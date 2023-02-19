@@ -1,0 +1,98 @@
+<template>
+  <div
+    class="fixed z-50 top-0 left-0 w-screen h-screen flex items-center justify-center"
+  >
+    <div
+      class="relative z-10 w-[450px] max-w-[calc(100vw-32px)] px-[15px] pt-5 pb-[35px] bg-white rounded-md shadow-card md:px-5"
+    >
+      <div
+        class="flex items-center justify-between mb-[38px] transition-opacity duration-300"
+        :class="[submitSuccess ? 'opacity-0 pointer-events-none' : '']"
+      >
+        <div class="flex items-center">
+          <BarCodeIcon class="w-7 h-7 mr-2" />
+          <span class="text-lg font-medium text-gray-300"
+            >Add custom part number</span
+          >
+        </div>
+        <button
+          class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
+          @click="customProductPartNumberModal = false"
+        >
+          <XIcon class="w-[15px] h-[15px]" />
+        </button>
+      </div>
+      <div
+        class="flex flex-col items-center px-[5px] transition-opacity duration-300 md:px-[15px]"
+        :class="[submitSuccess ? 'opacity-0 pointer-events-none' : '']"
+      >
+        <label class="block w-full">
+          <div class="text-sm mb-[5px]">Manufacturer part number:</div>
+          <input
+            :value="partNumber"
+            readonly
+            type="text"
+            class="bg-transparent w-full px-2.5 py-[5px] border border-[#D4D4D4] rounded h-[42px] text-xl font-semibold leading-tight text-dark focus:outline-none"
+          />
+        </label>
+        <ArrowDownIcon class="w-6 h-6 my-[15px]" />
+        <label class="block w-full mb-[43px]">
+          <input
+            v-model="customNumber"
+            type="text"
+            placeholder="Type your custom part number here"
+            class="bg-transparent w-full px-2.5 py-[9px] border border-[#D4D4D4] rounded h-[42px] text-sm focus:outline-none"
+          />
+        </label>
+        <div class="flex gap-2.5">
+          <button
+            class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white"
+            @click="submitSuccess = true"
+          >
+            Save
+          </button>
+          <button
+            class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300"
+            @click="customProductPartNumberModal = false"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+      <Transition name="fade">
+        <div
+          v-if="submitSuccess"
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
+        >
+          <CheckIcon class="w-[140px] h-[140px] text-green mb-5" />
+          <div class="text-2xl text-gray-300">Saved</div>
+        </div>
+      </Transition>
+    </div>
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-gray-300/70 cursor-pointer"
+      @click="customProductPartNumberModal = false"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import XIcon from "@/assets/icons/x.svg";
+import BarCodeIcon from "@/assets/icons/barcode.svg";
+import ArrowDownIcon from "@/assets/icons/arrow-down.svg";
+import CheckIcon from "@/assets/icons/check-circle.svg";
+import { customProductPartNumberModal } from "~~/system/modal/custom-product-part-number";
+
+const partNumber = ref("ADIN2111BCPZ");
+const customNumber = ref("");
+
+const submitSuccess = ref(false);
+
+watch(submitSuccess, (newVal) => {
+  if (newVal) {
+    setTimeout(() => {
+      customProductPartNumberModal.value = false;
+    }, 2000);
+  }
+});
+</script>
