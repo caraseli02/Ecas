@@ -10,10 +10,14 @@
       />
       <input
         v-model="searchVal"
-        type="text"
+        type="search"
         placeholder="Search parts here"
         class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2.5 py-2.5 h-[42px] placeholder:text-gray-100 focus:outline-none"
         @blur="searchVal = ''"
+        @keypress.enter="
+          $router.push('/search');
+          searchVal = '';
+        "
       />
       <div
         v-if="!isScrolled"

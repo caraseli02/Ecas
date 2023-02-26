@@ -10,7 +10,7 @@
             v-for="(filter, index) in filters"
             :key="index"
             :data-tab="textUtil.slugify(filter)"
-            class="relative text-sm font-semibold pb-[13px] transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
+            class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
             :class="[
               activeFilter === textUtil.slugify(filter)
                 ? 'text-blue'

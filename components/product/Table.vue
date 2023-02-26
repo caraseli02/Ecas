@@ -14,7 +14,7 @@
             v-for="(filter, index) in filters"
             :key="index"
             :data-tab="textUtil.slugify(filter)"
-            class="relative font-semibold pb-5 transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
+            class="relative font-medium pb-5 transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
             :class="[
               activeFilter === textUtil.slugify(filter)
                 ? 'text-blue'
@@ -33,11 +33,12 @@
           />
         </div>
       </div>
-      <button
+      <NuxtLink
+        to="/search"
         class="flex bg-gray-300 px-[22px] py-[11px] rounded text-sm font-medium text-white flex-shrink-0 md:mb-[15px]"
       >
         Show similar products (278)
-      </button>
+      </NuxtLink>
     </div>
     <div class="mb-[25px]">
       <table class="w-full">
@@ -69,11 +70,12 @@
       </table>
     </div>
     <div class="flex justify-center px-[15px] md:justify-end lg:px-5">
-      <button
+      <NuxtLink
+        to="/search"
         class="flex bg-gray-300 px-[22px] py-[11px] rounded text-sm font-medium text-white"
       >
         Show similar products (278)
-      </button>
+      </NuxtLink>
     </div>
   </div>
 </template>

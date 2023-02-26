@@ -14,7 +14,7 @@
         {{ modelValue || placeholder }}
       </span>
       <ChevronDownIcon
-        class="w-6 h-6 transition-transform duration-300"
+        class="w-6 h-6 text-gray-300 transition-transform duration-300"
         :class="{ 'rotate-180': showOptions }"
       />
     </button>

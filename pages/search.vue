@@ -1,7 +1,9 @@
 <template>
   <div>
-    <HomeHero />
-    <HomeFeaturedProducts />
+    <SearchBreadcrumbs />
+    <SearchFilters />
+    <SearchProducts />
+    <NewProducts />
     <Banner />
     <div class="container mb-[30px] lg:mb-10 xl:mb-[60px]">
       <div

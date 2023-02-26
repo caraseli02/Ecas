@@ -70,7 +70,7 @@
       </div>
     </div>
     <div
-      class="hidden absolute top-0 left-0 w-full h-full bg-gray-300/70 cursor-pointer md:block"
+      class="hidden absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer md:block"
       @click="showAccountModal = false"
     />
   </div>
@@ -136,4 +136,12 @@ const navItems = ref([
 ]);
 
 const isLoggedIn = ref(false);
+
+onMounted(() => {
+  documentUtil.toggleBodyScroll();
+});
+
+onBeforeUnmount(() => {
+  documentUtil.toggleBodyScroll();
+});
 </script>

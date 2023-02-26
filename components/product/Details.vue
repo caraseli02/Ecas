@@ -10,12 +10,6 @@
         >
           <CopyIcon class="w-[22px] h-[22px]" />
         </button>
-        <button
-          class="flex text-gray-300 transition-colors duration-300 mr-2 hover:text-blue"
-          @click="customProductPartNumberModal = true"
-        >
-          <EditIcon class="w-[22px] h-[22px]" />
-        </button>
       </div>
       <img
         :src="MicrochipLogo"
@@ -85,22 +79,14 @@
     </div>
     <div class="flex items-start gap-3 px-2.5 pt-[5px] pb-1.5 md:px-[15px]">
       <div class="text-xs leading-tight font-medium flex-shrink-0">Tags:</div>
-      <button class="flex items-center flex-wrap gap-x-2 gap-y-0.5">
-        <span class="text-xs leading-tight font-semibold text-blue">
-          #Diode
-        </span>
-        <span class="text-xs leading-tight font-semibold text-blue">
-          #Connector
-        </span>
-        <span class="text-xs leading-tight font-semibold text-blue">
-          #GasDetector
-        </span>
-        <span class="text-xs leading-tight font-semibold text-blue">
-          #Thermostat
-        </span>
-        <span class="text-xs leading-tight font-semibold text-blue">
-          #Transistor
-        </span>
+      <button
+        class="flex items-center flex-wrap gap-x-2 gap-y-0.5 text-xs leading-tight font-medium text-blue"
+      >
+        <span> #Diode </span>
+        <span> #Connector </span>
+        <span> #GasDetector </span>
+        <span> #Thermostat </span>
+        <span> #Transistor </span>
       </button>
     </div>
   </div>

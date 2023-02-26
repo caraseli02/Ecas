@@ -6,7 +6,7 @@
       <NuxtLink
         v-for="(item, index) in 20"
         :key="index"
-        to="/"
+        to="/product/slug"
         class="flex items-center px-2.5 pt-2 pb-[7px] text-gray-300 font-Inter transition-colors duration-300 hover:bg-gray-200 hover:text-blue lg:pr-[38px]"
       >
         <div class="text-xs leading-tight font-semibold mr-[15px]">

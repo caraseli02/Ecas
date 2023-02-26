@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid rounded-b-md shadow-card transition-all duration-150"
+    class="grid rounded-b-md shadow-card max-h-[calc(100vh-170px)] md:h-[448px] xl:h-[550px] transition-all duration-150"
     :class="[
       isBannerExpanded
         ? 'grid-cols-[0px,100%] md:grid-cols-[0px,728px] lg:grid-cols-[0px,984px] xl:grid-cols-[0px,1400px]'
@@ -46,182 +46,187 @@
         </div>
       </button>
     </div>
-    <div
-      v-if="!selectedCategory && !selectedSubCategory"
-      class="relative z-20 flex flex-col items-start px-[15px] pt-[15px] text-white h-full md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
-    >
-      <h3
-        class="relative z-20 font-semibold mb-[5px] md:text-2xl lg:text-[32px] lg:mb-2.5 xl:text-[40px]"
-      >
-        Exclusive Black Friday Offer
-      </h3>
-      <p
-        class="relative z-20 text-[11px] mb-[15px] max-w-[222px] leading-snug md:text-sm md:mb-[22px] md:max-w-[258px] lg:text-base lg:mb-[30px] lg:max-w-[415px] xl:text-lg xl:max-w-[642px] xl:mb-[46px]"
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut est
-        massa.
-      </p>
-      <button
-        class="relative z-20 flex bg-blue text-white rounded px-[15px] py-2 text-xs font-medium mb-[30px] md:px-6 md:py-[11px] md:text-sm md:mb-[60px] lg:mb-[34px] xl:mb-14"
-      >
-        View More
-      </button>
-      <Swiper
-        :key="isBannerExpanded"
-        :modules="[A11y, Pagination]"
-        :slides-per-view="isBannerExpanded ? 4 : 3"
-        :space-between="10"
-        :grab-cursor="true"
-        :pagination="{
-          bulletElement: 'button',
-          clickable: true,
-        }"
-        :breakpoints="{
-          1024: {
-            slidesPerView: isBannerExpanded ? 5 : 4,
-            spaceBetween: 13,
-          },
-          1280: {
-            slidesPerView: isBannerExpanded ? 7 : 6,
-            spaceBetween: 15,
-          },
-        }"
-        class="headerSubmenu--swiper w-full"
-      >
-        <SwiperSlide v-for="(item, index) in slides" :key="index">
-          <div
-            class="flex flex-col items-center justify-center text-center bg-blue/50 border border-blue/50 shadow-card py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
-          >
-            <component
-              :is="item.icon"
-              class="w-[34px] h-[34px] mb-1 md:w-[50px] md:h-[50px] md:mb-[21px] lg:w-[60px] lg:h-[60px] lg:mb-2.5 xl:mb-[15px]"
-            />
-            <div
-              class="text-[10px] font-medium leading-[1.4] text-white md:text-xs lg:text-[13px] xl:text-sm"
-            >
-              {{ item.title }}
-            </div>
-          </div>
-        </SwiperSlide>
-      </Swiper>
-      <img
-        :src="ItemImage"
-        alt="Img"
-        class="absolute z-20 top-[38px] right-[15px] w-[111px] object-contain md:w-[160px] md:top-[61px] lg:w-[240px] lg:top-[78px] lg:right-5 xl:w-[376px] xl:top-[52px] xl:right-[30px]"
-      />
-      <img
-        :src="SlideBg"
-        alt="Background"
-        class="absolute z-10 top-0 left-0 w-full h-full object-cover"
-        :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md']"
-      />
+    <Transition name="slide-from-right">
       <div
-        class="absolute z-10 top-0 left-0 w-full h-full opacity-75 pointer-events-none"
-        :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md']"
-        :style="{
-          background:
-            'linear-gradient(85.26deg, #001238 17.24%, rgba(0, 127, 255, 0.85) 106.53%)',
-        }"
-      />
-      <button
-        v-if="isStatic"
-        class="hidden absolute z-20 top-[15px] right-0 justify-center items-center px-[3px] py-[5px] bg-blue/70 rounded-l overflow-hidden border border-blue/50 transition-all duration-300 hover:px-2 md:flex"
-        :class="{ 'sideNav--toggler_active': isBannerExpanded }"
-        :style="{
-          boxShadow: '0px 0px 5px rgba(34, 34, 34, 0.15)',
-        }"
-        @click="isBannerExpanded = !isBannerExpanded"
-        @mouseenter="handleTogglerMouseEnter"
-        @mouseleave="handleTogglerMouseLeave"
+        v-if="!selectedCategory && !selectedSubCategory"
+        class="relative z-20 flex flex-col items-start px-[15px] pt-[15px] text-white h-full md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-          class="w-[18px] h-[18px] transition-transform duration-300"
-          :class="[isBannerExpanded ? 'rotate-180' : '']"
+        <h3
+          class="relative z-20 font-semibold mb-[5px] md:text-2xl lg:text-[32px] lg:mb-2.5 xl:text-[40px]"
         >
-          <path
-            fill="#fff"
-            d="M8.549 14.5 3.532 9l5.013-5.464a.946.946 0 0 0 .252-.643c0-.265-.11-.53-.292-.719a1.006 1.006 0 0 0-1.397.076L1.54 8.357a.943.943 0 0 0 0 1.286l5.57 6.107c.363.396.952.43 1.396.075.374-.353.407-.967.044-1.325Zm.833-6.143a.943.943 0 0 0 0 1.286l5.607 6.107c.363.397.989.43 1.396.075.408-.353.442-.967.077-1.325L11.447 9l5.012-5.464a.946.946 0 0 0 .253-.643c0-.265-.11-.53-.293-.719a1.006 1.006 0 0 0-1.396.076L9.382 8.357Z"
-          />
-        </svg>
-      </button>
-    </div>
-    <div
-      v-if="selectedCategory"
-      class="flex flex-col bg-white font-Inter max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin rounded-br-md xl:hidden"
-    >
-      <div
-        class="flex items-center justify-between border-b border-gray-200 px-[15px] py-2.5"
-      >
+          Exclusive Black Friday Offer
+        </h3>
+        <p
+          class="relative z-20 text-[11px] mb-[15px] max-w-[222px] leading-snug md:text-sm md:mb-[22px] md:max-w-[258px] lg:text-base lg:mb-[30px] lg:max-w-[415px] xl:text-lg xl:max-w-[642px] xl:mb-[46px]"
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut est
+          massa.
+        </p>
         <button
-          class="flex"
-          @click="
-            selectedSubCategory
-              ? (selectedSubCategory = null)
-              : (selectedCategory = null)
-          "
+          class="relative z-20 flex bg-blue text-white rounded px-[15px] py-2 text-xs font-medium mb-[30px] md:px-6 md:py-[11px] md:text-sm md:mb-[60px] lg:mb-[34px] xl:mb-14"
         >
-          <CaretLeft class="w-6 h-6" />
+          View More
         </button>
-        <div class="text-sm font-semibold text-blue">
-          {{
-            selectedSubCategory
-              ? selectedSubCategory.label
-              : selectedCategory.label
-          }}
-        </div>
-      </div>
-      <div class="flex flex-col flex-1">
-        <div class="flex-1 overflow-y-auto scrollbar-thin">
-          <div
-            v-if="selectedCategory && !selectedSubCategory"
-            class="flex flex-wrap gap-x-2.5 gap-y-[15px] p-2.5 lg:p-[15px]"
-          >
-            <button
-              v-for="(subCategory, index) in selectedCategory.subCategories"
-              :key="index"
-              class="group flex items-center px-2 py-1.5 rounded-[5px] text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
-              @click="selectedSubCategory = subCategory"
+        <Swiper
+          ref="swiperDOM"
+          :key="isBannerExpanded"
+          :modules="[A11y, Pagination]"
+          :slides-per-view="isBannerExpanded ? 4 : 3"
+          :space-between="10"
+          :grab-cursor="true"
+          :pagination="{
+            bulletElement: 'button',
+            clickable: true,
+          }"
+          :breakpoints="{
+            1024: {
+              slidesPerView: isBannerExpanded ? 5 : 4,
+              spaceBetween: 13,
+            },
+            1280: {
+              slidesPerView: isBannerExpanded ? 7 : 6,
+              spaceBetween: 15,
+            },
+          }"
+          class="headerSubmenu--swiper w-full"
+        >
+          <SwiperSlide v-for="(item, index) in slides" :key="index">
+            <div
+              class="flex flex-col items-center justify-center text-center bg-blue/50 border border-blue/50 shadow-card py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
             >
-              <div>
-                <div class="text-sm font-semibold">
-                  {{ subCategory.label }}
+              <component
+                :is="item.icon"
+                class="w-[34px] h-[34px] mb-1 md:w-[50px] md:h-[50px] md:mb-[21px] lg:w-[60px] lg:h-[60px] lg:mb-2.5 xl:mb-[15px]"
+              />
+              <div
+                class="text-[10px] font-medium leading-[1.4] text-white md:text-xs lg:text-[13px] xl:text-sm"
+              >
+                {{ item.title }}
+              </div>
+            </div>
+          </SwiperSlide>
+        </Swiper>
+        <img
+          :src="ItemImage"
+          alt="Img"
+          class="absolute z-20 top-[38px] right-[15px] w-[111px] object-contain md:w-[160px] md:top-[61px] lg:w-[240px] lg:top-[78px] lg:right-5 xl:w-[376px] xl:top-[52px] xl:right-[30px]"
+        />
+        <img
+          :src="SlideBg"
+          alt="Background"
+          class="absolute z-10 top-0 left-0 w-full h-full object-cover"
+          :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md']"
+        />
+        <div
+          class="absolute z-10 top-0 left-0 w-full h-full opacity-75 pointer-events-none"
+          :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md']"
+          :style="{
+            background:
+              'linear-gradient(85.26deg, #001238 17.24%, rgba(0, 127, 255, 0.85) 106.53%)',
+          }"
+        />
+        <button
+          v-if="isStatic"
+          class="hidden absolute z-20 top-[15px] right-0 justify-center items-center px-[3px] py-[5px] bg-blue/70 rounded-l overflow-hidden border border-blue/50 transition-all duration-300 hover:px-2 md:flex"
+          :class="{ 'sideNav--toggler_active': isBannerExpanded }"
+          :style="{
+            boxShadow: '0px 0px 5px rgba(34, 34, 34, 0.15)',
+          }"
+          @click="isBannerExpanded = !isBannerExpanded"
+          @mouseenter="handleTogglerMouseEnter"
+          @mouseleave="handleTogglerMouseLeave"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 18 18"
+            class="w-[18px] h-[18px] transition-transform duration-300"
+            :class="[isBannerExpanded ? 'rotate-180' : '']"
+          >
+            <path
+              fill="#fff"
+              d="M8.549 14.5 3.532 9l5.013-5.464a.946.946 0 0 0 .252-.643c0-.265-.11-.53-.292-.719a1.006 1.006 0 0 0-1.397.076L1.54 8.357a.943.943 0 0 0 0 1.286l5.57 6.107c.363.396.952.43 1.396.075.374-.353.407-.967.044-1.325Zm.833-6.143a.943.943 0 0 0 0 1.286l5.607 6.107c.363.397.989.43 1.396.075.408-.353.442-.967.077-1.325L11.447 9l5.012-5.464a.946.946 0 0 0 .253-.643c0-.265-.11-.53-.293-.719a1.006 1.006 0 0 0-1.396.076L9.382 8.357Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </Transition>
+    <Transition name="slide-from-right">
+      <div
+        v-if="selectedCategory"
+        class="flex flex-col bg-white font-Inter max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin rounded-br-md xl:hidden"
+      >
+        <div
+          class="flex items-center justify-between border-b border-gray-200 px-[15px] py-2.5"
+        >
+          <button
+            class="flex"
+            @click="
+              selectedSubCategory
+                ? (selectedSubCategory = null)
+                : (selectedCategory = null)
+            "
+          >
+            <CaretLeft class="w-6 h-6" />
+          </button>
+          <div class="text-sm font-semibold text-blue">
+            {{
+              selectedSubCategory
+                ? selectedSubCategory.label
+                : selectedCategory.label
+            }}
+          </div>
+        </div>
+        <div class="flex flex-col flex-1">
+          <div class="flex-1 overflow-y-auto scrollbar-thin">
+            <div
+              v-if="selectedCategory && !selectedSubCategory"
+              class="flex flex-wrap gap-x-2.5 gap-y-[15px] p-2.5 lg:p-[15px]"
+            >
+              <button
+                v-for="(subCategory, index) in selectedCategory.subCategories"
+                :key="index"
+                class="group flex items-center px-2 py-1.5 rounded-[5px] text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
+                @click="selectedSubCategory = subCategory"
+              >
+                <div>
+                  <div class="text-sm font-semibold">
+                    {{ subCategory.label }}
+                  </div>
+                  <div
+                    class="text-xs font-semibold text-gray-100 transition-colors duration-300 group-hover:text-gray-300"
+                  >
+                    {{ subCategory.products }} Products
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              v-else-if="selectedSubCategory"
+              class="grid grid-cols-2 gap-3 px-4 py-2.5 lg:grid-cols-3 lg:gap-x-[25px] lg:px-5 lg:pt-[5px]"
+            >
+              <NuxtLink
+                v-for="(subCategory, index) in selectedCategory.subCategories"
+                :key="index"
+                to="/"
+                class="relative flex items-center text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue hover:before:opacity-100"
+              >
+                <div class="text-sm font-medium truncate mr-[5px]">
+                  Semiconductors ({{ subCategory.products }})
                 </div>
                 <div
-                  class="text-xs font-semibold text-gray-100 transition-colors duration-300 group-hover:text-gray-300"
+                  v-if="index === 3 || index === 5"
+                  class="bg-blue text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
                 >
-                  {{ subCategory.products }} Products
+                  New
                 </div>
-              </div>
-            </button>
+              </NuxtLink>
+            </div>
           </div>
-          <div
-            v-else-if="selectedSubCategory"
-            class="grid grid-cols-2 gap-3 px-4 py-2.5 lg:grid-cols-3 lg:gap-x-[25px] lg:px-5 lg:pt-[5px]"
-          >
-            <NuxtLink
-              v-for="(subCategory, index) in selectedCategory.subCategories"
-              :key="index"
-              to="/"
-              class="relative flex items-center text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue hover:before:opacity-100"
-            >
-              <div class="text-sm font-medium truncate mr-[5px]">
-                Semiconductors ({{ subCategory.products }})
-              </div>
-              <div
-                v-if="index === 3 || index === 5"
-                class="bg-blue text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
-              >
-                New
-              </div>
-            </NuxtLink>
-          </div>
+          <LayoutHeaderMainMenuBanners />
         </div>
-        <LayoutHeaderMainMenuBanners />
       </div>
-    </div>
+    </Transition>
     <Transition name="slide-from-right">
       <div
         v-if="selectedCategory"
@@ -770,6 +775,14 @@ const handleTogglerMouseLeave = (event: MouseEvent) => {
 
   isMouseOverToggler.value = null;
 };
+
+const swiperDOM = ref<any>(null);
+
+onMounted(() => {
+  if (swiperDOM.value) {
+    swiperDOM.value.destroy = () => {};
+  }
+});
 </script>
 
 <style>
@@ -780,8 +793,7 @@ const handleTogglerMouseLeave = (event: MouseEvent) => {
   @apply h-auto;
 }
 .headerSubmenu--swiper .swiper-pagination {
-  /* @apply bottom-[5px] space-x-1.5 md:space-x-2 md:bottom-3; */
-  @apply flex justify-center h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px];
+  @apply flex justify-center w-full h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px];
 }
 .headerSubmenu--swiper .swiper-pagination-bullet {
   @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2;

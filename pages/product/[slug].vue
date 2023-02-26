@@ -34,22 +34,19 @@
       <ProductTable />
     </div>
     <ProductBanners />
-    <HomeNewProducts />
-    <HomeBanner class="hidden lg:flex xl:hidden" />
+    <NewProducts />
+    <Banner class="hidden lg:flex xl:hidden" />
     <div class="container mb-[30px] lg:mb-10 xl:mb-[60px]">
       <div
         class="grid grid-cols-1 gap-[15px] md:grid-cols-[40%,calc(60%-20px)] md:gap-5 xl:grid-cols-[41%,calc(59%-20px)]"
       >
-        <HomeQuickBuy />
-        <HomeEcxlusiveOffer />
+        <QuickBuy />
+        <EcxlusiveOffer />
       </div>
     </div>
-    <HomeNewProducts />
-    <HomeNews />
-    <HomeManufacturers />
-    <Transition name="fade">
-      <LayoutCustomProductPartNumberModal v-if="customProductPartNumberModal" />
-    </Transition>
+    <NewProducts />
+    <News />
+    <Manufacturers />
   </div>
 </template>
 
@@ -57,7 +54,6 @@
 import QuestionIcon from "@/assets/icons/question.svg";
 import TriangleIcon from "@/assets/icons/triangle.svg";
 import PrintIcon from "@/assets/icons/print.svg";
-import { customProductPartNumberModal } from "~~/system/modal/custom-product-part-number";
 
 useHead({
   title: "Product",

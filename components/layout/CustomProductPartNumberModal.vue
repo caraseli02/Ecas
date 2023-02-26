@@ -70,7 +70,7 @@
       </Transition>
     </div>
     <div
-      class="absolute top-0 left-0 w-full h-full bg-gray-300/70 cursor-pointer"
+      class="absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
       @click="customProductPartNumberModal = false"
     />
   </div>
@@ -94,5 +94,13 @@ watch(submitSuccess, (newVal) => {
       customProductPartNumberModal.value = false;
     }, 2000);
   }
+});
+
+onMounted(() => {
+  documentUtil.toggleBodyScroll();
+});
+
+onBeforeUnmount(() => {
+  documentUtil.toggleBodyScroll();
 });
 </script>

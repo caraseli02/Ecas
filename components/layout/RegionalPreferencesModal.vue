@@ -54,7 +54,7 @@
       </div>
     </div>
     <div
-      class="hidden absolute top-0 left-0 w-full h-full bg-gray-300/70 cursor-pointer md:block"
+      class="hidden absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer md:block"
       @click="showRegionalPreferencesModal = false"
     />
   </div>
@@ -67,4 +67,12 @@ import { showRegionalPreferencesModal } from "~~/system/modal/regional-preferenc
 
 const language = ref("English");
 const currency = ref("RON");
+
+onMounted(() => {
+  documentUtil.toggleBodyScroll();
+});
+
+onBeforeUnmount(() => {
+  documentUtil.toggleBodyScroll();
+});
 </script>

@@ -55,7 +55,19 @@
                 class="w-[26px] h-[26px] text-white md:w-[30px] md:h-[30px]"
               />
             </button>
-
+            <button
+              class="hidden items-center xl:flex"
+              @click="showAccountModal = true"
+            >
+              <UserIcon
+                class="w-[26px] h-[26px] text-white md:w-7 md:h-7 xl:mr-2"
+              />
+              <span
+                class="hidden text-sm font-medium text-white lg:text-base xl:inline-block"
+              >
+                My Account
+              </span>
+            </button>
             <button
               class="flex items-center"
               @click="
@@ -72,19 +84,6 @@
                 class="hidden text-sm font-medium text-white lg:text-base xl:inline-block"
               >
                 Favorites
-              </span>
-            </button>
-            <button
-              class="hidden items-center xl:flex"
-              @click="showAccountModal = true"
-            >
-              <UserIcon
-                class="w-[26px] h-[26px] text-white md:w-7 md:h-7 xl:mr-2"
-              />
-              <span
-                class="hidden text-sm font-medium text-white lg:text-base xl:inline-block"
-              >
-                My Account
               </span>
             </button>
             <button

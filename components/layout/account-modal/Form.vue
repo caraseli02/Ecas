@@ -18,7 +18,7 @@
         />
       </label>
       <button class="flex absolute top-1/2 -translate-y-1/2 right-2.5">
-        <EyeIcon class="w-6 h-6" />
+        <EyeIcon class="w-6 h-6 text-[#D4D4D4]" />
       </button>
     </div>
     <div class="flex items-center justify-between mb-[30px]">

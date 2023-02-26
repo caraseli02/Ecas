@@ -17,9 +17,11 @@
     "uuid": "^9.0.0"
   },
   "dependencies": {
+    "@vuemod/vue-touch": "^0.0.22",
     "lodash": "^4.17.21",
     "nuxt-swiper": "^0.1.9",
     "sass": "^1.58.1",
-    "sass-loader": "^13.2.0"
+    "sass-loader": "^13.2.0",
+    "vuejs-paginate-next": "^1.0.2"
   }
 }

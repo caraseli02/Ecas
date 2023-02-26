@@ -17,3 +17,25 @@
 .slide-from-right-leave-to {
   @apply opacity-0 translate-x-10;
 }
+
+.slide-from-left-enter-active,
+.slide-from-left-leave-active {
+  @apply transition-all duration-300 ease-linear;
+}
+
+.slide-from-left-enter-from {
+  @apply opacity-0 -translate-x-10;
+}
+
+.slide-from-left-leave-to {
+  @apply opacity-0 translate-x-2;
+}
+
+.slide-from-bottom-enter-active,
+.slide-from-bottom-leave-active {
+  @apply transition-all duration-300 ease-out;
+}
+.slide-from-bottom-enter-from,
+.slide-from-bottom-leave-to {
+  @apply opacity-0 translate-y-10;
+}

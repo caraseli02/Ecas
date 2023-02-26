@@ -8,4 +8,5 @@ html {
 
 body {
   @apply font-Poppins bg-white text-dark overflow-x-hidden;
+  touch-action: manipulation;
 }
