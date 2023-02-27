@@ -1,30 +1,36 @@
 <template>
-  <NuxtLink
-    :to="`/product/${item.slug}`"
+  <div
     class="relative font-Inter lg:grid lg:grid-cols-[60%,40%] lg:gap-[25px] xl:grid-cols-[45%,30%,25%] xl:pb-[15px] xl:gap-0 xl:border-b xl:border-gray-200"
   >
     <div class="flex items-start">
-      <img
-        :src="item.cover"
-        :alt="item.title"
-        class="w-[100px] h-[100px] mr-2.5 md:w-[120px] md:h-[120px] md:mr-[15px]"
-      />
+      <NuxtLink
+        :to="`/product/${item.slug}`"
+        class="flex flex-shrink-0 mr-2.5 md:mr-[15px]"
+      >
+        <img
+          :src="item.cover"
+          :alt="item.title"
+          class="w-[100px] h-[100px] md:w-[120px] md:h-[120px]"
+        />
+      </NuxtLink>
       <div>
         <div class="md:flex md:items-center md:mb-[14px]">
-          <button
-            class="flex items-center mb-2.5 md:mb-0 md:mr-5"
-            @click.prevent
-          >
-            <span class="text-xl leading-tight font-semibold mr-1.5">
+          <div class="flex items-center mb-2.5 md:mb-0 md:mr-5">
+            <NuxtLink
+              :to="`/product/${item.slug}`"
+              class="text-xl leading-tight font-semibold mr-1.5"
+            >
               {{ item.title }}
-            </span>
-            <CopyIcon
-              class="w-[22px] h-[22px] text-gray-300 transition-colors duration-300 hover:text-blue"
-            />
-          </button>
+            </NuxtLink>
+            <button class="flex">
+              <CopyIcon
+                class="w-[22px] h-[22px] text-gray-300 transition-colors duration-300 hover:text-blue"
+              />
+            </button>
+          </div>
           <button
             class="flex items-center text-gray-300 px-3 py-[5px] max-w-max border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue hover:border-blue md:mb-0"
-            @click.prevent="customProductPartNumberModal = true"
+            @click="customProductPartNumberModal = true"
           >
             <span class="text-[15px] leading-tight font-medium mr-2">
               PI2345678J
@@ -43,14 +49,12 @@
           <div class="flex items-center">
             <button
               class="flex items-center transition-colors duration-300 mr-[9px] hover:text-blue"
-              @click.prevent
             >
               <PDFIcon class="w-[22px] h-[22px] mr-[5px]" />
               <span class="text-xs leading-tight font-medium">Datasheet</span>
             </button>
             <button
               class="flex items-center transition-colors duration-300 hover:text-blue"
-              @click.prevent
             >
               <LeafIcon class="w-[22px] h-[22px] mr-[5px]" />
               <span class="text-xs leading-tight font-medium">RoHS</span>
@@ -148,7 +152,7 @@
         <button
           :disabled="quantity === 0"
           class="flex items-center justify-center bg-gray-200 text-gray-300 px-2.5 w-[42px] h-[42px] transition-colors duration-300 disabled:text-[#D4D4D4]"
-          @click.prevent="quantity--"
+          @click="quantity--"
         >
           <MinusIcon class="w-4 h-4" />
         </button>
@@ -159,7 +163,7 @@
         </div>
         <button
           class="flex items-center justify-center bg-gray-200 px-2.5 w-[42px] h-[42px]"
-          @click.prevent="quantity++"
+          @click="quantity++"
         >
           <PlusIcon class="w-3.5 h-3.5 text-gray-300" />
         </button>
@@ -174,13 +178,11 @@
     <div class="absolute top-0 right-0 flex flex-col gap-2.5">
       <button
         class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue"
-        @click.prevent
       >
         <HeartIcon class="w-6 h-6" />
       </button>
       <button
         class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue"
-        @click.prevent
       >
         <ShareIcon class="w-6 h-6" />
       </button>
@@ -191,7 +193,7 @@
     >
       {{ item.discount }}%
     </div>
-  </NuxtLink>
+  </div>
 </template>
 
 <script setup lang="ts">

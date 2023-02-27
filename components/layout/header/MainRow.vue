@@ -121,13 +121,15 @@
                 <SearchIcon
                   class="flex-shrink-0 w-[18px] h-[18px] text-gray-100"
                 />
-                <input
-                  v-model="searchVal"
-                  ref="searchDOM"
-                  type="text"
-                  placeholder="Search products"
-                  class="bg-transparent flex-1 w-full px-[5px] py-2.5 text-sm leading-tight placeholder:text-gray-100 focus:outline-none"
-                />
+                <form action="" @submit.prevent>
+                  <input
+                    v-model="searchVal"
+                    ref="searchDOM"
+                    type="search"
+                    placeholder="Search products"
+                    class="bg-transparent flex-1 w-full px-[5px] py-2.5 text-sm leading-tight placeholder:text-gray-100 focus:outline-none"
+                  />
+                </form>
               </label>
               <button class="flex" @click="showMobileSearch = false">
                 <XIcon class="flex-shrink-0 w-6 h-6 text-gray-100" />

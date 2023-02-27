@@ -8,7 +8,7 @@
         v-touch:drag="onDrag"
       >
         <button
-          class="flex items-center justify-between w-full px-2.5 py-[9px] transition-colors duration-300"
+          class="flex items-center justify-between w-full px-2.5 py-[9px] text-left transition-colors duration-300"
           :class="[isSwiped ? 'text-gray-100' : '']"
           @click="isSwiped ? null : (showOptions = !showOptions)"
         >

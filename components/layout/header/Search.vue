@@ -8,17 +8,20 @@
         v-if="!isScrolled"
         class="hidden w-4 h-4 text-gray-100 self-center ml-2.5 md:inline-block"
       />
-      <input
-        v-model="searchVal"
-        type="search"
-        placeholder="Search parts here"
-        class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2.5 py-2.5 h-[42px] placeholder:text-gray-100 focus:outline-none"
-        @blur="searchVal = ''"
-        @keypress.enter="
-          $router.push('/search');
-          searchVal = '';
-        "
-      />
+      <form action="" @submit.prevent class="w-full">
+        <input
+          v-model="searchVal"
+          type="search"
+          placeholder="Search parts here"
+          autocomplete="off"
+          class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2.5 py-2.5 h-[42px] w-full placeholder:text-gray-100 focus:outline-none"
+          @blur="searchVal = ''"
+          @keypress.enter="
+            $router.push('/search');
+            searchVal = '';
+          "
+        />
+      </form>
       <div
         v-if="!isScrolled"
         class="flex items-center justify-center bg-blue cursor-pointer px-[15px] py-[11px]"

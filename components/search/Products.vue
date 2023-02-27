@@ -1,7 +1,7 @@
 <template>
   <section class="mb-10 md:mb-[60px]">
     <div class="container">
-      <div class="font-semibold mb-[15px] md:hidden">
+      <div class="font-semibold font-Inter mb-[15px] md:hidden">
         Products Found ({{ searchItems.length }})
       </div>
       <div
@@ -115,7 +115,7 @@
       <div
         class="flex items-center justify-center mb-10 md:justify-between xl:mb-[30px]"
       >
-        <div class="hidden font-semibold md:block">
+        <div class="hidden font-Inter font-semibold md:block">
           Products Found ({{ searchItems.length }})
         </div>
         <div class="flex items-center">
