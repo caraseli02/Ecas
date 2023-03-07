@@ -1,7 +1,7 @@
 <template>
   <div class="fixed z-50 top-0 left-0 w-screen h-screen">
     <div
-      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white md:w-[450px]"
+      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh md:w-[450px]"
     >
       <div
         class="flex items-center justify-between p-5 border-b border-gray-200"
@@ -38,7 +38,7 @@
         <div class="flex items-center justify-between mb-[30px]">
           <div class="flex items-center text-sm text-gray-300">
             <span class="mr-2">Customer ID:</span>
-            <span>4BV77XSX</span>
+            <span class="font-Inter">4BV77XSX</span>
           </div>
           <BuildingIcon class="w-7 h-7" />
         </div>

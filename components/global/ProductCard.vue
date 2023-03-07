@@ -24,7 +24,7 @@
       </h3>
       <button class="flex">
         <InfoIcon
-          class="w-[14px] h-[14px] md:w-4 md:h-4 xl:w-[18px] xl:h-[18px]"
+          class="w-[14px] h-[14px] text-white md:w-4 md:h-4 xl:w-[18px] xl:h-[18px]"
         />
       </button>
     </div>
@@ -75,11 +75,18 @@
         {{ product.discount }}%
       </div>
     </div>
+    <div
+      v-if="product.stock"
+      class="absolute bottom-0 right-0 bg-blue px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]"
+      @click.prevent="$router.push('/order-summary')"
+    >
+      <CartIcon class="w-6 h-6 text-white" />
+    </div>
     <button
+      v-else
       class="absolute bottom-0 right-0 bg-blue px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]"
     >
-      <CartIcon v-if="product.stock" class="w-6 h-6 text-white" />
-      <ArrowsIcon v-else class="w-6 h-6" />
+      <ArrowsIcon class="w-6 h-6" />
     </button>
   </NuxtLink>
 </template>

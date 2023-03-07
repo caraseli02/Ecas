@@ -49,7 +49,7 @@
     <Transition name="slide-from-right">
       <div
         v-if="!selectedCategory && !selectedSubCategory"
-        class="relative z-20 flex flex-col items-start px-[15px] pt-[15px] text-white h-full md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
+        class="relative z-20 flex flex-col items-start px-[15px] pt-[15px] text-white h-full max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
       >
         <h3
           class="relative z-20 font-semibold mb-[5px] md:text-2xl lg:text-[32px] lg:mb-2.5 xl:text-[40px]"

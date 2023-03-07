@@ -29,7 +29,7 @@
           <div class="flex-shrink-0">Quantity</div>
           <div>Price ( Ex VAT)</div>
         </div>
-        <div class="mb-4 lg:mb-[9px]">
+        <div class="font-Inter mb-4 lg:mb-[9px]">
           <div
             class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight bg-[#F2F2F2] rounded"
           >
@@ -81,15 +81,15 @@
           </div>
           <div class="flex items-center">
             <span class="text-gray-300 mr-[5px]">Multiple:</span>
-            <span class="lg:text-gray-300">1</span>
+            <span class="font-Inter lg:text-gray-300">1</span>
           </div>
           <div class="flex items-center">
             <span class="text-gray-300 mr-[5px]">Minimum Order:</span>
-            <span class="lg:text-gray-300">1</span>
+            <span class="font-Inter lg:text-gray-300">1</span>
           </div>
         </div>
         <div
-          class="flex items-center justify-between mb-[22px] lg:justify-start lg:items-end"
+          class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end"
         >
           <div class="lg:mr-[15px]">
             <div class="text-sm leading-tight line-through">$ 0,15 (100+)</div>
@@ -106,32 +106,14 @@
       </div>
     </div>
     <div class="flex gap-2.5">
-      <div class="flex bg-[#F5F5F5] rounded overflow-hidden">
-        <button
-          :disabled="quantity === 0"
-          class="flex items-center justify-center bg-gray-200 text-gray-300 px-2.5 w-[42px] h-[42px] transition-colors duration-300 disabled:text-[#D4D4D4]"
-          @click="quantity--"
-        >
-          <MinusIcon class="w-4 h-4" />
-        </button>
-        <div
-          class="flex items-center justify-center w-[58px] font-Inter text-sm text-gray-300"
-        >
-          {{ quantity }}
-        </div>
-        <button
-          class="flex items-center justify-center bg-gray-200 px-2.5 w-[42px] h-[42px]"
-          @click="quantity++"
-        >
-          <PlusIcon class="w-3.5 h-3.5 text-gray-300" />
-        </button>
-      </div>
-      <button
+      <QuantityButtons v-model="quantity" size="lg" />
+      <NuxtLink
+        to="/order-summary"
         class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
       >
         <CartIcon class="w-6 h-6 mr-2" />
         <span class="text-sm font-medium">Add to cart</span>
-      </button>
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -139,8 +121,6 @@
 <script setup lang="ts">
 import CheckIcon from "@/assets/icons/check-circle.svg";
 import CartIcon from "@/assets/icons/cart.svg";
-import PlusIcon from "@/assets/icons/plus.svg";
-import MinusIcon from "@/assets/icons/minus.svg";
 
 const quantity = ref(0);
 </script>

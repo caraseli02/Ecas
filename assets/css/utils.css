@@ -16,6 +16,10 @@
   @apply overflow-visible;
 }
 
+.max-h-vh {
+  max-height: calc(100 * var(--vh));
+}
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;

@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "@types/uuid": "^9.0.0",
     "autoprefixer": "^10.4.13",
     "nuxt": "^3.1.0",
@@ -22,6 +23,7 @@
     "nuxt-swiper": "^0.1.9",
     "sass": "^1.58.1",
     "sass-loader": "^13.2.0",
+    "vue3-lottie": "^2.5.0",
     "vuejs-paginate-next": "^1.0.2"
   }
 }

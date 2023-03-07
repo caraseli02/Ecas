@@ -11,18 +11,62 @@
           <span class="text-sm flex-shrink-0 mr-2.5">Show</span>
           <div class="relative min-w-[215px]">
             <button
-              class="flex items-center w-full border border-[#D4D4D4] bg-white rounded px-2.5 py-[3px]"
+              class="flex items-center justify-between w-full border border-[#D4D4D4] bg-white rounded px-2.5 py-[3px]"
+              @click="showShowOptions = !showShowOptions"
             >
-              <span class="text-sm mr-2.5">New products only</span>
-              <div
-                class="flex items-center justify-center w-[18px] h-[18px] rounded border bg-blue border-blue transition-colors duration-300 mr-[13px]"
-              >
-                <CheckIcon class="w-4 text-white" />
+              <div class="flex items-center">
+                <span class="text-sm mr-2.5">{{ show }}</span>
+                <div
+                  class="flex items-center justify-center w-[18px] h-[18px] rounded border bg-blue border-blue transition-colors duration-300 mr-[13px]"
+                >
+                  <CheckIcon class="w-4 text-white" />
+                </div>
               </div>
               <ChevronDownIcon
                 class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                :class="[showShowOptions ? 'rotate-180' : '']"
               />
             </button>
+            <transition name="fade">
+              <div
+                v-if="showShowOptions"
+                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card py-1.5"
+                v-click-outside="() => (showShowOptions = false)"
+              >
+                <label
+                  v-for="option in showOptions"
+                  :key="option"
+                  class="group flex w-full items-center justify-between cursor-pointer px-[9px] py-1.5"
+                >
+                  <input
+                    name="show"
+                    v-model="show"
+                    :value="option"
+                    type="radio"
+                    class="sr-only"
+                    @change="showShowOptions = false"
+                  />
+                  <span
+                    class="flex w-full text-left text-sm rounded-[5px] text-gray-300"
+                  >
+                    {{ option }}
+                  </span>
+                  <div
+                    class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
+                    :class="[
+                      option === show
+                        ? 'bg-blue border-blue group-hover:bg-white'
+                        : 'bg-white  border-[#D4D4D4] group-hover:border-gray-300',
+                    ]"
+                  >
+                    <CheckIcon
+                      v-if="option === show"
+                      class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                    />
+                  </div>
+                </label>
+              </div>
+            </transition>
           </div>
         </label>
         <label class="flex items-center lg:mr-auto">
@@ -35,6 +79,7 @@
               <span class="text-sm text-left mr-2.5">{{ sortBy }}</span>
               <ChevronDownIcon
                 class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                :class="[showSortByOptions ? 'rotate-180' : '']"
               />
             </button>
             <transition name="fade">
@@ -89,6 +134,7 @@
               <span class="text-sm mr-2">{{ perPage }}</span>
               <ChevronDownIcon
                 class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                :class="[showPerPageOptions ? 'rotate-180' : '']"
               />
             </button>
             <transition name="fade">
@@ -120,7 +166,11 @@
         </div>
         <div class="flex items-center">
           <Transition name="fade">
-            <button v-if="atPage !== 1" @click="atPage--">
+            <button
+              v-if="atPage !== 1"
+              @click="atPage--"
+              class="flex transition-colors duration-300 text-gray-300 hover:text-blue"
+            >
               <ChevronRightIcon class="w-1.5 h-3 rotate-180 mr-4" />
             </button>
           </Transition>
@@ -150,7 +200,11 @@
             </template>
           </Pagination>
           <Transition name="fade">
-            <button v-if="totalPages !== atPage" @click="atPage++">
+            <button
+              v-if="totalPages !== atPage"
+              @click="atPage++"
+              class="flex transition-colors duration-300 text-gray-300 hover:text-blue"
+            >
               <ChevronRightIcon class="w-1.5 h-3 ml-4" />
             </button>
           </Transition>
@@ -178,6 +232,7 @@
               <span class="text-sm mr-2">{{ perPage }}</span>
               <ChevronDownIcon
                 class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                :class="[showPerPageOptions ? 'rotate-180' : '']"
               />
             </button>
             <transition name="fade">
@@ -202,7 +257,11 @@
         </label>
         <div class="flex items-center">
           <Transition name="fade">
-            <button v-if="atPage !== 1" @click="atPage--">
+            <button
+              v-if="atPage !== 1"
+              @click="atPage--"
+              class="flex transition-colors duration-300 text-gray-300 hover:text-blue"
+            >
               <ChevronRightIcon class="w-1.5 h-3 rotate-180 mr-4" />
             </button>
           </Transition>
@@ -232,7 +291,11 @@
             </template>
           </Pagination>
           <Transition name="fade">
-            <button v-if="totalPages !== atPage" @click="atPage++">
+            <button
+              v-if="totalPages !== atPage"
+              @click="atPage++"
+              class="flex transition-colors duration-300 text-gray-300 hover:text-blue"
+            >
               <ChevronRightIcon class="w-1.5 h-3 ml-4" />
             </button>
           </Transition>
@@ -251,6 +314,14 @@ import SearchItemCover from "@/assets/media/product/gallery-1.png";
 import { SearchItem as SearchItemType } from "~~/types/search";
 
 const perPage = ref(5);
+const show = ref("New products only");
+const showShowOptions = ref(false);
+const showOptions = ref([
+  "New products only",
+  "Available in stock",
+  "Sales only",
+  "All products",
+]);
 const showPerPageOptions = ref(false);
 const sortBy = ref("Product Code");
 const showSortByOptions = ref(false);

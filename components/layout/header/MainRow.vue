@@ -99,8 +99,10 @@
                 class="w-[26px] h-[26px] text-white md:w-7 md:h-7 md:mr-2"
               />
               <div class="hidden flex-col text-white md:flex">
-                <div class="text-xs leading-[1.17] mb-0">0 items</div>
-                <div class="text-sm font-medium mb-0 lg:text-base">
+                <div class="text-xs font-Inter leading-[1.17] mb-0">
+                  0 items
+                </div>
+                <div class="text-sm font-Inter font-medium mb-0 lg:text-base">
                   0,00 RON
                 </div>
                 <div class="text-xs leading-[1.17]">(ex VAT)</div>
@@ -121,13 +123,17 @@
                 <SearchIcon
                   class="flex-shrink-0 w-[18px] h-[18px] text-gray-100"
                 />
-                <form action="" @submit.prevent>
+                <form action="" @submit.prevent="showMobileSearch = false">
                   <input
                     v-model="searchVal"
                     ref="searchDOM"
                     type="search"
                     placeholder="Search products"
                     class="bg-transparent flex-1 w-full px-[5px] py-2.5 text-sm leading-tight placeholder:text-gray-100 focus:outline-none"
+                    @keypress.enter="
+                      $router.push('/search');
+                      searchVal = '';
+                    "
                   />
                 </form>
               </label>

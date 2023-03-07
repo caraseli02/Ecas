@@ -13,7 +13,7 @@
           <UserIcon class="w-7 h-7 text-gray-300" />
         </button>
         <div
-          class="hidden text-sm leading-[1.14] font-medium text-gray-300 xl:block"
+          class="hidden text-sm leading-[1.14] font-medium text-gray-300 font-Inter xl:block"
         >
           <span class="uppercase">Free</span> shipping on orders over $150
         </div>

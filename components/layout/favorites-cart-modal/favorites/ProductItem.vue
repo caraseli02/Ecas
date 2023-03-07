@@ -1,0 +1,102 @@
+<template>
+  <div class="flex flex-col pb-[15px] border-b border-gray-200">
+    <div class="flex items-start mb-2">
+      <img
+        v-if="product.image"
+        :src="product.image"
+        :alt="product.title"
+        class="w-[70px] h-[70px] mr-2.5"
+      />
+      <div>
+        <div class="flex items-center mb-2.5">
+          <div class="leading-tight font-semibold font-Inter mr-2.5">
+            {{ product.title }}
+          </div>
+          <button
+            class="flex text-gray-300 transition-colors duration-300 mr-2.5 hover:text-blue"
+          >
+            <CopyIcon class="w-5 h-5" />
+          </button>
+          <button
+            class="flex text-gray-300 transition-colors duration-300 mr-2.5 hover:text-blue"
+          >
+            <InfoIcon class="w-5 h-5" />
+          </button>
+        </div>
+        <div
+          v-if="product.description"
+          class="text-sm text-gray-300 truncate w-[205px] mb-2.5"
+        >
+          {{ product.description }}
+        </div>
+        <div>
+          <div class="text-xs leading-tight font-Inter line-through">
+            $ 0,15 (100+)
+          </div>
+          <div class="text-sm leading-tight font-bold font-Inter text-red">
+            $ 0,095 <span class="text-xs font-normal">(100+)</span>
+          </div>
+        </div>
+      </div>
+      <button
+        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full ml-auto text-gray-300 transition-colors duration-300 hover:text-blue"
+      >
+        <TrashIcon class="w-5 h-5" />
+      </button>
+    </div>
+    <div class="flex items-end justify-between">
+      <div class="flex items-center">
+        <label class="flex cursor-pointer mr-[15px]">
+          <input
+            :value="product.selected"
+            type="checkbox"
+            class="sr-only"
+            @change="$emit('select')"
+          />
+          <div
+            class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
+            :class="[
+              product.selected
+                ? 'bg-blue border-blue group-hover:bg-white'
+                : 'bg-white  border-[#D4D4D4] group-hover:border-gray-300',
+            ]"
+          >
+            <CheckIcon
+              v-if="product.selected"
+              class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+            />
+          </div>
+        </label>
+        <div class="flex items-center text-green">
+          <CheckCircleIcon class="w-4 h-4 mr-1" />
+          <span class="text-[11px] leading-tight font-semibold font-Inter"
+            >16,000 in stock
+          </span>
+        </div>
+      </div>
+      <QuantityButtons
+        v-if="typeof product.quantity === 'number'"
+        v-model="product.quantity"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { PropType } from "vue";
+import { FavoriteItem } from "~~/types";
+import CheckIcon from "@/assets/icons/check.svg";
+import CheckCircleIcon from "@/assets/icons/check-circle.svg";
+import CopyIcon from "@/assets/icons/copy.svg";
+import TrashIcon from "@/assets/icons/trash-can.svg";
+import InfoIcon from "@/assets/icons/info-circle.svg";
+
+defineProps({
+  product: {
+    type: Object as PropType<FavoriteItem>,
+    required: true,
+  },
+});
+
+defineEmits(["select"]);
+</script>

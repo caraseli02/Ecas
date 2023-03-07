@@ -50,7 +50,7 @@
                   class="sr-only"
                 />
                 <span
-                  class="text-xs transition-colors duration-300 group-hover:text-blue"
+                  class="text-xs font-Inter transition-colors duration-300 group-hover:text-blue"
                 >
                   {{ option.label }} ({{ option.quantity }})
                 </span>

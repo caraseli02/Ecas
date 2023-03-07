@@ -148,32 +148,14 @@
       </div>
     </div>
     <div class="flex gap-2.5 md:col-span-2 xl:col-span-1 xl:items-end">
-      <div class="flex bg-[#F5F5F5] rounded overflow-hidden">
-        <button
-          :disabled="quantity === 0"
-          class="flex items-center justify-center bg-gray-200 text-gray-300 px-2.5 w-[42px] h-[42px] transition-colors duration-300 disabled:text-[#D4D4D4]"
-          @click="quantity--"
-        >
-          <MinusIcon class="w-4 h-4" />
-        </button>
-        <div
-          class="flex items-center justify-center w-[58px] font-Inter text-sm text-gray-300"
-        >
-          {{ quantity }}
-        </div>
-        <button
-          class="flex items-center justify-center bg-gray-200 px-2.5 w-[42px] h-[42px]"
-          @click="quantity++"
-        >
-          <PlusIcon class="w-3.5 h-3.5 text-gray-300" />
-        </button>
-      </div>
-      <button
+      <QuantityButtons v-model="quantity" size="lg" />
+      <NuxtLink
+        to="/order-summary"
         class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
       >
         <CartIcon class="w-6 h-6 mr-2" />
         <span class="text-sm font-medium">Add to cart</span>
-      </button>
+      </NuxtLink>
     </div>
     <div class="absolute top-0 right-0 flex flex-col gap-2.5">
       <button
@@ -204,8 +186,6 @@ import PDFIcon from "@/assets/icons/pdf.svg";
 import LeafIcon from "@/assets/icons/leaf.svg";
 import CheckIcon from "@/assets/icons/check-circle.svg";
 import CartIcon from "@/assets/icons/cart.svg";
-import PlusIcon from "@/assets/icons/plus.svg";
-import MinusIcon from "@/assets/icons/minus.svg";
 import HeartIcon from "@/assets/icons/heart.svg";
 import ShareIcon from "@/assets/icons/share.svg";
 import { SearchItem } from "~~/types/search";

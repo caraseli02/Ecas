@@ -4,7 +4,9 @@
       <div
         class="flex items-start justify-between border-b border-gray-200 mb-4 md:mb-[26px] xl:mb-9"
       >
-        <h2 class="hidden text-xl font-semibold md:block">New Products</h2>
+        <h2 class="hidden text-xl font-semibold md:block">
+          {{ title || "New Products" }}
+        </h2>
         <div class="relative flex items-center gap-2.5 md:gap-5">
           <button
             v-for="(filter, index) in filters"
@@ -79,6 +81,13 @@ import ProductCover2 from "@/assets/media/home/product-2.jpg";
 import ProductCover3 from "@/assets/media/home/product-3.jpg";
 import { A11y, Pagination, Grid } from "swiper";
 import { ProductCard as ProductCardType } from "~~/types";
+
+defineProps({
+  title: {
+    type: String,
+    required: false,
+  },
+});
 
 const elDOM = ref<HTMLElement | null>(null);
 

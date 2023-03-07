@@ -1,7 +1,7 @@
 <template>
   <div class="fixed z-50 top-0 left-0-0 w-screen h-screen">
     <div
-      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white md:w-[450px]"
+      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white overflow-y-auto scrollbar-thin max-h-vh md:w-[450px]"
     >
       <div
         class="flex items-center justify-between p-5 border-b border-gray-200 mb-5"
@@ -19,7 +19,7 @@
           <XIcon class="w-[15px] h-[15px]" />
         </button>
       </div>
-      <div class="px-5">
+      <div class="px-5 mb-10">
         <div class="text-sm text-gray-300 mb-5">
           Select a language, shipping region and currency to update your
           experience on ecas.ro

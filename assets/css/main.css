@@ -10,3 +10,8 @@ body {
   @apply font-Poppins bg-white text-dark overflow-x-hidden;
   touch-action: manipulation;
 }
+
+html.mobile-prevent-scroll,
+body.mobile-prevent-scroll {
+  @apply overflow-y-hidden md:overflow-y-auto;
+}

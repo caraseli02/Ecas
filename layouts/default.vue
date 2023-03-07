@@ -39,6 +39,7 @@ import { customProductPartNumberModal } from "~~/system/modal/custom-product-par
 import { favoritesCartModal } from "~~/system/modal/favorites-cart";
 import { showRegionalPreferencesModal } from "~~/system/modal/regional-preferences";
 import { showSearchFiltersModal } from "~~/system/modal/search-filters";
+import { debounce } from "lodash";
 
 const isScrolled = ref(false);
 
@@ -50,8 +51,36 @@ const handleScroll = () => {
   }
 };
 
+const calcViewportHeight = () => {
+  if (typeof window !== "undefined") {
+    document.documentElement.style.setProperty(
+      "--vh",
+      `${window.innerHeight * 0.01}px`
+    );
+    window.addEventListener(
+      "resize",
+      debounce(function () {
+        document.documentElement.style.setProperty(
+          "--vh",
+          `${window.innerHeight * 0.01}px`
+        );
+      }, 100)
+    );
+    window.addEventListener(
+      "orientationchange",
+      debounce(function () {
+        document.documentElement.style.setProperty(
+          "--vh",
+          `${window.innerHeight * 0.01}px`
+        );
+      }, 100)
+    );
+  }
+};
+
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
+  calcViewportHeight();
 });
 
 onBeforeUnmount(() => {

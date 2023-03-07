@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col bg-white rounded-md shadow-card">
     <div class="flex items-start justify-between p-2.5">
-      <div>
+      <div class="font-Inter">
         <div
-          class="text-xs font-Inter font-semibold leading-tight truncate w-[140px] mb-[5px]"
+          class="text-xs font-semibold leading-tight truncate w-[140px] mb-[5px]"
         >
           Max. forward impulse lorem ipsum
         </div>
@@ -40,7 +40,7 @@
         >
           <input v-model="option.checked" type="checkbox" class="sr-only" />
           <span
-            class="text-xs transition-colors duration-300 group-hover:text-blue"
+            class="text-xs font-Inter transition-colors duration-300 group-hover:text-blue"
           >
             {{ option.label }} ({{ option.quantity }})
           </span>

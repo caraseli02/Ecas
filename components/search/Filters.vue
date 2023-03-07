@@ -31,14 +31,16 @@
             </button>
           </div>
           <button
-            class="flex bg-blue text-white rounded px-3 py-[9px] text-sm font-medium"
+            class="group flex bg-blue text-white rounded px-3 py-[9px] text-sm font-medium"
           >
-            <ResetIcon class="w-5 h-5 mr-2" />
+            <ResetIcon
+              class="w-5 h-5 mr-2 transition-transform duration-300 group-hover:rotate-[360deg]"
+            />
             <span> Reset Filters </span>
           </button>
         </div>
       </div>
-      <Transition name="slide-from-right">
+      <Transition name="slide-from-bottom">
         <div
           v-if="showFilters"
           class="hidden grid-cols-3 gap-5 mt-5 md:grid lg:grid-cols-4 xl:grid-cols-6"
@@ -53,7 +55,7 @@
               Add/Remove Filter
             </div>
             <button
-              class="flex items-center justify-center w-14 h-14 bg-blue rounded-full"
+              class="flex items-center justify-center w-14 h-14 bg-blue rounded-full transition-transform duration-300 hover:rotate-[360deg]"
               @click="filters.push('')"
             >
               <PlusIcon class="w-[30px] h-[30px] text-white" />
