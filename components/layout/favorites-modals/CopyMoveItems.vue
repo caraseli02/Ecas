@@ -1,9 +1,9 @@
 <template>
   <div
-    class="fixed z-50 top-0 left-0 w-screen h-screen flex items-center justify-center"
+    class="fixed z-[60] top-0 left-0 w-screen h-screen flex items-center justify-center pointer-events-none"
   >
     <div
-      class="relative z-10 w-[450px] max-w-[calc(100vw-32px)] max-h-[80vh] overflow-y-auto scrollbar-thin p-[15px] pb-[35px] bg-white rounded-md shadow-card flex flex-col justify-between"
+      class="relative z-10 pointer-events-auto w-[450px] max-w-[calc(100vw-32px)] max-h-[80vh] overflow-y-auto scrollbar-thin p-[15px] pb-[35px] bg-white rounded-md shadow-card flex flex-col justify-between"
     >
       <div class="flex items-center justify-between mb-[34px]">
         <div class="flex items-center text-gray-300">
@@ -49,7 +49,11 @@
               v-model="folder"
               label="Select destination folder"
               placeholder="Select Folder"
-              :options="['Folder 1', 'Folder 2']"
+              checkboxes
+              :options="[
+                { label: 'Folder 1', value: 'folder-1' },
+                { label: 'Folder 2', value: 'folder-2' },
+              ]"
             />
           </div>
         </div>
@@ -90,16 +94,12 @@
         <div class="text-xl text-center">Done</div>
       </div>
     </div>
-    <div
-      class="absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
-      @click="$emit('close')"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import { FavoriteItem } from "~~/types";
+import { FavoriteItem, FormSelectOption } from "~~/types";
 import XIcon from "@/assets/icons/x.svg";
 import CopyIcon from "@/assets/icons/copy.svg";
 import FolderArrowIcon from "@/assets/icons/folder-arrow.svg";
@@ -117,7 +117,7 @@ const props = defineProps({
 
 defineEmits(["close"]);
 
-const folder = ref("");
+const folder = ref<FormSelectOption | undefined>(undefined);
 const success = ref(false);
 
 const itemsCopy = ref<FavoriteItem[]>(JSON.parse(JSON.stringify(props.items)));

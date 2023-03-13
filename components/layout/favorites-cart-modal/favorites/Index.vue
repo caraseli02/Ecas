@@ -145,33 +145,27 @@
     </template>
   </div>
   <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="slide-from-top">
       <LayoutFavoritesModalsDelete
         v-if="deleteItems"
         :products="items.filter((e) => e.selected)"
         @close="deleteItems = false"
       />
     </Transition>
-  </Teleport>
-  <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="slide-from-top">
       <LayoutFavoritesModalsNewFolder
         v-if="newFolder"
         @close="newFolder = false"
       />
     </Transition>
-  </Teleport>
-  <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="slide-from-top">
       <LayoutFavoritesModalsMergeFolders
         v-if="mergeFolders"
         :folders="items.filter((e) => e.selected && e.type === 'folder')"
         @close="mergeFolders = false"
       />
     </Transition>
-  </Teleport>
-  <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="slide-from-top">
       <LayoutFavoritesModalsCopyMoveItems
         v-if="copyItems"
         :items="items.filter((e) => e.selected) || []"
@@ -179,14 +173,27 @@
         @close="copyItems = false"
       />
     </Transition>
-  </Teleport>
-  <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="slide-from-top">
       <LayoutFavoritesModalsCopyMoveItems
         v-if="moveItems"
         :items="items.filter((e) => e.selected) || []"
         action="move"
         @close="moveItems = false"
+      />
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="
+          deleteItems || newFolder || mergeFolders || copyItems || moveItems
+        "
+        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
+        @click="
+          deleteItems = false;
+          newFolder = false;
+          mergeFolders = false;
+          copyItems = false;
+          moveItems = false;
+        "
       />
     </Transition>
   </Teleport>

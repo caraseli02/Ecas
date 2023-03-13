@@ -111,21 +111,29 @@
     </div>
   </div>
   <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="slide-from-top">
       <LayoutFavoritesModalsDelete
         v-if="deleteItem"
         :products="[product]"
         @close="deleteItem = false"
       />
     </Transition>
-  </Teleport>
-  <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="slide-from-top">
       <LayoutFavoritesModalsCopyMoveItems
         v-if="copyItems"
         :items="[product]"
         action="copy"
         @close="copyItems = false"
+      />
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="deleteItem || copyItems"
+        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
+        @click="
+          deleteItem = false;
+          copyItems = false;
+        "
       />
     </Transition>
   </Teleport>

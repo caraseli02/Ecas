@@ -39,3 +39,12 @@
 .slide-from-bottom-leave-to {
   @apply opacity-0 translate-y-10;
 }
+
+.slide-from-top-enter-active,
+.slide-from-top-leave-active {
+  @apply transition-all duration-300 ease-out;
+}
+.slide-from-top-enter-from,
+.slide-from-top-leave-to {
+  @apply opacity-0 -translate-y-10;
+}

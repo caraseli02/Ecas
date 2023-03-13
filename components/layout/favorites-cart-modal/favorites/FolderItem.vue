@@ -120,11 +120,18 @@
     </div>
   </div>
   <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="slide-from-top">
       <LayoutFavoritesModalsDelete
         v-if="deleteItem"
         :products="[folder]"
         @close="deleteItem = false"
+      />
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="deleteItem"
+        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
+        @click="deleteItem = false"
       />
     </Transition>
   </Teleport>

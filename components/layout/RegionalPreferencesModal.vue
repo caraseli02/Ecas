@@ -28,14 +28,21 @@
           v-model="language"
           label="Language"
           placeholder="Language"
-          :options="['English', 'French', 'German', 'Romanian']"
+          :options="[
+            { value: 'english', label: 'English' },
+            { value: 'romanian', label: 'Romanian' },
+          ]"
           class="z-10 mb-5"
         />
         <FormSelect
           v-model="currency"
           label="Currency"
           placeholder="Currency"
-          :options="['RON', 'Euro', 'USD']"
+          :options="[
+            { value: 'ron', label: 'RON' },
+            { value: 'euro', label: 'EURO' },
+            { value: 'usd', label: 'USD' },
+          ]"
         />
       </div>
       <div class="flex items-center justify-center gap-2.5 mt-auto pb-[50px]">
@@ -64,9 +71,16 @@
 import XIcon from "@/assets/icons/x.svg";
 import GlobeIcon from "@/assets/icons/globe.svg";
 import { showRegionalPreferencesModal } from "~~/system/modal/regional-preferences";
+import { FormSelectOption } from "~~/types";
 
-const language = ref("English");
-const currency = ref("RON");
+const language = ref<FormSelectOption>({
+  label: "English",
+  value: "english",
+});
+const currency = ref<FormSelectOption>({
+  label: "RON",
+  value: "ron",
+});
 
 onMounted(() => {
   documentUtil.toggleBodyScroll();
