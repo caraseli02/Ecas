@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <div v-if="label" class="text-sm font-medium mb-2">
+    <div v-if="label" class="text-sm mb-2">
       {{ label }}
     </div>
     <button
@@ -9,7 +9,7 @@
     >
       <span
         class="text-left truncate"
-        :class="{ 'text-mainGray/50': !modelValue }"
+        :class="{ 'text-gray-300': !modelValue }"
       >
         {{ modelValue || placeholder }}
       </span>

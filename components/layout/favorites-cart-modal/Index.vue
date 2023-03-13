@@ -10,7 +10,7 @@
         <XIcon class="w-[15px] h-[15px]" />
       </button>
       <div
-        class="relative flex items-center gap-5 px-5 border-b border-gray-200 mb-[25px]"
+        class="relative flex items-center gap-5 px-5 border-b border-gray-200"
       >
         <button
           v-for="(item, index) in navItems"
@@ -37,11 +37,11 @@
           }"
         />
       </div>
-      <div class="flex-1 h-full overflow-y-auto scrollbar-thin max-h-vh">
+      <div class="flex-1 h-[calc(100%-102px)]">
         <LayoutFavoritesCartModalFavorites
           v-if="activeNavItem === 'favorites'"
         />
-        <div v-else class="px-5 text-sm font-Inter text-gray-300">
+        <div v-else class="px-5 text-sm font-Inter text-gray-300 pt-5">
           Recently added products
         </div>
       </div>
