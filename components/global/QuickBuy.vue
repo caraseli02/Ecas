@@ -1,18 +1,18 @@
 <template>
   <div
-    class="bg-white rounded-md px-[5px] pt-5 pb-[25px] shadow-card md:pb-5 lg:pb-[25px]"
+    class="bg-white rounded-md pt-5 pb-[25px] shadow-card md:px-[5px] md:pb-5 lg:pb-[25px]"
   >
-    <div class="flex items-center px-2.5 mb-[13px]">
+    <div class="flex items-center mb-[13px] px-[15px] md:px-2.5">
       <QuickBuyIcon class="w-[30px] h-[30px] mr-2" />
       <h2 class="text-xl font-semibold">Quick Buy</h2>
     </div>
     <p
-      class="text-xs text-gray-300 px-2.5 mb-6 md:mb-[15px] lg:mb-6 xl:text-sm xl:mb-[30px]"
+      class="text-xs text-gray-300 px-[15px] mb-6 md:px-2.5 md:mb-[15px] lg:mb-6 xl:text-sm xl:mb-[30px]"
     >
       Are you in a hurry? Use the Quick Buy feature!
     </p>
     <div
-      class="grid grid-cols-1 gap-2.5 px-2.5 mb-[25px] max-h-[146px] overflow-y-auto scrollbar-thin md:mb-6 md:max-h-[94px] xl:mb-8"
+      class="grid grid-cols-1 gap-2.5 mb-[25px] max-h-[146px] overflow-y-auto scrollbar-thin px-[15px] md:px-2.5 md:mb-6 md:max-h-[94px] xl:mb-8"
     >
       <div
         v-for="(product, index) in products"
@@ -30,7 +30,7 @@
         <QuantityButtons v-model="product.quantity" size="lg" />
       </div>
     </div>
-    <div class="flex gap-2.5 px-2.5">
+    <div class="flex gap-2.5 px-[15px] md:px-2.5">
       <button
         class="flex items-center justify-center w-[42px] h-[42px] rounded bg-[#F2F2F2]"
         @click="

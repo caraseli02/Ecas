@@ -73,7 +73,10 @@
                 v-for="option in [5, 20, 50, 100].filter((e) => e !== perPage)"
                 :key="option"
                 class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
-                @click="perPage = option"
+                @click="
+                  perPage = option;
+                  showPerPageOptions = false;
+                "
               >
                 {{ option }}
               </button>

@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col pb-[15px] border-b border-gray-200">
+  <div
+    class="flex flex-col pb-[15px]"
+    :class="[inModal ? '' : 'border-b border-gray-200 mx-2.5']"
+  >
     <div class="flex" :class="[inModal ? 'items-center' : 'items-start']">
       <label v-if="inModal" class="flex cursor-pointer mr-2.5">
         <input
@@ -28,7 +31,7 @@
         :alt="product.title"
         :class="[inModal ? 'w-9 h-9 mr-2' : 'w-[70px] h-[70px] mr-2.5']"
       />
-      <div>
+      <div :class="[inModal ? 'truncate' : '']">
         <div class="flex items-center" :class="[inModal ? '' : 'mb-2.5']">
           <div
             class="leading-tight font-semibold font-Inter mr-2.5"
@@ -129,7 +132,7 @@
     <Transition name="fade">
       <div
         v-if="deleteItem || copyItems"
-        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
+        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/30 backdrop-blur-[2px] cursor-pointer"
         @click="
           deleteItem = false;
           copyItems = false;

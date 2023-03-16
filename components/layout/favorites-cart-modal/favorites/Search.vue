@@ -2,7 +2,7 @@
   <form
     action=""
     @submit.prevent=""
-    class="border border-[#D4D4D4] rounded px-2.5"
+    class="border border-[#D4D4D4] rounded px-2.5 w-full"
   >
     <label class="flex items-center">
       <SearchIcon class="w-5 h-5 text-[#D4D4D4] flex-shrink-0" />

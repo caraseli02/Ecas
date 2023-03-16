@@ -1,7 +1,7 @@
 <template>
-  <div ref="elDOM" class="fixed z-50 top-0 left-0 w-screen h-screen">
+  <div ref="elDOM" class="fixed z-50 top-0 left-0 w-full h-screen">
     <div
-      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh md:w-[450px]"
+      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh overflow-hidden md:w-[450px]"
     >
       <button
         class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 flex-shrink-0 transition-colors duration-300 mt-5 ml-auto mr-5 mb-2.5 hover:text-gray-300"
@@ -10,7 +10,7 @@
         <XIcon class="w-[15px] h-[15px]" />
       </button>
       <div
-        class="relative flex items-center gap-5 px-5 border-b border-gray-200"
+        class="relative z-10 flex items-center gap-5 px-5 border-b border-gray-200 bg-white"
       >
         <button
           v-for="(item, index) in navItems"

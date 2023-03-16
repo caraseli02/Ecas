@@ -36,12 +36,10 @@
           <span>Reset Filters</span>
         </button>
       </div>
-      <div class="pr-[5px]">
-        <div
-          class="grid grid-cols-1 gap-2.5 overflow-auto max-h-[340px] scrollbar-thin pl-[15px] pr-2.5"
-        >
-          <SearchFilter2 v-for="filter in 20" :key="filter" />
-        </div>
+      <div
+        class="grid grid-cols-1 gap-1.5 overflow-auto max-h-[340px] scrollbar-thin px-[15px]"
+      >
+        <SearchFilter2 v-for="filter in 20" :key="filter" />
       </div>
     </div>
   </div>

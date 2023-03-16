@@ -4,10 +4,11 @@
       v-if="selectedFolder"
       :folder="selectedFolder"
       @back="selectedFolder = null"
+      @open-folder="($event) => (selectedFolder = $event)"
     />
     <template v-else>
       <div
-        class="relative flex items-center px-5 h-[95px] overflow-hidden"
+        class="relative flex items-center pl-[25px] pr-5 h-[95px] overflow-hidden"
         :style="{
           boxShadow: '0px 0px 4px rgba(51, 51, 51, 0.25)',
         }"
@@ -118,7 +119,7 @@
         />
       </div>
       <div
-        class="p-5 pb-10 flex-1 h-full overflow-y-auto scrollbar-thin max-h-vh"
+        class="pt-5 px-[15px] pb-10 flex-1 h-full overflow-y-auto overscroll-contain scrollbar-thin max-h-vh"
       >
         <div class="grid grid-cols-1 gap-2.5 mb-[30px]">
           <LayoutFavoritesCartModalFavoritesFolderItem
@@ -129,6 +130,7 @@
             :folder="item"
             @select="item.selected = !item.selected"
             @open="selectedFolder = item"
+            @show-options="handleShowOptions(item)"
           />
         </div>
         <div class="grid grid-cols-1 gap-5">
@@ -186,7 +188,7 @@
         v-if="
           deleteItems || newFolder || mergeFolders || copyItems || moveItems
         "
-        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
+        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/30 backdrop-blur-[2px] cursor-pointer"
         @click="
           deleteItems = false;
           newFolder = false;
@@ -222,10 +224,12 @@ const moveItems = ref(false);
 
 const items = ref<FavoriteItem[]>([
   {
+    id: "1",
     type: "folder",
     title: "Gas detector Homplex",
     items: [
       {
+        id: "2",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -235,6 +239,7 @@ const items = ref<FavoriteItem[]>([
         image: ProductCover,
       },
       {
+        id: "3",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -247,10 +252,40 @@ const items = ref<FavoriteItem[]>([
     selected: false,
   },
   {
+    id: "4",
     type: "folder",
     title: "Gas detector Homplex",
     items: [
       {
+        id: "5",
+        type: "folder",
+        title: "Nested detector Homplex",
+        items: [
+          {
+            id: "6",
+            type: "product",
+            title: "ADIN2111BCPZ",
+            description:
+              "Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ",
+            selected: false,
+            quantity: 16,
+            image: ProductCover,
+          },
+          {
+            id: "7",
+            type: "product",
+            title: "ADIN2111BCPZ",
+            description:
+              "Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ",
+            selected: false,
+            quantity: 16,
+            image: ProductCover,
+          },
+        ],
+        selected: false,
+      },
+      {
+        id: "8",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -260,6 +295,7 @@ const items = ref<FavoriteItem[]>([
         image: ProductCover,
       },
       {
+        id: "9",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -272,10 +308,12 @@ const items = ref<FavoriteItem[]>([
     selected: false,
   },
   {
+    id: "10",
     type: "folder",
     title: "Gas detector Homplex",
     items: [
       {
+        id: "11",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -285,6 +323,7 @@ const items = ref<FavoriteItem[]>([
         image: ProductCover,
       },
       {
+        id: "12",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -297,10 +336,12 @@ const items = ref<FavoriteItem[]>([
     selected: false,
   },
   {
+    id: "13",
     type: "folder",
     title: "Gas detector Homplex",
     items: [
       {
+        id: "14",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -310,6 +351,7 @@ const items = ref<FavoriteItem[]>([
         image: ProductCover,
       },
       {
+        id: "15",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -322,10 +364,12 @@ const items = ref<FavoriteItem[]>([
     selected: false,
   },
   {
+    id: "16",
     type: "folder",
     title: "Gas detector Homplex",
     items: [
       {
+        id: "17",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -335,6 +379,7 @@ const items = ref<FavoriteItem[]>([
         image: ProductCover,
       },
       {
+        id: "18",
         type: "product",
         title: "ADIN2111BCPZ",
         description:
@@ -347,6 +392,7 @@ const items = ref<FavoriteItem[]>([
     selected: false,
   },
   {
+    id: "19",
     type: "product",
     title: "ADIN2111BCPZ",
     description: "Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ",
@@ -355,6 +401,7 @@ const items = ref<FavoriteItem[]>([
     image: ProductCover,
   },
   {
+    id: "20",
     type: "product",
     title: "ADIN2111BCPZ",
     description: "Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ",
@@ -363,6 +410,7 @@ const items = ref<FavoriteItem[]>([
     image: ProductCover,
   },
   {
+    id: "21",
     type: "product",
     title: "ADIN2111BCPZ",
     description: "Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ",
@@ -417,6 +465,28 @@ const handleSelectAll = () => {
     });
   }
 };
+
+const selectedItemsLength = computed(() => {
+  return items.value.filter((e) => e.selected).length;
+});
+
+const folderWithActiveOptions = ref<FavoriteItem>();
+
+provide("folder-with-active-options", folderWithActiveOptions);
+
+const handleShowOptions = (item: FavoriteItem) => {
+  if (folderWithActiveOptions.value?.id === item.id) {
+    folderWithActiveOptions.value = undefined;
+  } else {
+    folderWithActiveOptions.value = item;
+  }
+};
+
+watch(selectedItemsLength, (newVal) => {
+  if (newVal > 1 && !showMenu.value) {
+    showMenu.value = true;
+  }
+});
 </script>
 
 <style>

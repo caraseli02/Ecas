@@ -23,12 +23,14 @@
         </button>
         <div v-if="showOptions" class="flex-1 flex flex-col">
           <div class="pl-2.5 pr-[15px] mb-2.5">
-            <label class="flex relative">
+            <label
+              class="flex relative border border-[#D4D4D4] rounded overflow-hidden"
+            >
               <input
                 v-model="searchValue"
                 type="search"
                 placeholder="Type here"
-                class="w-full border border-[#D4D4D4] bg-white rounded px-2.5 pt-[5px] pb-1.5 pr-10 text-xs placeholder:text-gray-100 focus:outline-none"
+                class="w-full px-2.5 pt-[5px] pb-1.5 pr-10 h-8 text-xs placeholder:text-gray-100 focus:outline-none"
               />
               <FiltersIcon
                 class="absolute top-1/2 -translate-y-1/2 right-2.5 w-5 h-5 text-gray-100"

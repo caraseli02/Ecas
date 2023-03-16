@@ -39,8 +39,9 @@
       <label v-if="editing" class="w-full pr-[5px]">
         <input
           v-model="newName"
+          ref="newNameInputDOM"
           type="text"
-          class="bg-transparent w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-[#D4D4D4] rounded text-dark placeholder:text-gray-300 focus:outline-none"
+          class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-[#D4D4D4] rounded text-dark placeholder:text-gray-300 focus:outline-none"
         />
       </label>
       <button v-else @click="$emit('open')" class="text-left">
@@ -63,7 +64,10 @@
       <button
         v-if="!editing && !inModal"
         class="flex text-gray-300 transition-colors duration-300 ml-auto hover:text-blue"
-        @click="showOptions = !showOptions"
+        @click="
+          showOptions = !showOptions;
+          $emit('show-options');
+        "
       >
         <DotsVerticalIcon class="w-6 h-6" />
       </button>
@@ -130,7 +134,7 @@
     <Transition name="fade">
       <div
         v-if="deleteItem"
-        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
+        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/30 backdrop-blur-[2px] cursor-pointer"
         @click="deleteItem = false"
       />
     </Transition>
@@ -138,7 +142,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
+import { PropType, Ref } from "vue";
 import { FavoriteItem } from "~~/types";
 import FolderIcon from "@/assets/icons/folder.svg";
 import CheckIcon from "@/assets/icons/check.svg";
@@ -160,12 +164,37 @@ const props = defineProps({
   },
 });
 
-defineEmits(["select", "open"]);
+defineEmits(["select", "open", "show-options"]);
 
 const showOptions = ref(false);
+
+const newNameInputDOM = ref<HTMLInputElement>();
 const editing = ref(false);
 
 const newName = ref(props.folder.title);
 
 const deleteItem = ref(false);
+
+const folderWithActiveOptions = inject<Ref<FavoriteItem | undefined>>(
+  "folder-with-active-options"
+);
+
+watch(editing, (newVal) => {
+  if (newVal) {
+    nextTick(() => {
+      if (newNameInputDOM.value) {
+        newNameInputDOM.value.focus();
+      }
+    });
+  }
+});
+
+watch(folderWithActiveOptions as any, () => {
+  if (
+    folderWithActiveOptions?.value &&
+    folderWithActiveOptions.value.id !== props.folder.id
+  ) {
+    showOptions.value = false;
+  }
+});
 </script>

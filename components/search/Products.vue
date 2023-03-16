@@ -36,7 +36,7 @@
                 <label
                   v-for="option in showOptions"
                   :key="option"
-                  class="group flex w-full items-center justify-between cursor-pointer px-[9px] py-1.5"
+                  class="group flex w-full items-center justify-between cursor-pointer px-[9px] py-1.5 transition-colors duration-300 hover:bg-[#F2F2F2]"
                 >
                   <input
                     name="show"
@@ -46,9 +46,7 @@
                     class="sr-only"
                     @change="showShowOptions = false"
                   />
-                  <span
-                    class="flex w-full text-left text-sm rounded-[5px] text-gray-300"
-                  >
+                  <span class="flex w-full text-left text-sm rounded-[5px]">
                     {{ option }}
                   </span>
                   <div
@@ -91,7 +89,7 @@
                 <button
                   v-for="option in sortByOptions.filter((e) => e !== sortBy)"
                   :key="option"
-                  class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
+                  class="flex w-full text-left text-sm rounded-[5px] transition-colors duration-300 hover:text-blue"
                   @click="sortBy = option"
                 >
                   {{ option }}
@@ -149,7 +147,10 @@
                   )"
                   :key="option"
                   class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
-                  @click="perPage = option"
+                  @click="
+                    perPage = option;
+                    showPerPageOptions = false;
+                  "
                 >
                   {{ option }}
                 </button>
@@ -247,7 +248,10 @@
                   )"
                   :key="option"
                   class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
-                  @click="perPage = option"
+                  @click="
+                    perPage = option;
+                    showPerPageOptions = false;
+                  "
                 >
                   {{ option }}
                 </button>

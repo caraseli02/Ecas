@@ -18,10 +18,10 @@
         </button>
       </div>
       <template v-if="!success">
-        <div class="mb-[46px]">
-          <div class="text-sm font-medium mb-5">Selected folders:</div>
+        <div class="mb-[150px]">
+          <div class="text-sm font-medium mb-[15px]">Selected folders:</div>
           <div
-            class="grid grid-cols-1 gap-2.5 max-h-[132px] overflow-y-auto scrollbar-thin mb-[25px]"
+            class="grid grid-cols-1 gap-2.5 max-h-[132px] overflow-y-auto scrollbar-thin mb-[15px]"
           >
             <LayoutFavoritesCartModalFavoritesFolderItem
               v-for="(folder, index) in foldersCopy"
@@ -40,9 +40,12 @@
               label="Select destination folder"
               placeholder="Select Folder"
               checkboxes
+              :icon="FolderIcon"
               :options="[
                 { label: 'Folder 1', value: 'folder-1' },
                 { label: 'Folder 2', value: 'folder-2' },
+                { label: 'Folder 3', value: 'folder-3' },
+                { label: 'Folder 4', value: 'folder-4' },
               ]"
             />
           </div>
@@ -91,6 +94,7 @@
 import { PropType } from "vue";
 import XIcon from "@/assets/icons/x.svg";
 import MergeIcon from "@/assets/icons/merge.svg";
+import FolderIcon from "@/assets/icons/folder.svg";
 import { FavoriteItem, FormSelectOption } from "~~/types";
 
 const props = defineProps({

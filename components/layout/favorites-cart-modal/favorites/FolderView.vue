@@ -7,14 +7,14 @@
   >
     <template v-if="!editing">
       <button
-        class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+        class="flex text-gray-300 mr-[15px] transition-colors duration-300 hover:text-blue"
         @click="$emit('back')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          class="w-6 h-6 mr-5"
+          class="w-6 h-6"
         >
           <path
             fill="currentColor"
@@ -29,8 +29,8 @@
         </span>
       </div>
       <button
-        class="flex text-gray-300 transition-colors duration-300 ml-auto hover:text-blue"
-        :class="[showMenu ? 'mr-7' : '']"
+        class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+        :class="[showMenu ? 'mr-[15px]' : 'ml-auto']"
         @click="showMenu = !showMenu"
       >
         <DotsVerticalIcon class="w-6 h-6" />
@@ -112,8 +112,9 @@
       <label class="w-full flex-1">
         <input
           v-model="newName"
+          ref="newNameInputDOM"
           type="text"
-          class="bg-transparent w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-[#D4D4D4] rounded text-dark placeholder:text-gray-300 focus:outline-none"
+          class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-[#D4D4D4] rounded text-dark placeholder:text-gray-300 focus:outline-none"
         />
       </label>
       <button
@@ -130,7 +131,9 @@
       </button>
     </div>
   </div>
-  <div class="flex-1 h-full overflow-y-auto scrollbar-thin max-h-vh">
+  <div
+    class="flex-1 h-full overflow-y-auto scrollbar-thin max-h-vh overscroll-contain"
+  >
     <div class="flex items-center justify-between pt-2.5 px-5 mb-[30px]">
       <div class="text-sm leading-tight font-Inter">
         Items:
@@ -141,9 +144,25 @@
         <strong class="font-semibold">$ 175.413,75</strong>
       </div>
     </div>
-    <div class="grid grid-cols-1 gap-5 px-5 mb-10">
+    <div
+      v-if="(folder.items?.filter((e) => e.type === 'folder') || []).length > 0"
+      class="grid grid-cols-1 gap-5 px-[15px] mb-10"
+    >
+      <LayoutFavoritesCartModalFavoritesFolderItem
+        v-for="(item, index) in folder.items?.filter(
+          (e) => e.type === 'folder'
+        )"
+        :key="index"
+        :folder="item"
+        @select="item.selected = !item.selected"
+        @open="$emit('open-folder', item)"
+      />
+    </div>
+    <div class="grid grid-cols-1 gap-5 px-[15px] mb-10">
       <LayoutFavoritesCartModalFavoritesProductItem
-        v-for="(item, index) in folder.items"
+        v-for="(item, index) in folder.items?.filter(
+          (e) => e.type === 'product'
+        )"
         :key="index"
         :product="item"
         @select="item.selected = !item.selected"
@@ -183,7 +202,7 @@
     <Transition name="fade">
       <div
         v-if="deleteItem || newFolder || copyItems || moveItems"
-        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
+        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/30 backdrop-blur-[2px] cursor-pointer"
         @click="
           deleteItem = false;
           newFolder = false;
@@ -218,9 +237,11 @@ const props = defineProps({
   },
 });
 
-defineEmits(["back"]);
+defineEmits(["back", "open-folder"]);
 
 const showMenu = ref(false);
+
+const newNameInputDOM = ref<HTMLInputElement>();
 const editing = ref(false);
 
 const newName = ref(props.folder.title);
@@ -232,5 +253,15 @@ const moveItems = ref(false);
 
 const hasSelectedItem = computed(() => {
   return props.folder.items?.some((e) => e.selected);
+});
+
+watch(editing, (newVal) => {
+  if (newVal) {
+    nextTick(() => {
+      if (newNameInputDOM.value) {
+        newNameInputDOM.value.focus();
+      }
+    });
+  }
 });
 </script>
