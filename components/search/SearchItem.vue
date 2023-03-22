@@ -30,7 +30,7 @@
           </div>
           <button
             class="flex items-center text-gray-300 px-3 py-[5px] max-w-max border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue hover:border-blue md:mb-0"
-            @click="customProductPartNumberModal = true"
+            @click="showCustomProductPartNumberModal = true"
           >
             <span class="text-[15px] leading-tight font-medium mr-2">
               PI2345678J
@@ -176,6 +176,14 @@
       {{ item.discount }}%
     </div>
   </div>
+  <Teleport to="body">
+    <Transition name="fade">
+      <LayoutCustomProductPartNumberModal
+        v-if="showCustomProductPartNumberModal"
+        @close="showCustomProductPartNumberModal = false"
+      />
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -189,7 +197,6 @@ import CartIcon from "@/assets/icons/cart.svg";
 import HeartIcon from "@/assets/icons/heart.svg";
 import ShareIcon from "@/assets/icons/share.svg";
 import { SearchItem } from "~~/types/search";
-import { customProductPartNumberModal } from "~~/system/modal/custom-product-part-number";
 
 defineProps({
   item: {
@@ -199,4 +206,6 @@ defineProps({
 });
 
 const quantity = ref(1);
+
+const showCustomProductPartNumberModal = ref(false);
 </script>

@@ -20,10 +20,19 @@
       </div>
     </div>
   </div>
+  <Teleport to="body">
+    <Transition name="slide-from-right">
+      <LayoutAccountModal
+        v-if="showAccountModal"
+        @close="showAccountModal = false"
+      />
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import Logo from "@/assets/media/logo.svg";
 import UserIcon from "@/assets/icons/user.svg";
-import { showAccountModal } from "~~/system/modal/account";
+
+const showAccountModal = ref(false);
 </script>

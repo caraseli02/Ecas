@@ -43,7 +43,7 @@
       </div>
       <button
         class="flex items-center text-gray-300 transition-colors duration-300 hover:text-blue"
-        @click="customProductPartNumberModal = true"
+        @click="showCustomProductPartNumberModal = true"
       >
         <span class="text-xs leading-tight font-medium mr-[5px]">
           Your Custom Code
@@ -90,6 +90,14 @@
       </button>
     </div>
   </div>
+  <Teleport to="body">
+    <Transition name="fade">
+      <LayoutCustomProductPartNumberModal
+        v-if="showCustomProductPartNumberModal"
+        @close="showCustomProductPartNumberModal = false"
+      />
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -98,5 +106,6 @@ import CADModelsIcon from "@/assets/icons/cad-models.svg";
 import PDFIcon from "@/assets/icons/pdf.svg";
 import CopyIcon from "@/assets/icons/copy.svg";
 import EditIcon from "@/assets/icons/edit.svg";
-import { customProductPartNumberModal } from "~~/system/modal/custom-product-part-number";
+
+const showCustomProductPartNumberModal = ref(false);
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed z-50 top-0 left-0 w-screen h-screen">
+  <div class="fixed z-[60] top-0 left-0 w-screen h-screen">
     <div
       class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh md:w-[450px]"
     >
@@ -17,7 +17,7 @@
         </button>
         <button
           class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
-          @click="showAccountModal = false"
+          @click="$emit('close')"
         >
           <XIcon class="w-[15px] h-[15px]" />
         </button>
@@ -71,7 +71,7 @@
     </div>
     <div
       class="hidden absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer md:block"
-      @click="showAccountModal = false"
+      @click="$emit('close')"
     />
   </div>
 </template>
@@ -90,7 +90,8 @@ import HeartIcon from "@/assets/icons/heart.svg";
 import OrderTrackingIcon from "@/assets/icons/order-tracking.svg";
 import OrderHistoryIcon from "@/assets/icons/history.svg";
 import SignOutIcon from "@/assets/icons/sign-out.svg";
-import { showAccountModal } from "~~/system/modal/account";
+
+defineEmits(["close"]);
 
 const navItems = ref([
   {

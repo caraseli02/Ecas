@@ -50,7 +50,7 @@
                   rel="noopener noreferrer"
                   class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
                 >
-                  <TwitterIcon class="w-5" />
+                  <TwitterIcon class="w-5 text-gray-300" />
                 </a>
                 <a
                   href="#"
@@ -58,7 +58,7 @@
                   rel="noopener noreferrer"
                   class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
                 >
-                  <LinkedInIcon class="w-5" />
+                  <LinkedInIcon class="w-5 text-gray-300" />
                 </a>
                 <a
                   href="#"
@@ -66,7 +66,7 @@
                   rel="noopener noreferrer"
                   class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
                 >
-                  <InstagramIcon class="w-5" />
+                  <InstagramIcon class="w-5 text-gray-300" />
                 </a>
                 <a
                   href="#"
@@ -74,7 +74,7 @@
                   rel="noopener noreferrer"
                   class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
                 >
-                  <DiscordIcon class="w-5" />
+                  <DiscordIcon class="w-5 text-gray-300" />
                 </a>
                 <a
                   href="#"
@@ -82,7 +82,7 @@
                   rel="noopener noreferrer"
                   class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
                 >
-                  <TelegramIcon class="w-5" />
+                  <TelegramIcon class="w-5 text-gray-300" />
                 </a>
               </div>
             </div>

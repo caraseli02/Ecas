@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed z-50 top-0 left-0-0 w-screen h-screen">
+  <div class="fixed z-[60] top-0 left-0-0 w-screen h-screen">
     <div
       class="relative z-10 flex flex-col ml-auto w-full h-full bg-white overflow-y-auto scrollbar-thin max-h-vh md:w-[450px]"
     >
@@ -14,7 +14,7 @@
         </div>
         <button
           class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
-          @click="showRegionalPreferencesModal = false"
+          @click="$emit('close')"
         >
           <XIcon class="w-[15px] h-[15px]" />
         </button>
@@ -48,13 +48,13 @@
       <div class="flex items-center justify-center gap-2.5 mt-auto pb-[50px]">
         <button
           class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white"
-          @click="showRegionalPreferencesModal = false"
+          @click="$emit('close')"
         >
           Save
         </button>
         <button
           class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300"
-          @click="showRegionalPreferencesModal = false"
+          @click="$emit('close')"
         >
           Cancel
         </button>
@@ -62,7 +62,7 @@
     </div>
     <div
       class="hidden absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer md:block"
-      @click="showRegionalPreferencesModal = false"
+      @click="$emit('close')"
     />
   </div>
 </template>
@@ -70,8 +70,9 @@
 <script setup lang="ts">
 import XIcon from "@/assets/icons/x.svg";
 import GlobeIcon from "@/assets/icons/globe.svg";
-import { showRegionalPreferencesModal } from "~~/system/modal/regional-preferences";
 import { FormSelectOption } from "~~/types";
+
+defineEmits(["close"]);
 
 const language = ref<FormSelectOption>({
   label: "English",

@@ -155,9 +155,24 @@
       </div>
     </div>
   </div>
-  <Transition name="fade">
-    <LayoutHeaderMainMenu v-if="showNavModal" />
-  </Transition>
+  <Teleport to="body">
+    <Transition name="fade">
+      <LayoutHeaderMainMenu v-if="showNavModal" />
+    </Transition>
+    <Transition name="slide-from-right">
+      <LayoutAccountModal
+        v-if="showAccountModal"
+        @close="showAccountModal = false"
+      />
+    </Transition>
+    <Transition name="slide-from-right">
+      <LayoutFavoritesCartModal
+        v-if="favoritesCartModal.show"
+        :tab="favoritesCartModal.tab"
+        @close="favoritesCartModal.show = false"
+      />
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -168,8 +183,6 @@ import UserIcon from "@/assets/icons/user.svg";
 import HeartIcon from "@/assets/icons/heart.svg";
 import CartIcon from "@/assets/icons/cart.svg";
 import XIcon from "@/assets/icons/x.svg";
-import { showAccountModal } from "~~/system/modal/account";
-import { favoritesCartModal } from "~~/system/modal/favorites-cart";
 import { showNavModal } from "~~/system/modal/nav";
 
 defineProps({
@@ -180,6 +193,12 @@ defineProps({
 });
 
 const route = useRoute();
+
+const showAccountModal = ref(false);
+const favoritesCartModal = ref({
+  show: false,
+  tab: "favorites" as "favorites" | "shopping-cart",
+});
 
 const navItems = [
   {

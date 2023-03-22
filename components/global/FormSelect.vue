@@ -14,7 +14,17 @@
           'font-semibold text-gray-300': checkboxes,
         }"
       >
-        <component v-if="icon" :is="icon" class="w-6 h-6 text-gray-300 mr-2" />
+        <img
+          v-if="modelValue?.icon && typeof modelValue.icon === 'string'"
+          :src="modelValue.icon"
+          :alt="modelValue.label"
+          class="w-8 rounded mr-2"
+        />
+        <component
+          v-else-if="modelValue?.icon"
+          :is="modelValue.icon"
+          class="w-6 h-6 text-gray-300 mr-2"
+        />
         <span>
           {{ modelValue?.label || placeholder }}
         </span>
@@ -58,7 +68,11 @@
                 class="w-4 text-white"
               />
             </div>
-            <FolderIcon class="w-6 h-6 text-gray-300 mr-2" />
+            <component
+              v-if="option.icon"
+              :is="option.icon"
+              class="w-6 h-6 text-gray-300 mr-2"
+            />
             <span
               class="text-sm font-Inter text-gray-300 font-semibold truncate transition-colors duration-300 group-hover:text-dark"
               :class="[option.value === modelValue?.value ? 'text-dark' : '']"
@@ -71,11 +85,24 @@
           <button
             v-for="(option, index) in options"
             :key="index"
-            class="flex w-full px-2.5 py-3 text-left rounded-[5px] text-gray-300 transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-dark"
+            class="flex w-full px-2.5 py-[9px] text-left rounded-[5px] text-gray-300 transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-dark"
             :class="[option.value === modelValue?.value ? 'text-blue' : '']"
             @click="inputHandler(option)"
           >
-            {{ option.label }}
+            <img
+              v-if="option?.icon && typeof option.icon === 'string'"
+              :src="option?.icon"
+              :alt="option.label"
+              class="w-8 rounded mr-2"
+            />
+            <component
+              v-else-if="option?.icon"
+              :is="option.icon"
+              class="w-6 h-6 mr-2"
+            />
+            <span>
+              {{ option.label }}
+            </span>
           </button>
         </template>
       </div>
@@ -86,7 +113,6 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { FormSelectOption } from "~~/types";
-import FolderIcon from "@/assets/icons/folder.svg";
 import CheckIcon from "@/assets/icons/check.svg";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 

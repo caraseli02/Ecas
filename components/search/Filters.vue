@@ -65,6 +65,21 @@
       </Transition>
     </div>
   </div>
+  <Teleport to="body">
+    <Transition name="slide-from-bottom">
+      <LayoutSearchFiltersModal
+        v-if="showSearchFiltersModal"
+        @close="showSearchFiltersModal = false"
+      />
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="showSearchFiltersModal"
+        class="absolute z-50 top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer md:hidden"
+        @click="showSearchFiltersModal = false"
+      />
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -73,7 +88,8 @@ import EyeIcon from "@/assets/icons/eye.svg";
 import EyeClosedIcon from "@/assets/icons/eye-closed.svg";
 import ResetIcon from "@/assets/icons/reset.svg";
 import PlusIcon from "@/assets/icons/plus.svg";
-import { showSearchFiltersModal } from "@/system/modal/search-filters";
+
+const showSearchFiltersModal = ref(false);
 
 const showFilters = ref(true);
 

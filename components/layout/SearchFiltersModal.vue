@@ -14,7 +14,7 @@
         </div>
         <button
           class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
-          @click="showSearchFiltersModal = false"
+          @click="$emit('close')"
         >
           <XIcon class="w-[15px] h-[15px]" />
         </button>
@@ -49,11 +49,12 @@
 import XIcon from "@/assets/icons/x.svg";
 import FiltersIcon from "@/assets/icons/filters.svg";
 import ResetIcon from "@/assets/icons/reset.svg";
-import { showSearchFiltersModal } from "~~/system/modal/search-filters";
+
+const emits = defineEmits(["close"]);
 
 const onDrag = (event: any) => {
   if (event.direction === "bottom") {
-    showSearchFiltersModal.value = false;
+    emits("close");
   }
 };
 

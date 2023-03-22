@@ -40,12 +40,11 @@
               label="Select destination folder"
               placeholder="Select Folder"
               checkboxes
-              :icon="FolderIcon"
               :options="[
-                { label: 'Folder 1', value: 'folder-1' },
-                { label: 'Folder 2', value: 'folder-2' },
-                { label: 'Folder 3', value: 'folder-3' },
-                { label: 'Folder 4', value: 'folder-4' },
+                { label: 'Folder 1', value: 'folder-1', icon: FolderIcon },
+                { label: 'Folder 2', value: 'folder-2', icon: FolderIcon },
+                { label: 'Folder 3', value: 'folder-3', icon: FolderIcon },
+                { label: 'Folder 4', value: 'folder-4', icon: FolderIcon },
               ]"
             />
           </div>

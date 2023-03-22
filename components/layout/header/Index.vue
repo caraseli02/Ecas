@@ -35,12 +35,19 @@
     <LayoutHeaderSearchRow />
     <LayoutHeaderMainRow :isScrolled="isScrolled" />
   </header>
+  <Teleport to="body">
+    <Transition name="slide-from-right">
+      <LayoutRegionalPreferencesModal
+        v-if="showRegionalPreferencesModal"
+        @close="showRegionalPreferencesModal = false"
+      />
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import RonFlag from "@/assets/icons/flags/ron.svg";
 import { showNavModal } from "~~/system/modal/nav";
-import { showRegionalPreferencesModal } from "~~/system/modal/regional-preferences";
 
 defineProps({
   isScrolled: {
@@ -48,4 +55,6 @@ defineProps({
     required: true,
   },
 });
+
+const showRegionalPreferencesModal = ref(false);
 </script>

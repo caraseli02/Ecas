@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed z-50 top-0 left-0 w-screen h-screen flex items-center justify-center"
+    class="fixed z-[60] top-0 left-0 w-screen h-screen flex items-center justify-center"
   >
     <div
       class="relative z-10 w-[450px] max-w-[calc(100vw-32px)] px-[15px] pt-5 pb-[35px] bg-white rounded-md shadow-card md:px-5"
@@ -17,7 +17,7 @@
         </div>
         <button
           class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
-          @click="customProductPartNumberModal = false"
+          @click="$emit('close')"
         >
           <XIcon class="w-[15px] h-[15px]" />
         </button>
@@ -53,7 +53,7 @@
           </button>
           <button
             class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300"
-            @click="customProductPartNumberModal = false"
+            @click="$emit('close')"
           >
             Cancel
           </button>
@@ -71,7 +71,7 @@
     </div>
     <div
       class="absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
-      @click="customProductPartNumberModal = false"
+      @click="$emit('close')"
     />
   </div>
 </template>
@@ -81,7 +81,8 @@ import XIcon from "@/assets/icons/x.svg";
 import BarCodeIcon from "@/assets/icons/barcode.svg";
 import ArrowDownIcon from "@/assets/icons/arrow-down.svg";
 import CheckIcon from "@/assets/icons/check-circle.svg";
-import { customProductPartNumberModal } from "~~/system/modal/custom-product-part-number";
+
+const emits = defineEmits(["close"]);
 
 const partNumber = ref("ADIN2111BCPZ");
 const customNumber = ref("");
@@ -91,7 +92,7 @@ const submitSuccess = ref(false);
 watch(submitSuccess, (newVal) => {
   if (newVal) {
     setTimeout(() => {
-      customProductPartNumberModal.value = false;
+      emits("close");
     }, 2000);
   }
 });
