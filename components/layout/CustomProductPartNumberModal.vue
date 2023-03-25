@@ -32,7 +32,7 @@
             :value="partNumber"
             readonly
             type="text"
-            class="bg-transparent w-full px-2.5 py-[5px] border border-[#D4D4D4] rounded h-[42px] text-xl font-semibold leading-tight text-dark focus:outline-none"
+            class="bg-transparent w-full px-2.5 py-[5px] border border-border rounded h-[42px] text-xl font-semibold leading-tight text-dark focus:outline-none"
           />
         </label>
         <ArrowDownIcon class="w-6 h-6 my-[15px]" />
@@ -41,7 +41,7 @@
             v-model="customNumber"
             type="text"
             placeholder="Type your custom part number here"
-            class="bg-transparent w-full px-2.5 py-[9px] border border-[#D4D4D4] rounded h-[42px] text-sm focus:outline-none"
+            class="bg-transparent w-full px-2.5 py-[9px] border border-border rounded h-[42px] text-sm focus:outline-none"
           />
         </label>
         <div class="flex gap-2.5">

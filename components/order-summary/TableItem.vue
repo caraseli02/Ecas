@@ -15,7 +15,7 @@
               {{ item.title }}
             </div>
             <button
-              class="flex border border-[#D4D4D4] rounded px-2 py-[3px] text-sm font-Inter font-semibold leading-tight text-gray-300"
+              class="flex border border-border rounded px-2 py-[3px] text-sm font-Inter font-semibold leading-tight text-gray-300"
             >
               CUSTOM1234
             </button>

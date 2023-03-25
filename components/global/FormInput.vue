@@ -7,7 +7,7 @@
       :value="modelValue"
       :type="type"
       :placeholder="placeholder"
-      class="bg-transparent border border-[#D4D4D4] rounded px-2.5 py-[9px] text-sm placeholder:text-gray-100 w-full focus:outline-none"
+      class="bg-transparent border border-border rounded px-2.5 py-[9px] text-sm placeholder:text-gray-100 w-full focus:outline-none"
       @input="handleInput"
     />
   </label>

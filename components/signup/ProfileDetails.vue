@@ -20,7 +20,7 @@
                 :class="[
                   details.useContactEmail
                     ? 'bg-blue border-blue group-hover:bg-white'
-                    : 'bg-white  border-[#D4D4D4] group-hover:border-gray-300',
+                    : 'bg-white  border-border group-hover:border-gray-300',
                 ]"
               >
                 <CheckIcon
@@ -60,7 +60,7 @@
               <button
                 class="relative w-10 h-[22px] rounded-[25px] transition-colors duration-300"
                 :class="[
-                  details.subscribeToNewsletter ? 'bg-blue ' : 'bg-[#D4D4D4]',
+                  details.subscribeToNewsletter ? 'bg-blue ' : 'bg-border',
                 ]"
                 @click="
                   details.subscribeToNewsletter = !details.subscribeToNewsletter
@@ -86,7 +86,7 @@
                 :class="[
                   details.agreeToTerms
                     ? 'bg-blue border-blue group-hover:bg-white'
-                    : 'bg-white  border-[#D4D4D4] group-hover:border-gray-300',
+                    : 'bg-white  border-border group-hover:border-gray-300',
                 ]"
               >
                 <CheckIcon

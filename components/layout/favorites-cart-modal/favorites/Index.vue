@@ -36,7 +36,7 @@
             :class="[
               allItemsSelected
                 ? 'bg-blue border-blue group-hover:bg-white'
-                : 'bg-white  border-[#D4D4D4] group-hover:border-gray-300',
+                : 'bg-white  border-border group-hover:border-gray-300',
             ]"
           >
             <CheckIcon

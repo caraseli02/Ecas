@@ -21,7 +21,7 @@
             </span>
             <button
               class="relative w-10 h-[22px] rounded-[25px] transition-colors duration-300"
-              :class="[showFilters ? 'bg-blue ' : 'bg-[#D4D4D4]']"
+              :class="[showFilters ? 'bg-blue ' : 'bg-border']"
               @click="showFilters = !showFilters"
             >
               <div

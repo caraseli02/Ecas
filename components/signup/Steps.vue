@@ -37,7 +37,7 @@
           :class="[
             currentStep === index
               ? 'border-blue'
-              : 'border-[#D4D4D4] md:border-blue',
+              : 'border-border md:border-blue',
           ]"
         >
           <div
@@ -62,7 +62,7 @@
         </div>
       </div>
       <div
-        class="absolute top-[18px] left-1/2 -translate-x-1/2 w-[calc(100%-20px)] border-2 border-[#D4D4D4] border-dashed md:w-auto md:h-[calc(100%-20px)] md:top-1/2 md:-translate-y-1/2 md:left-5 md:translate-x-0"
+        class="absolute top-[18px] left-1/2 -translate-x-1/2 w-[calc(100%-20px)] border-2 border-border border-dashed md:w-auto md:h-[calc(100%-20px)] md:top-1/2 md:-translate-y-1/2 md:left-5 md:translate-x-0"
       />
     </div>
     <div

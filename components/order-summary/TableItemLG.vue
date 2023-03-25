@@ -4,7 +4,7 @@
       class="grid grid-cols-[75px,1fr,100px,64px,145px,120px,120px] items-center 2xl:grid-cols-[32px,75px,1fr,100px,64px,145px,130px,120px]"
     >
       <div
-        class="flex items-center justify-center w-[22px] h-[22px] border border-[#D4D4D4] rounded text-sm font-medium leading-tight text-gray-300 max-2xl:hidden"
+        class="flex items-center justify-center w-[22px] h-[22px] border border-border rounded text-sm font-medium leading-tight text-gray-300 max-2xl:hidden"
       >
         {{ index }}
       </div>
@@ -17,7 +17,7 @@
             {{ item.title }}
           </div>
           <button
-            class="flex border border-[#D4D4D4] rounded px-2 py-[3px] text-sm font-semibold leading-tight text-gray-300"
+            class="flex border border-border rounded px-2 py-[3px] text-sm font-semibold leading-tight text-gray-300"
           >
             CUSTOM1234
           </button>

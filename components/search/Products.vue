@@ -11,7 +11,7 @@
           <span class="text-sm flex-shrink-0 mr-2.5">Show</span>
           <div class="relative min-w-[215px]">
             <button
-              class="flex items-center justify-between w-full border border-[#D4D4D4] bg-white rounded px-2.5 py-[3px]"
+              class="flex items-center justify-between w-full border border-border bg-white rounded px-2.5 py-[3px]"
               @click="showShowOptions = !showShowOptions"
             >
               <div class="flex items-center">
@@ -54,7 +54,7 @@
                     :class="[
                       option === show
                         ? 'bg-blue border-blue group-hover:bg-white'
-                        : 'bg-white  border-[#D4D4D4] group-hover:border-gray-300',
+                        : 'bg-white  border-border group-hover:border-gray-300',
                     ]"
                   >
                     <CheckIcon
@@ -71,7 +71,7 @@
           <span class="text-sm flex-shrink-0 mr-2.5">Sort by</span>
           <div class="relative min-w-[215px] mr-2.5">
             <button
-              class="flex items-center justify-between w-full border border-[#D4D4D4] bg-white rounded px-2.5 py-[3px]"
+              class="flex items-center justify-between w-full border border-border bg-white rounded px-2.5 py-[3px]"
               @click="showSortByOptions = !showSortByOptions"
             >
               <span class="text-sm text-left mr-2.5">{{ sortBy }}</span>
@@ -126,7 +126,7 @@
           <span class="text-sm flex-shrink-0 mr-2.5">Products on page</span>
           <div class="relative">
             <button
-              class="flex items-center justify-between w-full border border-[#D4D4D4] bg-white rounded px-2.5 py-[3px]"
+              class="flex items-center justify-between w-full border border-border bg-white rounded px-2.5 py-[3px]"
               @click="showPerPageOptions = !showPerPageOptions"
             >
               <span class="text-sm mr-2">{{ perPage }}</span>
@@ -227,7 +227,7 @@
           <span class="text-sm flex-shrink-0 mr-2.5">Products on page</span>
           <div class="relative">
             <button
-              class="flex items-center justify-between w-full border border-[#D4D4D4] bg-white rounded px-2.5 py-[3px]"
+              class="flex items-center justify-between w-full border border-border bg-white rounded px-2.5 py-[3px]"
               @click="showPerPageOptions = !showPerPageOptions"
             >
               <span class="text-sm mr-2">{{ perPage }}</span>

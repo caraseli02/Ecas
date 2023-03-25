@@ -2,7 +2,7 @@
   <div class="flex flex-col bg-white">
     <div class="flex items-center overflow-hidden">
       <div
-        class="border border-[#D4D4D4] flex-shrink-0 rounded-md transition-all duration-300"
+        class="border border-border flex-shrink-0 rounded-md transition-all duration-300"
         :class="[isSwiped ? 'w-[calc(100%-74px)]' : 'w-full']"
         @touchstart="onTouchStart"
         v-touch:drag="onDrag"
@@ -24,7 +24,7 @@
         <div v-if="showOptions" class="flex-1 flex flex-col">
           <div class="pl-2.5 pr-[15px] mb-2.5">
             <label
-              class="flex relative border border-[#D4D4D4] rounded overflow-hidden"
+              class="flex relative border border-border rounded overflow-hidden"
             >
               <input
                 v-model="searchValue"
@@ -61,7 +61,7 @@
                   :class="[
                     option.checked
                       ? 'bg-blue border-blue group-hover:bg-white'
-                      : 'bg-white  border-[#D4D4D4] group-hover:border-gray-300',
+                      : 'bg-white  border-border group-hover:border-gray-300',
                   ]"
                 >
                   <CheckIcon

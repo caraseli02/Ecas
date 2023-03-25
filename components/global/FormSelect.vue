@@ -4,7 +4,7 @@
       {{ label }}
     </div>
     <button
-      class="flex items-center justify-between px-2.5 py-2 text-sm w-full rounded border border-[#D4D4D4] focus:outline-none"
+      class="flex items-center justify-between px-2.5 py-2 text-sm w-full rounded border border-border focus:outline-none"
       @click="showOptions = !showOptions"
     >
       <span
@@ -60,7 +60,7 @@
               :class="[
                 option.value === modelValue?.value
                   ? 'bg-blue border-blue '
-                  : 'bg-white  border-[#D4D4D4] group-hover:border-gray-300',
+                  : 'bg-white  border-border group-hover:border-gray-300',
               ]"
             >
               <CheckIcon

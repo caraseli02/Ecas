@@ -21,7 +21,7 @@
           :class="[
             folder.selected
               ? 'bg-blue border-blue group-hover:bg-white'
-              : 'bg-white  border-[#D4D4D4] group-hover:border-gray-300',
+              : 'bg-white  border-border group-hover:border-gray-300',
           ]"
         >
           <CheckIcon
@@ -41,7 +41,7 @@
           v-model="newName"
           ref="newNameInputDOM"
           type="text"
-          class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-[#D4D4D4] rounded text-dark placeholder:text-gray-300 focus:outline-none"
+          class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-dark placeholder:text-gray-300 focus:outline-none"
         />
       </label>
       <button v-else @click="$emit('open')" class="text-left">

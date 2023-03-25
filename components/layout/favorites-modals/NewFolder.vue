@@ -24,7 +24,7 @@
             v-model="name"
             type="text"
             placeholder="Enter Folder Name"
-            class="bg-transparent w-full px-2.5 py-[5px] border border-[#D4D4D4] rounded h-[42px] text-sm leading-tight text-dark focus:outline-none"
+            class="bg-transparent w-full px-2.5 py-[5px] border border-border rounded h-[42px] text-sm leading-tight text-dark focus:outline-none"
           />
         </label>
         <div class="flex items-center justify-center gap-2.5">

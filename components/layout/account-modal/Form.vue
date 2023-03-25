@@ -5,7 +5,7 @@
         v-model="email"
         type="email"
         placeholder="you@company.com"
-        class="border border-[#D4D4D4] rounded bg-white px-2.5 py-[9px] w-full text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none hover:border-blue focus:border-blue"
+        class="border border-border rounded bg-white px-2.5 py-[9px] w-full text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none hover:border-blue focus:border-blue"
       />
     </label>
     <div class="relative">
@@ -14,11 +14,11 @@
           v-model="password"
           type="password"
           placeholder="Your Password"
-          class="border border-[#D4D4D4] rounded bg-white pl-2.5 pr-10 py-[9px] w-full text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none hover:border-blue focus:border-blue"
+          class="border border-border rounded bg-white pl-2.5 pr-10 py-[9px] w-full text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none hover:border-blue focus:border-blue"
         />
       </label>
       <button class="flex absolute top-1/2 -translate-y-1/2 right-2.5">
-        <EyeIcon class="w-6 h-6 text-[#D4D4D4]" />
+        <EyeIcon class="w-6 h-6 text-border" />
       </button>
     </div>
     <div class="flex items-center justify-between mb-[30px]">
@@ -49,7 +49,7 @@
       class="flex items-center justify-center mx-auto text-sm font-medium text-gray-100 mb-[25px]"
     >
       <span class="mr-2"> Don’t have an account yet ? </span>
-      <NuxtLink to="/" class="text-blue hover:underline">
+      <NuxtLink to="/signup" class="text-blue hover:underline">
         Sign up now
       </NuxtLink>
     </div>
@@ -61,7 +61,7 @@
       <div class="h-px flex-1 bg-gray-200" />
     </div>
     <button
-      class="group flex items-center justify-center w-full border border-[#D4D4D4] py-2 rounded mb-5 transition-colors duration-300 hover:border-blue"
+      class="group flex items-center justify-center w-full border border-border py-2 rounded mb-5 transition-colors duration-300 hover:border-blue"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +93,6 @@
           </clipPath>
         </defs>
       </svg>
-
       <span class="text-sm font-medium text-gray-300">Google</span>
     </button>
   </div>

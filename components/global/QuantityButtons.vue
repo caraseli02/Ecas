@@ -2,7 +2,7 @@
   <div class="flex bg-[#F5F5F5] rounded max-w-max overflow-hidden">
     <button
       :disabled="modelValue === 0"
-      class="flex items-center justify-center bg-gray-200 text-gray-300 px-2.5 transition-colors duration-300 disabled:text-[#D4D4D4]"
+      class="flex items-center justify-center bg-gray-200 text-gray-300 px-2.5 transition-colors duration-300 disabled:text-border"
       :class="[size === 'sm' ? 'w-8 h-8' : 'w-[42px] h-[42px]']"
       @click="inputHandler(modelValue - 1)"
     >

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border border-[#D4D4D4] shadow-card pt-[25px] px-2.5 pb-[30px] rounded-md mb-[30px] md:mb-5"
+    class="border border-border shadow-card pt-[25px] px-2.5 pb-[30px] rounded-md mb-[30px] md:mb-5"
   >
     <div class="flex items-center justify-between mb-[18px]">
       <div class="font-semibold">
@@ -25,7 +25,7 @@
       <div class="text-right font-Inter">$ 0.00</div>
     </div>
     <div
-      class="flex items-center justify-between pb-1.5 border-b border-[#D4D4D4] mb-2.5"
+      class="flex items-center justify-between pb-1.5 border-b border-border mb-2.5"
     >
       <div class="font-semibold">
         VAT

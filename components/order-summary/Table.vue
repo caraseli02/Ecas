@@ -1,7 +1,7 @@
 <template>
   <div class="mb-10 lg:mb-[50px]">
     <div
-      class="grid grid-cols-[75px,1fr,100px,64px,145px,120px,120px] border border-[#D4D4D4] bg-gray-200 px-[15px] py-[22px] rounded-md text-sm font-medium mb-5 max-xl:hidden 2xl:grid-cols-[32px,75px,1fr,100px,64px,145px,130px,120px]"
+      class="grid grid-cols-[75px,1fr,100px,64px,145px,120px,120px] border border-border bg-gray-200 px-[15px] py-[22px] rounded-md text-sm font-medium mb-5 max-xl:hidden 2xl:grid-cols-[32px,75px,1fr,100px,64px,145px,130px,120px]"
     >
       <div class="max-2xl:hidden">No.</div>
       <div />
@@ -54,7 +54,7 @@
         </span>
         <div class="relative">
           <button
-            class="flex items-center justify-between w-full border border-[#D4D4D4] bg-white rounded px-2.5 py-[3px]"
+            class="flex items-center justify-between w-full border border-border bg-white rounded px-2.5 py-[3px]"
             @click="showPerPageOptions = !showPerPageOptions"
           >
             <span class="text-sm mr-2">{{ perPage }}</span>

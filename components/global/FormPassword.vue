@@ -3,7 +3,7 @@
     <div v-if="label" class="text-sm text-gray-300 mb-[5px]">
       {{ label }}
     </div>
-    <div class="relative border border-[#D4D4D4] rounded">
+    <div class="relative border border-border rounded">
       <input
         :value="modelValue"
         :type="showPassword ? 'text' : 'password'"

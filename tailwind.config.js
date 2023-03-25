@@ -20,7 +20,8 @@ module.exports = {
           300: '#5E6278',
         },
         green: '#0FAC7E',
-        orange: '#F68500'
+        orange: '#F68500',
+        border: '#D4D4D4',
       },
       fontFamily: {
         Inter: ["Inter", "sans-serif"],

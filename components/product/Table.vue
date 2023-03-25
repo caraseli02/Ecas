@@ -60,7 +60,7 @@
               :class="[
                 item.checked
                   ? 'bg-blue border-blue'
-                  : 'border-[#D4D4D4] group-hover:border-gray-300',
+                  : 'border-border group-hover:border-gray-300',
               ]"
             >
               <CheckIcon v-if="item.checked" class="w-4 text-white" />
