@@ -31,25 +31,29 @@
               <span class="text-sm text-gray-300">Use Contact E-mail</span>
             </label>
             <FormInput
-              v-model="details.accountEmail"
+              v-model="details.accountEmail.value"
+              :error="details.accountEmail.error"
               type="email"
               label="Account E-mail"
               placeholder="Account E-mail"
             />
             <FormInput
-              v-model="details.confirmAccountEmail"
+              v-model="details.confirmAccountEmail.value"
+              :error="details.confirmAccountEmail.error"
               type="email"
               label="Confirm Account E-mail"
               placeholder="Confirm Account E-mail"
             />
             <FormPassword
-              v-model="details.password"
+              v-model="details.password.value"
+              :error="details.password.error"
               label="Password"
               placeholder="Password"
               handle-strength
             />
             <FormPassword
-              v-model="details.repeatPassword"
+              v-model="details.repeatPassword.value"
+              :error="details.repeatPassword.error"
               label="Repeat Password"
               placeholder="Repeat Password"
             />
@@ -139,16 +143,9 @@
 import QuestionIcon from "@/assets/icons/question-circle.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import CheckIcon from "@/assets/icons/check.svg";
+import { SignupProfileDetails } from "~~/types";
 
 defineEmits(["continue", "back"]);
 
-const details = ref({
-  useContactEmail: false,
-  accountEmail: "",
-  confirmAccountEmail: "",
-  password: "",
-  repeatPassword: "",
-  subscribeToNewsletter: true,
-  agreeToTerms: false,
-});
+const details = useState<SignupProfileDetails>("signup-profile-details");
 </script>

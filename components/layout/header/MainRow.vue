@@ -194,6 +194,8 @@ defineProps({
 
 const route = useRoute();
 
+const signinQuery = computed(() => route.query.signin);
+
 const showAccountModal = ref(false);
 const favoritesCartModal = ref({
   show: false,
@@ -240,6 +242,18 @@ watch(showMobileSearch, (newVal) => {
     });
   } else {
     searchVal.value = "";
+  }
+});
+
+watch(signinQuery, (newVal) => {
+  if (newVal === "true") {
+    showAccountModal.value = true;
+  }
+});
+
+onMounted(() => {
+  if (signinQuery.value === "true") {
+    showAccountModal.value = true;
   }
 });
 </script>

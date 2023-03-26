@@ -117,22 +117,20 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
 import Logo from "@/assets/media/logo-light.svg";
 import TwitterIcon from "@/assets/icons/social/twitter.svg";
 import LinkedInIcon from "@/assets/icons/social/linkedin.svg";
 import InstagramIcon from "@/assets/icons/social/instagram.svg";
+import { SignupAccountType } from "~~/types";
 
-const props = defineProps({
+defineProps({
   currentStep: {
     type: Number,
     required: true,
   },
-  selectedType: {
-    type: String as PropType<"personal" | "sale-trader" | "business">,
-    required: true,
-  },
 });
+
+const selectedType = useState<SignupAccountType>("signup-account-type");
 
 const steps = computed(() => [
   {
@@ -141,10 +139,10 @@ const steps = computed(() => [
   },
   {
     label: `${
-      props.selectedType === "personal" ? "Personal" : "Business"
+      selectedType.value === "personal" ? "Personal" : "Business"
     } <span class='max-md:hidden'>Details</span>`,
     description: `Setup your ${
-      props.selectedType === "personal" ? "personal" : "business"
+      selectedType.value === "personal" ? "personal" : "business"
     } details`,
   },
   {

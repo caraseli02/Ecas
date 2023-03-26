@@ -18,6 +18,17 @@
 </template>
 
 <script setup lang="ts">
+const router = useRouter();
+const route = useRoute();
+
+onMounted(() => {
+  if (route.query.signin === "true") {
+    router.replace({
+      query: {},
+    });
+  }
+});
+
 useHead({
   title: "Home",
 });

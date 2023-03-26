@@ -3,3 +3,8 @@ export interface FormSelectOption {
   value: string;
   icon?: any;
 }
+
+export interface InputObject {
+  value: any;
+  error: string;
+}

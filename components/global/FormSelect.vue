@@ -1,10 +1,15 @@
 <template>
   <div class="relative">
-    <div v-if="label" class="text-sm mb-2">
+    <div
+      v-if="label"
+      class="text-sm transition-colors duration-300 mb-2"
+      :class="[error ? 'text-red' : 'text-gray-300']"
+    >
       {{ label }}
     </div>
     <button
-      class="flex items-center justify-between px-2.5 py-2 text-sm w-full rounded border border-border focus:outline-none"
+      class="flex items-center justify-between px-2.5 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none"
+      :class="[error ? 'border-red' : 'border-border']"
       @click="showOptions = !showOptions"
     >
       <span
@@ -131,6 +136,7 @@ defineProps({
   icon: {
     required: false,
   },
+  error: String,
 });
 
 const emits = defineEmits(["update:modelValue"]);

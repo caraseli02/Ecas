@@ -1,26 +1,18 @@
 <template>
   <div class="max-w-[340px] mx-auto">
-    <label class="flex mb-[15px]">
-      <input
-        v-model="email"
-        type="email"
-        placeholder="you@company.com"
-        class="border border-border rounded bg-white px-2.5 py-[9px] w-full text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none hover:border-blue focus:border-blue"
-      />
-    </label>
-    <div class="relative">
-      <label class="flex mb-[15px]">
-        <input
-          v-model="password"
-          type="password"
-          placeholder="Your Password"
-          class="border border-border rounded bg-white pl-2.5 pr-10 py-[9px] w-full text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none hover:border-blue focus:border-blue"
-        />
-      </label>
-      <button class="flex absolute top-1/2 -translate-y-1/2 right-2.5">
-        <EyeIcon class="w-6 h-6 text-border" />
-      </button>
-    </div>
+    <FormInput
+      v-model="email.value"
+      :error="email.error"
+      type="email"
+      placeholder="you@company.com"
+      class="mb-[15px]"
+    />
+    <FormPassword
+      v-model="password.value"
+      :error="password.error"
+      placeholder="Your Password"
+      class="mb-[15px]"
+    />
     <div class="flex items-center justify-between mb-[30px]">
       <label class="flex items-center cursor-pointer">
         <input v-model="rememberMe" type="checkbox" class="sr-only" />
@@ -41,6 +33,7 @@
     </div>
     <button
       class="flex items-center justify-center w-full bg-blue rounded py-[9px] text-white mb-5"
+      @click="handleSignIn"
     >
       <KeyholeIcon class="w-6 h-6 mr-2" />
       <span class="text-sm font-medium"> Sign In </span>
@@ -62,6 +55,7 @@
     </div>
     <button
       class="group flex items-center justify-center w-full border border-border py-2 rounded mb-5 transition-colors duration-300 hover:border-blue"
+      @click="handleGoogleSignIn"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -100,10 +94,40 @@
 
 <script setup lang="ts">
 import KeyholeIcon from "@/assets/icons/keyhole.svg";
-import EyeIcon from "@/assets/icons/eye.svg";
 import CheckIcon from "@/assets/icons/check.svg";
+import { signInWithPopup, GoogleAuthProvider } from "@firebase/auth";
 
-const email = ref("");
-const password = ref("");
+const auth = useFirebaseAuth();
+const { checkForInputErrors } = useError();
+
+const email = ref({
+  value: "",
+  error: "",
+});
+const password = ref({
+  value: "",
+  error: "",
+});
 const rememberMe = ref(false);
+
+const handleGoogleSignIn = () => {
+  if (auth) {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // TODO: LOGIN REQUEST, IF USER VERIFIED - LOGIN, IF NOT - REDIRECT TO SIGNUP FLOW TO SET THE DATA ( FIREBASE QUERY )
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+};
+
+const handleSignIn = async () => {
+  const hasError = checkForInputErrors([email.value, password.value]);
+
+  if (!hasError) {
+    // TODO: LOGIN REQUEST
+  }
+};
 </script>

@@ -6,15 +6,12 @@
       <div
         class="flex items-center justify-between p-5 border-b border-gray-200"
       >
-        <button
-          class="relative flex items-center text-gray-300"
-          @click="isLoggedIn = !isLoggedIn"
-        >
+        <div class="relative flex items-center text-gray-300">
           <UserIcon class="w-7 h-7 mr-2" />
           <span class="text-lg font-semibold">
-            {{ isLoggedIn ? "Jason Statham" : "My Account" }}
+            {{ user ? user?.name : "My Account" }}
           </span>
-        </button>
+        </div>
         <button
           class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
           @click="$emit('close')"
@@ -22,10 +19,7 @@
           <XIcon class="w-[15px] h-[15px]" />
         </button>
       </div>
-      <div
-        v-if="!isLoggedIn"
-        class="flex-1 pt-[60px] overflow-y-auto scrollbar-thin"
-      >
+      <div v-if="!user" class="flex-1 pt-[60px] overflow-y-auto scrollbar-thin">
         <KeyholeIcon
           class="w-[100px] h-[100px] text-gray-200 mx-auto mb-[25px]"
         />
@@ -57,6 +51,7 @@
         </div>
         <button
           class="flex items-center justify-center w-full border border-blue py-2 max-w-[320px] rounded text-blue mx-auto mb-5"
+          @click="handleSignOut"
         >
           <SignOutIcon class="w-6 h-6 mr-2" />
           <span class="text-sm font-medium">Sign out</span>
@@ -92,6 +87,13 @@ import OrderHistoryIcon from "@/assets/icons/history.svg";
 import SignOutIcon from "@/assets/icons/sign-out.svg";
 
 defineEmits(["close"]);
+
+const auth = useFirebaseAuth();
+const { getUser } = useUser();
+
+const user = computed(() => {
+  return getUser();
+});
 
 const navItems = ref([
   {
@@ -136,7 +138,9 @@ const navItems = ref([
   },
 ]);
 
-const isLoggedIn = ref(false);
+const handleSignOut = async () => {
+  await auth?.signOut();
+};
 
 onMounted(() => {
   documentUtil.toggleBodyScroll();

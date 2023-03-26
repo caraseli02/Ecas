@@ -130,7 +130,17 @@
     </div>
     <div class="text-sm text-center mb-[60px] mt-auto max-md:hidden lg:mb-10">
       Already have an account?
-      <NuxtLink to="/" class="text-blue font-semibold">Sign in</NuxtLink>
+      <NuxtLink
+        :to="{
+          path: '/',
+          query: {
+            signin: 'true',
+          },
+        }"
+        class="text-blue font-semibold"
+      >
+        Sign in
+      </NuxtLink>
     </div>
     <div class="text-sm text-gray-300 text-center max-md:hidden">
       © {{ new Date().getFullYear() }} ECAS.RO
@@ -139,7 +149,6 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
 import QuestionIcon from "@/assets/icons/question-circle.svg";
 import PersonalIcon from "@/assets/icons/signup/personal.svg";
 import SaleTraderIcon from "@/assets/icons/signup/sale-trader.svg";
@@ -149,16 +158,11 @@ import AgentIcon from "@/assets/icons/signup/agent.svg";
 import TwitterIcon from "@/assets/icons/social/twitter.svg";
 import LinkedInIcon from "@/assets/icons/social/linkedin.svg";
 import InstagramIcon from "@/assets/icons/social/instagram.svg";
-import { FormSelectOption } from "~~/types";
-
-defineProps({
-  selectedType: {
-    type: String as PropType<"personal" | "sale-trader" | "business">,
-    required: true,
-  },
-});
+import { FormSelectOption, SignupAccountType } from "~~/types";
 
 const emits = defineEmits(["set-type", "continue", "set-business-type"]);
+
+const selectedType = useState<SignupAccountType>("signup-account-type");
 
 const selectedBusinessAccountType = ref<FormSelectOption>({
   label: "Executive",

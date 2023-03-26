@@ -1,9 +1,16 @@
 <template>
-  <label class="relative">
-    <div v-if="label" class="text-sm text-gray-300 mb-[5px]">
+  <label class="flex flex-col relative">
+    <div
+      v-if="label"
+      class="text-sm transition-colors duration-300 mb-[5px]"
+      :class="[error ? 'text-red' : 'text-gray-300']"
+    >
       {{ label }}
     </div>
-    <div class="relative border border-border rounded">
+    <div
+      class="relative border rounded w-full transition-colors duration-300"
+      :class="[error ? 'border-red' : 'border-border']"
+    >
       <input
         :value="modelValue"
         :type="showPassword ? 'text' : 'password'"
@@ -50,6 +57,7 @@ const props = defineProps({
   label: String,
   placeholder: String,
   handleStrength: Boolean,
+  error: String,
 });
 
 const emits = defineEmits(["update:modelValue"]);

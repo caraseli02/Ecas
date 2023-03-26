@@ -3,41 +3,52 @@
     <div class="container h-full">
       <div class="flex flex-col h-full md:max-w-[410px] md:mx-auto">
         <div class="flex items-center mb-5">
-          <div class="font-medium mr-2 md:text-xl">Business Details</div>
+          <div class="font-medium mr-2 md:text-xl">Personal Details</div>
           <QuestionIcon class="w-5 h-5 text-gray-100" />
         </div>
         <div class="mb-[30px]">
           <div class="grid grid-cols-1 gap-[15px] mb-10">
             <FormInput
-              v-model="details.firstName"
+              v-model="details.firstName.value"
+              :error="details.firstName.error"
               label="First Name"
               placeholder="First Name"
             />
             <FormInput
-              v-model="details.lastName"
+              v-model="details.lastName.value"
+              :error="details.lastName.error"
               label="Last Name"
               placeholder="Last Name"
             />
             <FormSelect
-              v-model="details.country"
+              v-model="details.country.value"
+              :error="details.country.error"
               :options="countries"
               label="Country"
               placeholder="Select Country"
               class="relative z-10"
             />
-            <FormInput v-model="details.city" label="City" placeholder="City" />
             <FormInput
-              v-model="details.postcode"
+              v-model="details.city.value"
+              :error="details.city.error"
+              label="City"
+              placeholder="City"
+            />
+            <FormInput
+              v-model="details.postcode.value"
+              :error="details.postcode.error"
               label="Postcode"
               placeholder="Postcode"
             />
             <FormInput
-              v-model="details.addressLine1"
+              v-model="details.addressLine1.value"
+              :error="details.addressLine1.error"
               label="Address Line 1"
               placeholder="Address Line 1"
             />
             <FormInput
-              v-model="details.addressLine2"
+              v-model="details.addressLine2.value"
+              :error="details.addressLine2.error"
               label="Address Line 2"
               placeholder="Address Line 2"
             />
@@ -69,20 +80,12 @@
 </template>
 
 <script setup lang="ts">
-import { FormSelectOption } from "~~/types";
+import { SignupPersonalDetails } from "~~/types";
 import QuestionIcon from "@/assets/icons/question-circle.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import { countries } from "@/data/countries";
 
 defineEmits(["continue", "back"]);
 
-const details = ref({
-  firstName: "",
-  lastName: "",
-  country: undefined as FormSelectOption | undefined,
-  city: "",
-  postcode: "",
-  addressLine1: "",
-  addressLine2: "",
-});
+const details = useState<SignupPersonalDetails>("signup-personal-details");
 </script>

@@ -9,41 +9,53 @@
         <div class="mb-[30px]">
           <div class="grid grid-cols-1 gap-[15px] mb-10">
             <FormInput
-              v-model="details.fullCompanyName"
+              v-model="details.fullCompanyName.value"
+              :error="details.fullCompanyName.error"
               label="Full Company Name"
               placeholder="Your Full Company Name"
             />
             <FormInput
-              v-model="details.companyRegistrationNumber"
+              v-model="details.companyRegistrationNumber.value"
+              :error="details.companyRegistrationNumber.error"
               label="Company Registration Number"
               placeholder="Company Registration Number"
             />
             <FormInput
               v-if="selectedType === 'executive'"
-              v-model="details.vatNumber"
+              v-model="details.vatNumber.value"
+              :error="details.vatNumber.error"
               label="VAT Number"
               placeholder="VAT Number"
             />
             <FormSelect
-              v-model="details.country"
+              v-model="details.country.value"
+              :error="details.country.error"
               :options="countries"
               label="Country"
               placeholder="Select Country"
               class="relative z-10"
             />
-            <FormInput v-model="details.city" label="City" placeholder="City" />
             <FormInput
-              v-model="details.postcode"
+              v-model="details.city.value"
+              :error="details.city.error"
+              label="City"
+              placeholder="City"
+            />
+            <FormInput
+              v-model="details.postcode.value"
+              :error="details.postcode.error"
               label="Postcode"
               placeholder="Postcode"
             />
             <FormInput
-              v-model="details.addressLine1"
+              v-model="details.addressLine1.value"
+              :error="details.addressLine1.error"
               label="Address Line 1"
               placeholder="Address Line 1"
             />
             <FormInput
-              v-model="details.addressLine2"
+              v-model="details.addressLine2.value"
+              :error="details.addressLine2.error"
               label="Address Line 2"
               placeholder="Address Line 2"
             />
@@ -75,10 +87,10 @@
 </template>
 
 <script setup lang="ts">
-import { FormSelectOption } from "~~/types";
 import QuestionIcon from "@/assets/icons/question-circle.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import { countries } from "@/data/countries";
+import { SignupBusinessDetails } from "~~/types";
 
 defineProps({
   selectedType: {
@@ -89,14 +101,5 @@ defineProps({
 
 defineEmits(["continue", "back"]);
 
-const details = ref({
-  fullCompanyName: "",
-  companyRegistrationNumber: "",
-  vatNumber: "",
-  country: undefined as FormSelectOption | undefined,
-  city: "",
-  postcode: "",
-  addressLine1: "",
-  addressLine2: "",
-});
+const details = useState<SignupBusinessDetails>("signup-business-details");
 </script>

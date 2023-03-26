@@ -56,7 +56,12 @@
               <span class="text-sm font-medium">Home</span>
             </NuxtLink>
             <NuxtLink
-              to="/"
+              :to="{
+                path: '/',
+                query: {
+                  signin: 'true',
+                },
+              }"
               class="flex items-center justify-center rounded w-[170px] px-5 py-2 text-white border border-blue bg-blue"
             >
               <svg
