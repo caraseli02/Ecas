@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import RonFlag from "@/assets/icons/flags/ron.svg";
-import { showNavModal } from "~~/system/modal/nav";
+import { showNavModal } from "~~/config/modal/nav";
 
 defineProps({
   isScrolled: {

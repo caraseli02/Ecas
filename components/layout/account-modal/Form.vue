@@ -55,7 +55,6 @@
     </div>
     <button
       class="group flex items-center justify-center w-full border border-border py-2 rounded mb-5 transition-colors duration-300 hover:border-blue"
-      @click="handleGoogleSignIn"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -95,9 +94,7 @@
 <script setup lang="ts">
 import KeyholeIcon from "@/assets/icons/keyhole.svg";
 import CheckIcon from "@/assets/icons/check.svg";
-import { signInWithPopup, GoogleAuthProvider } from "@firebase/auth";
 
-const auth = useFirebaseAuth();
 const { checkForInputErrors } = useError();
 
 const email = ref({
@@ -109,19 +106,6 @@ const password = ref({
   error: "",
 });
 const rememberMe = ref(false);
-
-const handleGoogleSignIn = () => {
-  if (auth) {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // TODO: LOGIN REQUEST, IF USER VERIFIED - LOGIN, IF NOT - REDIRECT TO SIGNUP FLOW TO SET THE DATA ( FIREBASE QUERY )
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-};
 
 const handleSignIn = async () => {
   const hasError = checkForInputErrors([email.value, password.value]);

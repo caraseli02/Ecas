@@ -88,12 +88,7 @@ import SignOutIcon from "@/assets/icons/sign-out.svg";
 
 defineEmits(["close"]);
 
-const auth = useFirebaseAuth();
-const { getUser } = useUser();
-
-const user = computed(() => {
-  return getUser();
-});
+const user = ref();
 
 const navItems = ref([
   {
@@ -138,9 +133,7 @@ const navItems = ref([
   },
 ]);
 
-const handleSignOut = async () => {
-  await auth?.signOut();
-};
+const handleSignOut = async () => {};
 
 onMounted(() => {
   documentUtil.toggleBodyScroll();

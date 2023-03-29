@@ -143,7 +143,7 @@ import CasesIcon from "@/assets/icons/header/cases.svg";
 import ToolsIcon from "@/assets/icons/header/tools.svg";
 import IndustrialFurnitureIcon from "@/assets/icons/header/industrial-furniture.svg";
 import CaretLeft from "@/assets/icons/caret-left.svg";
-import { showNavModal } from "@/system/modal/nav";
+import { showNavModal } from "~~/config/modal/nav";
 
 const categories = ref([
   {

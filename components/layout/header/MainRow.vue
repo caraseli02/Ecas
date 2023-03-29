@@ -183,7 +183,7 @@ import UserIcon from "@/assets/icons/user.svg";
 import HeartIcon from "@/assets/icons/heart.svg";
 import CartIcon from "@/assets/icons/cart.svg";
 import XIcon from "@/assets/icons/x.svg";
-import { showNavModal } from "~~/system/modal/nav";
+import { showNavModal } from "~~/config/modal/nav";
 
 defineProps({
   isScrolled: {
