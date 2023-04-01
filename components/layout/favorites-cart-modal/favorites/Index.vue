@@ -188,7 +188,7 @@
         v-if="
           deleteItems || newFolder || mergeFolders || copyItems || moveItems
         "
-        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/30 backdrop-blur-[2px] cursor-pointer"
+        class="fixed z-[60] top-0 left-0 w-full h-full bg-[#333333]/30 backdrop-blur-[2px] cursor-pointer md:z-50"
         @click="
           deleteItems = false;
           newFolder = false;

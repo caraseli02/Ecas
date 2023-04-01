@@ -69,7 +69,7 @@
       </div>
     </template>
     <div
-      class="flex justify-end mb-[100px] md:mb-10"
+      class="flex justify-end mb-[30px] md:mt-auto md:-mb-16 lg:-mb-32"
       :class="[selectedType !== 'business' ? 'mt-[200px] md:mt-[188px]' : '']"
     >
       <button

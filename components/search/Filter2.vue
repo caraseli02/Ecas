@@ -74,7 +74,6 @@
           </div>
         </div>
       </div>
-
       <div class="max-w-max flex-shrink-0">
         <button
           class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full ml-5 mr-[11px]"
@@ -91,6 +90,15 @@ import TrashIcon from "@/assets/icons/trash-can.svg";
 import FiltersIcon from "@/assets/icons/filters.svg";
 import CheckIcon from "@/assets/icons/check.svg";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
+
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+});
+
+const swipedFilter = useState<number | undefined>("swiped-search-filter");
 
 const searchValue = ref("");
 
@@ -145,11 +153,14 @@ const onDrag = (event: any) => {
   }
   if (event.direction === "left" || event.direction === "right") {
     isSwipping.value = true;
+    swipedFilter.value = props.id;
   }
   if (event.direction === "left") {
     isSwiped.value = true;
+    swipedFilter.value = props.id;
   } else {
     isSwiped.value = false;
+    swipedFilter.value = undefined;
   }
 
   const timeout = setTimeout(() => {
@@ -165,4 +176,12 @@ const onTouchStart = (event: TouchEvent) => {
     event.preventDefault();
   }
 };
+
+watch(swipedFilter, (newVal) => {
+  if (typeof newVal === "undefined") {
+    isSwiped.value = false;
+  } else if (typeof newVal === "number" && newVal !== props.id) {
+    isSwiped.value = false;
+  }
+});
 </script>

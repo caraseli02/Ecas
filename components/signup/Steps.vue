@@ -25,7 +25,7 @@
       journey with us.
     </h1>
     <div
-      class="relative flex items-center justify-between md:flex-col md:items-start md:gap-[35px] md:mb-10 lg:max-w-[256px] lg:mx-auto lg:mb-20"
+      class="relative flex items-center justify-between overflow-hidden md:flex-col md:items-start md:gap-[35px] md:mb-10 lg:max-w-[256px] lg:mx-auto lg:mb-20"
     >
       <div
         v-for="(step, index) in steps"
@@ -62,8 +62,14 @@
         </div>
       </div>
       <div
-        class="absolute top-[18px] left-1/2 -translate-x-1/2 w-[calc(100%-20px)] border-2 border-border border-dashed md:w-auto md:h-[calc(100%-20px)] md:top-1/2 md:-translate-y-1/2 md:left-5 md:translate-x-0"
-      />
+        class="absolute flex items-center gap-1.5 overflow-hidden top-[18px] left-1/2 -translate-x-1/2 w-[calc(100%-20px)] md:flex-col md:items-start md:h-[calc(100%-20px)] md:top-1/2 md:-translate-y-1/2 md:left-5 md:translate-x-0"
+      >
+        <div
+          v-for="dash in 100"
+          :key="dash"
+          class="rounded-full w-1.5 h-[3px] bg-border flex-shrink-0 md:w-[3px] md:h-1.5"
+        />
+      </div>
     </div>
     <div
       class="flex items-center justify-center gap-[15px] mt-auto mb-[30px] max-md:hidden"

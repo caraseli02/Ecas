@@ -202,7 +202,7 @@
     <Transition name="fade">
       <div
         v-if="deleteItem || newFolder || copyItems || moveItems"
-        class="fixed z-50 top-0 left-0 w-full h-full bg-[#333333]/30 backdrop-blur-[2px] cursor-pointer"
+        class="fixed z-[60] top-0 left-0 w-full h-full bg-[#333333]/30 backdrop-blur-[2px] cursor-pointer md:z-50"
         @click="
           deleteItem = false;
           newFolder = false;
@@ -255,6 +255,10 @@ const hasSelectedItem = computed(() => {
   return props.folder.items?.some((e) => e.selected);
 });
 
+const selectedItemsLength = computed(() => {
+  return props.folder.items?.filter((e) => e.selected).length;
+});
+
 watch(editing, (newVal) => {
   if (newVal) {
     nextTick(() => {
@@ -262,6 +266,14 @@ watch(editing, (newVal) => {
         newNameInputDOM.value.focus();
       }
     });
+  }
+});
+
+watch(selectedItemsLength, (newVal) => {
+  if (newVal && newVal >= 2) {
+    showMenu.value = true;
+  } else {
+    showMenu.value = false;
   }
 });
 </script>

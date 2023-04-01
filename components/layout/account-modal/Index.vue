@@ -6,12 +6,15 @@
       <div
         class="flex items-center justify-between p-5 border-b border-gray-200"
       >
-        <div class="relative flex items-center text-gray-300">
+        <button
+          class="relative flex items-center text-gray-300"
+          @click="user = !user"
+        >
           <UserIcon class="w-7 h-7 mr-2" />
           <span class="text-lg font-semibold">
-            {{ user ? user?.name : "My Account" }}
+            {{ user ? "Users name" : "My Account" }}
           </span>
-        </div>
+        </button>
         <button
           class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
           @click="$emit('close')"
@@ -88,7 +91,7 @@ import SignOutIcon from "@/assets/icons/sign-out.svg";
 
 defineEmits(["close"]);
 
-const user = ref();
+const user = ref(false);
 
 const navItems = ref([
   {

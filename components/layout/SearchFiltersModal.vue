@@ -39,7 +39,7 @@
       <div
         class="grid grid-cols-1 gap-1.5 overflow-auto max-h-[340px] scrollbar-thin px-[15px]"
       >
-        <SearchFilter2 v-for="filter in 20" :key="filter" />
+        <SearchFilter2 v-for="filter in 20" :key="filter" :id="filter" />
       </div>
     </div>
   </div>
