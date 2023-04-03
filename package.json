@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@vuemod/vue-touch": "^0.0.22",
+    "firebase": "^9.19.1",
     "lodash": "^4.17.21",
     "nuxt-swiper": "^0.1.9",
     "nuxt-vuefire": "^0.1.6",
