@@ -121,9 +121,13 @@ const handleSignIn = async () => {
 };
 
 const loginWithGoogle = async () => {
-    const { registerUser } = useFirebaseAuth();
+    const { registerUser, getUserJWTToken } = useFirebaseAuth();
 
-    const register = await registerUser();
-    console.log(register);
+    await registerUser();
+    const parsedToken = await getUserJWTToken();
+
+    if (!parsedToken.hasOwnProperty("permission")) {
+        return navigateTo("/signup");
+    }
 };
 </script>
