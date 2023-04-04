@@ -1,1 +1,1 @@
-export * from './FirebaseUser'
+export * from './firebase'

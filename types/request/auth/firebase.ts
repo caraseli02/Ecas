@@ -1,13 +1,21 @@
-export interface FirebaseUser {
-    "account": Account
+export interface FirebasePersonalAccount {
+    "account": PersonalAccount
     "isAlreadyRegisteredWithFirebase": boolean
 }
 
-interface Account {
+export interface FirebaseBusinessAccount {
+    "account": BusinessAccount
+    "isAlreadyRegisteredWithFirebase": boolean
+}
+
+interface BusinessAccount extends PersonalAccount {
+    "companyDetails": CompanyDetails
+}
+
+interface PersonalAccount {
     "accountType": number,
     "role": number,
     "firebaseId": string
-    "companyDetails": CompanyDetails
     "profileDetails": ProfileDetails
     "contactDetails": ContactDetails
 }
