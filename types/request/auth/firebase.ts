@@ -15,7 +15,7 @@ interface BusinessAccount extends PersonalAccount {
 interface PersonalAccount {
     "accountType": number,
     "role": number,
-    "firebaseId": string
+    "firebaseId"?: string
     "profileDetails": ProfileDetails
     "contactDetails": ContactDetails
 }
