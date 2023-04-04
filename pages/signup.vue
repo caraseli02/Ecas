@@ -46,13 +46,17 @@ import {
     SignupContactDetails as SignupContactDetailsType,
     SignupPersonalDetails as SignupPersonalDetailsType,
     SignupProfileDetails as SignupProfileDetailsType,
-    FirebaseUser as SignupPayload,
+    FirebasePersonalAccount as SignupPersonalPayload,
+    FirebaseBusinessAccount as SignupBusinessPayload,
 } from "~~/types";
 
 const route = useRoute();
 const { checkForInputErrors, checkConfirmEmail } = useError();
 
 const currentStep = ref(0);
+
+const firebaseToken = useState("firebaseToken");
+const parsedFirebaseToken = useState("parsedFirebaseToken");
 
 const selectedType = useState<SignupAccountType>(
     "signup-account-type",
@@ -278,8 +282,84 @@ const handleSubmit = async () => {
 
     if (!hasError) {
         // TODO: SIGNUP REQUEST
-        const payload: SignupPayload = {};
-        await useFetchAPI("auth/login", { method: "POST" });
+        let payload: SignupBusinessPayload | SignupPersonalPayload | null =
+            null;
+        if (selectedType.value === "personal") {
+            const personalPayload: SignupPersonalPayload = {
+                account: {
+                    accountType: 1,
+                    role: 1,
+                    firebaseId: "sdfsdf",
+                    profileDetails: {
+                        email: profileDetails.value.accountEmail.value,
+                    },
+                    contactDetails: {
+                        firstName: personalDetails.value.firstName.value,
+                        lastName: personalDetails.value.lastName.value,
+                        phone: contactDetails.value.phone.value,
+                        email: contactDetails.value.email.value,
+                    },
+                },
+                isAlreadyRegisteredWithFirebase: false,
+            };
+
+            payload = personalPayload;
+        } else {
+            const businessPayload: SignupBusinessPayload = {
+                account: {
+                    accountType: 1,
+                    role: 1,
+                    firebaseId: "sdfsdf",
+                    profileDetails: {
+                        email: profileDetails.value.accountEmail.value,
+                    },
+                    companyDetails: {
+                        name: "Hello",
+                        registrationNumber: 12323,
+                        vat: "123123",
+                        country: "Indonesia",
+                        city: "Bekll",
+                        postcode: 123123,
+                        address1: "sdfs",
+                    },
+                    contactDetails: {
+                        firstName: personalDetails.value.firstName.value,
+                        lastName: personalDetails.value.lastName.value,
+                        phone: contactDetails.value.phone.value,
+                        email: contactDetails.value.email.value,
+                    },
+                },
+                isAlreadyRegisteredWithFirebase: false,
+            };
+            payload = businessPayload;
+        }
+
+        if (firebaseToken.value) {
+            const { data, error } = await useFetchAPI(
+                "auth/firebase/register",
+                {
+                    headers: {
+                        Authorization: `Bearer ${firebaseToken.value}`,
+                    },
+                    method: "POST",
+                    body: payload,
+                }
+            );
+
+            if (error.value) {
+                console.log(error.value.message);
+            }
+        } else {
+            const { data, error } = await useFetchAPI("auth/register", {
+                method: "POST",
+                body: payload,
+            });
+
+            if (error.value) {
+                console.log(error.value.message);
+            }
+        }
+
         currentStep.value++;
     }
 };
