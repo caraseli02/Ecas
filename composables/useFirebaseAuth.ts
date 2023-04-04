@@ -5,25 +5,12 @@ import {
     signInWithPopup,
     User,
 } from "firebase/auth";
+import { ParsedFirebaseToken } from "~~/types";
 
 interface FirebaseResults {
     token: string | undefined;
     user: User;
     isNewUser: boolean | undefined
-}
-
-interface ParsedJWTToken {
-    aud: string
-    auth_time: number
-    email: string
-    email_verified: boolean
-    exp: number
-    iat: number
-    iss: string
-    name: string
-    picture: string
-    sub: string
-    user_id: string
 }
 
 export default function () {
@@ -53,25 +40,21 @@ export default function () {
         }
     };
 
-    const getUserJWTToken = async (): Promise<ParsedJWTToken> => {
+    const getParsedFirebaseJWTToken = async (): Promise<ParsedFirebaseToken> => {
         const { currentUser } = $auth
         const token = await getIdToken(currentUser)
-        return parseJwt(token)
+        return useParser().parseJwt(token)
     }
 
-    function parseJwt (token: string): any {
-        let base64Url = token.split('.')[1];
-        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        let JSONPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
-        return JSON.parse(JSONPayload);
+    const getUserToken = async (): Promise<string> => {
+        const { currentUser } = $auth
+        return await getIdToken(currentUser)
     }
 
     return {
         user,
         registerUser,
-        getUserJWTToken
+        getParsedFirebaseJWTToken,
+        getUserToken
     };
 }
