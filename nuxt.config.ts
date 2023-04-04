@@ -60,6 +60,7 @@ export default defineNuxtConfig({
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
     public: {
       FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+      BASE_URL_API: process.env.BASE_URL_API
     }
   },
 });

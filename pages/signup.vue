@@ -46,6 +46,7 @@ import {
     SignupContactDetails as SignupContactDetailsType,
     SignupPersonalDetails as SignupPersonalDetailsType,
     SignupProfileDetails as SignupProfileDetailsType,
+    FirebaseUser as SignupPayload,
 } from "~~/types";
 
 const route = useRoute();
@@ -277,6 +278,8 @@ const handleSubmit = async () => {
 
     if (!hasError) {
         // TODO: SIGNUP REQUEST
+        const payload: SignupPayload = {};
+        await useFetchAPI("auth/login", { method: "POST" });
         currentStep.value++;
     }
 };
