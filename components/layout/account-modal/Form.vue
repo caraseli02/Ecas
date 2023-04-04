@@ -39,9 +39,29 @@
             class="flex items-center justify-center w-full bg-blue rounded py-[9px] text-white mb-5"
             @click="handleSignIn"
         >
-            <KeyholeIcon class="w-6 h-6 mr-2" />
+            <div
+                aria-label="Loading..."
+                role="status"
+                class="mr-3"
+                v-if="isLoading"
+            >
+                <svg class="h-6 w-6 animate-spin" viewBox="3 3 18 18">
+                    <path
+                        class="fill-gray-200"
+                        d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z"
+                    ></path>
+                    <path
+                        class="fill-gray-800"
+                        d="M16.9497 7.05015C14.2161 4.31648 9.78392 4.31648 7.05025 7.05015C6.65973 7.44067 6.02656 7.44067 5.63604 7.05015C5.24551 6.65962 5.24551 6.02646 5.63604 5.63593C9.15076 2.12121 14.8492 2.12121 18.364 5.63593C18.7545 6.02646 18.7545 6.65962 18.364 7.05015C17.9734 7.44067 17.3403 7.44067 16.9497 7.05015Z"
+                    ></path>
+                </svg>
+            </div>
+            <KeyholeIcon class="w-6 h-6 mr-2" v-else />
             <span class="text-sm font-medium"> Sign In </span>
         </button>
+        <div>
+            <p>{{ errorMessage }}</p>
+        </div>
         <div
             class="flex items-center justify-center mx-auto text-sm font-medium text-gray-100 mb-[25px]"
         >
@@ -99,6 +119,7 @@
 <script setup lang="ts">
 import KeyholeIcon from "@/assets/icons/keyhole.svg";
 import CheckIcon from "@/assets/icons/check.svg";
+import { ParsedFirebaseToken } from "~~/types";
 
 const { checkForInputErrors } = useError();
 
@@ -110,23 +131,49 @@ const password = ref({
     value: "",
     error: "",
 });
+const errorMessage = ref("");
 const rememberMe = ref(false);
+const isLoading = ref(false);
 
 const handleSignIn = async () => {
     const hasError = checkForInputErrors([email.value, password.value]);
 
     if (!hasError) {
         // TODO: LOGIN REQUEST
+        const payload = {
+            email: email.value.value,
+            password: password.value.value,
+        };
+
+        isLoading.value = true;
+
+        const { data, error } = await useFetchAPI("auth/login", {
+            method: "POST",
+            body: {
+                email: payload.email,
+                password: payload.password,
+            },
+        });
+
+        if (error) {
+            errorMessage.value = error.value?.message ?? "";
+        }
+
+        isLoading.value = false;
     }
 };
 
 const loginWithGoogle = async () => {
-    const { registerUser, getUserJWTToken } = useFirebaseAuth();
+    const { registerUser, getParsedFirebaseJWTToken, getUserToken } =
+        useFirebaseAuth();
 
     await registerUser();
-    const parsedToken = await getUserJWTToken();
+    const parsedToken = await getParsedFirebaseJWTToken();
 
     if (!parsedToken.hasOwnProperty("permission")) {
+        const token = await getUserToken();
+        useState<string>("firebaseToken", () => token);
+        useState<ParsedFirebaseToken>("parsedFirebaseToken", () => parsedToken);
         return navigateTo("/signup");
     }
 };
