@@ -2,6 +2,19 @@ import { InputObject } from "../global";
 
 export type SignupAccountType = "personal" | "sale-trader" | "business";
 
+export enum AccountType {
+  Personal = 0,
+  SoleTrader = 1,
+  Business = 2,
+  Agent = 3,
+}
+
+export enum AccountRole {
+  SuperAdmin = 0,
+  Admin = 1,
+  Client = 2
+}
+
 export interface SignupBusinessDetails {
   fullCompanyName: InputObject;
   companyRegistrationNumber: InputObject;

@@ -40,8 +40,8 @@
 </template>
 
 <script setup lang="ts">
+import { User } from "firebase/auth";
 import {
-    SignupAccountType,
     SignupBusinessDetails as SignupBusinessDetailsType,
     SignupContactDetails as SignupContactDetailsType,
     SignupPersonalDetails as SignupPersonalDetailsType,
@@ -49,6 +49,8 @@ import {
     FirebasePersonalAccount as SignupPersonalPayload,
     FirebaseBusinessAccount as SignupBusinessPayload,
     UserInfo,
+    AccountType,
+    SignupAccountType,
 } from "~~/types";
 
 const route = useRoute();
@@ -57,7 +59,7 @@ const { checkForInputErrors, checkConfirmEmail } = useError();
 const currentStep = ref(0);
 
 const firebaseToken = useState("firebaseToken");
-const UserInfo = useState<UserInfo>("UserInfo");
+const userInfo = useState<UserInfo>("UserInfo");
 
 const selectedType = useState<SignupAccountType>(
     "signup-account-type",
@@ -271,6 +273,64 @@ const profileDetails = useState<SignupProfileDetailsType>(
     }
 );
 
+function mapType(selected: string): AccountType {
+    switch (selected) {
+        case "personal":
+            return AccountType.Personal;
+        case "SoleTrader":
+            return AccountType.SoleTrader;
+        case "Business":
+            return AccountType.Business;
+        default:
+            return AccountType.Agent;
+    }
+}
+
+const registerClassicSignup = async (
+    payload: SignupPersonalPayload | SignupBusinessPayload
+): Promise<UserInfo | Error> => {
+    payload.isAlreadyRegisteredWithFirebase = false;
+    payload.account.profileDetails.password =
+        profileDetails.value.password.value;
+
+    const { data, error, pending } = await useFetchAPI<UserInfo, Error>(
+        "auth/register",
+        {
+            method: "POST",
+            body: payload,
+        }
+    );
+
+    if (error.value) {
+        return error.value;
+    }
+
+    return data.value as UserInfo;
+};
+
+const registerFirebaseSignup = async (
+    payload: SignupPersonalPayload | SignupBusinessPayload
+): Promise<UserInfo | Error> => {
+    payload.account.firebaseId = userInfo.value.user_id;
+    payload.isAlreadyRegisteredWithFirebase = true;
+    const { data, error } = await useFetchAPI<UserInfo>(
+        "auth/firebase/register",
+        {
+            headers: {
+                Authorization: `Bearer ${firebaseToken.value}`,
+            },
+            method: "POST",
+            body: payload,
+        }
+    );
+
+    if (error.value) {
+        return error.value;
+    }
+
+    return data.value as UserInfo;
+};
+
 const handleSubmit = async () => {
     const inputsToCheck = [
         profileDetails.value.accountEmail,
@@ -288,7 +348,7 @@ const handleSubmit = async () => {
         if (selectedType.value === "personal") {
             const personalPayload: SignupPersonalPayload = {
                 account: {
-                    accountType: 2,
+                    accountType: mapType(selectedType.value),
                     role: 2,
                     profileDetails: {
                         email: profileDetails.value.accountEmail.value,
@@ -306,7 +366,7 @@ const handleSubmit = async () => {
         } else {
             const businessPayload: SignupBusinessPayload = {
                 account: {
-                    accountType: 2,
+                    accountType: mapType(selectedType.value),
                     role: 2,
                     profileDetails: {
                         email: profileDetails.value.accountEmail.value,
@@ -333,47 +393,17 @@ const handleSubmit = async () => {
             payload = businessPayload;
         }
 
-        payload.isAlreadyRegisteredWithFirebase = firebaseToken.value
-            ? true
-            : false;
-        payload.account.firebaseId = UserInfo.value.user_id;
+        try {
+            const request = firebaseToken.value
+                ? await registerFirebaseSignup(payload)
+                : await registerClassicSignup(payload);
 
-        if (firebaseToken.value) {
-            payload.account.firebaseId = UserInfo.value.user_id;
-            payload.isAlreadyRegisteredWithFirebase = true;
-            const { data, error } = await useFetchAPI(
-                "auth/firebase/register",
-                {
-                    headers: {
-                        Authorization: `Bearer ${firebaseToken.value}`,
-                    },
-                    method: "POST",
-                    body: payload,
-                }
-            );
-
-            if (error.value) {
-                console.log(error.value.message);
-            }
-        } else {
-            payload.isAlreadyRegisteredWithFirebase = false;
-            payload.account.profileDetails.password =
-                profileDetails.value.password.value;
-
-            const { data, error, pending } = await useFetchAPI(
-                "auth/register",
-                {
-                    method: "POST",
-                    body: payload,
-                }
-            );
-
-            if (error.value) {
-                console.log(error.value.statusMessage);
-            }
+            console.log(request);
+        } catch (error) {
+            console.log(error);
         }
 
-        currentStep.value++;
+        // currentStep.value++;
     }
 };
 

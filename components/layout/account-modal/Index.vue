@@ -6,15 +6,14 @@
             <div
                 class="flex items-center justify-between p-5 border-b border-gray-200"
             >
-                <button
-                    class="relative flex items-center text-gray-300"
-                    @click="user = !user"
-                >
+                <div class="relative flex items-center text-gray-300">
                     <UserIcon class="w-7 h-7 mr-2" />
                     <span class="text-lg font-semibold">
-                        {{ user ? "Users name" : "My Account" }}
+                        {{
+                            getCurrentUser ? getCurrentUser.email : "My Account"
+                        }}
                     </span>
-                </button>
+                </div>
                 <button
                     class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
                     @click="$emit('close')"
@@ -23,7 +22,7 @@
                 </button>
             </div>
             <div
-                v-if="!user"
+                v-if="!getCurrentUser"
                 class="flex-1 pt-[60px] overflow-y-auto scrollbar-thin"
             >
                 <KeyholeIcon
@@ -97,11 +96,11 @@ import OrderTrackingIcon from "@/assets/icons/order-tracking.svg";
 import OrderHistoryIcon from "@/assets/icons/history.svg";
 import SignOutIcon from "@/assets/icons/sign-out.svg";
 import { useAuthStore } from "~~/store/authStore";
-import { UserInfo } from "~~/types";
+import { storeToRefs } from "pinia";
 
 defineEmits(["close"]);
-
-const user = ref(false);
+const authStore = useAuthStore();
+const { getCurrentUser } = storeToRefs(authStore);
 
 const navItems = ref([
     {
@@ -146,7 +145,9 @@ const navItems = ref([
     },
 ]);
 
-const handleSignOut = async () => {};
+const handleSignOut = async () => {
+    authStore.signOut();
+};
 
 onMounted(() => {
     documentUtil.toggleBodyScroll();

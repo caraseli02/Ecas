@@ -126,6 +126,12 @@
                             </span>
                         </label>
                     </div>
+                    <!-- <div class="bg-rose-600 p-2 my-3 rounded">
+                        <p class="text-white">
+                            {{ errorResponse.description }}
+                        </p>
+                        <p>Hahaha</p>
+                    </div> -->
                     <div class="flex items-center justify-between">
                         <button
                             class="flex items-center rounded bg-gray-200 px-[22px] py-[11px] text-gray-300"

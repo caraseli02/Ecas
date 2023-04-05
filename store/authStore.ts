@@ -6,7 +6,7 @@ export const useAuthStore = defineStore({
     state: () => {
         return {
             token: '',
-            loggedInUser: {} as UserInfo
+            loggedInUser: null as UserInfo | null
         }
     },
     actions: {
@@ -15,6 +15,9 @@ export const useAuthStore = defineStore({
         },
         addUser(user: UserInfo) {
             this.loggedInUser = user
+        },
+        signOut() {
+            this.loggedInUser = null
         }
     },
     getters: {
