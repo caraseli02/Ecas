@@ -1,11 +1,11 @@
 export interface FirebasePersonalAccount {
     "account": PersonalAccount
-    "isAlreadyRegisteredWithFirebase": boolean
+    "isAlreadyRegisteredWithFirebase"?: boolean
 }
 
 export interface FirebaseBusinessAccount {
     "account": BusinessAccount
-    "isAlreadyRegisteredWithFirebase": boolean
+    "isAlreadyRegisteredWithFirebase"?: boolean
 }
 
 interface BusinessAccount extends PersonalAccount {
@@ -32,6 +32,7 @@ interface CompanyDetails {
 
 interface ProfileDetails {
     "email": string
+    "password"?: string
 }
 
 interface ContactDetails {
