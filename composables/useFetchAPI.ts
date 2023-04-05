@@ -8,5 +8,9 @@ export const useFetchAPI: useFetchType = (path, options = {}) => {
 
     // modify options as needed
     options.baseURL = config.public.BASE_URL_API;
+    options.headers = {
+        "Content-Type": "application/json",
+    };
+
     return useFetch(path, options);
 };
