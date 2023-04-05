@@ -1,4 +1,4 @@
-export interface UserInfo {
+export interface UserInfoJWT {
     aud: string
     auth_time: number
     email: string

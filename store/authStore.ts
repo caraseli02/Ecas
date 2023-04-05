@@ -1,19 +1,21 @@
 import { defineStore } from 'pinia'
-import { UserInfo } from '~~/types'
+import { UserInfoJWT } from '~~/types'
+import { UserDetails } from '~~/types/auth/user-details'
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
     state: () => {
         return {
             token: '',
-            loggedInUser: null as UserInfo | null
+            loggedInUser: null as UserInfoJWT | null,
+            userDetails: null as UserDetails | null
         }
     },
     actions: {
         addToken(token: string) {
             this.token = token
         },
-        addUser(user: UserInfo) {
+        addUser(user: UserInfoJWT) {
             this.loggedInUser = user
         },
         signOut() {

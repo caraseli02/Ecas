@@ -1,11 +1,11 @@
 import {
-    getAdditionalUserInfo,
+    getAdditionalUserInfoJWT,
     getIdToken,
     GoogleAuthProvider,
     signInWithPopup,
     User,
 } from "firebase/auth";
-import { UserInfo } from "~~/types";
+import { UserInfoJWT } from "~~/types";
 
 interface FirebaseResults {
     token: string | undefined;
@@ -24,7 +24,7 @@ export default function () {
             const signIn = await signInWithPopup($auth, provider)
             .then(
                 (result) => {
-                    const isNewUser = getAdditionalUserInfo(result)?.isNewUser
+                    const isNewUser = getAdditionalUserInfoJWT(result)?.isNewUser
                     const credential = GoogleAuthProvider.credentialFromResult(result);
                     const token = credential?.accessToken;
                     const user = result.user;
@@ -40,7 +40,7 @@ export default function () {
         }
     };
 
-    const getParsedFirebaseJWTToken = async (): Promise<UserInfo> => {
+    const getParsedFirebaseJWTToken = async (): Promise<UserInfoJWT> => {
         const { currentUser } = $auth
         const token = await getIdToken(currentUser)
 

@@ -119,7 +119,7 @@
 <script setup lang="ts">
 import KeyholeIcon from "@/assets/icons/keyhole.svg";
 import CheckIcon from "@/assets/icons/check.svg";
-import { UserInfo, SigninResponse } from "~~/types";
+import { UserInfoJWT, SigninResponse } from "~~/types";
 import { useAuthStore } from "~~/store/authStore";
 
 const { checkForInputErrors } = useError();
@@ -190,11 +190,14 @@ const loginWithGoogle = async () => {
     await registerUser();
     const parsedToken = await getParsedFirebaseJWTToken();
 
-    if (!parsedToken.hasOwnProperty("permission")) {
+    if (!parsedToken.hasOwnProperty("permissions")) {
         const token = await getUserToken();
         useState<string>("firebaseToken", () => token);
-        useState<UserInfo>("UserInfo", () => parsedToken);
+        useState<UserInfoJWT>("UserInfoJWT", () => parsedToken);
         return navigateTo("/signup");
+    } else {
+        const authStore = useAuthStore();
+        authStore.addUser(parsedToken);
     }
 };
 </script>

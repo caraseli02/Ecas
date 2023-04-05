@@ -41,6 +41,7 @@
 
 <script setup lang="ts">
 import { User } from "firebase/auth";
+import { FetchResult } from "nuxt/app";
 import {
     SignupBusinessDetails as SignupBusinessDetailsType,
     SignupContactDetails as SignupContactDetailsType,
@@ -48,7 +49,7 @@ import {
     SignupProfileDetails as SignupProfileDetailsType,
     FirebasePersonalAccount as SignupPersonalPayload,
     FirebaseBusinessAccount as SignupBusinessPayload,
-    UserInfo,
+    UserInfoJWT,
     AccountType,
     SignupAccountType,
 } from "~~/types";
@@ -59,7 +60,7 @@ const { checkForInputErrors, checkConfirmEmail } = useError();
 const currentStep = ref(0);
 
 const firebaseToken = useState("firebaseToken");
-const userInfo = useState<UserInfo>("UserInfo");
+const UserInfoJWT = useState<UserInfoJWT>("UserInfoJWT");
 
 const selectedType = useState<SignupAccountType>(
     "signup-account-type",
@@ -288,12 +289,12 @@ function mapType(selected: string): AccountType {
 
 const registerClassicSignup = async (
     payload: SignupPersonalPayload | SignupBusinessPayload
-): Promise<UserInfo | Error> => {
+): Promise<any> => {
     payload.isAlreadyRegisteredWithFirebase = false;
     payload.account.profileDetails.password =
         profileDetails.value.password.value;
 
-    const { data, error, pending } = await useFetchAPI<UserInfo, Error>(
+    const { data, error } = await useFetchAPI<UserInfoJWT, Error>(
         "auth/register",
         {
             method: "POST",
@@ -301,19 +302,15 @@ const registerClassicSignup = async (
         }
     );
 
-    if (error.value) {
-        return error.value;
-    }
-
-    return data.value as UserInfo;
+    return { data, error };
 };
 
 const registerFirebaseSignup = async (
     payload: SignupPersonalPayload | SignupBusinessPayload
-): Promise<UserInfo | Error> => {
-    payload.account.firebaseId = userInfo.value.user_id;
+): Promise<any> => {
+    payload.account.firebaseId = UserInfoJWT.value.user_id;
     payload.isAlreadyRegisteredWithFirebase = true;
-    const { data, error } = await useFetchAPI<UserInfo>(
+    const { data, error } = await useFetchAPI<UserInfoJWT>(
         "auth/firebase/register",
         {
             headers: {
@@ -322,13 +319,11 @@ const registerFirebaseSignup = async (
             method: "POST",
             body: payload,
         }
+
+        // TODO: Logout from Firebase
     );
 
-    if (error.value) {
-        return error.value;
-    }
-
-    return data.value as UserInfo;
+    return { data, error };
 };
 
 const handleSubmit = async () => {
@@ -398,12 +393,19 @@ const handleSubmit = async () => {
                 ? await registerFirebaseSignup(payload)
                 : await registerClassicSignup(payload);
 
-            console.log(request);
+            const { data, error } = request;
+
+            if (error.value != null) {
+                throw error.value.response;
+            }
+            const { message, status } = data.value;
+            console.log(message);
         } catch (error) {
             console.log(error);
+            return;
         }
 
-        // currentStep.value++;
+        currentStep.value++;
     }
 };
 
