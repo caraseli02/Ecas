@@ -48,6 +48,7 @@ import {
     SignupProfileDetails as SignupProfileDetailsType,
     FirebasePersonalAccount as SignupPersonalPayload,
     FirebaseBusinessAccount as SignupBusinessPayload,
+    UserInfo,
 } from "~~/types";
 
 const route = useRoute();
@@ -56,7 +57,7 @@ const { checkForInputErrors, checkConfirmEmail } = useError();
 const currentStep = ref(0);
 
 const firebaseToken = useState("firebaseToken");
-const parsedFirebaseToken = useState("parsedFirebaseToken");
+const UserInfo = useState<UserInfo>("UserInfo");
 
 const selectedType = useState<SignupAccountType>(
     "signup-account-type",
@@ -287,9 +288,8 @@ const handleSubmit = async () => {
         if (selectedType.value === "personal") {
             const personalPayload: SignupPersonalPayload = {
                 account: {
-                    accountType: 1,
-                    role: 1,
-                    firebaseId: "sdfsdf",
+                    accountType: 2,
+                    role: 2,
                     profileDetails: {
                         email: profileDetails.value.accountEmail.value,
                     },
@@ -300,27 +300,27 @@ const handleSubmit = async () => {
                         email: contactDetails.value.email.value,
                     },
                 },
-                isAlreadyRegisteredWithFirebase: false,
             };
 
             payload = personalPayload;
         } else {
             const businessPayload: SignupBusinessPayload = {
                 account: {
-                    accountType: 1,
-                    role: 1,
-                    firebaseId: "sdfsdf",
+                    accountType: 2,
+                    role: 2,
                     profileDetails: {
                         email: profileDetails.value.accountEmail.value,
                     },
                     companyDetails: {
-                        name: "Hello",
-                        registrationNumber: 12323,
-                        vat: "123123",
-                        country: "Indonesia",
-                        city: "Bekll",
-                        postcode: 123123,
-                        address1: "sdfs",
+                        name: businessDetails.value.fullCompanyName.value,
+                        registrationNumber:
+                            businessDetails.value.companyRegistrationNumber
+                                .value,
+                        vat: businessDetails.value.vatNumber.value,
+                        country: businessDetails.value.country.value,
+                        city: businessDetails.value.city.value,
+                        postcode: businessDetails.value.postcode.value,
+                        address1: businessDetails.value.addressLine1.value,
                     },
                     contactDetails: {
                         firstName: personalDetails.value.firstName.value,
@@ -329,12 +329,18 @@ const handleSubmit = async () => {
                         email: contactDetails.value.email.value,
                     },
                 },
-                isAlreadyRegisteredWithFirebase: false,
             };
             payload = businessPayload;
         }
 
+        payload.isAlreadyRegisteredWithFirebase = firebaseToken.value
+            ? true
+            : false;
+        payload.account.firebaseId = UserInfo.value.user_id;
+
         if (firebaseToken.value) {
+            payload.account.firebaseId = UserInfo.value.user_id;
+            payload.isAlreadyRegisteredWithFirebase = true;
             const { data, error } = await useFetchAPI(
                 "auth/firebase/register",
                 {
@@ -350,13 +356,20 @@ const handleSubmit = async () => {
                 console.log(error.value.message);
             }
         } else {
-            const { data, error } = await useFetchAPI("auth/register", {
-                method: "POST",
-                body: payload,
-            });
+            payload.isAlreadyRegisteredWithFirebase = false;
+            payload.account.profileDetails.password =
+                profileDetails.value.password.value;
+
+            const { data, error, pending } = await useFetchAPI(
+                "auth/register",
+                {
+                    method: "POST",
+                    body: payload,
+                }
+            );
 
             if (error.value) {
-                console.log(error.value.message);
+                console.log(error.value.statusMessage);
             }
         }
 

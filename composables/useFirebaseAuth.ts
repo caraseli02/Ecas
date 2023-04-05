@@ -5,7 +5,7 @@ import {
     signInWithPopup,
     User,
 } from "firebase/auth";
-import { ParsedFirebaseToken } from "~~/types";
+import { UserInfo } from "~~/types";
 
 interface FirebaseResults {
     token: string | undefined;
@@ -40,9 +40,10 @@ export default function () {
         }
     };
 
-    const getParsedFirebaseJWTToken = async (): Promise<ParsedFirebaseToken> => {
+    const getParsedFirebaseJWTToken = async (): Promise<UserInfo> => {
         const { currentUser } = $auth
         const token = await getIdToken(currentUser)
+
         return useParser().parseJwt(token)
     }
 

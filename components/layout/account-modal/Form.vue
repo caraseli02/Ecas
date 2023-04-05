@@ -119,7 +119,8 @@
 <script setup lang="ts">
 import KeyholeIcon from "@/assets/icons/keyhole.svg";
 import CheckIcon from "@/assets/icons/check.svg";
-import { ParsedFirebaseToken } from "~~/types";
+import { UserInfo, SigninResponse } from "~~/types";
+import { useAuthStore } from "~~/store/authStore";
 
 const { checkForInputErrors } = useError();
 
@@ -146,11 +147,12 @@ const handleSignIn = async () => {
     const hasError = checkForInputErrors([email.value, password.value]);
 
     if (!hasError) {
-        // TODO: LOGIN REQUEST
         const payload = {
             email: email.value.value,
             password: password.value.value,
         };
+
+        isLoading.value = true;
 
         const { data, pending, error, refresh } = await useFetchAPI(
             "auth/login",
@@ -172,6 +174,12 @@ const handleSignIn = async () => {
             errorResponse.show = true;
             return;
         }
+
+        const response: SigninResponse = data.value as SigninResponse;
+        const parsedTokenResponse = useParser().parseJwt(response.token);
+        const authStore = useAuthStore();
+        authStore.addUser(parsedTokenResponse);
+        console.log(authStore.getCurrentUser);
     }
 };
 
@@ -185,7 +193,7 @@ const loginWithGoogle = async () => {
     if (!parsedToken.hasOwnProperty("permission")) {
         const token = await getUserToken();
         useState<string>("firebaseToken", () => token);
-        useState<ParsedFirebaseToken>("parsedFirebaseToken", () => parsedToken);
+        useState<UserInfo>("UserInfo", () => parsedToken);
         return navigateTo("/signup");
     }
 };
