@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@types/lodash": "^4.14.191",
     "@types/uuid": "^9.0.0",
     "autoprefixer": "^10.4.13",
@@ -18,14 +19,19 @@
     "uuid": "^9.0.0"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.4.7",
     "@vuemod/vue-touch": "^0.0.22",
     "firebase": "^9.19.1",
     "lodash": "^4.17.21",
     "nuxt-swiper": "^0.1.9",
     "nuxt-vuefire": "^0.1.6",
+    "pinia": "^2.0.33",
     "sass": "^1.58.1",
     "sass-loader": "^13.2.0",
     "vue3-lottie": "^2.5.0",
     "vuejs-paginate-next": "^1.0.2"
+  },
+  "overrides": {
+    "vue": "latest"
   }
 }

@@ -28,7 +28,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ["nuxt-svgo", "nuxt-swiper"],
+  modules: ["nuxt-svgo", "nuxt-swiper", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
   svgo: {
     svgoConfig: {
       plugins: [
