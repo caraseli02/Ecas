@@ -59,8 +59,8 @@
             <KeyholeIcon class="w-6 h-6 mr-2" v-else />
             <span class="text-sm font-medium"> Sign In </span>
         </button>
-        <div>
-            <p>{{ errorMessage }}</p>
+        <div class="bg-rose-600 p-2 my-3 rounded" v-if="errorResponse.show">
+            <p class="text-white">{{ errorResponse.description }}</p>
         </div>
         <div
             class="flex items-center justify-center mx-auto text-sm font-medium text-gray-100 mb-[25px]"
@@ -131,9 +131,16 @@ const password = ref({
     value: "",
     error: "",
 });
-const errorMessage = ref("");
+
 const rememberMe = ref(false);
 const isLoading = ref(false);
+
+const errorResponse = reactive({
+    show: false,
+    status: "",
+    description: "",
+    code: 0,
+});
 
 const handleSignIn = async () => {
     const hasError = checkForInputErrors([email.value, password.value]);
@@ -145,21 +152,26 @@ const handleSignIn = async () => {
             password: password.value.value,
         };
 
-        isLoading.value = true;
+        const { data, pending, error, refresh } = await useFetchAPI(
+            "auth/login",
+            {
+                method: "POST",
+                body: {
+                    email: payload.email,
+                    password: payload.password,
+                },
+            }
+        );
 
-        const { data, error } = await useFetchAPI("auth/login", {
-            method: "POST",
-            body: {
-                email: payload.email,
-                password: payload.password,
-            },
-        });
+        isLoading.value = pending.value;
 
-        if (error) {
-            errorMessage.value = error.value?.message ?? "";
+        if (error.value) {
+            errorResponse.code = error.value.response?.status as number;
+            errorResponse.status = error.value.response?._data.status;
+            errorResponse.description = error.value.response?._data.description;
+            errorResponse.show = true;
+            return;
         }
-
-        isLoading.value = false;
     }
 };
 
