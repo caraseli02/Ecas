@@ -230,10 +230,6 @@ defineProps({
     },
 });
 
-const authStore = useAuthStore();
-let user = reactive({});
-user = authStore.getCurrentUser;
-
 const route = useRoute();
 
 const signinQuery = computed(() => route.query.signin);

@@ -18,13 +18,18 @@ export const useAuthStore = defineStore({
         addUser(user: UserInfoJWT) {
             this.loggedInUser = user
         },
+        addUserDetail(user: UserDetails) {
+            this.userDetails = user
+        },
         signOut() {
             this.loggedInUser = null
+            this.userDetails = null
         }
     },
     getters: {
         getToken: state => state.token,
-        getCurrentUser: state => state.loggedInUser
+        getCurrentUser: state => state.loggedInUser,
+        getUserDetails: state => state.userDetails
     },
     persist: true
 })

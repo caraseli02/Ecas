@@ -10,7 +10,9 @@
                     <UserIcon class="w-7 h-7 mr-2" />
                     <span class="text-lg font-semibold">
                         {{
-                            getCurrentUser ? getCurrentUser.email : "My Account"
+                            getUserDetails
+                                ? getUserDetails.contactDetails.firstName
+                                : "My Account"
                         }}
                     </span>
                 </div>
@@ -22,7 +24,7 @@
                 </button>
             </div>
             <div
-                v-if="!getCurrentUser"
+                v-if="!getUserDetails"
                 class="flex-1 pt-[60px] overflow-y-auto scrollbar-thin"
             >
                 <KeyholeIcon
@@ -37,7 +39,7 @@
                 <div class="flex items-center justify-between mb-[30px]">
                     <div class="flex items-center text-sm text-gray-300">
                         <span class="mr-2">Customer ID:</span>
-                        <span class="font-Inter">4BV77XSX</span>
+                        <span class="font-Inter">{{ getUserDetails._id }}</span>
                     </div>
                     <BuildingIcon class="w-7 h-7" />
                 </div>
@@ -98,9 +100,11 @@ import SignOutIcon from "@/assets/icons/sign-out.svg";
 import { useAuthStore } from "~~/store/authStore";
 import { storeToRefs } from "pinia";
 
-defineEmits(["close"]);
+const emit = defineEmits<{
+    (e: "close"): void;
+}>();
 const authStore = useAuthStore();
-const { getCurrentUser } = storeToRefs(authStore);
+const { getUserDetails } = storeToRefs(authStore);
 
 const navItems = ref([
     {
@@ -147,6 +151,9 @@ const navItems = ref([
 
 const handleSignOut = async () => {
     authStore.signOut();
+    setTimeout(() => {
+        emit("close");
+    }, 200);
 };
 
 onMounted(() => {

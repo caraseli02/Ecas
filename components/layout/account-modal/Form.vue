@@ -119,8 +119,9 @@
 <script setup lang="ts">
 import KeyholeIcon from "@/assets/icons/keyhole.svg";
 import CheckIcon from "@/assets/icons/check.svg";
-import { UserInfoJWT, SigninResponse } from "~~/types";
+import { UserInfoJWT, SigninResponse, UserDetailsResponse } from "~~/types";
 import { useAuthStore } from "~~/store/authStore";
+import { UserDetails } from "~~/types/auth/user-details";
 
 const { checkForInputErrors } = useError();
 
@@ -154,16 +155,13 @@ const handleSignIn = async () => {
 
         isLoading.value = true;
 
-        const { data, pending, error, refresh } = await useFetchAPI(
-            "auth/login",
-            {
-                method: "POST",
-                body: {
-                    email: payload.email,
-                    password: payload.password,
-                },
-            }
-        );
+        const { data, pending, error } = await useFetchAPI("auth/login", {
+            method: "POST",
+            body: {
+                email: payload.email,
+                password: payload.password,
+            },
+        });
 
         isLoading.value = pending.value;
 
@@ -179,7 +177,6 @@ const handleSignIn = async () => {
         const parsedTokenResponse = useParser().parseJwt(response.token);
         const authStore = useAuthStore();
         authStore.addUser(parsedTokenResponse);
-        console.log(authStore.getCurrentUser);
     }
 };
 
@@ -189,15 +186,30 @@ const loginWithGoogle = async () => {
 
     await registerUser();
     const parsedToken = await getParsedFirebaseJWTToken();
+    const token = await getUserToken();
 
     if (!parsedToken.hasOwnProperty("permissions")) {
-        const token = await getUserToken();
         useState<string>("firebaseToken", () => token);
         useState<UserInfoJWT>("UserInfoJWT", () => parsedToken);
         return navigateTo("/signup");
     } else {
         const authStore = useAuthStore();
         authStore.addUser(parsedToken);
+
+        // TODO: Error Handling
+
+        const { data, pending, error } = await useFetchAPI<UserDetailsResponse>(
+            `user/${parsedToken.user_id}/details`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                method: "GET",
+            }
+        );
+
+        const userDetails = data.value?.data;
+        authStore.addUserDetail(userDetails as UserDetails);
     }
 };
 </script>

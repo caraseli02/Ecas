@@ -1,5 +1,5 @@
 import {
-    getAdditionalUserInfoJWT,
+    getAdditionalUserInfo,
     getIdToken,
     GoogleAuthProvider,
     signInWithPopup,
@@ -24,7 +24,7 @@ export default function () {
             const signIn = await signInWithPopup($auth, provider)
             .then(
                 (result) => {
-                    const isNewUser = getAdditionalUserInfoJWT(result)?.isNewUser
+                    const isNewUser = getAdditionalUserInfo(result)?.isNewUser
                     const credential = GoogleAuthProvider.credentialFromResult(result);
                     const token = credential?.accessToken;
                     const user = result.user;
