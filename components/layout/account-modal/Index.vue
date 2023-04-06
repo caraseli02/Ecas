@@ -151,6 +151,7 @@ const navItems = ref([
 
 const handleSignOut = async () => {
     authStore.signOut();
+    authStore.firebaseSignOut();
     setTimeout(() => {
         emit("close");
     }, 200);

@@ -4,6 +4,7 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
     User,
+    signOut
 } from "firebase/auth";
 import { UserInfoJWT } from "~~/types";
 
@@ -52,10 +53,16 @@ export default function () {
         return await getIdToken(currentUser)
     }
 
+    const logout = async (): Promise<boolean> => {
+        await signOut($auth)
+        return true
+    }
+
     return {
         user,
         registerUser,
         getParsedFirebaseJWTToken,
-        getUserToken
+        getUserToken,
+        logout
     };
 }

@@ -24,6 +24,10 @@ export const useAuthStore = defineStore({
         signOut() {
             this.loggedInUser = null
             this.userDetails = null
+        },
+        firebaseSignOut() {
+            const firebaseAuth = useFirebaseAuth()
+            firebaseAuth.logout()
         }
     },
     getters: {
