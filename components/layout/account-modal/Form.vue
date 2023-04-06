@@ -144,6 +144,10 @@ const errorResponse = reactive({
     code: 0,
 });
 
+const authStore = useAuthStore();
+const { registerUser, getParsedFirebaseJWTToken, getUserToken } =
+    useFirebaseAuth();
+
 const handleSignIn = async () => {
     const hasError = checkForInputErrors([email.value, password.value]);
 
@@ -175,41 +179,47 @@ const handleSignIn = async () => {
 
         const response: SigninResponse = data.value as SigninResponse;
         const parsedTokenResponse = useParser().parseJwt(response.token);
-        const authStore = useAuthStore();
         authStore.addUser(parsedTokenResponse);
+        fetchUserDetails(parsedTokenResponse, response.token);
     }
 };
 
-const loginWithGoogle = async () => {
-    const { registerUser, getParsedFirebaseJWTToken, getUserToken } =
-        useFirebaseAuth();
+const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
+    // TODO: Error Handling
+    const { data, error } = await useFetchAPI<UserDetailsResponse>(
+        `user/${parsedToken.user_id}/details`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+        }
+    );
 
+    if (error.value) {
+        errorResponse.code = error.value.response?.status as number;
+        errorResponse.status = error.value.response?._data.status;
+        errorResponse.description = error.value.response?._data.description;
+        errorResponse.show = true;
+        return;
+    }
+
+    const userDetails = data.value?.data;
+    authStore.addUserDetail(userDetails as UserDetails);
+};
+
+const loginWithGoogle = async () => {
     await registerUser();
     const parsedToken = await getParsedFirebaseJWTToken();
     const token = await getUserToken();
+    authStore.addUser(parsedToken);
 
     if (!parsedToken.hasOwnProperty("permissions")) {
         useState<string>("firebaseToken", () => token);
         useState<UserInfoJWT>("UserInfoJWT", () => parsedToken);
         return navigateTo("/signup");
     } else {
-        const authStore = useAuthStore();
-        authStore.addUser(parsedToken);
-
-        // TODO: Error Handling
-
-        const { data, pending, error } = await useFetchAPI<UserDetailsResponse>(
-            `user/${parsedToken.user_id}/details`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                method: "GET",
-            }
-        );
-
-        const userDetails = data.value?.data;
-        authStore.addUserDetail(userDetails as UserDetails);
+        fetchUserDetails(parsedToken, token);
     }
 };
 </script>
