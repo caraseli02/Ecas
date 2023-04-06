@@ -40,8 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { User } from "firebase/auth";
-import { FetchResult } from "nuxt/app";
 import {
     SignupBusinessDetails as SignupBusinessDetailsType,
     SignupContactDetails as SignupContactDetailsType,
@@ -49,12 +47,9 @@ import {
     SignupProfileDetails as SignupProfileDetailsType,
     FirebasePersonalAccount as SignupPersonalPayload,
     FirebaseBusinessAccount as SignupBusinessPayload,
-    UserInfoJWT,
-    AccountType,
-    SignupAccountType,
+    UserInfoJWT, AccountType, SignupAccountType,
 } from "~~/types";
 
-const route = useRoute();
 const { checkForInputErrors, checkConfirmEmail } = useError();
 
 const currentStep = ref(0);
@@ -291,8 +286,7 @@ const registerClassicSignup = async (
     payload: SignupPersonalPayload | SignupBusinessPayload
 ): Promise<any> => {
     payload.isAlreadyRegisteredWithFirebase = false;
-    payload.account.profileDetails.password =
-        profileDetails.value.password.value;
+    payload.account.profileDetails.password = profileDetails.value.password.value;
 
     const { data, error } = await useFetchAPI<UserInfoJWT, Error>(
         "auth/register",
@@ -367,9 +361,7 @@ const handleSubmit = async () => {
                     },
                     companyDetails: {
                         name: businessDetails.value.fullCompanyName.value,
-                        registrationNumber:
-                            businessDetails.value.companyRegistrationNumber
-                                .value,
+                        registrationNumber: businessDetails.value.companyRegistrationNumber.value,
                         vat: businessDetails.value.vatNumber.value,
                         country: businessDetails.value.country.value,
                         city: businessDetails.value.city.value,
@@ -398,8 +390,7 @@ const handleSubmit = async () => {
                 throw error.value.response;
             }
             const { message, status } = data.value;
-            console.log(message);
-            console.log(status);
+            // TODO: Notification banner
         } catch (error) {
             console.log(error);
             return;
@@ -411,10 +402,8 @@ const handleSubmit = async () => {
 
 const handleUseContactEmail = () => {
     if (profileDetails.value.useContactEmail) {
-        profileDetails.value.accountEmail.value =
-            contactDetails.value.email.value;
-        profileDetails.value.confirmAccountEmail.value =
-            contactDetails.value.confirmEmail.value;
+        profileDetails.value.accountEmail.value = contactDetails.value.email.value;
+        profileDetails.value.confirmAccountEmail.value = contactDetails.value.confirmEmail.value;
     } else {
         profileDetails.value.accountEmail.value = "";
         profileDetails.value.confirmAccountEmail.value = "";
