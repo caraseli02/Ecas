@@ -22,15 +22,15 @@
             <button
                 class="flex flex-col items-center px-2.5 py-[15px] rounded-md transition-colors duration-300"
                 :class="[
-                    selectedType === 'sale-trader'
+                    selectedType === 'sole-trader'
                         ? 'text-white bg-blue'
                         : 'text-gray-300 bg-[#F2F2F2]',
                 ]"
-                @click="$emit('set-type', 'sale-trader')"
+                @click="$emit('set-type', 'sole-trader')"
             >
                 <SaleTraderIcon class="w-8 h-8 mb-2.5" />
                 <span class="text-sm leading-tight font-medium"
-                    >Sale Trader</span
+                    >Sole Trader</span
                 >
             </button>
             <button
@@ -159,7 +159,7 @@
 <script setup lang="ts">
 import QuestionIcon from "@/assets/icons/question-circle.svg";
 import PersonalIcon from "@/assets/icons/signup/personal.svg";
-import SaleTraderIcon from "@/assets/icons/signup/sale-trader.svg";
+import SaleTraderIcon from "@/assets/icons/signup/sole-trader.svg";
 import BusinessIcon from "@/assets/icons/signup/business.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import AgentIcon from "@/assets/icons/signup/agent.svg";

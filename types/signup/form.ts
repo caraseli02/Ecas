@@ -1,6 +1,6 @@
 import { InputObject } from "../global";
 
-export type SignupAccountType = "personal" | "sale-trader" | "business";
+export type SignupAccountType = "personal" | "sole-trader" | "business";
 
 export enum AccountType {
   Personal = 0,

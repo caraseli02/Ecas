@@ -11,10 +11,10 @@
         <SignupBusinessDetails
             v-if="
                 currentStep === 1 &&
-                (selectedType === 'business' || selectedType === 'sale-trader')
+                (selectedType === 'business' || selectedType === 'sole-trader')
             "
             :selectedType="
-                selectedType === 'sale-trader' ? '' : selectedBusinessType
+                selectedType === 'sole-trader' ? '' : selectedBusinessType
             "
             @back="currentStep--"
             @continue="handleBusinessDetailsContinue"
@@ -278,9 +278,9 @@ function mapType(selected: string): AccountType {
     switch (selected) {
         case "personal":
             return AccountType.Personal;
-        case "SoleTrader":
+        case "sole-trader":
             return AccountType.SoleTrader;
-        case "Business":
+        case "business":
             return AccountType.Business;
         default:
             return AccountType.Agent;
@@ -378,8 +378,8 @@ const handleSubmit = async () => {
                         address1: businessDetails.value.addressLine1.value,
                     },
                     contactDetails: {
-                        firstName: personalDetails.value.firstName.value,
-                        lastName: personalDetails.value.lastName.value,
+                        firstName: contactDetails.value.firstName.value,
+                        lastName: contactDetails.value.lastName.value,
                         phone: contactDetails.value.phone.value,
                         email: contactDetails.value.email.value,
                     },
@@ -400,6 +400,7 @@ const handleSubmit = async () => {
             }
             const { message, status } = data.value;
             console.log(message);
+            console.log(status);
         } catch (error) {
             console.log(error);
             return;
