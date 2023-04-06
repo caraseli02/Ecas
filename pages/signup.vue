@@ -60,7 +60,7 @@ const { checkForInputErrors, checkConfirmEmail } = useError();
 const currentStep = ref(0);
 
 const firebaseToken = useState("firebaseToken");
-const UserInfoJWT = useState<UserInfoJWT>("UserInfoJWT");
+const UserInfo = useState<UserInfoJWT>("UserInfoJWT");
 
 const selectedType = useState<SignupAccountType>(
     "signup-account-type",
@@ -308,7 +308,7 @@ const registerClassicSignup = async (
 const registerFirebaseSignup = async (
     payload: SignupPersonalPayload | SignupBusinessPayload
 ): Promise<any> => {
-    payload.account.firebaseId = UserInfoJWT.value.user_id;
+    payload.account.firebaseId = UserInfo.value.user_id;
     payload.isAlreadyRegisteredWithFirebase = true;
     const { data, error } = await useFetchAPI<UserInfoJWT>(
         "auth/firebase/register",
@@ -319,8 +319,6 @@ const registerFirebaseSignup = async (
             method: "POST",
             body: payload,
         }
-
-        // TODO: Logout from Firebase
     );
 
     return { data, error };
@@ -337,7 +335,6 @@ const handleSubmit = async () => {
     const hasError = checkForInputErrors(inputsToCheck);
 
     if (!hasError) {
-        // TODO: SIGNUP REQUEST
         let payload: SignupBusinessPayload | SignupPersonalPayload | null =
             null;
         if (selectedType.value === "personal") {
@@ -347,6 +344,7 @@ const handleSubmit = async () => {
                     role: 2,
                     profileDetails: {
                         email: profileDetails.value.accountEmail.value,
+                        password: profileDetails.value.password.value,
                     },
                     contactDetails: {
                         firstName: personalDetails.value.firstName.value,
@@ -357,7 +355,7 @@ const handleSubmit = async () => {
                 },
             };
 
-            payload = personalPayload;
+            payload = Object.assign({}, personalPayload);
         } else {
             const businessPayload: SignupBusinessPayload = {
                 account: {
@@ -365,6 +363,7 @@ const handleSubmit = async () => {
                     role: 2,
                     profileDetails: {
                         email: profileDetails.value.accountEmail.value,
+                        password: profileDetails.value.password.value,
                     },
                     companyDetails: {
                         name: businessDetails.value.fullCompanyName.value,
@@ -385,7 +384,7 @@ const handleSubmit = async () => {
                     },
                 },
             };
-            payload = businessPayload;
+            payload = Object.assign({}, businessPayload);
         }
 
         try {
