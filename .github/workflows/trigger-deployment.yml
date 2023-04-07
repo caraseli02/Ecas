@@ -104,19 +104,19 @@ jobs:
             docker rm $(echo $IMAGE_NAME)
             echo 'test3'
             # Run a new container from a new image
-            docker run -d \
-            -p 3030:3000 \
-            --restart always \
-            -e FIREBASE_SERVICE_ACCOUNT_JSON=$FIREBASE_SERVICE_ACCOUNT_JSON \
-            -e FIREBASE_API_KEY=$FIREBASE_API_KEY \
-            -e FIREBASE_AUTH_DOMAIN=$FIREBASE_AUTH_DOMAIN \
-            -e FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID \
-            -e FIREBASE_STORAGE_BUCKET=$FIREBASE_STORAGE_BUCKET \
-            -e FIREBASE_MESSAGE_SENDER_ID=$FIREBASE_MESSAGE_SENDER_ID \
-            -e FIREBASE_APP_ID=$FIREBASE_APP_ID \
-            -e FIREBASE_MEASUREMENT_ID=$FIREBASE_MEASUREMENT_ID \
-            -e HOST=$HOST \
-            --name $(echo $IMAGE_NAME) $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
+#            docker run -d \
+#            -p 3030:3000 \
+#            --restart always \
+#            -e FIREBASE_SERVICE_ACCOUNT_JSON=$FIREBASE_SERVICE_ACCOUNT_JSON \
+#            -e FIREBASE_API_KEY=$FIREBASE_API_KEY \
+#            -e FIREBASE_AUTH_DOMAIN=$FIREBASE_AUTH_DOMAIN \
+#            -e FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID \
+#            -e FIREBASE_STORAGE_BUCKET=$FIREBASE_STORAGE_BUCKET \
+#            -e FIREBASE_MESSAGE_SENDER_ID=$FIREBASE_MESSAGE_SENDER_ID \
+#            -e FIREBASE_APP_ID=$FIREBASE_APP_ID \
+#            -e FIREBASE_MEASUREMENT_ID=$FIREBASE_MEASUREMENT_ID \
+#            -e HOST=$HOST \
+#            --name $(echo $IMAGE_NAME) $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
 
 
       - name: set deployment status to success
