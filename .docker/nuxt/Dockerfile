@@ -55,7 +55,8 @@ WORKDIR /code
 ADD package.json ./
 ADD nuxt.config.ts ./
 
-COPY --from=builder /code/.output /code/
+COPY --from=builder /code/.output /code/.output
+COPY --from=builder /code/node_modules /code/node_modules
 
 EXPOSE 3000
 
