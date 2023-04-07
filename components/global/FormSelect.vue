@@ -9,7 +9,9 @@
     </div>
     <button
       class="flex items-center justify-between px-2.5 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none"
-      :class="[error ? 'border-red' : 'border-border']"
+      :class="[
+        error ? 'border-red' : showOptions ? 'border-blue' : 'border-border',
+      ]"
       @click="showOptions = !showOptions"
     >
       <span
@@ -56,7 +58,7 @@
               v-model="searchValue"
               type="search"
               :placeholder="`Search ${label}`"
-              class="bg-transparent flex-1 pl-2 pr-8 pt-[11px] pb-3 w-full text-xs placeholder:text-gray-100 focus:outline-none"
+              class="bg-transparent flex-1 pl-2 pr-8 py-[9px] w-full text-sm placeholder:text-gray-100 focus:outline-none"
             />
             <Transition name="fade">
               <XIcon

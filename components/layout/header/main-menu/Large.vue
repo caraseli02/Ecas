@@ -10,7 +10,7 @@
   >
     <div
       class="relative z-40 flex flex-col gap-1 p-2.5 bg-white border-r-2 border-gray-200 max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin rounded-bl-md w-[260px] xl:w-[290px] xl:py-[13px] xl:gap-1"
-      :class="[isStatic ? 'h-0 md:h-auto' : '']"
+      :class="[isStatic ? 'hidden h-0 md:h-auto md:flex' : '']"
     >
       <button
         v-for="(category, index) in categories"
