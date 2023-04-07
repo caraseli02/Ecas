@@ -26,6 +26,7 @@
               :options="countries"
               label="Country"
               placeholder="Select Country"
+              search
               class="relative z-10"
             />
             <FormInput
