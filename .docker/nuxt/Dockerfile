@@ -37,11 +37,9 @@
 # Stage 1 - build
 FROM node:alpine AS builder
 
-WORKDIR /code
-
 COPY package*.json ./
 
-RUN  npm install
+RUN npm install
 
 COPY . .
 
@@ -50,14 +48,12 @@ RUN npm run build
 # Stage 2 - production
 FROM node:alpine AS final
 
-WORKDIR /app
-
-ADD package.json .
-ADD nuxt.config.ts .
-
 WORKDIR /code
 
-COPY --from=builder /code/.output ./.output
+ADD package.json /code/
+ADD nuxt.config.ts /code/
+
+COPY --from=builder .output /code/
 
 EXPOSE 3000
 
