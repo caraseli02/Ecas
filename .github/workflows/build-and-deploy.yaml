@@ -80,7 +80,7 @@ jobs:
 
       - name: Build container image
         run: |
-          docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/node/Dockerfile .
+          docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
         env:
           REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
           SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
