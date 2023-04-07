@@ -31,7 +31,6 @@
         />
         <SignupProfileDetails
             v-if="currentStep === 3"
-            @contactEmailCheckbox="handleUseContactEmail"
             @back="currentStep--"
             @continue="handleSubmit"
         />
@@ -397,16 +396,6 @@ const handleSubmit = async () => {
         }
 
         currentStep.value++;
-    }
-};
-
-const handleUseContactEmail = () => {
-    if (profileDetails.value.useContactEmail) {
-        profileDetails.value.accountEmail.value = contactDetails.value.email.value;
-        profileDetails.value.confirmAccountEmail.value = contactDetails.value.confirmEmail.value;
-    } else {
-        profileDetails.value.accountEmail.value = "";
-        profileDetails.value.confirmAccountEmail.value = "";
     }
 };
 

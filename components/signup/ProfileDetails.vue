@@ -10,7 +10,7 @@
                 </div>
                 <div class="mb-[30px]">
                     <div class="grid grid-cols-1 gap-[15px] mb-10">
-                        <label class="flex items-center cursor-pointer">
+                        <label class="flex items-center cursor-pointer" v-if="!firebaseToken">
                             <input
                                 :value="details.useContactEmail"
                                 type="checkbox"
@@ -34,12 +34,16 @@
                                 Use Contact E-mail
                             </span>
                         </label>
+                        <div class="bg-amber-400 px-3 py-1 rounded" v-if="firebaseToken">
+                            <small>You are logged in with Google, so you can't change your email account</small>
+                        </div>
                         <FormInput
                             v-model="details.accountEmail.value"
                             :error="details.accountEmail.error"
                             type="email"
                             label="Account E-mail"
                             placeholder="Account E-mail"
+                            :disabled="!!firebaseToken"
                         />
                         <FormInput
                             v-model="details.confirmAccountEmail.value"
@@ -47,6 +51,7 @@
                             type="email"
                             label="Confirm Account E-mail"
                             placeholder="Confirm Account E-mail"
+                            :disabled="!!firebaseToken"
                         />
                         <FormPassword
                             v-model="details.password.value"
@@ -76,7 +81,7 @@
                                 ]"
                                 @click="
                                     details.subscribeToNewsletter =
-                                        !details.subscribeToNewsletter
+                                    !details.subscribeToNewsletter
                                 "
                             >
                                 <div
@@ -130,7 +135,6 @@
                         <p class="text-white">
                             {{ errorResponse.description }}
                         </p>
-                        <p>Hahaha</p>
                     </div> -->
                     <div class="flex items-center justify-between">
                         <button
@@ -166,14 +170,30 @@
 import QuestionIcon from "@/assets/icons/question-circle.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import CheckIcon from "@/assets/icons/check.svg";
-import { SignupProfileDetails } from "~~/types";
+import { SignupProfileDetails, SignupContactDetails } from "~~/types";
 
-const emits = defineEmits(["continue", "back", "contactEmailCheckbox"]);
+defineEmits(["continue", "back"]);
 
 const details = useState<SignupProfileDetails>("signup-profile-details");
+const contact = useState<SignupContactDetails>('signup-contact-details')
+
+const firebaseToken = useState("firebaseToken");
+
+if (firebaseToken) {
+    const { getParsedFirebaseJWTToken } = useFirebaseAuth();
+    const parsedToken = await getParsedFirebaseJWTToken();
+    details.value.accountEmail.value = parsedToken.email
+    details.value.confirmAccountEmail.value = parsedToken.email
+}
 
 const useContactEmailCheck = () => {
-    details.value.useContactEmail = !details.value.useContactEmail;
-    emits("contactEmailCheckbox");
+    details.value.useContactEmail = !details.value.useContactEmail
+    if (details.value.useContactEmail && !firebaseToken.value) {
+        details.value.accountEmail.value = contact.value.email.value
+        details.value.confirmAccountEmail.value = contact.value.email.value;
+    } else if (!firebaseToken.value) {
+        details.value.accountEmail.value = "";
+        details.value.confirmAccountEmail.value = "";
+    }
 };
 </script>
