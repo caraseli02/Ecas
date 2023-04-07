@@ -52,10 +52,10 @@ FROM node:alpine AS final
 
 WORKDIR /code
 
-ADD package.json /code/
-ADD nuxt.config.ts /code/
+ADD package.json ./
+ADD nuxt.config.ts ./
 
-COPY --from=builder .output /code/
+COPY --from=builder /code/.output /code/
 
 EXPOSE 3000
 
