@@ -96,14 +96,14 @@ jobs:
           script: |
             # Login to registry
             docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
-            echo 'test1'
-            # Stop running container
-            docker stop $(echo $IMAGE_NAME)
-            echo 'test2'
-            # Remove old container
-            docker rm $(echo $IMAGE_NAME)
-            echo 'test3'
-            # Run a new container from a new image
+#            echo 'test1'
+#            # Stop running container
+#            docker stop $(echo $IMAGE_NAME)
+#            echo 'test2'
+#            # Remove old container
+#            docker rm $(echo $IMAGE_NAME)
+#            echo 'test3'
+#            # Run a new container from a new image
 #            docker run -d \
 #            -p 3030:3000 \
 #            --restart always \
