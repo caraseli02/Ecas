@@ -40,25 +40,64 @@ jobs:
           pip3 install -r .github/helpers/requirements.txt
       - run: python .github/helpers/create_pull_request.py "${{secrets.GH_TOKEN}}" "${{github.repository}}" "${{github.ref}}" "${{github.actor}}"
 
-#  build_and_push:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout the repo
-#        uses: actions/checkout@v2
-#
-#      - name: Build container image
-#        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) -f .docker/node/Dockerfile .
-#
-#      - name: Install doctl
-#        uses: digitalocean/action-doctl@v2
-#        with:
-#          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-#
-#      - name: Log in to DigitalOcean Container Registry with short-lived credentials
-#        run: doctl registry login --expiry-seconds 600
-#
-#      - name: Remove all old images
-#        run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME) $(doctl registry repository list-tags $(echo $IMAGE_NAME) | grep -o "sha.*") --force; else echo "No repository"; fi
-#
-#      - name: Push image to DigitalOcean Container Registry
-#        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        id: get_issue_number
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          script: |
+            if (context.issue.number) {
+              // Return issue number if present
+              return context.issue.number;
+            } else {
+              // Otherwise return issue number from commit
+              return (
+                await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  commit_sha: context.sha,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                })
+              ).data[0].number;
+            }
+          result-encoding: string
+
+      - name: get pull request ref
+        id: get_pull_request_ref
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/:repository/pulls/:issue_id
+          repository: ${{ github.repository }}
+          issue_id: ${{steps.get_issue_number.outputs.result}}
+        env:
+          GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Build container image
+        run: |
+          docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
+        env:
+          REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
+          SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Remove all old images
+        run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME) $(doctl registry repository list-tags $(echo $IMAGE_NAME) | grep -o "sha.*") --force; else echo "No repository"; fi
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push  $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
+        env:
+          REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
+          SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
