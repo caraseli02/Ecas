@@ -37,11 +37,13 @@
 # Stage 1 - build
 FROM node:alpine AS builder
 
+WORKDIR /code
+
 COPY package*.json ./
 
-RUN npm install
+COPY ./ ./
 
-COPY . .
+RUN npm install
 
 RUN npm run build
 
