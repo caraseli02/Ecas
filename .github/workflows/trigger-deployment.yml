@@ -30,7 +30,7 @@ jobs:
   deploy:
     runs-on: ubuntu-20.04
 #    needs: deploy-trigger-check
-    if: needs.deploy-trigger-check.outputs.triggered == 'true'
+#    if: needs.deploy-trigger-check.outputs.triggered == 'true'
     steps:
       - name: get pull request ref
         id: get_pull_request_ref
