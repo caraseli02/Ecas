@@ -82,16 +82,16 @@ jobs:
           FIREBASE_MESSAGE_SENDER_ID: ${{secrets.FIREBASE_MESSAGE_SENDER_ID}}
           FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
           FIREBASE_MEASUREMENT_ID: ${{secrets.FIREBASE_MEASUREMENT_ID}}
-          HOST: ${{secrets.HOST}}
-        uses: appleboy/ssh-action@v0.1.3
+
+        uses: appleboy/ssh-action@v0.1.9
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSHKEY }}
+          key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA,FIREBASE_SERVICE_ACCOUNT_JSON,FIREBASE_API_KEY,
             FIREBASE_AUTH_DOMAIN,FIREBASE_PROJECT_ID,FIREBASE_STORAGE_BUCKET,FIREBASE_MESSAGE_SENDER_ID,FIREBASE_APP_ID,FIREBASE_MEASUREMENT_ID,
-            REF,SHA,HOST
+            REF,SHA
           script: |
             # Login to registry
             docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com

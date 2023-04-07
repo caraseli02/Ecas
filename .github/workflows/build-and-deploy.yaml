@@ -40,9 +40,9 @@ jobs:
           pip3 install -r .github/helpers/requirements.txt
       - run: python .github/helpers/create_pull_request.py "${{secrets.GH_TOKEN}}" "${{github.repository}}" "${{github.ref}}" "${{github.actor}}"
 
-
   build_and_push:
     runs-on: ubuntu-latest
+    needs: create_draft_pr
     steps:
       - uses: actions/github-script@v6
         id: get_issue_number
