@@ -25,6 +25,7 @@
       >
         <button
           class="flex items-center justify-center bg-blue text-white rounded px-3 py-1.5 text-sm font-medium font-Inter"
+          @click="$emit('show-add-filters-modal')"
         >
           <FiltersIcon class="w-5 h-5 mr-2" />
           <span>Add Filters</span>
@@ -50,7 +51,7 @@ import XIcon from "@/assets/icons/x.svg";
 import FiltersIcon from "@/assets/icons/filters.svg";
 import ResetIcon from "@/assets/icons/reset.svg";
 
-const emits = defineEmits(["close"]);
+const emits = defineEmits(["close", "show-add-filters-modal"]);
 
 const onDrag = (event: any) => {
   if (event.direction === "bottom") {

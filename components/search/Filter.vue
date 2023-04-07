@@ -22,7 +22,7 @@
           v-model="searchValue"
           type="search"
           placeholder="Type here"
-          class="w-full border border-border bg-white rounded px-2.5 pt-[5px] pb-1.5 pr-10 text-xs placeholder:text-gray-100 focus:outline-none"
+          class="w-full border border-border bg-white rounded px-2.5 pt-[5px] pb-1.5 pr-10 text-xs placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
         />
         <FiltersIcon
           class="absolute top-1/2 -translate-y-1/2 right-2.5 w-5 h-5 text-gray-100"

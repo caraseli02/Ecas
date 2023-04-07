@@ -45,14 +45,13 @@ import {
   SignupProfileDetails as SignupProfileDetailsType,
 } from "~~/types";
 
-const route = useRoute();
 const { checkForInputErrors } = useError();
 
 const currentStep = ref(0);
 
-const selectedType = useState<SignupAccountType>(
+const selectedType = useState<SignupAccountType | "">(
   "signup-account-type",
-  () => "business"
+  () => ""
 );
 const selectedBusinessType = ref("");
 

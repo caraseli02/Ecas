@@ -9,7 +9,7 @@
     </div>
     <div
       class="relative border rounded w-full transition-colors duration-300"
-      :class="[error ? 'border-red' : 'border-border']"
+      :class="[error ? 'border-red' : 'border-border focus-within:border-blue']"
     >
       <input
         :value="modelValue"
