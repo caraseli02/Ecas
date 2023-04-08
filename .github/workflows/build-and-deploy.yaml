@@ -18,6 +18,7 @@ env:
   REGISTRY: "registry.digitalocean.com/ecas-dev"
   IMAGE_NAME: "dev-frontend"
 
+
 #3
 jobs:
   check_branch_name:
