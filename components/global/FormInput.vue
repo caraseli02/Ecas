@@ -12,7 +12,7 @@
       :type="type"
       :placeholder="placeholder"
       class="bg-transparent border rounded px-2.5 py-[9px] text-sm placeholder:text-gray-100 w-full transition-colors duration-300 focus:outline-none"
-      :class="[error ? 'border-red' : 'border-border', disabled ? 'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none' : '']"
+      :class="[error ? 'border-red' : 'border-border focus:border-blue', disabled ? 'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none' : '']"
       @input="handleInput"
       :disabled="disabled"
     />

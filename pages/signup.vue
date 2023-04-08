@@ -56,9 +56,9 @@ const currentStep = ref(0);
 const firebaseToken = useState("firebaseToken");
 const UserInfo = useState<UserInfoJWT>("UserInfoJWT");
 
-const selectedType = useState<SignupAccountType>(
+const selectedType = useState<SignupAccountType | "">(
     "signup-account-type",
-    () => "business"
+    () => ""
 );
 const selectedBusinessType = ref("");
 

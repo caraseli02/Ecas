@@ -114,7 +114,7 @@
           v-model="newName"
           ref="newNameInputDOM"
           type="text"
-          class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-dark placeholder:text-gray-300 focus:outline-none"
+          class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-dark transition-colors duration-300 placeholder:text-gray-300 focus:outline-none focus:border-blue"
         />
       </label>
       <button

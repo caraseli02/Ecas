@@ -66,7 +66,10 @@
             class="flex items-center justify-center mx-auto text-sm font-medium text-gray-100 mb-[25px]"
         >
             <span class="mr-2"> Don’t have an account yet ? </span>
-            <NuxtLink to="/signup" class="text-blue hover:underline">
+            <NuxtLink
+        to="/signup"
+        class="relative text-blue after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
+      >
                 Sign up now
             </NuxtLink>
         </div>

@@ -54,6 +54,7 @@ const calcViewportHeight = () => {
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
   calcViewportHeight();
+  document.addEventListener("touchstart", function () {}, true);
 });
 
 onBeforeUnmount(() => {
