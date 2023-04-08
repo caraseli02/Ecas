@@ -6,12 +6,12 @@ export default defineNuxtPlugin(nuxtApp => {
 
     const firebaseConfig = {
         apiKey: config.FIREBASE_API_KEY,
-        authDomain: "ecas-adf2e.firebaseapp.com",
-        projectId: "ecas-adf2e",
-        storageBucket: "ecas-adf2e.appspot.com",
-        messagingSenderId: "62090955324",
-        appId: "1:62090955324:web:48bcf220686f578d2dd139",
-        measurementId: "G-64MNZJ5KPS"
+        authDomain: config.FIREBASE_AUTH_DOMAIN,
+        projectId: config.FIREBASE_PROJECT_ID,
+        storageBucket: config.FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: config.FIREBASE_MESSAGE_SENDER_ID,
+        appId: config.FIREBASE_APP_ID,
+        measurementId: config.FIREBASE_MEASUREMENT_ID
       };
 
     const app = initializeApp(firebaseConfig)
