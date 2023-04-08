@@ -61,7 +61,7 @@ COPY --from=builder /code/.docker/nuxt/nginx-app.conf /code/nginx-app.conf
 
 RUN \
     # copy nginx site config \
-    mv nginx-app.conf /etc/nginx/nginx.conf \
+    mv /code/nginx-app.conf /etc/nginx/nginx.conf
 
 EXPOSE 3000
 
