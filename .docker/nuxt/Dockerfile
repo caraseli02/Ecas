@@ -50,18 +50,24 @@ RUN npm run build
 # Stage 2 - production
 FROM node:alpine AS final
 
+RUN apk add --no-cache \
+    git \
+    wget curl \
+    nginx \
+    supervisor
+
 WORKDIR /code
 
 ADD package.json ./
 ADD nuxt.config.ts ./
+ADD .docker/nuxt/nginx-app.conf ./
 
 COPY --from=builder /code/.output /code/.output
 COPY --from=builder /code/node_modules /code/node_modules
-COPY --from=builder /code/.docker/nuxt/nginx-app.conf /code/nginx-app.conf
 
 RUN \
     # copy nginx site config \
-    mv /code/nginx-app.conf /etc/nginx/nginx.conf
+    mv ./nginx-app.conf /etc/nginx/nginx.conf
 
 EXPOSE 3000
 
