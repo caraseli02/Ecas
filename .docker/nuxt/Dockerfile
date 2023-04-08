@@ -41,23 +41,33 @@ WORKDIR /code
 
 COPY package*.json ./
 
-RUN  npm install
+COPY ./ ./
 
-COPY . .
+RUN npm install
 
 RUN npm run build
 
 # Stage 2 - production
 FROM node:alpine AS final
 
-WORKDIR /app
-
-ADD package.json .
-ADD nuxt.config.ts .
+RUN apk add --no-cache \
+    git \
+    wget curl \
+    nginx \
+    supervisor
 
 WORKDIR /code
 
-COPY --from=builder /code/.output ./.output
+ADD package.json ./
+ADD nuxt.config.ts ./
+ADD .docker/nuxt/nginx-app.conf ./
+
+COPY --from=builder /code/.output /code/.output
+COPY --from=builder /code/node_modules /code/node_modules
+
+RUN \
+    # copy nginx site config \
+    mv ./nginx-app.conf /etc/nginx/nginx.conf
 
 EXPOSE 3000
 
