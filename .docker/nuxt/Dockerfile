@@ -55,6 +55,10 @@ WORKDIR /code
 ADD package.json ./
 ADD nuxt.config.ts ./
 
+RUN \
+    # copy nginx site config \
+    mv .docker/nuxt/nginx-app.conf /etc/nginx/nginx.conf
+
 COPY --from=builder /code/.output /code/.output
 COPY --from=builder /code/node_modules /code/node_modules
 
