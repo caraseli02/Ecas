@@ -24,7 +24,7 @@
         <div v-if="showOptions" class="flex-1 flex flex-col">
           <div class="pl-2.5 pr-[15px] mb-2.5">
             <label
-              class="flex relative border border-border rounded overflow-hidden"
+              class="flex relative border border-border rounded overflow-hidden transition-colors duration-300 focus-within:border-blue"
             >
               <input
                 v-model="searchValue"

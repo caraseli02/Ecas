@@ -56,7 +56,7 @@
             </div>
             <button
               class="flex items-center justify-center w-14 h-14 bg-blue rounded-full transition-transform duration-300 hover:rotate-[360deg]"
-              @click="filters.push('')"
+              @click="showAddRemoveFilterModal = true"
             >
               <PlusIcon class="w-[30px] h-[30px] text-white" />
             </button>
@@ -70,6 +70,13 @@
       <LayoutSearchFiltersModal
         v-if="showSearchFiltersModal"
         @close="showSearchFiltersModal = false"
+        @show-add-filters-modal="showAddRemoveFilterModal = true"
+      />
+    </Transition>
+    <Transition name="slide-from-bottom">
+      <LayoutAddRemoveSearchFilter
+        v-if="showAddRemoveFilterModal"
+        @close="showAddRemoveFilterModal = false"
       />
     </Transition>
     <Transition name="fade">
@@ -90,6 +97,7 @@ import ResetIcon from "@/assets/icons/reset.svg";
 import PlusIcon from "@/assets/icons/plus.svg";
 
 const showSearchFiltersModal = ref(false);
+const showAddRemoveFilterModal = ref(false);
 
 const showFilters = ref(true);
 

@@ -79,7 +79,8 @@
             ]"
         >
             <button
-                class="flex items-center rounded bg-blue px-[22px] py-[11px] text-white"
+                class="flex items-center rounded bg-blue px-[22px] py-[11px] text-white transition-colors duration-300 disabled:bg-gray-200 disabled:text-gray-100"
+        :disabled="!selectedType"
                 @click="$emit('continue')"
             >
                 <span class="text-sm font-medium mr-2">Continue</span>
