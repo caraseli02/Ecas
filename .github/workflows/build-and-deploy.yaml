@@ -92,15 +92,15 @@ jobs:
           BASE_URL_API: ${{secrets.BASE_URL_API}}
           REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
           SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
-        run: |
-          docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo FIREBASE_SERVICE_ACCOUNT_JSON) \
-          NUXT_FIREBASE_API_KEY=$(echo FIREBASE_API_KEY) \
-          NUXT_FIREBASE_AUTH_DOMAIN=$(echo FIREBASE_AUTH_DOMAIN) \
-          NUXT_FIREBASE_PROJECT_ID=$(echo FIREBASE_PROJECT_ID) \
-          NUXT_FIREBASE_STORAGE_BUCKET=$(echo FIREBASE_STORAGE_BUCKET) \
-          NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo FIREBASE_MESSAGE_SENDER_ID) \
-          NUXT_FIREBASE_APP_ID=$(echo FIREBASE_APP_ID) \
-          NUXT_FIREBASE_MEASUREMENT_ID=$(echo FIREBASE_MEASUREMENT_ID) \
+        run: >
+          docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo FIREBASE_SERVICE_ACCOUNT_JSON) 
+          NUXT_FIREBASE_API_KEY=$(echo FIREBASE_API_KEY) 
+          NUXT_FIREBASE_AUTH_DOMAIN=$(echo FIREBASE_AUTH_DOMAIN) 
+          NUXT_FIREBASE_PROJECT_ID=$(echo FIREBASE_PROJECT_ID) 
+          NUXT_FIREBASE_STORAGE_BUCKET=$(echo FIREBASE_STORAGE_BUCKET) 
+          NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo FIREBASE_MESSAGE_SENDER_ID) 
+          NUXT_FIREBASE_APP_ID=$(echo FIREBASE_APP_ID) 
+          NUXT_FIREBASE_MEASUREMENT_ID=$(echo FIREBASE_MEASUREMENT_ID) 
           -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
 
       - name: Install doctl
