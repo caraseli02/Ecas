@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
 
-    const firebaseConfig = {
+    return {
         apiKey: config.NUXT_FIREBASE_API_KEY,
         authDomain: config.NUXT_FIREBASE_AUTH_DOMAIN,
         projectId: config.NUXT_FIREBASE_PROJECT_ID,
@@ -10,6 +10,4 @@ export default defineEventHandler(async (event) => {
         appId: config.NUXT_FIREBASE_APP_ID,
         measurementId: config.NUXT_FIREBASE_MEASUREMENT_ID,
     };
-
-    return firebaseConfig
 });
