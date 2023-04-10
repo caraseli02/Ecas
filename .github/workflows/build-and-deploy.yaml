@@ -93,8 +93,7 @@ jobs:
           REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
           SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
         run: |
-          docker build \
-          --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo FIREBASE_SERVICE_ACCOUNT_JSON) \
+          docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo FIREBASE_SERVICE_ACCOUNT_JSON) \
           NUXT_FIREBASE_API_KEY=$(echo FIREBASE_API_KEY) \
           NUXT_FIREBASE_AUTH_DOMAIN=$(echo FIREBASE_AUTH_DOMAIN) \
           NUXT_FIREBASE_PROJECT_ID=$(echo FIREBASE_PROJECT_ID) \
