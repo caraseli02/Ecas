@@ -96,7 +96,7 @@ jobs:
           docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo FIREBASE_SERVICE_ACCOUNT_JSON) 
           --build-arg NUXT_FIREBASE_API_KEY=$(echo FIREBASE_API_KEY) 
           --build-arg NUXT_FIREBASE_AUTH_DOMAIN=$(echo FIREBASE_AUTH_DOMAIN) 
-          --build-argNUXT_FIREBASE_PROJECT_ID=$(echo FIREBASE_PROJECT_ID) 
+          --build-arg NUXT_FIREBASE_PROJECT_ID=$(echo FIREBASE_PROJECT_ID) 
           --build-arg NUXT_FIREBASE_STORAGE_BUCKET=$(echo FIREBASE_STORAGE_BUCKET) 
           --build-arg NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo FIREBASE_MESSAGE_SENDER_ID) 
           --build-arg NUXT_FIREBASE_APP_ID=$(echo FIREBASE_APP_ID) 
