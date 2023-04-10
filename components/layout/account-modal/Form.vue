@@ -216,12 +216,12 @@ const loginWithGoogle = async () => {
     const token = await getUserToken();
     authStore.addUser(parsedToken);
 
-    // if (!parsedToken.hasOwnProperty("permissions")) {
-    useState<string>("firebaseToken", () => token);
-    useState<UserInfoJWT>("UserInfoJWT", () => parsedToken);
-    return navigateTo("/signup");
-    // } else {
-    //     fetchUserDetails(parsedToken, token);
-    // }
+    if (!parsedToken.hasOwnProperty("permissions")) {
+        useState<string>("firebaseToken", () => token);
+        useState<UserInfoJWT>("UserInfoJWT", () => parsedToken);
+        return navigateTo("/signup");
+    } else {
+        fetchUserDetails(parsedToken, token);
+    }
 };
 </script>
