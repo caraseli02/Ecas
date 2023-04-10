@@ -2,7 +2,7 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
 
     const firebaseConfig = {
-        apiKey: config.FIREBASE_API_KEY,
+        apiKey: config.FIREBASE_API_KEY || 'mock-key',
         authDomain: config.FIREBASE_AUTH_DOMAIN,
         projectId: config.FIREBASE_PROJECT_ID,
         storageBucket: config.FIREBASE_STORAGE_BUCKET,
