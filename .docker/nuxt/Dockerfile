@@ -34,17 +34,6 @@
 #
 #CMD [ "node", ".output/server/index.mjs" ]
 
-# Stage 1 - build
-FROM node:alpine AS builder
-
-WORKDIR /code
-
-COPY package*.json ./
-
-COPY ./ ./
-
-RUN npm install
-
 ARG NUXT_FIREBASE_API_KEY
 ENV NUXT_FIREBASE_API_KEY=$NUXT_FIREBASE_API_KEY
 
@@ -65,6 +54,17 @@ ENV NUXT_FIREBASE_APP_ID=$NUXT_FIREBASE_APP_ID
 
 ARG NUXT_FIREBASE_MEASUREMENT_ID
 ENV NUXT_FIREBASE_APP_ID=$NUXT_FIREBASE_APP_ID
+
+# Stage 1 - build
+FROM node:alpine AS builder
+
+WORKDIR /code
+
+COPY package*.json ./
+
+COPY ./ ./
+
+RUN npm install
 
 RUN npm run build
 
@@ -92,4 +92,4 @@ RUN \
 
 EXPOSE 3000
 
-CMD [ "npm", "run", "preview" ]
+CMD [ "node", ".output/server/index.mjs" ]
