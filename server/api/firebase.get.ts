@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
 
-    const firebaseConfig = {
+    const firebase = {
         apiKey: config.FIREBASE_API_KEY,
         authDomain: config.FIREBASE_AUTH_DOMAIN,
         projectId: config.FIREBASE_PROJECT_ID,
@@ -11,5 +11,5 @@ export default defineEventHandler(async (event) => {
         measurementId: config.FIREBASE_MEASUREMENT_ID,
     };
 
-    return firebaseConfig
+    return firebase
 });
