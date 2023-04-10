@@ -116,7 +116,6 @@ jobs:
             -e BASE_URL_API=$BASE_URL_API \
             --name $(echo $IMAGE_NAME) $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
 
-
       - name: set deployment status to success
         id: successful_deployment
         uses: octokit/request-action@v2.x
