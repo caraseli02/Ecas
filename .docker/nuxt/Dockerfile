@@ -34,10 +34,8 @@
 #
 #CMD [ "node", ".output/server/index.mjs" ]
 
-# Stage 1 - build
-FROM node:alpine AS builder
-
-WORKDIR /code
+# Stage 1 - base
+FROM node:alpine AS base
 
 ARG NUXT_FIREBASE_API_KEY
 ENV NUXT_FIREBASE_API_KEY=$NUXT_FIREBASE_API_KEY
@@ -75,6 +73,12 @@ ARG NUXT_PUBLIC_BASE_URL_API
 ENV NUXT_PUBLIC_BASE_URL_API=$NUXT_PUBLIC_BASE_URL_API
 RUN echo "NUXT_PUBLIC_BASE_URL_API=$NUXT_PUBLIC_BASE_URL_API" >> /code/.env
 
+
+# Stage 2 - builder
+FROM base AS builder
+
+WORKDIR /code
+
 COPY package*.json ./
 
 COPY ./ ./
@@ -83,8 +87,8 @@ RUN npm install
 
 RUN npm run build
 
-# Stage 2 - production
-FROM node:alpine AS final
+# Stage 3 - run
+FROM base AS final
 
 RUN apk add --no-cache \
     git \
