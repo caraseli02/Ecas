@@ -101,6 +101,7 @@ jobs:
           --build-arg NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo FIREBASE_MESSAGE_SENDER_ID) 
           --build-arg NUXT_FIREBASE_APP_ID=$(echo FIREBASE_APP_ID) 
           --build-arg NUXT_FIREBASE_MEASUREMENT_ID=$(echo FIREBASE_MEASUREMENT_ID) 
+          --build-arg NUXT_PUBLIC_BASE_URL_API=$(echo BASE_URL_API) 
           -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
 
       - name: Install doctl
