@@ -116,4 +116,4 @@ RUN \
 
 EXPOSE 3000
 
-CMD [ "node", ".output/server/index.mjs" ]
+CMD [ "source", ".env", "&&", "node", ".output/server/index.mjs" ]
