@@ -18,6 +18,7 @@ env:
   REGISTRY: "registry.digitalocean.com/ecas-dev"
   IMAGE_NAME: "dev-frontend"
 
+
 #3
 jobs:
   check_branch_name:
@@ -79,11 +80,29 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build container image
-        run: |
-          docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
         env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{secrets.FIREBASE_SERVICE_ACCOUNT_JSON}}
+          FIREBASE_API_KEY: ${{secrets.FIREBASE_API_KEY}}
+          FIREBASE_AUTH_DOMAIN: ${{secrets.FIREBASE_AUTH_DOMAIN}}
+          FIREBASE_PROJECT_ID: ${{secrets.FIREBASE_PROJECT_ID}}
+          FIREBASE_STORAGE_BUCKET: ${{secrets.FIREBASE_STORAGE_BUCKET}}
+          FIREBASE_MESSAGE_SENDER_ID: ${{secrets.FIREBASE_MESSAGE_SENDER_ID}}
+          FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
+          FIREBASE_MEASUREMENT_ID: ${{secrets.FIREBASE_MEASUREMENT_ID}}
+          BASE_URL_API: ${{secrets.BASE_URL_API}}
           REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
           SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
+        run: >
+          docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo $FIREBASE_SERVICE_ACCOUNT_JSON) 
+          --build-arg NUXT_FIREBASE_API_KEY=$(echo $FIREBASE_API_KEY) 
+          --build-arg NUXT_FIREBASE_AUTH_DOMAIN=$(echo $FIREBASE_AUTH_DOMAIN) 
+          --build-arg NUXT_FIREBASE_PROJECT_ID=$(echo $FIREBASE_PROJECT_ID) 
+          --build-arg NUXT_FIREBASE_STORAGE_BUCKET=$(echo $FIREBASE_STORAGE_BUCKET) 
+          --build-arg NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo $FIREBASE_MESSAGE_SENDER_ID) 
+          --build-arg NUXT_FIREBASE_APP_ID=$(echo $FIREBASE_APP_ID) 
+          --build-arg NUXT_FIREBASE_MEASUREMENT_ID=$(echo $FIREBASE_MEASUREMENT_ID) 
+          --build-arg NUXT_PUBLIC_BASE_URL_API=$(echo $BASE_URL_API) 
+          -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
