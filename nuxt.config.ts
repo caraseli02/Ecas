@@ -2,6 +2,8 @@ const _ = require("lodash");
 const svgPrefix = {};
 svgPrefix.toString = () => `${_.uniqueId()}_`;
 
+require('dotenv').config()
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // server: {
