@@ -4,10 +4,10 @@ svgPrefix.toString = () => `${_.uniqueId()}_`;
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  server: {
-    host: '0.0.0.0',
-    port: '3000'
-  },
+  // server: {
+  //   host: '0.0.0.0',
+  //   port: '3000'
+  // },
   app: {
     head: {
       titleTemplate: "%s - ECAS",
@@ -59,5 +59,18 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
+  },
+  runtimeConfig: {
+    FIREBASE_API_KEY: '',
+    FIREBASE_AUTH_DOMAIN: '',
+    FIREBASE_PROJECT_ID: '',
+    FIREBASE_STORAGE_BUCKET: '',
+    FIREBASE_MESSAGE_SENDER_ID: '',
+    FIREBASE_APP_ID: '',
+    FIREBASE_MEASUREMENT_ID: '',
+    public: {
+      BASE_URL_API: '',
+      HOST: '0.0.0.0'
+    }
   },
 });
