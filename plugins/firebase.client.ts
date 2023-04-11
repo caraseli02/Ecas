@@ -14,6 +14,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         measurementId: config.FIREBASE_MEASUREMENT_ID,
     });
 
+
     const auth = getAuth(app);
 
     nuxtApp.vueApp.provide("auth", auth);
