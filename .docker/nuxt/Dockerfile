@@ -85,6 +85,8 @@ COPY package*.json ./
 
 COPY ./ ./
 
+COPY --from=base /code/.env /code/.env
+
 RUN npm install
 
 RUN npm run build
