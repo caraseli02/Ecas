@@ -217,8 +217,7 @@ const loginWithGoogle = async () => {
     authStore.addUser(parsedToken);
 
     if (!parsedToken.hasOwnProperty("permissions")) {
-        useState<string>("firebaseToken", () => token);
-        useState<UserInfoJWT>("UserInfoJWT", () => parsedToken);
+        authStore.addFirebaseToken(token)
         return navigateTo("/signup");
     } else {
         fetchUserDetails(parsedToken, token);

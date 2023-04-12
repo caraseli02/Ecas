@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from "~~/store/authStore";
 import {
     SignupBusinessDetails as SignupBusinessDetailsType,
     SignupContactDetails as SignupContactDetailsType,
@@ -46,15 +47,17 @@ import {
     SignupProfileDetails as SignupProfileDetailsType,
     FirebasePersonalAccount as SignupPersonalPayload,
     FirebaseBusinessAccount as SignupBusinessPayload,
-    UserInfoJWT, AccountType, SignupAccountType,
+    UserInfoJWT, AccountType, SignupAccountType, InputObject,
 } from "~~/types";
 
 const { checkForInputErrors, checkConfirmEmail } = useError();
 
 const currentStep = ref(0);
 
-const firebaseToken = useState("firebaseToken");
-const UserInfo = useState<UserInfoJWT>("UserInfoJWT");
+const authStore = useAuthStore()
+
+const firebaseToken = authStore.firebaseTempToken
+const UserInfo = authStore.loggedInUser
 
 const selectedType = useState<SignupAccountType | "">(
     "signup-account-type",
@@ -301,13 +304,14 @@ const registerClassicSignup = async (
 const registerFirebaseSignup = async (
     payload: SignupPersonalPayload | SignupBusinessPayload
 ): Promise<any> => {
-    payload.account.firebaseId = UserInfo.value.user_id;
+    delete payload.account.profileDetails.password
+    payload.account.firebaseId = UserInfo?.user_id;
     payload.isAlreadyRegisteredWithFirebase = true;
     const { data, error } = await useFetchAPI<UserInfoJWT>(
         "auth/firebase/register",
         {
             headers: {
-                Authorization: `Bearer ${firebaseToken.value}`,
+                Authorization: `Bearer ${firebaseToken}`,
             },
             method: "POST",
             body: payload,
@@ -318,12 +322,21 @@ const registerFirebaseSignup = async (
 };
 
 const handleSubmit = async () => {
-    const inputsToCheck = [
-        profileDetails.value.accountEmail,
-        profileDetails.value.confirmAccountEmail,
-        profileDetails.value.password,
-        profileDetails.value.repeatPassword,
-    ];
+    let inputsToCheck: InputObject[] = []
+
+    if (firebaseToken) {
+        inputsToCheck = [
+            profileDetails.value.accountEmail,
+            profileDetails.value.confirmAccountEmail,
+        ];
+    } else {
+        inputsToCheck = [
+            profileDetails.value.accountEmail,
+            profileDetails.value.confirmAccountEmail,
+            profileDetails.value.password,
+            profileDetails.value.repeatPassword,
+        ];
+    }
 
     const hasError = checkForInputErrors(inputsToCheck);
 
@@ -379,7 +392,7 @@ const handleSubmit = async () => {
         }
 
         try {
-            const request = firebaseToken.value
+            const request = firebaseToken
                 ? await registerFirebaseSignup(payload)
                 : await registerClassicSignup(payload);
 

@@ -35,7 +35,7 @@
                             </span>
                         </label>
                         <div class="bg-amber-400 px-3 py-1 rounded" v-if="firebaseToken">
-                            <small>You are logged in with Google, so you can't change your email account</small>
+                            <small>You are logged in with Google, so you are not allowed to change your email account.</small>
                         </div>
                         <FormInput
                             v-model="details.accountEmail.value"
@@ -54,6 +54,7 @@
                             :disabled="!!firebaseToken"
                         />
                         <FormPassword
+                            v-if="!firebaseToken"
                             v-model="details.password.value"
                             :error="details.password.error"
                             label="Password"
@@ -61,6 +62,7 @@
                             handle-strength
                         />
                         <FormPassword
+                            v-if="!firebaseToken"
                             v-model="details.repeatPassword.value"
                             :error="details.repeatPassword.error"
                             label="Repeat Password"
@@ -171,13 +173,14 @@ import QuestionIcon from "@/assets/icons/question-circle.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import CheckIcon from "@/assets/icons/check.svg";
 import { SignupProfileDetails, SignupContactDetails } from "~~/types";
+import { useAuthStore } from "~~/store/authStore";
 
 defineEmits(["continue", "back"]);
 
 const details = useState<SignupProfileDetails>("signup-profile-details");
 const contact = useState<SignupContactDetails>('signup-contact-details')
 
-const firebaseToken = useState("firebaseToken");
+const firebaseToken = useAuthStore().firebaseTempToken
 
 if (firebaseToken) {
     const { getParsedFirebaseJWTToken } = useFirebaseAuth();
@@ -188,10 +191,10 @@ if (firebaseToken) {
 
 const useContactEmailCheck = () => {
     details.value.useContactEmail = !details.value.useContactEmail
-    if (details.value.useContactEmail && !firebaseToken.value) {
+    if (details.value.useContactEmail && !firebaseToken) {
         details.value.accountEmail.value = contact.value.email.value
         details.value.confirmAccountEmail.value = contact.value.email.value;
-    } else if (!firebaseToken.value) {
+    } else if (!firebaseToken) {
         details.value.accountEmail.value = "";
         details.value.confirmAccountEmail.value = "";
     }
