@@ -47,17 +47,24 @@ import {
     SignupProfileDetails as SignupProfileDetailsType,
     FirebasePersonalAccount as SignupPersonalPayload,
     FirebaseBusinessAccount as SignupBusinessPayload,
-    UserInfoJWT, AccountType, SignupAccountType, InputObject,
+    UserInfoJWT,
+    AccountType,
+    SignupAccountType,
+    InputObject,
 } from "~~/types";
 
-const { checkForInputErrors, checkConfirmEmail } = useError();
+const {
+    checkForInputErrors,
+    checkContactConfirmationEmail,
+    checkProfileConfirmationEmail,
+} = useError();
 
 const currentStep = ref(0);
 
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 
-const firebaseToken = authStore.firebaseTempToken
-const UserInfo = authStore.loggedInUser
+const firebaseToken = authStore.firebaseTempToken;
+const UserInfo = authStore.loggedInUser;
 
 const selectedType = useState<SignupAccountType | "">(
     "signup-account-type",
@@ -234,7 +241,7 @@ const handleContactDetailsContinue = () => {
 
     const hasError =
         checkForInputErrors(inputsToCheck) ||
-        checkConfirmEmail({
+        checkContactConfirmationEmail({
             email: contactDetails.value.email,
             confirmEmail: contactDetails.value.confirmEmail,
         });
@@ -288,7 +295,8 @@ const registerClassicSignup = async (
     payload: SignupPersonalPayload | SignupBusinessPayload
 ): Promise<any> => {
     payload.isAlreadyRegisteredWithFirebase = false;
-    payload.account.profileDetails.password = profileDetails.value.password.value;
+    payload.account.profileDetails.password =
+        profileDetails.value.password.value;
 
     const { data, error } = await useFetchAPI<UserInfoJWT, Error>(
         "auth/register",
@@ -304,7 +312,7 @@ const registerClassicSignup = async (
 const registerFirebaseSignup = async (
     payload: SignupPersonalPayload | SignupBusinessPayload
 ): Promise<any> => {
-    delete payload.account.profileDetails.password
+    delete payload.account.profileDetails.password;
     payload.account.firebaseId = UserInfo?.user_id;
     payload.isAlreadyRegisteredWithFirebase = true;
     const { data, error } = await useFetchAPI<UserInfoJWT>(
@@ -322,7 +330,7 @@ const registerFirebaseSignup = async (
 };
 
 const handleSubmit = async () => {
-    let inputsToCheck: InputObject[] = []
+    let inputsToCheck: InputObject[] = [];
 
     if (firebaseToken) {
         inputsToCheck = [
@@ -338,7 +346,12 @@ const handleSubmit = async () => {
         ];
     }
 
-    const hasError = checkForInputErrors(inputsToCheck);
+    const hasError =
+        checkForInputErrors(inputsToCheck) ||
+        checkProfileConfirmationEmail({
+            accountEmail: profileDetails.value.accountEmail,
+            confirmAccountEmail: profileDetails.value.confirmAccountEmail,
+        });
 
     if (!hasError) {
         let payload: SignupBusinessPayload | SignupPersonalPayload | null =
@@ -373,7 +386,9 @@ const handleSubmit = async () => {
                     },
                     companyDetails: {
                         name: businessDetails.value.fullCompanyName.value,
-                        registrationNumber: businessDetails.value.companyRegistrationNumber.value,
+                        registrationNumber:
+                            businessDetails.value.companyRegistrationNumber
+                                .value,
                         vat: businessDetails.value.vatNumber.value,
                         country: businessDetails.value.country.value,
                         city: businessDetails.value.city.value,

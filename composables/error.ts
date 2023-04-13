@@ -19,7 +19,7 @@ export const useError = () => {
     return hasError;
   };
 
-  const checkConfirmEmail = (obj: { email: InputObject, confirmEmail: InputObject} ) => {
+  const checkContactConfirmationEmail = (obj: { email: InputObject, confirmEmail: InputObject } ) => {
     let hasError = false
 
     if (obj.email.value != obj.confirmEmail.value) {
@@ -33,8 +33,23 @@ export const useError = () => {
     return hasError
   }
 
+  const checkProfileConfirmationEmail = (obj: { accountEmail: InputObject, confirmAccountEmail: InputObject } ) => {
+    let hasError = false
+
+    if (obj.accountEmail.value != obj.confirmAccountEmail.value) {
+      obj.confirmAccountEmail.error = "Confirmation email value should same"
+    }
+
+    if (obj.accountEmail.error || obj.confirmAccountEmail.error) {
+      hasError = true;
+    }
+
+    return hasError
+  }
+
   return {
     checkForInputErrors,
-    checkConfirmEmail
+    checkContactConfirmationEmail,
+    checkProfileConfirmationEmail
   };
 };

@@ -6,6 +6,7 @@
       :class="[error ? 'text-red' : 'text-gray-300']"
     >
       {{ label }}
+      <abbr v-if="mandatory" title="required" class="text-red">*</abbr>
     </div>
     <div
       class="relative border rounded w-full transition-colors duration-300"
@@ -58,12 +59,16 @@ const props = defineProps({
   placeholder: String,
   handleStrength: Boolean,
   error: String,
+  mandatory: {
+    type: Boolean,
+    default: true,
+    required: false
+  }
 });
 
 const emits = defineEmits(["update:modelValue"]);
 
 const showPassword = ref(false);
-
 const passwordStrength = computed(() => {
   let score = 0;
   let length = 0;
