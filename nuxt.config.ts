@@ -32,6 +32,11 @@ export default defineNuxtConfig({
             "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
         },
       ],
+      script: [
+        {
+          src: "https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.min.es.js",
+        },
+      ],
     },
   },
   modules: ["nuxt-svgo", "nuxt-swiper", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
@@ -63,15 +68,15 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
-    FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
-    FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
-    FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
-    FIREBASE_MESSAGE_SENDER_ID: process.env.FIREBASE_MESSAGE_SENDER_ID,
-    FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
-    FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
+    FIREBASE_API_KEY: process.env.NUXT_FIREBASE_API_KEY,
+    FIREBASE_AUTH_DOMAIN: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
+    FIREBASE_PROJECT_ID: process.env.NUXT_FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
+    FIREBASE_MESSAGE_SENDER_ID: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
+    FIREBASE_APP_ID: process.env.NUXT_FIREBASE_APP_ID,
+    FIREBASE_MEASUREMENT_ID: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
     public: {
-      BASE_URL_API: process.env.BASE_URL_API,
+      BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API,
       HOST: '0.0.0.0'
     }
   },
