@@ -5,8 +5,16 @@ export const useError = () => {
     let hasError = false;
 
     obj.forEach((e) => {
-      if (!e.value) {
-        e.error = "This field is required";
+      if (e.type === "email") {
+        const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+
+        if (!emailRegex.test(e.value)) {
+          e.error = "Please provide a valid email address";
+        } else {
+          e.error = "";
+        }
+      } else if (!e.value) {
+        e.error = "Please fill out this field";
       } else {
         e.error = "";
       }
@@ -19,22 +27,28 @@ export const useError = () => {
     return hasError;
   };
 
-  const checkConfirmEmail = (obj: { email: InputObject, confirmEmail: InputObject} ) => {
-    let hasError = false
+  const validateEmail = (email: InputObject) => {};
+
+  const checkConfirmEmail = (obj: {
+    email: InputObject;
+    confirmEmail: InputObject;
+  }) => {
+    let hasError = false;
 
     if (obj.email.value != obj.confirmEmail.value) {
-      obj.confirmEmail.error = "Confirmation email value should same"
+      obj.confirmEmail.error = "Confirmation email value should same";
     }
 
     if (obj.email.error || obj.confirmEmail.error) {
       hasError = true;
     }
 
-    return hasError
-  }
+    return hasError;
+  };
 
   return {
     checkForInputErrors,
-    checkConfirmEmail
+    checkConfirmEmail,
+    validateEmail,
   };
 };
