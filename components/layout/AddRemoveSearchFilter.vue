@@ -1,9 +1,9 @@
 <template>
   <div
-    class="fixed z-[60] top-0 left-0 w-screen h-screen flex items-center justify-center"
+    class="fixed z-[90] top-0 left-0 w-screen h-screen flex items-center justify-center pointer-events-none"
   >
     <div
-      class="relative z-10 w-[700px] max-w-[calc(100vw-32px)] pt-4 pb-8 bg-white rounded-md shadow-card md:pt-6 md:pb-8"
+      class="relative z-10 w-[700px] max-w-[calc(100vw-32px)] pt-4 pb-8 bg-white rounded-md shadow-card pointer-events-auto md:pt-6 md:pb-8"
     >
       <div class="flex items-center justify-between px-4 mb-10 md:px-6">
         <div class="flex items-center">
@@ -73,10 +73,10 @@
         </div>
         <div class="pr-1">
           <div
-            class="max-h-[40vh] overflow-y-auto scrollbar-thin overscroll-contain pl-4 pr-3"
+            class="max-h-[40vh] overflow-y-auto scrollbar-thin overscroll-contain pl-4 pr-3 md:pl-6"
           >
             <div
-              v-for="(item, index) in items"
+              v-for="(item, index) in filteredItems"
               :key="index"
               class="group grid grid-cols-[repeat(2,1fr),auto] gap-2 rounded-[3px] odd:bg-[#F2F2F2] px-2 pt-[5px] pb-1.5 cursor-pointer transition-colors duration-300 hover:text-blue"
               @click="item.checked = !item.checked"
@@ -118,10 +118,6 @@
         </button>
       </div>
     </div>
-    <div
-      class="absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer"
-      @click="$emit('close')"
-    />
   </div>
 </template>
 
@@ -202,9 +198,111 @@ const items = ref([
     products: 975,
     checked: false,
   },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
+  {
+    paremeter: "EU RoHS",
+    products: 975,
+    checked: false,
+  },
 ]);
 const parametersOrder = ref(0);
 const productsOrder = ref(0);
+
+const filteredItems = computed(() => {
+  const itemsToReturn = items.value.filter((e) =>
+    e.paremeter.toLowerCase().includes(searchValue.value.toLowerCase())
+  );
+
+  if (productsOrder.value) {
+    itemsToReturn.sort((a, b) => {
+      if (a.products > b.products) {
+        return productsOrder.value;
+      }
+      if (a.products < b.products) {
+        return -productsOrder.value;
+      }
+      return 0;
+    });
+  } else if (parametersOrder.value) {
+    itemsToReturn.sort((a, b) => {
+      if (a.paremeter > b.paremeter) {
+        return parametersOrder.value;
+      }
+      if (a.paremeter < b.paremeter) {
+        return -parametersOrder.value;
+      }
+      return 0;
+    });
+  }
+
+  return itemsToReturn;
+});
+
+watch(parametersOrder, (newVal) => {
+  if (newVal) {
+    productsOrder.value = 0;
+  }
+});
+
+watch(productsOrder, (newVal) => {
+  if (newVal) {
+    parametersOrder.value = 0;
+  }
+});
 
 onMounted(() => {
   documentUtil.toggleBodyScroll();
