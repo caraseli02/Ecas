@@ -1,52 +1,52 @@
 <template>
-    <div class="min-h-screen md:flex">
-        <SignupSteps :currentStep="currentStep" :selectedType="selectedType" />
-        <SignupSelectMenu
-            v-if="currentStep === 0"
-            :selectedType="selectedType"
-            @set-type="($event) => (selectedType = $event)"
-            @set-business-type="($event) => (selectedBusinessType = $event)"
-            @continue="currentStep++"
-        />
-        <SignupBusinessDetails
-            v-if="
-                currentStep === 1 &&
-                (selectedType === 'business' || selectedType === 'sole-trader')
-            "
-            :selectedType="
-                selectedType === 'sole-trader' ? '' : selectedBusinessType
-            "
-            @back="currentStep--"
-            @continue="handleBusinessDetailsContinue"
-        />
-        <SignupPersonalDetails
-            v-else-if="currentStep === 1 && selectedType === 'personal'"
-            @back="currentStep--"
-            @continue="handlePersonalDetailsContinue"
-        />
-        <SignupContactDetails
-            v-if="currentStep === 2"
-            @back="currentStep--"
-            @continue="handleContactDetailsContinue"
-        />
-        <SignupProfileDetails
-            v-if="currentStep === 3"
-            @back="currentStep--"
-            @continue="handleSubmit"
-        />
-        <SignupFinish v-if="currentStep === 4" />
-    </div>
+  <div class="min-h-screen md:flex">
+    <SignupSteps :currentStep="currentStep" :selectedType="selectedType" />
+    <SignupSelectMenu
+      v-if="currentStep === 0"
+      :selectedType="selectedType"
+      @set-type="($event) => (selectedType = $event)"
+      @set-business-type="($event) => (selectedBusinessType = $event)"
+      @continue="currentStep++"
+    />
+    <SignupBusinessDetails
+      v-if="
+        currentStep === 1 &&
+        (selectedType === 'business' || selectedType === 'sole-trader')
+      "
+      :selectedType="selectedType === 'sole-trader' ? '' : selectedBusinessType"
+      @back="currentStep--"
+      @continue="handleBusinessDetailsContinue"
+    />
+    <SignupPersonalDetails
+      v-else-if="currentStep === 1 && selectedType === 'personal'"
+      @back="currentStep--"
+      @continue="handlePersonalDetailsContinue"
+    />
+    <SignupContactDetails
+      v-if="currentStep === 2"
+      @back="currentStep--"
+      @continue="handleContactDetailsContinue"
+    />
+    <SignupProfileDetails
+      v-if="currentStep === 3"
+      @back="currentStep--"
+      @continue="handleSubmit"
+    />
+    <SignupFinish v-if="currentStep === 4" />
+  </div>
 </template>
 
 <script setup lang="ts">
 import {
-    SignupBusinessDetails as SignupBusinessDetailsType,
-    SignupContactDetails as SignupContactDetailsType,
-    SignupPersonalDetails as SignupPersonalDetailsType,
-    SignupProfileDetails as SignupProfileDetailsType,
-    FirebasePersonalAccount as SignupPersonalPayload,
-    FirebaseBusinessAccount as SignupBusinessPayload,
-    UserInfoJWT, AccountType, SignupAccountType,
+  SignupBusinessDetails as SignupBusinessDetailsType,
+  SignupContactDetails as SignupContactDetailsType,
+  SignupPersonalDetails as SignupPersonalDetailsType,
+  SignupProfileDetails as SignupProfileDetailsType,
+  FirebasePersonalAccount as SignupPersonalPayload,
+  FirebaseBusinessAccount as SignupBusinessPayload,
+  UserInfoJWT,
+  AccountType,
+  SignupAccountType,
 } from "~~/types";
 
 const { checkForInputErrors, checkConfirmEmail } = useError();
@@ -57,359 +57,364 @@ const firebaseToken = useState("firebaseToken");
 const UserInfo = useState<UserInfoJWT>("UserInfoJWT");
 
 const selectedType = useState<SignupAccountType | "">(
-    "signup-account-type",
-    () => ""
+  "signup-account-type",
+  () => ""
 );
 const selectedBusinessType = ref("");
 
 const businessDetails = useState<SignupBusinessDetailsType>(
-    "signup-business-details",
-    () => {
-        return {
-            fullCompanyName: {
-                value: "",
-                error: "",
-            },
-            companyRegistrationNumber: {
-                value: "",
-                error: "",
-            },
-            vatNumber: {
-                value: "",
-                error: "",
-            },
-            country: {
-                value: undefined,
-                error: "",
-            },
-            city: {
-                value: "",
-                error: "",
-            },
-            postcode: {
-                value: "",
-                error: "",
-            },
-            addressLine1: {
-                value: "",
-                error: "",
-            },
-            addressLine2: {
-                value: "",
-                error: "",
-            },
-        };
-    }
+  "signup-business-details",
+  () => {
+    return {
+      fullCompanyName: {
+        value: "",
+        error: "",
+      },
+      companyRegistrationNumber: {
+        value: "",
+        error: "",
+      },
+      vatNumber: {
+        value: "",
+        error: "",
+      },
+      country: {
+        value: undefined,
+        error: "",
+      },
+      city: {
+        value: "",
+        error: "",
+      },
+      postcode: {
+        value: "",
+        error: "",
+      },
+      addressLine1: {
+        value: "",
+        error: "",
+      },
+      addressLine2: {
+        value: "",
+        error: "",
+      },
+    };
+  }
 );
 
 const handleBusinessDetailsContinue = () => {
-    const hasError = checkForInputErrors([
-        businessDetails.value.fullCompanyName,
-        businessDetails.value.companyRegistrationNumber,
-        businessDetails.value.vatNumber,
-        businessDetails.value.country,
-        businessDetails.value.city,
-        businessDetails.value.postcode,
-        businessDetails.value.addressLine1,
-    ]);
+  const inputsToCheck = [
+    businessDetails.value.fullCompanyName,
+    businessDetails.value.companyRegistrationNumber,
+    businessDetails.value.country,
+    businessDetails.value.city,
+    businessDetails.value.postcode,
+    businessDetails.value.addressLine1,
+  ];
 
-    if (!hasError) {
-        currentStep.value++;
-    }
+  if (selectedBusinessType.value === "executive") {
+    inputsToCheck.push(businessDetails.value.vatNumber);
+  }
+
+  const hasError = checkForInputErrors(inputsToCheck);
+
+  if (!hasError) {
+    currentStep.value++;
+  }
 };
 
 const personalDetails = useState<SignupPersonalDetailsType>(
-    "signup-personal-details",
-    () => {
-        return {
-            firstName: {
-                value: "",
-                error: "",
-            },
-            lastName: {
-                value: "",
-                error: "",
-            },
-            country: {
-                value: undefined,
-                error: "",
-            },
-            city: {
-                value: "",
-                error: "",
-            },
-            postcode: {
-                value: "",
-                error: "",
-            },
-            addressLine1: {
-                value: "",
-                error: "",
-            },
-            addressLine2: {
-                value: "",
-                error: "",
-            },
-        };
-    }
+  "signup-personal-details",
+  () => {
+    return {
+      firstName: {
+        value: "",
+        error: "",
+      },
+      lastName: {
+        value: "",
+        error: "",
+      },
+      country: {
+        value: undefined,
+        error: "",
+      },
+      city: {
+        value: "",
+        error: "",
+      },
+      postcode: {
+        value: "",
+        error: "",
+      },
+      addressLine1: {
+        value: "",
+        error: "",
+      },
+      addressLine2: {
+        value: "",
+        error: "",
+      },
+    };
+  }
 );
 
 const handlePersonalDetailsContinue = () => {
-    const hasError = checkForInputErrors([
-        personalDetails.value.firstName,
-        personalDetails.value.lastName,
-        personalDetails.value.country,
-        personalDetails.value.city,
-        personalDetails.value.postcode,
-        personalDetails.value.addressLine1,
-    ]);
+  const hasError = checkForInputErrors([
+    personalDetails.value.firstName,
+    personalDetails.value.lastName,
+    personalDetails.value.country,
+    personalDetails.value.city,
+    personalDetails.value.postcode,
+    personalDetails.value.addressLine1,
+  ]);
 
-    if (!hasError) {
-        currentStep.value++;
-    }
+  if (!hasError) {
+    currentStep.value++;
+  }
 };
 
 const contactDetails = useState<SignupContactDetailsType>(
-    "signup-contact-details",
-    () => {
-        return {
-            firstName: {
-                value: "",
-                error: "",
-            },
-            lastName: {
-                value: "",
-                error: "",
-            },
-            phone: {
-                value: "",
-                error: "",
-            },
-            mobile: {
-                value: "",
-                error: "",
-            },
-            companyEmail: {
-                value: "",
-                error: "",
-                type: 'email'
-            },
-            confirmCompanyEmail: {
-                value: "",
-                error: "",
-                type: 'email'
-            },
-            email: {
-                value: "",
-                error: "",
-                type: 'email'
-            },
-            confirmEmail: {
-                value: "",
-                error: "",
-                type: 'email'
-            },
-        };
-    }
+  "signup-contact-details",
+  () => {
+    return {
+      firstName: {
+        value: "",
+        error: "",
+      },
+      lastName: {
+        value: "",
+        error: "",
+      },
+      phone: {
+        value: "",
+        error: "",
+      },
+      mobile: {
+        value: "",
+        error: "",
+      },
+      companyEmail: {
+        value: "",
+        error: "",
+        type: "email",
+      },
+      confirmCompanyEmail: {
+        value: "",
+        error: "",
+        type: "email",
+      },
+      email: {
+        value: "",
+        error: "",
+        type: "email",
+      },
+      confirmEmail: {
+        value: "",
+        error: "",
+        type: "email",
+      },
+    };
+  }
 );
 
 const handleContactDetailsContinue = () => {
-    const inputsToCheck = [
-        contactDetails.value.phone,
-        contactDetails.value.mobile,
-    ];
+  const inputsToCheck = [
+    contactDetails.value.phone,
+    contactDetails.value.mobile,
+  ];
 
-    if (selectedType.value === "personal") {
-        inputsToCheck.push(
-            contactDetails.value.email,
-            contactDetails.value.confirmEmail
-        );
-    } else {
-        inputsToCheck.push(
-            contactDetails.value.firstName,
-            contactDetails.value.lastName,
-            contactDetails.value.companyEmail,
-            contactDetails.value.confirmCompanyEmail
-        );
-    }
+  if (selectedType.value === "personal") {
+    inputsToCheck.push(
+      contactDetails.value.email,
+      contactDetails.value.confirmEmail
+    );
+  } else {
+    inputsToCheck.push(
+      contactDetails.value.firstName,
+      contactDetails.value.lastName,
+      contactDetails.value.companyEmail,
+      contactDetails.value.confirmCompanyEmail
+    );
+  }
 
-    const hasError =
-        checkForInputErrors(inputsToCheck) ||
-        checkConfirmEmail({
-            email: contactDetails.value.email,
-            confirmEmail: contactDetails.value.confirmEmail,
-        });
+  const hasError =
+    checkForInputErrors(inputsToCheck) ||
+    checkConfirmEmail({
+      email: contactDetails.value.email,
+      confirmEmail: contactDetails.value.confirmEmail,
+    });
 
-    if (!hasError) {
-        currentStep.value++;
-    }
+  if (!hasError) {
+    currentStep.value++;
+  }
 };
 
 const profileDetails = useState<SignupProfileDetailsType>(
-    "signup-profile-details",
-    () => {
-        return {
-            useContactEmail: false,
-            accountEmail: {
-                value: "",
-                error: "",
-                type: 'email'
-            },
-            confirmAccountEmail: {
-                value: "",
-                error: "",
-                type: 'email'
-            },
-            password: {
-                value: "",
-                error: "",
-            },
-            repeatPassword: {
-                value: "",
-                error: "",
-            },
-            subscribeToNewsletter: true,
-            agreeToTerms: false,
-        };
-    }
+  "signup-profile-details",
+  () => {
+    return {
+      useContactEmail: false,
+      accountEmail: {
+        value: "",
+        error: "",
+        type: "email",
+      },
+      confirmAccountEmail: {
+        value: "",
+        error: "",
+        type: "email",
+      },
+      password: {
+        value: "",
+        error: "",
+      },
+      repeatPassword: {
+        value: "",
+        error: "",
+      },
+      subscribeToNewsletter: true,
+      agreeToTerms: false,
+    };
+  }
 );
 
 function mapType(selected: string): AccountType {
-    switch (selected) {
-        case "personal":
-            return AccountType.Personal;
-        case "sole-trader":
-            return AccountType.SoleTrader;
-        case "business":
-            return AccountType.Business;
-        default:
-            return AccountType.Agent;
-    }
+  switch (selected) {
+    case "personal":
+      return AccountType.Personal;
+    case "sole-trader":
+      return AccountType.SoleTrader;
+    case "business":
+      return AccountType.Business;
+    default:
+      return AccountType.Agent;
+  }
 }
 
 const registerClassicSignup = async (
-    payload: SignupPersonalPayload | SignupBusinessPayload
+  payload: SignupPersonalPayload | SignupBusinessPayload
 ): Promise<any> => {
-    payload.isAlreadyRegisteredWithFirebase = false;
-    payload.account.profileDetails.password = profileDetails.value.password.value;
+  payload.isAlreadyRegisteredWithFirebase = false;
+  payload.account.profileDetails.password = profileDetails.value.password.value;
 
-    const { data, error } = await useFetchAPI<UserInfoJWT, Error>(
-        "auth/register",
-        {
-            method: "POST",
-            body: payload,
-        }
-    );
+  const { data, error } = await useFetchAPI<UserInfoJWT, Error>(
+    "auth/register",
+    {
+      method: "POST",
+      body: payload,
+    }
+  );
 
-    return { data, error };
+  return { data, error };
 };
 
 const registerFirebaseSignup = async (
-    payload: SignupPersonalPayload | SignupBusinessPayload
+  payload: SignupPersonalPayload | SignupBusinessPayload
 ): Promise<any> => {
-    payload.account.firebaseId = UserInfo.value.user_id;
-    payload.isAlreadyRegisteredWithFirebase = true;
-    const { data, error } = await useFetchAPI<UserInfoJWT>(
-        "auth/firebase/register",
-        {
-            headers: {
-                Authorization: `Bearer ${firebaseToken.value}`,
-            },
-            method: "POST",
-            body: payload,
-        }
-    );
+  payload.account.firebaseId = UserInfo.value.user_id;
+  payload.isAlreadyRegisteredWithFirebase = true;
+  const { data, error } = await useFetchAPI<UserInfoJWT>(
+    "auth/firebase/register",
+    {
+      headers: {
+        Authorization: `Bearer ${firebaseToken.value}`,
+      },
+      method: "POST",
+      body: payload,
+    }
+  );
 
-    return { data, error };
+  return { data, error };
 };
 
 const handleSubmit = async () => {
-    const inputsToCheck = [
-        profileDetails.value.accountEmail,
-        profileDetails.value.confirmAccountEmail,
-        profileDetails.value.password,
-        profileDetails.value.repeatPassword,
-    ];
+  const inputsToCheck = [
+    profileDetails.value.accountEmail,
+    profileDetails.value.confirmAccountEmail,
+    profileDetails.value.password,
+    profileDetails.value.repeatPassword,
+  ];
 
-    const hasError = checkForInputErrors(inputsToCheck);
+  const hasError = checkForInputErrors(inputsToCheck);
 
-    if (!hasError) {
-        let payload: SignupBusinessPayload | SignupPersonalPayload | null =
-            null;
-        if (selectedType.value === "personal") {
-            const personalPayload: SignupPersonalPayload = {
-                account: {
-                    accountType: mapType(selectedType.value),
-                    role: 2,
-                    profileDetails: {
-                        email: profileDetails.value.accountEmail.value,
-                        password: profileDetails.value.password.value,
-                    },
-                    contactDetails: {
-                        firstName: personalDetails.value.firstName.value,
-                        lastName: personalDetails.value.lastName.value,
-                        phone: contactDetails.value.phone.value,
-                        email: contactDetails.value.email.value,
-                    },
-                },
-            };
+  if (!hasError) {
+    let payload: SignupBusinessPayload | SignupPersonalPayload | null = null;
+    if (selectedType.value === "personal") {
+      const personalPayload: SignupPersonalPayload = {
+        account: {
+          accountType: mapType(selectedType.value),
+          role: 2,
+          profileDetails: {
+            email: profileDetails.value.accountEmail.value,
+            password: profileDetails.value.password.value,
+          },
+          contactDetails: {
+            firstName: personalDetails.value.firstName.value,
+            lastName: personalDetails.value.lastName.value,
+            phone: contactDetails.value.phone.value,
+            email: contactDetails.value.email.value,
+          },
+        },
+      };
 
-            payload = Object.assign({}, personalPayload);
-        } else {
-            const businessPayload: SignupBusinessPayload = {
-                account: {
-                    accountType: mapType(selectedType.value),
-                    role: 2,
-                    profileDetails: {
-                        email: profileDetails.value.accountEmail.value,
-                        password: profileDetails.value.password.value,
-                    },
-                    companyDetails: {
-                        name: businessDetails.value.fullCompanyName.value,
-                        registrationNumber: businessDetails.value.companyRegistrationNumber.value,
-                        vat: businessDetails.value.vatNumber.value,
-                        country: businessDetails.value.country.value,
-                        city: businessDetails.value.city.value,
-                        postcode: businessDetails.value.postcode.value,
-                        address1: businessDetails.value.addressLine1.value,
-                    },
-                    contactDetails: {
-                        firstName: contactDetails.value.firstName.value,
-                        lastName: contactDetails.value.lastName.value,
-                        phone: contactDetails.value.phone.value,
-                        email: contactDetails.value.email.value,
-                    },
-                },
-            };
-            payload = Object.assign({}, businessPayload);
-        }
-
-        try {
-            const request = firebaseToken.value
-                ? await registerFirebaseSignup(payload)
-                : await registerClassicSignup(payload);
-
-            const { data, error } = request;
-
-            if (error.value != null) {
-                throw error.value.response;
-            }
-            const { message, status } = data.value;
-            // TODO: Notification banner
-        } catch (error) {
-            console.log(error);
-            return;
-        }
-
-        currentStep.value++;
+      payload = Object.assign({}, personalPayload);
+    } else {
+      const businessPayload: SignupBusinessPayload = {
+        account: {
+          accountType: mapType(selectedType.value),
+          role: 2,
+          profileDetails: {
+            email: profileDetails.value.accountEmail.value,
+            password: profileDetails.value.password.value,
+          },
+          companyDetails: {
+            name: businessDetails.value.fullCompanyName.value,
+            registrationNumber:
+              businessDetails.value.companyRegistrationNumber.value,
+            vat: businessDetails.value.vatNumber.value,
+            country: businessDetails.value.country.value,
+            city: businessDetails.value.city.value,
+            postcode: businessDetails.value.postcode.value,
+            address1: businessDetails.value.addressLine1.value,
+          },
+          contactDetails: {
+            firstName: contactDetails.value.firstName.value,
+            lastName: contactDetails.value.lastName.value,
+            phone: contactDetails.value.phone.value,
+            email: contactDetails.value.email.value,
+          },
+        },
+      };
+      payload = Object.assign({}, businessPayload);
     }
+
+    try {
+      const request = firebaseToken.value
+        ? await registerFirebaseSignup(payload)
+        : await registerClassicSignup(payload);
+
+      const { data, error } = request;
+
+      if (error.value != null) {
+        throw error.value.response;
+      }
+      const { message, status } = data.value;
+      // TODO: Notification banner
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+
+    currentStep.value++;
+  }
 };
 
 definePageMeta({
-    layout: "empty",
+  layout: "empty",
 });
 
 useHead({
-    title: "Signup",
+  title: "Signup",
 });
 </script>

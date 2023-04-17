@@ -1,14 +1,16 @@
 <template>
   <div
+    @click="showTooltipContent = true"
     @mouseenter="showTooltipContent = true"
     @mouseleave="showTooltipContent = false"
+    v-click-outside="() => (showTooltipContent = false)"
     class="relative"
   >
     <slot />
     <Transition name="fade">
       <div
         v-if="showTooltipContent"
-        class="absolute bg-gray-300 rounded p-2 text-xs leading-tight font-Inter text-white"
+        class="absolute bg-gray-300 rounded p-2 text-xs leading-tight font-Inter text-white min-w-max"
         :class="[
           position === 'left'
             ? 'top-1/2 -left-2 -translate-x-full -translate-y-1/2'
