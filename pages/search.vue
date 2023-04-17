@@ -13,7 +13,7 @@
         <EcxlusiveOffer />
       </div>
     </div>
-    <NewProducts />
+    <NewProducts :row-count="2" />
     <News />
     <Manufacturers />
   </div>

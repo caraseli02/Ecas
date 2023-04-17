@@ -49,19 +49,19 @@
             spaceBetween: 20,
             slidesPerView: 3,
             grid: {
-              rows: 1,
+              rows: rowCount,
             },
           },
           1024: {
             slidesPerView: 4,
             grid: {
-              rows: 1,
+              rows: rowCount,
             },
           },
           1280: {
             slidesPerView: 5,
             grid: {
-              rows: 1,
+              rows: rowCount,
             },
           },
         }"
@@ -86,6 +86,11 @@ defineProps({
   title: {
     type: String,
     required: false,
+  },
+  rowCount: {
+    type: Number,
+    required: false,
+    default: 1,
   },
 });
 
@@ -192,7 +197,90 @@ const products = ref<ProductCardType[]>([
     cover: ProductCover3,
     stock: 87,
   },
+  {
+    slug: "slug",
+    title: "ADGN2999BCPZ",
+    category: "Analog Devices",
+    price: 1679.75,
+    discount: 20,
+    cover: ProductCover1,
+    stock: 731,
+  },
+  {
+    slug: "slug",
+    title: "ADGN2999BCPZ",
+    category: "Analog Devices",
+    price: 1679.75,
+    cover: ProductCover2,
+  },
+  {
+    slug: "slug",
+    title: "ADGN2999BCPZ",
+    category: "Analog Devices",
+    price: 1679.75,
+    discount: 20,
+    cover: ProductCover3,
+    stock: 87,
+  },
+  {
+    slug: "slug",
+    title: "ADGN2999BCPZ",
+    category: "Analog Devices",
+    price: 1679.75,
+    discount: 20,
+    cover: ProductCover1,
+    stock: 731,
+  },
+  {
+    slug: "slug",
+    title: "ADGN2999BCPZ",
+    category: "Analog Devices",
+    price: 1679.75,
+    cover: ProductCover2,
+  },
+  {
+    slug: "slug",
+    title: "ADGN2999BCPZ",
+    category: "Analog Devices",
+    price: 1679.75,
+    discount: 20,
+    cover: ProductCover3,
+    stock: 87,
+  },
+  {
+    slug: "slug",
+    title: "ADGN2999BCPZ",
+    category: "Analog Devices",
+    price: 1679.75,
+    discount: 20,
+    cover: ProductCover1,
+    stock: 731,
+  },
+  {
+    slug: "slug",
+    title: "ADGN2999BCPZ",
+    category: "Analog Devices",
+    price: 1679.75,
+    cover: ProductCover2,
+  },
+  {
+    slug: "slug",
+    title: "ADGN2999BCPZ",
+    category: "Analog Devices",
+    price: 1679.75,
+    discount: 20,
+    cover: ProductCover3,
+    stock: 87,
+  },
 ]);
+
+const productsMD = computed(() => {
+  const chunkedArray = [];
+  for (let i = 0; i < products.value.length; i += 3) {
+    chunkedArray.push(products.value.slice(i, i + 3));
+  }
+  return chunkedArray;
+});
 
 const filters = ["Featured", "Best Sellers", "Hot Deals", "Top Searched"];
 const activeFilter = ref("featured");
