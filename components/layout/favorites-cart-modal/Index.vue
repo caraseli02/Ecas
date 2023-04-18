@@ -41,9 +41,7 @@
         <LayoutFavoritesCartModalFavorites
           v-if="activeNavItem === 'favorites'"
         />
-        <div v-else class="px-5 text-sm font-Inter text-gray-300 pt-5">
-          Recently added products
-        </div>
+        <LayoutFavoritesCartModalCart v-else />
       </div>
     </div>
     <div

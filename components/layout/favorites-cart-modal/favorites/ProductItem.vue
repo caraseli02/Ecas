@@ -40,7 +40,7 @@
             {{ product.title }}
           </div>
           <button
-            v-if="!inModal"
+            v-if="!inModal && !inCart"
             class="flex text-gray-300 transition-colors duration-300 mr-2.5 hover:text-blue"
             @click="copyItems = true"
           >
@@ -78,7 +78,7 @@
       </button>
     </div>
     <div v-if="!inModal" class="flex items-end justify-between mt-2">
-      <div class="flex items-center">
+      <div v-if="!inCart" class="flex items-center">
         <label class="flex cursor-pointer mr-[15px]">
           <input
             :value="product.selected"
@@ -107,6 +107,7 @@
           </span>
         </div>
       </div>
+      <div v-else class="font-Inter font-bold leading-tight">$ 175.413,75</div>
       <QuantityButtons
         v-if="typeof product.quantity === 'number'"
         v-model="product.quantity"
@@ -157,6 +158,10 @@ defineProps({
     required: true,
   },
   inModal: {
+    type: Boolean,
+    required: false,
+  },
+  inCart: {
     type: Boolean,
     required: false,
   },
