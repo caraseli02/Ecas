@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <div v-if="label" class="text-sm text-gray-300 mb-2">
+    <div v-if="label" class="text-sm text-gray-300 mb-1">
       {{ label }}
     </div>
     <button
@@ -107,8 +107,8 @@
         </template>
         <template v-else>
           <button
-            v-for="(option, index) in filteredOptions"
-            :key="index"
+            v-for="option in filteredOptions"
+            :key="option.value"
             class="flex w-full px-2.5 py-[9px] text-left rounded-[5px] text-gray-300 transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-dark"
             :class="[option.value === modelValue?.value ? 'text-blue' : '']"
             @click="inputHandler(option)"

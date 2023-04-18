@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <label class="flex flex-col relative">
-      <div v-if="label" class="text-sm text-gray-300 mb-[5px]">
+      <div v-if="label" class="text-sm text-gray-300 mb-1">
         {{ label }}
       </div>
       <input
