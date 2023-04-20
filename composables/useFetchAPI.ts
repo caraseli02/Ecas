@@ -4,7 +4,7 @@ type useFetchType = typeof useFetch;
 
 // wrap useFetch with configuration needed to talk to our API
 export const useFetchAPI: useFetchType = (path, options: any) => {
-    options.baseURL = import.meta.env.VITE_BASE_URL_API
+    options.baseURL = import.meta.env.VITE_BASE_URL_API;
 
     return useFetch(path, {
         ...options,

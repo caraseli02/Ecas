@@ -199,10 +199,25 @@ const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
     );
 
     if (error.value) {
-        errorResponse.code = error.value.response?.status as number;
-        errorResponse.status = error.value.response?._data.status;
-        errorResponse.description = error.value.response?._data.description;
-        errorResponse.show = true;
+        switch (error.value.response?.status) {
+            case 404:
+                errorResponse.code = error.value.response.status as number
+                errorResponse.description = "404 - Something invalid just happened."
+                errorResponse.show = true;
+                break;
+            case 500:
+                errorResponse.code = error.value.response.status as number
+                errorResponse.description = "500 - Server error"
+                errorResponse.show = true;
+                break;
+            case 401:
+                errorResponse.code = error.value.response.status as number
+                errorResponse.description = "401 - Unauthorized"
+                errorResponse.show = true;
+                break;
+            default:
+                break
+        }
         return;
     }
 
