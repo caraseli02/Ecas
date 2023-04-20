@@ -13,7 +13,7 @@
             placeholder="Your Password"
             class="mb-[15px]"
         />
-        <div class="flex items-center justify-between mb-[30px]">
+        <div class="flex items-center justify-between mb-[30px] mt-[15px]">
             <label class="flex items-center cursor-pointer">
                 <input v-model="rememberMe" type="checkbox" class="sr-only" />
                 <div

@@ -34,52 +34,21 @@
                     class="absolute top-1/2 -translate-y-1/2 right-2.5 w-6 h-6 text-gray-100"
                 />
             </div>
-            <div
-                class="relative border rounded w-full transition-colors duration-300"
-                :class="[
-                  error
-                    ? 'border-red'
-                    : 'border-border focus-within:border-blue',
-                ]"
-            >
-                <input
-                    :value="modelValue"
-                    :type="showPassword ? 'text' : 'password'"
-                    :placeholder="placeholder"
-                    class="bg-transparent pl-2.5 pr-10 py-[9px] text-sm placeholder:text-gray-100 w-full focus:outline-none"
-                    @input="handleInput"
-                />
+        </div>
+        <div v-if="handleStrength" class="flex flex-col mt-[15px]">
+            <div class="grid grid-cols-5 gap-2.5 mb-[5px]">
                 <div
-                    class="flex cursor-pointer"
-                    @click="showPassword = !showPassword"
-                >
-                    <EyeIcon
-                        v-if="!showPassword"
-                        class="absolute top-1/2 -translate-y-1/2 right-2.5 w-6 h-6 text-gray-100"
-                    />
-                    <EyeClosedIcon
-                        v-else
-                        class="absolute top-1/2 -translate-y-1/2 right-2.5 w-6 h-6 text-gray-100"
-                    />
-                </div>
+                    v-for="num in 5"
+                    :key="num"
+                    class="rounded-lg h-[5px] transition-colors duration-300"
+                    :class="[
+                      passwordStrength >= num ? 'bg-green' : 'bg-[#E7E7EB]',
+                    ]"
+                />
             </div>
-            <div v-if="handleStrength" class="flex flex-col mt-[15px]">
-                <div class="grid grid-cols-5 gap-2.5 mb-[5px]">
-                    <div
-                        v-for="num in 5"
-                        :key="num"
-                        class="rounded-lg h-[5px] transition-colors duration-300"
-                        :class="[
-                          passwordStrength >= num
-                            ? 'bg-green'
-                            : 'bg-[#E7E7EB]',
-                        ]"
-                    />
-                </div>
-                <div class="text-xs text-gray-300">
-                    Use 8 or more characters with a mix of letters, numbers &
-                    symbols.
-                </div>
+            <div class="text-xs text-gray-300">
+                Use 8 or more characters with a mix of letters, numbers &
+                symbols.
             </div>
         </div>
     </label>
