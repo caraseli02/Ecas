@@ -16,12 +16,12 @@
             :selectedType="
                 selectedType === 'sole-trader' ? '' : selectedBusinessType
             "
-            @back="currentStep--"
+            @back="backToSelectMenu()"
             @continue="handleBusinessDetailsContinue"
         />
         <SignupPersonalDetails
             v-else-if="currentStep === 1 && selectedType === 'personal'"
-            @back="currentStep--"
+            @back="backToSelectMenu()"
             @continue="handlePersonalDetailsContinue"
         />
         <SignupContactDetails
@@ -291,6 +291,19 @@ function mapType(selected: string): AccountType {
         default:
             return AccountType.Agent;
     }
+}
+
+const backToSelectMenu = async () => {
+    let personal = useState<SignupPersonalDetailsType>("signup-personal-details");
+    const business = useState<SignupBusinessDetailsType>("signup-business-details");
+
+    for (let p in personal.value) {
+        personal.value[p].error = ''
+    }
+    for (let p in business.value) {
+        business.value[p].error = ''
+    }
+    currentStep.value--
 }
 
 const registerClassicSignup = async (
