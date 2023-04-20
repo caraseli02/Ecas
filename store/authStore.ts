@@ -8,7 +8,8 @@ export const useAuthStore = defineStore({
         return {
             token: '',
             loggedInUser: null as UserInfoJWT | null,
-            userDetails: null as UserDetails | null
+            userDetails: null as UserDetails | null,
+            firebaseTempToken: null as string | null
         }
     },
     actions: {
@@ -20,6 +21,9 @@ export const useAuthStore = defineStore({
         },
         addUserDetail(user: UserDetails) {
             this.userDetails = user
+        },
+        addFirebaseToken(token: string) {
+            this.firebaseTempToken = token
         },
         signOut() {
             this.loggedInUser = null

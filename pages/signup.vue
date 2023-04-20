@@ -16,12 +16,12 @@
             :selectedType="
                 selectedType === 'sole-trader' ? '' : selectedBusinessType
             "
-            @back="currentStep--"
+            @back="backToSelectMenu()"
             @continue="handleBusinessDetailsContinue"
         />
         <SignupPersonalDetails
             v-else-if="currentStep === 1 && selectedType === 'personal'"
-            @back="currentStep--"
+            @back="backToSelectMenu()"
             @continue="handlePersonalDetailsContinue"
         />
         <SignupContactDetails
@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from "~~/store/authStore";
 import {
     SignupBusinessDetails as SignupBusinessDetailsType,
     SignupContactDetails as SignupContactDetailsType,
@@ -46,15 +47,26 @@ import {
     SignupProfileDetails as SignupProfileDetailsType,
     FirebasePersonalAccount as SignupPersonalPayload,
     FirebaseBusinessAccount as SignupBusinessPayload,
-    UserInfoJWT, AccountType, SignupAccountType,
+    UserInfoJWT,
+    AccountType,
+    SignupAccountType,
+    InputObject,
 } from "~~/types";
 
-const { checkForInputErrors, checkConfirmEmail } = useError();
+const {
+    checkForInputErrors,
+    checkContactConfirmationEmail,
+    checkProfileConfirmationEmail,
+} = useError();
 
 const currentStep = ref(0);
 
-const firebaseToken = useState("firebaseToken");
-const UserInfo = useState<UserInfoJWT>("UserInfoJWT");
+const authStore = useAuthStore();
+
+const { logout } = useFirebaseAuth();
+
+const firebaseToken = authStore.firebaseTempToken;
+const UserInfo = authStore.loggedInUser;
 
 const selectedType = useState<SignupAccountType | "">(
     "signup-account-type",
@@ -235,7 +247,7 @@ const handleContactDetailsContinue = () => {
 
     const hasError =
         checkForInputErrors(inputsToCheck) ||
-        checkConfirmEmail({
+        checkContactConfirmationEmail({
             email: contactDetails.value.email,
             confirmEmail: contactDetails.value.confirmEmail,
         });
@@ -287,11 +299,25 @@ function mapType(selected: string): AccountType {
     }
 }
 
+const backToSelectMenu = async () => {
+    let personal = useState<SignupPersonalDetailsType>("signup-personal-details");
+    const business = useState<SignupBusinessDetailsType>("signup-business-details");
+
+    for (let p in personal.value) {
+        personal.value[p].error = ''
+    }
+    for (let p in business.value) {
+        business.value[p].error = ''
+    }
+    currentStep.value--
+}
+
 const registerClassicSignup = async (
     payload: SignupPersonalPayload | SignupBusinessPayload
 ): Promise<any> => {
     payload.isAlreadyRegisteredWithFirebase = false;
-    payload.account.profileDetails.password = profileDetails.value.password.value;
+    payload.account.profileDetails.password =
+        profileDetails.value.password.value;
 
     const { data, error } = await useFetchAPI<UserInfoJWT, Error>(
         "auth/register",
@@ -307,13 +333,14 @@ const registerClassicSignup = async (
 const registerFirebaseSignup = async (
     payload: SignupPersonalPayload | SignupBusinessPayload
 ): Promise<any> => {
-    payload.account.firebaseId = UserInfo.value.user_id;
+    delete payload.account.profileDetails.password;
+    payload.account.firebaseId = UserInfo?.user_id;
     payload.isAlreadyRegisteredWithFirebase = true;
     const { data, error } = await useFetchAPI<UserInfoJWT>(
         "auth/firebase/register",
         {
             headers: {
-                Authorization: `Bearer ${firebaseToken.value}`,
+                Authorization: `Bearer ${firebaseToken}`,
             },
             method: "POST",
             body: payload,
@@ -324,14 +351,28 @@ const registerFirebaseSignup = async (
 };
 
 const handleSubmit = async () => {
-    const inputsToCheck = [
-        profileDetails.value.accountEmail,
-        profileDetails.value.confirmAccountEmail,
-        profileDetails.value.password,
-        profileDetails.value.repeatPassword,
-    ];
+    let inputsToCheck: InputObject[] = [];
 
-    const hasError = checkForInputErrors(inputsToCheck);
+    if (firebaseToken) {
+        inputsToCheck = [
+            profileDetails.value.accountEmail,
+            profileDetails.value.confirmAccountEmail,
+        ];
+    } else {
+        inputsToCheck = [
+            profileDetails.value.accountEmail,
+            profileDetails.value.confirmAccountEmail,
+            profileDetails.value.password,
+            profileDetails.value.repeatPassword,
+        ];
+    }
+
+    const hasError =
+        checkForInputErrors(inputsToCheck) ||
+        checkProfileConfirmationEmail({
+            accountEmail: profileDetails.value.accountEmail,
+            confirmAccountEmail: profileDetails.value.confirmAccountEmail,
+        });
 
     if (!hasError) {
         let payload: SignupBusinessPayload | SignupPersonalPayload | null =
@@ -366,7 +407,9 @@ const handleSubmit = async () => {
                     },
                     companyDetails: {
                         name: businessDetails.value.fullCompanyName.value,
-                        registrationNumber: businessDetails.value.companyRegistrationNumber.value,
+                        registrationNumber:
+                            businessDetails.value.companyRegistrationNumber
+                                .value,
                         vat: businessDetails.value.vatNumber.value,
                         country: businessDetails.value.country.value,
                         city: businessDetails.value.city.value,
@@ -385,7 +428,7 @@ const handleSubmit = async () => {
         }
 
         try {
-            const request = firebaseToken.value
+            const request = firebaseToken
                 ? await registerFirebaseSignup(payload)
                 : await registerClassicSignup(payload);
 
@@ -395,6 +438,7 @@ const handleSubmit = async () => {
                 throw error.value.response;
             }
             const { message, status } = data.value;
+            await logout()
             // TODO: Notification banner
         } catch (error) {
             console.log(error);

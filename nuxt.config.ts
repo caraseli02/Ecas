@@ -32,6 +32,11 @@ export default defineNuxtConfig({
             "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
         },
       ],
+      script: [
+        {
+          src: "https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.min.es.js",
+        },
+      ],
     },
   },
   modules: ["nuxt-svgo", "nuxt-swiper", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
@@ -71,7 +76,7 @@ export default defineNuxtConfig({
     FIREBASE_APP_ID: process.env.NUXT_FIREBASE_APP_ID,
     FIREBASE_MEASUREMENT_ID: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
     public: {
-      BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API,
+      BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API || 'https://ecasmag.ro/ecas',
       HOST: '0.0.0.0'
     }
   },

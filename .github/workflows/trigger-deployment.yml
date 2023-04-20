@@ -63,7 +63,7 @@ jobs:
           repository: ${{ github.repository }}
           deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
           environment: dev #here
-          environment_url: https://ecasmag.ro
+          environment_url: https://ecasmag.ro/ecas
           log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           state: in_progress
           mediaType: '{"previews": ["flash", "ant-man"]}'

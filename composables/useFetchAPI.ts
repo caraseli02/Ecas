@@ -6,8 +6,7 @@ type useFetchType = typeof useFetch;
 export const useFetchAPI: useFetchType = (path, options: any) => {
     const config = useRuntimeConfig();
 
-    // modify options as needed
-    options.baseURL = config.public.BASE_URL_API;
+    options.baseURL = config.BASE_URL_API;
 
     return useFetch(path, {
         ...options,

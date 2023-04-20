@@ -100,6 +100,7 @@ const setNavLine = () => {
   }
 };
 
+
 const setActiveNav = (item: string) => {
   activeNavItem.value = textUtil.slugify(item) as typeof activeNavItem.value;
   setNavLine();
