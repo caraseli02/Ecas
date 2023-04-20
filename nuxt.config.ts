@@ -76,7 +76,7 @@ export default defineNuxtConfig({
     FIREBASE_APP_ID: process.env.NUXT_FIREBASE_APP_ID,
     FIREBASE_MEASUREMENT_ID: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
     public: {
-      BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API,
+      BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API || 'https://ecasmag.ro/ecas',
       HOST: '0.0.0.0'
     }
   },
