@@ -63,6 +63,8 @@ const currentStep = ref(0);
 
 const authStore = useAuthStore();
 
+const { logout } = useFirebaseAuth();
+
 const firebaseToken = authStore.firebaseTempToken;
 const UserInfo = authStore.loggedInUser;
 
@@ -417,6 +419,7 @@ const handleSubmit = async () => {
                 throw error.value.response;
             }
             const { message, status } = data.value;
+            await logout()
             // TODO: Notification banner
         } catch (error) {
             console.log(error);
