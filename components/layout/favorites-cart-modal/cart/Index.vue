@@ -11,9 +11,9 @@
       </div>
     </div>
     <div
-      class="pt-5 px-[15px] pb-10 flex-1 h-full overflow-y-auto overscroll-contain scrollbar-thin max-h-vh"
+      class="pt-6 px-4 pb-10 flex-1 h-full overflow-y-auto overscroll-contain scrollbar-thin max-h-vh"
     >
-      <div class="grid grid-cols-1 gap-5">
+      <div class="grid grid-cols-1 gap-4">
         <LayoutFavoritesCartModalFavoritesProductItem
           v-for="(item, index) in items"
           :key="index"

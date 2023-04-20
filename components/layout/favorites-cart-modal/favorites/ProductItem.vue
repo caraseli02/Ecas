@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col pb-[15px]"
+    class="flex flex-col pb-4"
     :class="[inModal ? '' : 'border-b border-gray-200 mx-2.5']"
   >
     <div class="flex" :class="[inModal ? 'items-center' : 'items-start']">
@@ -34,23 +34,23 @@
       <div :class="[inModal ? 'truncate' : '']">
         <div class="flex items-center" :class="[inModal ? '' : 'mb-2.5']">
           <div
-            class="leading-tight font-semibold font-Inter mr-2.5"
+            class="leading-tight font-semibold font-Inter mr-2"
             :class="[inModal ? 'text-xs' : '']"
           >
             {{ product.title }}
           </div>
           <button
             v-if="!inModal && !inCart"
-            class="flex text-gray-300 transition-colors duration-300 mr-2.5 hover:text-blue"
+            class="flex text-gray-300 transition-colors duration-300 mr-2 hover:text-blue"
             @click="copyItems = true"
           >
-            <CopyIcon class="w-5 h-5" />
+            <CopyIcon class="w-[18px] h-[18px]" />
           </button>
           <button
             v-if="!inModal"
-            class="flex text-gray-300 transition-colors duration-300 mr-2.5 hover:text-blue"
+            class="flex text-gray-300 transition-colors duration-300 mr-2 hover:text-blue"
           >
-            <InfoIcon class="w-5 h-5" />
+            <InfoIcon class="w-[18px] h-[18px]" />
           </button>
         </div>
         <div
