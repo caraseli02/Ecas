@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative" :class="[error ? 'mb-4' : '']">
     <label class="flex flex-col relative">
       <div v-if="label" class="text-sm text-gray-300 mb-1">
         {{ label }}
@@ -45,7 +45,7 @@
     <Transition name="fade">
       <div
         v-if="error"
-        class="absolute bottom-0 left-0 translate-y-full pointer-events-none text-[10px] leading-normal text-red"
+        class="absolute -bottom-1 left-0 translate-y-full pointer-events-none text-xs leading-normal text-red"
       >
         {{ error }}
       </div>

@@ -1,18 +1,18 @@
 <template>
     <div class="max-w-[340px] mx-auto">
-        <FormInput
-            v-model="email.value"
-            :error="email.error"
-            type="email"
-            placeholder="you@company.com"
-            class="mb-[15px]"
-        />
-        <FormPassword
-            v-model="password.value"
-            :error="password.error"
-            placeholder="Your Password"
-            class="mb-[15px]"
-        />
+        <div class="grid grid-cols-1 gap-[15px] mb-[15px]">
+            <FormInput
+                v-model="email.value"
+                :error="email.error"
+                type="email"
+                placeholder="you@company.com"
+            />
+            <FormPassword
+                v-model="password.value"
+                :error="password.error"
+                placeholder="Your Password"
+            />
+        </div>
         <div class="flex items-center justify-between mb-[30px]">
             <label class="flex items-center cursor-pointer">
                 <input v-model="rememberMe" type="checkbox" class="sr-only" />
