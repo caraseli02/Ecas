@@ -53,7 +53,9 @@
         </div>
         <div class="text-right font-Inter">$ 0.00</div>
       </div>
-      <div class="flex items-center justify-between text-sm mb-2">
+      <div
+        class="flex items-center justify-between text-sm mb-[3px] pb-[5px] border-b border-gray-200"
+      >
         <div class="font-semibold">
           VAT
           <span class="font-normal text-gray-300">(19%)</span>
