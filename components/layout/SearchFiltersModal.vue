@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed z-[60] bottom-0 left-0 w-screen flex items-end justify-end md:hidden"
+    class="fixed z-[70] bottom-0 left-0 w-screen flex items-end justify-end md:hidden"
   >
     <div
       class="relative z-10 w-full py-5 bg-white rounded-t-[15px] shadow-card md:px-5"

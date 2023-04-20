@@ -1,10 +1,6 @@
 <template>
   <div class="relative">
-    <div
-      v-if="label"
-      class="text-sm transition-colors duration-300 mb-2"
-      :class="[error ? 'text-red' : 'text-gray-300']"
-    >
+    <div v-if="label" class="text-sm text-gray-300 mb-2">
       {{ label }}
       <abbr v-if="mandatory" title="required" class="text-red">*</abbr>
     </div>
@@ -42,7 +38,7 @@
         :class="{ 'rotate-180': showOptions }"
       />
     </button>
-    <transition name="fade">
+    <Transition name="fade">
       <div
         v-if="showOptions"
         class="absolute -bottom-1 left-0 translate-y-full w-full bg-white rounded-md overflow-y-auto scrollbar-thin shadow-card px-2.5 py-[15px]"
@@ -135,7 +131,15 @@
           </button>
         </template>
       </div>
-    </transition>
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="error"
+        class="absolute bottom-0 left-0 translate-y-full pointer-events-none text-[10px] leading-normal text-red"
+      >
+        {{ error }}
+      </div>
+    </Transition>
   </div>
 </template>
 

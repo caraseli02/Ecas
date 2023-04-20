@@ -45,7 +45,7 @@ defineProps({
     type: Boolean,
     default: true,
     required: false
-  }
+  
 });
 
 const emits = defineEmits(["update:modelValue"]);

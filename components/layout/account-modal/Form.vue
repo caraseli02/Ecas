@@ -131,6 +131,7 @@ const { checkForInputErrors } = useError();
 const email = ref({
     value: "",
     error: "",
+    type: 'email'
 });
 const password = ref({
     value: "",

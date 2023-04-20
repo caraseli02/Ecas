@@ -7,4 +7,5 @@ export interface FormSelectOption {
 export interface InputObject {
   value: any;
   error: string;
+  type?: "email";
 }

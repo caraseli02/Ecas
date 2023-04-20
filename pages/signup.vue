@@ -204,18 +204,22 @@ const contactDetails = useState<SignupContactDetailsType>(
             companyEmail: {
                 value: "",
                 error: "",
+                type: 'email'
             },
             confirmCompanyEmail: {
                 value: "",
                 error: "",
+                type: 'email'
             },
             email: {
                 value: "",
                 error: "",
+                type: 'email'
             },
             confirmEmail: {
                 value: "",
                 error: "",
+                type: 'email'
             },
         };
     }
@@ -261,10 +265,12 @@ const profileDetails = useState<SignupProfileDetailsType>(
             accountEmail: {
                 value: "",
                 error: "",
+                type: 'email'
             },
             confirmAccountEmail: {
                 value: "",
                 error: "",
+                type: 'email'
             },
             password: {
                 value: "",
