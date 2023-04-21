@@ -3,6 +3,7 @@
     <label class="flex flex-col relative">
       <div v-if="label" class="text-sm text-gray-300 mb-1">
         {{ label }}
+        <abbr v-if="mandatory" title="required" class="text-red">*</abbr>
       </div>
       <div
         class="relative border rounded w-full transition-colors duration-300"
@@ -27,18 +28,18 @@
             class="absolute top-1/2 -translate-y-1/2 right-2.5 w-6 h-6 text-gray-100"
           />
         </div>
-      </div>
-      <div v-if="handleStrength" class="flex flex-col mt-[15px]">
-        <div class="grid grid-cols-5 gap-2.5 mb-[5px]">
-          <div
-            v-for="num in 5"
-            :key="num"
-            class="rounded-lg h-[5px] transition-colors duration-300"
-            :class="[passwordStrength >= num ? 'bg-green' : 'bg-[#E7E7EB]']"
-          />
-        </div>
-        <div class="text-xs text-gray-300">
-          Use 8 or more characters with a mix of letters, numbers & symbols.
+        <div v-if="handleStrength" class="flex flex-col mt-[15px]">
+          <div class="grid grid-cols-5 gap-2.5 mb-[5px]">
+            <div
+              v-for="num in 5"
+              :key="num"
+              class="rounded-lg h-[5px] transition-colors duration-300"
+              :class="[passwordStrength >= num ? 'bg-green' : 'bg-[#E7E7EB]']"
+            />
+          </div>
+          <div class="text-xs text-gray-300">
+            Use 8 or more characters with a mix of letters, numbers & symbols.
+          </div>
         </div>
       </div>
     </label>
@@ -66,12 +67,16 @@ const props = defineProps({
   placeholder: String,
   handleStrength: Boolean,
   error: String,
+  mandatory: {
+    type: Boolean,
+    default: true,
+    required: false,
+  },
 });
 
 const emits = defineEmits(["update:modelValue"]);
 
 const showPassword = ref(false);
-
 const passwordStrength = computed(() => {
   let score = 0;
   let length = 0;

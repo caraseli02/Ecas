@@ -2,6 +2,7 @@
   <div class="relative" :class="[error ? 'mb-4' : '']">
     <div v-if="label" class="text-sm text-gray-300 mb-1">
       {{ label }}
+      <abbr v-if="mandatory" title="required" class="text-red">*</abbr>
     </div>
     <button
       class="flex items-center justify-between px-2.5 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none"
@@ -167,6 +168,11 @@ const props = defineProps({
   },
   search: Boolean,
   error: String,
+  mandatory: {
+    type: Boolean,
+    default: true,
+    required: false
+  }
 });
 
 const emits = defineEmits(["update:modelValue"]);

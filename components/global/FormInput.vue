@@ -3,6 +3,7 @@
     <label class="flex flex-col relative">
       <div v-if="label" class="text-sm text-gray-300 mb-1">
         {{ label }}
+        <abbr v-if="mandatory" title="required" class="text-red">*</abbr>
       </div>
       <input
         :value="modelValue"
@@ -49,6 +50,11 @@ defineProps({
   disabled: {
     type: Boolean,
     default: false,
+  },
+  mandatory: {
+    type: Boolean,
+    default: true,
+    required: false,
   },
 });
 
