@@ -489,8 +489,8 @@ watch(selectedItemsLength, (newVal) => {
 });
 </script>
 
-<style>
+<style lang="scss">
 .favoritesModal--swiper .swiper-slide {
-  @apply w-[42px];
+  @apply w-[42px] #{!important};
 }
 </style>

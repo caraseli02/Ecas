@@ -694,7 +694,7 @@ const categories = ref([
     ],
   },
 ]);
-const selectedCategory = ref<typeof categories.value[0] | null>(null);
+const selectedCategory = ref<(typeof categories.value)[0] | null>(null);
 const selectedSubCategory = ref<any>();
 
 const slides = ref([
@@ -787,23 +787,23 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style lang="scss">
 .headerSubmenu--swiper {
-  @apply z-20 pb-[22px] mt-auto md:pb-[38px];
+  @apply z-20 pb-[22px] mt-auto md:pb-[38px] #{!important};
 }
 .headerSubmenu--swiper .swiper-slide {
-  @apply h-auto;
+  @apply h-auto #{!important};
 }
 .headerSubmenu--swiper .swiper-pagination {
-  @apply flex justify-center w-full h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px];
+  @apply flex justify-center w-full h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px] #{!important};
 }
 .headerSubmenu--swiper .swiper-pagination-bullet {
-  @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2;
+  @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
   margin-right: 0 !important;
 }
 .headerSubmenu--swiper
   .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  @apply w-[25px] bg-white;
+  @apply w-[25px] bg-white #{!important};
 }
 </style>
 

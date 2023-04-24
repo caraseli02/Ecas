@@ -12,7 +12,7 @@
                                 @click="toggleNavModal"
                             >
                                 <BurgerIcon
-                                    class="w-[26px] h-[26px] md:w-7 md:h-w-7"
+                                    class="w-[26px] h-[26px] md:w-7 md:h-7"
                                 />
                                 <span
                                     v-if="!isScrolled"
