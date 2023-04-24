@@ -3,7 +3,6 @@
     <label class="flex flex-col relative">
       <div v-if="label" class="text-sm text-gray-300 mb-1">
         {{ label }}
-        <abbr v-if="mandatory" title="required" class="text-red">*</abbr>
       </div>
       <div
         class="relative border rounded w-full transition-colors duration-300"
@@ -67,11 +66,6 @@ const props = defineProps({
   placeholder: String,
   handleStrength: Boolean,
   error: String,
-  mandatory: {
-    type: Boolean,
-    default: true,
-    required: false,
-  },
 });
 
 const emits = defineEmits(["update:modelValue"]);
