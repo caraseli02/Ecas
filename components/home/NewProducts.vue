@@ -216,7 +216,7 @@ onMounted(() => {
 
 <style lang="scss">
 .homeProducts--swiper {
-  @apply px-1 pt-1 pb-[30px] #{!important};
+  @apply px-[5px] pt-[5px] pb-[30px] #{!important};
 }
 .homeProducts--swiper .swiper-slide {
   @apply h-auto #{!important};
