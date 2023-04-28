@@ -116,15 +116,27 @@ const businessDetails = useState<SignupBusinessDetailsType>(
 );
 
 const handleBusinessDetailsContinue = () => {
-    const hasError = checkForInputErrors([
-        businessDetails.value.fullCompanyName,
-        businessDetails.value.companyRegistrationNumber,
-        businessDetails.value.vatNumber,
-        businessDetails.value.country.value,
-        businessDetails.value.city,
-        businessDetails.value.postcode,
-        businessDetails.value.addressLine1,
-    ]);
+    let hasError = false
+    if (selectedType.value === 'business') {
+        hasError = checkForInputErrors([
+            businessDetails.value.fullCompanyName,
+            businessDetails.value.companyRegistrationNumber,
+            businessDetails.value.vatNumber,
+            businessDetails.value.country.value,
+            businessDetails.value.city,
+            businessDetails.value.postcode,
+            businessDetails.value.addressLine1,
+        ]);
+    } else if (selectedType.value === 'sole-trader') {
+        hasError = checkForInputErrors([
+            businessDetails.value.fullCompanyName,
+            businessDetails.value.companyRegistrationNumber,
+            businessDetails.value.country.value,
+            businessDetails.value.city,
+            businessDetails.value.postcode,
+            businessDetails.value.addressLine1,
+        ]);
+    }
 
     if (!hasError) {
         currentStep.value++;
@@ -227,17 +239,17 @@ const contactDetails = useState<SignupContactDetailsType>(
 );
 
 const handleContactDetailsContinue = () => {
-    const inputsToCheck = [
+    let inputsToCheck = [
         contactDetails.value.phone,
         contactDetails.value.mobile,
     ];
 
-    if (selectedType.value === "personal") {
+    if (selectedType.value === 'personal') {
         inputsToCheck.push(
             contactDetails.value.email,
             contactDetails.value.confirmEmail
         );
-    } else {
+    } else if (selectedType.value === 'business' || selectedType.value === 'sole-trader') {
         inputsToCheck.push(
             contactDetails.value.firstName,
             contactDetails.value.lastName,
@@ -255,6 +267,7 @@ const handleContactDetailsContinue = () => {
 
     if (!hasError) {
         currentStep.value++;
+        inputsToCheck = []
     }
 };
 
@@ -421,34 +434,32 @@ const handleSubmit = async () => {
                         firstName: contactDetails.value.firstName.value,
                         lastName: contactDetails.value.lastName.value,
                         phone: contactDetails.value.phone.value,
-                        email: contactDetails.value.email.value,
+                        email: contactDetails.value.companyEmail.value
                     },
                 },
             };
             payload = Object.assign({}, businessPayload);
         }
 
-        console.log(payload);
+        try {
+            const request = firebaseToken
+                ? await registerFirebaseSignup(payload)
+                : await registerClassicSignup(payload);
 
-        // try {
-        //     const request = firebaseToken
-        //         ? await registerFirebaseSignup(payload)
-        //         : await registerClassicSignup(payload);
+            const { data, error } = request;
 
-        //     const { data, error } = request;
+            if (error.value != null) {
+                throw error.value.response;
+            }
+            const { message, status } = data.value;
+            await logout()
+            // TODO: Notification banner
+        } catch (error) {
+            console.log(error);
+            return;
+        }
 
-        //     if (error.value != null) {
-        //         throw error.value.response;
-        //     }
-        //     const { message, status } = data.value;
-        //     await logout()
-        //     // TODO: Notification banner
-        // } catch (error) {
-        //     console.log(error);
-        //     return;
-        // }
-
-        // currentStep.value++;
+        currentStep.value++;
     }
 };
 
