@@ -9,13 +9,10 @@
             @continue="currentStep++"
         />
         <SignupBusinessDetails
-            v-if="
-                currentStep === 1 &&
+            v-if="currentStep === 1 &&
                 (selectedType === 'business' || selectedType === 'sole-trader')
-            "
-            :selectedType="
-                selectedType === 'sole-trader' ? '' : selectedBusinessType
-            "
+                "
+            :selectedType="selectedType === 'sole-trader' ? '' : selectedBusinessType"
             @back="backToSelectMenu()"
             @continue="handleBusinessDetailsContinue"
         />
@@ -91,8 +88,12 @@ const businessDetails = useState<SignupBusinessDetailsType>(
                 error: "",
             },
             country: {
-                value: undefined,
-                error: "",
+                value: {
+                    value: "",
+                    error: ""
+                },
+                label: "",
+                icon: ""
             },
             city: {
                 value: "",
@@ -119,7 +120,7 @@ const handleBusinessDetailsContinue = () => {
         businessDetails.value.fullCompanyName,
         businessDetails.value.companyRegistrationNumber,
         businessDetails.value.vatNumber,
-        businessDetails.value.country,
+        businessDetails.value.country.value,
         businessDetails.value.city,
         businessDetails.value.postcode,
         businessDetails.value.addressLine1,
@@ -411,7 +412,7 @@ const handleSubmit = async () => {
                             businessDetails.value.companyRegistrationNumber
                                 .value,
                         vat: businessDetails.value.vatNumber.value,
-                        country: businessDetails.value.country.value,
+                        country: businessDetails.value.country.value.value.value,
                         city: businessDetails.value.city.value,
                         postcode: businessDetails.value.postcode.value,
                         address1: businessDetails.value.addressLine1.value,
@@ -427,25 +428,27 @@ const handleSubmit = async () => {
             payload = Object.assign({}, businessPayload);
         }
 
-        try {
-            const request = firebaseToken
-                ? await registerFirebaseSignup(payload)
-                : await registerClassicSignup(payload);
+        console.log(payload);
 
-            const { data, error } = request;
+        // try {
+        //     const request = firebaseToken
+        //         ? await registerFirebaseSignup(payload)
+        //         : await registerClassicSignup(payload);
 
-            if (error.value != null) {
-                throw error.value.response;
-            }
-            const { message, status } = data.value;
-            await logout()
-            // TODO: Notification banner
-        } catch (error) {
-            console.log(error);
-            return;
-        }
+        //     const { data, error } = request;
 
-        currentStep.value++;
+        //     if (error.value != null) {
+        //         throw error.value.response;
+        //     }
+        //     const { message, status } = data.value;
+        //     await logout()
+        //     // TODO: Notification banner
+        // } catch (error) {
+        //     console.log(error);
+        //     return;
+        // }
+
+        // currentStep.value++;
     }
 };
 
