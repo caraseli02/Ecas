@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid rounded-b-md shadow-card max-h-[calc(100vh-170px)] overflow-hidden md:h-[448px] xl:h-[550px] transition-all duration-150"
+    class="grid rounded-b-md shadow-card max-h-[calc(100vh-170px)] md:h-[448px] xl:h-[550px] transition-all duration-150"
     :class="[
       isBannerExpanded
         ? 'grid-cols-[0px,100%] md:grid-cols-[0px,728px] lg:grid-cols-[0px,984px] xl:grid-cols-[0px,1400px]'

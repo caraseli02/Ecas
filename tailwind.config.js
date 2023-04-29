@@ -40,8 +40,8 @@ module.exports = {
           '2xl': '1440px'
         },
         padding: {
-          DEFAULT: '15px',
-          md: '20px'
+          DEFAULT: '1rem',
+          md: '1.5rem'
         }
       }
     },
