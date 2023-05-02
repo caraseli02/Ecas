@@ -1,7 +1,7 @@
 <template>
-  <div class="fixed z-[60] top-0 left-0 w-screen h-screen">
+  <div class="fixed z-[60] top-0 left-0 w-screen h-screen pointer-events-none">
     <div
-      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh md:w-[450px]"
+      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh pointer-events-auto md:w-[450px]"
     >
       <div
         class="flex items-center justify-between p-5 border-b border-gray-200"
@@ -96,10 +96,6 @@
         </a>
       </div>
     </div>
-    <div
-      class="hidden absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer md:block"
-      @click="$emit('close')"
-    />
   </div>
 </template>
 
