@@ -153,7 +153,7 @@
         <Transition name="fade">
           <LayoutHeaderMainMenuLarge
             v-if="showNavModal"
-            class="hidden absolute z-[60] -bottom-[7px] left-0 translate-y-full w-full max-w-max md:grid"
+            class="hidden absolute z-[60] -bottom-[8px] left-0 translate-y-full w-full max-w-max md:grid"
           />
         </Transition>
       </div>

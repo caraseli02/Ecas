@@ -1,6 +1,6 @@
 <template>
   <section ref="elDOM" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
-    <div class="container px-[11px] md:px-4">
+    <div class="container">
       <div
         class="flex items-start justify-between border-b border-gray-200 mb-5 px-1 md:mb-[26px] xl:mb-9"
       >

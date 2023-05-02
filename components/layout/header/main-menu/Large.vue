@@ -1,15 +1,15 @@
 <template>
   <div
-    class="grid rounded-b-md shadow-card max-h-[calc(100vh-170px)] md:h-[448px] xl:h-[550px] transition-all duration-150"
+    class="grid grid-cols-[0px,1fr] rounded-b-md shadow-card max-h-[calc(100vh-178px)] md:h-[448px] xl:h-[550px] transition-all duration-150"
     :class="[
       isBannerExpanded
-        ? 'grid-cols-[0px,100%] md:grid-cols-[0px,728px] lg:grid-cols-[0px,984px] xl:grid-cols-[0px,1400px]'
-        : 'grid-cols-[0px,100%] md:grid-cols-[260px,468px] lg:grid-cols-[260px,724px] xl:grid-cols-[290px,1110px]',
+        ? ''
+        : 'grid-cols-[0px,1fr] md:grid-cols-[260px,1fr] lg:grid-cols-[260px,1fr] xl:grid-cols-[290px,1fr]',
     ]"
     v-click-outside="() => handleClickOutside()"
   >
     <div
-      class="relative z-40 flex flex-col gap-1 p-2.5 bg-white border-r-2 border-gray-200 max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin rounded-bl-md w-[260px] transition-opacity duration-200 xl:w-[290px] xl:py-[13px] xl:gap-1"
+      class="relative z-40 flex flex-col gap-1 p-2.5 bg-white border-r-2 border-gray-200 max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-bl-md w-[260px] transition-opacity duration-200 xl:w-[290px] xl:py-[13px] xl:gap-1"
       :class="[
         isStatic ? 'hidden h-0 md:h-auto md:flex' : '',
         isBannerExpanded ? 'md:opacity-0 md:pointer-events-none' : '',
@@ -50,7 +50,7 @@
       </button>
     </div>
     <div
-      class="relative z-20 col-start-2 row-start-1 flex flex-col items-start px-[15px] pt-[15px] text-white h-full max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin transition-all duration-500 md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
+      class="relative z-20 col-start-2 row-start-1 flex flex-col items-start px-[15px] pt-[15px] text-white h-full max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin transition-all duration-500 md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
       :class="[
         !selectedCategory && !selectedSubCategory
           ? ''
@@ -157,7 +157,7 @@
       </button>
     </div>
     <div
-      class="relative z-30 col-start-2 row-start-1 flex flex-col bg-white font-Inter max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:hidden"
+      class="relative z-30 col-start-2 row-start-1 flex flex-col bg-white font-Inter max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:hidden"
       :class="[
         selectedCategory ? '' : 'opacity-0 pointer-events-none -translate-x-10',
       ]"
@@ -233,7 +233,7 @@
       </div>
     </div>
     <div
-      class="hidden relative z-30 col-start-2 row-start-1 grid-cols-[1fr,340px] gap-[25px] bg-white font-Inter max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:grid xl:gap-0"
+      class="hidden relative z-30 col-start-2 row-start-1 grid-cols-[1fr,340px] gap-[25px] bg-white font-Inter max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:grid xl:gap-0"
       :class="[
         selectedCategory ? '' : 'opacity-0 pointer-events-none -translate-x-10',
       ]"
