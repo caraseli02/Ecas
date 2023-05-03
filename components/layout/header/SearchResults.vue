@@ -1,9 +1,12 @@
 <template>
   <div
-    class="absolute z-50 -bottom-2 translate-y-full left-0 w-full bg-white border border-gray-100 rounded-md py-2 pl-2 shadow-card md:-bottom-1"
+    class="absolute z-50 -bottom-3 translate-y-full left-0 w-full bg-white border border-[#F2F2F2] rounded-md py-2 pl-2 pr-0.5 shadow-card md:-bottom-1"
+    :style="{
+      boxShadow: '0px 4px 12px rgba(51, 51, 51, 0.1)',
+    }"
   >
     <div
-      class="grid grid-cols-1 max-h-[340px] overflow-auto scrollbar-thin pr-2"
+      class="grid grid-cols-1 max-h-[340px] overflow-auto scrollbar-thin pr-1.5"
     >
       <NuxtLink
         v-for="(_, index) in 20"
