@@ -121,11 +121,19 @@
         :src="SlideBg"
         alt="Background"
         class="absolute z-10 top-0 left-0 w-full h-full object-cover"
-        :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md']"
+        :class="[
+          isBannerExpanded
+            ? 'rounded-b-md'
+            : 'rounded-br-md max-md:rounded-bl-md',
+        ]"
       />
       <div
         class="absolute z-10 top-0 left-0 w-full h-full opacity-75 pointer-events-none"
-        :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md']"
+        :class="[
+          isBannerExpanded
+            ? 'rounded-b-md'
+            : 'rounded-br-md max-md:rounded-bl-md',
+        ]"
         :style="{
           background:
             'linear-gradient(85.26deg, #001238 17.24%, rgba(0, 127, 255, 0.85) 106.53%)',

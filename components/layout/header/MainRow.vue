@@ -160,7 +160,7 @@
     </div>
   </div>
   <Teleport to="body">
-    <Transition name="slide-from-right">
+    <Transition name="slide-from-left">
       <LayoutHeaderMainMenu v-if="showNavModal" />
     </Transition>
     <Transition name="fade">
