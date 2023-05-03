@@ -29,7 +29,9 @@
             New
           </div>
         </div>
-        <div class="text-xs leading-[1.33] truncate lg:w-[calc(100%-50px)]">
+        <div
+          class="text-xs leading-[1.33] truncate text-gray-300 lg:w-[calc(100%-50px)]"
+        >
           Cable - PHY 1-CH 1.1V/1.8V/2.5V/3.3V 48-Pin LFCSP EP Tray 1-CH
           1.1V/1.8V/2.5V/3.3V 48-Pin LFCSP EP Tray
         </div>
