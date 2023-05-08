@@ -20,10 +20,10 @@
                             <div
                                 class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2.5"
                                 :class="[
-                                    details.useContactEmail
-                                        ? 'bg-blue border-blue group-hover:bg-white'
-                                        : 'bg-white  border-border group-hover:border-gray-300',
-                                ]"
+                                        details.useContactEmail
+                                            ? 'bg-blue border-blue group-hover:bg-white'
+                                            : 'bg-white  border-border group-hover:border-gray-300',
+                                    ]"
                             >
                                 <CheckIcon
                                     v-if="details.useContactEmail"
@@ -77,22 +77,21 @@
                             <button
                                 class="relative w-10 h-[22px] rounded-[25px] transition-colors duration-300"
                                 :class="[
-                                    details.subscribeToNewsletter
-                                        ? 'bg-blue '
-                                        : 'bg-border',
-                                ]"
-                                @click="
-                                    details.subscribeToNewsletter =
+                                        details.subscribeToNewsletter
+                                            ? 'bg-blue '
+                                            : 'bg-border',
+                                    ]"
+                                @click="details.subscribeToNewsletter =
                                     !details.subscribeToNewsletter
-                                "
+                                    "
                             >
                                 <div
                                     class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full transition-all duration-300"
                                     :class="[
-                                        details.subscribeToNewsletter
-                                            ? ' right-1'
-                                            : 'right-5',
-                                    ]"
+                                            details.subscribeToNewsletter
+                                                ? ' right-1'
+                                                : 'right-5',
+                                        ]"
                                 />
                             </button>
                         </div>
@@ -101,17 +100,16 @@
                                 :value="details.agreeToTerms"
                                 type="checkbox"
                                 class="sr-only"
-                                @change="
-                                    details.agreeToTerms = !details.agreeToTerms
-                                "
+                                @change="details.agreeToTerms = !details.agreeToTerms
+                                    "
                             />
                             <div
                                 class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2.5"
                                 :class="[
-                                    details.agreeToTerms
-                                        ? 'bg-blue border-blue group-hover:bg-white'
-                                        : 'bg-white  border-border group-hover:border-gray-300',
-                                ]"
+                                        details.agreeToTerms
+                                            ? 'bg-blue border-blue group-hover:bg-white'
+                                            : 'bg-white  border-border group-hover:border-gray-300',
+                                    ]"
                             >
                                 <CheckIcon
                                     v-if="details.agreeToTerms"
@@ -172,14 +170,15 @@
 import QuestionIcon from "@/assets/icons/question-circle.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import CheckIcon from "@/assets/icons/check.svg";
-import { SignupProfileDetails, SignupContactDetails } from "~~/types";
+import { SignupProfileDetails, SignupContactDetails, SignupBusinessDetails, SignupAccountType } from "~~/types";
 import { useAuthStore } from "~~/store/authStore";
 
 defineEmits(["continue", "back"]);
 
 const details = useState<SignupProfileDetails>("signup-profile-details");
-const contact = useState<SignupContactDetails>('signup-contact-details')
-
+const contact = useState<SignupContactDetails>('signup-contact-details');
+const businessDetails = useState<SignupBusinessDetails>("signup-business-details");
+const selectedType = useState<SignupAccountType>("signup-account-type");
 const firebaseToken = useAuthStore().firebaseTempToken
 
 if (firebaseToken) {
@@ -191,12 +190,14 @@ if (firebaseToken) {
 
 const useContactEmailCheck = () => {
     details.value.useContactEmail = !details.value.useContactEmail
-    if (details.value.useContactEmail && !firebaseToken) {
-        details.value.accountEmail.value = contact.value.email.value
-        details.value.confirmAccountEmail.value = contact.value.email.value;
-    } else if (!firebaseToken) {
-        details.value.accountEmail.value = "";
-        details.value.confirmAccountEmail.value = "";
+    if (!firebaseToken) {
+        if (selectedType.value === "business" || selectedType.value === "sole-trader") {
+            details.value.accountEmail.value = details.value.useContactEmail ? contact.value.companyEmail.value : ""
+            details.value.confirmAccountEmail.value = details.value.useContactEmail ? contact.value.companyEmail.value : ""
+        } else {
+            details.value.accountEmail.value = details.value.useContactEmail ? contact.value.email.value : ""
+            details.value.confirmAccountEmail.value = details.value.useContactEmail ? contact.value.email.value : ""
+        }
     }
 };
 </script>

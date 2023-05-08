@@ -28,8 +28,8 @@
               placeholder="VAT Number"
             />
             <FormSelect
-              v-model="details.country.value"
-              :error="details.country.error"
+              v-model="details.country.value.value"
+              :error="details.country.value.error"
               :options="countries"
               label="Country"
               placeholder="Select Country"

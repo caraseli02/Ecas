@@ -19,13 +19,12 @@ export interface SignupBusinessDetails {
   fullCompanyName: InputObject;
   companyRegistrationNumber: InputObject;
   vatNumber: InputObject;
-  country: InputObject;
+  country: CountryType;
   city: InputObject;
   postcode: InputObject;
   addressLine1: InputObject;
   addressLine2: InputObject;
 }
-
 export interface SignupPersonalDetails {
   firstName: InputObject;
   lastName: InputObject;
@@ -55,4 +54,11 @@ export interface SignupProfileDetails {
   repeatPassword: InputObject;
   subscribeToNewsletter: boolean;
   agreeToTerms: boolean;
+}
+
+
+interface CountryType {
+  value: InputObject;
+  label: String;
+  icon: String
 }
