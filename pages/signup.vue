@@ -73,75 +73,75 @@ const selectedType = useState<SignupAccountType | "">(
 const selectedBusinessType = ref("");
 
 const businessDetails = useState<SignupBusinessDetailsType>(
-    "signup-business-details",
-    () => {
-        return {
-            fullCompanyName: {
-                value: "",
-                error: "",
-            },
-            companyRegistrationNumber: {
-                value: "",
-                error: "",
-            },
-            vatNumber: {
-                value: "",
-                error: "",
-            },
-            country: {
-                value: {
-                    value: "",
-                    error: ""
-                },
-                label: "",
-                icon: ""
-            },
-            city: {
-                value: "",
-                error: "",
-            },
-            postcode: {
-                value: "",
-                error: "",
-            },
-            addressLine1: {
-                value: "",
-                error: "",
-            },
-            addressLine2: {
-                value: "",
-                error: "",
-            },
-        };
-    }
+  "signup-business-details",
+  () => {
+    return {
+      fullCompanyName: {
+        value: "",
+        error: "",
+      },
+      companyRegistrationNumber: {
+        value: "",
+        error: "",
+      },
+      vatNumber: {
+        value: "",
+        error: "",
+      },
+      country: {
+        value: {
+          value: "",
+          error: "",
+        },
+        label: "",
+        icon: "",
+      },
+      city: {
+        value: "",
+        error: "",
+      },
+      postcode: {
+        value: "",
+        error: "",
+      },
+      addressLine1: {
+        value: "",
+        error: "",
+      },
+      addressLine2: {
+        value: "",
+        error: "",
+      },
+    };
+  }
 );
 
 const handleBusinessDetailsContinue = () => {
-    let hasError = false
-    if (selectedType.value === 'business') {
-        hasError = checkForInputErrors([
-            businessDetails.value.fullCompanyName,
-            businessDetails.value.companyRegistrationNumber,
-            businessDetails.value.vatNumber,
-            businessDetails.value.country.value,
-            businessDetails.value.city,
-            businessDetails.value.postcode,
-            businessDetails.value.addressLine1,
-        ]);
-    } else if (selectedType.value === 'sole-trader') {
-        hasError = checkForInputErrors([
-            businessDetails.value.fullCompanyName,
-            businessDetails.value.companyRegistrationNumber,
-            businessDetails.value.country.value,
-            businessDetails.value.city,
-            businessDetails.value.postcode,
-            businessDetails.value.addressLine1,
-        ]);
-    }
+  let hasError = false;
+  if (selectedType.value === "business") {
+    hasError = checkForInputErrors([
+      businessDetails.value.fullCompanyName,
+      businessDetails.value.companyRegistrationNumber,
+      businessDetails.value.vatNumber,
+      businessDetails.value.country.value,
+      businessDetails.value.city,
+      businessDetails.value.postcode,
+      businessDetails.value.addressLine1,
+    ]);
+  } else if (selectedType.value === "sole-trader") {
+    hasError = checkForInputErrors([
+      businessDetails.value.fullCompanyName,
+      businessDetails.value.companyRegistrationNumber,
+      businessDetails.value.country.value,
+      businessDetails.value.city,
+      businessDetails.value.postcode,
+      businessDetails.value.addressLine1,
+    ]);
+  }
 
-    if (!hasError) {
-        currentStep.value++;
-    }
+  if (!hasError) {
+    currentStep.value++;
+  }
 };
 
 const personalDetails = useState<SignupPersonalDetailsType>(
@@ -240,36 +240,36 @@ const contactDetails = useState<SignupContactDetailsType>(
 );
 
 const handleContactDetailsContinue = () => {
-    let inputsToCheck = [
-        contactDetails.value.phone,
-        contactDetails.value.mobile,
-    ];
+  let inputsToCheck = [contactDetails.value.phone, contactDetails.value.mobile];
 
-    if (selectedType.value === 'personal') {
-        inputsToCheck.push(
-            contactDetails.value.email,
-            contactDetails.value.confirmEmail
-        );
-    } else if (selectedType.value === 'business' || selectedType.value === 'sole-trader') {
-        inputsToCheck.push(
-            contactDetails.value.firstName,
-            contactDetails.value.lastName,
-            contactDetails.value.companyEmail,
-            contactDetails.value.confirmCompanyEmail
-        );
-    }
+  if (selectedType.value === "personal") {
+    inputsToCheck.push(
+      contactDetails.value.email,
+      contactDetails.value.confirmEmail
+    );
+  } else if (
+    selectedType.value === "business" ||
+    selectedType.value === "sole-trader"
+  ) {
+    inputsToCheck.push(
+      contactDetails.value.firstName,
+      contactDetails.value.lastName,
+      contactDetails.value.companyEmail,
+      contactDetails.value.confirmCompanyEmail
+    );
+  }
 
-    const hasError =
-        checkForInputErrors(inputsToCheck) ||
-        checkContactConfirmationEmail({
-            email: contactDetails.value.email,
-            confirmEmail: contactDetails.value.confirmEmail,
-        });
+  const hasError =
+    checkForInputErrors(inputsToCheck) ||
+    checkContactConfirmationEmail({
+      email: contactDetails.value.email,
+      confirmEmail: contactDetails.value.confirmEmail,
+    });
 
-    if (!hasError) {
-        currentStep.value++;
-        inputsToCheck = []
-    }
+  if (!hasError) {
+    currentStep.value++;
+    inputsToCheck = [];
+  }
 };
 
 const profileDetails = useState<SignupProfileDetailsType>(
@@ -425,7 +425,7 @@ const handleSubmit = async () => {
             registrationNumber:
               businessDetails.value.companyRegistrationNumber.value,
             vat: businessDetails.value.vatNumber.value,
-            country: businessDetails.value.country.value,
+            country: businessDetails.value.country.value.value.value,
             city: businessDetails.value.city.value,
             postcode: businessDetails.value.postcode.value,
             address1: businessDetails.value.addressLine1.value,
@@ -434,101 +434,33 @@ const handleSubmit = async () => {
             firstName: contactDetails.value.firstName.value,
             lastName: contactDetails.value.lastName.value,
             phone: contactDetails.value.phone.value,
-            email: contactDetails.value.email.value,
+            email: contactDetails.value.companyEmail.value,
           },
         },
       };
       payload = Object.assign({}, businessPayload);
     }
 
-    const hasError =
-        checkForInputErrors(inputsToCheck) ||
-        checkProfileConfirmationEmail({
-            accountEmail: profileDetails.value.accountEmail,
-            confirmAccountEmail: profileDetails.value.confirmAccountEmail,
-        });
+    try {
+      const request = firebaseToken
+        ? await registerFirebaseSignup(payload)
+        : await registerClassicSignup(payload);
 
-    if (!hasError) {
-        let payload: SignupBusinessPayload | SignupPersonalPayload | null =
-            null;
-        if (selectedType.value === "personal") {
-            const personalPayload: SignupPersonalPayload = {
-                account: {
-                    accountType: mapType(selectedType.value),
-                    role: 2,
-                    profileDetails: {
-                        email: profileDetails.value.accountEmail.value,
-                        password: profileDetails.value.password.value,
-                    },
-                    contactDetails: {
-                        firstName: personalDetails.value.firstName.value,
-                        lastName: personalDetails.value.lastName.value,
-                        phone: contactDetails.value.phone.value,
-                        email: contactDetails.value.email.value,
-                    },
-                },
-            };
+      const { data, error } = request;
 
-            payload = Object.assign({}, personalPayload);
-        } else {
-            const businessPayload: SignupBusinessPayload = {
-                account: {
-                    accountType: mapType(selectedType.value),
-                    role: 2,
-                    profileDetails: {
-                        email: profileDetails.value.accountEmail.value,
-                        password: profileDetails.value.password.value,
-                    },
-                    companyDetails: {
-                        name: businessDetails.value.fullCompanyName.value,
-                        registrationNumber:
-                            businessDetails.value.companyRegistrationNumber
-                                .value,
-                        vat: businessDetails.value.vatNumber.value,
-                        country: businessDetails.value.country.value.value.value,
-                        city: businessDetails.value.city.value,
-                        postcode: businessDetails.value.postcode.value,
-                        address1: businessDetails.value.addressLine1.value,
-                    },
-                    contactDetails: {
-                        firstName: contactDetails.value.firstName.value,
-                        lastName: contactDetails.value.lastName.value,
-                        phone: contactDetails.value.phone.value,
-                        email: contactDetails.value.companyEmail.value
-                    },
-                },
-            };
-            payload = Object.assign({}, businessPayload);
-        }
-
-        try {
-            const request = firebaseToken
-                ? await registerFirebaseSignup(payload)
-                : await registerClassicSignup(payload);
-
-            const { data, error } = request;
-
-            if (error.value != null) {
-                throw error.value.response;
-            }
-            const { message, status } = data.value;
-            await logout()
-            // TODO: Notification banner
-        } catch (error) {
-            console.log(error);
-            return;
-        }
-
-        currentStep.value++;
+      if (error.value != null) {
+        throw error.value.response;
+      }
+      const { message, status } = data.value;
+      await logout();
+      // TODO: Notification banner
+    } catch (error) {
+      console.log(error);
+      return;
     }
-    const { message, status } = data.value;
-    // TODO: Notification banner
-  } catch (error) {
-    console.log(error);
-    return;
-  }
 
-  currentStep.value++;
+    currentStep.value++;
+  }
 };
 
 definePageMeta({
