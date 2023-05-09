@@ -434,15 +434,15 @@ const totalPages = computed(() => {
 });
 </script>
 
-<style>
+<style lang="scss">
 .searchProducts--pagination-item {
-  @apply cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md bg-gray-200 text-gray-300 transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white;
+  @apply cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md bg-gray-200 text-gray-300 transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white #{!important};
 }
 .searchProducts--pagination-item-active .searchProducts--pagination-item {
-  @apply bg-blue text-white;
+  @apply bg-blue text-white #{!important};
 }
 .searchProducts--pagination-item_prev,
 .searchProducts--pagination-item_next {
-  @apply hidden;
+  @apply hidden #{!important};
 }
 </style>

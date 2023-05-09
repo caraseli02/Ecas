@@ -1,6 +1,6 @@
 <template>
   <section ref="elDOM" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
-    <div class="container px-[11px] md:px-4">
+    <div class="container">
       <div
         class="flex items-start justify-between border-b border-gray-200 mb-5 px-1 md:mb-[26px] xl:mb-9"
       >
@@ -317,22 +317,22 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style lang="scss">
 .homeFeaturedProducts--swiper {
-  @apply px-1 pt-1 pb-[30px];
+  @apply px-1 pt-1 pb-[30px] #{!important};
 }
 .homeFeaturedProducts--swiper .swiper-slide {
-  @apply h-auto;
+  @apply h-auto #{!important};
 }
 .homeFeaturedProducts--swiper .swiper-pagination {
-  @apply bottom-0 space-x-1.5 md:space-x-2;
+  @apply bottom-0 space-x-1.5 md:space-x-2 #{!important};
 }
 .homeFeaturedProducts--swiper .swiper-pagination-bullet {
-  @apply w-1.5 h-1.5 bg-[#D9D9D9] rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2;
+  @apply w-1.5 h-1.5 bg-[#D9D9D9] rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
   margin-right: 0 !important;
 }
 .homeFeaturedProducts--swiper
   .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  @apply w-[25px] bg-gray-100;
+  @apply w-[25px] bg-gray-100 #{!important};
 }
 </style>

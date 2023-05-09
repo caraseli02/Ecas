@@ -158,7 +158,7 @@
         @open="$emit('open-folder', item)"
       />
     </div>
-    <div class="grid grid-cols-1 gap-5 px-[15px] mb-10">
+    <div class="grid grid-cols-1 gap-4 px-4 mb-10">
       <LayoutFavoritesCartModalFavoritesProductItem
         v-for="(item, index) in folder.items?.filter(
           (e) => e.type === 'product'

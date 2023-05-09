@@ -491,7 +491,7 @@ const categories = ref([
     ],
   },
 ]);
-const selectedCategory = ref<typeof categories.value[0] | null>(null);
+const selectedCategory = ref<(typeof categories.value)[0] | null>(null);
 const selectedSubCategory = ref();
 
 const navItems = [

@@ -1,8 +1,7 @@
 <template>
-  <div class="relative">
-    <div v-if="label" class="text-sm text-gray-300 mb-2">
+  <div class="relative" :class="[error ? 'mb-4' : '']">
+    <div v-if="label" class="text-sm text-gray-300 mb-1">
       {{ label }}
-      <abbr v-if="mandatory" title="required" class="text-red">*</abbr>
     </div>
     <button
       class="flex items-center justify-between px-2.5 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none"
@@ -108,8 +107,8 @@
         </template>
         <template v-else>
           <button
-            v-for="(option, index) in filteredOptions"
-            :key="index"
+            v-for="option in filteredOptions"
+            :key="option.value"
             class="flex w-full px-2.5 py-[9px] text-left rounded-[5px] text-gray-300 transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-dark"
             :class="[option.value === modelValue?.value ? 'text-blue' : '']"
             @click="inputHandler(option)"
@@ -135,7 +134,7 @@
     <Transition name="fade">
       <div
         v-if="error"
-        class="absolute bottom-0 left-0 translate-y-full pointer-events-none text-[10px] leading-normal text-red"
+        class="absolute -bottom-1 left-0 translate-y-full pointer-events-none text-xs leading-normal text-red"
       >
         {{ error }}
       </div>
@@ -168,11 +167,6 @@ const props = defineProps({
   },
   search: Boolean,
   error: String,
-  mandatory: {
-    type: Boolean,
-    default: true,
-    required: false
-  }
 });
 
 const emits = defineEmits(["update:modelValue"]);

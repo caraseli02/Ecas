@@ -67,14 +67,14 @@ const logos = [
 ];
 </script>
 
-<style>
+<style lang="scss">
 .homeManufacturers--swiper {
-  @apply lg:px-[14px] xl:pl-[38px] xl:pr-0;
+  @apply lg:px-[14px] xl:pl-[38px] xl:pr-0 #{!important};
 }
 .homeManufacturers--swiper .swiper-slide:last-child {
   margin-right: 0 !important;
 }
 .homeManufacturers--swiper .swiper-wrapper {
-  @apply md:justify-between;
+  @apply md:justify-between #{!important};
 }
 </style>

@@ -1,7 +1,10 @@
 <template>
-  <div ref="elDOM" class="fixed z-[60] top-0 left-0 w-full h-screen">
+  <div
+    ref="elDOM"
+    class="fixed z-[60] top-0 left-0 w-full h-screen pointer-events-none"
+  >
     <div
-      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh overflow-hidden md:w-[450px]"
+      class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh overflow-hidden pointer-events-auto md:w-[450px]"
     >
       <button
         class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 flex-shrink-0 transition-colors duration-300 mt-5 ml-auto mr-5 mb-2.5 hover:text-gray-300"
@@ -41,15 +44,9 @@
         <LayoutFavoritesCartModalFavorites
           v-if="activeNavItem === 'favorites'"
         />
-        <div v-else class="px-5 text-sm font-Inter text-gray-300 pt-5">
-          Recently added products
-        </div>
+        <LayoutFavoritesCartModalCart v-else />
       </div>
     </div>
-    <div
-      class="hidden absolute top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer md:block"
-      @click="$emit('close')"
-    />
   </div>
 </template>
 
@@ -99,7 +96,6 @@ const setNavLine = () => {
     }
   }
 };
-
 
 const setActiveNav = (item: string) => {
   activeNavItem.value = textUtil.slugify(item) as typeof activeNavItem.value;

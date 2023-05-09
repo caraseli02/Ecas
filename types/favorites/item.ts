@@ -4,7 +4,7 @@ export interface FavoriteItem {
   title: string;
   description?: string;
   items?: FavoriteItem[];
-  selected: boolean;
+  selected?: boolean;
   quantity?: number;
   image?: any;
 }

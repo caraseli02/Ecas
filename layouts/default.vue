@@ -2,8 +2,8 @@
   <div>
     <LayoutHeader :isScrolled="isScrolled" />
     <main
-      class="pt-[91px]"
-      :class="[isScrolled ? 'md:pt-[167px]' : 'md:pt-[170px]']"
+      class="pt-[86px]"
+      :class="[isScrolled ? 'md:pt-[167px]' : 'md:pt-[178px]']"
     >
       <slot />
     </main>

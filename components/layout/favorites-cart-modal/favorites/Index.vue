@@ -119,7 +119,7 @@
         />
       </div>
       <div
-        class="pt-5 px-[15px] pb-10 flex-1 h-full overflow-y-auto overscroll-contain scrollbar-thin max-h-vh"
+        class="pt-6 px-4 pb-10 flex-1 h-full overflow-y-auto overscroll-contain scrollbar-thin max-h-vh"
       >
         <div class="grid grid-cols-1 gap-2.5 mb-[30px]">
           <LayoutFavoritesCartModalFavoritesFolderItem
@@ -133,7 +133,7 @@
             @show-options="handleShowOptions(item)"
           />
         </div>
-        <div class="grid grid-cols-1 gap-5">
+        <div class="grid grid-cols-1 gap-4">
           <LayoutFavoritesCartModalFavoritesProductItem
             v-for="(item, index) in filteredItems.filter(
               (e) => e.type === 'product'
@@ -489,8 +489,8 @@ watch(selectedItemsLength, (newVal) => {
 });
 </script>
 
-<style>
+<style lang="scss">
 .favoritesModal--swiper .swiper-slide {
-  @apply w-[42px];
+  @apply w-[42px] #{!important};
 }
 </style>
