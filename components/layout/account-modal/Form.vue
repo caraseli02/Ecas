@@ -189,6 +189,7 @@ const handleSignIn = async () => {
 };
 
 const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
+    console.log(token);
     const { data, error } = await useFetchAPI<UserDetailsResponse>(
         `user/${parsedToken.user_id}/details`,
         {

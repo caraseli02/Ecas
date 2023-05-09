@@ -267,7 +267,6 @@ const handleContactDetailsContinue = () => {
 
     if (!hasError) {
         currentStep.value++;
-        inputsToCheck = []
     }
 };
 

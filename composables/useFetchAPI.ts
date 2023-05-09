@@ -6,18 +6,22 @@ type useFetchType = typeof useFetch;
 export const useFetchAPI: useFetchType = (path, options: any) => {
     const config = useRuntimeConfig();
 
-    options.baseURL = config.BASE_URL_API;
+    let headers = {
+        accept: 'application/json',
+        ...options?.headers,
+    }
+
+    if (process.server) {
+        headers = {
+            ...headers,
+            ...useRequestHeaders(['cookie']),
+            referer: config.public.baseURL
+        }
+    }
 
     return useFetch(path, {
+        baseURL: import.meta.env.VITE_BASE_URL_API as string,
+        headers,
         ...options,
-        onRequest({ request, options }) {
-
-        },
-        onResponse({ request, response, options }) {
-
-        },
-        onResponseError({ request, response, options }) {
-
-        }
     });
 };

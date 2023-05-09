@@ -227,18 +227,21 @@ onMounted(() => {
 .homeProducts--swiper {
   @apply px-1 pt-1 pb-[30px];
 }
+
 .homeProducts--swiper .swiper-slide {
   @apply h-auto;
 }
+
 .homeProducts--swiper .swiper-pagination {
   @apply bottom-0 space-x-1.5 md:space-x-2;
 }
+
 .homeProducts--swiper .swiper-pagination-bullet {
   @apply w-1.5 h-1.5 bg-[#D9D9D9] rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2;
   margin-right: 0 !important;
 }
-.homeProducts--swiper
-  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+
+.homeProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
   @apply w-[25px] bg-gray-100;
 }
 </style>
