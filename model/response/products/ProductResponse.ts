@@ -24,6 +24,7 @@ export interface ProductInterface {
 export interface ProductDetailsInterface {
     SummaryData: ProductSummaryDataInterface;
     ParametricData: ProductParametricDataInterface;
+    ProductImage: ProductImage
 }
 
 export interface ProductSummaryDataInterface {
@@ -62,4 +63,9 @@ export interface AdditionalInfoInterface {
 export interface AdminSettings {
     discount?: DiscountInterface;
     featured?: boolean;
+}
+
+export interface ProductImage {
+    ProductImageLarge: string
+    ProductImageSmall: string
 }

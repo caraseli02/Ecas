@@ -323,8 +323,8 @@ watch(activeFilter, async (value) => {
             slug: value._id,
             title: value.alias,
             category: "category",
-            price: value.priceEur,
-            cover: ProductCover1,
+            price: value.priceEur.toFixed(3),
+            cover: value.details.ProductImage.ProductImageLarge,
         });
     });
 });
@@ -350,23 +350,23 @@ const setActiveFilter = (filter: string) => {
 
 onMounted(async () => {
     setFilterLine();
+});
 
-    let product = await fetchProducts(`products/featured`);
+const fetchProducts = async (path: string) => {
+    return await useFetchAPI<ProductResponse>(path);
+};
+
+let product = await fetchProducts(`products/featured`);
     productList.value = [];
     product.data.value?.data.forEach((value) => {
         productList.value.push({
             slug: value._id,
             title: value.alias,
             category: "category",
-            price: value.priceEur,
-            cover: ProductCover1,
+            price: value.priceEur.toFixed(3),
+            cover: value.details.ProductImage.ProductImageLarge
         });
     });
-});
-
-const fetchProducts = async (path: string) => {
-    return await useFetchAPI<ProductResponse>(path);
-};
 </script>
 
 <style>
