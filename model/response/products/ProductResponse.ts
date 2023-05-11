@@ -44,6 +44,7 @@ export interface ProductParametricDataFeaturesInterface extends CountInterface {
     FeatureUnit: string;
     FeatureID?: string;
     FeatureValueDetails?: string;
+    checked?: boolean
 }
 
 export interface CountInterface {

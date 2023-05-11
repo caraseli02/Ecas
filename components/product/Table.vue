@@ -43,16 +43,16 @@
     <div class="mb-[25px]">
       <table class="w-full">
         <tr
-          v-for="(item, index) in tableItems"
+          v-for="(item, index) in features.filter(feature => feature.FeatureValue != '')"
           :key="index"
           class="group w-full text-xs leading-tight font-medium font-Inter text-left cursor-pointer transition-colors duration-300 odd:bg-[#F2F2F2] hover:text-blue"
           @click="item.checked = !item.checked"
         >
           <td class="pl-[15px] py-1 lg:pl-5">
-            {{ item.label }}
+            {{ item.FeatureName }}
           </td>
           <td class="py-1">
-            {{ item.value }}
+            {{ item.FeatureValue }}
           </td>
           <td class="flex justify-end pr-[15px] py-1 lg:pr-5">
             <div
@@ -82,6 +82,7 @@
 
 <script setup lang="ts">
 import CheckIcon from "@/assets/icons/check.svg";
+import { ProductParametricDataFeaturesInterface } from "~~/model/response/products/ProductResponse";
 
 const elDOM = ref<HTMLElement | null>(null);
 
@@ -89,6 +90,14 @@ const filters = ref(["Specifications", "Tab 2", "Tab 3"]);
 const activeFilter = ref("specifications");
 const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
+
+const props = defineProps<{
+  features: ProductParametricDataFeaturesInterface[]
+}>()
+const features = props.features.map(item => {
+  item.checked = false
+  return item
+})
 
 const tableItems = ref([
   {

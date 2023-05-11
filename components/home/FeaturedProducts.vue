@@ -316,15 +316,15 @@ const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
 
 watch(activeFilter, async (value) => {
-    let product = await fetchProducts(`products/${value}`);
+    let { data } = await fetchProducts(`products/${value}`);
     productList.value = [];
-    product.data.value?.data.forEach((value) => {
+    data.value?.data.forEach(({ _id, alias, priceEur, details }) => {
         productList.value.push({
-            slug: value._id,
-            title: value.alias,
-            category: "category",
-            price: value.priceEur.toFixed(3),
-            cover: value.details.ProductImage.ProductImageLarge,
+            slug: _id,
+            title: alias,
+            category: "Not supported",
+            price: priceEur.toFixed(3),
+            cover: details.ProductImage.ProductImageLarge
         });
     });
 });
@@ -356,17 +356,17 @@ const fetchProducts = async (path: string) => {
     return await useFetchAPI<ProductResponse>(path);
 };
 
-let product = await fetchProducts(`products/featured`);
-    productList.value = [];
-    product.data.value?.data.forEach((value) => {
-        productList.value.push({
-            slug: value._id,
-            title: value.alias,
-            category: "category",
-            price: value.priceEur.toFixed(3),
-            cover: value.details.ProductImage.ProductImageLarge
-        });
+let { data } = await fetchProducts(`products/featured`);
+productList.value = [];
+data.value?.data.forEach(({ _id, alias, priceEur, details }) => {
+    productList.value.push({
+        slug: _id,
+        title: alias,
+        category: "Not supported",
+        price: priceEur.toFixed(3),
+        cover: details.ProductImage.ProductImageLarge
     });
+});
 </script>
 
 <style>
@@ -387,8 +387,7 @@ let product = await fetchProducts(`products/featured`);
     margin-right: 0 !important;
 }
 
-.homeFeaturedProducts--swiper
-    .swiper-pagination-bullet.swiper-pagination-bullet-active {
+.homeFeaturedProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
     @apply w-[25px] bg-gray-100;
 }
 </style>

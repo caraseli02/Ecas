@@ -9,7 +9,7 @@
       <span
         class="text-[11px] font-Inter leading-tight font-semibold text-white"
       >
-        16,000 in stock
+        {{ product.stock }} in stock
       </span>
     </div>
     <div class="flex justify-end text-xs mb-[18px] lg:hidden">
@@ -27,38 +27,15 @@
           class="flex items-center justify-between gap-3 text-xs leading-tight text-gray-300 pl-[5px] mb-[5px]"
         >
           <div class="flex-shrink-0">Quantity</div>
-          <div>Price ( Ex VAT)</div>
+          <div>Price ( Ex VAT )</div>
         </div>
         <div class="font-Inter mb-4 lg:mb-[9px]">
           <div
             class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight bg-[#F2F2F2] rounded"
+            v-for="(quantity, index) in bulkQuantities" :key="index"
           >
-            <div>1+</div>
-            <div>$150,00</div>
-          </div>
-          <div
-            class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight rounded"
-          >
-            <div>5+</div>
-            <div>$150,00</div>
-          </div>
-          <div
-            class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight rounded"
-          >
-            <div>10+</div>
-            <div>$150,00</div>
-          </div>
-          <div
-            class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight rounded"
-          >
-            <div>20+</div>
-            <div>$150,00</div>
-          </div>
-          <div
-            class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight rounded"
-          >
-            <div>100+</div>
-            <div>$150,00</div>
+            <div>{{ quantity[0] }}+</div>
+            <div>${{ quantity[1].toFixed(3) }}</div>
           </div>
         </div>
         <div class="hidden justify-end text-gray-300 text-xs mb-[9px] lg:flex">
@@ -92,9 +69,9 @@
           class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end"
         >
           <div class="lg:mr-[15px]">
-            <div class="text-sm leading-tight line-through">$ 0,15 (100+)</div>
+            <div class="text-sm leading-tight line-through">$ {{ (product.priceEur * 100).toFixed(3) }} (100+)</div>
             <div class="text-lg leading-tight text-red">
-              <strong>$ 0,095</strong> (100+)
+              <strong>$ {{ ((product.priceEur * 100) * 20 / 100).toFixed(3) }}</strong> (100+)
             </div>
           </div>
           <div
@@ -121,6 +98,17 @@
 <script setup lang="ts">
 import CheckIcon from "@/assets/icons/check-circle.svg";
 import CartIcon from "@/assets/icons/cart.svg";
+import { ProductDetail } from "~~/model/response/products/ProductDetailResponse";
 
-const quantity = ref(0);
+const props = defineProps<{
+  product: ProductDetail
+}>()
+const product = props.product
+const quantity = ref(0)
+
+let bulkQuantities = new Map<number, number>();
+
+for (let i = 1; i < 26; i += 5) {
+  bulkQuantities.set(i, product.priceRon * i)
+}
 </script>

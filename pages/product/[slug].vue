@@ -25,13 +25,14 @@
       <div
         class="grid grid-cols-1 gap-[30px] mb-[30px] md:grid-cols-2 md:gap-5 lg:grid-rows-[repeat(2,auto)] lg:items-start lg:mb-10 xl:grid-cols-[814px,1fr]"
       >
-        <ProductGallery class="md:row-start-1 lg:row-span-2" />
+        <ProductGallery class="md:row-start-1 lg:row-span-2" :images="images" />
         <ProductDetails
           class="md:col-span-2 lg:col-span-1 lg:row-span-1 lg:row-start-1 lg:col-start-2"
+          :product="product"
         />
-        <ProductQuantity class="md:row-start-1 lg:row-span-1 lg:col-start-2" />
+        <ProductQuantity class="md:row-start-1 lg:row-span-1 lg:col-start-2" :product="product" />
       </div>
-      <ProductTable />
+      <ProductTable :features="product.details.ParametricData.Features" />
     </div>
     <ProductBanners />
     <NewProducts />
@@ -54,8 +55,22 @@
 import QuestionIcon from "@/assets/icons/question.svg";
 import TriangleIcon from "@/assets/icons/triangle.svg";
 import PrintIcon from "@/assets/icons/print.svg";
+import { ProductDetail, ProductDetailResponse } from "~~/model/response/products/ProductDetailResponse";
+import { ProductImage } from "~~/model/response/products/ProductResponse";
 
 useHead({
   title: "Product",
 });
+
+
+const route = useRoute()
+
+const { data } = await useFetchAPI<ProductDetailResponse>(`products/${route.params.slug}`)
+const product: ProductDetail = data.value?.data as ProductDetail
+
+let images: ProductImage[] = []
+
+for (let i = 0; i < 3; i++) {
+  images.push(product.details.ProductImage)
+}
 </script>
