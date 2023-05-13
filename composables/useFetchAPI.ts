@@ -20,7 +20,7 @@ export const useFetchAPI: useFetchType = (path, options: any) => {
     }
 
     return useFetch(path, {
-        baseURL: config.public.baseURL,
+        baseURL: config.public.BASE_URL_API,
         headers,
         ...options,
     });
