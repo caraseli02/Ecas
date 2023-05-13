@@ -587,7 +587,7 @@ export const countries = [
   {
     label: "Cambodia",
     value: "KH",
-    icon: "/flags/kH.svg",
+    icon: "/flags/KH.svg",
   },
   {
     label: "Kiribati",

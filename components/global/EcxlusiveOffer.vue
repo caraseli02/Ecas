@@ -95,16 +95,16 @@ const slides = ref([
 ]);
 </script>
 
-<style>
+<style lang="scss">
 .homeExclusiveOffer--swiper .swiper-pagination {
-  @apply bottom-[15px] space-x-1.5 md:space-x-2 lg:-translate-x-24 xl:translate-x-0;
+  @apply bottom-[15px] space-x-1.5 md:space-x-2 lg:-translate-x-24 xl:translate-x-0 #{!important};
 }
 .homeExclusiveOffer--swiper .swiper-pagination-bullet {
-  @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2;
+  @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
   margin-right: 0 !important;
 }
 .homeExclusiveOffer--swiper
   .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  @apply w-[25px] bg-white;
+  @apply w-[25px] bg-white #{!important};
 }
 </style>

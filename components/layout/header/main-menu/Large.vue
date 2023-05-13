@@ -1,16 +1,19 @@
 <template>
   <div
-    class="grid rounded-b-md shadow-card max-h-[calc(100vh-170px)] overflow-hidden md:h-[448px] xl:h-[550px] transition-all duration-150"
+    class="grid grid-cols-[0px,1fr] rounded-b-md shadow-card max-h-[calc(100vh-178px)] md:h-[448px] xl:h-[550px] transition-all duration-150"
     :class="[
       isBannerExpanded
-        ? 'grid-cols-[0px,100%] md:grid-cols-[0px,728px] lg:grid-cols-[0px,984px] xl:grid-cols-[0px,1400px]'
-        : 'grid-cols-[0px,100%] md:grid-cols-[260px,468px] lg:grid-cols-[260px,724px] xl:grid-cols-[290px,1110px]',
+        ? ''
+        : 'grid-cols-[0px,1fr] md:grid-cols-[260px,1fr] lg:grid-cols-[260px,1fr] xl:grid-cols-[290px,1fr]',
     ]"
     v-click-outside="() => handleClickOutside()"
   >
     <div
-      class="relative z-40 flex flex-col gap-1 p-2.5 bg-white border-r-2 border-gray-200 max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin rounded-bl-md w-[260px] xl:w-[290px] xl:py-[13px] xl:gap-1"
-      :class="[isStatic ? 'hidden h-0 md:h-auto md:flex' : '']"
+      class="relative z-40 flex flex-col gap-1 p-2.5 bg-white border-r-2 border-gray-200 max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-bl-md w-[260px] transition-opacity duration-200 xl:w-[290px] xl:py-[13px] xl:gap-1"
+      :class="[
+        isStatic ? 'hidden h-0 md:h-auto md:flex' : '',
+        isBannerExpanded ? 'md:opacity-0 md:pointer-events-none' : '',
+      ]"
     >
       <button
         v-for="(category, index) in categories"
@@ -47,7 +50,7 @@
       </button>
     </div>
     <div
-      class="relative z-20 col-start-2 row-start-1 flex flex-col items-start px-[15px] pt-[15px] text-white h-full max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin transition-all duration-500 md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
+      class="relative z-20 col-start-2 row-start-1 flex flex-col items-start px-[15px] pt-[15px] text-white h-full max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin transition-all duration-500 md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
       :class="[
         !selectedCategory && !selectedSubCategory
           ? ''
@@ -118,11 +121,19 @@
         :src="SlideBg"
         alt="Background"
         class="absolute z-10 top-0 left-0 w-full h-full object-cover"
-        :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md']"
+        :class="[
+          isBannerExpanded
+            ? 'rounded-b-md'
+            : 'rounded-br-md max-md:rounded-bl-md',
+        ]"
       />
       <div
         class="absolute z-10 top-0 left-0 w-full h-full opacity-75 pointer-events-none"
-        :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md']"
+        :class="[
+          isBannerExpanded
+            ? 'rounded-b-md'
+            : 'rounded-br-md max-md:rounded-bl-md',
+        ]"
         :style="{
           background:
             'linear-gradient(85.26deg, #001238 17.24%, rgba(0, 127, 255, 0.85) 106.53%)',
@@ -154,7 +165,7 @@
       </button>
     </div>
     <div
-      class="relative z-30 col-start-2 row-start-1 flex flex-col bg-white font-Inter max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:hidden"
+      class="relative z-30 col-start-2 row-start-1 flex flex-col bg-white font-Inter max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:hidden"
       :class="[
         selectedCategory ? '' : 'opacity-0 pointer-events-none -translate-x-10',
       ]"
@@ -230,7 +241,7 @@
       </div>
     </div>
     <div
-      class="hidden relative z-30 col-start-2 row-start-1 grid-cols-[1fr,340px] gap-[25px] bg-white font-Inter max-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:grid xl:gap-0"
+      class="hidden relative z-30 col-start-2 row-start-1 grid-cols-[1fr,340px] gap-[25px] bg-white font-Inter max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:grid xl:gap-0"
       :class="[
         selectedCategory ? '' : 'opacity-0 pointer-events-none -translate-x-10',
       ]"
@@ -694,7 +705,7 @@ const categories = ref([
     ],
   },
 ]);
-const selectedCategory = ref<typeof categories.value[0] | null>(null);
+const selectedCategory = ref<(typeof categories.value)[0] | null>(null);
 const selectedSubCategory = ref<any>();
 
 const slides = ref([
@@ -787,23 +798,23 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style lang="scss">
 .headerSubmenu--swiper {
-  @apply z-20 pb-[22px] mt-auto md:pb-[38px];
+  @apply z-20 pb-[22px] mt-auto md:pb-[38px] #{!important};
 }
 .headerSubmenu--swiper .swiper-slide {
-  @apply h-auto;
+  @apply h-auto #{!important};
 }
 .headerSubmenu--swiper .swiper-pagination {
-  @apply flex justify-center w-full h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px];
+  @apply flex justify-center w-full h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px] #{!important};
 }
 .headerSubmenu--swiper .swiper-pagination-bullet {
-  @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2;
+  @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
   margin-right: 0 !important;
 }
 .headerSubmenu--swiper
   .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  @apply w-[25px] bg-white;
+  @apply w-[25px] bg-white #{!important};
 }
 </style>
 

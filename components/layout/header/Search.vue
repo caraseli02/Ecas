@@ -1,20 +1,19 @@
 <template>
   <div class="relative">
     <label
-      class="relative hidden border-2 border-blue rounded-md md:flex xl:w-[600px]"
-      :class="[isScrolled ? 'w-[350px]' : 'w-[410px]']"
+      class="relative hidden border-2 border-blue rounded-md items-center h-[44px] overflow-hidden md:flex"
     >
       <SearchIcon
         v-if="!isScrolled"
-        class="hidden w-4 h-4 text-gray-100 self-center ml-2.5 md:inline-block"
+        class="hidden w-[18px] h-[18px] flex-shrink-0 text-gray-100 self-center ml-3 md:inline-block"
       />
-      <form action="" @submit.prevent class="w-full">
+      <form action="" @submit.prevent class="w-full flex">
         <input
           v-model="searchVal"
           type="search"
           placeholder="Search parts here"
           autocomplete="off"
-          class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2.5 py-2.5 h-[42px] w-full placeholder:text-gray-100 focus:outline-none"
+          class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
           @blur="searchVal = ''"
           @keypress.enter="
             $router.push('/search');
@@ -24,7 +23,7 @@
       </form>
       <div
         v-if="!isScrolled"
-        class="flex items-center justify-center bg-blue cursor-pointer px-[15px] py-[11px]"
+        class="flex items-center justify-center bg-blue cursor-pointer px-4 py-3"
       >
         <SearchIcon class="w-5 h-5 text-white" />
       </div>

@@ -22,6 +22,7 @@ module.exports = {
         green: '#0FAC7E',
         orange: '#F68500',
         border: '#D4D4D4',
+        yellow: '#FFC900'
       },
       fontFamily: {
         Inter: ["Inter", "sans-serif"],
@@ -40,8 +41,8 @@ module.exports = {
           '2xl': '1440px'
         },
         padding: {
-          DEFAULT: '15px',
-          md: '20px'
+          DEFAULT: '1rem',
+          md: '1.5rem'
         }
       }
     },
