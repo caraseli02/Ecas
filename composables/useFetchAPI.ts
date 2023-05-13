@@ -20,7 +20,7 @@ export const useFetchAPI: useFetchType = (path, options: any) => {
     }
 
     return useFetch(path, {
-        baseURL: import.meta.env.VITE_BASE_URL_API as string,
+        baseURL: import.meta.env.BASE_URL_API as string,
         headers,
         ...options,
     });
