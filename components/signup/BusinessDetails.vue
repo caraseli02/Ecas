@@ -34,6 +34,16 @@
               label="Country"
               placeholder="Select Country"
               search
+              class="relative z-20"
+            />
+            <FormSelect
+              v-model="details.region.value.value"
+              :error="details.region.value.error"
+              :options="regions"
+              :disabled="regions.length === 0"
+              label="County/Region"
+              placeholder="Select County/Region"
+              search
               class="relative z-10"
             />
             <FormInput
@@ -91,7 +101,7 @@
 import QuestionIcon from "@/assets/icons/question-circle.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import { countries } from "@/data/countries";
-import { SignupBusinessDetails } from "~~/types";
+import { FormSelectOption, SignupBusinessDetails } from "~~/types";
 
 defineProps({
   selectedType: {
@@ -103,4 +113,28 @@ defineProps({
 defineEmits(["continue", "back"]);
 
 const details = useState<SignupBusinessDetails>("signup-business-details");
+
+const regions = ref<FormSelectOption[]>([]);
+
+watch(details.value.country, (newVal) => {
+  if (newVal?.value) {
+    details.value.region = {
+      value: {
+        value: "",
+        error: "",
+      },
+      label: "",
+      icon: "",
+    };
+    regions.value =
+      countries
+        .find((e) => e.label === newVal.value.value.label)
+        ?.regions.map((e) => {
+          return {
+            label: e.name,
+            value: e.name,
+          };
+        }) || [];
+  }
+});
 </script>

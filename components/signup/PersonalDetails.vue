@@ -27,6 +27,16 @@
               label="Country"
               placeholder="Select Country"
               search
+              class="relative z-20"
+            />
+            <FormSelect
+              v-model="details.region.value"
+              :error="details.region.error"
+              :options="regions"
+              :disabled="regions.length === 0"
+              label="County/Region"
+              placeholder="Select County/Region"
+              search
               class="relative z-10"
             />
             <FormInput
@@ -81,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { SignupPersonalDetails } from "~~/types";
+import { FormSelectOption, SignupPersonalDetails } from "~~/types";
 import QuestionIcon from "@/assets/icons/question-circle.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import { countries } from "@/data/countries";
@@ -89,4 +99,24 @@ import { countries } from "@/data/countries";
 defineEmits(["continue", "back"]);
 
 const details = useState<SignupPersonalDetails>("signup-personal-details");
+
+const regions = ref<FormSelectOption[]>([]);
+
+watch(details.value.country, (newVal) => {
+  if (newVal?.value) {
+    details.value.region = {
+      value: "",
+      error: "",
+    };
+    regions.value =
+      countries
+        .find((e) => e.label === newVal.value.label)
+        ?.regions.map((e) => {
+          return {
+            label: e.name,
+            value: e.name,
+          };
+        }) || [];
+  }
+});
 </script>
