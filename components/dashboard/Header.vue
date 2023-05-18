@@ -78,9 +78,14 @@ import BellIcon from "@/assets/icons/dashboard/bell.svg";
 import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
 import PlusIcon from "@/assets/icons/dashboard/plus.svg";
 
-defineEmits(["show-side-nav"]);
+defineProps({
+  isSideNavCollapsedOnDesktop: {
+    type: Boolean,
+    required: true,
+  },
+});
 
-const { isSideNavCollapsedOnDesktop } = useDashboard();
+defineEmits(["show-side-nav"]);
 
 const searchValue = ref("");
 </script>
