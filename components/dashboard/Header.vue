@@ -2,7 +2,7 @@
   <header
     class="fixed z-30 top-0 left-0 w-full px-4 py-3 flex items-center justify-between bg-white md:py-4 md:transition-all md:duration-300 md:delay-50 xl:px-[100px]"
     :class="[
-      isSideNavCollapsedOnDesktop
+      isCollapsedOnDesktop
         ? 'md:ml-[96px] md:w-[calc(100%-96px)]'
         : 'md:ml-[280px] md:w-[calc(100%-280px)]',
     ]"
@@ -79,7 +79,7 @@ import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
 import PlusIcon from "@/assets/icons/dashboard/plus.svg";
 
 defineProps({
-  isSideNavCollapsedOnDesktop: {
+  isCollapsedOnDesktop: {
     type: Boolean,
     required: true,
   },

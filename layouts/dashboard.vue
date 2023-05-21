@@ -1,7 +1,7 @@
 <template>
   <div>
     <DashboardHeader
-      :isSideNavCollapsedOnDesktop="isSideNavCollapsedOnDesktop"
+      :isCollapsedOnDesktop="isSideNavCollapsedOnDesktop"
       @show-side-nav="showSideNav = true"
     />
     <transition name="slide-from-left">

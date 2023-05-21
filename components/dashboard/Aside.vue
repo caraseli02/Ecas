@@ -2,76 +2,128 @@
   <aside
     class="fixed top-0 left-0 z-40 bg-[#1B1B28] h-screen flex flex-col items-center"
   >
-    <div class="flex items-center justify-between w-full px-4 py-9 md:py-6">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 142 28"
-        class="w-[142px]"
-      >
-        <path
-          fill="#fff"
-          d="M1.078 15.902c0 .346.154.52.307.691l.153.174c.308.344.613.344.92.344h16.689c.92 0 1.38-.69 1.38-1.554v-3.458c0-.171-.307-.69-.46-.69-.306-.347-.613-.347-.92-.347H2.61c-.306 0-.766 0-1.073.347l-.153.17a1.42 1.42 0 0 0-.307.866v3.457Z"
-        />
-        <path
-          fill="#fff"
-          d="M42.883.172c-4.818 0-7.227 2.419-7.227 7.603v12.618c0 5.186 2.57 7.605 7.227 7.605h16.143c3.694 0 6.263-1.727 6.905-5.877l-.16-.17H43.846c-.963 0-1.445-.174-1.766-.519-.16-.174-.32-.69-.32-1.383V8.122c0-.692.16-1.21.32-1.557.321-.17.803-.344 1.766-.344h21.925c.16 0 .16-.173.16-.173C65.289 1.9 62.72.173 59.026.173L42.883.172Z"
-        />
-        <path
-          fill="#fff"
-          d="M7.226.172C2.41.172 0 2.59 0 7.775v12.618c0 5.186 2.57 7.605 7.226 7.605H23.37c3.694 0 6.263-1.727 6.904-5.877l-.16-.17H8.19c-.963 0-1.445-.174-1.766-.519-.16-.174-.321-.69-.321-1.383V8.122c0-.692.16-1.21.321-1.557.321-.17.803-.344 1.766-.344h21.924c.16 0 .16-.173.16-.173C29.634 1.9 27.064.173 23.37.173L7.226.172Z"
-        />
-        <path
-          fill="#fff"
-          d="M120.4 0c-4.979 0-8.028 2.42-8.028 7.95s3.049 8.124 8.028 8.297l13.25 1.036c1.125 0 1.607.348 1.93.692.318.344.479.866.479 1.729 0 1.73-.802 2.075-2.248 2.075-3.372.173-6.26.173-9.152.173h-12.131c-.157 0-.157 0-.157.17.157 3.286 2.566 5.704 5.458 5.704h16.143c5.14 0 8.028-2.245 8.028-7.95 0-5.531-3.049-8.123-7.867-8.298l-13.255-1.036c-1.285 0-1.764-.344-2.086-.691-.323-.345-.484-.865-.484-1.727 0-.866.323-1.384.484-1.557.322-.344.801-.517 1.925-.517H142v-.175C142 2.593 139.752 0 136.703 0H120.4Z"
-        />
-        <path
-          fill="#fff"
-          d="M71.313 26.446c0 .517.16 1.036.48 1.21.322.17.643.17.803.17h3.854c.16 0 .322 0 .803-.17.32-.174.481-.521.642-.866l2.088-3.285 3.533-5.876 5.94-9.853c0-.172.161-.172.161 0l9.474 15.729 1.284 2.075.802 1.209c0 .173.322.692.803.865.16.171.321.171.642.171h3.854c.161 0 .482 0 .643-.17.481-.174.641-.693.641-1.21 0-.174-.16-.52-.321-.692L92.828 1.38C92.506.69 92.025.171 91.22.171h-3.533c-.16 0-.481.172-.642.345-.482.173-.642.518-.803.692L71.472 25.58c0 .344-.16.518-.16.866Z"
-        />
-        <path
-          fill="#007FFF"
-          d="m90.373 17.945 4.134 7.668c.556 1.031-.069 2.387-1.1 2.387h-8.188c-1.027 0-1.653-1.342-1.107-2.375l4.054-7.668c.508-.963 1.69-.97 2.207-.012Z"
-        />
-      </svg>
-      <button
-        class="flex items-center justify-center p-1 bg-[#2F3241] rounded-lg md:hidden"
-        @click="$emit('close')"
-      >
-        <XIcon class="w-6 h-6 text-gray-200" />
-      </button>
-      <button class="flex max-md:hidden" @click="$emit('close')">
-        <CollapseIcon class="w-6 h-6 text-gray-200" />
-      </button>
+    <div
+      class="flex items-center w-full transition-all duration-300"
+      :class="[
+        isCollapsedOnDesktop
+          ? 'px-6 pt-6 pb-[96px] justify-center'
+          : 'px-4 py-9 justify-between md:py-6',
+      ]"
+    >
+      <NuxtLink v-if="isCollapsedOnDesktop" to="/" class="flex">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 30 28"
+          class="w-[30px]"
+        >
+          <path
+            fill="#fff"
+            d="M7.16 0C2.388 0 0 2.434 0 7.65v12.697C0 25.565 2.547 28 7.16 28h15.998c3.66 0 6.206-1.738 6.842-5.914l-.159-.172H8.115c-.953 0-1.431-.174-1.75-.52-.158-.176-.317-.696-.317-1.393V8c0-.697 0-1.248.318-1.567.433-.433.634-.346 1.75-.346H29.84c.159 0 .159-.174.159-.174-.636-4.174-3.181-5.912-6.842-5.912L7.161 0Z"
+          />
+          <path
+            fill="#007FFF"
+            d="m20.337 14.982-7.12 3.826c-.959.514-2.217-.064-2.217-1.019v-7.578c0-.95 1.246-1.53 2.205-1.024l7.12 3.752c.895.47.901 1.564.012 2.043Z"
+          />
+        </svg>
+      </NuxtLink>
+      <template v-else>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 142 28"
+          class="w-[142px]"
+        >
+          <path
+            fill="#fff"
+            d="M1.078 15.902c0 .346.154.52.307.691l.153.174c.308.344.613.344.92.344h16.689c.92 0 1.38-.69 1.38-1.554v-3.458c0-.171-.307-.69-.46-.69-.306-.347-.613-.347-.92-.347H2.61c-.306 0-.766 0-1.073.347l-.153.17a1.42 1.42 0 0 0-.307.866v3.457Z"
+          />
+          <path
+            fill="#fff"
+            d="M42.883.172c-4.818 0-7.227 2.419-7.227 7.603v12.618c0 5.186 2.57 7.605 7.227 7.605h16.143c3.694 0 6.263-1.727 6.905-5.877l-.16-.17H43.846c-.963 0-1.445-.174-1.766-.519-.16-.174-.32-.69-.32-1.383V8.122c0-.692.16-1.21.32-1.557.321-.17.803-.344 1.766-.344h21.925c.16 0 .16-.173.16-.173C65.289 1.9 62.72.173 59.026.173L42.883.172Z"
+          />
+          <path
+            fill="#fff"
+            d="M7.226.172C2.41.172 0 2.59 0 7.775v12.618c0 5.186 2.57 7.605 7.226 7.605H23.37c3.694 0 6.263-1.727 6.904-5.877l-.16-.17H8.19c-.963 0-1.445-.174-1.766-.519-.16-.174-.321-.69-.321-1.383V8.122c0-.692.16-1.21.321-1.557.321-.17.803-.344 1.766-.344h21.924c.16 0 .16-.173.16-.173C29.634 1.9 27.064.173 23.37.173L7.226.172Z"
+          />
+          <path
+            fill="#fff"
+            d="M120.4 0c-4.979 0-8.028 2.42-8.028 7.95s3.049 8.124 8.028 8.297l13.25 1.036c1.125 0 1.607.348 1.93.692.318.344.479.866.479 1.729 0 1.73-.802 2.075-2.248 2.075-3.372.173-6.26.173-9.152.173h-12.131c-.157 0-.157 0-.157.17.157 3.286 2.566 5.704 5.458 5.704h16.143c5.14 0 8.028-2.245 8.028-7.95 0-5.531-3.049-8.123-7.867-8.298l-13.255-1.036c-1.285 0-1.764-.344-2.086-.691-.323-.345-.484-.865-.484-1.727 0-.866.323-1.384.484-1.557.322-.344.801-.517 1.925-.517H142v-.175C142 2.593 139.752 0 136.703 0H120.4Z"
+          />
+          <path
+            fill="#fff"
+            d="M71.313 26.446c0 .517.16 1.036.48 1.21.322.17.643.17.803.17h3.854c.16 0 .322 0 .803-.17.32-.174.481-.521.642-.866l2.088-3.285 3.533-5.876 5.94-9.853c0-.172.161-.172.161 0l9.474 15.729 1.284 2.075.802 1.209c0 .173.322.692.803.865.16.171.321.171.642.171h3.854c.161 0 .482 0 .643-.17.481-.174.641-.693.641-1.21 0-.174-.16-.52-.321-.692L92.828 1.38C92.506.69 92.025.171 91.22.171h-3.533c-.16 0-.481.172-.642.345-.482.173-.642.518-.803.692L71.472 25.58c0 .344-.16.518-.16.866Z"
+          />
+          <path
+            fill="#007FFF"
+            d="m90.373 17.945 4.134 7.668c.556 1.031-.069 2.387-1.1 2.387h-8.188c-1.027 0-1.653-1.342-1.107-2.375l4.054-7.668c.508-.963 1.69-.97 2.207-.012Z"
+          />
+        </svg>
+        <button
+          class="flex items-center justify-center p-1 bg-[#2F3241] rounded-lg md:hidden"
+          @click="$emit('close')"
+        >
+          <XIcon class="w-6 h-6 text-gray-200" />
+        </button>
+        <button class="flex max-md:hidden" @click="$emit('close')">
+          <CollapseIcon class="w-6 h-6 text-gray-200" />
+        </button>
+      </template>
     </div>
-    <div class="w-full h-full flex-1 overflow-y-auto scrollbar-thin mr-1">
-      <ul class="grid grid-cols-1 gap-1 px-4">
+    <div
+      class="w-full overflow-y-auto scrollbar-thin"
+      :class="[isCollapsedOnDesktop ? 'mb-5' : 'h-full flex-1 mr-1']"
+    >
+      <ul
+        class="grid grid-cols-1"
+        :class="[isCollapsedOnDesktop ? 'gap-2.5 px-2' : 'gap-1 px-4']"
+      >
         <li v-for="(item, index) in nav" :key="index">
           <NuxtLink
             v-if="item.to"
             :to="item.to"
-            class="flex items-center text-gray-200 p-3 rounded-xl transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
+            class="flex items-center text-gray-200 p-3 transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
+            :class="[
+              isCollapsedOnDesktop
+                ? 'justify-center w-12 h-12 mx-auto rounded-lg'
+                : 'rounded-xl',
+            ]"
+            @mouseenter="handleNavItemMouseEnter($event, item)"
+            @mouseleave="hoveredNavItem = undefined"
           >
-            <component :is="item.icon" class="w-6 h-6 mr-3" />
-            <span class="text-sm leading-[1.43] font-medium">
+            <component :is="item.icon" class="w-6 h-6" />
+            <span
+              v-if="!isCollapsedOnDesktop"
+              class="text-sm leading-[1.43] font-medium ml-3"
+            >
               {{ item.label }}
             </span>
           </NuxtLink>
           <button
             v-else
-            class="group flex items-center justify-between text-gray-200 p-3 rounded-xl w-full transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
-            :class="[item.dropdown?.show ? 'bg-[#2F3241]' : '']"
+            class="group flex items-center text-gray-200 transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
+            :class="[
+              item.dropdown?.show ? 'bg-[#2F3241]' : '',
+              isCollapsedOnDesktop
+                ? 'justify-center rounded-lg w-12 h-12 mx-auto'
+                : 'justify-between rounded-xl p-3 w-full',
+            ]"
             @click="
               item.dropdown ? (item.dropdown.show = !item.dropdown?.show) : null
             "
+            @mouseenter="handleNavItemMouseEnter($event, item)"
+            @mouseleave="hoveredNavItem = undefined"
           >
             <div class="flex items-center">
-              <component :is="item.icon" class="w-6 h-6 mr-3" />
-              <span class="text-sm leading-[1.43] font-medium">
+              <component :is="item.icon" class="w-6 h-6" />
+              <span
+                v-if="!isCollapsedOnDesktop"
+                class="text-sm leading-[1.43] font-medium ml-3"
+              >
                 {{ item.label }}
               </span>
             </div>
-            <div class="flex items-center">
+            <div v-if="!isCollapsedOnDesktop" class="flex items-center">
               <div
                 v-if="item.count"
                 class="px-2 rounded-md font-Inter text-xs font-medium leading-[1.67] text-gray-200 mr-4 transition-colors duration-300 group-hover:bg-[#1B1B28]"
@@ -84,7 +136,7 @@
           </button>
           <Transition name="fade">
             <div
-              v-if="item.dropdown?.show"
+              v-if="item.dropdown?.show && !isCollapsedOnDesktop"
               class="py-2 bg-[#2F3241] rounded-lg mt-1"
             >
               <NuxtLink
@@ -118,20 +170,78 @@
         </li>
       </ul>
     </div>
+    <button
+      v-if="isCollapsedOnDesktop"
+      class="group flex justify-center items-center w-12 h-12 mx-auto bg-[#2F3241] rounded-lg flex-shrink-0 my-auto max-md:hidden"
+    >
+      <PlusIcon
+        class="w-8 h-8 text-gray-200 transition-colors duration-300 group-hover:text-[#009FFF]"
+      />
+    </button>
+    <button
+      v-if="isCollapsedOnDesktop"
+      class="mt-5 max-md:hidden"
+      @click="$emit('close')"
+    >
+      <CollapseIcon class="w-6 h-6 text-gray-200 rotate-180" />
+    </button>
     <div class="flex justify-center pt-8 pb-5">
       <button
-        class="relative flex items-center bg-[#2F3241] rounded-[100px] p-1"
+        class="relative flex items-center justify-between bg-[#2F3241] rounded-[100px] p-1 w-11"
+        @click="
+          themeMode === 'dark' ? (themeMode = 'light') : (themeMode = 'dark')
+        "
       >
-        <div class="w-4 h-4 rounded-full bg-[#009FFF] mr-1" />
-        <SunIcon class="w-4 h-4 text-gray-200" />
+        <MoonIcon
+          class="w-4 h-4 text-gray-200 transition-opacity duration-300"
+          :class="[themeMode === 'light' ? '' : 'opacity-0']"
+        />
+        <div
+          class="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#009FFF] transition-all duration-300"
+          :class="[themeMode === 'dark' ? 'right-6' : 'right-1']"
+        />
+        <SunIcon
+          class="w-4 h-4 text-gray-200 transition-opacity duration-300"
+          :class="[themeMode === 'dark' ? '' : 'opacity-0']"
+        />
       </button>
     </div>
-    <div class="w-full pt-5 px-4 pb-4 border-t border-[#2F3241] text-center">
-      <div class="text-xs text-[#C2C5CD] leading-normal mb-1">
+    <div
+      class="w-full pt-5 px-4 pb-4 text-center"
+      :class="[isCollapsedOnDesktop ? 'mt-2' : 'border-t border-[#2F3241]']"
+    >
+      <div
+        v-if="!isCollapsedOnDesktop"
+        class="text-xs text-[#C2C5CD] leading-normal mb-1"
+      >
         © {{ new Date().getFullYear() }} ECASMAG.RO
       </div>
       <div class="text-xs leading-normal text-gray-300">V 1.0.0</div>
     </div>
+    <Transition name="fade">
+      <div
+        v-if="isCollapsedOnDesktop && hoveredNavItem"
+        class="absolute -right-2 translate-y-1/2 translate-x-full bg-[#1B1B28] rounded p-2 text-xs leading-tight font-Inter text-white min-w-max pointer-events-none"
+        :style="{
+          top: `${hoveredNavItemTop - 7}px`,
+        }"
+      >
+        <span>
+          {{ hoveredNavItem.label }}
+        </span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 11 16"
+          class="absolute top-1/2 left-1.5 -translate-x-full rotate-180 -translate-y-1/2 w-[18px] h-3"
+        >
+          <path
+            fill="#1B1B28"
+            d="M9.867 6.4a2 2 0 0 1 0 3.2l-6.667 5c-1.318.989-3.2.048-3.2-1.6V3C0 1.352 1.882.411 3.2 1.4l6.667 5Z"
+          />
+        </svg>
+      </div>
+    </Transition>
   </aside>
 </template>
 
@@ -142,6 +252,7 @@ import OverviewIcon from "@/assets/icons/dashboard/overview.svg";
 import ProductsIcon from "@/assets/icons/dashboard/products.svg";
 import CategoriesIcon from "@/assets/icons/dashboard/categories.svg";
 import StockIcon from "@/assets/icons/dashboard/stock.svg";
+import PlusIcon from "@/assets/icons/dashboard/plus.svg";
 import PlusCircleIcon from "@/assets/icons/dashboard/plus-circle.svg";
 import CustomersIcon from "@/assets/icons/dashboard/customers.svg";
 import OrdersIcon from "@/assets/icons/dashboard/orders.svg";
@@ -153,7 +264,15 @@ import LayoutIcon from "@/assets/icons/dashboard/layout.svg";
 import CampaignsIcon from "@/assets/icons/dashboard/campaigns.svg";
 import ProfileIcon from "@/assets/icons/dashboard/profile.svg";
 import SunIcon from "@/assets/icons/dashboard/sun.svg";
+import MoonIcon from "@/assets/icons/dashboard/moon.svg";
 import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
+
+defineProps({
+  isCollapsedOnDesktop: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 defineEmits(["close"]);
 
@@ -262,4 +381,15 @@ const nav = ref([
     },
   },
 ]);
+
+const hoveredNavItem = ref();
+const hoveredNavItemTop = ref(0);
+
+const themeMode = ref<"dark" | "light">("dark");
+
+const handleNavItemMouseEnter = (event: MouseEvent, item: any) => {
+  const target = event.target as HTMLElement;
+  hoveredNavItem.value = item;
+  hoveredNavItemTop.value = target.getBoundingClientRect().top;
+};
 </script>
