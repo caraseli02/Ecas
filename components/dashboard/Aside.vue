@@ -123,7 +123,7 @@
             <div v-if="!isCollapsedOnDesktop" class="flex items-center">
               <div
                 v-if="item.count"
-                class="px-2 rounded-md font-Inter text-xs font-medium leading-[1.67] text-gray-200 mr-4 transition-colors duration-300 group-hover:bg-[#1B1B28]"
+                class="px-2 rounded-md font-Inter text-xs font-medium leading-[2] text-gray-200 mr-4 transition-colors duration-300 group-hover:bg-[#1B1B28]"
                 :class="[item.dropdown?.show ? 'bg-[#1B1B28]' : 'bg-[#2F3241]']"
               >
                 {{ item.count }}
@@ -153,7 +153,7 @@
                 </div>
                 <div
                   v-if="dropdownItem.count"
-                  class="px-2 bg-[#1B1B28] rounded-md font-Inter text-xs font-medium leading-[1.67] text-gray-200 transition-colors duration-300 group-hover:text-[#009FFF]"
+                  class="px-2 bg-[#1B1B28] rounded-md font-Inter text-xs font-medium leading-[2] text-gray-200 transition-colors duration-300 group-hover:text-[#009FFF]"
                 >
                   {{ dropdownItem.count }}
                 </div>
@@ -316,7 +316,26 @@ const nav = ref([
     count: "9",
     dropdown: {
       show: false,
-      items: [],
+      items: [
+        {
+          label: "All products",
+          to: "/",
+          icon: ProductsIcon,
+          count: "19,227",
+        },
+        {
+          label: "Categories",
+          to: "/",
+          icon: CategoriesIcon,
+          count: "28",
+        },
+        {
+          label: "Stock",
+          to: "/",
+          icon: StockIcon,
+          count: "358,469",
+        },
+      ],
     },
   },
   {
@@ -325,7 +344,26 @@ const nav = ref([
     count: "749",
     dropdown: {
       show: false,
-      items: [],
+      items: [
+        {
+          label: "All products",
+          to: "/",
+          icon: ProductsIcon,
+          count: "19,227",
+        },
+        {
+          label: "Categories",
+          to: "/",
+          icon: CategoriesIcon,
+          count: "28",
+        },
+        {
+          label: "Stock",
+          to: "/",
+          icon: StockIcon,
+          count: "358,469",
+        },
+      ],
     },
   },
   {
@@ -333,7 +371,26 @@ const nav = ref([
     icon: ReportsIcon,
     dropdown: {
       show: false,
-      items: [],
+      items: [
+        {
+          label: "All products",
+          to: "/",
+          icon: ProductsIcon,
+          count: "19,227",
+        },
+        {
+          label: "Categories",
+          to: "/",
+          icon: CategoriesIcon,
+          count: "28",
+        },
+        {
+          label: "Stock",
+          to: "/",
+          icon: StockIcon,
+          count: "358,469",
+        },
+      ],
     },
   },
   {
@@ -341,7 +398,26 @@ const nav = ref([
     icon: AnalyticsIcon,
     dropdown: {
       show: false,
-      items: [],
+      items: [
+        {
+          label: "All products",
+          to: "/",
+          icon: ProductsIcon,
+          count: "19,227",
+        },
+        {
+          label: "Categories",
+          to: "/",
+          icon: CategoriesIcon,
+          count: "28",
+        },
+        {
+          label: "Stock",
+          to: "/",
+          icon: StockIcon,
+          count: "358,469",
+        },
+      ],
     },
   },
   {
