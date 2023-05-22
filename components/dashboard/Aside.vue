@@ -7,7 +7,7 @@
       :class="[
         isCollapsedOnDesktop
           ? 'px-6 pt-6 pb-[96px] justify-center'
-          : 'px-4 py-9 justify-between md:py-6',
+          : 'px-4 pt-6 pb-[50px] justify-between md:pb-[60px]',
       ]"
     >
       <NuxtLink v-if="isCollapsedOnDesktop" to="/" class="flex">
@@ -66,12 +66,13 @@
           <XIcon class="w-6 h-6 text-gray-200" />
         </button>
         <button class="flex max-md:hidden" @click="$emit('close')">
-          <CollapseIcon class="w-6 h-6 text-gray-200" />
+          <CollapseIcon class="w-6 h-6" />
         </button>
       </template>
     </div>
-    <div
-      class="w-full overflow-y-auto scrollbar-thin"
+    <nav
+      ref="navDOM"
+      class="w-full overflow-y-auto scrollbar-thin pb-4"
       :class="[isCollapsedOnDesktop ? 'mb-5' : 'h-full flex-1 mr-1']"
     >
       <ul
@@ -82,11 +83,9 @@
           <NuxtLink
             v-if="item.to"
             :to="item.to"
-            class="flex items-center text-gray-200 p-3 transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
+            class="flex items-center text-gray-200 p-3 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
             :class="[
-              isCollapsedOnDesktop
-                ? 'justify-center w-12 h-12 mx-auto rounded-lg'
-                : 'rounded-xl',
+              isCollapsedOnDesktop ? 'justify-center w-12 h-12 mx-auto' : '',
             ]"
             @mouseenter="handleNavItemMouseEnter($event, item)"
             @mouseleave="hoveredNavItem = undefined"
@@ -101,16 +100,14 @@
           </NuxtLink>
           <button
             v-else
-            class="group flex items-center text-gray-200 transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
+            class="group flex items-center text-gray-200 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
             :class="[
               item.dropdown?.show ? 'bg-[#2F3241]' : '',
               isCollapsedOnDesktop
-                ? 'justify-center rounded-lg w-12 h-12 mx-auto'
-                : 'justify-between rounded-xl p-3 w-full',
+                ? 'justify-center w-12 h-12 mx-auto'
+                : 'justify-between p-3 w-full',
             ]"
-            @click="
-              item.dropdown ? (item.dropdown.show = !item.dropdown?.show) : null
-            "
+            @click="handleItemDropdownToggle($event, item)"
             @mouseenter="handleNavItemMouseEnter($event, item)"
             @mouseleave="hoveredNavItem = undefined"
           >
@@ -131,7 +128,10 @@
               >
                 {{ item.count }}
               </div>
-              <ChevronDownIcon class="w-5 h-5 text-gray-200" />
+              <ChevronDownIcon
+                class="w-5 h-5 text-gray-200 transition-transform duration-300"
+                :class="[item.dropdown?.show ? 'rotate-180' : '']"
+              />
             </div>
           </button>
           <Transition name="fade">
@@ -169,7 +169,7 @@
           </Transition>
         </li>
       </ul>
-    </div>
+    </nav>
     <button
       v-if="isCollapsedOnDesktop"
       class="group flex justify-center items-center w-12 h-12 mx-auto bg-[#2F3241] rounded-lg flex-shrink-0 my-auto max-md:hidden"
@@ -183,7 +183,7 @@
       class="mt-5 max-md:hidden"
       @click="$emit('close')"
     >
-      <CollapseIcon class="w-6 h-6 text-gray-200 rotate-180" />
+      <Collapse2Icon class="w-6 h-6" />
     </button>
     <div class="flex justify-center pt-8 pb-5">
       <button
@@ -232,13 +232,10 @@
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
-          viewBox="0 0 11 16"
-          class="absolute top-1/2 left-1.5 -translate-x-full rotate-180 -translate-y-1/2 w-[18px] h-3"
+          viewBox="0 0 5 8"
+          class="absolute top-1/2 left-px -translate-x-full -translate-y-1/2 w-2"
         >
-          <path
-            fill="#1B1B28"
-            d="M9.867 6.4a2 2 0 0 1 0 3.2l-6.667 5c-1.318.989-3.2.048-3.2-1.6V3C0 1.352 1.882.411 3.2 1.4l6.667 5Z"
-          />
+          <path fill="#1B1B28" d="M5 8V0L1.496 2.336a2 2 0 0 0 0 3.328L5 8Z" />
         </svg>
       </div>
     </Transition>
@@ -248,6 +245,7 @@
 <script setup lang="ts">
 import XIcon from "@/assets/icons/dashboard/x.svg";
 import CollapseIcon from "@/assets/icons/dashboard/collapse.svg";
+import Collapse2Icon from "@/assets/icons/dashboard/collapse-2.svg";
 import OverviewIcon from "@/assets/icons/dashboard/overview.svg";
 import ProductsIcon from "@/assets/icons/dashboard/products.svg";
 import CategoriesIcon from "@/assets/icons/dashboard/categories.svg";
@@ -275,6 +273,8 @@ defineProps({
 });
 
 defineEmits(["close"]);
+
+const navDOM = ref<HTMLElement>();
 
 const nav = ref([
   {
@@ -391,5 +391,21 @@ const handleNavItemMouseEnter = (event: MouseEvent, item: any) => {
   const target = event.target as HTMLElement;
   hoveredNavItem.value = item;
   hoveredNavItemTop.value = target.getBoundingClientRect().top;
+};
+
+const handleItemDropdownToggle = (event: MouseEvent, item: any) => {
+  if (item.dropdown) {
+    item.dropdown.show = !item.dropdown?.show;
+
+    nextTick(() => {
+      if (item.dropdown.show) {
+        (event.currentTarget as HTMLElement).nextElementSibling?.scrollIntoView(
+          {
+            behavior: "smooth",
+          }
+        );
+      }
+    });
+  }
 };
 </script>
