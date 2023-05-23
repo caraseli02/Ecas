@@ -77,7 +77,9 @@
     >
       <ul
         class="grid grid-cols-1"
-        :class="[isCollapsedOnDesktop ? 'gap-2.5 pl-4' : 'gap-1 px-4']"
+        :class="[
+          isCollapsedOnDesktop ? 'gap-2.5 pl-5 pr-1' : 'gap-1 pl-5 pr-2',
+        ]"
       >
         <li v-for="(item, index) in nav" :key="index">
           <NuxtLink
