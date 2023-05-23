@@ -72,12 +72,12 @@
     </div>
     <nav
       ref="navDOM"
-      class="w-full overflow-y-auto scrollbar-thin pb-4"
-      :class="[isCollapsedOnDesktop ? 'mb-5' : 'h-full flex-1 mr-1']"
+      class="w-full overflow-y-auto scrollbar-thin scrollbar-custom mr-3 pb-4 w-full"
+      :class="[isCollapsedOnDesktop ? 'mb-5' : 'h-full flex-1']"
     >
       <ul
         class="grid grid-cols-1"
-        :class="[isCollapsedOnDesktop ? 'gap-2.5 px-2' : 'gap-1 px-4']"
+        :class="[isCollapsedOnDesktop ? 'gap-2.5 pl-4' : 'gap-1 px-4']"
       >
         <li v-for="(item, index) in nav" :key="index">
           <NuxtLink
@@ -485,3 +485,15 @@ const handleItemDropdownToggle = (event: MouseEvent, item: any) => {
   }
 };
 </script>
+
+<style lang="scss">
+.scrollbar-custom {
+  &::-webkit-scrollbar-thumb {
+    background-color: #383b4d !important;
+    border-radius: 100px !important;
+  }
+  @supports (scrollbar-color: red blue) {
+    scrollbar-color: #383b4d transparent;
+  }
+}
+</style>
