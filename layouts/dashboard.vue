@@ -22,7 +22,7 @@
       :class="[
         isSideNavCollapsedOnDesktop
           ? 'md:ml-[96px] md:max-w-[calc(100vw-96px)]'
-          : 'md:ml-[280px] md:max-w-[calc(100vw-280px)]',
+          : 'md:ml-[112px] md:max-w-[calc(100vw-112px)]',
       ]"
     >
       <slot />

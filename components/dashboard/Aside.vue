@@ -270,7 +270,7 @@ import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
 defineProps({
   isCollapsedOnDesktop: {
     type: Boolean,
-    required: true,
+    required: false,
   },
 });
 
