@@ -31,6 +31,6 @@
 </template>
 
 <script setup lang="ts">
-const isSideNavCollapsedOnDesktop = ref(false);
+const isSideNavCollapsedOnDesktop = ref(true);
 const showSideNav = ref(false);
 </script>

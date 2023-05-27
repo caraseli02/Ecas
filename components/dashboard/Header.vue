@@ -62,9 +62,7 @@
               />
             </div>
             <div class="flex flex-col mr-4 max-lg:hidden">
-              <div class="leading-normal text-[#222222] font-medium">
-                Madalina Popescu
-              </div>
+              <div class="leading-normal font-medium">Madalina Popescu</div>
               <div class="text-xs leading-normal text-gray-300">
                 Super Admin
               </div>

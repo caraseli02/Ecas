@@ -10,7 +10,7 @@
       <div
         v-for="(person, index) in people"
         :key="index"
-        class="flex items-center justify-between py-2"
+        class="group flex items-center justify-between py-2"
       >
         <div class="flex items-center">
           <img
@@ -19,7 +19,9 @@
             class="w-11 h-11 rounded-full object-cover mr-3"
           />
           <div class="truncate">
-            <div class="text-sm leading-[1.43] font-semibold truncate mb-1">
+            <div
+              class="text-sm leading-[1.43] font-semibold truncate mb-1 transition-colors duration-300 group-hover:text-blue"
+            >
               {{ person.name }}
             </div>
             <div class="text-xs leading-[1.67] text-gray-300 truncate">
@@ -28,7 +30,7 @@
           </div>
         </div>
         <button
-          class="flex text-[#9296AA] transition-colors duration-300 hover:text-[#007FFF]"
+          class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue"
         >
           <MoreVerticalIcon class="w-7 h-7" />
         </button>

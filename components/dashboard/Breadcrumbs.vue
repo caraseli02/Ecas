@@ -4,16 +4,13 @@
       <div class="flex items-center mb-3">
         <NuxtLink
           to="/"
-          class="flex items-center text-gray-300 transition-colors duration-300 hover:text-[#007FFF]"
+          class="flex items-center text-gray-300 transition-colors duration-300 hover:text-blue"
         >
           <HomeIcon class="w-[18px] h-[18px] mr-2" />
           <span class="text-xs leading-[1.33]">Home</span>
         </NuxtLink>
         <span class="text-xs leading-[1.33] mx-2">/</span>
-        <NuxtLink
-          to="/"
-          class="text-xs leading-[1.33] font-medium text-[#007FFF]"
-        >
+        <NuxtLink to="/" class="text-xs leading-[1.33] font-medium text-blue">
           Customers
         </NuxtLink>
       </div>
