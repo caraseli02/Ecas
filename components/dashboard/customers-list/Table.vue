@@ -180,7 +180,7 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import FlagIcon from "@/assets/icons/flags/ron.svg";
+import FlagIcon from "@/assets/icons/dashboard/ro.svg";
 import DocumentIcon from "@/assets/icons/dashboard/document.svg";
 import MoreVerticalIcon from "@/assets/icons/dashboard/more-vertical.svg";
 import SearchIcon from "@/assets/icons/dashboard/search.svg";

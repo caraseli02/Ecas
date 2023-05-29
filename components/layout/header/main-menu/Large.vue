@@ -102,7 +102,7 @@
           >
             <component
               :is="item.icon"
-              class="w-[34px] h-[34px] mb-1 md:w-[50px] md:h-[50px] md:mb-[21px] lg:w-[60px] lg:h-[60px] lg:mb-2.5 xl:mb-[15px]"
+              class="w-[34px] h-[34px] mb-1 flex-shrink-0 md:w-[50px] md:h-[50px] md:mb-[21px] lg:w-[60px] lg:h-[60px] lg:mb-2.5 xl:mb-[15px]"
             />
             <div
               class="text-[10px] font-medium leading-[1.4] text-white md:text-xs lg:text-[13px] xl:text-sm"

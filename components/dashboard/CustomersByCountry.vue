@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import FlagIcon from "@/assets/icons/flags/ron.svg";
+import FlagIcon from "@/assets/icons/dashboard/ro.svg";
 
 const countries = [
   {
