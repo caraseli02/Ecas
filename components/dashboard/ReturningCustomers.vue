@@ -5,7 +5,7 @@
       boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
     }"
   >
-    <div class="flex items-start justify-between mb-7">
+    <div class="flex items-start justify-between">
       <div class="leading-normal font-semibold">Returning Customers</div>
       <div
         class="flex items-center justify-center bg-[#FA4B4B] rounded-full w-10 h-10"
@@ -13,9 +13,17 @@
         <PeopleIcon class="w-6 h-6" />
       </div>
     </div>
-    <div class="flex items-center justify-between mb-7">
+    <div class="flex items-center justify-between -my-1.5">
       <div class="text-4xl leading-normal font-semibold">1832</div>
-      <div>CHART</div>
+      <div>
+        <ClientOnly>
+          <apexchart
+            width="170"
+            :options="chartOptions"
+            :series="series"
+          ></apexchart>
+        </ClientOnly>
+      </div>
     </div>
     <div class="flex items-center justify-between">
       <div class="flex items-center">
@@ -45,4 +53,64 @@ import PeopleIcon from "@/assets/icons/dashboard/people.svg";
 import ArrowDownIcon from "@/assets/icons/dashboard/arrow-down.svg";
 import ChevronIcon from "@/assets/icons/dashboard/chevron-down.svg";
 import ArrowRightIcon from "@/assets/icons/dashboard/arrow-right.svg";
+
+import type { ApexOptions } from "apexcharts";
+
+const chartOptions: ApexOptions = {
+  chart: {
+    zoom: {
+      enabled: false,
+    },
+    toolbar: {
+      show: false,
+    },
+    animations: {
+      enabled: true,
+    },
+    type: "area",
+    width: "145px",
+    height: "48px",
+  },
+  legend: {
+    show: false,
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  tooltip: {
+    enabled: false,
+  },
+  stroke: {
+    curve: "smooth",
+    width: 3,
+    colors: ["#FA4B4B"],
+  },
+  fill: {
+    type: "solid",
+    colors: ["white"],
+    opacity: 0,
+  },
+  xaxis: {
+    axisBorder: {
+      show: false,
+    },
+    labels: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: {
+    show: false,
+  },
+  grid: {
+    show: false,
+  },
+};
+const series = [
+  {
+    data: ["-3", "0", "2", "-1", "4", "3", "0", "4", "5"],
+  },
+];
 </script>
