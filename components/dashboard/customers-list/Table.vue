@@ -6,22 +6,33 @@
       @scroll="syncScroll(1)"
     >
       <div
-        class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center"
+        class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center rounded-t-lg"
       >
-        <div class="p-4">
-          <label class="flex relative w-full">
-            <input
-              v-model="name"
-              type="search"
-              placeholder="Search name, email, country, discount"
-              class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
-            />
-            <SearchIcon
-              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100"
-            />
-          </label>
+        <div class="p-4 bg-[#F2F2F2] rounded-l-lg">
+          <div class="relative">
+            <button class="flex items-center mb-4">
+              <span class="text-sm leading-[1.43] font-medium mr-1">
+                Name
+              </span>
+              <ChevronDownIcon class="w-5 h-5" />
+            </button>
+          </div>
+          <DashboardSearch
+            v-model="name"
+            placeholder="Search name, email, country, discount"
+            size="sm"
+            class="w-full"
+          />
         </div>
-        <div class="p-4">
+        <div class="p-4 bg-[#F2F2F2]">
+          <div class="relative">
+            <button class="flex items-center mb-4">
+              <span class="text-sm leading-[1.43] font-medium mr-1">
+                Account
+              </span>
+              <ChevronDownIcon class="w-5 h-5" />
+            </button>
+          </div>
           <label class="flex relative w-full">
             <input
               v-model="account"
@@ -34,20 +45,31 @@
             />
           </label>
         </div>
-        <div class="p-4">
-          <label class="flex relative w-full">
-            <input
-              v-model="company"
-              type="search"
-              placeholder="Search company"
-              class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
-            />
-            <SearchIcon
-              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100"
-            />
-          </label>
+        <div class="p-4 bg-[#F2F2F2]">
+          <div class="relative">
+            <button class="flex items-center mb-4">
+              <span class="text-sm leading-[1.43] font-medium mr-1">
+                Company
+              </span>
+              <ChevronDownIcon class="w-5 h-5" />
+            </button>
+          </div>
+          <DashboardSearch
+            v-model="company"
+            placeholder="Search company"
+            size="sm"
+            class="w-full"
+          />
         </div>
-        <div class="p-4">
+        <div class="p-4 bg-[#F2F2F2]">
+          <div class="relative">
+            <button class="flex items-center mb-4">
+              <span class="text-sm leading-[1.43] font-medium mr-1">
+                Registered
+              </span>
+              <ChevronDownIcon class="w-5 h-5" />
+            </button>
+          </div>
           <label class="flex relative w-full">
             <input
               v-model="registered"
@@ -60,7 +82,15 @@
             />
           </label>
         </div>
-        <div class="p-4">
+        <div class="p-4 bg-[#F2F2F2]">
+          <div class="relative">
+            <button class="flex items-center mb-4">
+              <span class="text-sm leading-[1.43] font-medium mr-1">
+                Spent
+              </span>
+              <ChevronDownIcon class="w-5 h-5" />
+            </button>
+          </div>
           <label class="flex relative w-full">
             <input
               v-model="spent"
@@ -73,7 +103,15 @@
             />
           </label>
         </div>
-        <div class="p-4">
+        <div class="p-4 bg-[#F2F2F2]">
+          <div class="relative">
+            <button class="flex items-center mb-4">
+              <span class="text-sm leading-[1.43] font-medium mr-1">
+                Orders count
+              </span>
+              <ChevronDownIcon class="w-5 h-5" />
+            </button>
+          </div>
           <label class="flex relative w-full">
             <input
               v-model="ordersCount"
@@ -86,8 +124,12 @@
             />
           </label>
         </div>
-        <div class="px-4 w-full">
-          <div class="w-full opacity-0 pointer-events-none">Empty</div>
+        <div class="p-4 w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
+          <div class="relative">
+            <div class="flex items-center mb-4">
+              <span class="text-sm leading-[1.43] font-medium"> Actions </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -184,6 +226,7 @@ import FlagIcon from "@/assets/icons/dashboard/ro.svg";
 import DocumentIcon from "@/assets/icons/dashboard/document.svg";
 import MoreVerticalIcon from "@/assets/icons/dashboard/more-vertical.svg";
 import SearchIcon from "@/assets/icons/dashboard/search.svg";
+import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
 import { DashboardItem } from "~~/types";
 
 defineProps({

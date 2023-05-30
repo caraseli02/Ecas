@@ -20,7 +20,11 @@
           Country with the most customers
         </div>
       </div>
-      <div class="rounded-xl max-md:mb-4 md:col-span-2 md:row-start-2">MAP</div>
+      <div class="rounded-xl max-md:mb-4 md:col-span-2 md:row-start-2">
+        <ClientOnly>
+          <DashboardWorld />
+        </ClientOnly>
+      </div>
       <div
         class="grid grid-cols-[repeat(2,auto)] gap-4 max-md:px-4 md:gap-x-8 md:gap-y-3 md:col-start-2 md:row-start-1 md:mb-6 md:pl-6 md:border-l md:border-gray-200 xl:gap-x-6"
       >
@@ -93,3 +97,9 @@ const countryWithMostCustomers = computed(() => {
   return highestCountCountry;
 });
 </script>
+
+<style lang="scss">
+#mapid {
+  aspect-ratio: 2;
+}
+</style>

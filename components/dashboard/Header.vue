@@ -19,17 +19,11 @@
       >
         <BurgerIcon class="w-6 h-6 text-gray-300" />
       </button>
-      <label class="flex relative w-[400px] max-xl:hidden">
-        <input
-          v-model="searchValue"
-          type="search"
-          placeholder="Search"
-          class="w-full border-[1.5px] border-border rounded-lg px-3 py-2.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
-        />
-        <SearchIcon
-          class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100"
-        />
-      </label>
+      <DashboardSearch
+        v-model="searchValue"
+        placeholder="Search"
+        class="w-[400px] max-xl:hidden"
+      />
       <div class="flex items-center">
         <button class="flex mr-4 md:mr-8 xl:hidden">
           <SearchIcon class="w-6 h-6 text-gray-300" />
