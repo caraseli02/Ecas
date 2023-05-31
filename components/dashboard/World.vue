@@ -120,6 +120,9 @@ onMounted(() => {
       &.leaflet-disabled {
         @apply text-gray-100;
       }
+      span {
+        @apply leading-[0];
+      }
     }
   }
   .dashboard--map-tooltip {

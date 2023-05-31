@@ -1,9 +1,7 @@
 <template>
   <div class="mb-6 md:mb-8">
     <div
-      ref="scroll1"
-      class="mb-1 rounded-t-lg overflow-x-auto scrollbar-none"
-      @scroll="syncScroll(1)"
+      class="grid grid-cols-1 gap-1 rounded-t-lg overflow-x-auto scrollbar-thin"
     >
       <div
         class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center rounded-t-lg"
@@ -132,12 +130,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div
-      ref="scroll2"
-      class="grid grid-cols-1 gap-1 overflow-x-auto scrollbar-thin"
-      @scroll="syncScroll(2)"
-    >
       <div
         v-for="(item, index) in items"
         :key="index"
@@ -282,17 +274,6 @@ defineProps({
     required: true,
   },
 });
-
-const scroll1 = ref<HTMLElement>();
-const scroll2 = ref<HTMLElement>();
-
-const syncScroll = (scroll: 1 | 2) => {
-  if (scroll === 1 && scroll1.value && scroll2.value) {
-    scroll2.value.scrollLeft = scroll1.value.scrollLeft;
-  } else if (scroll === 2 && scroll1.value && scroll2.value) {
-    scroll1.value.scrollLeft = scroll2.value.scrollLeft;
-  }
-};
 
 const name = ref("");
 const account = ref("");
