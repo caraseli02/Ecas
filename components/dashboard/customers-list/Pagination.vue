@@ -27,11 +27,18 @@
         <transition name="fade">
           <div
             v-if="showPerPageOptions"
-            class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-2.5"
+            class="absolute z-10 left-0 w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-2.5"
+            :class="[
+              position === 'top'
+                ? '-bottom-1 translate-y-full'
+                : '-top-1 -translate-y-full',
+            ]"
             v-click-outside="() => (showPerPageOptions = false)"
           >
             <button
-              v-for="option in [5, 20, 50, 100].filter((e) => e !== perPage)"
+              v-for="option in [5, 10, 20, 50, 100].filter(
+                (e) => e !== perPage
+              )"
               :key="option"
               class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
               @click="
@@ -51,17 +58,15 @@
       {{ paginationLabel }}
     </div>
     <div
-      class="flex items-center justify-center md:col-span-2 md:order-3 lg:order-2"
+      class="flex items-center justify-center overflow-x-auto scrollbar-thin md:col-span-2 md:order-3 lg:order-2"
     >
-      <Transition name="fade">
-        <button
-          :disabled="atPage === 1"
-          @click="$emit('page-change', atPage - 1)"
-          class="cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-300 mr-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue max-sm:hidden"
-        >
-          <ChevronLeftIcon class="w-4 h-4" />
-        </button>
-      </Transition>
+      <button
+        :disabled="atPage === 1"
+        @click="$emit('page-change', atPage - 1)"
+        class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-300 mr-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue"
+      >
+        <ChevronLeftIcon class="w-4 h-4" />
+      </button>
       <Pagination
         :modelValue="atPage"
         :page-count="totalPages"
@@ -91,7 +96,7 @@
       <button
         :disabled="totalPages === atPage"
         @click="$emit('page-change', atPage + 1)"
-        class="cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-300 ml-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue max-sm:hidden"
+        class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-300 ml-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue"
       >
         <ChevronRightIcon class="w-4 h-4" />
       </button>
@@ -116,6 +121,10 @@ const props = defineProps({
   },
   itemsCount: {
     type: Number,
+    required: true,
+  },
+  position: {
+    type: String as PropType<"top" | "bottom">,
     required: true,
   },
 });

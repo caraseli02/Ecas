@@ -63,6 +63,7 @@
       :items-count="listItems.length"
       @page-change="atPage = $event"
       @per-page-change="perPage = $event"
+      position="top"
       class="flex-col mb-6 md:mb-8"
     />
     <DashboardCustomersListTable :items="visibleItems" />
@@ -72,6 +73,7 @@
       :items-count="listItems.length"
       @page-change="atPage = $event"
       @per-page-change="perPage = $event"
+      position="bottom"
       class="flex-col-reverse"
     />
   </div>
