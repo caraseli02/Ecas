@@ -2,6 +2,18 @@
   <aside
     class="fixed top-0 left-0 z-40 bg-[#1B1B28] h-screen flex flex-col items-center"
   >
+    <Transition name="fade">
+      <div
+        v-if="showTopNavLayer"
+        class="absolute top-[112px] left-0 w-full h-[100px] pointer-events-none bg-gradient-to-t from-transparent to-[#1b1b28] max-md:hidden"
+      />
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="showBottomNavLayer"
+        class="absolute bottom-[153px] left-0 w-full h-[100px] pointer-events-none bg-gradient-to-b from-transparent to-[#1b1b28] max-md:hidden"
+      />
+    </Transition>
     <div
       class="flex items-center w-full transition-all duration-300"
       :class="[
@@ -72,7 +84,7 @@
     </div>
     <nav
       ref="navDOM"
-      class="w-full overflow-y-auto scrollbar-thin scrollbar-custom mr-3 pb-4 w-full"
+      class="w-full overflow-y-auto scrollbar-thin scrollbar-custom mr-3 pb-4"
       :class="[isCollapsedOnDesktop ? 'mb-5' : 'h-full flex-1']"
     >
       <ul
@@ -277,6 +289,8 @@ defineProps({
 defineEmits(["close"]);
 
 const navDOM = ref<HTMLElement>();
+const showTopNavLayer = ref(false);
+const showBottomNavLayer = ref(false);
 
 const nav = ref([
   {
@@ -486,6 +500,32 @@ const handleItemDropdownToggle = (event: MouseEvent, item: any) => {
     });
   }
 };
+
+const handleNavScroll = (event: Event) => {
+  const target = event.target as HTMLElement;
+  if (target.scrollTop > 0) {
+    showTopNavLayer.value = true;
+  } else if (!target.scrollTop) {
+    showTopNavLayer.value = false;
+  }
+  if (target.scrollHeight - target.scrollTop === target.clientHeight) {
+    showBottomNavLayer.value = false;
+  } else {
+    showBottomNavLayer.value = true;
+  }
+};
+
+onMounted(() => {
+  if (navDOM.value) {
+    navDOM.value.addEventListener("scroll", handleNavScroll);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (navDOM.value) {
+    navDOM.value.removeEventListener("scroll", handleNavScroll);
+  }
+});
 </script>
 
 <style lang="scss">
