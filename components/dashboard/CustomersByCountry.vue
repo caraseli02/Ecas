@@ -137,9 +137,3 @@ const countryWithMostCustomers = computed(() => {
   return highestCountCountry;
 });
 </script>
-
-<style lang="scss">
-#mapid {
-  aspect-ratio: 2;
-}
-</style>

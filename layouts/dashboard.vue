@@ -18,11 +18,11 @@
       @close="isSideNavCollapsedOnDesktop = !isSideNavCollapsedOnDesktop"
     />
     <main
-      class="pt-[68px] transition-all duration-300 md:pt-[76px]"
+      class="pt-[68px] transition-all duration-300 md:pt-[76px] md:ml-[96px] md:max-w-[calc(100vw-96px)]"
       :class="[
         isSideNavCollapsedOnDesktop
-          ? 'md:ml-[96px] md:max-w-[calc(100vw-96px)]'
-          : 'md:ml-[112px] md:max-w-[calc(100vw-112px)]',
+          ? ''
+          : '2xl:ml-[280px] 2xl:max-w-[calc(100vw-280px)]',
       ]"
     >
       <slot />

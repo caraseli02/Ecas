@@ -84,7 +84,7 @@
     </div>
     <nav
       ref="navDOM"
-      class="w-full overflow-y-auto scrollbar-thin scrollbar-custom mr-3 pb-4"
+      class="w-full overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-custom mr-3 pb-4"
       :class="[isCollapsedOnDesktop ? 'mb-5' : 'h-full flex-1']"
     >
       <ul

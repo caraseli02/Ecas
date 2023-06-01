@@ -38,8 +38,8 @@
               placeholder="Select"
               class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
             />
-            <SearchIcon
-              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100"
+            <ChevronDownIcon
+              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
             />
           </label>
         </div>
@@ -75,8 +75,8 @@
               placeholder="23/9/2023 - 23/9/2023"
               class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
             />
-            <SearchIcon
-              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100"
+            <CelandarIcon
+              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
             />
           </label>
         </div>
@@ -96,8 +96,8 @@
               placeholder="Filter"
               class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
             />
-            <SearchIcon
-              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100"
+            <FilterIcon
+              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
             />
           </label>
         </div>
@@ -117,8 +117,8 @@
               placeholder="Filter"
               class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
             />
-            <SearchIcon
-              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100"
+            <FilterIcon
+              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
             />
           </label>
         </div>
@@ -136,14 +136,23 @@
         class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center"
       >
         <div class="flex items-center px-4 py-3">
-          <img
-            :src="item.avatar"
-            :alt="item.name"
-            class="w-11 h-11 rounded-full object-cover mr-4"
-          />
+          <div
+            class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 mr-4 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 hover:after:opacity-100"
+            :class="[index === 3 ? 'bg-gray-200' : '']"
+          >
+            <img
+              v-if="index !== 3"
+              :src="item.avatar"
+              :alt="item.name"
+              class="w-full h-full rounded-full object-cover"
+            />
+            <UserIcon v-else class="w-7 h-7 text-gray-100" />
+          </div>
           <div>
             <div class="flex items-center gap-3 mb-1">
-              <div class="text-sm leading-[1.43] font-semibold truncate">
+              <div
+                class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 hover:text-blue"
+              >
                 {{ item.name }}
               </div>
               <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
@@ -266,6 +275,9 @@ import DocumentIcon from "@/assets/icons/dashboard/document.svg";
 import MoreVerticalIcon from "@/assets/icons/dashboard/more-vertical.svg";
 import SearchIcon from "@/assets/icons/dashboard/search.svg";
 import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
+import UserIcon from "@/assets/icons/dashboard/user.svg";
+import CelandarIcon from "@/assets/icons/dashboard/calendar.svg";
+import FilterIcon from "@/assets/icons/dashboard/filter-2.svg";
 import { DashboardItem } from "~~/types";
 
 defineProps({

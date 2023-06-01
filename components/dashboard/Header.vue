@@ -4,7 +4,7 @@
     :class="[
       isCollapsedOnDesktop
         ? 'md:ml-[96px] md:w-[calc(100%-96px)]'
-        : 'md:ml-[280px] md:w-[calc(100%-280px)]',
+        : '2xl:ml-[280px] 2xl:w-[calc(100%-280px)]',
     ]"
     :style="{
       boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',

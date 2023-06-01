@@ -102,7 +102,7 @@ onMounted(() => {
 
 <style lang="scss">
 #mapid {
-  @apply bg-white;
+  @apply bg-white aspect-[2.3];
   .leaflet-pane {
     z-index: 1;
   }
