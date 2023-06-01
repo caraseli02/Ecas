@@ -1,6 +1,7 @@
 <template>
   <aside
     class="fixed top-0 left-0 z-40 bg-[#1B1B28] h-screen flex flex-col items-center"
+    :class="[isCollapsedOnDesktop ? 'collapsed' : '']"
   >
     <Transition name="fade">
       <div
@@ -536,6 +537,13 @@ onBeforeUnmount(() => {
   }
   @supports (scrollbar-color: red blue) {
     scrollbar-color: #383b4d transparent;
+  }
+}
+.collapsed {
+  & + main {
+    & > div {
+      @apply 2xl:px-[100px];
+    }
   }
 }
 </style>
