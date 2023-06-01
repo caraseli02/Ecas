@@ -117,6 +117,9 @@ onMounted(() => {
     @apply mt-2 mr-2 flex flex-col gap-2 border-hidden;
     a {
       @apply flex items-center justify-center w-[26px] h-[26px] bg-[#F2F2F2] rounded text-gray-300 transition-colors duration-300 font-medium hover:text-blue;
+      @media (pointer: coarse) {
+        display: block !important;
+      }
       &.leaflet-disabled {
         @apply text-gray-100;
       }
