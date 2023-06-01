@@ -6,13 +6,13 @@
     <Transition name="fade">
       <div
         v-if="showTopNavLayer && !isCollapsedOnDesktop"
-        class="absolute top-[112px] left-0 w-full h-[100px] pointer-events-none bg-gradient-to-t from-transparent to-[#1b1b28] max-md:hidden"
+        class="absolute top-[106px] left-0 w-full h-[100px] pointer-events-none bg-gradient-to-t from-transparent to-[#1b1b28] md:top-[112px]"
       />
     </Transition>
     <Transition name="fade">
       <div
         v-if="showBottomNavLayer && !isCollapsedOnDesktop"
-        class="absolute left-0 bottom-[153px] w-full h-[100px] pointer-events-none bg-gradient-to-b from-transparent to-[#1b1b28] max-md:hidden"
+        class="absolute left-0 bottom-[153px] w-full h-[100px] pointer-events-none bg-gradient-to-b from-transparent to-[#1b1b28]"
       />
     </Transition>
     <div
