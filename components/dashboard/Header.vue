@@ -11,7 +11,7 @@
     }"
   >
     <div
-      class="w-[1640px] max-w-full mx-auto flex items-center justify-between px-4 py-3 md:py-4"
+      class="w-[1440px] max-w-full mx-auto flex items-center justify-between px-4 py-3 transition-all duration-300 md:py-4 2xl:box-content"
       :class="[isCollapsedOnDesktop ? '2xl:px-[100px]' : '2xl:px-6']"
     >
       <button

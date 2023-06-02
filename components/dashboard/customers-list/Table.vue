@@ -135,98 +135,108 @@
         :key="index"
         class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center"
       >
-        <div class="flex items-center px-4 py-3">
-          <div
-            class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 mr-4 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 hover:after:opacity-100"
-            :class="[index === 3 ? 'bg-gray-200' : '']"
-          >
-            <img
-              v-if="index !== 3"
-              :src="item.avatar"
-              :alt="item.name"
-              class="w-full h-full rounded-full object-cover"
-            />
-            <UserIcon v-else class="w-7 h-7 text-gray-100" />
-          </div>
-          <div>
-            <div class="flex items-center gap-3 mb-1">
-              <div
-                class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 hover:text-blue"
-              >
-                {{ item.name }}
-              </div>
-              <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-                <svg
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-5 h-5"
-                >
-                  <rect
-                    y="2.85742"
-                    width="20"
-                    height="14.2857"
-                    rx="4"
-                    fill="white"
-                  />
-                  <mask
-                    id="mask0_801_26126"
-                    style="mask-type: luminance"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="2"
-                    width="20"
-                    height="16"
-                  >
-                    <path
-                      d="M0 4.85742C0 3.75285 0.895431 2.85742 2 2.85742H18C19.1046 2.85742 20 3.75285 20 4.85742V15.1431C20 16.2477 19.1046 17.1431 18 17.1431H2C0.895431 17.1431 0 16.2477 0 15.1431V4.85742Z"
-                      fill="white"
-                    />
-                  </mask>
-                  <g mask="url(#mask0_801_26126)">
-                    <rect
-                      x="9.52344"
-                      y="2.85742"
-                      width="10.4762"
-                      height="14.2857"
-                      fill="#E5253D"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M0 17.1431H6.66667V2.85742H0V17.1431Z"
-                      fill="#0A3D9C"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M6.66797 17.1431H13.3346V2.85742H6.66797V17.1431Z"
-                      fill="#FFD955"
-                    />
-                  </g>
-                </svg>
-                <template #content>
-                  <span>Romania</span>
-                </template>
-              </Tooltip>
-              <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+        <div class="px-4 py-3">
+          <NuxtLink to="/" class="group/link flex items-center">
+            <div
+              class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 mr-4 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
+              :class="[index === 3 ? 'bg-gray-200' : '']"
+            >
+              <img
+                v-if="index !== 3"
+                :src="item.avatar"
+                :alt="item.name"
+                class="w-full h-full rounded-full object-cover"
+              />
+              <UserIcon v-else class="w-7 h-7 text-gray-100" />
+            </div>
+            <div>
+              <div class="flex items-center gap-3 mb-1">
                 <div
-                  class="bg-blue px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-white"
+                  class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue"
                 >
-                  10%
+                  {{ item.name }}
                 </div>
-                <template #content>
-                  <span
-                    >Customer Discount:
-                    <strong class="font-semibold">10%</strong></span
+                <div class="flex items-center gap-3 cursor-default">
+                  <Tooltip
+                    :position="index === 0 ? 'bottom' : 'top'"
+                    theme="black"
                   >
-                </template>
-              </Tooltip>
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-5 h-5"
+                    >
+                      <rect
+                        y="2.85742"
+                        width="20"
+                        height="14.2857"
+                        rx="4"
+                        fill="white"
+                      />
+                      <mask
+                        id="mask0_801_26126"
+                        style="mask-type: luminance"
+                        maskUnits="userSpaceOnUse"
+                        x="0"
+                        y="2"
+                        width="20"
+                        height="16"
+                      >
+                        <path
+                          d="M0 4.85742C0 3.75285 0.895431 2.85742 2 2.85742H18C19.1046 2.85742 20 3.75285 20 4.85742V15.1431C20 16.2477 19.1046 17.1431 18 17.1431H2C0.895431 17.1431 0 16.2477 0 15.1431V4.85742Z"
+                          fill="white"
+                        />
+                      </mask>
+                      <g mask="url(#mask0_801_26126)">
+                        <rect
+                          x="9.52344"
+                          y="2.85742"
+                          width="10.4762"
+                          height="14.2857"
+                          fill="#E5253D"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M0 17.1431H6.66667V2.85742H0V17.1431Z"
+                          fill="#0A3D9C"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M6.66797 17.1431H13.3346V2.85742H6.66797V17.1431Z"
+                          fill="#FFD955"
+                        />
+                      </g>
+                    </svg>
+                    <template #content>
+                      <span>Romania</span>
+                    </template>
+                  </Tooltip>
+                  <Tooltip
+                    :position="index === 0 ? 'bottom' : 'top'"
+                    theme="black"
+                  >
+                    <div
+                      class="bg-blue px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-white"
+                    >
+                      10%
+                    </div>
+                    <template #content>
+                      <span
+                        >Customer Discount:
+                        <strong class="font-semibold">10%</strong></span
+                      >
+                    </template>
+                  </Tooltip>
+                </div>
+              </div>
+              <div class="text-xs leading-[1.33] text-gray-300 truncate">
+                {{ item.email }}
+              </div>
             </div>
-            <div class="text-xs leading-[1.33] text-gray-300 truncate">
-              {{ item.email }}
-            </div>
-          </div>
+          </NuxtLink>
         </div>
         <div class="text-sm leading-[1.43] truncate px-4">
           {{ item.account }}

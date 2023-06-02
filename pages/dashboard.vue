@@ -1,5 +1,7 @@
 <template>
-  <div class="w-[1640px] max-w-full p-4 mx-auto md:py-6 2xl:px-6">
+  <div
+    class="w-[1440px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6 2xl:box-content"
+  >
     <DashboardBreadcrumbs />
     <div
       class="grid grid-cols-1 gap-4 md:grid-cols-[1fr,325px] md:gap-6 lg:grid-cols-[1fr,398px] xl:grid-cols-[1fr,320px,300px] 2xl:grid-cols-[1fr,358px,358px]"

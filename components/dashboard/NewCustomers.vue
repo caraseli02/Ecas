@@ -7,17 +7,22 @@
   >
     <div class="leading-normal font-semibold mb-6">New Customers</div>
     <div class="grid grid-cols-1 gap-1 mb-6">
-      <div
+      <NuxtLink
         v-for="(person, index) in people"
         :key="index"
+        to="/"
         class="group flex items-center justify-between py-2"
       >
         <div class="flex items-center">
-          <img
-            :src="person.avatar"
-            :alt="person.name"
-            class="w-11 h-11 rounded-full object-cover mr-3"
-          />
+          <div
+            class="relative w-11 h-11 mr-3 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover:after:opacity-100"
+          >
+            <img
+              :src="person.avatar"
+              :alt="person.name"
+              class="w-full h-full rounded-full object-cover"
+            />
+          </div>
           <div class="truncate">
             <div
               class="text-sm leading-[1.43] font-semibold truncate mb-1 transition-colors duration-300 group-hover:text-blue"
@@ -34,7 +39,7 @@
         >
           <MoreVerticalIcon class="w-7 h-7" />
         </button>
-      </div>
+      </NuxtLink>
     </div>
     <div class="flex items-center justify-between mt-auto">
       <div class="flex items-center">
