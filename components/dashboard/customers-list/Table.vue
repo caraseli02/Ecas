@@ -138,7 +138,7 @@
         <div class="px-4 py-3">
           <NuxtLink to="/" class="group/link flex items-center">
             <div
-              class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 mr-4 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
+              class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
               :class="[index === 3 ? 'bg-gray-200' : '']"
             >
               <img
@@ -149,7 +149,7 @@
               />
               <UserIcon v-else class="w-7 h-7 text-gray-100" />
             </div>
-            <div>
+            <div class="w-[calc(100%-60px)]">
               <div class="flex items-center gap-3 mb-1">
                 <div
                   class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue"
