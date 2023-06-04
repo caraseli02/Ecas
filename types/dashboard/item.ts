@@ -1,4 +1,4 @@
-export interface DashboardItem {
+export interface DashboardTableItem {
   avatar: any;
   name: string;
   email: string;

@@ -45,7 +45,10 @@
           </div>
         </div>
         <div class="relative">
-          <button class="flex items-center text-left">
+          <button
+            class="flex items-center text-left"
+            @click="showOptions = !showOptions"
+          >
             <div class="relative mr-4">
               <img
                 src="@/assets/icons/dashboard/avatar.png"
@@ -64,6 +67,38 @@
             </div>
             <ChevronDownIcon class="w-6 h-6 text-gray-300" />
           </button>
+          <Transition name="fade">
+            <div
+              v-if="showOptions"
+              v-click-outside="() => (showOptions = false)"
+              class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[250px] md:-bottom-[18px]"
+              :style="{
+                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+              }"
+            >
+              <button
+                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                @click="showOptions = false"
+              >
+                <ProfileIcon class="w-6 h-6 mr-3 text-current" />
+                <span class="text-sm leading-[1.71]">Profile</span>
+              </button>
+              <button
+                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                @click="showOptions = false"
+              >
+                <SettingsIcon class="w-6 h-6 mr-3 text-current" />
+                <span class="text-sm leading-[1.71]">Settings</span>
+              </button>
+              <button
+                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                @click="showOptions = false"
+              >
+                <SignOutIcon class="w-6 h-6 mr-3 text-current" />
+                <span class="text-sm leading-[1.71]">Sign out</span>
+              </button>
+            </div>
+          </Transition>
         </div>
       </div>
     </div>
@@ -76,6 +111,9 @@ import SearchIcon from "@/assets/icons/dashboard/search.svg";
 import BellIcon from "@/assets/icons/dashboard/bell.svg";
 import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
 import PlusIcon from "@/assets/icons/dashboard/plus.svg";
+import ProfileIcon from "@/assets/icons/dashboard/profile.svg";
+import SettingsIcon from "@/assets/icons/dashboard/setting.svg";
+import SignOutIcon from "@/assets/icons/dashboard/sign-out.svg";
 
 defineProps({
   isCollapsedOnDesktop: {
@@ -87,4 +125,6 @@ defineProps({
 defineEmits(["show-side-nav"]);
 
 const searchValue = ref("");
+
+const showOptions = ref(false);
 </script>

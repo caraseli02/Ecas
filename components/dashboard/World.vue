@@ -21,82 +21,73 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  if (window) {
-    const map = Leaflet.map("mapid", {
-      scrollWheelZoom: true,
-      doubleClickZoom: true,
-      maxZoom: 5,
-      minZoom: 1,
-      zoomControl: false,
-      attributionControl: false,
-    }).setView([51, 0], 1);
-
-    map.setMaxBounds([
-      [100.673, -200.023],
-      [-60.995, 250.2421],
-    ]);
-
-    Leaflet.control
-      .zoom({
-        position: "topright",
-      })
-      .addTo(map);
-
-    Leaflet.tileLayer("", {
-      noWrap: true,
-    }).addTo(map);
-
-    const getColor = (countryName: string) => {
-      const country = props.countries.find(
-        (country) => country.label === countryName
-      );
-      if (country) {
-        return country.theme;
-      } else {
-        return "#D9D9D9";
-      }
-    };
-
-    const style = (feature: any) => {
-      return {
-        fillColor: getColor(feature.properties.name),
-        fillOpacity: 1,
-      };
-    };
-
-    const highlightFeatureClick = (e: any) => {
-      const clickedCountryName = e.target.feature.properties.name;
-      const country = props.countries.find(
-        (c) => c.label === clickedCountryName
-      );
-
-      if (country) {
-        Leaflet.tooltip({
-          direction: "top",
-          permanent: false,
-          sticky: true,
-          offset: [0, -10],
-          className: "dashboard--map-tooltip",
-        })
-          .setLatLng([e.latlng.lat, e.latlng.lng])
-          .setContent(
-            `${clickedCountryName} <span class="font-semibold">${country.count}</span>`
-          )
-          .addTo(map);
-      }
-    };
-
-    const onEachFeature = (_: any, layer: any) => {
-      layer.on({
-        click: highlightFeatureClick,
-      });
-    };
-
-    const geojson = Leaflet.geoJson(LeafletMapData, {
-      style,
-      onEachFeature,
-    }).addTo(map);
-  }
+  // if (window) {
+  //   const map = Leaflet.map("mapid", {
+  //     scrollWheelZoom: true,
+  //     doubleClickZoom: true,
+  //     maxZoom: 5,
+  //     minZoom: 1,
+  //     zoomControl: false,
+  //     attributionControl: false,
+  //   }).setView([51, 0], 1);
+  //   map.setMaxBounds([
+  //     [100.673, -200.023],
+  //     [-60.995, 250.2421],
+  //   ]);
+  //   Leaflet.control
+  //     .zoom({
+  //       position: "topright",
+  //     })
+  //     .addTo(map);
+  //   Leaflet.tileLayer("", {
+  //     noWrap: true,
+  //   }).addTo(map);
+  //   const getColor = (countryName: string) => {
+  //     const country = props.countries.find(
+  //       (country) => country.label === countryName
+  //     );
+  //     if (country) {
+  //       return country.theme;
+  //     } else {
+  //       return "#D9D9D9";
+  //     }
+  //   };
+  //   const style = (feature: any) => {
+  //     return {
+  //       fillColor: getColor(feature.properties.name),
+  //       fillOpacity: 1,
+  //     };
+  //   };
+  //   const highlightFeatureClick = (e: any) => {
+  //     const clickedCountryName = e.target.feature.properties.name;
+  //     const country = props.countries.find(
+  //       (c) => c.label === clickedCountryName
+  //     );
+  //     if (country) {
+  //       Leaflet.tooltip({
+  //         direction: "top",
+  //         permanent: false,
+  //         sticky: true,
+  //         offset: [0, -10],
+  //         className: "dashboard--map-tooltip",
+  //       })
+  //         .setLatLng([e.latlng.lat, e.latlng.lng])
+  //         .setContent(
+  //           `${clickedCountryName} <span class="font-semibold">${country.count}</span>`
+  //         )
+  //         .addTo(map);
+  //     }
+  //   };
+  //   const onEachFeature = (_: any, layer: any) => {
+  //     layer.on({
+  //       click: highlightFeatureClick,
+  //     });
+  //   };
+  //   const geojson = Leaflet.geoJson(LeafletMapData, {
+  //     style,
+  //     onEachFeature,
+  //   }).addTo(map);
+  // }
 });
 </script>
 

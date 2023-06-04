@@ -22,7 +22,7 @@
             class="w-full"
           />
         </div>
-        <div class="p-4 bg-[#F2F2F2]">
+        <div class="relative p-4 bg-[#F2F2F2]">
           <div class="relative">
             <button class="flex items-center mb-4">
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -31,17 +31,80 @@
               <ChevronDownIcon class="w-5 h-5" />
             </button>
           </div>
-          <label class="flex relative w-full">
-            <input
-              v-model="account"
-              type="search"
-              placeholder="Select"
-              class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
-            />
+          <button
+            class="flex relative w-full border-[1.5px] border-border rounded-lg px-3 py-[7px] bg-white"
+            :class="[!account ? 'text-gray-100' : '']"
+            @click="showAccountOptions = !showAccountOptions"
+          >
+            <span class="text-sm">
+              {{ account || "Select" }}
+            </span>
             <ChevronDownIcon
-              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
+              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300 transition-transform duration-300"
+              :class="[showAccountOptions ? 'rotate-180' : '']"
             />
-          </label>
+          </button>
+          <Transition name="fade">
+            <div
+              v-if="showAccountOptions"
+              v-click-outside="() => (showAccountOptions = false)"
+              class="absolute z-10 bottom-2 right-4 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[161px]"
+              :style="{
+                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+              }"
+            >
+              <button
+                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                :class="[
+                  account === 'Personal' ? 'text-blue bg-[#F2F2F2]' : '',
+                ]"
+                @click="
+                  account = 'Personal';
+                  showAccountOptions = false;
+                "
+              >
+                <ProfileIcon class="w-6 h-6 mr-3 text-current" />
+                <span class="text-sm leading-[1.71]">Personal</span>
+              </button>
+              <button
+                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                :class="[
+                  account === 'Sale Trader' ? 'text-blue bg-[#F2F2F2]' : '',
+                ]"
+                @click="
+                  account = 'Sale Trader';
+                  showAccountOptions = false;
+                "
+              >
+                <SaleTraderIcon class="w-6 h-6 mr-3 text-current" />
+                <span class="text-sm leading-[1.71]">Sole trader</span>
+              </button>
+              <button
+                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                :class="[account === 'Agent' ? 'text-blue bg-[#F2F2F2]' : '']"
+                @click="
+                  account = 'Agent';
+                  showAccountOptions = false;
+                "
+              >
+                <AgentIcon class="w-6 h-6 mr-3 text-current" />
+                <span class="text-sm leading-[1.71]">Agent</span>
+              </button>
+              <button
+                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                :class="[
+                  account === 'Business' ? 'text-blue bg-[#F2F2F2]' : '',
+                ]"
+                @click="
+                  account = 'Business';
+                  showAccountOptions = false;
+                "
+              >
+                <BusinessIcon class="w-6 h-6 mr-3 text-current" />
+                <span class="text-sm leading-[1.71]">Business</span>
+              </button>
+            </div>
+          </Transition>
         </div>
         <div class="p-4 bg-[#F2F2F2]">
           <div class="relative">
@@ -80,7 +143,7 @@
             />
           </label>
         </div>
-        <div class="p-4 bg-[#F2F2F2]">
+        <div class="relative p-4 bg-[#F2F2F2]">
           <div class="relative">
             <button class="flex items-center mb-4">
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -89,19 +152,62 @@
               <ChevronDownIcon class="w-5 h-5" />
             </button>
           </div>
-          <label class="flex relative w-full">
-            <input
-              v-model="spent"
-              type="search"
-              placeholder="Filter"
-              class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
-            />
+          <button
+            class="flex relative w-full border-[1.5px] border-border rounded-lg px-3 py-[7px] bg-white"
+            :class="[!spent ? 'text-gray-100' : '']"
+            @click="showSpentRange = !showSpentRange"
+          >
+            <span class="text-sm">
+              {{ spent || "Filter" }}
+            </span>
             <FilterIcon
               class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
             />
-          </label>
+          </button>
+          <Transition name="fade">
+            <div
+              v-if="showSpentRange"
+              v-click-outside="() => (showSpentRange = false)"
+              class="absolute z-10 bottom-2 right-4 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px]"
+              :style="{
+                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+              }"
+            >
+              <div class="text-sm leading-[1.71] font-semibold mb-8">
+                Spent range
+              </div>
+              <div class="mb-16">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="text-sm leading-[1.43] font-medium">40</div>
+                  <div class="text-sm leading-[1.43] font-medium">Any</div>
+                </div>
+                <Slider
+                  v-model="spentBuffer"
+                  :tooltips="false"
+                  class="rangeSlider"
+                />
+              </div>
+              <div class="flex items-center gap-4">
+                <button
+                  class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
+                  @click="showSpentRange = false"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
+                  @click="
+                    spent = spentBuffer;
+                    showSpentRange = false;
+                  "
+                >
+                  Apply Filter
+                </button>
+              </div>
+            </div>
+          </Transition>
         </div>
-        <div class="p-4 bg-[#F2F2F2]">
+        <div class="relative p-4 bg-[#F2F2F2]">
           <div class="relative">
             <button class="flex items-center mb-4">
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -110,17 +216,65 @@
               <ChevronDownIcon class="w-5 h-5" />
             </button>
           </div>
-          <label class="flex relative w-full">
-            <input
-              v-model="ordersCount"
-              type="search"
-              placeholder="Filter"
-              class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
-            />
+          <button
+            class="flex relative w-full border-[1.5px] border-border rounded-lg px-3 py-[7px] bg-white"
+            :class="[!ordersCount ? 'text-gray-100' : '']"
+            @click="showOrdersRange = !showOrdersRange"
+          >
+            <span class="text-sm">
+              {{ ordersCount || "Filter" }}
+            </span>
             <FilterIcon
               class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
             />
-          </label>
+          </button>
+          <Transition name="fade">
+            <div
+              v-if="showOrdersRange"
+              v-click-outside="() => (showOrdersRange = false)"
+              class="absolute z-10 bottom-2 right-4 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px]"
+              :style="{
+                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+              }"
+            >
+              <div class="text-sm leading-[1.71] font-semibold mb-[76px]">
+                Orders range
+              </div>
+              <div class="mb-14">
+                <Slider
+                  v-model="ordersCountBuffer"
+                  :min="40"
+                  :format="
+                    (val: number) => {
+                      return `${val === 100 ? 'Any' : val + ' +'}`;
+                    }
+                  "
+                  class="rangeSlider"
+                />
+                <div class="flex items-center justify-between">
+                  <div class="text-sm leading-[1.43] font-medium">40</div>
+                  <div class="text-sm leading-[1.43] font-medium">Any</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <button
+                  class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
+                  @click="showOrdersRange = false"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
+                  @click="
+                    ordersCount = ordersCountBuffer;
+                    showOrdersRange = false;
+                  "
+                >
+                  Apply Filter
+                </button>
+              </div>
+            </div>
+          </Transition>
         </div>
         <div class="p-4 w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
           <div class="relative">
@@ -130,169 +284,31 @@
           </div>
         </div>
       </div>
-      <div
+      <DashboardCustomersListItem
         v-for="(item, index) in items"
         :key="index"
-        class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center"
-      >
-        <div class="px-4 py-3">
-          <NuxtLink to="/" class="group/link flex items-center">
-            <div
-              class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
-              :class="[index === 3 ? 'bg-gray-200' : '']"
-            >
-              <img
-                v-if="index !== 3"
-                :src="item.avatar"
-                :alt="item.name"
-                class="w-full h-full rounded-full object-cover"
-              />
-              <UserIcon v-else class="w-7 h-7 text-gray-100" />
-            </div>
-            <div class="w-[calc(100%-60px)]">
-              <div class="flex items-center gap-3 mb-1">
-                <div
-                  class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue"
-                >
-                  {{ item.name }}
-                </div>
-                <div class="flex items-center gap-3 cursor-default">
-                  <Tooltip
-                    :position="index === 0 ? 'bottom' : 'top'"
-                    theme="black"
-                  >
-                    <svg
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-5 h-5"
-                    >
-                      <rect
-                        y="2.85742"
-                        width="20"
-                        height="14.2857"
-                        rx="4"
-                        fill="white"
-                      />
-                      <mask
-                        id="mask0_801_26126"
-                        style="mask-type: luminance"
-                        maskUnits="userSpaceOnUse"
-                        x="0"
-                        y="2"
-                        width="20"
-                        height="16"
-                      >
-                        <path
-                          d="M0 4.85742C0 3.75285 0.895431 2.85742 2 2.85742H18C19.1046 2.85742 20 3.75285 20 4.85742V15.1431C20 16.2477 19.1046 17.1431 18 17.1431H2C0.895431 17.1431 0 16.2477 0 15.1431V4.85742Z"
-                          fill="white"
-                        />
-                      </mask>
-                      <g mask="url(#mask0_801_26126)">
-                        <rect
-                          x="9.52344"
-                          y="2.85742"
-                          width="10.4762"
-                          height="14.2857"
-                          fill="#E5253D"
-                        />
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M0 17.1431H6.66667V2.85742H0V17.1431Z"
-                          fill="#0A3D9C"
-                        />
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M6.66797 17.1431H13.3346V2.85742H6.66797V17.1431Z"
-                          fill="#FFD955"
-                        />
-                      </g>
-                    </svg>
-                    <template #content>
-                      <span>Romania</span>
-                    </template>
-                  </Tooltip>
-                  <Tooltip
-                    :position="index === 0 ? 'bottom' : 'top'"
-                    theme="black"
-                  >
-                    <div
-                      class="bg-blue px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-white"
-                    >
-                      10%
-                    </div>
-                    <template #content>
-                      <span
-                        >Customer Discount:
-                        <strong class="font-semibold">10%</strong></span
-                      >
-                    </template>
-                  </Tooltip>
-                </div>
-              </div>
-              <div class="text-xs leading-[1.33] text-gray-300 truncate">
-                {{ item.email }}
-              </div>
-            </div>
-          </NuxtLink>
-        </div>
-        <div class="text-sm leading-[1.43] truncate px-4">
-          {{ item.account }}
-        </div>
-        <div class="text-sm leading-[1.43] truncate px-4">
-          {{ item.company }}
-        </div>
-        <div class="text-sm leading-[1.43] truncate px-4">
-          {{ item.registered }}
-        </div>
-        <div class="text-sm leading-[1.43] font-medium truncate px-4">
-          {{ item.spent }}
-        </div>
-        <div class="flex px-4">
-          <div
-            class="text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md"
-          >
-            {{ item.ordersCount }}
-          </div>
-        </div>
-        <div class="flex items-center justify-end gap-4 px-4">
-          <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-            <button
-              class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-            >
-              <DocumentIcon class="w-7 h-7" />
-            </button>
-            <template #content>
-              <span>View order</span>
-            </template>
-          </Tooltip>
-          <button
-            class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-          >
-            <MoreVerticalIcon class="w-7 h-7" />
-          </button>
-        </div>
-      </div>
+        :item="item"
+        :is-first="index === 0"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import DocumentIcon from "@/assets/icons/dashboard/document.svg";
-import MoreVerticalIcon from "@/assets/icons/dashboard/more-vertical.svg";
-import SearchIcon from "@/assets/icons/dashboard/search.svg";
+import Slider from "@vueform/slider";
 import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
-import UserIcon from "@/assets/icons/dashboard/user.svg";
 import CelandarIcon from "@/assets/icons/dashboard/calendar.svg";
 import FilterIcon from "@/assets/icons/dashboard/filter-2.svg";
-import { DashboardItem } from "~~/types";
+import { DashboardTableItem } from "~~/types";
+import ProfileIcon from "@/assets/icons/dashboard/profile.svg";
+import SaleTraderIcon from "@/assets/icons/dashboard/sale-trader.svg";
+import AgentIcon from "@/assets/icons/dashboard/agent.svg";
+import BusinessIcon from "@/assets/icons/dashboard/business.svg";
 
 defineProps({
   items: {
-    type: Array as PropType<DashboardItem[]>,
+    type: Array as PropType<DashboardTableItem[]>,
     required: true,
   },
 });
@@ -301,6 +317,38 @@ const name = ref("");
 const account = ref("");
 const company = ref("");
 const registered = ref("");
-const spent = ref("");
-const ordersCount = ref("");
+const spentBuffer = ref(0);
+const spent = ref(0);
+const spentFrom = ref(570);
+const spentTo = ref(850);
+const ordersCountBuffer = ref(40);
+const ordersCount = ref(0);
+
+const showAccountOptions = ref(false);
+const showOrdersRange = ref(false);
+const showSpentRange = ref(false);
 </script>
+
+<style src="@vueform/slider/themes/default.css"></style>
+<style lang="scss">
+.rangeSlider {
+  @apply h-2 mb-3;
+  .slider-base {
+    @apply bg-gray-200;
+  }
+  .slider-connect {
+    @apply bg-blue;
+  }
+  .slider-handle {
+    @apply w-6 h-6 -top-2;
+    box-shadow: 0px 0px 6px rgba(51, 51, 51, 0.2);
+    border: 1px solid #d4d4d4;
+  }
+  .slider-tooltip {
+    @apply bg-[#1B1B28] border-none rounded px-3 py-1 text-sm leading-[1.43] tracking-[-0.02em] text-white font-normal -translate-x-5 -translate-y-3  before:hidden after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:translate-y-full after:bg-no-repeat after:w-2 after:h-2;
+    &::after {
+      background-image: url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.5 3.49691e-07L0.5 0L2.8359 3.50385C3.62754 4.69132 5.37246 4.69132 6.1641 3.50385L8.5 3.49691e-07Z' fill='%231B1B28'/%3E%3C/svg%3E");
+    }
+  }
+}
+</style>

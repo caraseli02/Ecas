@@ -84,7 +84,7 @@ import PlusIcon from "@/assets/icons/dashboard/plus.svg";
 import FilterIcon from "@/assets/icons/dashboard/filter.svg";
 import XIcon from "@/assets/icons/dashboard/x.svg";
 import Avatar from "@/assets/icons/dashboard/avatar.png";
-import { DashboardItem } from "~~/types";
+import { DashboardTableItem } from "~~/types";
 
 const activeFilters = ref([
   "0740333555",
@@ -100,7 +100,7 @@ const clearFilters = () => {
 const atPage = ref(1);
 const perPage = ref(10);
 
-const listItems = ref<DashboardItem[]>(
+const listItems = ref<DashboardTableItem[]>(
   new Array(50).fill({
     avatar: Avatar,
     name: "Madalina Popescu",
