@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-[#f9f9f9]">
     <DashboardHeader
       :isCollapsedOnDesktop="isSideNavCollapsedOnDesktop"
       @show-side-nav="showSideNav = true"
