@@ -168,7 +168,7 @@
             <div
               v-if="showSpentRange"
               v-click-outside="() => (showSpentRange = false)"
-              class="absolute z-10 bottom-2 right-4 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px]"
+              class="absolute z-10 bottom-2 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px]"
               :style="{
                 boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
               }"
