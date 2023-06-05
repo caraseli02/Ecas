@@ -105,7 +105,7 @@ import CADModelsIcon from "@/assets/icons/cad-models.svg";
 import PDFIcon from "@/assets/icons/pdf.svg";
 import CopyIcon from "@/assets/icons/copy.svg";
 import EditIcon from "@/assets/icons/edit.svg";
-import { ProductDetail } from "~~/model/response/products/ProductDetailResponse";
+import { ProductDetail } from "~~/model/products/response/ProductDetailResponse";
 
 const props = defineProps<{
   product: ProductDetail

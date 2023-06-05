@@ -2,26 +2,39 @@ import { useFetch } from "#app";
 
 type useFetchType = typeof useFetch;
 
-// wrap useFetch with configuration needed to talk to our API
-export const useFetchAPI: useFetchType = (path, options: any) => {
-    const config = useRuntimeConfig();
+export const useFetchAPI: useFetchType = async (url, params) => {
+    const cookie = useCookie("token");
+    const runtimeConfig = useRuntimeConfig()
 
-    let headers = {
-        accept: 'application/json',
-        ...options?.headers,
-    }
+    const opts = {
+        key: url,
+        baseURL: runtimeConfig.public.BASE_URL_API,
 
-    if (process.server) {
-        headers = {
-            ...headers,
-            ...useRequestHeaders(['cookie']),
-            referer: config.public.baseURL
-        }
-    }
+        async onRequest({ options }) {
+            options.headers = options.headers || {};
 
-    return useFetch(path, {
-        baseURL: config.public.BASE_URL_API,
-        headers,
-        ...options,
-    });
+            if (cookie.value) {
+                options.headers["x-access-token"] = cookie.value;
+            }
+        },
+
+        async onRequestError({ error }) {
+            console.log(error.message);
+        },
+
+        async onResponseError({ response }) {
+            console.log(response._data.message);
+        },
+
+        ...params,
+    };
+
+    const { data, pending, error, execute } = await useFetch(url, opts);
+
+    return {
+        data,
+        pending,
+        error,
+        execute,
+    };
 };

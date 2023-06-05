@@ -9,6 +9,7 @@
       />
       <form action="" @submit.prevent class="w-full flex">
         <input
+          @input="onInput"
           v-model="searchVal"
           type="search"
           placeholder="Search parts here"
@@ -17,7 +18,7 @@
           @blur="searchVal = ''"
           @keypress.enter="
             $router.push('/search');
-            searchVal = '';
+          searchVal = '';
           "
         />
       </form>
@@ -32,13 +33,15 @@
       </div>
     </label>
     <Transition name="fade">
-      <LayoutHeaderSearchResults v-if="searchVal" />
+      <LayoutHeaderSearchResults v-if="searchVal" :products="productList" :is-loading="isLoading" />
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
 import SearchIcon from "@/assets/icons/search.svg";
+import _ from "lodash";
+import { ProductSearchItems, ProductSearchResponse, SearchData } from "~~/model/products/response/ProductSearchResponse";
 
 defineProps({
   isScrolled: {
@@ -48,4 +51,28 @@ defineProps({
 });
 
 const searchVal = ref("");
+let isLoading = ref<boolean>(false)
+
+const productList = ref<ProductSearchItems[]>([])
+
+const onInput = _.debounce(async () => {
+  let request = await searchProduct(searchVal.value)
+  productList.value = request
+  isLoading.value = false
+}, 500)
+
+const searchProduct = async (keyword: string): Promise<ProductSearchItems[]> => {
+  isLoading.value = true
+  const { data: products, pending } = await useFetchAPI<ProductSearchResponse>("products/search", {
+    method: "GET",
+    params: {
+      page: 1,
+      perPage: 8,
+      operator: '$and',
+      partDescription: keyword
+    }
+  })
+  const data = products.value as ProductSearchResponse
+  return data.data.items.items
+}
 </script>

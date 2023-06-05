@@ -55,7 +55,7 @@
 import QuestionIcon from "@/assets/icons/question.svg";
 import TriangleIcon from "@/assets/icons/triangle.svg";
 import PrintIcon from "@/assets/icons/print.svg";
-import { ProductDetail, ProductDetailResponse } from "~~/model/response/products/ProductDetailResponse";
+import { ProductDetail, ProductDetailResponse } from "~~/model/products/response/ProductDetailResponse";
 import { ProductImage } from "~~/model/response/products/ProductResponse";
 
 useHead({

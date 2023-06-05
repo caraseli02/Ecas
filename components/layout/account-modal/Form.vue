@@ -24,9 +24,9 @@
                 >
                     <CheckIcon v-if="rememberMe" class="w-4 text-white" />
                 </div>
-                <span class="text-xs text-gray-300 select-none"
-                    >Remember me</span
-                >
+                <span class="text-xs text-gray-300 select-none">
+                    Remember me
+                </span>
             </label>
             <NuxtLink
                 to="/"
@@ -163,7 +163,7 @@ const handleSignIn = async () => {
 
         isLoading.value = true;
 
-        const { data, pending, error } = await useFetchAPI("auth/login", {
+        const { data, pending, error } = await useFetchAPI<ProductResponse>("auth/login", {
             method: "POST",
             body: {
                 email: payload.email,
@@ -189,7 +189,6 @@ const handleSignIn = async () => {
 };
 
 const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
-    console.log(token);
     const { data, error } = await useFetchAPI<UserDetailsResponse>(
         `user/${parsedToken.user_id}/details`,
         {

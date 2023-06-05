@@ -98,7 +98,7 @@
 <script setup lang="ts">
 import CheckIcon from "@/assets/icons/check-circle.svg";
 import CartIcon from "@/assets/icons/cart.svg";
-import { ProductDetail } from "~~/model/response/products/ProductDetailResponse";
+import { ProductDetail } from "~~/model/products/response/ProductDetailResponse";
 
 const props = defineProps<{
   product: ProductDetail
