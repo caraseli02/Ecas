@@ -288,7 +288,7 @@
                       return `${val === 100 ? 'Any' : val + ' +'}`;
                     }
                   "
-                  class="rangeSlider"
+                  class="rangeSlider rangeSlider-reverseColors"
                 />
                 <div class="flex items-center justify-between">
                   <div class="text-sm leading-[1.43] font-medium">40</div>
@@ -372,11 +372,19 @@ const showSpentRange = ref(false);
 <style lang="scss">
 .rangeSlider {
   @apply h-2 mb-3;
+  &.rangeSlider-reverseColors {
+    .slider-base {
+      @apply bg-blue;
+    }
+    .slider-connect {
+      @apply bg-gray-200;
+    }
+  }
   .slider-base {
     @apply bg-gray-200;
   }
   .slider-connect {
-    @apply bg-blue;
+    @apply bg-blue h-[9px] -top-px;
   }
   .slider-handle {
     @apply w-6 h-6 -top-2;
