@@ -69,14 +69,14 @@
               <button
                 class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
                 :class="[
-                  account === 'Sale Trader' ? 'text-blue bg-[#F2F2F2]' : '',
+                  account === 'Sole Trader' ? 'text-blue bg-[#F2F2F2]' : '',
                 ]"
                 @click="
-                  account = 'Sale Trader';
+                  account = 'Sole Trader';
                   showAccountOptions = false;
                 "
               >
-                <SaleTraderIcon class="w-6 h-6 mr-3 text-current" />
+                <SoleTraderIcon class="w-6 h-6 mr-3 text-current" />
                 <span class="text-sm leading-[1.71]">Sole trader</span>
               </button>
               <button
@@ -302,7 +302,7 @@ import CelandarIcon from "@/assets/icons/dashboard/calendar.svg";
 import FilterIcon from "@/assets/icons/dashboard/filter-2.svg";
 import { DashboardTableItem } from "~~/types";
 import ProfileIcon from "@/assets/icons/dashboard/profile.svg";
-import SaleTraderIcon from "@/assets/icons/dashboard/sale-trader.svg";
+import SoleTraderIcon from "@/assets/icons/dashboard/sole-trader.svg";
 import AgentIcon from "@/assets/icons/dashboard/agent.svg";
 import BusinessIcon from "@/assets/icons/dashboard/business.svg";
 
