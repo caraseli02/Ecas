@@ -1,10 +1,12 @@
 <template>
-  <label class="flex relative">
+  <label
+    class="flex relative border-[1.5px] border-border rounded-lg overflow-hidden"
+  >
     <input
       :value="modelValue"
       type="search"
       :placeholder="placeholder"
-      class="w-full border-[1.5px] border-border rounded-lg px-3 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
+      class="w-full px-3 pr-10 text-sm bg-white placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
       :class="[size === 'lg' ? 'py-2.5' : 'py-1.5']"
       @input="handleInput"
     />
