@@ -143,7 +143,7 @@
             />
           </label>
         </div>
-        <div class="relative p-4 bg-[#F2F2F2]">
+        <div class="relative p-4 pr-0 bg-[#F2F2F2]">
           <div class="relative">
             <button class="flex items-center mb-4">
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -154,11 +154,11 @@
           </div>
           <button
             class="flex relative w-full border-[1.5px] border-border rounded-lg px-3 py-[7px] bg-white"
-            :class="[!spent ? 'text-gray-100' : '']"
+            :class="[!spent[0] && !spent[1] ? 'text-gray-100' : '']"
             @click="showSpentRange = !showSpentRange"
           >
-            <span class="text-sm">
-              {{ spent || "Filter" }}
+            <span class="text-sm truncate pr-[18px]">
+              {{ spent[0] && spent[1] ? `${spent[0]}-${spent[1]}` : "Filter" }}
             </span>
             <FilterIcon
               class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
@@ -177,12 +177,51 @@
                 Spent range
               </div>
               <div class="mb-16">
+                <div class="flex items-end gap-3 mb-6">
+                  <label>
+                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">
+                      From
+                    </div>
+                    <div
+                      class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]"
+                    >
+                      <span class="font-medium mr-1">$</span>
+                      <input
+                        v-model.number="spentFrom"
+                        type="number"
+                        class="bg-transparent py-2 w-full focus:outline-none"
+                      />
+                    </div>
+                  </label>
+                  <div class="text-sm leading-[1.43] mb-3">-</div>
+                  <label>
+                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">
+                      To
+                    </div>
+                    <div
+                      class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]"
+                    >
+                      <span class="font-medium mr-1">$</span>
+                      <input
+                        v-model.number="spentTo"
+                        type="number"
+                        class="bg-transparent py-2 w-full focus:outline-none"
+                      />
+                    </div>
+                  </label>
+                </div>
                 <div class="flex items-center justify-between mb-3">
-                  <div class="text-sm leading-[1.43] font-medium">40</div>
-                  <div class="text-sm leading-[1.43] font-medium">Any</div>
+                  <div class="text-sm leading-[1.43] font-medium">
+                    ${{ spentBuffer[0] }}
+                  </div>
+                  <div class="text-sm leading-[1.43] font-medium">
+                    ${{ spentBuffer[1] }}
+                  </div>
                 </div>
                 <Slider
                   v-model="spentBuffer"
+                  :min="spentFrom"
+                  :max="spentTo"
                   :tooltips="false"
                   class="rangeSlider"
                 />
@@ -317,8 +356,8 @@ const name = ref("");
 const account = ref("");
 const company = ref("");
 const registered = ref("");
-const spentBuffer = ref(0);
-const spent = ref(0);
+const spentBuffer = ref([570, 850]);
+const spent = ref([570, 850]);
 const spentFrom = ref(570);
 const spentTo = ref(850);
 const ordersCountBuffer = ref(40);
