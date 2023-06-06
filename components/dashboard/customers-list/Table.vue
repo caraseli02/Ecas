@@ -122,7 +122,7 @@
             class="w-full"
           />
         </div>
-        <div class="p-4 bg-[#F2F2F2]">
+        <div class="relative p-4 bg-[#F2F2F2]">
           <div class="relative">
             <button class="flex items-center mb-4">
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -131,17 +131,38 @@
               <ChevronDownIcon class="w-5 h-5" />
             </button>
           </div>
-          <label class="flex relative w-full">
-            <input
-              v-model="registered"
-              type="search"
-              placeholder="23/9/2023 - 23/9/2023"
-              class="w-full border-[1.5px] border-border rounded-lg px-3 py-1.5 pr-10 text-sm placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
+          <button
+            class="flex relative w-full border-[1.5px] border-border rounded-lg px-3 py-[7px] bg-white"
+            :class="[
+              !registered.start && !registered.end ? 'text-gray-100' : '',
+            ]"
+            @click="showRegisteredRange = !showRegisteredRange"
+          >
+            <span class="text-sm tracking-[-0.02em]">
+              {{
+                registered.start && registered.end
+                  ? `${formattedDate(registered.start)} - ${formattedDate(
+                      registered.end
+                    )}`
+                  : "23/9/2023 - 23/9/2023"
+              }}
+            </span>
+            <CalendarIcon
+              class="absolute top-1/2 -translate-y-1/2 right-1 w-5 h-5 text-gray-300"
             />
-            <CelandarIcon
-              class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
-            />
-          </label>
+          </button>
+          <Transition name="fade">
+            <div
+              v-if="showRegisteredRange"
+              v-click-outside="() => (showRegisteredRange = false)"
+              class="absolute right-4 bottom-2 translate-y-full rounded-lg overflow-hidden"
+              :style="{
+                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+              }"
+            >
+              <DatePicker v-model.range="registered" borderless />
+            </div>
+          </Transition>
         </div>
         <div class="relative p-4 pr-0 bg-[#F2F2F2]">
           <div class="relative">
@@ -337,13 +358,14 @@
 import { PropType } from "vue";
 import Slider from "@vueform/slider";
 import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
-import CelandarIcon from "@/assets/icons/dashboard/calendar.svg";
+import CalendarIcon from "@/assets/icons/dashboard/calendar.svg";
 import FilterIcon from "@/assets/icons/dashboard/filter-2.svg";
 import { DashboardTableItem } from "~~/types";
 import ProfileIcon from "@/assets/icons/dashboard/profile.svg";
 import SoleTraderIcon from "@/assets/icons/dashboard/sole-trader.svg";
 import AgentIcon from "@/assets/icons/dashboard/agent.svg";
 import BusinessIcon from "@/assets/icons/dashboard/business.svg";
+import { DatePicker } from "v-calendar";
 
 defineProps({
   items: {
@@ -355,7 +377,10 @@ defineProps({
 const name = ref("");
 const account = ref("");
 const company = ref("");
-const registered = ref("");
+const registered = ref({
+  start: null,
+  end: null,
+});
 const spentBuffer = ref([570, 850]);
 const spent = ref([570, 850]);
 const spentFrom = ref(570);
@@ -366,6 +391,11 @@ const ordersCount = ref(0);
 const showAccountOptions = ref(false);
 const showOrdersRange = ref(false);
 const showSpentRange = ref(false);
+const showRegisteredRange = ref(false);
+
+const formattedDate = (date: Date) => {
+  return new Date(date).toLocaleDateString("en-GB");
+};
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>
@@ -397,5 +427,26 @@ const showSpentRange = ref(false);
       background-image: url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.5 3.49691e-07L0.5 0L2.8359 3.50385C3.62754 4.69132 5.37246 4.69132 6.1641 3.50385L8.5 3.49691e-07Z' fill='%231B1B28'/%3E%3C/svg%3E");
     }
   }
+}
+.vc-header .vc-title {
+  @apply text-dark;
+}
+.vc-weekday {
+  @apply text-gray-300;
+}
+.vc-focus {
+  @apply focus:shadow-none;
+}
+.vc-day-content {
+  @apply hover:bg-blue hover:text-white;
+}
+.vc-highlight-content-solid.vc-blue {
+  @apply bg-blue;
+}
+.vc-highlight-content-outline.vc-blue {
+  @apply border border-blue;
+}
+.vc-highlight-content-light.vc-blue {
+  @apply text-blue font-semibold;
 }
 </style>

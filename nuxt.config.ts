@@ -66,6 +66,7 @@ export default defineNuxtConfig({
     "~/assets/css/animations.css",
     "vue3-lottie/dist/style.css",
     "leaflet/dist/leaflet.css",
+    "v-calendar/style.css",
   ],
   postcss: {
     plugins: {
