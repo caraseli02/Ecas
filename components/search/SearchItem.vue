@@ -33,7 +33,7 @@
             @click="showCustomProductPartNumberModal = true"
           >
             <span class="text-[15px] leading-tight font-medium mr-2">
-              PI2345678J
+              {{ item.manufacturerCode }}
             </span>
             <EditIcon class="w-5 h-5" />
           </button>
@@ -42,10 +42,10 @@
           class="grid grid-cols-1 gap-[5px] text-xs leading-tight mb-[15px] md:gap-2 md:mb-[25px] lg:mb-0"
         >
           <div>
-            Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW
+            {{ item.description }}
           </div>
-          <div>Manufacturer: Microchip</div>
-          <div>Manufacturer part number: ADIN2111BCPZ</div>
+          <div>Manufacturer: {{ item.manufacturer }}</div>
+          <div>Manufacturer part number: {{ item.manufacturerCode }}</div>
           <div class="flex items-center">
             <button
               class="flex items-center transition-colors duration-300 mr-[9px] hover:text-blue"
@@ -73,7 +73,7 @@
                 <span
                   class="text-xs leading-tight font-semibold md:mr-[15px] lg:mr-0"
                 >
-                  16,000 in stock
+                  {{ item.stock }} in stock
                 </span>
                 <span
                   class="hidden text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline lg:hidden"
@@ -141,7 +141,6 @@
       <div
         class="grid grid-cols-2 pt-2.5 mb-[15px] md:grid-cols-[70%,30%] md:mb-5 lg:grid-cols-[40%,60%] lg:mb-0"
       >
-        <div></div>
         <div class="text-sm font-medium font-Poppins text-blue text-center">
           View More
         </div>
@@ -181,6 +180,7 @@
       <LayoutCustomProductPartNumberModal
         v-if="showCustomProductPartNumberModal"
         @close="showCustomProductPartNumberModal = false"
+        :manufacturer-code="item.manufacturerCode"
       />
     </Transition>
   </Teleport>

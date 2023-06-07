@@ -16,8 +16,7 @@
           autocomplete="off"
           class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
           @blur="searchVal = ''"
-          @keypress.enter="
-            $router.push('/search');
+          @keypress.enter="$router.push({ path: '/search', query: { keyword: searchVal } });
           searchVal = '';
           "
         />
@@ -41,6 +40,7 @@
 <script setup lang="ts">
 import SearchIcon from "@/assets/icons/search.svg";
 import _ from "lodash";
+import { fetchSearchProduct } from "~/services/product.service";
 import { ProductSearchItems, ProductSearchResponse, SearchData } from "~~/model/products/response/ProductSearchResponse";
 
 defineProps({
@@ -52,7 +52,6 @@ defineProps({
 
 const searchVal = ref("");
 let isLoading = ref<boolean>(false)
-
 const productList = ref<ProductSearchItems[]>([])
 
 const onInput = _.debounce(async () => {
@@ -63,15 +62,7 @@ const onInput = _.debounce(async () => {
 
 const searchProduct = async (keyword: string): Promise<ProductSearchItems[]> => {
   isLoading.value = true
-  const { data: products, pending } = await useFetchAPI<ProductSearchResponse>("products/search", {
-    method: "GET",
-    params: {
-      page: 1,
-      perPage: 8,
-      operator: '$and',
-      partDescription: keyword
-    }
-  })
+  const { data: products } = await fetchSearchProduct(keyword)
   const data = products.value as ProductSearchResponse
   return data.data.items.items
 }

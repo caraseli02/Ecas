@@ -76,10 +76,8 @@
 </template>
 
 <script setup lang="ts">
-import ProductCover1 from "@/assets/media/home/product-1.jpg";
-import ProductCover2 from "@/assets/media/home/product-2.jpg";
-import ProductCover3 from "@/assets/media/home/product-3.jpg";
 import { A11y, Pagination, Grid } from "swiper";
+import { fetchNewProducts } from "~/services/product.service";
 import { ProductCard as ProductCardType } from "~~/types";
 
 defineProps({
@@ -96,188 +94,10 @@ defineProps({
 
 const elDOM = ref<HTMLElement | null>(null);
 
-const products = ref<ProductCardType[]>([
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover1,
-    stock: 731,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    cover: ProductCover2,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover3,
-    stock: 87,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover1,
-    stock: 731,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    cover: ProductCover2,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover3,
-    stock: 87,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover1,
-    stock: 731,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    cover: ProductCover2,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover3,
-    stock: 87,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover1,
-    stock: 731,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    cover: ProductCover2,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover3,
-    stock: 87,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover1,
-    stock: 731,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    cover: ProductCover2,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover3,
-    stock: 87,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover1,
-    stock: 731,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    cover: ProductCover2,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover3,
-    stock: 87,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover1,
-    stock: 731,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    cover: ProductCover2,
-  },
-  {
-    slug: "slug",
-    title: "ADGN2999BCPZ",
-    category: "Analog Devices",
-    price: 1679.75,
-    discount: 20,
-    cover: ProductCover3,
-    stock: 87,
-  },
-]);
-
 const productsMD = computed(() => {
   const chunkedArray = [];
-  for (let i = 0; i < products.value.length; i += 3) {
-    chunkedArray.push(products.value.slice(i, i + 3));
+  for (let i = 0; i < products.value?.length!; i += 3) {
+    chunkedArray.push(products.value?.slice(i, i + 3));
   }
   return chunkedArray;
 });
@@ -309,6 +129,22 @@ const setActiveFilter = (filter: string) => {
 onMounted(() => {
   setFilterLine();
 });
+
+const fetch = await fetchNewProducts()
+const products = ref<ProductCardType[]>()
+
+products.value = []
+fetch.data.value?.data.slice(0, 20).map(item => {
+  products.value?.push({
+      slug: item._id,
+      title: item.alias,
+      category: "Not Supported",
+      price: new Intl.NumberFormat('en-US', { minimumFractionDigits: 3 }).format(item.priceEur),
+      discount: 0,
+      cover: item.details.ProductImage.ProductImageLarge,
+      stock: item.stock,
+    })
+})
 </script>
 
 <style lang="scss">

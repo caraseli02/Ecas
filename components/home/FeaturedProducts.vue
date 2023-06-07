@@ -68,6 +68,16 @@
                         </div>
                     </div>
                 </div>
+                <div
+                    v-if="productList.length === 0"
+                    class="px-1 md:pt-1 md:pr-0"
+                >
+                    <div
+                        class="flex items-center content-center justify-center bg-white rounded-md flex-row pl-[15px] pr-5 pt-7 pb-[34px] mb-3 md:w-full md:px-[15px] md:py-12 md:h-[calc(100%-30px)] lg:px-[21px] lg:pt-[30px] xl:w-full xl:px-2 xl:pt-[15px]"
+                    >
+                        <h3>No items to show from this tab</h3>
+                    </div>
+                </div>
                 <Swiper
                     :modules="[A11y, Pagination, Grid]"
                     :slides-per-view="2"
@@ -176,7 +186,7 @@ import ProductCover1 from "@/assets/media/home/product-1.jpg";
 import ProductCover2 from "@/assets/media/home/product-2.jpg";
 import ProductCover3 from "@/assets/media/home/product-3.jpg";
 import { A11y, Pagination, Grid } from "swiper";
-import { ProductResponse } from "~~/model/response/products/ProductResponse";
+import { fetchProductTab } from "~/services/product.service";
 import { ProductCard as ProductCardType } from "~~/types";
 
 const elDOM = ref<HTMLElement | null>(null);
@@ -213,18 +223,17 @@ const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
 
 watch(activeFilter, async (value) => {
-    let { data } = await fetchProducts(`products/${value}`);
-    productList.value = [];
-    data.value?.data.forEach(({ _id, alias, priceEur, details, stock }) => {
-        productList.value.push({
-            slug: _id,
-            title: alias,
-            category: "Not supported",
-            price: priceEur.toFixed(3),
-            cover: details.ProductImage.ProductImageLarge,
-            stock: stock
-        });
-    });
+    let { data } = await fetchProductTab(value);
+    productList.value = data.value?.data.map((item) => ({
+        slug: item._id,
+        title: item.alias,
+        category: "Not supported",
+        price: new Intl.NumberFormat("en-US", {
+            minimumFractionDigits: 3,
+        }).format(item.priceEur),
+        cover: item.details.ProductImage.ProductImageLarge,
+        stock: item.stock,
+    }));
 });
 
 const setFilterLine = () => {
@@ -250,22 +259,17 @@ onMounted(async () => {
     setFilterLine();
 });
 
-const fetchProducts = async (path: string) => {
-    return await useFetchAPI<ProductResponse>(path);
-};
-
-let { data } = await fetchProducts(`products/featured`);
-productList.value = [];
-data.value?.data.forEach(({ _id, alias, priceEur, details, stock }) => {
-    productList.value.push({
-        slug: _id,
-        title: alias,
-        category: "Not supported",
-        price: priceEur.toFixed(3),
-        cover: details.ProductImage.ProductImageLarge,
-        stock: stock
-    });
-});
+let { data } = await fetchProductTab("featured");
+productList.value = data.value?.data.map((item) => ({
+    slug: item._id,
+    title: item.alias,
+    category: "Not supported",
+    price: new Intl.NumberFormat("en-US", { minimumFractionDigits: 3 }).format(
+        item.priceEur
+    ),
+    cover: item.details.ProductImage.ProductImageLarge,
+    stock: item.stock,
+}));
 </script>
 
 <style lang="scss">
@@ -286,7 +290,8 @@ data.value?.data.forEach(({ _id, alias, priceEur, details, stock }) => {
     margin-right: 0 !important;
 }
 
-.homeFeaturedProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
+.homeFeaturedProducts--swiper
+    .swiper-pagination-bullet.swiper-pagination-bullet-active {
     @apply w-[25px] bg-gray-100 #{!important};
 }
 </style>

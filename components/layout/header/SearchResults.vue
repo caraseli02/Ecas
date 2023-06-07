@@ -23,13 +23,13 @@
           class="flex items-center justify-between gap-1 text-xs leading-tight font-semibold mb-1 md:text-sm md:leading-[1.29]"
         >
           <div class="flex items-center w-[calc(100%-50px)]">
-            <div class="truncate">{{ product.manufacturer }}</div>
+            <div class="truncate">{{ product.details.SummaryData.TaxonomyPath }}</div>
             <CaretIcon class="w-4 h-4 flex-shrink-0" />
             <div class="font-Inter">{{ product.alias }}</div>
           </div>
           <div
             class="rounded-3xl bg-blue px-1 text-xs leading-[1.33] font-semibold text-white flex-shrink-0 lg:translate-y-2.5"
-            :class="[index % 2 === 0 ? 'invisible' : '']"
+            :class="[product.adminSettings.featured == true ? 'invisible' : '']"
           >
             New
           </div>

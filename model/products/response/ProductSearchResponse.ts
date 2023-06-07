@@ -8,12 +8,14 @@ export interface ProductSearchResponse {
 export interface SearchData {
     filtersCount: number
     items: SearchDataItems
-    filters: {
-        "string": SearchFiltersCategories
-    }
+    filters: ProductFilters
 }
 
-interface SearchFiltersCategories {
+export interface ProductFilters {
+    [key: string]: SearchFiltersCategories[]
+}
+
+export interface SearchFiltersCategories {
     FeatureName: string
     FeatureValue: string
     FeatureUnit: string

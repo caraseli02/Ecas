@@ -48,6 +48,7 @@
           <SearchFilter
             v-for="(filter, index) in filters"
             :key="index"
+            :filter="filter"
             @close="removeItem(index)"
           />
           <div class="flex flex-col items-center pt-[60px] pb-10">
@@ -102,15 +103,32 @@ import EyeIcon from "@/assets/icons/eye.svg";
 import EyeClosedIcon from "@/assets/icons/eye-closed.svg";
 import ResetIcon from "@/assets/icons/reset.svg";
 import PlusIcon from "@/assets/icons/plus.svg";
+import { ProductFilters } from "~/model/products/response/ProductSearchResponse";
+
+const props = defineProps<{
+  filters: ProductFilters
+}>()
 
 const showSearchFiltersModal = ref(false);
 const showAddRemoveFilterModal = ref(false);
 
 const showFilters = ref(true);
 
-const filters = ref(new Array(20));
+const filters = ref<ProductFilters[]>();
+const dataArray = Object.entries(props.filters);
+filters.value = []
+dataArray.forEach(item => {
+  const key = item[0]
+  const value = item[1]
+
+  filters.value?.push({
+    [key]: value
+  })
+})
+console.log(filters.value);
+
 
 const removeItem = (index: number) => {
-  filters.value.splice(index, 1);
+  filters.value?.splice(index, 1);
 };
 </script>

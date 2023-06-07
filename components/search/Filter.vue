@@ -5,9 +5,9 @@
         <div
           class="text-xs font-semibold leading-tight truncate w-[140px] mb-[5px]"
         >
-          Max. forward impulse lorem ipsum
+        {{ FeatureName }}
         </div>
-        <div class="text-xs leading-tight">(18945)</div>
+        <div class="text-xs leading-tight">({{ FeatureID }})</div>
       </div>
       <button
         class="rounded w-[22px] h-[22px] bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
@@ -90,8 +90,13 @@
 import FiltersIcon from "@/assets/icons/filters.svg";
 import CheckIcon from "@/assets/icons/check.svg";
 import XIcon from "@/assets/icons/x.svg";
+import { ProductFilters } from "~/model/products/response/ProductSearchResponse";
 
 defineEmits(["close"]);
+
+const props = defineProps<{
+  filter: ProductFilters
+}>()
 
 const searchValue = ref("");
 
@@ -127,6 +132,18 @@ const options = ref([
     checked: false,
   },
 ]);
+
+const FeatureID = computed(() => {
+  return Object.entries(props.filter)[0][1][0].FeatureID
+})
+
+const FeatureValueDetails = computed(() => {
+  return props.filter[Object.keys(props.filter)[0]][0].FeatureValueDetails
+})
+
+const FeatureName = computed(() => {
+  return Object.keys(props.filter)[0]
+})
 
 const filteredOptions = computed(() => {
   return options.value.filter((e) =>
