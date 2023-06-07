@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col gap-6 md:grid md:grid-cols-2 md:items-center md:gap-8 lg:flex lg:flex-row lg:items-center lg:justify-between"
+    class="flex flex-col gap-6 md:grid md:grid-cols-2 md:items-center md:gap-8 lg:relative lg:flex lg:flex-row lg:items-center lg:justify-between"
   >
     <label
       class="flex items-center justify-center md:order-2 md:justify-end lg:order-3"
@@ -58,7 +58,7 @@
       {{ paginationLabel }}
     </div>
     <div
-      class="flex items-center justify-center overflow-x-auto scrollbar-thin md:col-span-2 md:order-3 lg:order-2"
+      class="flex items-center justify-center overflow-x-auto scrollbar-thin md:col-span-2 md:order-3 lg:order-2 lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:left-1/2 lg:-translate-x-1/2"
     >
       <button
         :disabled="atPage === 1"
