@@ -104,7 +104,7 @@
                     v-for="(notificaton, index) in notifications"
                     :key="index"
                     to="/"
-                    class="flex flex-col w-full bg-[#F5F5F5] pt-2 pb-1 px-3 border-b border-border transition-colors duration-300 hover:bg-white"
+                    class="flex flex-col w-full bg-[#F5F5F5] pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-white"
                   >
                     <div class="flex items-center justify-between w-full mb-2">
                       <div class="flex items-center">
@@ -169,7 +169,7 @@
                     </div>
                   </NuxtLink>
                 </div>
-                <div class="flex justify-center py-4 shadow-card">
+                <div class="flex justify-center py-4 shadow-card relative z-10">
                   <NuxtLink to="/" class="flex items-center text-blue">
                     <span class="text-sm leading-[1.43] font-medium mr-2">
                       View all

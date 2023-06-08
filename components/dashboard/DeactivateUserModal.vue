@@ -6,7 +6,7 @@
       class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-4 bg-white rounded-xl shadow-card md:p-6"
     >
       <button
-        class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg ml-auto mb-4"
+        class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg ml-auto mb-4 transition-colors duration-300 hover:text-blue"
         @click="$emit('close')"
       >
         <XIcon class="w-6 h-6" />

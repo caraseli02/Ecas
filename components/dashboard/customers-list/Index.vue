@@ -25,13 +25,13 @@
           <FilterIcon class="w-6 h-6" />
         </button>
         <button
-          class="flex items-center justify-center w-full bg-gray-200 rounded-lg px-4 py-2 text-gray-300 md:max-w-max md:order-1"
+          class="group flex items-center justify-center w-full bg-gray-200 rounded-lg px-4 py-2 text-gray-300 transition-colors duration-300 md:max-w-max md:order-1"
           @click="clearFilters"
         >
           <span class="text-sm leading-[1.71] font-medium mr-2">
             Clear Filters
           </span>
-          <XIcon class="w-6 h-6" />
+          <XIcon class="w-6 h-6 group-hover:text-blue" />
         </button>
       </div>
     </div>
@@ -51,8 +51,11 @@
           <span class="text-sm leading-normal text-gray-300 mr-2">
             {{ filter }}
           </span>
-          <button class="flex" @click="activeFilters.splice(index, 1)">
-            <XIcon class="w-4 h-4 text-gray-300" />
+          <button
+            class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+            @click="activeFilters.splice(index, 1)"
+          >
+            <XIcon class="w-4 h-4" />
           </button>
         </div>
       </div>

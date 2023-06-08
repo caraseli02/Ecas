@@ -1,14 +1,17 @@
 <template>
   <div class="flex items-center justify-between py-2">
-    <NuxtLink to="/" class="group flex items-center">
+    <NuxtLink to="/" class="group/link flex items-center">
       <div
-        class="relative w-11 h-11 mr-3 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-[3px] after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover:after:opacity-100"
+        class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-3 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-[3px] after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
+        :class="[!item.avatar ? 'bg-gray-200' : '']"
       >
         <img
+          v-if="item.avatar"
           :src="item.avatar"
           :alt="item.name"
           class="w-full h-full rounded-full object-cover"
         />
+        <UserIcon v-else class="w-7 h-7 text-gray-100" />
       </div>
       <div class="truncate">
         <div
@@ -102,13 +105,14 @@ import OrdersIcon from "@/assets/icons/dashboard/document.svg";
 import SettingsIcon from "@/assets/icons/dashboard/setting.svg";
 import DeactivateIcon from "@/assets/icons/dashboard/deactivate.svg";
 import TrashIcon from "@/assets/icons/dashboard/trash.svg";
+import UserIcon from "@/assets/icons/dashboard/user.svg";
 
 defineProps({
   item: {
     type: Object as PropType<{
       name: string;
       email: string;
-      avatar: any;
+      avatar?: any;
     }>,
     required: true,
   },
