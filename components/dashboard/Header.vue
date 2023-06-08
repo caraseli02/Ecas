@@ -126,7 +126,7 @@
                         />
                         <span
                           v-if="!notificaton.read"
-                          class="flex w-2 h-2 bg-blue rounded-full mr-2"
+                          class="flex w-2 h-2 flex-shrink-0 bg-blue rounded-full mr-2"
                         />
                         <span
                           class="capitalize text-sm leading-[1.43] font-medium"

@@ -63,7 +63,7 @@
       <button
         :disabled="atPage === 1"
         @click="$emit('page-change', atPage - 1)"
-        class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-300 mr-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue"
+        class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-100 mr-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue"
       >
         <ChevronLeftIcon class="w-4 h-4" />
       </button>
@@ -87,7 +87,7 @@
             class="w-3 h-2 translate-y-1"
           >
             <path
-              fill="#5E6278"
+              fill="currentColor"
               d="M1.943 3.11c-.302 0-.56-.107-.776-.319a1.03 1.03 0 0 1-.318-.775 1.019 1.019 0 0 1 .318-.766c.215-.212.474-.318.776-.318.291 0 .545.106.76.318a1.045 1.045 0 0 1 .174 1.317c-.1.166-.232.299-.398.398a1.035 1.035 0 0 1-.536.144Zm4.06 0c-.301 0-.56-.107-.775-.319a1.03 1.03 0 0 1-.319-.775 1.019 1.019 0 0 1 .319-.766c.215-.212.474-.318.775-.318.292 0 .545.106.76.318a1.045 1.045 0 0 1 .175 1.317c-.1.166-.232.299-.398.398a1.035 1.035 0 0 1-.537.144Zm4.06 0c-.301 0-.56-.107-.775-.319a1.03 1.03 0 0 1-.318-.775 1.019 1.019 0 0 1 .318-.766c.216-.212.474-.318.776-.318.291 0 .545.106.76.318a1.045 1.045 0 0 1 .174 1.317c-.1.166-.232.299-.397.398a1.035 1.035 0 0 1-.537.144Z"
             />
           </svg>
@@ -96,7 +96,7 @@
       <button
         :disabled="totalPages === atPage"
         @click="$emit('page-change', atPage + 1)"
-        class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-300 ml-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue"
+        class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-100 ml-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue"
       >
         <ChevronRightIcon class="w-4 h-4" />
       </button>
