@@ -1,5 +1,5 @@
 export interface DashboardTableItem {
-  avatar: any;
+  avatar?: any;
   name: string;
   email: string;
   account: string;

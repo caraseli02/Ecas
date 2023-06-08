@@ -100,18 +100,7 @@ const clearFilters = () => {
 const atPage = ref(1);
 const perPage = ref(10);
 
-const listItems = ref<DashboardTableItem[]>(
-  new Array(50).fill({
-    avatar: Avatar,
-    name: "Madalina Popescu",
-    email: "madalina.popescu@company.com",
-    account: "Business Agent",
-    company: "Nezo Global Development s.r.l.",
-    registered: "21 September 2023, 18:25",
-    spent: "$138.000,77",
-    ordersCount: 17,
-  })
-);
+const listItems = ref<DashboardTableItem[]>([]);
 
 const visibleItemsFiltered = computed(() => {
   return [...listItems.value].filter((e) => {
@@ -124,5 +113,21 @@ const visibleItems = computed(() => {
     (atPage.value - 1) * perPage.value,
     (atPage.value - 1) * perPage.value + perPage.value
   );
+});
+
+onMounted(() => {
+  for (let i = 0; i < 50; i++) {
+    const element = {
+      avatar: i === 2 ? undefined : Avatar,
+      name: "Madalina Popescu",
+      email: "madalina.popescu@company.com",
+      account: "Business Agent",
+      company: "Nezo Global Development s.r.l.",
+      registered: "21 September 2023, 18:25",
+      spent: "$138.000,77",
+      ordersCount: 17,
+    };
+    listItems.value.push(element);
+  }
 });
 </script>

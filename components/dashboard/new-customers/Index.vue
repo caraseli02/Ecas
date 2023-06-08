@@ -20,7 +20,7 @@
           3,78%
         </div>
         <button class="flex items-center" @click="showOptions = !showOptions">
-          <span class="text-sm left-[1.43] text-gray-300 mr-1">
+          <span class="text-sm left-[1.43] text-gray-300 font-medium mr-1">
             {{ selectedOption }}
           </span>
           <ChevronIcon class="w-5 h-5 text-gray-300" />
@@ -52,7 +52,7 @@
             selectedOption = option;
           "
         >
-          <span class="text-sm leading-[1.71]">{{ option }}</span>
+          <span class="text-sm leading-[1.71] font-medium">{{ option }}</span>
         </button>
       </div>
     </Transition>

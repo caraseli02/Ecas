@@ -16,7 +16,7 @@
           :class="[showPerPageOptions ? 'border-blue' : 'border-border']"
           @click="showPerPageOptions = !showPerPageOptions"
         >
-          <span class="text-sm leading-[1.71] mr-2">
+          <span class="text-sm leading-[1.71] font-medium mr-2">
             {{ perPage }}
           </span>
           <ChevronDownIcon
@@ -27,7 +27,7 @@
         <transition name="fade">
           <div
             v-if="showPerPageOptions"
-            class="absolute z-10 left-0 w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-2.5"
+            class="absolute z-10 left-0 w-full grid grid-cols-1 gap-1 bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-3"
             :class="[
               position === 'top'
                 ? '-bottom-1 translate-y-full'
@@ -40,7 +40,7 @@
                 (e) => e !== perPage
               )"
               :key="option"
-              class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
+              class="flex justify-center w-full text-left text-sm leading-[1.71] py-1 font-medium rounded-md text-gray-300 transition-colors duration-300 hover:text-blue hover:bg-[#F2F2F2]"
               @click="
                 $emit('per-page-change', option);
                 showPerPageOptions = false;

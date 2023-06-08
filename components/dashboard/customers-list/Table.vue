@@ -62,7 +62,7 @@
             <div
               v-if="showAccountOptions"
               v-click-outside="() => (showAccountOptions = false)"
-              class="absolute z-10 bottom-2 right-4 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[163px]"
+              class="absolute z-10 bottom-2 right-1 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[163px]"
               :style="{
                 boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
               }"
@@ -185,7 +185,7 @@
             <div
               v-if="showRegisteredRange"
               v-click-outside="() => (showRegisteredRange = false)"
-              class="absolute right-4 bottom-2 translate-y-full rounded-lg overflow-hidden"
+              class="absolute right-2 bottom-2 translate-y-full rounded-lg overflow-hidden"
               :style="{
                 boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
               }"
@@ -493,7 +493,7 @@ const spentValue = computed(() => {
 <style src="@vueform/slider/themes/default.css"></style>
 <style lang="scss">
 .rangeSlider {
-  @apply h-2 mb-3;
+  @apply h-2 mb-3 pl-3.5 pr-2;
   &.rangeSlider-reverseColors {
     .slider-base {
       @apply bg-blue;

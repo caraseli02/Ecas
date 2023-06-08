@@ -104,7 +104,7 @@
                     v-for="(notificaton, index) in notifications"
                     :key="index"
                     to="/"
-                    class="flex flex-col w-full bg-[#ebebeb] pt-2 pb-1 px-3 border-b border-border transition-colors duration-300 hover:bg-white"
+                    class="flex flex-col w-full bg-[#F5F5F5] pt-2 pb-1 px-3 border-b border-border transition-colors duration-300 hover:bg-white"
                   >
                     <div class="flex items-center justify-between w-full mb-2">
                       <div class="flex items-center">
@@ -123,6 +123,10 @@
                               ? 'text-[#FFB100]'
                               : 'text-[#A460BC]',
                           ]"
+                        />
+                        <span
+                          v-if="!notificaton.read"
+                          class="flex w-2 h-2 bg-blue rounded-full mr-2"
                         />
                         <span
                           class="capitalize text-sm leading-[1.43] font-medium"
@@ -237,21 +241,27 @@
                   @click="showOptions = false"
                 >
                   <ProfileIcon class="w-6 h-6 mr-3 text-current" />
-                  <span class="text-sm leading-[1.71]">Profile</span>
+                  <span class="text-sm leading-[1.71] font-medium"
+                    >Profile</span
+                  >
                 </button>
                 <button
                   class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
                   @click="showOptions = false"
                 >
                   <SettingsIcon class="w-6 h-6 mr-3 text-current" />
-                  <span class="text-sm leading-[1.71]">Settings</span>
+                  <span class="text-sm leading-[1.71] font-medium"
+                    >Settings</span
+                  >
                 </button>
                 <button
                   class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
                   @click="showOptions = false"
                 >
                   <SignOutIcon class="w-6 h-6 mr-3 text-current" />
-                  <span class="text-sm leading-[1.71]">Sign out</span>
+                  <span class="text-sm leading-[1.71] font-medium"
+                    >Sign out</span
+                  >
                 </button>
               </div>
             </Transition>
@@ -291,51 +301,61 @@ const notifications = ref<DashboardNotification[]>([
     type: "others",
     message: "Notification content goes here. More content goes here.",
     date: "16 h",
+    read: true,
   },
   {
     type: "new",
     message: "Notification content goes here. More content goes here.",
     date: "15 m",
+    read: false,
   },
   {
     type: "removed",
     message: "Notification content goes here. More content goes here.",
     date: "2 d",
+    read: true,
   },
   {
     type: "completed",
     message: "Notification content goes here. More content goes here.",
     date: "16 h",
+    read: false,
   },
   {
     type: "pending",
     message: "Notification content goes here. More content goes here.",
     date: "16 h",
+    read: true,
   },
   {
     type: "processing",
     message: "Notification content goes here. More content goes here.",
     date: "16 h",
+    read: false,
   },
   {
     type: "removed",
     message: "Notification content goes here. More content goes here.",
     date: "2 d",
+    read: false,
   },
   {
     type: "completed",
     message: "Notification content goes here. More content goes here.",
     date: "16 h",
+    read: false,
   },
   {
     type: "pending",
     message: "Notification content goes here. More content goes here.",
     date: "16 h",
+    read: false,
   },
   {
     type: "processing",
     message: "Notification content goes here. More content goes here.",
     date: "16 h",
+    read: false,
   },
 ]);
 
