@@ -17,13 +17,13 @@
         v-for="(product, index) in props?.products"
         :key="index"
         :to="`/product/${product._id}`"
-        class="p-2 rounded text-gray-300 transition-colors duration-300 hover:bg-gray-200 hover:text-blue"
+        class="p-2 rounded text-gray-300 transition-colors duration-300 hover:bg-gray-200"
       >
         <div
           class="flex items-center justify-between gap-1 text-xs leading-tight font-semibold mb-1 md:text-sm md:leading-[1.29]"
         >
-          <div class="flex items-center w-[calc(100%-50px)]">
-            <div class="truncate">{{ product.details.SummaryData.TaxonomyPath }}</div>
+          <div class="flex items-center w-[calc(100%-50px)] hover:text-blue">
+            <div class="truncate">{{ productTitle(product) }}</div>
             <CaretIcon class="w-4 h-4 flex-shrink-0" />
             <div class="font-Inter">{{ product.alias }}</div>
           </div>
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div
-          class="text-xs leading-[1.33] truncate text-gray-300 lg:w-[calc(100%-50px)]"
+          class="text-xs leading-[1.33] truncate text-gray-300 lg:w-[calc(100%-50px)] hover:text-blue"
         >
           {{ product.description }}
         </div>
@@ -55,4 +55,9 @@ const props = defineProps<{
   products: ProductSearchItems[],
   isLoading: boolean
 }>()
+
+const productTitle = (product: ProductSearchItems) => {
+  const titleArray = product.details.SummaryData.TaxonomyPath.split('>')
+  return titleArray[titleArray.length - 1]
+}
 </script>

@@ -47,9 +47,9 @@ export default defineNuxtConfig({
           name: "preset-default",
           params: {
             overrides: {
-              cleanupIDs: { prefix: svgPrefix },
             },
           },
+          cleanupIDs: { prefix: svgPrefix },
         },
       ],
     },
