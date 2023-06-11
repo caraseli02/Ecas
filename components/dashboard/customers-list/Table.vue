@@ -46,7 +46,7 @@
             </button>
           </div>
           <button
-            class="flex items-center justify-between relative w-full border-2 border-border rounded-lg px-3 py-[7px] bg-white"
+            class="flex items-center justify-between relative w-full border border-border rounded-lg px-3 py-[7px] bg-white"
             :class="[!account ? 'text-gray-100' : '']"
             @click="showAccountOptions = !showAccountOptions"
           >
@@ -164,7 +164,7 @@
             </button>
           </div>
           <button
-            class="flex items-center justify-between relative w-full border-2 border-border rounded-lg px-3 py-[7px] bg-white"
+            class="flex items-center justify-between relative w-full border border-border rounded-lg px-3 py-[7px] bg-white"
             :class="[
               !registered.start && !registered.end ? 'text-gray-100' : '',
             ]"
@@ -210,7 +210,7 @@
             </button>
           </div>
           <button
-            class="flex items-center justify-between relative w-full border-2 border-border rounded-lg px-2.5 py-[7px] bg-white"
+            class="flex items-center justify-between relative w-full border border-border rounded-lg px-2.5 py-[7px] bg-white"
             :class="[!spent[0] && !spent[1] ? 'text-gray-100' : '']"
             @click="showSpentRange = !showSpentRange"
           >
@@ -326,7 +326,7 @@
             </button>
           </div>
           <button
-            class="flex relative w-full border-2 border-border rounded-lg px-3 py-[7px] bg-white"
+            class="flex relative w-full border border-border rounded-lg px-3 py-[7px] bg-white"
             :class="[!ordersCount ? 'text-gray-100' : '']"
             @click="showOrdersRange = !showOrdersRange"
           >
