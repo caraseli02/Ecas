@@ -9,7 +9,7 @@
         <div class="p-4 pr-1.5 bg-[#F2F2F2] rounded-l-lg h-[104px]">
           <div class="relative mb-4">
             <button
-              class="relative flex items-center"
+              class="relative flex items-center h-5"
               @click="nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0)"
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -31,7 +31,7 @@
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative mb-4">
             <button
-              class="relative flex items-center"
+              class="relative flex items-center h-5"
               @click="
                 accountOrder === 0 ? (accountOrder = 1) : (accountOrder = 0)
               "
@@ -123,7 +123,7 @@
         <div class="p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative mb-4">
             <button
-              class="relative flex items-center"
+              class="relative flex items-center h-5"
               @click="
                 companyOrder === 0 ? (companyOrder = 1) : (companyOrder = 0)
               "
@@ -147,7 +147,7 @@
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative mb-4">
             <button
-              class="relative flex items-center"
+              class="relative flex items-center h-5"
               @click="
                 registeredOrder === 0
                   ? (registeredOrder = 1)
@@ -197,7 +197,7 @@
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative mb-4">
             <button
-              class="relative flex items-center"
+              class="relative flex items-center h-5"
               @click="spentOrder === 0 ? (spentOrder = 1) : (spentOrder = 0)"
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -309,7 +309,7 @@
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative mb-4">
             <button
-              class="relative flex items-center"
+              class="relative flex items-center h-5"
               @click="
                 ordersCountOrder === 0
                   ? (ordersCountOrder = 1)
