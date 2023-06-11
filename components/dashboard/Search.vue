@@ -1,6 +1,6 @@
 <template>
   <label
-    class="flex relative border-[1.5px] h-9 border-border bg-white rounded-lg overflow-hidden"
+    class="flex relative border-2 h-9 border-border bg-white rounded-lg overflow-hidden"
   >
     <input
       :value="modelValue"
