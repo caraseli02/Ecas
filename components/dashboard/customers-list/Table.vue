@@ -15,9 +15,11 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Name
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
+              <SortDownIcon
+                v-if="nameOrder === 0"
+                class="w-5 h-5 rounded-full"
               />
+              <SortUpIcon v-else class="w-5 h-5 rounded-full" />
             </button>
           </div>
           <DashboardSearch
@@ -38,9 +40,11 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Account
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
+              <SortDownIcon
+                v-if="accountOrder === 0"
+                class="w-5 h-5 rounded-full"
               />
+              <SortUpIcon v-else class="w-5 h-5 rounded-full" />
             </button>
           </div>
           <button
@@ -52,7 +56,8 @@
               {{ account || "Select" }}
             </span>
             <ChevronDownIcon
-              class="w-5 h-5 text-gray-300 flex-shrink-0 transition-transform duration-300 ease-linear rounded-full origin-center"
+              class="w-5 h-5 text-gray-300 flex-shrink-0 rounded-full"
+              :class="[showAccountOptions ? 'rotate-180' : '']"
             />
           </button>
           <Transition name="fade">
@@ -128,9 +133,11 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Company
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
+              <SortDownIcon
+                v-if="companyOrder === 0"
+                class="w-5 h-5 rounded-full"
               />
+              <SortUpIcon v-else class="w-5 h-5 rounded-full" />
             </button>
           </div>
           <DashboardSearch
@@ -153,9 +160,11 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Registered
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
+              <SortDownIcon
+                v-if="registeredOrder === 0"
+                class="w-5 h-5 rounded-full"
               />
+              <SortUpIcon v-else class="w-5 h-5 rounded-full" />
             </button>
           </div>
           <button
@@ -198,9 +207,11 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Spent
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
+              <SortDownIcon
+                v-if="spentOrder === 0"
+                class="w-5 h-5 rounded-full"
               />
+              <SortUpIcon v-else class="w-5 h-5 rounded-full" />
             </button>
           </div>
           <button
@@ -313,9 +324,11 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Orders count
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
+              <SortDownIcon
+                v-if="ordersCountOrder === 0"
+                class="w-5 h-5 rounded-full"
               />
+              <SortUpIcon v-else class="w-5 h-5 rounded-full" />
             </button>
           </div>
           <button
@@ -572,6 +585,8 @@ import SoleTraderIcon from "@/assets/icons/dashboard/sole-trader.svg";
 import AgentIcon from "@/assets/icons/dashboard/agent.svg";
 import BusinessIcon from "@/assets/icons/dashboard/business.svg";
 import XIcon from "@/assets/icons/dashboard/x.svg";
+import SortUpIcon from "@/assets/icons/dashboard/sort-up.svg";
+import SortDownIcon from "@/assets/icons/dashboard/sort-down.svg";
 import { DatePicker } from "v-calendar";
 
 defineProps({
