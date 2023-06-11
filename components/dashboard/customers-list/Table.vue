@@ -6,17 +6,17 @@
       <div
         class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center rounded-t-lg"
       >
-        <div class="p-4 bg-[#F2F2F2] rounded-l-lg">
+        <div class="p-4 pr-1.5 bg-[#F2F2F2] rounded-l-lg h-[104px]">
           <div class="relative">
             <button
-              class="flex items-center mb-4"
+              class="relative flex items-center mb-4"
               @click="nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0)"
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Name
               </span>
               <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
                 :class="nameOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -28,10 +28,10 @@
             class="w-full"
           />
         </div>
-        <div class="relative p-4 pr-1 bg-[#F2F2F2]">
+        <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative">
             <button
-              class="flex items-center mb-4"
+              class="relative flex items-center mb-4"
               @click="
                 accountOrder === 0 ? (accountOrder = 1) : (accountOrder = 0)
               "
@@ -40,7 +40,7 @@
                 Account
               </span>
               <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
                 :class="accountOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -54,7 +54,7 @@
               {{ account || "Select" }}
             </span>
             <ChevronDownIcon
-              class="w-5 h-5 text-gray-300 flex-shrink-0 transition-transform duration-300"
+              class="absolute top-1/2 -translate-y-1/2 right-2 w-5 h-5 text-gray-300 flex-shrink-0 transition-transform duration-300"
               :class="[showAccountOptions ? 'rotate-180' : '']"
             />
           </button>
@@ -120,10 +120,10 @@
             </div>
           </Transition>
         </div>
-        <div class="p-4 bg-[#F2F2F2]">
+        <div class="p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative">
             <button
-              class="flex items-center mb-4"
+              class="relative flex items-center mb-4"
               @click="
                 companyOrder === 0 ? (companyOrder = 1) : (companyOrder = 0)
               "
@@ -132,7 +132,7 @@
                 Company
               </span>
               <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
                 :class="companyOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -144,10 +144,10 @@
             class="w-full"
           />
         </div>
-        <div class="relative p-4 pr-2 bg-[#F2F2F2]">
+        <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative">
             <button
-              class="flex items-center mb-4"
+              class="relative flex items-center mb-4"
               @click="
                 registeredOrder === 0
                   ? (registeredOrder = 1)
@@ -158,7 +158,7 @@
                 Registered
               </span>
               <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
                 :class="registeredOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -194,17 +194,17 @@
             </div>
           </Transition>
         </div>
-        <div class="relative p-4 pr-0 bg-[#F2F2F2]">
+        <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative">
             <button
-              class="flex items-center mb-4"
+              class="relative flex items-center mb-4"
               @click="spentOrder === 0 ? (spentOrder = 1) : (spentOrder = 0)"
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Spent
               </span>
               <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
                 :class="spentOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -214,16 +214,99 @@
             :class="[!spent[0] && !spent[1] ? 'text-gray-100' : '']"
             @click="showSpentRange = !showSpentRange"
           >
-            <span class="text-sm truncate flex-shrink-0 tracking-tighter mr-1">
+            <span class="text-sm truncate flex-shrink-0 -tracking-widest mr-1">
               {{ spentValue }}
             </span>
             <FilterIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
           </button>
+          <Transition name="fade">
+            <div
+              v-if="showSpentRange"
+              v-click-outside="() => (showSpentRange = false)"
+              class="absolute z-10 bottom-2 right-2 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px]"
+              :style="{
+                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+              }"
+            >
+              <div class="text-sm leading-[1.71] font-semibold mb-8">
+                Spent range
+              </div>
+              <div class="mb-16">
+                <div class="flex items-end gap-3 mb-6">
+                  <label>
+                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">
+                      From
+                    </div>
+                    <div
+                      class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]"
+                    >
+                      <span class="font-medium mr-1">$</span>
+                      <input
+                        v-model.number="spentBuffer[0]"
+                        type="number"
+                        class="bg-transparent py-2 w-full focus:outline-none"
+                      />
+                    </div>
+                  </label>
+                  <div class="text-sm leading-[1.43] mb-3">-</div>
+                  <label>
+                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">
+                      To
+                    </div>
+                    <div
+                      class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]"
+                    >
+                      <span class="font-medium mr-1">$</span>
+                      <input
+                        v-model.number="spentBuffer[1]"
+                        type="number"
+                        class="bg-transparent py-2 w-full focus:outline-none"
+                      />
+                    </div>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between mb-3">
+                  <div class="text-sm leading-[1.43] font-medium">
+                    ${{ spentBuffer[0] }}
+                  </div>
+                  <div class="text-sm leading-[1.43] font-medium">
+                    ${{ spentBuffer[1] }}
+                  </div>
+                </div>
+                <Slider
+                  v-model="spentBuffer"
+                  :min="0"
+                  :max="100000"
+                  :step="10"
+                  :tooltips="false"
+                  @slide="spentBuffer = $event"
+                  class="rangeSlider"
+                />
+              </div>
+              <div class="grid grid-cols-[auto,1fr] gap-4">
+                <button
+                  class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
+                  @click="showSpentRange = false"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
+                  @click="
+                    spent = spentBuffer;
+                    showSpentRange = false;
+                  "
+                >
+                  Apply Filter
+                </button>
+              </div>
+            </div>
+          </Transition>
         </div>
-        <div class="relative p-4 bg-[#F2F2F2]">
+        <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="relative">
             <button
-              class="flex items-center mb-4"
+              class="relative flex items-center mb-4"
               @click="
                 ordersCountOrder === 0
                   ? (ordersCountOrder = 1)
@@ -234,7 +317,7 @@
                 Orders count
               </span>
               <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
                 :class="ordersCountOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -251,8 +334,57 @@
               class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
             />
           </button>
+          <Transition name="fade">
+            <div
+              v-if="showOrdersRange"
+              v-click-outside="() => (showOrdersRange = false)"
+              class="absolute z-10 bottom-2 right-2 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px]"
+              :style="{
+                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+              }"
+            >
+              <div class="text-sm leading-[1.71] font-semibold mb-[76px]">
+                Orders range
+              </div>
+              <div class="mb-14">
+                <Slider
+                  v-model="ordersCountBuffer"
+                  :min="0"
+                  :max="1000"
+                  :step="5"
+                  :format="
+            (val: number) => {
+              return `${val === 1000 ? 'Any' : val + ' +'}`;
+            }
+          "
+                  class="rangeSlider rangeSlider-reverseColors"
+                />
+                <div class="flex items-center justify-between">
+                  <div class="text-sm leading-[1.43] font-medium">40</div>
+                  <div class="text-sm leading-[1.43] font-medium">Any</div>
+                </div>
+              </div>
+              <div class="grid grid-cols-[auto,1fr] gap-4">
+                <button
+                  class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
+                  @click="showOrdersRange = false"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
+                  @click="
+                    ordersCount = ordersCountBuffer;
+                    showOrdersRange = false;
+                  "
+                >
+                  Apply Filter
+                </button>
+              </div>
+            </div>
+          </Transition>
         </div>
-        <div class="p-4 w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
+        <div class="p-4 pr-1.5 w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
           <div class="relative">
             <div class="flex items-center mb-4">
               <span class="text-sm leading-[1.43] font-medium"> Actions </span>
@@ -272,20 +404,22 @@
     <Transition name="fade">
       <div
         v-if="showSpentRange"
-        class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center"
+        class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center md:hidden"
       >
         <div
-          class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-4 bg-white rounded-xl shadow-card md:p-6"
+          class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-6 bg-white rounded-xl shadow-card"
         >
           <div class="grid grid-cols-1 gap-1">
-            <button
-              class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg ml-auto mb-3"
-              @click="showSpentRange = false"
-            >
-              <XIcon class="w-6 h-6" />
-            </button>
-            <div class="text-sm leading-[1.71] font-semibold mb-8">
-              Spent range
+            <div class="flex items-center justify-between mb-8">
+              <div class="text-sm leading-[1.71] font-semibold">
+                Spent range
+              </div>
+              <button
+                class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg"
+                @click="showSpentRange = false"
+              >
+                <XIcon class="w-6 h-6" />
+              </button>
             </div>
             <div class="mb-16">
               <div class="flex items-end gap-3 mb-6">
@@ -367,20 +501,22 @@
     <Transition name="fade">
       <div
         v-if="showOrdersRange"
-        class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center"
+        class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center md:hidden"
       >
         <div
           class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-4 bg-white rounded-xl shadow-card md:p-6"
         >
           <div class="grid grid-cols-1 gap-1">
-            <button
-              class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg ml-auto mb-3"
-              @click="showOrdersRange = false"
-            >
-              <XIcon class="w-6 h-6" />
-            </button>
-            <div class="text-sm leading-[1.71] font-semibold mb-[76px]">
-              Orders range
+            <div class="flex items-center justify-between mb-[76px]">
+              <div class="text-sm leading-[1.71] font-semibold">
+                Orders range
+              </div>
+              <button
+                class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg ml-auto"
+                @click="showOrdersRange = false"
+              >
+                <XIcon class="w-6 h-6" />
+              </button>
             </div>
             <div class="mb-14">
               <Slider

@@ -2,7 +2,7 @@
   <div
     class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center"
   >
-    <div class="px-4 py-3">
+    <div class="pl-4 pr-1.5 py-3">
       <NuxtLink to="/" class="group/link flex items-center">
         <div
           class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-[3px] after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
@@ -99,26 +99,26 @@
         </div>
       </NuxtLink>
     </div>
-    <div class="text-sm leading-[1.43] truncate pl-4 pr-2">
+    <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
       {{ item.account }}
     </div>
-    <div class="text-sm leading-[1.43] truncate px-4">
+    <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
       {{ item.company }}
     </div>
-    <div class="text-sm leading-[1.43] truncate px-4">
+    <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
       {{ item.registered }}
     </div>
-    <div class="text-sm leading-[1.43] font-medium truncate px-4">
+    <div class="text-sm leading-[1.43] font-medium truncate pl-4 pr-1.5">
       {{ item.spent }}
     </div>
-    <div class="flex justify-center px-4">
+    <div class="flex justify-center pl-4 pr-1.5">
       <div
         class="text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md"
       >
         {{ item.ordersCount }}
       </div>
     </div>
-    <div class="flex items-center justify-end gap-4 px-4">
+    <div class="flex items-center justify-end gap-4 pl-4 pr-1.5">
       <Tooltip :position="isFirst ? 'bottom' : 'top'" theme="black">
         <button
           class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
