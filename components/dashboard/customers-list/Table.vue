@@ -360,7 +360,7 @@
               return `${val === 1000 ? 'Any' : val + ' +'}`;
             }
           "
-                  class="rangeSlider rangeSlider-reverseColors"
+                  class="rangeSlider"
                 />
                 <div class="flex items-center justify-between">
                   <div class="text-sm leading-[1.43] font-medium">0</div>
@@ -532,7 +532,7 @@
               return `${val === 1000 ? 'Any' : val + ' +'}`;
             }
           "
-                class="rangeSlider rangeSlider-reverseColors"
+                class="rangeSlider"
               />
               <div class="flex items-center justify-between">
                 <div class="text-sm leading-[1.43] font-medium">0</div>
@@ -633,14 +633,6 @@ const spentValue = computed(() => {
 <style lang="scss">
 .rangeSlider {
   @apply h-2 mb-3 px-2;
-  &.rangeSlider-reverseColors {
-    .slider-base {
-      @apply bg-blue;
-    }
-    .slider-connect {
-      @apply bg-gray-200;
-    }
-  }
   .slider-base {
     @apply bg-gray-200;
   }
