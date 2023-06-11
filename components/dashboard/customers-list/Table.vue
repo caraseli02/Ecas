@@ -15,10 +15,23 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Name
               </span>
-              <ChevronDownIcon
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
                 class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
                 :class="nameOrder === 1 ? 'rotate-180' : ''"
-              />
+              >
+                <path
+                  d="M5.83203 8.33398L9.9987 11.6673L14.1654 8.33398"
+                  stroke="#222222"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
           </div>
           <DashboardSearch
@@ -39,10 +52,23 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Account
               </span>
-              <ChevronDownIcon
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
                 class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
                 :class="accountOrder === 1 ? 'rotate-180' : ''"
-              />
+              >
+                <path
+                  d="M5.83203 8.33398L9.9987 11.6673L14.1654 8.33398"
+                  stroke="#222222"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
           </div>
           <button
@@ -53,10 +79,23 @@
             <span class="text-sm flex-shrink-0 mr-1">
               {{ account || "Select" }}
             </span>
-            <ChevronDownIcon
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
               class="w-5 h-5 text-gray-300 flex-shrink-0 transition-transform duration-300 ease-linear rounded-full origin-center"
               :class="[showAccountOptions ? 'rotate-180' : '']"
-            />
+            >
+              <path
+                d="M5.83203 8.33398L9.9987 11.6673L14.1654 8.33398"
+                stroke="#222222"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
           </button>
           <Transition name="fade">
             <div
@@ -131,10 +170,23 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Company
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
                 :class="companyOrder === 1 ? 'rotate-180' : ''"
-              />
+              >
+                <path
+                  d="M5.83203 8.33398L9.9987 11.6673L14.1654 8.33398"
+                  stroke="#222222"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
           </div>
           <DashboardSearch
@@ -157,10 +209,23 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Registered
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
                 :class="registeredOrder === 1 ? 'rotate-180' : ''"
-              />
+              >
+                <path
+                  d="M5.83203 8.33398L9.9987 11.6673L14.1654 8.33398"
+                  stroke="#222222"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
           </div>
           <button
@@ -203,10 +268,23 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Spent
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
                 :class="spentOrder === 1 ? 'rotate-180' : ''"
-              />
+              >
+                <path
+                  d="M5.83203 8.33398L9.9987 11.6673L14.1654 8.33398"
+                  stroke="#222222"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
           </div>
           <button
@@ -319,10 +397,23 @@
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Orders count
               </span>
-              <ChevronDownIcon
-                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
                 :class="ordersCountOrder === 1 ? 'rotate-180' : ''"
-              />
+              >
+                <path
+                  d="M5.83203 8.33398L9.9987 11.6673L14.1654 8.33398"
+                  stroke="#222222"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
           </div>
           <button
