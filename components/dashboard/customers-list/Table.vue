@@ -602,7 +602,7 @@ const registeredOrder = ref(0);
 const spentBuffer = ref([0, 0]);
 const spent = ref([0, 0]);
 const spentOrder = ref(0);
-const ordersCountBuffer = ref(40);
+const ordersCountBuffer = ref(0);
 const ordersCount = ref(0);
 const ordersCountOrder = ref(0);
 
