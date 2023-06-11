@@ -7,7 +7,7 @@
         class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center rounded-t-lg"
       >
         <div class="p-4 pr-1.5 bg-[#F2F2F2] rounded-l-lg h-[104px]">
-          <div class="relative mb-4">
+          <div class="mb-4">
             <button
               class="relative flex items-center h-5"
               @click="nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0)"
@@ -16,7 +16,7 @@
                 Name
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 origin-center rounded-full"
+                class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
                 :class="nameOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -29,7 +29,7 @@
           />
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative mb-4">
+          <div class="mb-4">
             <button
               class="relative flex items-center h-5"
               @click="
@@ -40,7 +40,7 @@
                 Account
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 origin-center rounded-full"
+                class="w-5 h-5 transition-transform duration-300 ease-linear origin-center rounded-full"
                 :class="accountOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -54,7 +54,7 @@
               {{ account || "Select" }}
             </span>
             <ChevronDownIcon
-              class="absolute top-1/2 -translate-y-1/2 right-2 w-5 h-5 text-gray-300 flex-shrink-0 transition-transform duration-300 rounded-full origin-center"
+              class="w-5 h-5 text-gray-300 flex-shrink-0 transition-transform duration-300 ease-linear rounded-full origin-center"
               :class="[showAccountOptions ? 'rotate-180' : '']"
             />
           </button>
@@ -62,7 +62,7 @@
             <div
               v-if="showAccountOptions"
               v-click-outside="() => (showAccountOptions = false)"
-              class="absolute z-10 bottom-2 right-1 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[163px]"
+              class="absolute z-10 bottom-2 right-1.5 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[163px]"
               :style="{
                 boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
               }"
@@ -121,7 +121,7 @@
           </Transition>
         </div>
         <div class="p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative mb-4">
+          <div class="mb-4">
             <button
               class="relative flex items-center h-5"
               @click="
@@ -132,7 +132,7 @@
                 Company
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 origin-center rounded-full"
+                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
                 :class="companyOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -145,7 +145,7 @@
           />
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative mb-4">
+          <div class="mb-4">
             <button
               class="relative flex items-center h-5"
               @click="
@@ -158,7 +158,7 @@
                 Registered
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 origin-center rounded-full"
+                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
                 :class="registeredOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -195,7 +195,7 @@
           </Transition>
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative mb-4">
+          <div class="mb-4">
             <button
               class="relative flex items-center h-5"
               @click="spentOrder === 0 ? (spentOrder = 1) : (spentOrder = 0)"
@@ -204,7 +204,7 @@
                 Spent
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 origin-center rounded-full"
+                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
                 :class="spentOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -307,7 +307,7 @@
           </Transition>
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative mb-4">
+          <div class="mb-4">
             <button
               class="relative flex items-center h-5"
               @click="
@@ -320,7 +320,7 @@
                 Orders count
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 origin-center rounded-full"
+                class="w-5 h-5 transition-transform duration-300 origin-center rounded-full ease-linear"
                 :class="ordersCountOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
