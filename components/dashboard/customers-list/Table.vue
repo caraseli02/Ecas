@@ -629,8 +629,7 @@ const spentValue = computed(() => {
 <style src="@vueform/slider/themes/default.css"></style>
 <style lang="scss">
 .rangeSlider {
-  // @apply h-2 mb-3 pl-3.5 pr-2;
-  @apply h-2 mb-3;
+  @apply h-2 mb-3 px-2;
   &.rangeSlider-reverseColors {
     .slider-base {
       @apply bg-blue;
