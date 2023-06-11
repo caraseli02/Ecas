@@ -16,7 +16,7 @@
                 Name
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 rounded-full"
                 :class="nameOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -40,7 +40,7 @@
                 Account
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 rounded-full"
                 :class="accountOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -54,7 +54,7 @@
               {{ account || "Select" }}
             </span>
             <ChevronDownIcon
-              class="absolute top-1/2 -translate-y-1/2 right-2 w-5 h-5 text-gray-300 flex-shrink-0 transition-transform duration-300"
+              class="absolute top-1/2 -translate-y-1/2 right-2 w-5 h-5 text-gray-300 flex-shrink-0 transition-transform duration-300 rounded-full"
               :class="[showAccountOptions ? 'rotate-180' : '']"
             />
           </button>
@@ -132,7 +132,7 @@
                 Company
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 rounded-full"
                 :class="companyOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -158,7 +158,7 @@
                 Registered
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 rounded-full"
                 :class="registeredOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -204,7 +204,7 @@
                 Spent
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 rounded-full"
                 :class="spentOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -317,7 +317,7 @@
                 Orders count
               </span>
               <ChevronDownIcon
-                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 translate-x-full right-0 w-5 h-5 transition-transform duration-300 rounded-full"
                 :class="ordersCountOrder === 1 ? 'rotate-180' : ''"
               />
             </button>
@@ -629,7 +629,8 @@ const spentValue = computed(() => {
 <style src="@vueform/slider/themes/default.css"></style>
 <style lang="scss">
 .rangeSlider {
-  @apply h-2 mb-3 pl-3.5 pr-2;
+  // @apply h-2 mb-3 pl-3.5 pr-2;
+  @apply h-2 mb-3;
   &.rangeSlider-reverseColors {
     .slider-base {
       @apply bg-blue;
