@@ -7,9 +7,9 @@
         class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center rounded-t-lg"
       >
         <div class="p-4 pr-1.5 bg-[#F2F2F2] rounded-l-lg h-[104px]">
-          <div class="relative">
+          <div class="relative mb-4">
             <button
-              class="relative flex items-center mb-4"
+              class="relative flex items-center"
               @click="nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0)"
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -29,9 +29,9 @@
           />
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative">
+          <div class="relative mb-4">
             <button
-              class="relative flex items-center mb-4"
+              class="relative flex items-center"
               @click="
                 accountOrder === 0 ? (accountOrder = 1) : (accountOrder = 0)
               "
@@ -121,9 +121,9 @@
           </Transition>
         </div>
         <div class="p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative">
+          <div class="relative mb-4">
             <button
-              class="relative flex items-center mb-4"
+              class="relative flex items-center"
               @click="
                 companyOrder === 0 ? (companyOrder = 1) : (companyOrder = 0)
               "
@@ -145,9 +145,9 @@
           />
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative">
+          <div class="relative mb-4">
             <button
-              class="relative flex items-center mb-4"
+              class="relative flex items-center"
               @click="
                 registeredOrder === 0
                   ? (registeredOrder = 1)
@@ -195,9 +195,9 @@
           </Transition>
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative">
+          <div class="relative mb-4">
             <button
-              class="relative flex items-center mb-4"
+              class="relative flex items-center"
               @click="spentOrder === 0 ? (spentOrder = 1) : (spentOrder = 0)"
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -214,7 +214,10 @@
             :class="[!spent[0] && !spent[1] ? 'text-gray-100' : '']"
             @click="showSpentRange = !showSpentRange"
           >
-            <span class="text-sm truncate flex-shrink-0 -tracking-widest mr-1">
+            <span
+              class="text-sm truncate flex-shrink-0 mr-1"
+              :class="[spent[0] || spent[1] ? '-tracking-widest' : '']"
+            >
               {{ spentValue }}
             </span>
             <FilterIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
@@ -304,9 +307,9 @@
           </Transition>
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
-          <div class="relative">
+          <div class="relative mb-4">
             <button
-              class="relative flex items-center mb-4"
+              class="relative flex items-center"
               @click="
                 ordersCountOrder === 0
                   ? (ordersCountOrder = 1)
@@ -360,7 +363,7 @@
                   class="rangeSlider rangeSlider-reverseColors"
                 />
                 <div class="flex items-center justify-between">
-                  <div class="text-sm leading-[1.43] font-medium">40</div>
+                  <div class="text-sm leading-[1.43] font-medium">0</div>
                   <div class="text-sm leading-[1.43] font-medium">Any</div>
                 </div>
               </div>
@@ -532,7 +535,7 @@
                 class="rangeSlider rangeSlider-reverseColors"
               />
               <div class="flex items-center justify-between">
-                <div class="text-sm leading-[1.43] font-medium">40</div>
+                <div class="text-sm leading-[1.43] font-medium">0</div>
                 <div class="text-sm leading-[1.43] font-medium">Any</div>
               </div>
             </div>
