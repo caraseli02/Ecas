@@ -1,7 +1,7 @@
 <template>
   <div class="mb-6 md:mb-8">
     <div
-      class="grid grid-cols-1 gap-1 rounded-t-lg overflow-x-auto scrollbar-thin"
+      class="dashboardTable grid grid-cols-1 gap-1 rounded-t-lg overflow-x-auto scrollbar-thin"
     >
       <div
         class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center rounded-t-lg"
@@ -639,6 +639,11 @@ const spentValue = computed(() => {
 
 <style src="@vueform/slider/themes/default.css"></style>
 <style lang="scss">
+.dashboardTable {
+  &::-webkit-scrollbar {
+    @apply h-1;
+  }
+}
 .rangeSlider {
   @apply h-2 mb-3 px-2;
   .slider-base {
