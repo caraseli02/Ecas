@@ -14,7 +14,7 @@
           :value="modelValue"
           :type="showPassword ? 'text' : 'password'"
           :placeholder="placeholder"
-          class="bg-transparent pl-2.5 pr-10 py-[9px] text-sm placeholder:text-gray-100 w-full focus:outline-none"
+          class="bg-transparent pl-3 pr-10 py-2 text-sm placeholder:text-gray-100 w-full focus:outline-none"
           @input="handleInput"
         />
         <div class="flex cursor-pointer" @click="showPassword = !showPassword">

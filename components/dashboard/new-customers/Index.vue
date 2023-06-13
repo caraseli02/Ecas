@@ -1,0 +1,107 @@
+<template>
+  <div
+    class="relative flex flex-col bg-white rounded-xl p-6 pr-4"
+    :style="{
+      boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+    }"
+  >
+    <div class="leading-normal font-semibold mb-6">New Customers</div>
+    <div class="grid grid-cols-1 gap-1 mb-6">
+      <DashboardNewCustomersItem
+        v-for="(person, index) in people"
+        :key="index"
+        :item="person"
+      />
+    </div>
+    <div class="flex items-center justify-between mt-auto">
+      <div class="flex items-center">
+        <ArrowUpIcon class="w-4 h-4 mr-1" />
+        <div class="text-sm leading-[1.43] font-medium text-[#00D395] mr-1">
+          3,78%
+        </div>
+        <button class="flex items-center" @click="showOptions = !showOptions">
+          <span class="text-sm left-[1.43] text-gray-300 font-medium mr-1">
+            {{ selectedOption }}
+          </span>
+          <ChevronIcon
+            class="w-5 h-5 text-gray-300 transition-transform duration-300"
+            :class="[showOptions ? 'rotate-180' : '']"
+          />
+        </button>
+      </div>
+      <button class="flex items-center">
+        <span class="text-sm font-medium left-[1.43] text-gray-300 mr-1">
+          View more
+        </span>
+        <ArrowRightIcon class="w-5 h-5" />
+      </button>
+    </div>
+    <Transition name="fade">
+      <div
+        v-if="showOptions"
+        v-click-outside="() => (showOptions = false)"
+        class="absolute z-10 -bottom-0.5 left-0 translate-y-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[200px]"
+        :style="{
+          boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+        }"
+      >
+        <button
+          v-for="(option, index) in options"
+          :key="index"
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+          :class="selectedOption === option ? 'bg-[#F2F2F2] text-blue' : ''"
+          @click="
+            showOptions = false;
+            selectedOption = option;
+          "
+        >
+          <span class="text-sm leading-[1.71] font-medium">{{ option }}</span>
+        </button>
+      </div>
+    </Transition>
+  </div>
+</template>
+
+<script setup lang="ts">
+import ArrowUpIcon from "@/assets/icons/dashboard/arrow-up.svg";
+import ChevronIcon from "@/assets/icons/dashboard/chevron-down.svg";
+import ArrowRightIcon from "@/assets/icons/dashboard/arrow-right.svg";
+import Avatar from "@/assets/icons/dashboard/avatar.png";
+
+const people = ref([
+  {
+    name: "Madalina Dobrovolski",
+    email: "madalina.popescu@company.com",
+    avatar: Avatar,
+  },
+  {
+    name: "Madalina Dobrovolski",
+    email: "madalina.popescu@company.com",
+  },
+  {
+    name: "Madalina Dobrovolski",
+    email: "madalina.popescu@company.com",
+    avatar: Avatar,
+  },
+  {
+    name: "Madalina Dobrovolski",
+    email: "madalina.popescu@company.com",
+    avatar: Avatar,
+  },
+  {
+    name: "Madalina Dobrovolski",
+    email: "madalina.popescu@company.com",
+    avatar: Avatar,
+  },
+]);
+
+const showOptions = ref(false);
+const selectedOption = ref("This Week");
+const options = [
+  "Last 24h",
+  "This Week",
+  "Last 7 Days",
+  "Last 30 Days",
+  "All Time",
+];
+</script>

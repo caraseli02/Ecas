@@ -12,7 +12,7 @@ export enum AccountType {
 export enum AccountRole {
   SuperAdmin = 0,
   Admin = 1,
-  Client = 2
+  Client = 2,
 }
 
 export interface SignupBusinessDetails {
@@ -20,6 +20,7 @@ export interface SignupBusinessDetails {
   companyRegistrationNumber: InputObject;
   vatNumber: InputObject;
   country: CountryType;
+  region: CountryType;
   city: InputObject;
   postcode: InputObject;
   addressLine1: InputObject;
@@ -29,6 +30,7 @@ export interface SignupPersonalDetails {
   firstName: InputObject;
   lastName: InputObject;
   country: InputObject;
+  region: InputObject;
   city: InputObject;
   postcode: InputObject;
   addressLine1: InputObject;
@@ -56,9 +58,8 @@ export interface SignupProfileDetails {
   agreeToTerms: boolean;
 }
 
-
 interface CountryType {
   value: InputObject;
   label: String;
-  icon: String
+  icon: String;
 }
