@@ -46,7 +46,7 @@
               v-if="getUserDetails.accountType === 0"
               class="w-7 h-7 text-gray-300"
             />
-            <SaleTraderIcon
+            <SoleTraderIcon
               v-else-if="getUserDetails.accountType === 1"
               class="w-7 h-7 text-gray-300"
             />
@@ -104,7 +104,7 @@ import XIcon from "@/assets/icons/x.svg";
 import UserIcon from "@/assets/icons/user.svg";
 import KeyholeIcon from "@/assets/icons/keyhole.svg";
 import PersonalIcon from "@/assets/icons/signup/personal.svg";
-import SaleTraderIcon from "@/assets/icons/signup/sole-trader.svg";
+import SoleTraderIcon from "@/assets/icons/signup/sole-trader.svg";
 import ExecutiveIcon from "@/assets/icons/signup/business.svg";
 import AgentIcon from "@/assets/icons/signup/agent.svg";
 import DashboardIcon from "@/assets/icons/dashboard.svg";
@@ -173,7 +173,7 @@ const mapType = (type: number) => {
     case 0:
       return "Personal";
     case 1:
-      return "Sale Trader";
+      return "Sole Trader";
     case 2:
       return "Executive";
     default:

@@ -8,7 +8,7 @@
         :value="modelValue"
         :type="type"
         :placeholder="placeholder"
-        class="bg-transparent border rounded px-2.5 py-[9px] text-sm placeholder:text-gray-100 w-full transition-colors duration-300 focus:outline-none"
+        class="bg-transparent border rounded px-3 py-2 text-sm placeholder:text-gray-100 w-full transition-colors duration-300 focus:outline-none"
         :class="[
           error ? 'border-red' : 'border-border focus:border-blue',
           disabled

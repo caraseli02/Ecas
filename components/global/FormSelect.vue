@@ -4,10 +4,11 @@
       {{ label }}
     </div>
     <button
-      class="flex items-center justify-between px-2.5 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none"
+      class="flex items-center justify-between px-3 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none"
       :class="[
         error ? 'border-red' : showOptions ? 'border-blue' : 'border-border',
       ]"
+      :disabled="disabled"
       @click="showOptions = !showOptions"
     >
       <span
@@ -40,7 +41,7 @@
     <Transition name="fade">
       <div
         v-if="showOptions"
-        class="absolute -bottom-1 left-0 translate-y-full w-full bg-white rounded-md overflow-y-auto scrollbar-thin shadow-card px-2.5 py-[15px]"
+        class="absolute -bottom-1 left-0 translate-y-full w-full bg-white rounded-md overflow-y-auto scrollbar-thin shadow-card px-3 py-[15px]"
         :class="[checkboxes ? 'max-h-[200px]' : 'max-h-[250px]']"
         v-click-outside="() => (showOptions = false)"
       >
@@ -161,6 +162,7 @@ const props = defineProps({
     type: Array as PropType<FormSelectOption[]>,
     required: true,
   },
+  disabled: Boolean,
   checkboxes: Boolean,
   icon: {
     required: false,

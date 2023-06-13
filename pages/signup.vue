@@ -96,6 +96,14 @@ const businessDetails = useState<SignupBusinessDetailsType>(
         label: "",
         icon: "",
       },
+      region: {
+        value: {
+          value: "",
+          error: "",
+        },
+        label: "",
+        icon: "",
+      },
       city: {
         value: "",
         error: "",
@@ -124,6 +132,7 @@ const handleBusinessDetailsContinue = () => {
       businessDetails.value.companyRegistrationNumber,
       businessDetails.value.vatNumber,
       businessDetails.value.country.value,
+      businessDetails.value.region.value,
       businessDetails.value.city,
       businessDetails.value.postcode,
       businessDetails.value.addressLine1,
@@ -133,6 +142,7 @@ const handleBusinessDetailsContinue = () => {
       businessDetails.value.fullCompanyName,
       businessDetails.value.companyRegistrationNumber,
       businessDetails.value.country.value,
+      businessDetails.value.region.value,
       businessDetails.value.city,
       businessDetails.value.postcode,
       businessDetails.value.addressLine1,
@@ -157,6 +167,10 @@ const personalDetails = useState<SignupPersonalDetailsType>(
         error: "",
       },
       country: {
+        value: undefined,
+        error: "",
+      },
+      region: {
         value: undefined,
         error: "",
       },
@@ -185,6 +199,7 @@ const handlePersonalDetailsContinue = () => {
     personalDetails.value.firstName,
     personalDetails.value.lastName,
     personalDetails.value.country,
+    personalDetails.value.region,
     personalDetails.value.city,
     personalDetails.value.postcode,
     personalDetails.value.addressLine1,
@@ -426,6 +441,7 @@ const handleSubmit = async () => {
               businessDetails.value.companyRegistrationNumber.value,
             vat: businessDetails.value.vatNumber.value,
             country: businessDetails.value.country.value.value.value,
+            region: businessDetails.value.region.value.value.value,
             city: businessDetails.value.city.value,
             postcode: businessDetails.value.postcode.value,
             address1: businessDetails.value.addressLine1.value,

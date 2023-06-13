@@ -2,7 +2,7 @@ const _ = require("lodash");
 const svgPrefix = {};
 svgPrefix.toString = () => `${_.uniqueId()}_`;
 
-require('dotenv').config()
+require("dotenv").config();
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -60,6 +60,8 @@ export default defineNuxtConfig({
     "~/assets/css/utils.css",
     "~/assets/css/animations.css",
     "vue3-lottie/dist/style.css",
+    "leaflet/dist/leaflet.css",
+    "v-calendar/style.css",
   ],
   postcss: {
     plugins: {
