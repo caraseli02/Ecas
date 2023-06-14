@@ -145,6 +145,7 @@
             placeholder="Search company"
             size="sm"
             class="w-full"
+            @input="handleFilterChange('companyName', $event)"
           />
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
@@ -194,7 +195,10 @@
                 boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
               }"
             >
-              <DatePicker v-model.range="registered" borderless />
+              <DatePicker
+                  v-model.range="registered"
+                  borderless
+              />
             </div>
           </Transition>
         </div>
@@ -588,6 +592,7 @@ import XIcon from "@/assets/icons/dashboard/x.svg";
 import SortUpIcon from "@/assets/icons/dashboard/sort-up.svg";
 import SortDownIcon from "@/assets/icons/dashboard/sort-down.svg";
 import { DatePicker } from "v-calendar";
+import {FilterInterface} from "~/model/dashboard/table/filters";
 
 defineProps({
   items: {
@@ -595,6 +600,10 @@ defineProps({
     required: true,
   },
 });
+
+const emits = defineEmits(["active-filters"]);
+
+const activeFilters: FilterInterface[] = [];
 
 const name = ref("");
 const nameOrder = ref(0);
@@ -622,6 +631,29 @@ const showRegisteredRange = ref(false);
 const formattedDate = (date: Date) => {
   return new Date(date).toLocaleDateString("en-GB");
 };
+
+const handleFilterChange = (filter: string, event: any, raw = false) => {
+  const value = raw ? event : event.target.value;
+
+  if (!value) {
+    return;
+  }
+
+  let existingFilter = activeFilters.find((item) => item.filter === filter);
+
+  if (!existingFilter) {
+    activeFilters.push({filter: filter, value: value});
+  } else {
+    existingFilter.value = value;
+  }
+
+  emits("active-filters", activeFilters);
+};
+
+watch((registered), (newRegistered) => {
+  handleFilterChange('startDate', formattedDate(newRegistered.start), true);
+  handleFilterChange('endDate', formattedDate(newRegistered.end), true);
+})
 
 const spentValue = computed(() => {
   const spentValue = spent.value

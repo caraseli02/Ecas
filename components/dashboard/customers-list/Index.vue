@@ -49,11 +49,11 @@
           class="flex items-center pl-2 pr-1 py-1 bg-gray-200 rounded-md"
         >
           <span class="text-sm leading-normal text-gray-300 mr-2">
-            {{ filter }}
+            {{ filter.value }}
           </span>
           <button
             class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-            @click="activeFilters.splice(index, 1)"
+            @click="removeFilter(index)"
           >
             <XIcon class="w-4 h-4" />
           </button>
@@ -69,7 +69,7 @@
       position="top"
       class="flex-col mb-6 md:mb-8"
     />
-    <DashboardCustomersListTable :items="visibleItemsFiltered" />
+    <DashboardCustomersListTable :items="visibleItemsFiltered" @active-filters="activeFilters = $event" />
     <DashboardCustomersListPagination
       :at-page="atPage"
       :per-page="perPage"
@@ -91,16 +91,17 @@ import {DashboardTableItem, getAccountTypeById} from "~~/types";
 import {fetchCustomersList} from "~/services/dashboard/user.service";
 import {PaginatedCustomersInterface} from "~/model/dashboard/response/CustomerInterfaceResponse";
 
-const activeFilters = ref([
-  "0740333555",
-  "company.com",
-  "United States",
-  "company.com",
-]);
+const activeFilters = ref([]);
 
-const clearFilters = () => {
+const clearFilters = async () => {
   activeFilters.value = [];
+  await fetchAndSetUsersList(atPage, perPage, activeFilters);
 };
+
+const removeFilter = async (index) => {
+  activeFilters.splice(index, 1);
+  await fetchAndSetUsersList(atPage, perPage, activeFilters);
+}
 
 const atPage = ref(1);
 const perPage = ref(10);
@@ -114,8 +115,8 @@ const visibleItemsFiltered = computed(() => {
   });
 });
 
-const fetchAndSetUsersList = async (page, perPage) => {
-  const data = await fetchCustomersList(page, perPage);
+const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}) => {
+  const data = await fetchCustomersList(page, perPage, filters);
   const paginatedUsersData = data.data.value as PaginatedCustomersInterface;
   const paginatedUsers = paginatedUsersData.data.items;
 
@@ -127,16 +128,22 @@ const fetchAndSetUsersList = async (page, perPage) => {
     email: user.profileDetails.email,
     account: getAccountTypeById(user.accountType) || '-',
     company: user.companyDetails?.name || "-",
-    registered: new Date(user.createdAt).toDateString(),
+    registered: new Date(user.createdAt).toLocaleDateString("en-GB"),
     spent: user.spent,
     ordersCount: user.ordersCount,
   }));
 }
 
-await fetchAndSetUsersList(atPage, perPage);
+await fetchAndSetUsersList(atPage, perPage, activeFilters);
 
-watch([atPage, perPage], async ([newAtPage, newPerPage]) => {
-  await fetchAndSetUsersList(newAtPage, newPerPage);
+watch([atPage, perPage, activeFilters], async ([newAtPage, newPerPage, newActiveFilters]) => {
+  const filterParams = {};
+
+  for (const filter of newActiveFilters) {
+    filterParams[filter.filter] = filter.value;
+  }
+
+  await fetchAndSetUsersList(newAtPage, newPerPage, filterParams);
 })
 
 </script>
