@@ -184,7 +184,7 @@ const handleSignIn = async () => {
         const response: SigninResponse = data.value as SigninResponse;
         const parsedTokenResponse = useParser().parseJwt(response.token);
         authStore.addUser(parsedTokenResponse);
-        fetchUserDetails(parsedTokenResponse, response.token);
+        await fetchUserDetails(parsedTokenResponse, response.token);
     }
 };
 

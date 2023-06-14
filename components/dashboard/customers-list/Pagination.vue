@@ -140,7 +140,7 @@ const totalPages = computed(() => {
 const paginationLabel = computed(() => {
   return `Showing ${props.atPage * props.perPage - props.perPage + 1} to ${
     props.atPage * props.perPage > props.itemsCount
-      ? props.atPage * props.perPage - props.perPage + 1
+      ? props.itemsCount
       : props.atPage * props.perPage
   } from ${props.itemsCount} entries`;
 });

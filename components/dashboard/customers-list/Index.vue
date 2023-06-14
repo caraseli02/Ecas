@@ -63,17 +63,17 @@
     <DashboardCustomersListPagination
       :at-page="atPage"
       :per-page="perPage"
-      :items-count="listItems.length"
+      :items-count="totalItems"
       @page-change="atPage = $event"
       @per-page-change="perPage = $event"
       position="top"
       class="flex-col mb-6 md:mb-8"
     />
-    <DashboardCustomersListTable :items="visibleItems" />
+    <DashboardCustomersListTable :items="visibleItemsFiltered" />
     <DashboardCustomersListPagination
       :at-page="atPage"
       :per-page="perPage"
-      :items-count="listItems.length"
+      :items-count="totalItems"
       @page-change="atPage = $event"
       @per-page-change="perPage = $event"
       position="bottom"
@@ -87,7 +87,9 @@ import PlusIcon from "@/assets/icons/dashboard/plus.svg";
 import FilterIcon from "@/assets/icons/dashboard/filter.svg";
 import XIcon from "@/assets/icons/dashboard/x.svg";
 import Avatar from "@/assets/icons/dashboard/avatar.png";
-import { DashboardTableItem } from "~~/types";
+import {DashboardTableItem, getAccountTypeById} from "~~/types";
+import {fetchCustomersList} from "~/services/dashboard/user.service";
+import {PaginatedCustomersInterface} from "~/model/dashboard/response/CustomerInterfaceResponse";
 
 const activeFilters = ref([
   "0740333555",
@@ -102,6 +104,7 @@ const clearFilters = () => {
 
 const atPage = ref(1);
 const perPage = ref(10);
+let totalItems = ref(0);
 
 const listItems = ref<DashboardTableItem[]>([]);
 
@@ -111,26 +114,29 @@ const visibleItemsFiltered = computed(() => {
   });
 });
 
-const visibleItems = computed(() => {
-  return visibleItemsFiltered.value.slice(
-    (atPage.value - 1) * perPage.value,
-    (atPage.value - 1) * perPage.value + perPage.value
-  );
-});
+const fetchAndSetUsersList = async (page, perPage) => {
+  const data = await fetchCustomersList(page, perPage);
+  const paginatedUsersData = data.data.value as PaginatedCustomersInterface;
+  const paginatedUsers = paginatedUsersData.data.items;
 
-onMounted(() => {
-  for (let i = 0; i < 50; i++) {
-    const element = {
-      avatar: i === 2 ? undefined : Avatar,
-      name: "Madalina Popescu",
-      email: "madalina.popescu@company.com",
-      account: "Business Agent",
-      company: "Nezo Global Development s.r.l.",
-      registered: "21 September 2023, 18:25",
-      spent: "$138.000,77",
-      ordersCount: 17,
-    };
-    listItems.value.push(element);
-  }
-});
+  totalItems = paginatedUsersData.data.total_items;
+
+  listItems.value = paginatedUsers.map((user) => ({
+    avatar: Avatar,
+    name: `${user.contactDetails?.firstName} ${user.contactDetails?.lastName}`,
+    email: user.profileDetails.email,
+    account: getAccountTypeById(user.accountType) || '-',
+    company: user.companyDetails?.name || "-",
+    registered: new Date(user.createdAt).toDateString(),
+    spent: user.spent,
+    ordersCount: user.ordersCount,
+  }));
+}
+
+await fetchAndSetUsersList(atPage, perPage);
+
+watch([atPage, perPage], async ([newAtPage, newPerPage]) => {
+  await fetchAndSetUsersList(newAtPage, newPerPage);
+})
+
 </script>

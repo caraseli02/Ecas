@@ -3,7 +3,7 @@ import { useFetch } from "#app";
 type useFetchType = typeof useFetch;
 
 export const useFetchAPI: useFetchType = async (url, params) => {
-    const cookie = useCookie("token");
+    const cookie = useCookie('token');
     const runtimeConfig = useRuntimeConfig()
 
     const opts = {

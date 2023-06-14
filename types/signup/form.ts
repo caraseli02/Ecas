@@ -9,6 +9,11 @@ export enum AccountType {
   Agent = 3,
 }
 
+export const getAccountTypeById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
+  const keys = Object.keys(AccountType).filter((x) => AccountType[x] === enumValue);
+  return keys.length > 0 ? keys[0] : null;
+};
+
 export enum AccountRole {
   SuperAdmin = 0,
   Admin = 1,

@@ -5,6 +5,6 @@ export interface DashboardTableItem {
   account: string;
   company: string;
   registered: string;
-  spent: string;
+  spent: number;
   ordersCount: number;
 }
