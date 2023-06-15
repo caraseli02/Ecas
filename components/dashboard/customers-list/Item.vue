@@ -17,7 +17,7 @@
           <UserIcon v-else class="w-7 h-7 text-gray-100" />
         </div>
         <div class="w-[calc(100%-60px)]">
-          <div class="flex items-center gap-3 mb-1">
+          <div class="flex items-center justify-between gap-3 mb-1">
             <div
               class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue"
             >
@@ -119,7 +119,7 @@
       </div>
     </div>
     <div class="flex items-center justify-end gap-4 pl-4 pr-1.5">
-      <Tooltip :position="isFirst ? 'bottom' : 'top'" theme="black">
+      <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
         <button
           class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
         >
@@ -140,10 +140,12 @@
           <div
             v-if="showOptions"
             v-click-outside="() => (showOptions = false)"
-            class="absolute z-10 -bottom-2 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px]"
-            :style="{
-              boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-            }"
+            class="absolute z-10 right-0 grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m"
+            :class="[
+              index > 5
+                ? '-top-2 -translate-y-full'
+                : '-bottom-2 translate-y-full',
+            ]"
           >
             <button
               class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
@@ -174,9 +176,9 @@
               "
             >
               <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
-              <span class="text-sm leading-[1.71] font-medium"
-                >Deactivate Account</span
-              >
+              <span class="text-sm leading-[1.71] font-medium">
+                Deactivate Account
+              </span>
             </button>
             <button
               class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
@@ -200,6 +202,15 @@
         @close="showDeactivatingModal = false"
       />
     </Transition>
+    <div
+      class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
+      :class="[
+        showDeactivatingModal
+          ? 'backdrop-blur-[7.5px]'
+          : 'backdrop-blur-0 opacity-0 pointer-events-none',
+      ]"
+      @click="showDeactivatingModal = false"
+    />
   </Teleport>
 </template>
 
@@ -220,8 +231,8 @@ defineProps({
     type: Object as PropType<DashboardTableItem>,
     required: true,
   },
-  isFirst: {
-    type: Boolean,
+  index: {
+    type: Number,
     default: false,
   },
 });

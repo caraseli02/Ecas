@@ -64,10 +64,7 @@
             <div
               v-if="showAccountOptions"
               v-click-outside="() => (showAccountOptions = false)"
-              class="absolute z-10 bottom-2 right-1.5 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[163px]"
-              :style="{
-                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-              }"
+              class="absolute z-10 bottom-2 right-1.5 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[163px] shadow-m"
             >
               <button
                 class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
@@ -231,10 +228,7 @@
             <div
               v-if="showSpentRange"
               v-click-outside="() => (showSpentRange = false)"
-              class="absolute z-10 bottom-2 right-2 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px]"
-              :style="{
-                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-              }"
+              class="absolute z-10 bottom-2 right-2 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px] shadow-m"
             >
               <div class="text-sm leading-[1.71] font-semibold mb-8">
                 Spent range
@@ -347,10 +341,7 @@
             <div
               v-if="showOrdersRange"
               v-click-outside="() => (showOrdersRange = false)"
-              class="absolute z-10 bottom-2 right-2 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px]"
-              :style="{
-                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-              }"
+              class="absolute z-10 bottom-2 right-2 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px] shadow-m"
             >
               <div class="text-sm leading-[1.71] font-semibold mb-[76px]">
                 Orders range
@@ -405,7 +396,7 @@
         v-for="(item, index) in items"
         :key="index"
         :item="item"
-        :is-first="index === 0"
+        :index="index"
       />
     </div>
   </div>
@@ -416,7 +407,7 @@
         class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center md:hidden"
       >
         <div
-          class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-6 bg-white rounded-xl shadow-card"
+          class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-6 bg-white rounded-xl shadow-xs"
         >
           <div class="grid grid-cols-1 gap-1">
             <div class="flex items-center justify-between mb-8">
@@ -513,7 +504,7 @@
         class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center md:hidden"
       >
         <div
-          class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-4 bg-white rounded-xl shadow-card md:p-6"
+          class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-4 bg-white rounded-xl shadow-xs md:p-6"
         >
           <div class="grid grid-cols-1 gap-1">
             <div class="flex items-center justify-between mb-[76px]">

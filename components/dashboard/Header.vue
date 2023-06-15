@@ -1,21 +1,17 @@
 <template>
   <header
-    class="fixed z-30 top-0 left-0 w-full bg-white md:transition-all md:duration-300 md:delay-50"
+    class="fixed z-30 top-0 left-0 w-full bg-white shadow-xs md:transition-all md:duration-300 md:delay-50"
     :class="[
       isCollapsedOnDesktop
         ? 'md:ml-[96px] md:w-[calc(100%-96px)]'
         : '2xl:ml-[280px] 2xl:w-[calc(100%-280px)]',
     ]"
-    :style="{
-      boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-    }"
   >
     <div
-      class="w-[1440px] max-w-full mx-auto flex items-center justify-between px-4 py-3 transition-all duration-300 md:py-4 2xl:box-content"
-      :class="[isCollapsedOnDesktop ? '2xl:px-[100px]' : '2xl:px-6']"
+      class="max-w-full mx-auto flex items-center justify-between px-4 py-3 transition-all duration-300 md:py-4 2xl:px-6"
     >
       <button
-        class="flex md:opacity-0 md:pointer-events-none xl:hidden"
+        class="flex md:opacity-0 md:pointer-events-none md:hidden"
         @click="$emit('show-side-nav')"
       >
         <BurgerIcon class="w-6 h-6 text-gray-300" />
@@ -23,10 +19,13 @@
       <DashboardSearch
         v-model="searchValue"
         placeholder="Search"
-        class="w-[400px] max-xl:hidden"
+        class="w-[400px] max-md:hidden"
       />
       <div class="flex items-center">
-        <button class="flex mr-4 md:mr-8 xl:hidden">
+        <button
+          class="flex mr-4 md:mr-8 md:hidden"
+          @click="showMobileSearch = !showMobileSearch"
+        >
           <SearchIcon class="w-6 h-6 text-gray-300" />
         </button>
         <button
@@ -50,10 +49,10 @@
               <div
                 v-if="showNotifications"
                 v-click-outside="() => (showNotifications = false)"
-                class="flex flex-col fixed z-50 top-0 left-0 w-full h-full bg-white shadow-card md:absolute md:w-[316px] md:h-[508px] md:max-h-[80vh] md:left-[unset] md:right-0 md:top-[62px] md:rounded-xl md:shadow-card md:overflow-hidden"
+                class="flex flex-col fixed z-50 top-0 left-0 w-full h-full bg-white shadow-m md:absolute md:w-[316px] md:h-[508px] md:max-h-[80vh] md:left-[unset] md:right-0 md:top-[62px] md:rounded-xl md:overflow-hidden"
               >
                 <div
-                  class="relative flex items-center justify-between py-4 px-3 shadow-card"
+                  class="relative flex items-center justify-between py-4 px-3 shadow-s"
                 >
                   <button
                     class="flex items-center text-gray-300 transition-colors duration-300 hover:text-blue md:hidden"
@@ -104,7 +103,7 @@
                     v-for="(notificaton, index) in notifications"
                     :key="index"
                     to="/"
-                    class="flex flex-col w-full bg-[#F5F5F5] pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-white"
+                    class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
                   >
                     <div class="flex items-center justify-between w-full mb-2">
                       <div class="flex items-center">
@@ -169,7 +168,7 @@
                     </div>
                   </NuxtLink>
                 </div>
-                <div class="flex justify-center py-4 shadow-card relative z-10">
+                <div class="flex justify-center py-4 shadow-s relative z-10">
                   <NuxtLink to="/" class="flex items-center text-blue">
                     <span class="text-sm leading-[1.43] font-medium mr-2">
                       View all
@@ -231,19 +230,16 @@
               <div
                 v-if="showOptions"
                 v-click-outside="() => (showOptions = false)"
-                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[250px] md:-bottom-[18px]"
-                :style="{
-                  boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-                }"
+                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[250px] shadow-m md:-bottom-[18px]"
               >
                 <button
                   class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
                   @click="showOptions = false"
                 >
                   <ProfileIcon class="w-6 h-6 mr-3 text-current" />
-                  <span class="text-sm leading-[1.71] font-medium"
-                    >Profile</span
-                  >
+                  <span class="text-sm leading-[1.71] font-medium">
+                    Profile
+                  </span>
                 </button>
                 <button
                   class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
@@ -259,14 +255,43 @@
                   @click="showOptions = false"
                 >
                   <SignOutIcon class="w-6 h-6 mr-3 text-current" />
-                  <span class="text-sm leading-[1.71] font-medium"
-                    >Sign out</span
-                  >
+                  <span class="text-sm leading-[1.71] font-medium">
+                    Sign out
+                  </span>
                 </button>
               </div>
             </Transition>
           </div>
         </div>
+        <Transition name="fade">
+          <div
+            v-if="showMobileSearch"
+            v-click-outside="() => (showMobileSearch = false)"
+            class="absolute z-50 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] md:hidden"
+          >
+            <div
+              class="flex items-center border border-border bg-white rounded-lg pr-3"
+            >
+              <label class="relative z-10 flex-1 flex items-center">
+                <form action="" @submit.prevent>
+                  <input
+                    v-model="searchValue"
+                    type="search"
+                    placeholder="Search"
+                    class="bg-transparent flex-1 w-full px-3 py-2.5 text-sm leading-[1.43] placeholder:text-gray-100 focus:outline-none"
+                  />
+                </form>
+              </label>
+              <SearchIcon
+                v-if="!searchValue"
+                class="flex-shrink-0 w-5 h-5 text-gray-100"
+              />
+              <button v-else class="flex" @click.stop="searchValue = ''">
+                <XIcon class="flex-shrink-0 w-5 h-5 text-gray-100" />
+              </button>
+            </div>
+          </div>
+        </Transition>
       </div>
     </div>
   </header>
@@ -294,6 +319,7 @@ defineProps({
 
 defineEmits(["show-side-nav"]);
 
+const showMobileSearch = ref(false);
 const searchValue = ref("");
 
 const notifications = ref<DashboardNotification[]>([

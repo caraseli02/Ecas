@@ -1,13 +1,14 @@
 <template>
   <label
-    class="flex relative border h-9 border-border bg-white rounded-lg overflow-hidden"
+    class="flex relative border border-border bg-white rounded-lg overflow-hidden"
+    :class="[size === 'lg' ? 'h-11' : 'h-9']"
   >
     <input
       :value="modelValue"
       type="search"
       :placeholder="placeholder"
-      class="flex w-full px-3 pr-10 h-9 text-sm bg-white leading-[1.6] placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
-      :class="[size === 'lg' ? 'py-2.5' : 'py-1.5']"
+      class="flex w-full px-3 pr-10 text-sm bg-white leading-[1.6] placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
+      :class="[size === 'lg' ? 'py-2.5 h-11' : 'py-1.5 h-9']"
       @input="handleInput"
     />
     <SearchIcon

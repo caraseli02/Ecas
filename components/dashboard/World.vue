@@ -32,7 +32,7 @@ onMounted(() => {
     }).setView([51, 0], 1);
     map.setMaxBounds([
       [100.673, -200.023],
-      [-60.995, 250.2421],
+      [-60.995, 210.2421],
     ]);
     Leaflet.control
       .zoom({

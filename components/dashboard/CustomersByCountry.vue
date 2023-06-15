@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="bg-white rounded-xl p-4 md:p-6"
-    :style="{
-      boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-    }"
-  >
+  <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
     <div class="leading-normal font-semibold mb-4 md:mb-6 xl:mb-10">
       Customers by Country
     </div>
