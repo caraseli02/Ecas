@@ -27,6 +27,12 @@
             placeholder="Search name, email, country, discount"
             size="sm"
             class="w-full"
+            @input="
+              handleFilterChange(activeFilters, emits, 'firstName', $event);
+              handleFilterChange(activeFilters, emits, 'lastName', $event);
+              handleFilterChange(activeFilters, emits, 'email', $event);
+              handleFilterChange(activeFilters, emits, 'country', $event);
+            "
           />
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
@@ -77,6 +83,7 @@
                 @click="
                   account = 'Personal';
                   showAccountOptions = false;
+                  handleFilterChange(activeFilters, emits, 'accountType', AccountType.Personal, true)
                 "
               >
                 <ProfileIcon class="w-6 h-6 mr-3 text-current" />
@@ -90,6 +97,7 @@
                 @click="
                   account = 'Sole Trader';
                   showAccountOptions = false;
+                  handleFilterChange(activeFilters, emits, 'accountType', AccountType.SoleTrader, true)
                 "
               >
                 <SoleTraderIcon class="w-6 h-6 mr-3 text-current" />
@@ -101,6 +109,7 @@
                 @click="
                   account = 'Agent';
                   showAccountOptions = false;
+                  handleFilterChange(activeFilters, emits, 'accountType', AccountType.Agent, true)
                 "
               >
                 <AgentIcon class="w-6 h-6 mr-3 text-current" />
@@ -114,6 +123,7 @@
                 @click="
                   account = 'Business';
                   showAccountOptions = false;
+                  handleFilterChange(activeFilters, emits, 'accountType', AccountType.Business, true)
                 "
               >
                 <BusinessIcon class="w-6 h-6 mr-3 text-current" />
@@ -145,7 +155,7 @@
             placeholder="Search company"
             size="sm"
             class="w-full"
-            @input="handleFilterChange('companyName', $event)"
+            @input="handleFilterChange(activeFilters, emits, 'companyName', $event)"
           />
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
@@ -583,7 +593,7 @@ import Slider from "@vueform/slider";
 import ChevronDownIcon from "@/assets/icons/dashboard/chevron-down.svg";
 import CalendarIcon from "@/assets/icons/dashboard/calendar.svg";
 import FilterIcon from "@/assets/icons/dashboard/filter-2.svg";
-import { DashboardTableItem } from "~~/types";
+import {AccountType, DashboardTableItem} from "~~/types";
 import ProfileIcon from "@/assets/icons/dashboard/profile.svg";
 import SoleTraderIcon from "@/assets/icons/dashboard/sole-trader.svg";
 import AgentIcon from "@/assets/icons/dashboard/agent.svg";
@@ -593,6 +603,7 @@ import SortUpIcon from "@/assets/icons/dashboard/sort-up.svg";
 import SortDownIcon from "@/assets/icons/dashboard/sort-down.svg";
 import { DatePicker } from "v-calendar";
 import {FilterInterface} from "~/model/dashboard/table/filters";
+import {handleFilterChange} from "~/services/dashboard/filter.service";
 
 defineProps({
   items: {
@@ -632,27 +643,9 @@ const formattedDate = (date: Date) => {
   return new Date(date).toLocaleDateString("en-GB");
 };
 
-const handleFilterChange = (filter: string, event: any, raw = false) => {
-  const value = raw ? event : event.target.value;
-
-  if (!value) {
-    return;
-  }
-
-  let existingFilter = activeFilters.find((item) => item.filter === filter);
-
-  if (!existingFilter) {
-    activeFilters.push({filter: filter, value: value});
-  } else {
-    existingFilter.value = value;
-  }
-
-  emits("active-filters", activeFilters);
-};
-
 watch((registered), (newRegistered) => {
-  handleFilterChange('startDate', formattedDate(newRegistered.start), true);
-  handleFilterChange('endDate', formattedDate(newRegistered.end), true);
+  handleFilterChange(activeFilters,emits, 'startDate', formattedDate(newRegistered.start), true);
+  handleFilterChange(activeFilters,emits,'endDate', formattedDate(newRegistered.end), true);
 })
 
 const spentValue = computed(() => {

@@ -1,8 +1,10 @@
 import {PaginatedCustomersInterface} from "~/model/dashboard/response/CustomerInterfaceResponse";
-import {useAuthStore} from "~/store/authStore";
-import {FilterInterface} from "~/model/dashboard/table/filters";
 
 export const fetchCustomersList = async (page: number, perPage: number, filters = {}) => {
+    if (Object.keys(filters).length) {
+        filters['operator'] = '$or';
+    }
+
     return await useFetchAPI<PaginatedCustomersInterface>("user", {
         method: "GET",
         params: {

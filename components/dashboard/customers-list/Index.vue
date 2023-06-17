@@ -49,7 +49,7 @@
           class="flex items-center pl-2 pr-1 py-1 bg-gray-200 rounded-md"
         >
           <span class="text-sm leading-normal text-gray-300 mr-2">
-            {{ filter.value }}
+            {{ `${FilterLabelsEnum[filter.filter]}: ${filter.value}` }}
           </span>
           <button
             class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
@@ -90,6 +90,7 @@ import Avatar from "@/assets/icons/dashboard/avatar.png";
 import {DashboardTableItem, getAccountTypeById} from "~~/types";
 import {fetchCustomersList} from "~/services/dashboard/user.service";
 import {PaginatedCustomersInterface} from "~/model/dashboard/response/CustomerInterfaceResponse";
+import {FilterLabelsEnum} from "~/types/dashboard/filter";
 
 const activeFilters = ref([]);
 
@@ -99,7 +100,7 @@ const clearFilters = async () => {
 };
 
 const removeFilter = async (index) => {
-  activeFilters.splice(index, 1);
+  activeFilters.value.splice(index, 1);
   await fetchAndSetUsersList(atPage, perPage, activeFilters);
 }
 
@@ -142,8 +143,8 @@ watch([atPage, perPage, activeFilters], async ([newAtPage, newPerPage, newActive
   for (const filter of newActiveFilters) {
     filterParams[filter.filter] = filter.value;
   }
-
+  console.log(newActiveFilters)
   await fetchAndSetUsersList(newAtPage, newPerPage, filterParams);
-})
+}, {deep: true})
 
 </script>
