@@ -8,7 +8,7 @@
         :item="person"
       />
     </div>
-    <div class="flex items-center justify-between mt-auto">
+    <div class="flex items-center justify-center mt-auto">
       <div />
       <button class="flex items-center">
         <span class="text-sm font-medium left-[1.43] text-gray-300 mr-1">

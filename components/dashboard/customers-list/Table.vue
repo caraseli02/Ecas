@@ -2,6 +2,7 @@
   <div class="mb-6 md:mb-8">
     <div
       class="dashboardTable grid grid-cols-1 gap-1 rounded-t-lg overflow-x-auto scrollbar-thin"
+      @scroll="handleScroll"
     >
       <div
         class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center rounded-t-lg"
@@ -397,6 +398,7 @@
         :key="index"
         :item="item"
         :index="index"
+        :isScrolling="isScrolling"
       />
     </div>
   </div>
@@ -626,6 +628,17 @@ const spentValue = computed(() => {
 
   return spent.value[0] || spent.value[1] ? spentValue : "Filter";
 });
+
+const isScrolling = ref(false);
+const scrollTimeout = ref();
+
+const handleScroll = () => {
+  isScrolling.value = true;
+  clearTimeout(scrollTimeout.value);
+  scrollTimeout.value = setTimeout(() => {
+    isScrolling.value = false;
+  }, 66);
+};
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>

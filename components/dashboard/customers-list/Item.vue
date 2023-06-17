@@ -24,7 +24,7 @@
               {{ item.name }}
             </div>
             <div class="flex items-center gap-3 cursor-default">
-              <Tooltip :position="isFirst ? 'bottom' : 'top'" theme="black">
+              <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
                 <svg
                   viewBox="0 0 20 20"
                   fill="none"
@@ -78,7 +78,7 @@
                   <span>Romania</span>
                 </template>
               </Tooltip>
-              <Tooltip :position="isFirst ? 'bottom' : 'top'" theme="black">
+              <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
                 <div
                   class="bg-blue px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-white"
                 >
@@ -132,69 +132,69 @@
       <div class="relative">
         <button
           class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-          @click="showOptions = !showOptions"
+          @click="handleShowOptions"
         >
           <MoreVerticalIcon class="w-7 h-7" />
         </button>
-        <Transition name="fade">
-          <div
-            v-if="showOptions"
-            v-click-outside="() => (showOptions = false)"
-            class="absolute z-10 right-0 grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m"
-            :class="[
-              index > 5
-                ? '-top-2 -translate-y-full'
-                : '-bottom-2 translate-y-full',
-            ]"
-          >
-            <button
-              class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-              @click="showOptions = false"
-            >
-              <ProfileIcon class="w-6 h-6 mr-3 text-current" />
-              <span class="text-sm leading-[1.71] font-medium">Profile</span>
-            </button>
-            <button
-              class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-              @click="showOptions = false"
-            >
-              <OrdersIcon class="w-6 h-6 mr-3 text-current" />
-              <span class="text-sm leading-[1.71] font-medium">Orders</span>
-            </button>
-            <button
-              class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-              @click="showOptions = false"
-            >
-              <SettingsIcon class="w-6 h-6 mr-3 text-current" />
-              <span class="text-sm leading-[1.71] font-medium">Settings</span>
-            </button>
-            <button
-              class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-              @click="
-                showDeactivatingModal = true;
-                showOptions = false;
-              "
-            >
-              <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
-              <span class="text-sm leading-[1.71] font-medium">
-                Deactivate Account
-              </span>
-            </button>
-            <button
-              class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
-              @click="showOptions = false"
-            >
-              <TrashIcon class="w-6 h-6 mr-3 text-current" />
-              <span class="text-sm leading-[1.71] font-medium"
-                >Delete Account</span
-              >
-            </button>
-          </div>
-        </Transition>
       </div>
     </div>
   </div>
   <Teleport to="body">
+    <Transition name="fade">
+      <div
+        v-if="showOptions"
+        v-click-outside="() => (showOptions = false)"
+        class="absolute z-10 grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[224px] shadow-m -translate-x-full"
+        :class="[index > 5 ? '-translate-y-[calc(100%+42px)]' : '']"
+        :style="{
+          top: optionsDropdownTop + 'px',
+          left: optionsDropdownLeft + 'px',
+        }"
+      >
+        <button
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+          @click="showOptions = false"
+        >
+          <ProfileIcon class="w-6 h-6 mr-3 text-current" />
+          <span class="text-sm leading-[1.71] font-medium">Profile</span>
+        </button>
+        <button
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+          @click="showOptions = false"
+        >
+          <OrdersIcon class="w-6 h-6 mr-3 text-current" />
+          <span class="text-sm leading-[1.71] font-medium">Orders</span>
+        </button>
+        <button
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+          @click="showOptions = false"
+        >
+          <SettingsIcon class="w-6 h-6 mr-3 text-current" />
+          <span class="text-sm leading-[1.71] font-medium">Settings</span>
+        </button>
+        <button
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+          @click="
+            showDeactivatingModal = true;
+            showOptions = false;
+          "
+        >
+          <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
+          <span class="text-sm leading-[1.71] font-medium">
+            Deactivate Account
+          </span>
+        </button>
+        <button
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
+          @click="showOptions = false"
+        >
+          <TrashIcon class="w-6 h-6 mr-3 text-current" />
+          <span class="text-sm leading-[1.71] font-medium">
+            Delete Account
+          </span>
+        </button>
+      </div>
+    </Transition>
     <Transition name="fade">
       <DashboardDeactivateUserModal
         v-if="showDeactivatingModal"
@@ -226,7 +226,7 @@ import SettingsIcon from "@/assets/icons/dashboard/setting.svg";
 import DeactivateIcon from "@/assets/icons/dashboard/deactivate.svg";
 import TrashIcon from "@/assets/icons/dashboard/trash.svg";
 
-defineProps({
+const props = defineProps({
   item: {
     type: Object as PropType<DashboardTableItem>,
     required: true,
@@ -235,8 +235,32 @@ defineProps({
     type: Number,
     default: false,
   },
+  isScrolling: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const showOptions = ref(false);
 const showDeactivatingModal = ref(false);
+const optionsDropdownLeft = ref(0);
+const optionsDropdownTop = ref(0);
+
+const handleShowOptions = (event: MouseEvent) => {
+  showOptions.value = !showOptions.value;
+  const target = event.currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
+  optionsDropdownLeft.value = rect.left + 28;
+  optionsDropdownTop.value = rect.top + window.scrollY + 36;
+};
+
+const scrolling = computed(() => {
+  return props.isScrolling;
+});
+
+watch(scrolling, (val) => {
+  if (val) {
+    showOptions.value = false;
+  }
+});
 </script>
