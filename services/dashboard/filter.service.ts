@@ -1,4 +1,4 @@
-import {FilterInterface} from "~/model/dashboard/table/filters";
+import {FilterInterface, SortInterface} from "~/model/dashboard/table/filters";
 
 
 export const handleFilterChange = (activeFilters: FilterInterface[], emits, filter: string, event: any, raw = false) => {
@@ -18,3 +18,7 @@ export const handleFilterChange = (activeFilters: FilterInterface[], emits, filt
 
     emits("active-filters", [...activeFilters]);
 };
+
+export const handleSortChange = (emits, sortBy: string, sortOrder: number) => {
+    emits("active-sort", {sortBy: sortBy, sortOrder: sortOrder === 0 ? 'desc' : 'asc'} as SortInterface);
+}

@@ -69,7 +69,7 @@
       position="top"
       class="flex-col mb-6 md:mb-8"
     />
-    <DashboardCustomersListTable :items="visibleItemsFiltered" @active-filters="activeFilters = $event" />
+    <DashboardCustomersListTable :items="visibleItemsFiltered" @active-filters="activeFilters = $event" @active-sort="activeSort = $event" />
     <DashboardCustomersListPagination
       :at-page="atPage"
       :per-page="perPage"
@@ -91,17 +91,19 @@ import {DashboardTableItem, getAccountTypeById} from "~~/types";
 import {fetchCustomersList} from "~/services/dashboard/user.service";
 import {PaginatedCustomersInterface} from "~/model/dashboard/response/CustomerInterfaceResponse";
 import {FilterLabelsEnum} from "~/types/dashboard/filter";
+import {FilterInterface, SortInterface} from "~/model/dashboard/table/filters";
 
-const activeFilters = ref([]);
+const activeFilters = ref([] as FilterInterface);
+const activeSort = ref({} as SortInterface);
 
 const clearFilters = async () => {
   activeFilters.value = [];
-  await fetchAndSetUsersList(atPage, perPage, activeFilters);
+  await fetchAndSetUsersList(atPage, perPage, activeFilters, activeSort);
 };
 
 const removeFilter = async (index) => {
   activeFilters.value.splice(index, 1);
-  await fetchAndSetUsersList(atPage, perPage, activeFilters);
+  await fetchAndSetUsersList(atPage, perPage, activeFilters, activeSort);
 }
 
 const atPage = ref(1);
@@ -116,8 +118,9 @@ const visibleItemsFiltered = computed(() => {
   });
 });
 
-const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}) => {
-  const data = await fetchCustomersList(page, perPage, filters);
+const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
+  console.log(sort)
+  const data = await fetchCustomersList(page, perPage, filters, sort);
   const paginatedUsersData = data.data.value as PaginatedCustomersInterface;
   const paginatedUsers = paginatedUsersData.data.items;
 
@@ -135,16 +138,15 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {})
   }));
 }
 
-await fetchAndSetUsersList(atPage, perPage, activeFilters);
+await fetchAndSetUsersList(atPage, perPage, activeFilters, activeSort);
 
-watch([atPage, perPage, activeFilters], async ([newAtPage, newPerPage, newActiveFilters]) => {
+watch([atPage, perPage, activeFilters, activeSort], async ([newAtPage, newPerPage, newActiveFilters, newActiveSort]) => {
   const filterParams = {};
 
   for (const filter of newActiveFilters) {
     filterParams[filter.filter] = filter.value;
   }
-  console.log(newActiveFilters)
-  await fetchAndSetUsersList(newAtPage, newPerPage, filterParams);
+  await fetchAndSetUsersList(newAtPage, newPerPage, filterParams, newActiveSort);
 }, {deep: true})
 
 </script>

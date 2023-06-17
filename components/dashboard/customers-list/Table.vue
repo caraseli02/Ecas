@@ -10,7 +10,7 @@
           <div class="mb-4">
             <button
               class="relative flex items-center h-5"
-              @click="nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0)"
+              @click="nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0); handleSortChange(emits, 'email', nameOrder)"
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Name
@@ -40,7 +40,8 @@
             <button
               class="relative flex items-center h-5"
               @click="
-                accountOrder === 0 ? (accountOrder = 1) : (accountOrder = 0)
+                accountOrder === 0 ? (accountOrder = 1) : (accountOrder = 0);
+                handleSortChange('emits', 'accountType', accountOrder)
               "
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -137,7 +138,8 @@
             <button
               class="relative flex items-center h-5"
               @click="
-                companyOrder === 0 ? (companyOrder = 1) : (companyOrder = 0)
+                companyOrder === 0 ? (companyOrder = 1) : (companyOrder = 0);
+                handleSortChange(emits, 'companyName', companyOrder)
               "
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -165,7 +167,8 @@
               @click="
                 registeredOrder === 0
                   ? (registeredOrder = 1)
-                  : (registeredOrder = 0)
+                  : (registeredOrder = 0);
+                handleSortChange(emits, 'createdAt', registeredOrder)
               "
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -216,7 +219,7 @@
           <div class="mb-4">
             <button
               class="relative flex items-center h-5"
-              @click="spentOrder === 0 ? (spentOrder = 1) : (spentOrder = 0)"
+              @click="spentOrder === 0 ? (spentOrder = 1) : (spentOrder = 0); handleSortChange(emits, 'spent', spentOrder)"
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
                 Spent
@@ -332,7 +335,8 @@
               @click="
                 ordersCountOrder === 0
                   ? (ordersCountOrder = 1)
-                  : (ordersCountOrder = 0)
+                  : (ordersCountOrder = 0);
+                handleSortChange(emits, 'ordersCount', ordersCountOrder)
               "
             >
               <span class="text-sm leading-[1.43] font-medium mr-1">
@@ -603,7 +607,7 @@ import SortUpIcon from "@/assets/icons/dashboard/sort-up.svg";
 import SortDownIcon from "@/assets/icons/dashboard/sort-down.svg";
 import { DatePicker } from "v-calendar";
 import {FilterInterface} from "~/model/dashboard/table/filters";
-import {handleFilterChange} from "~/services/dashboard/filter.service";
+import {handleFilterChange, handleSortChange} from "~/services/dashboard/filter.service";
 
 defineProps({
   items: {
@@ -612,27 +616,27 @@ defineProps({
   },
 });
 
-const emits = defineEmits(["active-filters"]);
+const emits = defineEmits(["active-filters", "active-sort"]);
 
 const activeFilters: FilterInterface[] = [];
 
 const name = ref("");
-const nameOrder = ref(0);
+const nameOrder: number = ref(0);
 const account = ref("");
-const accountOrder = ref(0);
+const accountOrder: number = ref(0);
 const company = ref("");
-const companyOrder = ref(0);
+const companyOrder: number = ref(0);
 const registered = ref({
   start: null,
   end: null,
 });
-const registeredOrder = ref(0);
+const registeredOrder: number = ref(0);
 const spentBuffer = ref([0, 0]);
 const spent = ref([0, 0]);
-const spentOrder = ref(0);
+const spentOrder: number = ref(0);
 const ordersCountBuffer = ref(0);
 const ordersCount = ref(0);
-const ordersCountOrder = ref(0);
+const ordersCountOrder: number = ref(0);
 
 const showAccountOptions = ref(false);
 const showOrdersRange = ref(false);
