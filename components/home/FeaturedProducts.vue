@@ -182,12 +182,9 @@
 
 <script setup lang="ts">
 import BlackFridayItem from "@/assets/media/home/black-friday-item.png";
-import ProductCover1 from "@/assets/media/home/product-1.jpg";
-import ProductCover2 from "@/assets/media/home/product-2.jpg";
-import ProductCover3 from "@/assets/media/home/product-3.jpg";
 import { A11y, Pagination, Grid } from "swiper";
-import { fetchProductTab } from "~/services/product.service";
 import { ProductCard as ProductCardType } from "~~/types";
+const { $api } = useNuxtApp()
 
 const elDOM = ref<HTMLElement | null>(null);
 
@@ -223,8 +220,8 @@ const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
 
 watch(activeFilter, async (value) => {
-    let { data } = await fetchProductTab(value);
-    productList.value = data.value?.data.map((item) => ({
+    let { data} = await $api.product.fetchProductTab(value);
+    productList.value = data.map((item) => ({
         slug: item._id,
         title: item.alias,
         category: "Not supported",
@@ -259,8 +256,8 @@ onMounted(async () => {
     setFilterLine();
 });
 
-let { data } = await fetchProductTab("featured");
-productList.value = data.value?.data.map((item) => ({
+let { data } = await $api.product.fetchProductTab("featured");
+productList.value = data.map((item) => ({
     slug: item._id,
     title: item.alias,
     category: "Not supported",

@@ -46,7 +46,7 @@
           class="hidden grid-cols-3 gap-5 mt-5 md:grid lg:grid-cols-4 xl:grid-cols-6"
         >
           <SearchFilter
-            v-for="(filter, index) in filters"
+            v-for="(filter, index) in filters.slice(0,11)"
             :key="index"
             :filter="filter"
             @close="removeItem(index)"
@@ -125,7 +125,6 @@ dataArray.forEach(item => {
     [key]: value
   })
 })
-console.log(filters.value);
 
 
 const removeItem = (index: number) => {

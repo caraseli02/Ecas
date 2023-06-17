@@ -127,6 +127,7 @@ import { useAuthStore } from "~~/store/authStore";
 import { UserDetails } from "~~/types/auth/user-details";
 
 const { checkForInputErrors } = useError();
+const { $api } = useNuxtApp()
 
 const email = ref({
     value: "",
@@ -163,13 +164,7 @@ const handleSignIn = async () => {
 
         isLoading.value = true;
 
-        const { data, pending, error } = await useFetchAPI<ProductResponse>("auth/login", {
-            method: "POST",
-            body: {
-                email: payload.email,
-                password: payload.password,
-            },
-        });
+        const { data, pending, error } = await $api.auth.login(payload)
 
         isLoading.value = pending.value;
 

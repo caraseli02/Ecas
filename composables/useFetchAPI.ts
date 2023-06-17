@@ -1,5 +1,3 @@
-import { useFetch } from "#app";
-
 type useFetchType = typeof useFetch;
 
 export const useFetchAPI: useFetchType = async (url, params) => {
