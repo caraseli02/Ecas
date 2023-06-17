@@ -12,8 +12,12 @@ class HttpFactory {
     * URL
   **/
   async call<T>(method: string, url: string, data?: object, extras = {}): Promise<T> {
-    const $res: T = await this.$fetch(url, { method, body: data, ...extras });
-    return $res;
+    try {
+      const $res: T = await this.$fetch(url, { method, body: data, ...extras });
+      return $res;
+    } catch (err) {
+      return err as T
+    }
   }
 }
 

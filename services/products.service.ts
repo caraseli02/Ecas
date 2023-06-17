@@ -12,7 +12,7 @@ class ProductService extends HttpFactory {
     return await this.call<ProductResponse>('GET', `${this.RESOURCE}/${path}`);
   }
 
-  async fetchNewProducts(path: string): Promise<NewProductResponse> {
+  async fetchNewProducts(): Promise<NewProductResponse> {
     return await this.call<NewProductResponse>('GET', `${this.RESOURCE}/new-products`);
   }
 
