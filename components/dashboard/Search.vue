@@ -1,6 +1,6 @@
 <template>
   <label
-    class="flex relative border border-border bg-white rounded-lg overflow-hidden"
+    class="flex relative border border-border bg-white rounded-lg overflow-hidden transition-colors duration-300 focus-within:border-blue"
     :class="[size === 'lg' ? 'h-11' : 'h-9']"
   >
     <input
@@ -11,7 +11,13 @@
       :class="[size === 'lg' ? 'py-2.5 h-11' : 'py-1.5 h-9']"
       @input="handleInput"
     />
+    <XIcon
+      v-if="modelValue"
+      class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100 cursor-pointer"
+      @click="$emit('update:modelValue', '')"
+    />
     <SearchIcon
+      v-else
       class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100"
     />
   </label>
@@ -19,6 +25,7 @@
 
 <script setup lang="ts">
 import SearchIcon from "@/assets/icons/dashboard/search.svg";
+import XIcon from "@/assets/icons/dashboard/x.svg";
 import { PropType } from "vue";
 
 defineProps({

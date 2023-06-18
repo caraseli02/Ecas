@@ -49,8 +49,11 @@
             </button>
           </div>
           <button
-            class="flex items-center justify-between relative w-full border border-border rounded-lg px-3 py-[7px] bg-white"
-            :class="[!account ? 'text-gray-100' : '']"
+            class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
+            :class="[
+              !account ? 'text-gray-100' : '',
+              showAccountOptions ? 'border-blue' : 'border-border',
+            ]"
             @click="showAccountOptions = !showAccountOptions"
           >
             <span class="text-sm flex-shrink-0 mr-1">
@@ -166,9 +169,10 @@
             </button>
           </div>
           <button
-            class="flex items-center justify-between relative w-full border border-border rounded-lg px-3 py-[7px] bg-white"
+            class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
             :class="[
               !registered.start && !registered.end ? 'text-gray-100' : '',
+              showRegisteredRange ? 'border-blue' : 'border-border',
             ]"
             @click="showRegisteredRange = !showRegisteredRange"
           >
@@ -213,8 +217,11 @@
             </button>
           </div>
           <button
-            class="flex items-center justify-between relative w-full border border-border rounded-lg px-2.5 py-[7px] bg-white"
-            :class="[!spent[0] && !spent[1] ? 'text-gray-100' : '']"
+            class="flex items-center justify-between relative w-full border rounded-lg px-2.5 py-[7px] bg-white transition-colors duration-300"
+            :class="[
+              !spent[0] && !spent[1] ? 'text-gray-100' : '',
+              showSpentRange ? 'border-blue' : 'border-border',
+            ]"
             @click="showSpentRange = !showSpentRange"
           >
             <span
@@ -327,8 +334,11 @@
             </button>
           </div>
           <button
-            class="flex relative w-full border border-border rounded-lg px-3 py-[7px] bg-white"
-            :class="[!ordersCount ? 'text-gray-100' : '']"
+            class="flex relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
+            :class="[
+              !ordersCount ? 'text-gray-100' : '',
+              showOrdersRange ? 'border-blue' : 'border-border',
+            ]"
             @click="showOrdersRange = !showOrdersRange"
           >
             <span class="text-sm">

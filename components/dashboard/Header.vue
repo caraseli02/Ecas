@@ -1,10 +1,8 @@
 <template>
   <header
-    class="fixed z-30 top-0 left-0 w-full bg-white shadow-xs md:transition-all md:duration-300 md:delay-50"
+    class="fixed z-30 top-0 left-0 w-full bg-white shadow-xs md:transition-all md:duration-300 md:delay-50 md:ml-[96px] md:w-[calc(100%-96px)]"
     :class="[
-      isCollapsedOnDesktop
-        ? 'md:ml-[96px] md:w-[calc(100%-96px)]'
-        : '2xl:ml-[280px] 2xl:w-[calc(100%-280px)]',
+      isCollapsedOnDesktop ? '' : '2xl:ml-[280px] 2xl:w-[calc(100%-280px)]',
     ]"
   >
     <div

@@ -1,10 +1,12 @@
 <template>
-  <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
+  <div class="flex flex-col bg-white rounded-xl p-4 shadow-xs md:p-6">
     <div class="leading-normal font-semibold mb-4 md:mb-6 xl:mb-10">
       Customers by Country
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-[auto,auto] md:justify-between">
-      <div class="md:col-start-1 md:row-start-1 md:mr-[60px]">
+    <div
+      class="grid grid-cols-1 md:grid-cols-[auto,auto] md:justify-between xl:flex-1"
+    >
+      <div class="md:col-start-1 md:row-start-1 md:mr-[60px] xl:mr-10">
         <div class="flex items-center mb-1">
           <div class="text-2xl leading-[1.17] font-semibold mr-2">
             {{ countryWithMostCustomers?.count }}
@@ -63,7 +65,7 @@
         </ClientOnly>
       </div>
       <div
-        class="grid grid-cols-[repeat(2,auto)] gap-4 max-md:px-4 md:gap-x-8 md:gap-y-3 md:col-start-2 md:row-start-1 md:mb-6 md:pl-6 md:border-l md:border-gray-200 xl:gap-x-6"
+        class="grid grid-cols-[repeat(2,auto)] gap-4 max-md:px-4 md:gap-x-8 md:gap-y-3 md:col-start-2 md:row-start-1 md:mb-6 md:pl-6 md:border-l md:border-gray-200 xl:gap-x-6 xl:self-start"
       >
         <div
           v-for="(country, index) in countries"

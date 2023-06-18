@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center justify-between py-2">
-    <NuxtLink to="/" class="group/link flex items-center">
+  <div class="flex items-center justify-between py-2 w-full">
+    <NuxtLink to="/" class="group/link flex items-center w-[calc(100%-40px)]">
       <div
         class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-3 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-[3px] after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
         :class="[!item.avatar ? 'bg-gray-200' : '']"
@@ -17,10 +17,10 @@
         <div
           class="text-sm leading-[1.43] font-semibold truncate mb-1 transition-colors duration-300 group-hover:text-blue"
         >
-          {{ item.name }}
+          {{ item.name }} asd asd asd asd asd asd asd
         </div>
         <div class="text-xs leading-[1.67] text-gray-300 truncate">
-          {{ item.email }}
+          {{ item.email }}as dasd asd asd asd as
         </div>
       </div>
     </NuxtLink>
