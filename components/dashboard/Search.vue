@@ -7,13 +7,13 @@
       :value="modelValue"
       type="search"
       :placeholder="placeholder"
-      class="flex w-full px-3 pr-10 text-sm bg-white leading-[1.6] placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
+      class="flex w-full px-3 pr-10 text-sm bg-white leading-[1.6] text-gray-300 placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
       :class="[size === 'lg' ? 'py-2.5 h-11' : 'py-1.5 h-9']"
       @input="handleInput"
     />
     <XIcon
       v-if="modelValue"
-      class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-100 cursor-pointer"
+      class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300 cursor-pointer"
       @click="$emit('update:modelValue', '')"
     />
     <SearchIcon
