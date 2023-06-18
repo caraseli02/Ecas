@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-[1440px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6"
+    class="w-[1488px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6"
   >
     <DashboardBreadcrumbs />
     <div
