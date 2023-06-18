@@ -7,7 +7,7 @@
       :value="modelValue"
       type="search"
       :placeholder="placeholder"
-      class="flex w-full px-3 pr-10 text-sm bg-white leading-[1.6] text-gray-300 placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
+      class="flex w-full px-3 pr-10 text-sm bg-white leading-[1.6] text-gray-300 placeholder:text-gray-100 font-normal placeholder:font-normal transition-colors duration-300 focus:outline-none focus:border-blue"
       :class="[size === 'lg' ? 'py-2.5 h-11' : 'py-1.5 h-9']"
       @input="handleInput"
     />
