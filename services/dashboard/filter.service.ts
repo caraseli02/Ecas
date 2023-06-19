@@ -22,3 +22,4 @@ export const handleFilterChange = (activeFilters: FilterInterface[], emits, filt
 export const handleSortChange = (emits, sortBy: string, sortOrder: number) => {
     emits("active-sort", {sortBy: sortBy, sortOrder: sortOrder === 0 ? 'desc' : 'asc'} as SortInterface);
 }
+

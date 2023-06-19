@@ -611,6 +611,8 @@ import SortDownIcon from "@/assets/icons/dashboard/sort-down.svg";
 import { DatePicker } from "v-calendar";
 import {FilterInterface} from "~/model/dashboard/table/filters";
 import {handleFilterChange, handleSortChange} from "~/services/dashboard/filter.service";
+import Emitter from 'tiny-emitter/instance';
+import {subDays} from "date-fns";
 
 defineProps({
   items: {
@@ -650,10 +652,22 @@ const formattedDate = (date: Date) => {
   return new Date(date).toLocaleDateString("en-GB");
 };
 
+Emitter.on('registered-filter', (filter) => {
+  if (filter.time === -1) {
+    registered.value.start = null;
+    registered.value.end = Date.now();
+
+    return;
+  }
+
+  registered.value.start = subDays(Date.now(), filter.time);
+  registered.value.end = Date.now();
+});
+
 watch((registered), (newRegistered) => {
   handleFilterChange(activeFilters,emits, 'startDate', formattedDate(newRegistered.start), true);
   handleFilterChange(activeFilters,emits,'endDate', formattedDate(newRegistered.end), true);
-})
+}, {deep: true})
 
 const spentValue = computed(() => {
   const spentValue = spent.value

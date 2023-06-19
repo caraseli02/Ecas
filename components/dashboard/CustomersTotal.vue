@@ -22,8 +22,10 @@
     </div>
     <div class="flex items-center justify-between">
       <div class="flex items-center">
-        <ArrowUpIcon class="w-4 h-4 mr-1" />
-        <div class="text-sm leading-[1.43] font-medium text-[#00D395] mr-1">
+        <ArrowUpIcon v-if="delta >= 0" class="w-4 h-4 mr-1" />
+        <ArrowDownIcon v-if="delta < 0" class="w-4 h-4 mr-1" />
+        <div class="text-sm leading-[1.43] font-medium mr-1"
+          :class="{'text-[#FA4B4B]': delta < 0, 'text-[#00D395]': delta > 0}">
           {{ delta + '%' }}
         </div>
         <button class="flex items-center" @click="showOptions = !showOptions">
@@ -36,7 +38,7 @@
           />
         </button>
       </div>
-      <button class="flex items-center">
+      <button class="flex items-center" @click="Emitter.emit('registered-filter', selectedOption)">
         <span class="text-sm font-medium left-[1.43] text-gray-300 mr-1">
           <span class="md:hidden lg:inline-block"> View </span> more
         </span>
@@ -69,14 +71,16 @@
 <script setup lang="ts">
 import PeopleIcon from "@/assets/icons/dashboard/people.svg";
 import ArrowUpIcon from "@/assets/icons/dashboard/arrow-up.svg";
+import ArrowDownIcon from "@/assets/icons/dashboard/arrow-down.svg";
 import ChevronIcon from "@/assets/icons/dashboard/chevron-down.svg";
 import ArrowRightIcon from "@/assets/icons/dashboard/arrow-right.svg";
 import type { ApexOptions } from "apexcharts";
-import {fetchCustomersList, fetchTotalCustomersWidget} from "~/services/dashboard/user.service";
+import { fetchTotalCustomersWidget} from "~/services/dashboard/user.service";
 import {
-  PaginatedCustomersInterface,
   TotalCustomersInterface
 } from "~/model/dashboard/response/CustomerInterfaceResponse";
+import {differenceInDays, startOfISOWeek} from "date-fns";
+import Emitter from 'tiny-emitter/instance';
 
 const chartOptions: ApexOptions = {
   chart: {
@@ -133,12 +137,16 @@ const chartOptions: ApexOptions = {
 
 const showOptions = ref(false);
 const selectedOption = ref({label: "Last 7 Days", time: 7});
+
+const start = startOfISOWeek(Date.now());
+const thisWeekDifference = differenceInDays(Date.now(), start);
+
 const options = [
   {label: "Last 24h", time: 1},
-  {label: "This Week", time: 7},
+  {label: "This Week", time: thisWeekDifference},
   {label: "Last 7 Days", time: 7},
   {label: "Last 30 Days", time: 30},
-  {label: "All Time", time: 0},
+  {label: "All Time", time: -1},
 ];
 
 let series = ref([]);
