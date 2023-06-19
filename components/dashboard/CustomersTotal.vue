@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="relative bg-white rounded-xl p-4 md:p-6"
-    :style="{
-      boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-    }"
-  >
+  <div class="relative bg-white rounded-xl p-4 shadow-xs md:p-6">
     <div class="flex items-start justify-between">
       <div class="leading-normal font-semibold">Customers Total</div>
       <div
@@ -14,7 +9,7 @@
       </div>
     </div>
     <div class="flex items-center justify-between -my-1.5">
-      <div class="text-4xl leading-normal font-semibold">1832</div>
+      <div class="text-4xl leading-normal font-semibold">{{ total }}</div>
       <div>
         <ClientOnly>
           <apexchart
@@ -29,11 +24,11 @@
       <div class="flex items-center">
         <ArrowUpIcon class="w-4 h-4 mr-1" />
         <div class="text-sm leading-[1.43] font-medium text-[#00D395] mr-1">
-          3,78%
+          {{ delta + '%' }}
         </div>
         <button class="flex items-center" @click="showOptions = !showOptions">
           <span class="text-sm left-[1.43] text-gray-300 font-medium mr-1">
-            {{ selectedOption }}
+            {{ selectedOption.label }}
           </span>
           <ChevronIcon
             class="w-5 h-5 text-gray-300 transition-transform duration-300"
@@ -52,22 +47,19 @@
       <div
         v-if="showOptions"
         v-click-outside="() => (showOptions = false)"
-        class="absolute z-10 -bottom-0.5 left-0 translate-y-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[200px]"
-        :style="{
-          boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-        }"
+        class="absolute z-10 -bottom-0.5 left-0 translate-y-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[200px] shadow-m"
       >
         <button
           v-for="(option, index) in options"
           :key="index"
           class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-          :class="selectedOption === option ? 'bg-[#F2F2F2] text-blue' : ''"
+          :class="selectedOption.label === option.label ? 'bg-[#F2F2F2] text-blue' : ''"
           @click="
             showOptions = false;
             selectedOption = option;
           "
         >
-          <span class="text-sm leading-[1.71] font-medium">{{ option }}</span>
+          <span class="text-sm leading-[1.71] font-medium">{{ option.label }}</span>
         </button>
       </div>
     </Transition>
@@ -80,6 +72,11 @@ import ArrowUpIcon from "@/assets/icons/dashboard/arrow-up.svg";
 import ChevronIcon from "@/assets/icons/dashboard/chevron-down.svg";
 import ArrowRightIcon from "@/assets/icons/dashboard/arrow-right.svg";
 import type { ApexOptions } from "apexcharts";
+import {fetchCustomersList, fetchTotalCustomersWidget} from "~/services/dashboard/user.service";
+import {
+  PaginatedCustomersInterface,
+  TotalCustomersInterface
+} from "~/model/dashboard/response/CustomerInterfaceResponse";
 
 const chartOptions: ApexOptions = {
   chart: {
@@ -133,19 +130,34 @@ const chartOptions: ApexOptions = {
     show: false,
   },
 };
-const series = [
-  {
-    data: ["-3", "0", "2", "-1", "4", "3", "0", "4", "5"],
-  },
-];
 
 const showOptions = ref(false);
-const selectedOption = ref("This Week");
+const selectedOption = ref({label: "Last 7 Days", time: 7});
 const options = [
-  "Last 24h",
-  "This Week",
-  "Last 7 Days",
-  "Last 30 Days",
-  "All Time",
+  {label: "Last 24h", time: 1},
+  {label: "This Week", time: 7},
+  {label: "Last 7 Days", time: 7},
+  {label: "Last 30 Days", time: 30},
+  {label: "All Time", time: 0},
 ];
+
+let series = ref([]);
+let total = ref(0);
+let delta = ref(0);
+
+const fetchAndSetTotalCustomers = async (time = 7) => {
+  const data = await fetchTotalCustomersWidget(time);
+  const widgetData = data.data.value as TotalCustomersInterface;
+
+  series.value = widgetData.data.series;
+  total.value = widgetData.data.total;
+  delta.value = widgetData.data.delta;
+}
+
+await fetchAndSetTotalCustomers(selectedOption.time);
+
+watch([selectedOption], async ([newSelectedOption]) => {
+  await fetchAndSetTotalCustomers(newSelectedOption.time);
+});
+
 </script>

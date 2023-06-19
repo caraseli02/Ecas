@@ -27,7 +27,7 @@
         <transition name="fade">
           <div
             v-if="showPerPageOptions"
-            class="absolute z-10 left-0 w-full grid grid-cols-1 gap-1 bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-3"
+            class="absolute z-10 left-0 w-full grid grid-cols-1 gap-1 bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin p-3 shadow-m"
             :class="[
               position === 'top'
                 ? '-bottom-1 translate-y-full'

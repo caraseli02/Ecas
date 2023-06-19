@@ -29,7 +29,13 @@ module.exports = {
         Poppins: ["Poppins", "sans-serif"]
       },
       boxShadow: {
-        card: '0px 0px 6px rgba(51, 51, 51, 0.2)'
+        card: '0px 0px 6px rgba(51, 51, 51, 0.2)',
+        xs: '0px 0px 8px rgba(133, 133, 133, 0.25)',
+        s: '0px 0px 8px rgba(133, 133, 133, 0.25)',
+        m: '0px 0px 16px rgba(133, 133, 133, 0.25)',
+        l: '0px 0px 24px rgba(133, 133, 133, 0.25)',
+        xl: '0px 0px 32px rgba(133, 133, 133, 0.25)',
+        xxl: '0px 0px 48px rgba(133, 133, 133, 0.25)'
       },
       container: {
         center: true,

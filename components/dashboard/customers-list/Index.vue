@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="bg-white rounded-xl p-4 md:p-6"
-    :style="{
-      boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-    }"
-  >
+  <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
     <div
       class="flex flex-col mb-6 md:block md:mb-8 lg:flex lg:flex-row lg:items-start lg:justify-between xl:items-center"
     >
@@ -119,7 +114,6 @@ const visibleItemsFiltered = computed(() => {
 });
 
 const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
-  console.log(sort)
   const data = await fetchCustomersList(page, perPage, filters, sort);
   const paginatedUsersData = data.data.value as PaginatedCustomersInterface;
   const paginatedUsers = paginatedUsersData.data.items;

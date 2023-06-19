@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center justify-between py-2">
-    <NuxtLink to="/" class="group/link flex items-center">
+  <div class="flex items-center justify-between py-2 w-full">
+    <NuxtLink to="/" class="group/link flex items-center w-[calc(100%-40px)]">
       <div
         class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-3 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-[3px] after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
         :class="[!item.avatar ? 'bg-gray-200' : '']"
@@ -8,7 +8,7 @@
         <img
           v-if="item.avatar"
           :src="item.avatar"
-          :alt="item.name"
+          :alt="`${item.contactDetails.firstName} ${item.contactDetails.lastName}`"
           class="w-full h-full rounded-full object-cover"
         />
         <UserIcon v-else class="w-7 h-7 text-gray-100" />
@@ -17,10 +17,10 @@
         <div
           class="text-sm leading-[1.43] font-semibold truncate mb-1 transition-colors duration-300 group-hover:text-blue"
         >
-          {{ item.name }}
+          {{ `${item.contactDetails.firstName} ${item.contactDetails.lastName}` }} asd asd asd asd asd asd asd
         </div>
         <div class="text-xs leading-[1.67] text-gray-300 truncate">
-          {{ item.email }}
+          {{ item.contactDetails.email }}as dasd asd asd asd as
         </div>
       </div>
     </NuxtLink>
@@ -35,10 +35,7 @@
         <div
           v-if="showOptions"
           v-click-outside="() => (showOptions = false)"
-          class="absolute z-10 -bottom-2 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px]"
-          :style="{
-            boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-          }"
+          class="absolute z-10 -bottom-2 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m"
         >
           <button
             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
@@ -69,9 +66,9 @@
             "
           >
             <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
-            <span class="text-sm leading-[1.71] font-medium"
-              >Deactivate Account</span
-            >
+            <span class="text-sm leading-[1.71] font-medium">
+              Deactivate Account
+            </span>
           </button>
           <button
             class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
@@ -94,6 +91,15 @@
         @close="showDeactivatingModal = false"
       />
     </Transition>
+    <div
+      class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
+      :class="[
+        showDeactivatingModal
+          ? 'backdrop-blur-[7.5px]'
+          : 'backdrop-blur-0 opacity-0 pointer-events-none',
+      ]"
+      @click="showDeactivatingModal = false"
+    />
   </Teleport>
 </template>
 
@@ -106,14 +112,11 @@ import SettingsIcon from "@/assets/icons/dashboard/setting.svg";
 import DeactivateIcon from "@/assets/icons/dashboard/deactivate.svg";
 import TrashIcon from "@/assets/icons/dashboard/trash.svg";
 import UserIcon from "@/assets/icons/dashboard/user.svg";
+import {UserDetails} from "~/types/auth/user-details";
 
 defineProps({
   item: {
-    type: Object as PropType<{
-      name: string;
-      email: string;
-      avatar?: any;
-    }>,
+    type: Object as PropType<{avatar?: string} & UserDetails>,
     required: true,
   },
 });
