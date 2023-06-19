@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-6 md:mb-8">
+  <div class="mb-6 min-h-[350px] md:mb-8">
     <div
       class="dashboardTable grid grid-cols-1 gap-1 rounded-t-lg overflow-x-auto scrollbar-thin"
       @scroll="handleScroll"
@@ -54,7 +54,7 @@
               !account ? 'text-gray-100' : '',
               showAccountOptions ? 'border-blue' : 'border-border',
             ]"
-            @click="showAccountOptions = !showAccountOptions"
+            @click="handleShowAccountOptions"
           >
             <span class="text-sm flex-shrink-0 mr-1">
               {{ account || "Select" }}
@@ -64,64 +64,6 @@
               :class="[showAccountOptions ? 'rotate-180' : '']"
             />
           </button>
-          <Transition name="fade">
-            <div
-              v-if="showAccountOptions"
-              v-click-outside="() => (showAccountOptions = false)"
-              class="absolute z-10 bottom-2 right-1.5 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[163px] shadow-m"
-            >
-              <button
-                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                :class="[
-                  account === 'Personal' ? 'text-blue bg-[#F2F2F2]' : '',
-                ]"
-                @click="
-                  account = 'Personal';
-                  showAccountOptions = false;
-                "
-              >
-                <ProfileIcon class="w-6 h-6 mr-3 text-current" />
-                <span class="text-sm leading-[1.71]">Personal</span>
-              </button>
-              <button
-                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                :class="[
-                  account === 'Sole Trader' ? 'text-blue bg-[#F2F2F2]' : '',
-                ]"
-                @click="
-                  account = 'Sole Trader';
-                  showAccountOptions = false;
-                "
-              >
-                <SoleTraderIcon class="w-6 h-6 mr-3 text-current" />
-                <span class="text-sm leading-[1.71]">Sole Trader</span>
-              </button>
-              <button
-                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                :class="[account === 'Agent' ? 'text-blue bg-[#F2F2F2]' : '']"
-                @click="
-                  account = 'Agent';
-                  showAccountOptions = false;
-                "
-              >
-                <AgentIcon class="w-6 h-6 mr-3 text-current" />
-                <span class="text-sm leading-[1.71]">Agent</span>
-              </button>
-              <button
-                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                :class="[
-                  account === 'Business' ? 'text-blue bg-[#F2F2F2]' : '',
-                ]"
-                @click="
-                  account = 'Business';
-                  showAccountOptions = false;
-                "
-              >
-                <BusinessIcon class="w-6 h-6 mr-3 text-current" />
-                <span class="text-sm leading-[1.71]">Business</span>
-              </button>
-            </div>
-          </Transition>
         </div>
         <div class="p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="mb-4">
@@ -174,7 +116,7 @@
               !registered.start && !registered.end ? 'text-gray-100' : '',
               showRegisteredRange ? 'border-blue' : 'border-border',
             ]"
-            @click="showRegisteredRange = !showRegisteredRange"
+            @click="handleShowRegistered"
           >
             <span class="text-sm tracking-[-0.02em] flex-shrink-0 mr-1">
               {{
@@ -187,18 +129,6 @@
             </span>
             <CalendarIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
           </button>
-          <Transition name="fade">
-            <div
-              v-if="showRegisteredRange"
-              v-click-outside="() => (showRegisteredRange = false)"
-              class="absolute right-2 bottom-2 translate-y-full rounded-lg overflow-hidden"
-              :style="{
-                boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-              }"
-            >
-              <DatePicker v-model.range="registered" borderless />
-            </div>
-          </Transition>
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="mb-4">
@@ -222,7 +152,7 @@
               !spent[0] && !spent[1] ? 'text-gray-100' : '',
               showSpentRange ? 'border-blue' : 'border-border',
             ]"
-            @click="showSpentRange = !showSpentRange"
+            @click="handleShowSpentRange"
           >
             <span
               class="text-sm truncate flex-shrink-0 mr-1"
@@ -232,86 +162,6 @@
             </span>
             <FilterIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
           </button>
-          <Transition name="fade">
-            <div
-              v-if="showSpentRange"
-              v-click-outside="() => (showSpentRange = false)"
-              class="absolute z-10 bottom-2 right-2 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px] shadow-m"
-            >
-              <div class="text-sm leading-[1.71] font-semibold mb-8">
-                Spent range
-              </div>
-              <div class="mb-16">
-                <div class="flex items-end gap-3 mb-6">
-                  <label>
-                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">
-                      From
-                    </div>
-                    <div
-                      class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]"
-                    >
-                      <span class="font-medium mr-1">$</span>
-                      <input
-                        v-model.number="spentBuffer[0]"
-                        type="number"
-                        class="bg-transparent py-2 w-full focus:outline-none"
-                      />
-                    </div>
-                  </label>
-                  <div class="text-sm leading-[1.43] mb-3">-</div>
-                  <label>
-                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">
-                      To
-                    </div>
-                    <div
-                      class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]"
-                    >
-                      <span class="font-medium mr-1">$</span>
-                      <input
-                        v-model.number="spentBuffer[1]"
-                        type="number"
-                        class="bg-transparent py-2 w-full focus:outline-none"
-                      />
-                    </div>
-                  </label>
-                </div>
-                <div class="flex items-center justify-between mb-3">
-                  <div class="text-sm leading-[1.43] font-medium">
-                    ${{ spentBuffer[0] }}
-                  </div>
-                  <div class="text-sm leading-[1.43] font-medium">
-                    ${{ spentBuffer[1] }}
-                  </div>
-                </div>
-                <Slider
-                  v-model="spentBuffer"
-                  :min="0"
-                  :max="100000"
-                  :step="10"
-                  :tooltips="false"
-                  @slide="spentBuffer = $event"
-                  class="rangeSlider"
-                />
-              </div>
-              <div class="grid grid-cols-[auto,1fr] gap-4">
-                <button
-                  class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
-                  @click="showSpentRange = false"
-                >
-                  Cancel
-                </button>
-                <button
-                  class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
-                  @click="
-                    spent = spentBuffer;
-                    showSpentRange = false;
-                  "
-                >
-                  Apply Filter
-                </button>
-              </div>
-            </div>
-          </Transition>
         </div>
         <div class="relative p-4 pr-1.5 bg-[#F2F2F2]">
           <div class="mb-4">
@@ -339,7 +189,7 @@
               !ordersCount ? 'text-gray-100' : '',
               showOrdersRange ? 'border-blue' : 'border-border',
             ]"
-            @click="showOrdersRange = !showOrdersRange"
+            @click="handleShowOrdersRange"
           >
             <span class="text-sm">
               {{ ordersCount || "Filter" }}
@@ -348,52 +198,6 @@
               class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300"
             />
           </button>
-          <Transition name="fade">
-            <div
-              v-if="showOrdersRange"
-              v-click-outside="() => (showOrdersRange = false)"
-              class="absolute z-10 bottom-2 right-2 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-6 min-w-[358px] shadow-m"
-            >
-              <div class="text-sm leading-[1.71] font-semibold mb-[76px]">
-                Orders range
-              </div>
-              <div class="mb-14">
-                <Slider
-                  v-model="ordersCountBuffer"
-                  :min="0"
-                  :max="1000"
-                  :step="5"
-                  :format="
-            (val: number) => {
-              return `${val === 1000 ? 'Any' : val + ' +'}`;
-            }
-          "
-                  class="rangeSlider"
-                />
-                <div class="flex items-center justify-between">
-                  <div class="text-sm leading-[1.43] font-medium">0</div>
-                  <div class="text-sm leading-[1.43] font-medium">Any</div>
-                </div>
-              </div>
-              <div class="grid grid-cols-[auto,1fr] gap-4">
-                <button
-                  class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
-                  @click="showOrdersRange = false"
-                >
-                  Cancel
-                </button>
-                <button
-                  class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
-                  @click="
-                    ordersCount = ordersCountBuffer;
-                    showOrdersRange = false;
-                  "
-                >
-                  Apply Filter
-                </button>
-              </div>
-            </div>
-          </Transition>
         </div>
         <div class="p-4 pr-1.5 w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
           <div class="relative">
@@ -413,6 +217,203 @@
     </div>
   </div>
   <Teleport to="body">
+    <Transition name="fade">
+      <div
+        v-if="showAccountOptions"
+        v-click-outside="() => (showAccountOptions = false)"
+        class="absolute z-10 -translate-x-full translate-y-2 grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[163px] shadow-m"
+        :style="{
+          top: accountDropdownTop + 'px',
+          left: accountDropdownLeft + 'px',
+        }"
+      >
+        <button
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+          :class="[account === 'Personal' ? 'text-blue bg-[#F2F2F2]' : '']"
+          @click="
+            account = 'Personal';
+            showAccountOptions = false;
+          "
+        >
+          <ProfileIcon class="w-6 h-6 mr-3 text-current" />
+          <span class="text-sm leading-[1.71]">Personal</span>
+        </button>
+        <button
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+          :class="[account === 'Sole Trader' ? 'text-blue bg-[#F2F2F2]' : '']"
+          @click="
+            account = 'Sole Trader';
+            showAccountOptions = false;
+          "
+        >
+          <SoleTraderIcon class="w-6 h-6 mr-3 text-current" />
+          <span class="text-sm leading-[1.71]">Sole Trader</span>
+        </button>
+        <button
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+          :class="[account === 'Agent' ? 'text-blue bg-[#F2F2F2]' : '']"
+          @click="
+            account = 'Agent';
+            showAccountOptions = false;
+          "
+        >
+          <AgentIcon class="w-6 h-6 mr-3 text-current" />
+          <span class="text-sm leading-[1.71]">Agent</span>
+        </button>
+        <button
+          class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+          :class="[account === 'Business' ? 'text-blue bg-[#F2F2F2]' : '']"
+          @click="
+            account = 'Business';
+            showAccountOptions = false;
+          "
+        >
+          <BusinessIcon class="w-6 h-6 mr-3 text-current" />
+          <span class="text-sm leading-[1.71]">Business</span>
+        </button>
+      </div>
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="showRegisteredRange"
+        v-click-outside="() => (showRegisteredRange = false)"
+        class="absolute z-10 -translate-x-full translate-y-2 rounded-lg overflow-hidden shadow-m"
+        :style="{
+          left: registeredDropdownLeft + 'px',
+          top: registeredDropdownTop + 'px',
+        }"
+      >
+        <DatePicker v-model.range="registered" borderless />
+      </div>
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="showSpentRange"
+        v-click-outside="() => (showSpentRange = false)"
+        class="absolute z-10 -translate-x-full translate-y-2 grid grid-cols-1 gap-1 rounded-lg bg-white p-6 w-[358px] shadow-m"
+        :style="{
+          left: spentRangeDropdownLeft + 'px',
+          top: spentRangeDropdownTop + 'px',
+        }"
+      >
+        <div class="text-sm leading-[1.71] font-semibold mb-8">Spent range</div>
+        <div class="mb-16">
+          <div class="flex items-end gap-3 mb-6">
+            <label>
+              <div class="text-sm leading-[1.43] text-gray-300 mb-4">From</div>
+              <div
+                class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]"
+              >
+                <span class="font-medium mr-1">$</span>
+                <input
+                  v-model.number="spentBuffer[0]"
+                  type="number"
+                  class="bg-transparent py-2 w-full focus:outline-none"
+                />
+              </div>
+            </label>
+            <div class="text-sm leading-[1.43] mb-3">-</div>
+            <label>
+              <div class="text-sm leading-[1.43] text-gray-300 mb-4">To</div>
+              <div
+                class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]"
+              >
+                <span class="font-medium mr-1">$</span>
+                <input
+                  v-model.number="spentBuffer[1]"
+                  type="number"
+                  class="bg-transparent py-2 w-full focus:outline-none"
+                />
+              </div>
+            </label>
+          </div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="text-sm leading-[1.43] font-medium">
+              ${{ spentBuffer[0] }}
+            </div>
+            <div class="text-sm leading-[1.43] font-medium">
+              ${{ spentBuffer[1] }}
+            </div>
+          </div>
+          <Slider
+            v-model="spentBuffer"
+            :min="0"
+            :max="100000"
+            :step="10"
+            :tooltips="false"
+            @slide="spentBuffer = $event"
+            class="rangeSlider"
+          />
+        </div>
+        <div class="grid grid-cols-[auto,1fr] gap-4">
+          <button
+            class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
+            @click="showSpentRange = false"
+          >
+            Cancel
+          </button>
+          <button
+            class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
+            @click="
+              spent = spentBuffer;
+              showSpentRange = false;
+            "
+          >
+            Apply Filter
+          </button>
+        </div>
+      </div>
+    </Transition>
+    <Transition name="fade">
+      <div
+        v-if="showOrdersRange"
+        v-click-outside="() => (showOrdersRange = false)"
+        class="absolute z-10 -translate-x-full translate-y-2 grid grid-cols-1 gap-1 rounded-lg bg-white p-6 w-[358px] shadow-m"
+        :style="{
+          left: ordersRangeDropdownLeft + 'px',
+          top: ordersRangeDropdownTop + 'px',
+        }"
+      >
+        <div class="text-sm leading-[1.71] font-semibold mb-[76px]">
+          Orders range
+        </div>
+        <div class="mb-14">
+          <Slider
+            v-model="ordersCountBuffer"
+            :min="0"
+            :max="1000"
+            :step="5"
+            :format="
+            (val: number) => {
+              return `${val === 1000 ? 'Any' : val + ' +'}`;
+            }
+          "
+            class="rangeSlider"
+          />
+          <div class="flex items-center justify-between">
+            <div class="text-sm leading-[1.43] font-medium">0</div>
+            <div class="text-sm leading-[1.43] font-medium">Any</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-[auto,1fr] gap-4">
+          <button
+            class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
+            @click="showOrdersRange = false"
+          >
+            Cancel
+          </button>
+          <button
+            class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
+            @click="
+              ordersCount = ordersCountBuffer;
+              showOrdersRange = false;
+            "
+          >
+            Apply Filter
+          </button>
+        </div>
+      </div>
+    </Transition>
     <Transition name="fade">
       <div
         v-if="showSpentRange"
@@ -618,9 +619,48 @@ const ordersCount = ref(0);
 const ordersCountOrder = ref(0);
 
 const showAccountOptions = ref(false);
-const showOrdersRange = ref(false);
-const showSpentRange = ref(false);
+const accountDropdownLeft = ref(0);
+const accountDropdownTop = ref(0);
+const handleShowAccountOptions = (event: MouseEvent) => {
+  showAccountOptions.value = !showAccountOptions.value;
+  const target = event.currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
+  accountDropdownLeft.value = rect.right;
+  accountDropdownTop.value = rect.bottom + window.scrollY;
+};
+
 const showRegisteredRange = ref(false);
+const registeredDropdownLeft = ref(0);
+const registeredDropdownTop = ref(0);
+const handleShowRegistered = (event: MouseEvent) => {
+  showRegisteredRange.value = !showRegisteredRange.value;
+  const target = event.currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
+  registeredDropdownTop.value = rect.bottom + window.scrollY;
+  registeredDropdownLeft.value = rect.right;
+};
+
+const showSpentRange = ref(false);
+const spentRangeDropdownLeft = ref(0);
+const spentRangeDropdownTop = ref(0);
+const handleShowSpentRange = (event: MouseEvent) => {
+  showSpentRange.value = !showSpentRange.value;
+  const target = event.currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
+  spentRangeDropdownTop.value = rect.bottom + window.scrollY;
+  spentRangeDropdownLeft.value = rect.right;
+};
+
+const showOrdersRange = ref(false);
+const ordersRangeDropdownLeft = ref(0);
+const ordersRangeDropdownTop = ref(0);
+const handleShowOrdersRange = (event: MouseEvent) => {
+  showOrdersRange.value = !showOrdersRange.value;
+  const target = event.currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
+  ordersRangeDropdownTop.value = rect.bottom + window.scrollY;
+  ordersRangeDropdownLeft.value = rect.right;
+};
 
 const formattedDate = (date: Date) => {
   return new Date(date).toLocaleDateString("en-GB");
@@ -643,6 +683,10 @@ const isScrolling = ref(false);
 const scrollTimeout = ref();
 
 const handleScroll = () => {
+  showAccountOptions.value = false;
+  showRegisteredRange.value = false;
+  showSpentRange.value = false;
+  showOrdersRange.value = false;
   isScrolling.value = true;
   clearTimeout(scrollTimeout.value);
   scrollTimeout.value = setTimeout(() => {
