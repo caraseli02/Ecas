@@ -33,26 +33,26 @@
           />
         </div>
       </div>
-      <NuxtLink
-        to="/search"
+      <button
+        @click="searchSimilarProducts"
         class="flex bg-gray-300 px-[22px] py-[11px] rounded text-sm font-medium text-white flex-shrink-0 md:mb-[15px]"
       >
-        Show similar products (278)
-      </NuxtLink>
+        Show similar products ({{ totalSimilarProducts }})
+      </button>
     </div>
     <div class="mb-[25px]">
       <table class="w-full">
         <tr
-          v-for="(item, index) in tableItems"
+          v-for="(item, index) in features.filter(feature => feature.FeatureValue != '')"
           :key="index"
           class="group w-full text-xs leading-tight font-medium font-Inter text-left cursor-pointer transition-colors duration-300 odd:bg-[#F2F2F2] hover:text-blue"
           @click="item.checked = !item.checked"
         >
           <td class="pl-[15px] py-1 lg:pl-5">
-            {{ item.label }}
+            {{ item.FeatureName }}
           </td>
           <td class="py-1">
-            {{ item.value }}
+            {{ item.FeatureValue }}
           </td>
           <td class="flex justify-end pr-[15px] py-1 lg:pr-5">
             <div
@@ -70,18 +70,21 @@
       </table>
     </div>
     <div class="flex justify-center px-[15px] md:justify-end lg:px-5">
-      <NuxtLink
-        to="/search"
+      <button
+        @click="searchSimilarProducts"
         class="flex bg-gray-300 px-[22px] py-[11px] rounded text-sm font-medium text-white"
       >
-        Show similar products (278)
-      </NuxtLink>
+        Show similar products ({{ totalSimilarProducts }})
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import CheckIcon from "@/assets/icons/check.svg";
+import { SearchSimilarProductRequest } from "~/model/products/request/SearchSimilarProductRequest";
+import { ProductParametricDataFeaturesInterface } from "~/model/products/response/ProductResponse";
+const { $api } = useNuxtApp()
 
 const elDOM = ref<HTMLElement | null>(null);
 
@@ -90,103 +93,16 @@ const activeFilter = ref("specifications");
 const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
 
-const tableItems = ref([
-  {
-    label: "EU RoHS",
-    value: "Compliant",
-    checked: false,
-  },
-  {
-    label: "ECCN (US)",
-    value: "EAR99",
-    checked: false,
-  },
-  {
-    label: "Part Status",
-    value: "Active",
-    checked: true,
-  },
-  {
-    label: "HTS",
-    value: "8542.31.00.01",
-    checked: false,
-  },
-  {
-    label: "Automotive",
-    value: "Yes",
-    checked: true,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-  {
-    label: "EU RoHS",
-    value: "EU RoHS",
-    checked: false,
-  },
-]);
+const props = defineProps<{
+  features: ProductParametricDataFeaturesInterface[]
+}>()
+
+const features = reactive<ProductParametricDataFeaturesInterface[]>(props.features.map(item => {
+  item.checked = false
+  return item
+}))
+
+const totalSimilarProducts = ref<number>(0)
 
 const setFilterLine = () => {
   if (elDOM.value) {
@@ -206,6 +122,19 @@ const setActiveFilter = (filter: string) => {
   activeFilter.value = textUtil.slugify(filter);
   setFilterLine();
 };
+
+watch(features, async() => {
+  await searchSimilarProducts()
+})
+
+const searchSimilarProducts = async() => {
+  const payload: SearchSimilarProductRequest = {
+    filters: features.filter(item => item.checked)
+  }
+  let { data } = await $api.product.fetchProductByCriteria(payload)
+  totalSimilarProducts.value = data.count
+  console.log('aha');
+}
 
 onMounted(() => {
   setFilterLine();

@@ -9,15 +9,15 @@
       />
       <form action="" @submit.prevent class="w-full flex">
         <input
+          @input="onInput"
           v-model="searchVal"
           type="search"
           placeholder="Search parts here"
           autocomplete="off"
           class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
           @blur="searchVal = ''"
-          @keypress.enter="
-            $router.push('/search');
-            searchVal = '';
+          @keypress.enter="$router.push({ path: '/search', query: { keyword: searchVal } });
+          searchVal = '';
           "
         />
       </form>
@@ -32,13 +32,16 @@
       </div>
     </label>
     <Transition name="fade">
-      <LayoutHeaderSearchResults v-if="searchVal" />
+      <LayoutHeaderSearchResults v-if="searchVal" :products="productList" :is-loading="isLoading" />
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
 import SearchIcon from "@/assets/icons/search.svg";
+import _ from "lodash";
+import { fetchSearchProduct } from "~/services/product.service";
+import { ProductSearchItems, ProductSearchResponse, SearchData } from "~~/model/products/response/ProductSearchResponse";
 
 defineProps({
   isScrolled: {
@@ -48,4 +51,19 @@ defineProps({
 });
 
 const searchVal = ref("");
+let isLoading = ref<boolean>(false)
+const productList = ref<ProductSearchItems[]>([])
+
+const onInput = _.debounce(async () => {
+  let request = await searchProduct(searchVal.value)
+  productList.value = request
+  isLoading.value = false
+}, 500)
+
+const searchProduct = async (keyword: string): Promise<ProductSearchItems[]> => {
+  isLoading.value = true
+  const { data: products } = await fetchSearchProduct(keyword)
+  const data = products.value as ProductSearchResponse
+  return data.data.items.items
+}
 </script>

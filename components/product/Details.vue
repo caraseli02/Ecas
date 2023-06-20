@@ -4,7 +4,7 @@
   >
     <div class="flex items-end justify-between px-2.5 mb-[18px] md:px-[15px]">
       <div class="flex items-center">
-        <div class="text-xl leading-tight font-semibold mr-2">ADIN2111BCPZ</div>
+        <div class="text-xl leading-tight font-semibold mr-2">{{ product.alias }}</div>
         <button
           class="flex text-gray-300 transition-colors duration-300 mr-2 hover:text-blue"
         >
@@ -12,7 +12,7 @@
         </button>
       </div>
       <img
-        :src="MicrochipLogo"
+        :src="product.details.ProductImage.ProductImageLarge"
         alt="Microchip Logo"
         class="w-[82px] h-[50px] object-contain"
       />
@@ -24,7 +24,7 @@
         Description
       </div>
       <div class="text-xs leading-tight">
-        EAR99, Active, 8542.31.00.01, PIC16, EU RoHS
+        {{ product.description }}
       </div>
     </div>
     <div
@@ -33,7 +33,7 @@
       <div class="text-xs leading-tight font-medium flex-shrink-0">
         Manufacturer
       </div>
-      <div class="text-xs leading-tight font-medium">MICROCHIP</div>
+      <div class="text-xs leading-tight font-medium">{{ product.manufacturer }}</div>
     </div>
     <div
       class="flex items-center justify-between gap-3 px-2.5 pt-[5px] pb-1.5 bg-[#F2F2F2] md:px-[15px]"
@@ -70,12 +70,12 @@
       <div class="text-xs leading-tight font-medium flex-shrink-0">
         Technical Datasheet
       </div>
-      <button class="flex items-center">
+      <a class="flex items-center" :href="product.details.SummaryData.Datasheet" :download="`${product.alias} Datasheet`" target="_blank">
         <PDFIcon class="w-[22px] h-[22px] mr-[5px]" />
-        <span class="text-xs leading-tight text-gray-300">
-          ADIN2111BCPZ-DataSheet
+        <span class="text-xs leading-tight text-blue hover:underline">
+          {{ product.alias }}-DataSheet
         </span>
-      </button>
+      </a>
     </div>
     <div class="flex items-start gap-3 px-2.5 pt-[5px] pb-1.5 md:px-[15px]">
       <div class="text-xs leading-tight font-medium flex-shrink-0">Tags:</div>
@@ -101,11 +101,16 @@
 </template>
 
 <script setup lang="ts">
-import MicrochipLogo from "@/assets/media/product/microchip.png";
 import CADModelsIcon from "@/assets/icons/cad-models.svg";
 import PDFIcon from "@/assets/icons/pdf.svg";
 import CopyIcon from "@/assets/icons/copy.svg";
 import EditIcon from "@/assets/icons/edit.svg";
+import { ProductDetail } from "~~/model/products/response/ProductDetailResponse";
+
+const props = defineProps<{
+  product: ProductDetail
+}>()
+const product = props.product
 
 const showCustomProductPartNumberModal = ref(false);
 </script>

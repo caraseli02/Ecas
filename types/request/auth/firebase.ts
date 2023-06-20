@@ -8,7 +8,12 @@ export interface FirebaseBusinessAccount {
   isAlreadyRegisteredWithFirebase?: boolean;
 }
 
-interface BusinessAccount extends PersonalAccount {
+interface BusinessAccount {
+  accountType: number;
+  role: number;
+  firebaseId?: string;
+  profileDetails: ProfileDetails;
+  contactDetails: ContactDetails;
   companyDetails: CompanyDetails;
 }
 
@@ -18,6 +23,21 @@ interface PersonalAccount {
   firebaseId?: string;
   profileDetails: ProfileDetails;
   contactDetails: ContactDetails;
+  personalDetails: PersonalDetails;
+}
+
+interface PersonalDetails {
+  firstName: string,
+  lastName: string,
+  country: string,
+  region: string,
+  city: string,
+  postcode: number,
+  address: {
+    name1: string,
+    name2: string,
+    default: true
+  }[]
 }
 
 interface CompanyDetails {
