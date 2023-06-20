@@ -166,7 +166,7 @@
         class="flex items-center justify-center mb-10 md:justify-between xl:mb-[30px]"
       >
         <div class="hidden font-Inter font-semibold md:block">
-          Products Found ({{ searchItems.length }})
+          Products Found ({{ searchItems?.length }})
         </div>
         <div class="flex items-center">
           <Transition name="fade">
@@ -379,7 +379,7 @@ const filteredSearchItems = computed(() => {
 });
 
 const totalPages = computed(() => {
-  return Math.ceil(searchItems.value?.length ?? 1 / perPage.value);
+  return Math.ceil(searchItems.value?.length! / perPage.value);
 });
 </script>
 

@@ -67,9 +67,9 @@
         >
             <span class="mr-2"> Don’t have an account yet ? </span>
             <NuxtLink
-        to="/signup"
-        class="relative text-blue after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
-      >
+                to="/signup"
+                class="relative text-blue after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
+            >
                 Sign up now
             </NuxtLink>
         </div>
@@ -125,13 +125,15 @@ import CheckIcon from "@/assets/icons/check.svg";
 import { UserInfoJWT, SigninResponse, UserDetailsResponse } from "~~/types";
 import { useAuthStore } from "~~/store/authStore";
 import { UserDetails } from "~~/types/auth/user-details";
+import { ProductResponse } from "~/model/products/response/ProductResponse";
 
 const { checkForInputErrors } = useError();
+const { $api } = useNuxtApp();
 
 const email = ref({
     value: "",
     error: "",
-    type: 'email'
+    type: "email",
 });
 const password = ref({
     value: "",
@@ -163,28 +165,23 @@ const handleSignIn = async () => {
 
         isLoading.value = true;
 
-        const { data, pending, error } = await useFetchAPI<ProductResponse>("auth/login", {
-            method: "POST",
-            body: {
-                email: payload.email,
-                password: payload.password,
-            },
-        });
+        try {
+            const response = await $api.auth.login(payload) as SigninResponse
 
-        isLoading.value = pending.value;
-
-        if (error.value) {
-            errorResponse.code = error.value.response?.status as number;
-            errorResponse.status = error.value.response?._data.status;
-            errorResponse.description = error.value.response?._data.description;
+            const parsedTokenResponse = useParser().parseJwt(response.token);
+            isLoading.value = false;
+            authStore.addUser(parsedTokenResponse);
+            authStore.addToken(response.token)
+            await fetchUserDetails(parsedTokenResponse, response.token);
+        } catch (error) {
+            errorResponse.code = 404
+            errorResponse.status = "Internal server error"
+            errorResponse.description = "Please try again"
             errorResponse.show = true;
-            return;
+            console.error(error);
         }
 
-        const response: SigninResponse = data.value as SigninResponse;
-        const parsedTokenResponse = useParser().parseJwt(response.token);
-        authStore.addUser(parsedTokenResponse);
-        await fetchUserDetails(parsedTokenResponse, response.token);
+        isLoading.value = false
     }
 };
 
@@ -202,22 +199,23 @@ const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
     if (error.value) {
         switch (error.value.response?.status) {
             case 404:
-                errorResponse.code = error.value.response.status as number
-                errorResponse.description = "404 - Something invalid just happened."
+                errorResponse.code = error.value.response.status as number;
+                errorResponse.description =
+                    "404 - Something invalid just happened.";
                 errorResponse.show = true;
                 break;
             case 500:
-                errorResponse.code = error.value.response.status as number
-                errorResponse.description = "500 - Server error"
+                errorResponse.code = error.value.response.status as number;
+                errorResponse.description = "500 - Server error";
                 errorResponse.show = true;
                 break;
             case 401:
-                errorResponse.code = error.value.response.status as number
-                errorResponse.description = "401 - Unauthorized"
+                errorResponse.code = error.value.response.status as number;
+                errorResponse.description = "401 - Unauthorized";
                 errorResponse.show = true;
                 break;
             default:
-                break
+                break;
         }
         return;
     }
@@ -233,7 +231,7 @@ const loginWithGoogle = async () => {
     authStore.addUser(parsedToken);
 
     if (!parsedToken.hasOwnProperty("permissions")) {
-        authStore.addFirebaseToken(token)
+        authStore.addFirebaseToken(token);
         return navigateTo("/signup");
     } else {
         fetchUserDetails(parsedToken, token);

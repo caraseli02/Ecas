@@ -6,7 +6,7 @@
     }"
   >
   <div v-if="isLoading">
-      <p class="p-2 rounded text-gray-300 transition-colors duration-300 hover:bg-gray-200 hover:text-blue">Loading...</p>
+      <p class="p-2 rounded text-gray-300 transition-colors duration-300">Loading...</p>
     </div>
     <div
       class="grid grid-cols-1 max-h-[340px] overflow-auto scrollbar-thin pr-1.5"

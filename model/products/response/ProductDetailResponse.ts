@@ -18,8 +18,8 @@ export interface ProductDetail {
     priceEur: number
     sold: number
     adminSettings: {
-        featured: Boolean
-        stockClearance: Boolean
+        featured: boolean
+        stockClearance: boolean
     }
     additionalInfo: {
         searchedCount: number

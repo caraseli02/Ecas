@@ -33,6 +33,7 @@
     "lodash": "^4.17.21",
     "nuxt-swiper": "^0.1.9",
     "nuxt-vuefire": "^0.1.6",
+    "ohmyfetch": "^0.4.21",
     "pinia": "^2.0.33",
     "sass-loader": "^13.2.0",
     "tiny-emitter": "^2.1.0",
