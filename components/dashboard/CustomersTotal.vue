@@ -156,15 +156,15 @@ let delta = ref(0);
 const fetchAndSetTotalCustomers = async (time = 7) => {
   const data = await fetchTotalCustomersWidget(time);
 
-  if (!data) {
+  if (!data || !data.data) {
     return;
   }
 
-  const widgetData = data.data.value as TotalCustomersInterface;
+  const widgetData = data?.data?.value as TotalCustomersInterface;
 
-  series.value = widgetData.data.series;
-  total.value = widgetData.data.total;
-  delta.value = widgetData.data.delta;
+  series.value = widgetData?.data.series;
+  total.value = widgetData?.data.total;
+  delta.value = widgetData?.data.delta;
 }
 
 await fetchAndSetTotalCustomers(selectedOption.time);

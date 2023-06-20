@@ -116,14 +116,14 @@ const visibleItemsFiltered = computed(() => {
 const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
   const data = await fetchCustomersList(page, perPage, filters, sort);
 
-  if (!data) {
+  if (!data || !data.data) {
     return;
   }
 
-  const paginatedUsersData = data.data.value as PaginatedCustomersInterface;
-  const paginatedUsers = paginatedUsersData.data.items;
+  const paginatedUsersData = data?.data?.value as PaginatedCustomersInterface;
+  const paginatedUsers = paginatedUsersData?.data?.items;
 
-  totalItems = paginatedUsersData.data.total_items;
+  totalItems = paginatedUsersData?.data?.total_items;
 
   listItems.value = paginatedUsers.map((user) => ({
     avatar: Avatar,
