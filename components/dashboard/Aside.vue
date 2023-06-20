@@ -542,7 +542,7 @@ onBeforeUnmount(() => {
 .collapsed {
   & + main {
     & > div {
-      @apply 2xl:px-[100px];
+      @apply 2xl:px-6;
     }
   }
 }
