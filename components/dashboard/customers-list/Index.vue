@@ -115,6 +115,11 @@ const visibleItemsFiltered = computed(() => {
 
 const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
   const data = await fetchCustomersList(page, perPage, filters, sort);
+
+  if (!data) {
+    return;
+  }
+
   const paginatedUsersData = data.data.value as PaginatedCustomersInterface;
   const paginatedUsers = paginatedUsersData.data.items;
 

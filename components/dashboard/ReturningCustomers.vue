@@ -155,6 +155,11 @@ let delta = ref(0);
 
 const fetchAndSetReturningCustomers = async (time = 7) => {
   const data = await fetchReturningCustomersWidget(time);
+
+  if (!data) {
+    return;
+  }
+
   const widgetData = data?.data?.value as ReturningCustomersInterface;
 
   series.value = widgetData.data.series;
