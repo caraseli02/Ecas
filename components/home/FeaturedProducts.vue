@@ -183,6 +183,7 @@
 <script setup lang="ts">
 import BlackFridayItem from "@/assets/media/home/black-friday-item.png";
 import { A11y, Pagination, Grid } from "swiper";
+import { PaginatedUserRequest } from "~/model/user/request/PaginatedUserRequest";
 import { ProductCard as ProductCardType } from "~~/types";
 const { $api } = useNuxtApp()
 
@@ -220,7 +221,7 @@ const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
 
 watch(activeFilter, async (value) => {
-    let { data} = await $api.product.fetchProductTab(value);
+    let { data } = await $api.product.fetchProductTab(value);
     productList.value = data.map((item) => ({
         slug: item._id,
         title: item.alias,
@@ -254,7 +255,17 @@ const setActiveFilter = (filter: string) => {
 
 onMounted(async () => {
     setFilterLine();
+
+    fetchUser()
 });
+
+async function fetchUser() {
+    const payload: PaginatedUserRequest = {
+        page: 1,
+        perPage: 10
+    }
+    let user = await $api.user.fetchPaginatedUser(payload)
+}
 
 let { data } = await $api.product.fetchProductTab("featured");
 productList.value = data.map((item) => ({
