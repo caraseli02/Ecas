@@ -6,7 +6,7 @@ export const useAuthStore = defineStore({
     id: 'auth-store',
     state: () => {
         return {
-            token: '',
+            token: '' as string | null,
             loggedInUser: null as UserInfoJWT | null,
             userDetails: null as UserDetails | null,
             firebaseTempToken: null as string | null
@@ -28,10 +28,11 @@ export const useAuthStore = defineStore({
         signOut() {
             this.loggedInUser = null
             this.userDetails = null
+            this.token = null
         },
-        firebaseSignOut() {
+        async firebaseSignOut() {
             const firebaseAuth = useFirebaseAuth()
-            firebaseAuth.logout()
+            await firebaseAuth.logout()
         }
     },
     getters: {
