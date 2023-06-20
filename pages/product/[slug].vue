@@ -1,6 +1,6 @@
 <template>
   <div class="pt-5 md:pt-0">
-    <ProductBreadcrumbs />
+    <ProductBreadcrumbs :product="product"  />
     <div class="container mb-[30px] lg:mb-10">
       <div class="hidden items-center justify-end gap-5 mb-2.5 md:flex">
         <button
@@ -68,9 +68,5 @@ const route = useRoute()
 const { data } = await useFetchAPI<ProductDetailResponse>(`products/${route.params.slug}`)
 const product: ProductDetail = data.value?.data as ProductDetail
 
-let images: ProductImage[] = []
-
-for (let i = 0; i < 3; i++) {
-  images.push(product.details.ProductImage)
-}
+const images: ProductImage[] = Array(3).fill(product.details.ProductImage);
 </script>
