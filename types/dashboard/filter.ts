@@ -9,4 +9,6 @@ export enum FilterLabelsEnum{
     ordersCount = 'Orders count',
     email = 'Email',
     country = 'Country',
+
+    combinedName = 'Name'
 }

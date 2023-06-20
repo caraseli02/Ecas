@@ -29,10 +29,7 @@
             size="sm"
             class="w-full"
             @input="
-              handleFilterChange(activeFilters, emits, 'firstName', $event);
-              handleFilterChange(activeFilters, emits, 'lastName', $event);
-              handleFilterChange(activeFilters, emits, 'email', $event);
-              handleFilterChange(activeFilters, emits, 'country', $event);
+              handleFilterChange(activeFilters, emits, 'combinedName', $event);
             "
           />
         </div>

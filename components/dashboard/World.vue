@@ -21,7 +21,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  // if (window) {
+  if (window) {
     const map = Leaflet.map("mapid", {
       scrollWheelZoom: true,
       doubleClickZoom: true,
@@ -87,7 +87,7 @@ onMounted(() => {
       style,
       onEachFeature,
     }).addTo(map);
-  // }
+  }
 });
 </script>
 

@@ -234,7 +234,7 @@ const loginWithGoogle = async () => {
         authStore.addFirebaseToken(token);
         return navigateTo("/signup");
     } else {
-        fetchUserDetails(parsedToken, token);
+        await fetchUserDetails(parsedToken, token);
     }
 };
 </script>
