@@ -2,6 +2,10 @@ import HttpFactory from '@/composables/HttpFactory';
 import { FirebaseError } from 'firebase/app';
 import { LoginRequest } from '~/model/auth/request/LoginRequest';
 import { ProductResponse } from '~/model/products/response/ProductResponse';
+import {
+  FirebasePersonalAccount as SignupPersonalPayload,
+  FirebaseBusinessAccount as SignupBusinessPayload,
+} from "~~/types";
 
 class AuthService extends HttpFactory {
   private RESOURCE = '/auth';
@@ -16,6 +20,14 @@ class AuthService extends HttpFactory {
       }
       return err
     }
+  }
+
+  async registerFirebase(payload: SignupPersonalPayload | SignupBusinessPayload) {
+    return await this.call('POST', `${this.RESOURCE}/firebase/register`, payload);
+  }
+
+  async registerClassic(payload: SignupPersonalPayload | SignupBusinessPayload) {
+    return await this.call('POST', `${this.RESOURCE}/register`, payload);
   }
 }
 
