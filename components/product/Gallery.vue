@@ -3,7 +3,7 @@
     class="relative bg-white flex flex-col rounded-md pt-[30px] px-[15px] pb-5 shadow-card lg:pt-[70px] lg:pb-[15px] lg:self-stretch xl:pt-[45px]"
   >
     <img
-      :src="images[activeImageIndex]"
+      :src="props.images[activeImageIndex].ProductImageLarge"
       alt="Image"
       class="w-[220px] h-[220px] object-contain mx-auto mb-[50px] lg:w-[330px] lg:h-[330px] lg:mb-[60px] xl:w-[350px] xl:h-[350px] xl:mb-[38px]"
     />
@@ -25,7 +25,7 @@
       <SwiperSlide v-for="(image, index) in images" :key="index">
         <button class="flex" @click="handleSlideTo(index)">
           <img
-            :src="image"
+            :src="image.ProductImageSmall"
             alt="Image"
             class="w-[60px] h-[50x] object-contain transition-opacity duration-300 lg:w-[72px] lg:h-[60px]"
             :class="[index !== activeImageIndex ? 'opacity-50' : '']"
@@ -63,13 +63,12 @@ import HeartIcon from "@/assets/icons/heart.svg";
 import ShareIcon from "@/assets/icons/share.svg";
 import D3Icon from "@/assets/icons/3d.svg";
 import { A11y } from "swiper";
+import { ProductImage } from "~~/model/response/products/ProductResponse";
 
-const images = ref([
-  GalleryImage1,
-  GalleryImage2,
-  GalleryImage3,
-  GalleryImage1,
-]);
+const props = defineProps<{
+  images: ProductImage[]
+}>()
+
 const activeImageIndex = ref(0);
 
 const handleSlideTo = (index: number) => {

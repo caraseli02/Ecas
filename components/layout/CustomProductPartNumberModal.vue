@@ -83,8 +83,11 @@ import ArrowDownIcon from "@/assets/icons/arrow-down.svg";
 import CheckIcon from "@/assets/icons/check-circle.svg";
 
 const emits = defineEmits(["close"]);
+const props = defineProps<{
+  manufacturerCode?: string
+}>()
 
-const partNumber = ref("ADIN2111BCPZ");
+const partNumber = ref(props.manufacturerCode ?? "ADIN2111BCPZ");
 const customNumber = ref("");
 
 const submitSuccess = ref(false);

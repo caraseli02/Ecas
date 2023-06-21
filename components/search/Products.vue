@@ -2,7 +2,7 @@
   <section class="mb-10 md:mb-[60px]">
     <div class="container">
       <div class="font-semibold font-Inter mb-[15px] md:hidden">
-        Products Found ({{ searchItems.length }})
+        Products Found ({{ searchItems?.length }})
       </div>
       <div
         class="grid grid-cols-1 gap-5 bg-gray-200 p-2.5 pr-[42px] rounded-md mb-5 md:grid-cols-[auto,auto] md:justify-start md:gap-x-[30px] md:gap-y-[18px] md:px-[15px] md:mb-[30px] lg:flex lg:items-center"
@@ -166,7 +166,7 @@
         class="flex items-center justify-center mb-10 md:justify-between xl:mb-[30px]"
       >
         <div class="hidden font-Inter font-semibold md:block">
-          Products Found ({{ searchItems.length }})
+          Products Found ({{ searchItems?.length }})
         </div>
         <div class="flex items-center">
           <Transition name="fade">
@@ -318,8 +318,12 @@ import CheckIcon from "@/assets/icons/check.svg";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import Pagination from "vuejs-paginate-next";
-import SearchItemCover from "@/assets/media/product/gallery-1.png";
 import { SearchItem as SearchItemType } from "~~/types/search";
+import { SearchData } from "~/model/products/response/ProductSearchResponse";
+
+const props = defineProps<{
+  products: SearchData
+}>()
 
 const perPage = ref(5);
 const show = ref("New products only");
@@ -351,86 +355,31 @@ const sortByOptions = ref([
 ]);
 const atPage = ref(1);
 
-const searchItems = ref<SearchItemType[]>([
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-  {
-    title: "ADIN2111BCPZ",
-    slug: "slug",
-    discount: 10,
-    cover: SearchItemCover,
-  },
-]);
+const searchItems = ref<SearchItemType[]>()
+searchItems.value = []
+props.products.items.items.map(item => {
+  searchItems.value?.push({
+    slug: item._id,
+    title: item.alias,
+    cover: item.details.ProductImage.ProductImageSmall,
+    manufacturer: item.manufacturer,
+    manufacturerCode: item.manufacturerCode,
+    stock: item.stock,
+    description: item.description
+  })
+})
 
 const order = ref<"asc" | "des">("asc");
 
 const filteredSearchItems = computed(() => {
-  return searchItems.value.slice(
+  return searchItems.value?.slice(
     (atPage.value - 1) * perPage.value,
     (atPage.value - 1) * perPage.value + perPage.value
   );
 });
 
 const totalPages = computed(() => {
-  return Math.ceil(searchItems.value.length / perPage.value);
+  return Math.ceil(searchItems.value?.length! / perPage.value);
 });
 </script>
 

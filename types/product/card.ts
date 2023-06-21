@@ -2,8 +2,8 @@ export interface ProductCard {
   slug: string;
   title: string;
   category: string;
-  price: number;
-  discount?: number;
+  price: string;
   cover: any;
+  discount?: number;
   stock?: number;
 }

@@ -39,12 +39,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: [
-    "nuxt-svgo",
-    "nuxt-swiper",
-    "@pinia/nuxt",
-    "@pinia-plugin-persistedstate/nuxt",
-  ],
+  modules: ["nuxt-svgo", "nuxt-swiper", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "nuxt-lodash"],
   svgo: {
     svgoConfig: {
       plugins: [
@@ -52,9 +47,9 @@ export default defineNuxtConfig({
           name: "preset-default",
           params: {
             overrides: {
-              cleanupIDs: { prefix: svgPrefix },
             },
           },
+          cleanupIDs: { prefix: svgPrefix },
         },
       ],
     },
@@ -83,9 +78,19 @@ export default defineNuxtConfig({
     FIREBASE_APP_ID: process.env.NUXT_FIREBASE_APP_ID,
     FIREBASE_MEASUREMENT_ID: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
     public: {
-      BASE_URL_API:
-        process.env.NUXT_PUBLIC_BASE_URL_API || "https://ecasmag.ro/ecas",
-      HOST: "0.0.0.0",
-    },
+      BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API ?? 'https://dev-backend.ecasmag.ro/ecas',
+      HOST: '0.0.0.0'
+    }
+  },
+  lodash: {
+    prefix: "_",
+    prefixSkip: ["string"],
+    upperAfterPrefix: false,
+    exclude: ["map"],
+    alias: [
+      ["camelCase", "stringToCamelCase"], // => stringToCamelCase
+      ["kebabCase", "stringToKebab"], // => stringToKebab
+      ["isDate", "isLodashDate"], // => _isLodashDate
+    ],
   },
 });
