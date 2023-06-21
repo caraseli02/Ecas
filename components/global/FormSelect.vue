@@ -41,7 +41,7 @@
     <Transition name="fade">
       <div
         v-if="showOptions"
-        class="absolute -bottom-1 left-0 translate-y-full w-full bg-white rounded-md overflow-y-auto scrollbar-thin shadow-card px-3 py-[15px]"
+        class="absolute -bottom-1 left-0 translate-y-full w-full bg-white rounded-md overflow-y-auto scrollbar-thin shadow-m px-3 py-[15px]"
         :class="[checkboxes ? 'max-h-[200px]' : 'max-h-[250px]']"
         v-click-outside="() => (showOptions = false)"
       >

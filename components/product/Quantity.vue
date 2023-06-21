@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative bg-white rounded-md px-2.5 pt-2 pb-5 shadow-card md:px-[15px] lg:pt-[15px] lg:self-start"
+    class="relative bg-white rounded-md px-2.5 pt-2 pb-5 shadow-m md:px-[15px] lg:pt-[15px] lg:self-start"
   >
     <div
       class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green"
@@ -32,7 +32,8 @@
         <div class="font-Inter mb-4 lg:mb-[9px]">
           <div
             class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight bg-[#F2F2F2] rounded"
-            v-for="(quantity, index) in bulkQuantities" :key="index"
+            v-for="(quantity, index) in bulkQuantities"
+            :key="index"
           >
             <div>{{ quantity[0] }}+</div>
             <div>${{ quantity[1].toFixed(3) }}</div>
@@ -69,9 +70,15 @@
           class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end"
         >
           <div class="lg:mr-[15px]">
-            <div class="text-sm leading-tight line-through">$ {{ (product.priceEur * 100).toFixed(3) }} (100+)</div>
+            <div class="text-sm leading-tight line-through">
+              $ {{ (product.priceEur * 100).toFixed(3) }} (100+)
+            </div>
             <div class="text-lg leading-tight text-red">
-              <strong>$ {{ ((product.priceEur * 100) * 20 / 100).toFixed(3) }}</strong> (100+)
+              <strong
+                >$
+                {{ ((product.priceEur * 100 * 20) / 100).toFixed(3) }}</strong
+              >
+              (100+)
             </div>
           </div>
           <div
@@ -101,14 +108,14 @@ import CartIcon from "@/assets/icons/cart.svg";
 import { ProductDetail } from "~~/model/products/response/ProductDetailResponse";
 
 const props = defineProps<{
-  product: ProductDetail
-}>()
-const product = props.product
-const quantity = ref(0)
+  product: ProductDetail;
+}>();
+const product = props.product;
+const quantity = ref(0);
 
 let bulkQuantities = new Map<number, number>();
 
 for (let i = 1; i < 26; i += 5) {
-  bulkQuantities.set(i, product.priceRon * i)
+  bulkQuantities.set(i, product.priceRon * i);
 }
 </script>

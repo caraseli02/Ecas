@@ -31,7 +31,7 @@
             <transition name="fade">
               <div
                 v-if="showShowOptions"
-                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card py-1.5"
+                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m py-1.5"
                 v-click-outside="() => (showShowOptions = false)"
               >
                 <label
@@ -85,7 +85,7 @@
             <transition name="fade">
               <div
                 v-if="showSortByOptions"
-                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card px-2.5 py-[15px]"
+                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m px-2.5 py-[15px]"
                 v-click-outside="() => (showSortByOptions = false)"
               >
                 <button
@@ -141,7 +141,7 @@
             <transition name="fade">
               <div
                 v-if="showPerPageOptions"
-                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-2.5"
+                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m p-2.5"
                 v-click-outside="() => (showPerPageOptions = false)"
               >
                 <button
@@ -243,7 +243,7 @@
             <transition name="fade">
               <div
                 v-if="showPerPageOptions"
-                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-2.5"
+                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m p-2.5"
                 v-click-outside="() => (showPerPageOptions = false)"
               >
                 <button
@@ -322,8 +322,8 @@ import { SearchItem as SearchItemType } from "~~/types/search";
 import { SearchData } from "~/model/products/response/ProductSearchResponse";
 
 const props = defineProps<{
-  products: SearchData
-}>()
+  products: SearchData;
+}>();
 
 const perPage = ref(5);
 const show = ref("New products only");
@@ -355,9 +355,9 @@ const sortByOptions = ref([
 ]);
 const atPage = ref(1);
 
-const searchItems = ref<SearchItemType[]>()
-searchItems.value = []
-props.products.items.items.map(item => {
+const searchItems = ref<SearchItemType[]>();
+searchItems.value = [];
+props.products.items.items.map((item) => {
   searchItems.value?.push({
     slug: item._id,
     title: item.alias,
@@ -365,9 +365,9 @@ props.products.items.items.map(item => {
     manufacturer: item.manufacturer,
     manufacturerCode: item.manufacturerCode,
     stock: item.stock,
-    description: item.description
-  })
-})
+    description: item.description,
+  });
+});
 
 const order = ref<"asc" | "des">("asc");
 

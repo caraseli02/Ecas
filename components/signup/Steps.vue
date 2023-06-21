@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="flex flex-col bg-[#22242F] shadow-card pt-[30px] px-5 pb-[25px] md:w-[290px] md:pt-10 md:pb-5 lg:w-[400px] lg:px-[30px]"
+    class="flex flex-col bg-[#22242F] shadow-m pt-[30px] px-5 pb-[25px] md:w-[290px] md:pt-10 md:pb-5 lg:w-[400px] lg:px-[30px]"
   >
     <div class="flex items-center justify-between mb-[46px] md:mb-[100px]">
       <Logo class="w-[121px]" />

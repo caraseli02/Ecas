@@ -3,7 +3,7 @@
     class="fixed z-[60] top-0 left-0 w-screen h-screen flex items-center justify-center"
   >
     <div
-      class="relative z-10 w-[450px] max-w-[calc(100vw-32px)] px-[15px] pt-5 pb-[35px] bg-white rounded-md shadow-card md:px-5"
+      class="relative z-10 w-[450px] max-w-[calc(100vw-32px)] px-[15px] pt-5 pb-[35px] bg-white rounded-md shadow-xs md:px-5"
     >
       <div
         class="flex items-center justify-between mb-[38px] transition-opacity duration-300"
@@ -84,8 +84,8 @@ import CheckIcon from "@/assets/icons/check-circle.svg";
 
 const emits = defineEmits(["close"]);
 const props = defineProps<{
-  manufacturerCode?: string
-}>()
+  manufacturerCode?: string;
+}>();
 
 const partNumber = ref(props.manufacturerCode ?? "ADIN2111BCPZ");
 const customNumber = ref("");

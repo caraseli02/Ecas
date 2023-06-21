@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-lg overflow-hidden border-l-8 bg-white max-w-full w-[360px] shadow-card md:w-[560px] lg:w-[680px]"
+    class="rounded-lg overflow-hidden border-l-8 bg-white max-w-full w-[360px] shadow-xs md:w-[560px] lg:w-[680px]"
     :class="[
       type === 'info'
         ? 'border-blue'

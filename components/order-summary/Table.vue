@@ -67,7 +67,7 @@
           <transition name="fade">
             <div
               v-if="showPerPageOptions"
-              class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-2.5"
+              class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m p-2.5"
               v-click-outside="() => (showPerPageOptions = false)"
             >
               <button

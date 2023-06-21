@@ -24,7 +24,7 @@
         <SwiperSlide v-for="(item, index) in news" :key="index">
           <NuxtLink
             :to="`/`"
-            class="flex flex-col rounded-md bg-white shadow-card"
+            class="flex flex-col rounded-md bg-white shadow-xs"
           >
             <img
               :src="item.cover"

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-blue py-3 shadow-card md:py-2">
+  <div class="bg-blue py-3 shadow-m md:py-2">
     <div class="container">
       <div class="relative">
         <div
