@@ -1,8 +1,8 @@
 <template>
-  <div class="flex items-center justify-between py-2 w-full">
+  <div class="flex items-center justify-between w-full">
     <NuxtLink to="/" class="group/link flex items-center w-[calc(100%-40px)]">
       <div
-        class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-3 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-[3px] after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
+        class="relative flex items-center justify-center rounded-full overflow-hidden w-10 h-10 flex-shrink-0 mr-3 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
         :class="[!item.avatar ? 'bg-gray-200' : '']"
       >
         <img
@@ -15,12 +15,12 @@
       </div>
       <div class="truncate">
         <div
-          class="text-sm leading-[1.43] font-semibold truncate mb-1 transition-colors duration-300 group-hover:text-blue"
+          class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue"
         >
-          {{ item.name }} asd asd asd asd asd asd asd
+          {{ item.name }}
         </div>
         <div class="text-xs leading-[1.67] text-gray-300 truncate">
-          {{ item.email }}as dasd asd asd asd as
+          {{ item.email }}
         </div>
       </div>
     </NuxtLink>
