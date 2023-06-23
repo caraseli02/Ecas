@@ -3,9 +3,9 @@
     class="relative flex flex-col bg-white rounded-xl p-4 pb-5 pr-2 shadow-xs md:p-6 md:pr-3 md:pb-8"
   >
     <div class="leading-normal font-semibold mb-6 md:mb-7">New Customers</div>
-    <div class="grid grid-cols-1 gap-4">
+    <div class="grid grid-cols-1 gap-4 md:gap-3">
       <DashboardNewCustomersItem
-        v-for="(person, index) in people"
+        v-for="(person, index) in people.slice(0, 7)"
         :key="index"
         :item="person"
       />
@@ -35,6 +35,16 @@ const people = ref([
   {
     name: "Madalina Dobrovolski",
     email: "madalina.popescu@company.com",
+  },
+  {
+    name: "Madalina Dobrovolski",
+    email: "madalina.popescu@company.com",
+    avatar: Avatar,
+  },
+  {
+    name: "Madalina Dobrovolski",
+    email: "madalina.popescu@company.com",
+    avatar: Avatar,
   },
   {
     name: "Madalina Dobrovolski",
