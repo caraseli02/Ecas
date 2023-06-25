@@ -122,6 +122,11 @@ defineProps({
     }>,
     required: true,
   },
+  type: {
+    type: String as PropType<"default" | "detailed" | "landing">,
+    required: false,
+    default: "default",
+  },
 });
 
 const showOptions = ref(false);
