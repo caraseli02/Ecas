@@ -38,7 +38,7 @@
         :class="{ 'rotate-180': showOptions }"
       />
     </button>
-    <Transition name="fade">
+    <Transition name="fade-full">
       <div
         v-if="showOptions"
         class="absolute -bottom-1 left-0 translate-y-full w-full bg-white rounded-md overflow-y-auto scrollbar-thin shadow-m px-3 py-[15px]"

@@ -140,7 +140,7 @@
     </div>
   </div>
   <Teleport to="body">
-    <Transition name="fade">
+    <Transition :name="index > 5 ? 'fade-full-neg' : 'fade-bottom'">
       <div
         v-if="showOptions"
         v-click-outside="() => (showOptions = false)"

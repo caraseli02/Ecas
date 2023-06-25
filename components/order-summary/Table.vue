@@ -64,7 +64,7 @@
               :class="[showPerPageOptions ? 'rotate-180' : '']"
             />
           </button>
-          <transition name="fade">
+          <transition name="fade-full">
             <div
               v-if="showPerPageOptions"
               class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m p-2.5"

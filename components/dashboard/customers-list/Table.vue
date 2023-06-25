@@ -217,11 +217,11 @@
     </div>
   </div>
   <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="fade-bottom">
       <div
         v-if="showAccountOptions"
         v-click-outside="() => (showAccountOptions = false)"
-        class="absolute z-10 -translate-x-full translate-y-2 grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[163px] shadow-m"
+        class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[163px] shadow-m"
         :style="{
           top: accountDropdownTop + 'px',
           left: accountDropdownLeft + 'px',
@@ -273,11 +273,11 @@
         </button>
       </div>
     </Transition>
-    <Transition name="fade">
+    <Transition name="fade-bottom">
       <div
         v-if="showRegisteredRange"
         v-click-outside="() => (showRegisteredRange = false)"
-        class="absolute z-10 -translate-x-full translate-y-2 rounded-lg overflow-hidden shadow-m"
+        class="absolute z-10 -translate-x-full rounded-lg overflow-hidden shadow-m"
         :style="{
           left: registeredDropdownLeft + 'px',
           top: registeredDropdownTop + 'px',
@@ -286,11 +286,11 @@
         <DatePicker v-model.range="registered" borderless />
       </div>
     </Transition>
-    <Transition name="fade">
+    <Transition name="fade-bottom">
       <div
         v-if="showSpentRange"
         v-click-outside="() => (showSpentRange = false)"
-        class="absolute z-10 -translate-x-full translate-y-2 grid grid-cols-1 gap-1 rounded-lg bg-white p-6 w-[358px] shadow-m"
+        class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-6 w-[358px] shadow-m"
         :style="{
           left: spentRangeDropdownLeft + 'px',
           top: spentRangeDropdownTop + 'px',
@@ -364,11 +364,11 @@
         </div>
       </div>
     </Transition>
-    <Transition name="fade">
+    <Transition name="fade-bottom">
       <div
         v-if="showOrdersRange"
         v-click-outside="() => (showOrdersRange = false)"
-        class="absolute z-10 -translate-x-full translate-y-2 grid grid-cols-1 gap-1 rounded-lg bg-white p-6 w-[358px] shadow-m"
+        class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-6 w-[358px] shadow-m"
         :style="{
           left: ordersRangeDropdownLeft + 'px',
           top: ordersRangeDropdownTop + 'px',
@@ -626,7 +626,7 @@ const handleShowAccountOptions = (event: MouseEvent) => {
   const target = event.currentTarget as HTMLElement;
   const rect = target.getBoundingClientRect();
   accountDropdownLeft.value = rect.right;
-  accountDropdownTop.value = rect.bottom + window.scrollY;
+  accountDropdownTop.value = rect.bottom + window.scrollY + 8;
 };
 
 const showRegisteredRange = ref(false);
@@ -636,7 +636,7 @@ const handleShowRegistered = (event: MouseEvent) => {
   showRegisteredRange.value = !showRegisteredRange.value;
   const target = event.currentTarget as HTMLElement;
   const rect = target.getBoundingClientRect();
-  registeredDropdownTop.value = rect.bottom + window.scrollY;
+  registeredDropdownTop.value = rect.bottom + window.scrollY + 8;
   registeredDropdownLeft.value = rect.right;
 };
 
@@ -647,7 +647,7 @@ const handleShowSpentRange = (event: MouseEvent) => {
   showSpentRange.value = !showSpentRange.value;
   const target = event.currentTarget as HTMLElement;
   const rect = target.getBoundingClientRect();
-  spentRangeDropdownTop.value = rect.bottom + window.scrollY;
+  spentRangeDropdownTop.value = rect.bottom + window.scrollY + 8;
   spentRangeDropdownLeft.value = rect.right;
 };
 
@@ -658,7 +658,7 @@ const handleShowOrdersRange = (event: MouseEvent) => {
   showOrdersRange.value = !showOrdersRange.value;
   const target = event.currentTarget as HTMLElement;
   const rect = target.getBoundingClientRect();
-  ordersRangeDropdownTop.value = rect.bottom + window.scrollY;
+  ordersRangeDropdownTop.value = rect.bottom + window.scrollY + 8;
   ordersRangeDropdownLeft.value = rect.right;
 };
 

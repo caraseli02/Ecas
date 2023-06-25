@@ -28,7 +28,7 @@
                 :class="[showShowOptions ? 'rotate-180' : '']"
               />
             </button>
-            <transition name="fade">
+            <transition name="fade-full">
               <div
                 v-if="showShowOptions"
                 class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m py-1.5"
@@ -82,7 +82,7 @@
                 :class="[showSortByOptions ? 'rotate-180' : '']"
               />
             </button>
-            <transition name="fade">
+            <transition name="fade-full">
               <div
                 v-if="showSortByOptions"
                 class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m px-2.5 py-[15px]"
@@ -138,7 +138,7 @@
                 :class="[showPerPageOptions ? 'rotate-180' : '']"
               />
             </button>
-            <transition name="fade">
+            <Transition name="fade-full">
               <div
                 v-if="showPerPageOptions"
                 class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m p-2.5"
@@ -158,7 +158,7 @@
                   {{ option }}
                 </button>
               </div>
-            </transition>
+            </Transition>
           </div>
         </label>
       </div>
@@ -240,7 +240,7 @@
                 :class="[showPerPageOptions ? 'rotate-180' : '']"
               />
             </button>
-            <transition name="fade">
+            <Transition name="fade-full">
               <div
                 v-if="showPerPageOptions"
                 class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m p-2.5"
@@ -260,7 +260,7 @@
                   {{ option }}
                 </button>
               </div>
-            </transition>
+            </Transition>
           </div>
         </label>
         <div class="flex items-center">

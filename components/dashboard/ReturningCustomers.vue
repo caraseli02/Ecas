@@ -43,7 +43,7 @@
         <ArrowRightIcon class="w-4 h-4" />
       </button>
     </div>
-    <Transition name="fade">
+    <Transition name="fade-full">
       <div
         v-if="showOptions"
         v-click-outside="() => (showOptions = false)"

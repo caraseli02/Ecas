@@ -31,7 +31,7 @@
       >
         <MoreVerticalIcon class="w-7 h-7" />
       </button>
-      <Transition name="fade">
+      <Transition name="fade-full">
         <div
           v-if="showOptions"
           v-click-outside="() => (showOptions = false)"
