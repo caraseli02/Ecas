@@ -488,13 +488,13 @@
             </div>
             <div class="grid grid-cols-[auto,1fr] gap-4">
               <button
-                class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
+                class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
                 @click="showSpentRange = false"
               >
                 Cancel
               </button>
               <button
-                class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
+                class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
                 @click="
                   spent = spentBuffer;
                   showSpentRange = false;
@@ -551,13 +551,13 @@
             </div>
             <div class="grid grid-cols-[auto,1fr] gap-4">
               <button
-                class="flex px-8 py-3 rounded-lg bg-gray-200 leading-normal text-gray-300 font-medium"
+                class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
                 @click="showOrdersRange = false"
               >
                 Cancel
               </button>
               <button
-                class="flex justify-center px-8 py-3 w-full rounded-lg bg-blue leading-normal text-white font-medium"
+                class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
                 @click="
                   ordersCount = ordersCountBuffer;
                   showOrdersRange = false;
