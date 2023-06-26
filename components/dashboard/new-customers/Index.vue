@@ -10,6 +10,7 @@
       New Customers
     </div>
     <div
+      v-if="people.length > 0"
       class="grid grid-cols-1 gap-4"
       :class="[type === 'default' ? 'md:gap-3' : 'mb-7 md:mb-5']"
     >
@@ -19,9 +20,21 @@
         :item="person"
         :type="type"
       />
+      <DashboardNewCustomersEmptyItem
+        v-for="(_, index) in type === 'default'
+          ? 7 - people.length
+          : 6 - people.length"
+        :key="index"
+      />
+    </div>
+    <div v-else class="flex flex-col items-center justify-center flex-1">
+      <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+      <div class="text-sm font-medium leading-normal text-gray-100">
+        No data available
+      </div>
     </div>
     <div
-      v-if="type !== 'default'"
+      v-if="type !== 'default' && people.length > 0"
       class="flex items-center mt-auto"
       :class="[type === 'detailed' ? 'justify-between' : 'justify-center']"
     >
@@ -74,10 +87,11 @@
 </template>
 
 <script setup lang="ts">
+import type { PropType } from "vue";
 import ArrowUpIcon from "@/assets/icons/dashboard/arrow-up.svg";
 import ChevronIcon from "@/assets/icons/dashboard/chevron-down.svg";
 import ArrowRightIcon from "@/assets/icons/dashboard/arrow-right.svg";
-import type { PropType } from "vue";
+import EmojiSadIcon from "@/assets/icons/dashboard/emoji-sad.svg";
 import Avatar from "@/assets/icons/dashboard/avatar.png";
 
 const people = ref([
@@ -105,16 +119,16 @@ const people = ref([
     email: "madalina.popescu@company.com",
     avatar: Avatar,
   },
-  {
-    name: "Madalina Dobrovolski",
-    email: "madalina.popescu@company.com",
-    avatar: Avatar,
-  },
-  {
-    name: "Madalina Dobrovolski",
-    email: "madalina.popescu@company.com",
-    avatar: Avatar,
-  },
+  // {
+  //   name: "Madalina Dobrovolski",
+  //   email: "madalina.popescu@company.com",
+  //   avatar: Avatar,
+  // },
+  // {
+  //   name: "Madalina Dobrovolski",
+  //   email: "madalina.popescu@company.com",
+  //   avatar: Avatar,
+  // },
 ]);
 
 const showOptions = ref(false);
