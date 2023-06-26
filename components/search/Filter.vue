@@ -106,7 +106,7 @@ interface FilterOptions {
 }
 
 const props = defineProps<{
-    filter: ProductFilters;
+    filter: ProductFilters | null;
 }>();
 
 const searchValue = ref("");
