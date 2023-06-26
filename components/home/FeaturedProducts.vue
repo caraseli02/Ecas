@@ -183,8 +183,9 @@
 <script setup lang="ts">
 import BlackFridayItem from "@/assets/media/home/black-friday-item.png";
 import { A11y, Pagination, Grid } from "swiper";
+import { PaginatedUserRequest } from "~/model/user/request/PaginatedUserRequest";
 import { ProductCard as ProductCardType } from "~~/types";
-const { $api } = useNuxtApp()
+const { $api } = useNuxtApp();
 
 const elDOM = ref<HTMLElement | null>(null);
 
@@ -220,17 +221,19 @@ const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
 
 watch(activeFilter, async (value) => {
-    let { data} = await $api.product.fetchProductTab(value);
-    productList.value = data.map((item) => ({
-        slug: item._id,
-        title: item.alias,
-        category: "Not supported",
-        price: new Intl.NumberFormat("en-US", {
-            minimumFractionDigits: 3,
-        }).format(item.priceEur),
-        cover: item.details.ProductImage.ProductImageLarge,
-        stock: item.stock,
-    }));
+    let { data } = await $api.product.fetchProductTab(value);
+    if (data) {
+        productList.value = data.map((item) => ({
+            slug: item._id,
+            title: item.alias,
+            category: "Not supported",
+            price: new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: 3,
+            }).format(item.priceEur),
+            cover: item.details.ProductImage.ProductImageLarge,
+            stock: item.stock,
+        }));
+    }
 });
 
 const setFilterLine = () => {
@@ -254,19 +257,37 @@ const setActiveFilter = (filter: string) => {
 
 onMounted(async () => {
     setFilterLine();
+
+    // fetchUser()
 });
 
-let { data } = await $api.product.fetchProductTab("featured");
-productList.value = data.map((item) => ({
-    slug: item._id,
-    title: item.alias,
-    category: "Not supported",
-    price: new Intl.NumberFormat("en-US", { minimumFractionDigits: 3 }).format(
-        item.priceEur
-    ),
-    cover: item.details.ProductImage.ProductImageLarge,
-    stock: item.stock,
-}));
+async function fetchUser() {
+    const payload: PaginatedUserRequest = {
+        page: 1,
+        perPage: 10,
+    };
+    let user = await $api.user.fetchPaginatedUser(payload);
+}
+
+async function getProductTab() {
+    let { data } = await $api.product.fetchProductTab("featured");
+    if (data) {
+        productList.value = data.map((item) => ({
+            slug: item._id,
+            title: item.alias,
+            category: "Not supported",
+            price: new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: 3,
+            }).format(item.priceEur),
+            cover: item.details.ProductImage.ProductImageLarge,
+            stock: item.stock,
+        }));
+    }
+}
+
+onMounted(() => {
+    getProductTab()
+})
 </script>
 
 <style lang="scss">

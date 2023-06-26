@@ -32,7 +32,7 @@ onMounted(() => {
     }).setView([51, 0], 1);
     map.setMaxBounds([
       [100.673, -200.023],
-      [-60.995, 250.2421],
+      [-60.995, 210.2421],
     ]);
     Leaflet.control
       .zoom({
@@ -93,7 +93,7 @@ onMounted(() => {
 
 <style lang="scss">
 #mapid {
-  @apply bg-white aspect-[2.3];
+  @apply bg-white aspect-[2.3] xl:h-full xl:w-full;
   .leaflet-pane {
     z-index: 1;
   }

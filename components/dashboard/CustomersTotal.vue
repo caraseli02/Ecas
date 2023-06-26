@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="relative bg-white rounded-xl p-4 md:p-6"
-    :style="{
-      boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-    }"
-  >
+  <div class="relative bg-white rounded-xl p-4 shadow-xs md:p-6">
     <div class="flex items-start justify-between">
       <div class="leading-normal font-semibold">Customers Total</div>
       <div
@@ -52,10 +47,7 @@
       <div
         v-if="showOptions"
         v-click-outside="() => (showOptions = false)"
-        class="absolute z-10 -bottom-0.5 left-0 translate-y-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[200px]"
-        :style="{
-          boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
-        }"
+        class="absolute z-10 -bottom-0.5 left-0 translate-y-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[200px] shadow-m"
       >
         <button
           v-for="(option, index) in options"

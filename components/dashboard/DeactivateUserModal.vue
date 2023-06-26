@@ -1,9 +1,9 @@
 <template>
   <div
-    class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center"
+    class="fixed z-[60] top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none"
   >
     <div
-      class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-4 bg-white rounded-xl shadow-card md:p-6"
+      class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-4 bg-white rounded-xl pointer-events-auto shadow-xs md:p-6"
     >
       <button
         class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg ml-auto mb-4 transition-colors duration-300 hover:text-blue"
@@ -111,10 +111,6 @@
         </button>
       </div>
     </div>
-    <div
-      class="absolute top-0 left-0 w-full h-full bg-[#2F3241]/10 backdrop-blur-[7.5px] cursor-pointer"
-      @click="$emit('close')"
-    />
   </div>
 </template>
 
