@@ -16,9 +16,7 @@
           autocomplete="off"
           class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
           @blur="searchVal = ''"
-          @keypress.enter="$router.push({ path: '/search', query: { keyword: searchVal } });
-          searchVal = '';
-          "
+          @keypress.enter="handleEnterButton"
         />
       </form>
       <div
@@ -58,7 +56,7 @@ const onInput = _.debounce(async () => {
   let request = await searchProduct(searchVal.value)
   productList.value = request
   isLoading.value = false
-}, 500)
+}, 200)
 
 const searchProduct = async (keyword: string): Promise<ProductSearchItems[]> => {
   isLoading.value = true
@@ -66,4 +64,11 @@ const searchProduct = async (keyword: string): Promise<ProductSearchItems[]> => 
   const data = products.value as ProductSearchResponse
   return data.data.items.items
 }
+
+function handleEnterButton() {
+  const router = useRouter()
+  router.push({ path: '/search', query: { keyword: searchVal.value } })
+  searchVal.value= ''
+}
+
 </script>

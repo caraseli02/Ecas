@@ -256,7 +256,7 @@ const setActiveFilter = (filter: string) => {
 onMounted(async () => {
     setFilterLine();
 
-    fetchUser()
+    // fetchUser()
 });
 
 async function fetchUser() {
