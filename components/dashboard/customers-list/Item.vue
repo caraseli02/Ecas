@@ -126,7 +126,7 @@
           <DocumentIcon class="w-7 h-7" />
         </button>
         <template #content>
-          <span>View order</span>
+          <span>View Orders</span>
         </template>
       </Tooltip>
       <div class="relative">
