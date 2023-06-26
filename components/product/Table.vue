@@ -17,7 +17,7 @@ const props = defineProps<{
 }>();
 
 const features = reactive<ProductParametricDataFeaturesInterface[]>(
-    props.features.map((item) => {
+    props.features?.map((item) => {
         item.checked = false;
         return item;
     })

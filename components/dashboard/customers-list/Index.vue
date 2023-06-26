@@ -125,16 +125,18 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {},
 
   totalItems = paginatedUsersData?.data?.total_items;
 
-  listItems.value = paginatedUsers.map((user) => ({
-    avatar: Avatar,
-    name: `${user.contactDetails?.firstName} ${user.contactDetails?.lastName}`,
-    email: user.profileDetails.email,
-    account: getAccountTypeById(user.accountType) || '-',
-    company: user.companyDetails?.name || "-",
-    registered: new Date(user.createdAt).toLocaleDateString("en-GB"),
-    spent: user.spent,
-    ordersCount: user.ordersCount,
-  }));
+  if (paginatedUsers) {
+    listItems.value = paginatedUsers.map((user) => ({
+      avatar: Avatar,
+      name: `${user.contactDetails?.firstName} ${user.contactDetails?.lastName}`,
+      email: user.profileDetails.email,
+      account: getAccountTypeById(user.accountType) || '-',
+      company: user.companyDetails?.name || "-",
+      registered: new Date(user.createdAt).toLocaleDateString("en-GB"),
+      spent: user.spent,
+      ordersCount: user.ordersCount,
+    }));
+  }
 }
 
 await fetchAndSetUsersList(atPage, perPage, activeFilters, activeSort);

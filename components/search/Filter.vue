@@ -148,9 +148,9 @@ const filter = ref(props.filter);
 
 const filterOptions = (filter: ProductFilters): FilterOptions[] => {
     let keys = Object.keys(filter)[0];
-    let filtered = filter[keys].filter((item) => item.FeatureName === keys);
+    let filtered = filter[keys].filter((item) => item.FeatureName === keys) || [];
 
-    let data: FilterOptions[] = filtered.map((item) => ({
+    let data: FilterOptions[] = filtered?.map((item) => ({
         value: item.FeatureValue,
         unit: item.FeatureUnit,
         checked: false,
@@ -171,7 +171,7 @@ const selectedAll = computed(() => {
 });
 
 const handleAll = () => {
-    options.value = options.value.map((e) => {
+    options.value = options.value?.map((e) => {
         return {
             ...e,
             checked: selectedAll.value ? false : true,

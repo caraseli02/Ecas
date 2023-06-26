@@ -140,14 +140,14 @@ const products = ref<ProductCardType[]>();
 onMounted(async () => {
     setFilterLine();
 
-    fetchNewProducts();
+    await fetchNewProducts();
 });
 
 const fetchNewProducts = async () => {
     const fetch = await $api.product.fetchNewProducts();
 
     products.value = [];
-    fetch.data.value?.data.slice(0, 20).map((item) => {
+    fetch.data.value?.data.slice(0, 20)?.map((item) => {
         products.value?.push({
             slug: item._id,
             title: item.alias,

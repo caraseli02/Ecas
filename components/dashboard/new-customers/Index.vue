@@ -29,9 +29,14 @@ const people = ref([] as UserDetails[]);
 
 const fetchAndSetNewCustomers = async (time = 7) => {
   const data = await fetchNewCustomersWidget();
-  const widgetData = data.data.value as NewCustomersInterface;
 
-  people.value = widgetData.data;
+  if (!data || !data.data) {
+    return;
+  }
+
+  const widgetData = data?.data?.value as NewCustomersInterface;
+
+  people.value = widgetData?.data;
 }
 
 await fetchAndSetNewCustomers();

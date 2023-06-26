@@ -357,7 +357,8 @@ const atPage = ref(1);
 
 const searchItems = ref<SearchItemType[]>()
 searchItems.value = []
-props.products.items.items.map(item => {
+
+props.products.items.items?.map(item => {
   searchItems.value?.push({
     slug: item._id,
     title: item.alias,

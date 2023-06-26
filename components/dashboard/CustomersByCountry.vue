@@ -113,6 +113,11 @@ const fetchAndSetCustomersByCountry = async () => {
   const widgetData = data?.data?.value as CustomersByCountryInterface;
 
   countries.value = widgetData?.data;
+
+  if (!countries.value) {
+    return;
+  }
+
   countryWithMostCustomers.value = countries?.value[0];
 }
 

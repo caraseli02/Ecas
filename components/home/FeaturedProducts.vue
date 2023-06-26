@@ -222,7 +222,8 @@ const filterLineWidth = ref(0);
 
 watch(activeFilter, async (value) => {
     let { data } = await $api.product.fetchProductTab(value);
-    productList.value = data.map((item) => ({
+
+    productList.value = data?.map((item) => ({
         slug: item._id,
         title: item.alias,
         category: "Not supported",
@@ -268,7 +269,7 @@ async function fetchUser() {
 }
 
 let { data } = await $api.product.fetchProductTab("featured");
-productList.value = data.map((item) => ({
+productList.value = data?.map((item) => ({
     slug: item._id,
     title: item.alias,
     category: "Not supported",

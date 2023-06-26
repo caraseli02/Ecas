@@ -450,14 +450,14 @@ const hasSelectedItem = computed(() => {
 
 const handleSelectAll = () => {
   if (allItemsSelected.value) {
-    items.value = items.value.map((e) => {
+    items.value = items.value?.map((e) => {
       return {
         ...e,
         selected: false,
       };
     });
   } else {
-    items.value = items.value.map((e) => {
+    items.value = items.value?.map((e) => {
       return {
         ...e,
         selected: true,

@@ -668,7 +668,7 @@ watch((registered), (newRegistered) => {
 
 const spentValue = computed(() => {
   const spentValue = spent.value
-    .map((value) => {
+    ?.map((value) => {
       if (value >= 1000) {
         return `${Math.round(value / 1000)}K`;
       }
