@@ -21,7 +21,6 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  // Trigger build
   if (window) {
     const map = Leaflet.map("mapid", {
       scrollWheelZoom: true,

@@ -1,6 +1,6 @@
 <template>
   <section class="mb-10 md:mb-[60px]">
-    <div class="container">
+    <div class="container" v-if="searchItems && searchItems.length > 0">
       <div class="font-semibold font-Inter mb-[15px] md:hidden">
         Products Found ({{ searchItems?.length }})
       </div>
@@ -31,7 +31,7 @@
             <transition name="fade-full">
               <div
                 v-if="showShowOptions"
-                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m py-1.5"
+                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card py-1.5"
                 v-click-outside="() => (showShowOptions = false)"
               >
                 <label
@@ -85,7 +85,7 @@
             <transition name="fade-full">
               <div
                 v-if="showSortByOptions"
-                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m px-2.5 py-[15px]"
+                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card px-2.5 py-[15px]"
                 v-click-outside="() => (showSortByOptions = false)"
               >
                 <button
@@ -138,10 +138,10 @@
                 :class="[showPerPageOptions ? 'rotate-180' : '']"
               />
             </button>
-            <Transition name="fade-full">
+            <transition name="fade-full">
               <div
                 v-if="showPerPageOptions"
-                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m p-2.5"
+                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-2.5"
                 v-click-outside="() => (showPerPageOptions = false)"
               >
                 <button
@@ -158,7 +158,7 @@
                   {{ option }}
                 </button>
               </div>
-            </Transition>
+            </transition>
           </div>
         </label>
       </div>
@@ -240,10 +240,10 @@
                 :class="[showPerPageOptions ? 'rotate-180' : '']"
               />
             </button>
-            <Transition name="fade-full">
+            <transition name="fade-full">
               <div
                 v-if="showPerPageOptions"
-                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-m p-2.5"
+                class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-2.5"
                 v-click-outside="() => (showPerPageOptions = false)"
               >
                 <button
@@ -260,7 +260,7 @@
                   {{ option }}
                 </button>
               </div>
-            </Transition>
+            </transition>
           </div>
         </label>
         <div class="flex items-center">
@@ -310,6 +310,9 @@
         </div>
       </div>
     </div>
+    <div v-else>
+      <div class="text-center font-Inter mb-[15px]">No products found</div>
+    </div>
   </section>
 </template>
 
@@ -322,7 +325,7 @@ import { SearchItem as SearchItemType } from "~~/types/search";
 import { SearchData } from "~/model/products/response/ProductSearchResponse";
 
 const props = defineProps<{
-  products: SearchData;
+  products: SearchData | null;
 }>();
 
 const perPage = ref(5);
@@ -355,18 +358,26 @@ const sortByOptions = ref([
 ]);
 const atPage = ref(1);
 
-const searchItems = ref<SearchItemType[]>();
-searchItems.value = [];
-props.products.items.items.map((item) => {
-  searchItems.value?.push({
-    slug: item._id,
-    title: item.alias,
-    cover: item.details.ProductImage.ProductImageSmall,
-    manufacturer: item.manufacturer,
-    manufacturerCode: item.manufacturerCode,
-    stock: item.stock,
-    description: item.description,
+const productData = computed<SearchData | null>(() => {
+  return props.products;
+});
+
+const searchItems = computed<SearchItemType[]>(() => {
+  let data: SearchItemType[] = [];
+
+  productData.value?.items.items.map((item) => {
+    data.push({
+      slug: item._id,
+      title: item.alias,
+      cover: item.details.ProductImage.ProductImageSmall,
+      manufacturer: item.manufacturer,
+      manufacturerCode: item.manufacturerCode,
+      stock: item.stock,
+      description: item.description,
+    });
   });
+
+  return data;
 });
 
 const order = ref<"asc" | "des">("asc");
@@ -378,8 +389,8 @@ const filteredSearchItems = computed(() => {
   );
 });
 
-const totalPages = computed(() => {
-  return Math.ceil(searchItems.value?.length! / perPage.value);
+const totalPages = computed<number>(() => {
+  return Math.ceil(searchItems.value?.length / perPage.value);
 });
 </script>
 
