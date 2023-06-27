@@ -1,27 +1,27 @@
 <template>
   <div class="relative">
     <label
-      class="relative hidden border-2 border-blue rounded-md items-center h-[44px] overflow-hidden md:flex"
+        class="relative hidden border-2 border-blue rounded-md items-center h-[44px] overflow-hidden md:flex"
     >
       <SearchIcon
-        v-if="!isScrolled"
-        class="hidden w-[18px] h-[18px] flex-shrink-0 text-gray-100 self-center ml-3 md:inline-block"
+          v-if="!isScrolled"
+          class="hidden w-[18px] h-[18px] flex-shrink-0 text-gray-100 self-center ml-3 md:inline-block"
       />
       <form action="" @submit.prevent class="w-full flex">
         <input
-          @input="onInput"
-          v-model="searchVal"
-          type="search"
-          placeholder="Search parts here"
-          autocomplete="off"
-          class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
-          @blur="searchVal = ''"
-          @keypress.enter="handleEnterButton"
+            @input="onInput"
+            v-model="searchVal"
+            type="search"
+            placeholder="Search parts here"
+            autocomplete="off"
+            class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
+            @blur="searchVal = ''"
+            @keypress.enter="handleEnterButton"
         />
       </form>
       <div
-        v-if="!isScrolled"
-        class="flex items-center justify-center bg-blue cursor-pointer px-4 py-3"
+          v-if="!isScrolled"
+          class="flex items-center justify-center bg-blue cursor-pointer px-4 py-3"
       >
         <SearchIcon class="w-5 h-5 text-white" />
       </div>
@@ -30,7 +30,11 @@
       </div>
     </label>
     <Transition name="fade">
-      <LayoutHeaderSearchResults v-if="searchVal" :products="productList" :is-loading="isLoading" />
+      <LayoutHeaderSearchResults
+          v-if="searchVal"
+          :products="productList"
+          :keyword="searchVal"
+          :is-loading="isLoading"/>
     </Transition>
   </div>
 </template>
@@ -38,8 +42,9 @@
 <script setup lang="ts">
 import SearchIcon from "@/assets/icons/search.svg";
 import _ from "lodash";
-import { fetchSearchProduct } from "~/services/product.service";
-import { ProductSearchItems, ProductSearchResponse, SearchData } from "~~/model/products/response/ProductSearchResponse";
+import {fetchSearchProduct} from "~/services/product.service";
+import {ProductSearchItems, ProductSearchResponse} from "~~/model/products/response/ProductSearchResponse";
+import Emitter from 'tiny-emitter/instance';
 
 defineProps({
   isScrolled: {
@@ -52,18 +57,29 @@ const searchVal = ref("");
 let isLoading = ref<boolean>(false)
 const productList = ref<ProductSearchItems[]>([])
 
+// const perPage = ref(5);
+// const atPage = ref(1);
+
 const onInput = _.debounce(async () => {
-  let request = await searchProduct(searchVal.value)
-  productList.value = request
+  productList.value = await searchProduct(searchVal.value)
   isLoading.value = false
 }, 200)
 
-const searchProduct = async (keyword: string): Promise<ProductSearchItems[]> => {
-  isLoading.value = true
-  const { data: products } = await fetchSearchProduct(keyword)
-  const data = products.value as ProductSearchResponse
-  return data.data.items.items
+const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
+  isLoading.value = true;
+
+  const { data: products } = await fetchSearchProduct(keyword, page, perPage);
+  const data = products.value as ProductSearchResponse;
+
+  Emitter.emit('product-keyword-change', keyword);
+
+  return data.data.items.items;
 }
+
+// watch([atPage, perPage], async ([_atPage, _perPage]) => {
+//   console.log(_atPage, _perPage)
+//   await searchProduct(searchVal.value, _atPage, _perPage);
+// })
 
 function handleEnterButton() {
   const router = useRouter()

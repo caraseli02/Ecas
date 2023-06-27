@@ -16,12 +16,13 @@ export const fetchNewProducts = async () => {
     })
 }
 
-export const fetchSearchProduct = async (keyword: string) => {
+export const fetchSearchProduct = async (keyword: string, page = 1, perPage = 10, sort = {}) => {
     return await useFetchAPI<ProductSearchResponse>("products/search", {
         method: "GET",
         params: {
-            page: 1,
-            perPage: 10,
+            page: page,
+            perPage: perPage,
+            ...sort,
             operator: '$or',
             partDescription: keyword,
             manufacturer: keyword

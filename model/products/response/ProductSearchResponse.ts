@@ -30,7 +30,7 @@ export interface SearchFiltersCategories {
     count: number
 }
 
-interface SearchDataItems {
+export interface SearchDataItems {
     total_items: number
     page_count: number
     page: number
