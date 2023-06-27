@@ -15,8 +15,8 @@
             placeholder="Search parts here"
             autocomplete="off"
             class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
-            @blur="searchVal = ''"
             @keypress.enter="handleEnterButton"
+            @blur="searchVal=''"
         />
       </form>
       <div
@@ -57,9 +57,6 @@ const searchVal = ref("");
 let isLoading = ref<boolean>(false)
 const productList = ref<ProductSearchItems[]>([])
 
-// const perPage = ref(5);
-// const atPage = ref(1);
-
 const onInput = _.debounce(async () => {
   productList.value = await searchProduct(searchVal.value)
   isLoading.value = false
@@ -69,6 +66,11 @@ const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<P
   isLoading.value = true;
 
   const { data: products } = await fetchSearchProduct(keyword, page, perPage);
+
+  if (!products) {
+    return;
+  }
+
   const data = products.value as ProductSearchResponse;
 
   Emitter.emit('product-keyword-change', keyword);
@@ -76,15 +78,9 @@ const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<P
   return data.data.items.items;
 }
 
-// watch([atPage, perPage], async ([_atPage, _perPage]) => {
-//   console.log(_atPage, _perPage)
-//   await searchProduct(searchVal.value, _atPage, _perPage);
-// })
-
 function handleEnterButton() {
   const router = useRouter()
   router.push({ path: '/search', query: { keyword: searchVal.value } })
-  searchVal.value= ''
 }
 
 </script>

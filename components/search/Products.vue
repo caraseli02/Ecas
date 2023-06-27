@@ -250,7 +250,7 @@
           class="grid grid-cols-1 gap-10 mb-[25px] md:mb-10 lg:gap-[30px] xl:gap-[15px] xl:mb-[30px]"
       >
         <SearchItem
-            v-for="(item, index) in props.products"
+            v-for="(item, index) in paginatedProductsList"
             :key="index"
             :item="item"
         />
@@ -320,7 +320,7 @@
           <Pagination
               v-model="atPage"
               :page-count="totalPages"
-              :page-range="3"
+              :page-range="10"
               :hide-prev-next="true"
               page-link-class="searchProducts--pagination-item"
               prev-link-class="searchProducts--pagination-item_prev cursor-pointer text-mainPurple font-medium px-2"
@@ -382,7 +382,6 @@ const props = defineProps<{
   products: SearchData | null;
 }>();
 
-const perPage = ref(5);
 const show = ref("New products only");
 const showShowOptions = ref(false);
 const showOptions = ref([
@@ -412,10 +411,11 @@ const sortByOptions = ref([
 ]);
 const activeSort = ref({} as SortInterface);
 const atPage = ref(1);
+const perPage = ref(10);
 const totalItems = ref(props.products?.items.total_items);
 const totalPages = ref(props.products?.items.page_count);
-const paginatedProductsList = ref([] as ProductSearchItems[]);
-// const keyword = ref(route.query.keyword || '');
+const paginatedProductsList = ref(props.products?.items.items);
+const keywordRef = ref(route.query.keyword || '');
 const order = ref<"asc" | "des">("asc");
 
 const emits = defineEmits(["page-change", "per-page-change"]);
@@ -454,23 +454,22 @@ const fetchAndSetProductsList = async (keyword, page: number, perPage: number, s
   }
 }
 
-await fetchAndSetProductsList(route.query.keyword, atPage.value, perPage.value, activeSort.value);
+await fetchAndSetProductsList(keywordRef, atPage.value, perPage.value, activeSort.value);
 
-watch([atPage, perPage, route.query.keyword, activeSort, () => props.products], async([newAtPage, newPerPage, newKeyword, newActiveSort, newProducts]) => {
-  await fetchAndSetProductsList(newKeyword, newAtPage.value, newPerPage.value, newActiveSort.value);
+watch([atPage, perPage, activeSort], async([_atPage, _perPage, _activeSort]) => {
+  if (_perPage > totalItems) {
+    _atPage = 1;
+  }
+
+  await fetchAndSetProductsList(keywordRef.value, _atPage, _perPage, _activeSort);
 }, {deep: true})
 
 Emitter.on('product-keyword-change', async (keyword) => {
-  console.log('test',keyword);
+  keywordRef.value = keyword;
+
   await fetchAndSetProductsList(keyword, atPage.value, perPage.value, activeSort.value);
 });
 
-// watch(() => props.products, (newProducts: SearchData) => {
-//   totalItems.value = newProducts.items.total_items;
-//   totalPages.value = newProducts.items.page_count;
-//
-//   console.log(newProducts)
-// })
 </script>
 
 <style lang="scss">
