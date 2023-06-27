@@ -17,9 +17,13 @@
         </div>
       </div>
     </div>
+    <div class="flex text-gray-200">
+      <MoreVerticalIcon class="w-7 h-7" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import UserIcon from "@/assets/icons/dashboard/user.svg";
+import MoreVerticalIcon from "@/assets/icons/dashboard/more-vertical.svg";
 </script>
