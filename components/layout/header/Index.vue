@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <LayoutHeaderSearchRow />
+    <LayoutHeaderSearchRow :isScrolled="isScrolled" />
     <LayoutHeaderMainRow :isScrolled="isScrolled" />
   </header>
   <Teleport to="body">

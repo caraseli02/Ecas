@@ -45,6 +45,7 @@
           </div>
           <LayoutHeaderSearch
             v-if="isScrolled"
+            :showResults="true"
             :is-scrolled="isScrolled"
             class="flex-1"
           />
@@ -148,7 +149,10 @@
           </div>
         </Transition>
         <Transition name="fade">
-          <LayoutHeaderSearchResults v-if="searchVal" />
+          <LayoutHeaderSearchResults
+            :is-scrolled="isScrolled"
+            v-if="searchVal"
+          />
         </Transition>
         <Transition name="fade">
           <LayoutHeaderMainMenuLarge
