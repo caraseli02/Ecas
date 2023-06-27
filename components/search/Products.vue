@@ -89,7 +89,7 @@
                 @click="showSortByOptions = !showSortByOptions"
             >
                             <span class="text-sm text-left mr-2.5">{{
-                                sortBy
+                                sortBy.label
                               }}</span>
               <ChevronDownIcon
                   class="w-6 h-6 text-gray-300 transition-transform duration-300"
@@ -106,11 +106,11 @@
               >
                 <button
                     v-for="option in sortByOptions.filter((e) => e !== sortBy)"
-                    :key="option"
+                    :key="option.name"
                     class="flex w-full text-left text-sm rounded-[5px] transition-colors duration-300 hover:text-blue"
-                    @click="sortBy = option"
+                    @click="sortBy = option; handleSortChange()"
                 >
-                  {{ option }}
+                  {{ option.label }}
                 </button>
               </div>
             </transition>
@@ -118,7 +118,8 @@
           <button
               class="flex"
               @click="
-                            order === 'asc' ? (order = 'des') : (order = 'asc')
+                            order === 0 ? (order = 1) : (order = 0);
+                            handleSortOrderChange()
                         "
           >
             <svg
@@ -131,13 +132,13 @@
                   fill="#5E6278"
                   d="M6.21 11h11.58c1.076 0 1.614-1.396.855-2.208L12.857 2.38a1.165 1.165 0 0 0-.854-.38c-.309 0-.617.127-.851.38L5.355 8.792C4.596 9.604 5.134 11 6.21 11Z"
                   class="transition-all duration-300"
-                  :opacity="order === 'asc' ? '1' : '0.4'"
+                  :opacity="order === 1 ? '1' : '0.4'"
               />
               <path
                   fill="#5E6278"
                   d="M17.79 13H6.21c-1.076 0-1.614 1.396-.855 2.209l5.798 6.412c.23.252.502.379.848.379.309 0 .618-.127.854-.38l5.79-6.413c.76-.81.221-2.207-.855-2.207Z"
                   class="transition-all duration-300"
-                  :opacity="order === 'asc' ? '0.4' : '1'"
+                  :opacity="order === 1 ? '0.4' : '1'"
               />
             </svg>
           </button>
@@ -390,25 +391,21 @@ const showOptions = ref([
   "Sales only",
   "All products",
 ]);
+
 const showPerPageOptions = ref(false);
-const sortBy = ref("Product Code");
+const sortBy = ref({label: "Product Code", name: 'manufacturerCode'});
 const showSortByOptions = ref(false);
+
 const sortByOptions = ref([
-  "Product Code",
-  "Max. forward impulse",
-  "Manufacturer part number",
-  "Stock availability",
-  "Max. forward impulse",
-  "Manufacturer part number",
-  "Product code",
-  "Product Code",
-  "Max. forward impulse",
-  "Manufacturer part number",
-  "Stock availability",
-  "Max. forward impulse",
-  "Manufacturer part number",
-  "Product code",
+  {label: "Product Code", name: 'manufacturerCode'},
+  {label: "Manufacturer", name: 'manufacturer'},
+  {label: "Manufacturer Code", name: 'manufacturerCode'},
+  {label: "Description", name: 'description'},
+  {label: "Category", name: 'taxonomy'},
+  {label: "Stock", name: 'stock'},
+  {label: "Price", name: 'priceRon'},
 ]);
+
 const activeSort = ref({} as SortInterface);
 const atPage = ref(1);
 const perPage = ref(10);
@@ -416,9 +413,9 @@ const totalItems = ref(props.products?.items.total_items);
 const totalPages = ref(props.products?.items.page_count);
 const paginatedProductsList = ref(props.products?.items.items);
 const keywordRef = ref(route.query.keyword || '');
-const order = ref<"asc" | "des">("asc");
+const order = ref<1 | 0>(1);
 
-const emits = defineEmits(["page-change", "per-page-change"]);
+const emits = defineEmits(["page-change", "per-page-change", "active-sort"]);
 
 const handlePageChange = (e: number) => {
   emits("page-change", e);
@@ -463,6 +460,14 @@ watch([atPage, perPage, activeSort], async([_atPage, _perPage, _activeSort]) => 
 
   await fetchAndSetProductsList(keywordRef.value, _atPage, _perPage, _activeSort);
 }, {deep: true})
+
+const handleSortOrderChange = () => {
+  Emitter.emit('product-sort-change', {sortBy: sortBy.value.name, order: order.value});
+}
+
+const handleSortChange = () => {
+  Emitter.emit('product-sort-change', {sortBy: sortBy.value.name, order: order.value});
+}
 
 Emitter.on('product-keyword-change', async (keyword) => {
   keywordRef.value = keyword;

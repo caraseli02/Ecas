@@ -56,6 +56,8 @@ defineProps({
 const searchVal = ref("");
 let isLoading = ref<boolean>(false)
 const productList = ref<ProductSearchItems[]>([])
+const sort = ref('manufacturerCode');
+const order = ref(1);
 
 const onInput = _.debounce(async () => {
   productList.value = await searchProduct(searchVal.value)
@@ -65,7 +67,7 @@ const onInput = _.debounce(async () => {
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
   isLoading.value = true;
 
-  const { data: products } = await fetchSearchProduct(keyword, page, perPage);
+  const { data: products } = await fetchSearchProduct(keyword, page, perPage, {sortBy: sort.value.name, sortOrder: order.value});
 
   if (!products) {
     return;
@@ -77,6 +79,13 @@ const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<P
 
   return data.data.items.items;
 }
+
+Emitter.on('product-sort-change', async (sorting: {sortBy: string, order: number}) => {
+  sort.value = sorting.sortBy;
+  order.value = sorting.order;
+
+  productList.value = await searchProduct(searchVal.value)
+})
 
 function handleEnterButton() {
   const router = useRouter()
