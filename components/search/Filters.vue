@@ -1,5 +1,5 @@
 <template>
-    <div v-if="filterData.length > 0" class="mb-[30px] md:mb-[60px]">
+    <div v-if="filteredData.length > 0" class="mb-[30px] md:mb-[60px]">
         <div class="container">
             <button
                 class="flex items-center justify-center bg-blue text-white rounded px-[15px] py-[9px] text-sm font-medium w-full md:hidden"
@@ -34,12 +34,8 @@
             </div>
             <Transition name="slide-from-bottom">
                 <div v-if="showFilters" class="hidden grid-cols-3 gap-5 mt-5 md:grid lg:grid-cols-4 xl:grid-cols-6">
-                    <SearchFilter
-                        v-for="(filter, index) in filterData.slice(0, 11)"
-                        :key="index"
-                        :filter="filter"
-                        @close="removeItem(index)"
-                    />
+                    {{ filteredData[0] }}
+                    <SearchFilter v-for="(filter, index) in filteredData" :key="index" :filter="filter" @close="removeItem(index)" />
                     <div class="flex flex-col items-center pt-[60px] pb-10">
                         <div class="text-sm font-medium text-gray-300 mb-5">Add/Remove Filter</div>
                         <button
@@ -87,7 +83,8 @@ import EyeIcon from '@/assets/icons/eye.svg';
 import EyeClosedIcon from '@/assets/icons/eye-closed.svg';
 import ResetIcon from '@/assets/icons/reset.svg';
 import PlusIcon from '@/assets/icons/plus.svg';
-import { ProductFilters } from '~/model/products/response/ProductSearchResponse';
+import { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
+import Emitter from 'tiny-emitter/instance.js';
 
 const props = defineProps<{
     filters: ProductFilters | null;
@@ -95,14 +92,17 @@ const props = defineProps<{
 
 const showSearchFiltersModal = ref(false);
 const showAddRemoveFilterModal = ref(false);
+const productFiltersData = ref(props.filters);
+const filteredData = ref([] as ProductFilters[]);
 
 const showFilters = ref(true);
 
-const filterData = computed<ProductFilters[]>(() => {
+const filterData = () => {
     const data: ProductFilters[] = [];
 
-    if (props.filters) {
-        const dataArray = Object.entries(props.filters);
+    if (productFiltersData.value) {
+        const dataArray = Object.entries(productFiltersData.value as unknown as ProductFilters);
+
         dataArray.forEach((item) => {
             const key = item[0];
             const value = item[1];
@@ -112,11 +112,18 @@ const filterData = computed<ProductFilters[]>(() => {
             });
         });
     }
-
-    return data;
-});
+    filteredData.value = data.slice(0, 11).splice(0);
+};
 
 const removeItem = (index: number) => {
-    filterData.value?.splice(index, 1);
+    filteredData.value.splice(index, 1);
 };
+
+filterData();
+
+Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
+    productFiltersData.value = value.products.filters;
+
+    filterData();
+});
 </script>

@@ -38,6 +38,7 @@ const filters = ref<ProductFilters | null>(null);
 
 async function getProduct(keyword: string) {
     const { data } = await fetchSearchProduct(keyword);
+
     products.value = data.value?.data as SearchData;
     filters.value = data.value?.data.filters as ProductFilters;
 }

@@ -332,8 +332,6 @@ const paginatedProductsList = ref(props.products?.items.items);
 const keywordRef = ref(route.query.keyword || '');
 const order = ref<1 | 0>(1);
 
-const emits = defineEmits(['page-change', 'per-page-change', 'active-sort']);
-
 const fetchAndSetProductsList = async (keyword, page: number, perPage: number, sort = {}) => {
     const data = await fetchSearchProduct(keyword, page, perPage, sort);
 
@@ -391,10 +389,10 @@ const handleSortChange = async () => {
     });
 };
 
-Emitter.on('product-keyword-change', async (keyword) => {
-    keywordRef.value = keyword;
+Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
+    keywordRef.value = value.keyword;
 
-    await fetchAndSetProductsList(keyword, atPage.value, perPage.value, activeSort.value);
+    await fetchAndSetProductsList(value.keyword, atPage.value, perPage.value, activeSort.value);
 });
 </script>
 

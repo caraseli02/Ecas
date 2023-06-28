@@ -44,8 +44,6 @@ defineProps({
 const searchVal = ref('');
 const isLoading = ref<boolean>(false);
 const productList = ref<ProductSearchItems[]>([]);
-const sort = ref('manufacturerCode');
-const order = ref(1);
 
 const onInput = _.debounce(async () => {
     productList.value = await searchProduct(searchVal.value);
@@ -63,7 +61,7 @@ const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<P
 
     const data = products.value as ProductSearchResponse;
 
-    Emitter.emit('product-keyword-change', keyword);
+    Emitter.emit('product-keyword-change', { keyword: keyword, products: data.data });
 
     return data.data.items.items;
 };

@@ -82,6 +82,16 @@ const props = defineProps<{
     filter: ProductFilters | null;
 }>();
 
+console.log('filter:', props.filter);
+
+watch(
+    [props.filter],
+    async ([item]) => {
+        console.log(item);
+    },
+    { immediate: true }
+);
+
 const searchValue = ref('');
 
 const options = ref([
@@ -123,12 +133,11 @@ const filterOptions = (filter: ProductFilters): FilterOptions[] => {
     const keys = Object.keys(filter)[0];
     const filtered = filter[keys].filter((item) => item.FeatureName === keys) || [];
 
-    const data: FilterOptions[] = filtered?.map((item) => ({
+    return filtered.map((item) => ({
         value: item.FeatureValue,
         unit: item.FeatureUnit,
         checked: false,
     }));
-    return data;
 };
 
 const FeatureID = computed(() => {
@@ -147,7 +156,7 @@ const handleAll = () => {
     options.value = options.value?.map((e) => {
         return {
             ...e,
-            checked: selectedAll.value ? false : true,
+            checked: !selectedAll.value,
         };
     });
 };
