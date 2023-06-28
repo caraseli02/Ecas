@@ -181,8 +181,7 @@
                     class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
                     @click="
                                         perPage = option;
-                                        showPerPageOptions = false;
-                                        handlePerPageChange(option)
+                                        showPerPageOptions = false
                                     "
                 >
                   {{ option }}
@@ -215,7 +214,6 @@
               :page-count="totalPages"
               :page-range="3"
               :hide-prev-next="true"
-              @click="handlePageChange(atPage)"
               page-link-class="searchProducts--pagination-item"
               prev-link-class="searchProducts--pagination-item_prev cursor-pointer text-mainPurple font-medium px-2"
               next-link-class="searchProducts--pagination-item_next cursor-pointer text-mainPurple font-medium px-2"
@@ -417,14 +415,6 @@ const order = ref<1 | 0>(1);
 
 const emits = defineEmits(["page-change", "per-page-change", "active-sort"]);
 
-const handlePageChange = (e: number) => {
-  emits("page-change", e);
-};
-
-const handlePerPageChange = (e: number) => {
-  emits("per-page-change", e);
-};
-
 const fetchAndSetProductsList = async (keyword, page: number, perPage: number, sort = {}) => {
   const data = await fetchSearchProduct(keyword, page, perPage, sort);
 
@@ -453,20 +443,23 @@ const fetchAndSetProductsList = async (keyword, page: number, perPage: number, s
 
 await fetchAndSetProductsList(keywordRef, atPage.value, perPage.value, activeSort.value);
 
-watch([atPage, perPage, activeSort], async([_atPage, _perPage, _activeSort]) => {
+watch([atPage, perPage], async([_atPage, _perPage]) => {
   if (_perPage > totalItems) {
     _atPage = 1;
   }
 
-  await fetchAndSetProductsList(keywordRef.value, _atPage, _perPage, _activeSort);
+  await fetchAndSetProductsList(keywordRef.value, _atPage, _perPage, {sortBy: sortBy.value.name, sortOrder: order.value === 0 ? 'desc' : 'asc'});
 }, {deep: true})
 
-const handleSortOrderChange = () => {
-  Emitter.emit('product-sort-change', {sortBy: sortBy.value.name, order: order.value});
+const handleSortOrderChange = async () => {
+  await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, {sortBy: sortBy.value.name, sortOrder: order.value === 0 ? 'desc' : 'asc'});
 }
 
-const handleSortChange = () => {
-  Emitter.emit('product-sort-change', {sortBy: sortBy.value.name, order: order.value});
+const handleSortChange = async () => {
+  await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, {
+    sortBy: sortBy.value.name,
+    sortOrder: order.value === 0 ? 'desc' : 'asc'
+  });
 }
 
 Emitter.on('product-keyword-change', async (keyword) => {
