@@ -1,9 +1,11 @@
 <template>
   <div class="flex flex-col bg-white rounded-xl p-4 shadow-xs md:p-6">
-    <div class="leading-normal font-semibold mb-4 md:mb-6 xl:mb-10">
-      Customers by Country
+    <div class="flex items-center justify-between mb-4 md:mb-6 xl:mb-10">
+      <div class="leading-normal font-semibold">Customers by Country</div>
+      <WarningIcon v-if="error" class="w-6 h-6" />
     </div>
     <div
+      v-if="countries.length > 0"
       class="grid grid-cols-1 md:grid-cols-[auto,auto] md:justify-between xl:flex-1"
     >
       <div class="md:col-start-1 md:row-start-1 md:mr-[60px] xl:mr-10">
@@ -92,10 +94,19 @@
         </div>
       </div>
     </div>
+    <div v-else class="flex flex-col items-center justify-center flex-1">
+      <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+      <div class="text-sm font-medium leading-normal text-gray-100">
+        No data available
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import EmojiSadIcon from "@/assets/icons/dashboard/emoji-sad.svg";
+import WarningIcon from "@/assets/icons/dashboard/warning.svg";
+
 const countries = [
   {
     label: "United States",
@@ -133,4 +144,6 @@ const countryWithMostCustomers = computed(() => {
 
   return highestCountCountry;
 });
+
+const error = ref(false);
 </script>
