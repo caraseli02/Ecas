@@ -174,7 +174,7 @@
                                 "
               >
                 <button
-                    v-for="option in [5, 20, 50, 100].filter(
+                    v-for="option in [5, 10, 20, 50, 100].filter(
                                         (e) => e !== perPage
                                     )"
                     :key="option"
@@ -288,7 +288,7 @@
                                 "
               >
                 <button
-                    v-for="option in [5, 20, 50, 100].filter(
+                    v-for="option in [5, 10, 20, 50, 100].filter(
                                         (e) => e !== perPage
                                     )"
                     :key="option"
