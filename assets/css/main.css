@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 html {
-  @apply overflow-x-hidden;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    @apply overflow-x-hidden;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 body {
-  @apply font-Poppins bg-white text-dark overflow-x-hidden;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    @apply font-Poppins bg-white text-dark overflow-x-hidden;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 html.mobile-prevent-scroll,
 body.mobile-prevent-scroll {
-  @apply overflow-y-hidden md:overflow-y-auto;
+    @apply overflow-y-hidden md:overflow-y-auto;
 }

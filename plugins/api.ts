@@ -6,16 +6,15 @@ import UserService from '~/services/user.service';
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
-    product: ProductService
-    auth: AuthService
-    user: UserService
+    product: ProductService;
+    auth: AuthService;
+    user: UserService;
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
-
     const fetchOptions: FetchOptions = {
         baseURL: nuxtApp.$config.public.BASE_URL_API,
-    }
+    };
 
     /** create a new instance of $fetcher with custom option */
     const apiFetcher = $fetch.create(fetchOptions);
@@ -24,7 +23,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     const modules: IApiInstance = {
         product: new ProductService(apiFetcher),
         auth: new AuthService(apiFetcher),
-        user: new UserService(apiFetcher)
+        user: new UserService(apiFetcher),
     };
 
     return {

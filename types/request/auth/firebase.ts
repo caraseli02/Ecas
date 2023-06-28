@@ -1,64 +1,64 @@
 export interface FirebasePersonalAccount {
-  account: PersonalAccount;
-  isAlreadyRegisteredWithFirebase?: boolean;
+    account: PersonalAccount;
+    isAlreadyRegisteredWithFirebase?: boolean;
 }
 
 export interface FirebaseBusinessAccount {
-  account: BusinessAccount;
-  isAlreadyRegisteredWithFirebase?: boolean;
+    account: BusinessAccount;
+    isAlreadyRegisteredWithFirebase?: boolean;
 }
 
 interface BusinessAccount {
-  accountType: number;
-  role: number;
-  firebaseId?: string;
-  profileDetails: ProfileDetails;
-  contactDetails: ContactDetails;
-  companyDetails: CompanyDetails;
+    accountType: number;
+    role: number;
+    firebaseId?: string;
+    profileDetails: ProfileDetails;
+    contactDetails: ContactDetails;
+    companyDetails: CompanyDetails;
 }
 
 interface PersonalAccount {
-  accountType: number;
-  role: number;
-  firebaseId?: string;
-  profileDetails: ProfileDetails;
-  contactDetails: ContactDetails;
-  personalDetails: PersonalDetails;
+    accountType: number;
+    role: number;
+    firebaseId?: string;
+    profileDetails: ProfileDetails;
+    contactDetails: ContactDetails;
+    personalDetails: PersonalDetails;
 }
 
 interface PersonalDetails {
-  firstName: string,
-  lastName: string,
-  country: string,
-  region: string,
-  city: string,
-  postcode: number,
-  address: {
-    name1: string,
-    name2: string,
-    default: true
-  }[]
+    firstName: string;
+    lastName: string;
+    country: string;
+    region: string;
+    city: string;
+    postcode: number;
+    address: {
+        name1: string;
+        name2: string;
+        default: true;
+    }[];
 }
 
 interface CompanyDetails {
-  name: string;
-  registrationNumber: number;
-  vat: string;
-  country: string;
-  region: string;
-  city: string;
-  postcode: number;
-  address1: string;
+    name: string;
+    registrationNumber: number;
+    vat: string;
+    country: string;
+    region: string;
+    city: string;
+    postcode: number;
+    address1: string;
 }
 
 interface ProfileDetails {
-  email: string;
-  password?: string;
+    email: string;
+    password?: string;
 }
 
 interface ContactDetails {
-  firstName: string;
-  lastName: string;
-  phone: number;
-  email: string;
+    firstName: string;
+    lastName: string;
+    phone: number;
+    email: string;
 }

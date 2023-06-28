@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import CheckIcon from "@/assets/icons/check.svg";
-import { SearchSimilarProductRequest } from "~/model/products/request/SearchSimilarProductRequest";
-import { ProductParametricDataFeaturesInterface } from "~/model/products/response/ProductResponse";
+import CheckIcon from '@/assets/icons/check.svg';
+import { SearchSimilarProductRequest } from '~/model/products/request/SearchSimilarProductRequest';
+import { ProductParametricDataFeaturesInterface } from '~/model/products/response/ProductResponse';
 const { $api } = useNuxtApp();
 
 const elDOM = ref<HTMLElement | null>(null);
 const isLoading = ref<boolean>(false);
 
-const filters = ref(["Specifications", "Tab 2", "Tab 3"]);
-const activeFilter = ref("specifications");
+const filters = ref(['Specifications', 'Tab 2', 'Tab 3']);
+const activeFilter = ref('specifications');
 const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
 
@@ -27,9 +27,7 @@ const totalSimilarProducts = ref<number>(0);
 
 const setFilterLine = () => {
     if (elDOM.value) {
-        const activeFilterEl = elDOM.value.querySelector(
-            `[data-tab=${activeFilter.value}]`
-        ) as HTMLButtonElement;
+        const activeFilterEl = elDOM.value.querySelector(`[data-tab=${activeFilter.value}]`) as HTMLButtonElement;
 
         if (activeFilterEl) {
             const rect = activeFilterEl.getBoundingClientRect();
@@ -53,7 +51,7 @@ const searchSimilarProducts = async () => {
     const payload: SearchSimilarProductRequest = {
         filters: features.filter((item) => item.checked),
     };
-    let { data } = await $api.product.fetchProductByCriteria(payload);
+    const { data } = await $api.product.fetchProductByCriteria(payload);
     totalSimilarProducts.value = data.count;
     isLoading.value = false;
 };
@@ -64,27 +62,18 @@ onMounted(() => {
 </script>
 
 <template>
-    <div
-        ref="elDOM"
-        class="relative bg-white rounded-md font-Inter pt-7 pb-[25px] shadow-card md:py-[15px]"
-    >
+    <div ref="elDOM" class="relative bg-white rounded-md font-Inter pt-7 pb-[25px] shadow-card md:py-[15px]">
         <div
             class="flex flex-col items-center mb-[30px] md:flex-row md:justify-between md:items-end md:mb-10 md:border-b md:border-gray-200 md:px-[15px] lg:px-5"
         >
-            <div
-                class="border-b border-gray-200 w-full px-[15px] mb-[30px] md:px-0 md:mb-0 md:border-b-0"
-            >
+            <div class="border-b border-gray-200 w-full px-[15px] mb-[30px] md:px-0 md:mb-0 md:border-b-0">
                 <div class="relative flex items-center gap-[15px]">
                     <button
                         v-for="(filter, index) in filters"
                         :key="index"
                         :data-tab="textUtil.slugify(filter)"
                         class="relative font-medium pb-5 transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
-                        :class="[
-                            activeFilter === textUtil.slugify(filter)
-                                ? 'text-blue'
-                                : 'text-gray-300 after:opacity-0',
-                        ]"
+                        :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue' : 'text-gray-300 after:opacity-0']"
                         @click="setActiveFilter(filter)"
                     >
                         {{ filter }}
@@ -100,22 +89,18 @@ onMounted(() => {
             </div>
             <button
                 :disabled="isLoading"
-                @click="searchSimilarProducts"
                 class="flex bg-gray-300 px-[22px] py-[11px] rounded text-sm font-medium text-white flex-shrink-0 md:mb-[15px]"
                 :class="{ 'bg-gray-400': isLoading }"
+                @click="searchSimilarProducts"
             >
                 <span v-if="isLoading"> Loading... </span>
-                <span v-else>
-                    Show similar products ({{ totalSimilarProducts }})
-                </span>
+                <span v-else> Show similar products ({{ totalSimilarProducts }}) </span>
             </button>
         </div>
         <div class="mb-[25px]">
             <table class="w-full">
                 <tr
-                    v-for="(item, index) in features.filter(
-                        (feature) => feature.FeatureValue != ''
-                    )"
+                    v-for="(item, index) in features.filter((feature) => feature.FeatureValue != '')"
                     :key="index"
                     class="group w-full text-xs leading-tight font-medium font-Inter text-left cursor-pointer transition-colors duration-300 odd:bg-[#F2F2F2] hover:text-blue"
                     @click="item.checked = !item.checked"
@@ -129,16 +114,9 @@ onMounted(() => {
                     <td class="flex justify-end pr-[15px] py-1 lg:pr-5">
                         <div
                             class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300"
-                            :class="[
-                                item.checked
-                                    ? 'bg-blue border-blue'
-                                    : 'border-border group-hover:border-gray-300',
-                            ]"
+                            :class="[item.checked ? 'bg-blue border-blue' : 'border-border group-hover:border-gray-300']"
                         >
-                            <CheckIcon
-                                v-if="item.checked"
-                                class="w-4 text-white"
-                            />
+                            <CheckIcon v-if="item.checked" class="w-4 text-white" />
                         </div>
                     </td>
                 </tr>
@@ -147,14 +125,12 @@ onMounted(() => {
         <div class="flex justify-center px-[15px] md:justify-end lg:px-5">
             <button
                 :disabled="isLoading"
-                @click="searchSimilarProducts"
                 class="flex bg-gray-300 px-[22px] py-[11px] rounded text-sm font-medium text-white"
                 :class="{ 'bg-gray-400': isLoading }"
+                @click="searchSimilarProducts"
             >
                 <span v-if="isLoading"> Loading... </span>
-                <span v-else>
-                    Show similar products ({{ totalSimilarProducts }})
-                </span>
+                <span v-else> Show similar products ({{ totalSimilarProducts }}) </span>
             </button>
         </div>
     </div>

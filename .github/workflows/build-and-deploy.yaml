@@ -3,120 +3,118 @@ name: CI
 # 1
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push events but only for the main branch
-  push:
-    branches-ignore: [ main ]
+    # Triggers the workflow on push events but only for the main branch
+    push:
+        branches-ignore: [main]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Image version'
-        required: true
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+        inputs:
+            version:
+                description: 'Image version'
+                required: true
 #2
 env:
-  REGISTRY: "registry.digitalocean.com/ecas-dev"
-  IMAGE_NAME: "dev-frontend"
-
+    REGISTRY: 'registry.digitalocean.com/ecas-dev'
+    IMAGE_NAME: 'dev-frontend'
 
 #3
 jobs:
-  check_branch_name:
-    name: 1) valid branch name
-    runs-on: ubuntu-latest
-    steps:
-      - uses: deepakputhraya/action-branch-name@master
-        with:
-          regex: '(ft|fx)_([a-z_0-9]+)'
+    check_branch_name:
+        name: 1) valid branch name
+        runs-on: ubuntu-latest
+        steps:
+            - uses: deepakputhraya/action-branch-name@master
+              with:
+                  regex: '(ft|fx)_([a-z_0-9]+)'
 
-  create_draft_pr:
-    name: 2) create the draft pull request
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-        with:
-          python-version: '3.x'
-      - run:
-          pip3 install -r .github/helpers/requirements.txt
-      - run: python .github/helpers/create_pull_request.py "${{secrets.GH_TOKEN}}" "${{github.repository}}" "${{github.ref}}" "${{github.actor}}"
+    create_draft_pr:
+        name: 2) create the draft pull request
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-python@v3
+              with:
+                  python-version: '3.x'
+            - run: pip3 install -r .github/helpers/requirements.txt
+            - run: python .github/helpers/create_pull_request.py "${{secrets.GH_TOKEN}}" "${{github.repository}}" "${{github.ref}}" "${{github.actor}}"
 
-  build_and_push:
-    runs-on: ubuntu-latest
-    needs: create_draft_pr
-    steps:
-      - uses: actions/github-script@v6
-        id: get_issue_number
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          script: |
-            if (context.issue.number) {
-              // Return issue number if present
-              return context.issue.number;
-            } else {
-              // Otherwise return issue number from commit
-              return (
-                await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                  commit_sha: context.sha,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                })
-              ).data[0].number;
-            }
-          result-encoding: string
+    build_and_push:
+        runs-on: ubuntu-latest
+        needs: create_draft_pr
+        steps:
+            - uses: actions/github-script@v6
+              id: get_issue_number
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+              with:
+                  script: |
+                      if (context.issue.number) {
+                        // Return issue number if present
+                        return context.issue.number;
+                      } else {
+                        // Otherwise return issue number from commit
+                        return (
+                          await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                            commit_sha: context.sha,
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                          })
+                        ).data[0].number;
+                      }
+                  result-encoding: string
 
-      - name: get pull request ref
-        id: get_pull_request_ref
-        uses: octokit/request-action@v2.x
-        with:
-          route: GET /repos/:repository/pulls/:issue_id
-          repository: ${{ github.repository }}
-          issue_id: ${{steps.get_issue_number.outputs.result}}
-        env:
-          GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+            - name: get pull request ref
+              id: get_pull_request_ref
+              uses: octokit/request-action@v2.x
+              with:
+                  route: GET /repos/:repository/pulls/:issue_id
+                  repository: ${{ github.repository }}
+                  issue_id: ${{steps.get_issue_number.outputs.result}}
+              env:
+                  GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
 
-      - name: Checkout the repo
-        uses: actions/checkout@v2
+            - name: Checkout the repo
+              uses: actions/checkout@v2
 
-      - name: Build container image
-        env:
-          FIREBASE_SERVICE_ACCOUNT_JSON: ${{secrets.FIREBASE_SERVICE_ACCOUNT_JSON}}
-          FIREBASE_API_KEY: ${{secrets.FIREBASE_API_KEY}}
-          FIREBASE_AUTH_DOMAIN: ${{secrets.FIREBASE_AUTH_DOMAIN}}
-          FIREBASE_PROJECT_ID: ${{secrets.FIREBASE_PROJECT_ID}}
-          FIREBASE_STORAGE_BUCKET: ${{secrets.FIREBASE_STORAGE_BUCKET}}
-          FIREBASE_MESSAGE_SENDER_ID: ${{secrets.FIREBASE_MESSAGE_SENDER_ID}}
-          FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
-          FIREBASE_MEASUREMENT_ID: ${{secrets.FIREBASE_MEASUREMENT_ID}}
-          BASE_URL_API: ${{secrets.BASE_URL_API}}
-          REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
-          SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
-        run: >
-          docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo $FIREBASE_SERVICE_ACCOUNT_JSON) 
-          --build-arg NUXT_FIREBASE_API_KEY=$(echo $FIREBASE_API_KEY) 
-          --build-arg NUXT_FIREBASE_AUTH_DOMAIN=$(echo $FIREBASE_AUTH_DOMAIN) 
-          --build-arg NUXT_FIREBASE_PROJECT_ID=$(echo $FIREBASE_PROJECT_ID) 
-          --build-arg NUXT_FIREBASE_STORAGE_BUCKET=$(echo $FIREBASE_STORAGE_BUCKET) 
-          --build-arg NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo $FIREBASE_MESSAGE_SENDER_ID) 
-          --build-arg NUXT_FIREBASE_APP_ID=$(echo $FIREBASE_APP_ID) 
-          --build-arg NUXT_FIREBASE_MEASUREMENT_ID=$(echo $FIREBASE_MEASUREMENT_ID) 
-          --build-arg NUXT_PUBLIC_BASE_URL_API=$(echo $BASE_URL_API) 
-          -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
+            - name: Build container image
+              env:
+                  FIREBASE_SERVICE_ACCOUNT_JSON: ${{secrets.FIREBASE_SERVICE_ACCOUNT_JSON}}
+                  FIREBASE_API_KEY: ${{secrets.FIREBASE_API_KEY}}
+                  FIREBASE_AUTH_DOMAIN: ${{secrets.FIREBASE_AUTH_DOMAIN}}
+                  FIREBASE_PROJECT_ID: ${{secrets.FIREBASE_PROJECT_ID}}
+                  FIREBASE_STORAGE_BUCKET: ${{secrets.FIREBASE_STORAGE_BUCKET}}
+                  FIREBASE_MESSAGE_SENDER_ID: ${{secrets.FIREBASE_MESSAGE_SENDER_ID}}
+                  FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
+                  FIREBASE_MEASUREMENT_ID: ${{secrets.FIREBASE_MEASUREMENT_ID}}
+                  BASE_URL_API: ${{secrets.BASE_URL_API}}
+                  REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
+                  SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
+              run: >
+                  docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo $FIREBASE_SERVICE_ACCOUNT_JSON) 
+                  --build-arg NUXT_FIREBASE_API_KEY=$(echo $FIREBASE_API_KEY) 
+                  --build-arg NUXT_FIREBASE_AUTH_DOMAIN=$(echo $FIREBASE_AUTH_DOMAIN) 
+                  --build-arg NUXT_FIREBASE_PROJECT_ID=$(echo $FIREBASE_PROJECT_ID) 
+                  --build-arg NUXT_FIREBASE_STORAGE_BUCKET=$(echo $FIREBASE_STORAGE_BUCKET) 
+                  --build-arg NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo $FIREBASE_MESSAGE_SENDER_ID) 
+                  --build-arg NUXT_FIREBASE_APP_ID=$(echo $FIREBASE_APP_ID) 
+                  --build-arg NUXT_FIREBASE_MEASUREMENT_ID=$(echo $FIREBASE_MEASUREMENT_ID) 
+                  --build-arg NUXT_PUBLIC_BASE_URL_API=$(echo $BASE_URL_API) 
+                  -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
 
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+            - name: Install doctl
+              uses: digitalocean/action-doctl@v2
+              with:
+                  token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Log in to DigitalOcean Container Registry with short-lived credentials
-        run: doctl registry login --expiry-seconds 600
+            - name: Log in to DigitalOcean Container Registry with short-lived credentials
+              run: doctl registry login --expiry-seconds 600
 
-#      - name: Remove all old images
-#        run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME) $(doctl registry repository list-tags $(echo $IMAGE_NAME) | grep -o "sha.*") --force; else echo "No repository"; fi
+            #      - name: Remove all old images
+            #        run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME) $(doctl registry repository list-tags $(echo $IMAGE_NAME) | grep -o "sha.*") --force; else echo "No repository"; fi
 
-      - name: Push image to DigitalOcean Container Registry
-        run: docker push  $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
-        env:
-          REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
-          SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
+            - name: Push image to DigitalOcean Container Registry
+              run: docker push  $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
+              env:
+                  REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
+                  SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}

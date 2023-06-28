@@ -1,22 +1,22 @@
-import {AddressInterface, PersonalDetails} from "~/model/dashboard/response/CustomerInterfaceResponse";
-import {AccountRole} from "~/types";
+import { AddressInterface, PersonalDetails } from '~/model/dashboard/response/CustomerInterfaceResponse';
+import { AccountRole } from '~/types';
 
 export interface UserDetails {
-    _id: string
-    accountType?: number
-    role: AccountRole
-    firebaseId: string
-    active: boolean
-    ordersCount: number
-    spent: number
-    contactDetails: ContactDetails
-    profileDetails: ProfileDetails
-    companyDetails?: CompanyDetails
-    personalDetails?: PersonalDetails
-    createdAt: string
-    updatedAt: string
+    _id: string;
+    accountType?: number;
+    role: AccountRole;
+    firebaseId: string;
+    active: boolean;
+    ordersCount: number;
+    spent: number;
+    contactDetails: ContactDetails;
+    profileDetails: ProfileDetails;
+    companyDetails?: CompanyDetails;
+    personalDetails?: PersonalDetails;
+    createdAt: string;
+    updatedAt: string;
     currentStatus?: 'online' | 'offline';
-    __v: number
+    __v: number;
 }
 
 export interface PersonalDetails {
@@ -30,29 +30,29 @@ export interface PersonalDetails {
 }
 
 interface ContactDetails {
-    firstName: string
-    lastName: string
-    phone: number
-    mobile?: number
-    email: string
-    _id: string
+    firstName: string;
+    lastName: string;
+    phone: number;
+    mobile?: number;
+    email: string;
+    _id: string;
 }
 
 interface ProfileDetails {
-    email: string
-    _id: string
+    email: string;
+    _id: string;
 }
 
 interface CompanyDetails {
-    name: string
-    registrationNumber: string
-    vat?: string
-    region: string
-    country: string
-    city: string
-    postcode: string
+    name: string;
+    registrationNumber: string;
+    vat?: string;
+    region: string;
+    country: string;
+    city: string;
+    postcode: string;
     address: AddressInterface[];
-    _id: string
+    _id: string;
 }
 
 export interface AddressInterface {

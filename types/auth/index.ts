@@ -1,1 +1,1 @@
-export * from './user-info-jwt'
+export * from './user-info-jwt';

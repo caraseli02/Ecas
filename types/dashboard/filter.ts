@@ -1,4 +1,4 @@
-export enum FilterLabelsEnum{
+export enum FilterLabelsEnum {
     accountType = 'Account type',
     companyName = 'Company',
     startDate = 'Start date',
@@ -10,5 +10,5 @@ export enum FilterLabelsEnum{
     email = 'Email',
     country = 'Country',
 
-    combinedName = 'Name'
+    combinedName = 'Name',
 }

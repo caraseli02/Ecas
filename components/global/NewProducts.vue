@@ -1,11 +1,9 @@
 <template>
     <section ref="elDOM" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
         <div class="container">
-            <div
-                class="flex items-start justify-between border-b border-gray-200 mb-4 md:mb-[26px] xl:mb-9"
-            >
+            <div class="flex items-start justify-between border-b border-gray-200 mb-4 md:mb-[26px] xl:mb-9">
                 <h2 class="hidden text-xl font-semibold md:block">
-                    {{ title || "New Products" }}
+                    {{ title || 'New Products' }}
                 </h2>
                 <div class="relative flex items-center gap-2.5 md:gap-5">
                     <button
@@ -13,11 +11,7 @@
                         :key="index"
                         :data-tab="textUtil.slugify(filter)"
                         class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
-                        :class="[
-                            activeFilter === textUtil.slugify(filter)
-                                ? 'text-blue'
-                                : 'text-gray-300 after:opacity-0',
-                        ]"
+                        :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue' : 'text-gray-300 after:opacity-0']"
                         @click="setActiveFilter(filter)"
                     >
                         {{ filter }}
@@ -73,7 +67,7 @@
                 </SwiperSlide>
             </Swiper>
 
-            <div class="px-1 md:pt-1 md:pr-0" v-else>
+            <div v-else class="px-1 md:pt-1 md:pr-0">
                 <div
                     class="flex items-center content-center justify-center bg-white rounded-md flex-row pl-[15px] pr-5 pt-7 pb-[34px] mb-3 md:w-full md:px-[15px] md:py-12 md:h-[calc(100%-30px)] lg:px-[21px] lg:pt-[30px] xl:w-full xl:px-2 xl:pt-[15px]"
                 >
@@ -85,8 +79,8 @@
 </template>
 
 <script setup lang="ts">
-import { A11y, Pagination, Grid } from "swiper";
-import { ProductCard as ProductCardType } from "~~/types";
+import { A11y, Pagination, Grid } from 'swiper';
+import { ProductCard as ProductCardType } from '~~/types';
 const { $api } = useNuxtApp();
 
 defineProps({
@@ -111,16 +105,14 @@ const productsMD = computed(() => {
     return chunkedArray;
 });
 
-const filters = ["Featured", "Best Sellers", "Hot Deals", "Top Searched"];
-const activeFilter = ref("featured");
+const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
+const activeFilter = ref('featured');
 const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
 
 const setFilterLine = () => {
     if (elDOM.value) {
-        const activeFilterEl = elDOM.value.querySelector(
-            `[data-tab=${activeFilter.value}]`
-        ) as HTMLButtonElement;
+        const activeFilterEl = elDOM.value.querySelector(`[data-tab=${activeFilter.value}]`) as HTMLButtonElement;
 
         if (activeFilterEl) {
             const rect = activeFilterEl.getBoundingClientRect();
@@ -151,8 +143,8 @@ const fetchNewProducts = async () => {
         products.value?.push({
             slug: item._id,
             title: item.alias,
-            category: "Not Supported",
-            price: new Intl.NumberFormat("en-US", {
+            category: 'Not Supported',
+            price: new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 3,
             }).format(item.priceEur),
             discount: 0,
@@ -181,8 +173,7 @@ const fetchNewProducts = async () => {
     margin-right: 0 !important;
 }
 
-.homeProducts--swiper
-    .swiper-pagination-bullet.swiper-pagination-bullet-active {
+.homeProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
     @apply w-[25px] bg-gray-100 #{!important};
 }
 </style>

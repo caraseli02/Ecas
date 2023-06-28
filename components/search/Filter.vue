@@ -2,9 +2,7 @@
     <div class="flex flex-col bg-white rounded-md shadow-card">
         <div class="flex items-start justify-between p-2.5">
             <div class="font-Inter">
-                <div
-                    class="text-xs font-semibold leading-tight truncate w-[140px] mb-[5px]"
-                >
+                <div class="text-xs font-semibold leading-tight truncate w-[140px] mb-[5px]">
                     {{ FeatureName }}
                 </div>
                 <div class="text-xs leading-tight">({{ FeatureName }})</div>
@@ -24,28 +22,18 @@
                     placeholder="Type here"
                     class="w-full border border-border bg-white rounded px-2.5 pt-[5px] pb-1.5 pr-10 text-xs placeholder:text-gray-100 transition-colors duration-300 focus:outline-none focus:border-blue"
                 />
-                <FiltersIcon
-                    class="absolute top-1/2 -translate-y-1/2 right-2.5 w-5 h-5 text-gray-100"
-                />
+                <FiltersIcon class="absolute top-1/2 -translate-y-1/2 right-2.5 w-5 h-5 text-gray-100" />
             </label>
         </div>
         <div class="flex-1 pr-[5px]">
-            <div
-                class="grid grid-cols-1 gap-2 flex-1 max-h-[115px] overflow-y-auto scrollbar-thin pb-[13px]"
-            >
+            <div class="grid grid-cols-1 gap-2 flex-1 max-h-[115px] overflow-y-auto scrollbar-thin pb-[13px]">
                 <label
                     v-for="(option, index) in filterOptions(filter)"
                     :key="index"
                     class="group flex items-start justify-between cursor-pointer px-2.5"
                 >
-                    <input
-                        v-model="option.checked"
-                        type="checkbox"
-                        class="sr-only"
-                    />
-                    <span
-                        class="text-xs font-Inter transition-colors duration-300 group-hover:text-blue"
-                    >
+                    <input v-model="option.checked" type="checkbox" class="sr-only" />
+                    <span class="text-xs font-Inter transition-colors duration-300 group-hover:text-blue">
                         {{ useTrimText(option.value + option.unit) }}
                     </span>
                     <div
@@ -56,48 +44,33 @@
                                 : 'bg-white  border-border group-hover:border-gray-300',
                         ]"
                     >
-                        <CheckIcon
-                            v-if="option.checked"
-                            class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
-                        />
+                        <CheckIcon v-if="option.checked" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
                     </div>
                 </label>
             </div>
         </div>
-        <button
-            class="group flex items-center justify-between bg-gray-200 pr-[15px] py-2 pl-2.5"
-            @click="handleAll"
-        >
-            <span
-                class="text-xs transition-colors duration-300 group-hover:text-blue"
-            >
-                {{ selectedAll ? "Unselect All" : "Select All" }}
+        <button class="group flex items-center justify-between bg-gray-200 pr-[15px] py-2 pl-2.5" @click="handleAll">
+            <span class="text-xs transition-colors duration-300 group-hover:text-blue">
+                {{ selectedAll ? 'Unselect All' : 'Select All' }}
             </span>
             <div
                 class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300"
-                :class="[
-                    selectedAll
-                        ? 'bg-blue border-blue group-hover:bg-white'
-                        : 'bg-white  border-border group-hover:border-gray-300',
-                ]"
+                :class="[selectedAll ? 'bg-blue border-blue group-hover:bg-white' : 'bg-white  border-border group-hover:border-gray-300']"
             >
-                <CheckIcon
-                    v-if="selectedAll"
-                    class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
-                />
+                <CheckIcon v-if="selectedAll" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
             </div>
         </button>
     </div>
 </template>
 
 <script setup lang="ts">
-import FiltersIcon from "@/assets/icons/filters.svg";
-import CheckIcon from "@/assets/icons/check.svg";
-import XIcon from "@/assets/icons/x.svg";
-import { useTrimText } from "@/composables/text";
-import { ProductFilters } from "~/model/products/response/ProductSearchResponse";
+import FiltersIcon from '@/assets/icons/filters.svg';
+import CheckIcon from '@/assets/icons/check.svg';
+import XIcon from '@/assets/icons/x.svg';
+import { useTrimText } from '@/composables/text';
+import { ProductFilters } from '~/model/products/response/ProductSearchResponse';
 
-defineEmits(["close"]);
+defineEmits(['close']);
 
 interface FilterOptions {
     value: string;
@@ -109,36 +82,36 @@ const props = defineProps<{
     filter: ProductFilters | null;
 }>();
 
-const searchValue = ref("");
+const searchValue = ref('');
 
 const options = ref([
     {
-        label: "Micro Comercial Components",
+        label: 'Micro Comercial Components',
         quantity: 17897,
         checked: false,
     },
     {
-        label: "Manufacturer1",
+        label: 'Manufacturer1',
         quantity: 17897,
         checked: true,
     },
     {
-        label: "Manufacturer2",
+        label: 'Manufacturer2',
         quantity: 17897,
         checked: false,
     },
     {
-        label: "Manufacturer3",
+        label: 'Manufacturer3',
         quantity: 17897,
         checked: true,
     },
     {
-        label: "Manufacturer4",
+        label: 'Manufacturer4',
         quantity: 17897,
         checked: false,
     },
     {
-        label: "Micro Comercial Components",
+        label: 'Micro Comercial Components',
         quantity: 17897,
         checked: false,
     },
@@ -147,10 +120,10 @@ const options = ref([
 const filter = ref(props.filter);
 
 const filterOptions = (filter: ProductFilters): FilterOptions[] => {
-    let keys = Object.keys(filter)[0];
-    let filtered = filter[keys].filter((item) => item.FeatureName === keys) || [];
+    const keys = Object.keys(filter)[0];
+    const filtered = filter[keys].filter((item) => item.FeatureName === keys) || [];
 
-    let data: FilterOptions[] = filtered?.map((item) => ({
+    const data: FilterOptions[] = filtered?.map((item) => ({
         value: item.FeatureValue,
         unit: item.FeatureUnit,
         checked: false,
@@ -163,7 +136,7 @@ const FeatureID = computed(() => {
 });
 
 const FeatureName = computed(() => {
-  return Object.keys(filter.value)[0];
+    return Object.keys(filter.value)[0];
 });
 
 const selectedAll = computed(() => {

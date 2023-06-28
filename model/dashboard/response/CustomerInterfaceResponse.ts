@@ -1,4 +1,4 @@
-import {UserDetails} from "~/types/auth/user-details";
+import { UserDetails } from '~/types/auth/user-details';
 
 export interface PaginatedCustomersInterface {
     status: string;
@@ -6,26 +6,26 @@ export interface PaginatedCustomersInterface {
         total_items: number;
         page_count: number;
         page: number;
-        items: UserDetails[]
-    }
+        items: UserDetails[];
+    };
 }
 
 export interface TotalCustomersInterface {
     status: string;
     data: {
         series: {
-            data: number[]
+            data: number[];
         }[];
         total: number;
         delta: number;
-    }
+    };
 }
 
-export interface ReturningCustomersInterface extends TotalCustomersInterface {}
+export type ReturningCustomersInterface = TotalCustomersInterface;
 
 export interface NewCustomersInterface {
     status: string;
-    data: UserDetails[]
+    data: UserDetails[];
 }
 
 export interface CustomersByCountryInterface {

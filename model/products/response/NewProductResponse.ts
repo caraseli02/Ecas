@@ -1,6 +1,6 @@
-import { NewProducts } from "../NewProducts";
+import { NewProducts } from '../NewProducts';
 
 export interface NewProductResponse {
-    data: [NewProducts]
-    status: string
+    data: [NewProducts];
+    status: string;
 }
