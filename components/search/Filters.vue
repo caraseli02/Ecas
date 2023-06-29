@@ -34,8 +34,12 @@
             </div>
             <Transition name="slide-from-bottom">
                 <div v-if="showFilters" class="hidden grid-cols-3 gap-5 mt-5 md:grid lg:grid-cols-4 xl:grid-cols-6">
-                    {{ filteredData[0] }}
-                    <SearchFilter v-for="(filter, index) in filteredData" :key="index" :filter="filter" @close="removeItem(index)" />
+                    <SearchFilter
+                        v-for="(filter, index) in filteredData"
+                        :key="getFilterSlug(filter)"
+                        :filter="filter"
+                        @close="removeItem(index)"
+                    />
                     <div class="flex flex-col items-center pt-[60px] pb-10">
                         <div class="text-sm font-medium text-gray-300 mb-5">Add/Remove Filter</div>
                         <button
@@ -117,6 +121,10 @@ const filterData = () => {
 
 const removeItem = (index: number) => {
     filteredData.value.splice(index, 1);
+};
+
+const getFilterSlug = (filter: ProductFilters) => {
+    return filter[Object.keys(filter)[0]][0].FeatureID;
 };
 
 filterData();
