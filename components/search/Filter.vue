@@ -82,16 +82,6 @@ const props = defineProps<{
     filter: ProductFilters | null;
 }>();
 
-console.log('filter:', props.filter);
-
-watch(
-    [props.filter],
-    async ([item]) => {
-        console.log(item);
-    },
-    { immediate: true }
-);
-
 const searchValue = ref('');
 
 const options = ref([

@@ -1,7 +1,7 @@
 <template>
     <div>
         <SearchBreadcrumbs />
-        <SearchFilters :filters="filters" />
+        <SearchFilters v-if="filters" :filters="filters" />
         <SearchProducts :products="products" />
         <NewProducts :row-count="2" />
         <Banner />

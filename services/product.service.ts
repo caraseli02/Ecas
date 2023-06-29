@@ -17,16 +17,26 @@ export const fetchNewProducts = async () => {
 };
 
 export const fetchSearchProduct = async (keyword: string, page = 1, perPage = 10, sort = {}) => {
-    return await useFetchAPI<ProductSearchResponse>('products/search', {
-        method: 'GET',
-        params: {
+    let filters = {};
+
+    keyword = keyword.trim();
+
+    if (!keyword || keyword === '') {
+        filters = { page: page, perPage: perPage, ...sort };
+    } else {
+        filters = {
             page: page,
             perPage: perPage,
             ...sort,
             operator: '$or',
             partDescription: keyword,
             manufacturer: keyword,
-        },
+        };
+    }
+
+    return await useFetchAPI<ProductSearchResponse>('products/search', {
+        method: 'GET',
+        params: filters,
     });
 };
 

@@ -358,7 +358,7 @@ const fetchAndSetProductsList = async (keyword, page: number, perPage: number, s
     }
 };
 
-await fetchAndSetProductsList(keywordRef, atPage.value, perPage.value, activeSort.value);
+await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, activeSort.value);
 
 watch(
     [atPage, perPage],
