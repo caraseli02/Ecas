@@ -11,7 +11,7 @@
         <div v-else class="grid grid-cols-1 max-h-[340px] overflow-auto scrollbar-thin pr-1.5">
             <NuxtLink
                 v-for="(product, index) in props?.products"
-                v-if="props.products.length > 0"
+                v-if="props?.products?.length > 0"
                 :key="index"
                 :to="`/product/${product._id}`"
                 class="p-2 rounded text-gray-300 transition-colors duration-300 hover:bg-gray-200"
@@ -24,7 +24,7 @@
                     </div>
                     <div
                         class="rounded-3xl bg-blue px-1 text-xs leading-[1.33] font-semibold text-white flex-shrink-0 lg:translate-y-2.5"
-                        :class="[product.adminSettings.featured == true ? 'invisible' : '']"
+                        :class="[product.adminSettings.featured === true ? 'invisible' : '']"
                     >
                         New
                     </div>

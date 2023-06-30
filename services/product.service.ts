@@ -16,7 +16,7 @@ export const fetchNewProducts = async () => {
     });
 };
 
-export const fetchSearchProduct = async (keyword: string, page = 1, perPage = 10, sort = {}) => {
+export const fetchSearchProduct = async (keyword: string, page = 1, perPage = 10, sort = {}, featuresFilters = []) => {
     let filters = {};
 
     keyword = keyword.trim();
@@ -35,8 +35,11 @@ export const fetchSearchProduct = async (keyword: string, page = 1, perPage = 10
     }
 
     return await useFetchAPI<ProductSearchResponse>('products/search', {
-        method: 'GET',
+        method: 'POST',
         params: filters,
+        body: { filters: featuresFilters },
+    }).catch((err) => {
+        console.log(err);
     });
 };
 

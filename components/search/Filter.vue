@@ -28,11 +28,11 @@
         <div class="flex-1 pr-[5px]">
             <div class="grid grid-cols-1 gap-2 flex-1 max-h-[115px] overflow-y-auto scrollbar-thin pb-[13px]">
                 <label
-                    v-for="(option, index) in filterOptions(filter)"
+                    v-for="option in options"
                     :key="option.rawFilter.FeatureID"
                     class="group flex items-start justify-between cursor-pointer px-2.5"
                 >
-                    <input type="checkbox" class="sr-only" @click="toggleOption(filter, option)" />
+                    <input type="checkbox" class="sr-only" @click="toggleOption(option)" />
                     <span class="text-xs font-Inter transition-colors duration-300 group-hover:text-blue">
                         {{ useTrimText(option.value + option.unit) }}
                     </span>
@@ -68,55 +68,24 @@ import FiltersIcon from '@/assets/icons/filters.svg';
 import CheckIcon from '@/assets/icons/check.svg';
 import XIcon from '@/assets/icons/x.svg';
 import { useTrimText } from '@/composables/text';
-import { FilterOptions, ProductFilters } from '~/model/products/response/ProductSearchResponse';
+import { FilterOptions, ProductFilters, SearchFiltersCategories } from '~/model/products/response/ProductSearchResponse';
+import Emitter from 'tiny-emitter/instance.js';
 
-const emits = defineEmits(['close', 'add-filter-option']);
+defineEmits(['close', 'add-filter-option']);
 
 const props = defineProps<{
     filter: ProductFilters | null;
 }>();
 
 const searchValue = ref('');
-const checkedOptions = ref([]);
-
-const options = ref([
-    {
-        label: 'Micro Comercial Components',
-        quantity: 17897,
-        checked: false,
-    },
-    {
-        label: 'Manufacturer1',
-        quantity: 17897,
-        checked: true,
-    },
-    {
-        label: 'Manufacturer2',
-        quantity: 17897,
-        checked: false,
-    },
-    {
-        label: 'Manufacturer3',
-        quantity: 17897,
-        checked: true,
-    },
-    {
-        label: 'Manufacturer4',
-        quantity: 17897,
-        checked: false,
-    },
-    {
-        label: 'Micro Comercial Components',
-        quantity: 17897,
-        checked: false,
-    },
-]);
+const checkedOptions = ref([] as SearchFiltersCategories[]);
 
 const filter = ref(props.filter);
+const options = ref([] as FilterOptions[]);
 
-const filterOptions = (filter: ProductFilters): FilterOptions[] => {
-    const keys = Object.keys(filter)[0];
-    const filtered = filter[keys].filter((item) => item.FeatureName === keys) || [];
+const parseOptions = () => {
+    const keys = Object.keys(filter.value)[0];
+    const filtered = filter.value[keys].filter((item) => item.FeatureName === keys) || [];
 
     return filtered.map((item) => ({
         value: item.FeatureValue,
@@ -126,19 +95,20 @@ const filterOptions = (filter: ProductFilters): FilterOptions[] => {
     }));
 };
 
-const toggleOption = (filter: ProductFilters, option: FilterOptions) => {
+options.value = parseOptions();
+
+const toggleOption = (option: FilterOptions) => {
     option.checked = !option.checked;
 
     if (option.checked) {
-        checkedOptions.value.push(option.rawFilter);
-        emits('add-filter-option', checkedOptions.value);
+        // checkedOptions.value.push(option.rawFilter);
+        Emitter.emit('add-filter-option', option.rawFilter);
     } else {
-        const optionIndex = checkedOptions.value.findIndex((item) => item.FeatureID === option.rawFilter.FeatureID);
-
-        checkedOptions.value.splice(optionIndex, 1);
+        // const optionIndex = checkedOptions.value.findIndex((item) => item.FeatureID === option.rawFilter.FeatureID);
+        //
+        // checkedOptions.value.splice(optionIndex, 1);
+        Emitter.emit('remove-filter-option', option.rawFilter);
     }
-
-    console.log(checkedOptions.value);
 };
 
 const FeatureID = computed(() => {
@@ -150,15 +120,15 @@ const FeatureName = computed(() => {
 });
 
 const selectedAll = computed(() => {
-    return options.value.every((e) => e.checked);
+    // return options.value.every((e) => e.checked);
 });
 
 const handleAll = () => {
-    options.value = options.value?.map((e) => {
-        return {
-            ...e,
-            checked: !selectedAll.value,
-        };
-    });
+    // options.value = options.value?.map((e) => {
+    //     return {
+    //         ...e,
+    //         checked: !selectedAll.value,
+    //     };
+    // });
 };
 </script>

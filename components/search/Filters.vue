@@ -92,7 +92,12 @@ import EyeIcon from '@/assets/icons/eye.svg';
 import EyeClosedIcon from '@/assets/icons/eye-closed.svg';
 import ResetIcon from '@/assets/icons/reset.svg';
 import PlusIcon from '@/assets/icons/plus.svg';
-import { ProductFilters, ProductFiltersWrapper, SearchData } from '~/model/products/response/ProductSearchResponse';
+import {
+    ProductFilters,
+    ProductFiltersWrapper,
+    SearchData,
+    SearchFiltersCategories,
+} from '~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance.js';
 
 const props = defineProps<{
@@ -105,6 +110,7 @@ const productFiltersData = ref(props.filters);
 const filteredData = ref([] as ProductFiltersWrapper[]);
 
 const showFilters = ref(true);
+const checkedOptions = ref([]);
 
 const parseFilters = (filters: any) => {
     const data: ProductFiltersWrapper[] = [];
@@ -147,8 +153,33 @@ filterData();
 
 Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
     productFiltersData.value = parseFilters(value.products.filters);
+    checkedOptions.value = [];
 
     filterData();
+});
+
+Emitter.on('add-filter-option', async (option: SearchFiltersCategories) => {
+    const item = checkedOptions.value.find((x) => x.FeatureName === option.FeatureName && x.FeatureValue === option.FeatureValue);
+
+    if (item) {
+        return;
+    }
+
+    checkedOptions.value.push(option);
+
+    Emitter.emit('register-filter-option', checkedOptions.value);
+});
+
+Emitter.on('remove-filter-option', async (option: SearchFiltersCategories) => {
+    const itemIndex = checkedOptions.value.findIndex((x) => x.FeatureName === option.FeatureName && x.FeatureValue === option.FeatureValue);
+
+    if (!itemIndex) {
+        return;
+    }
+
+    checkedOptions.value.splice(itemIndex, 1);
+
+    Emitter.emit('register-filter-option', checkedOptions.value);
 });
 
 watch([productFiltersData], async ([_productFiltersData]) => {

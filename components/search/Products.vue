@@ -294,7 +294,7 @@ import CheckIcon from '@/assets/icons/check.svg';
 import ChevronDownIcon from '@/assets/icons/chevron-down.svg';
 import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
 import Pagination from 'vuejs-paginate-next';
-import { ProductSearchResponse, SearchData } from '~/model/products/response/ProductSearchResponse';
+import { ProductFilters, ProductSearchResponse, SearchData } from '~/model/products/response/ProductSearchResponse';
 import { SortInterface } from '~/model/dashboard/table/filters';
 import { fetchSearchProduct } from '~/services/product.service';
 import Emitter from 'tiny-emitter/instance';
@@ -332,8 +332,8 @@ const paginatedProductsList = ref(props.products?.items.items);
 const keywordRef = ref(route.query.keyword || '');
 const order = ref<1 | 0>(1);
 
-const fetchAndSetProductsList = async (keyword, page: number, perPage: number, sort = {}) => {
-    const data = await fetchSearchProduct(keyword, page, perPage, sort);
+const fetchAndSetProductsList = async (keyword, page: number, perPage: number, sort = {}, filters = []) => {
+    const data = await fetchSearchProduct(keyword, page, perPage, sort, filters);
 
     if (!data || !data.data) {
         return;
@@ -397,6 +397,10 @@ Emitter.on('product-keyword-change', async (value: { keyword: string; products: 
     keywordRef.value = value.keyword;
 
     await fetchAndSetProductsList(value.keyword, atPage.value, perPage.value, activeSort.value);
+});
+
+Emitter.on('register-filter-option', async (filter: ProductFilters[]) => {
+    await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, activeSort.value, filter);
 });
 </script>
 
