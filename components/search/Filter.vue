@@ -29,10 +29,10 @@
             <div class="grid grid-cols-1 gap-2 flex-1 max-h-[115px] overflow-y-auto scrollbar-thin pb-[13px]">
                 <label
                     v-for="(option, index) in filterOptions(filter)"
-                    :key="index"
+                    :key="option.rawFilter.FeatureID"
                     class="group flex items-start justify-between cursor-pointer px-2.5"
                 >
-                    <input v-model="option.checked" type="checkbox" class="sr-only" />
+                    <input type="checkbox" class="sr-only" @click="toggleOption(filter, option)" />
                     <span class="text-xs font-Inter transition-colors duration-300 group-hover:text-blue">
                         {{ useTrimText(option.value + option.unit) }}
                     </span>
@@ -68,21 +68,16 @@ import FiltersIcon from '@/assets/icons/filters.svg';
 import CheckIcon from '@/assets/icons/check.svg';
 import XIcon from '@/assets/icons/x.svg';
 import { useTrimText } from '@/composables/text';
-import { ProductFilters } from '~/model/products/response/ProductSearchResponse';
+import { FilterOptions, ProductFilters } from '~/model/products/response/ProductSearchResponse';
 
-defineEmits(['close']);
-
-interface FilterOptions {
-    value: string;
-    unit: string;
-    checked: boolean;
-}
+const emits = defineEmits(['close', 'add-filter-option']);
 
 const props = defineProps<{
     filter: ProductFilters | null;
 }>();
 
 const searchValue = ref('');
+const checkedOptions = ref([]);
 
 const options = ref([
     {
@@ -127,7 +122,23 @@ const filterOptions = (filter: ProductFilters): FilterOptions[] => {
         value: item.FeatureValue,
         unit: item.FeatureUnit,
         checked: false,
+        rawFilter: item,
     }));
+};
+
+const toggleOption = (filter: ProductFilters, option: FilterOptions) => {
+    option.checked = !option.checked;
+
+    if (option.checked) {
+        checkedOptions.value.push(option.rawFilter);
+        emits('add-filter-option', checkedOptions.value);
+    } else {
+        const optionIndex = checkedOptions.value.findIndex((item) => item.FeatureID === option.rawFilter.FeatureID);
+
+        checkedOptions.value.splice(optionIndex, 1);
+    }
+
+    console.log(checkedOptions.value);
 };
 
 const FeatureID = computed(() => {

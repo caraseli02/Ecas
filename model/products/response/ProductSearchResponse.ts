@@ -73,3 +73,10 @@ export interface AddFilterInterface extends ProductFiltersWrapper {
     parameter: string;
     products?: number;
 }
+
+export interface FilterOptions {
+    value: string;
+    unit: string;
+    checked: boolean;
+    rawFilter: SearchFiltersCategories;
+}
