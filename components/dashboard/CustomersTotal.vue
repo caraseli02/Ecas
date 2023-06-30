@@ -13,24 +13,30 @@
       </div>
     </div>
     <template v-if="series.length > 0">
-      <div class="flex items-center justify-between -my-1.5">
-        <div class="text-4xl leading-normal font-semibold">1832</div>
-        <div>
-          <ClientOnly>
-            <apexchart
-              width="170"
-              :options="chartOptions"
-              :series="series"
-            ></apexchart>
-          </ClientOnly>
+      <SkeletonLoader v-if="loading" class="w-full h-[54px] my-7" />
+      <template v-else>
+        <div class="flex items-center justify-between -my-1.5">
+          <div class="text-4xl leading-normal font-semibold">1832</div>
+          <div>
+            <ClientOnly>
+              <apexchart
+                width="170"
+                :options="chartOptions"
+                :series="series"
+              ></apexchart>
+            </ClientOnly>
+          </div>
         </div>
-      </div>
+      </template>
       <div class="flex items-center justify-between">
         <div class="flex items-center">
-          <ArrowUpIcon class="w-4 h-4 mr-1" />
-          <div class="text-sm leading-[1.43] font-medium text-[#00D395] mr-1">
-            3,78%
-          </div>
+          <SkeletonLoader v-if="loading" class="w-[60px] h-5 mr-1" />
+          <template v-else>
+            <ArrowUpIcon class="w-4 h-4 mr-1" />
+            <div class="text-sm leading-[1.43] font-medium text-[#00D395] mr-1">
+              3,78%
+            </div>
+          </template>
           <button class="flex items-center" @click="showOptions = !showOptions">
             <span class="text-sm left-[1.43] text-gray-300 font-medium mr-1">
               {{ selectedOption }}
@@ -156,4 +162,11 @@ const options = [
 ];
 
 const error = ref(false);
+const loading = ref(true);
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 5000);
+});
 </script>

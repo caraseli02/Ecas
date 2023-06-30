@@ -19,12 +19,14 @@
         :key="index"
         :item="person"
         :type="type"
+        :loading="loading"
       />
       <DashboardNewCustomersEmptyItem
         v-for="(_, index) in type === 'default'
           ? 7 - people.length
           : 6 - people.length"
         :key="index"
+        :loading="loading"
       />
     </div>
     <div v-else class="flex flex-col items-center justify-center flex-1">
@@ -147,5 +149,13 @@ defineProps({
     required: false,
     default: "default",
   },
+});
+
+const loading = ref(true);
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 5000);
 });
 </script>

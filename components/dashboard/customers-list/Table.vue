@@ -213,6 +213,7 @@
         :item="item"
         :index="index"
         :isScrolling="isScrolling"
+        :loading="loading"
       />
     </div>
   </div>
@@ -693,6 +694,14 @@ const handleScroll = () => {
     isScrolling.value = false;
   }, 66);
 };
+
+const loading = ref(true);
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 5000);
+});
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>

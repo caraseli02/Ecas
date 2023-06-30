@@ -4,20 +4,24 @@
       <div
         class="relative flex items-center justify-center rounded-full overflow-hidden w-10 h-10 flex-shrink-0 bg-gray-200 mr-3"
       >
-        <UserIcon class="w-7 h-7 text-gray-100" />
+        <SkeletonLoader v-if="loading" type="circle" class="w-full h-full" />
+        <UserIcon v-else class="w-7 h-7 text-gray-100" />
       </div>
-      <div class="truncate">
+      <div :class="[loading ? 'w-full' : 'truncate']">
+        <SkeletonLoader v-if="loading" class="block w-2/3 h-4 mb-2" />
         <div
+          v-else
           class="text-sm leading-[1.43] font-semibold truncate text-gray-100"
         >
           No data available
         </div>
-        <div class="text-xs leading-[1.67] text-gray-100 truncate">
+        <SkeletonLoader v-if="loading" class="w-full h-4" />
+        <div v-else class="text-xs leading-[1.67] text-gray-100 truncate">
           No data available
         </div>
       </div>
     </div>
-    <div class="flex text-gray-200">
+    <div v-if="!loading" class="flex text-gray-200">
       <MoreVerticalIcon class="w-7 h-7" />
     </div>
   </div>
@@ -26,4 +30,12 @@
 <script setup lang="ts">
 import UserIcon from "@/assets/icons/dashboard/user.svg";
 import MoreVerticalIcon from "@/assets/icons/dashboard/more-vertical.svg";
+
+defineProps({
+  loading: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
 </script>
