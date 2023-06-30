@@ -59,7 +59,11 @@ const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<P
         return;
     }
 
-    const data = products.value as ProductSearchResponse;
+    const data = products?.value as ProductSearchResponse;
+
+    if (!data) {
+        return;
+    }
 
     Emitter.emit('product-keyword-change', { keyword: keyword, products: data.data });
 

@@ -48,15 +48,15 @@
                     <div class="w-[18px] h-[18px]" />
                 </div>
                 <div class="pr-1">
-                    <div class="max-h-[40vh] overflow-y-auto scrollbar-thin overscroll-contain pl-4 pr-3 md:pl-6">
+                    <div v-if="items.length > 0" class="max-h-[40vh] overflow-y-auto scrollbar-thin overscroll-contain pl-4 pr-3 md:pl-6">
                         <div
-                            v-for="(item, index) in filteredItems"
-                            :key="index"
+                            v-for="item in filteredItems"
+                            :key="item.parameter"
                             class="group grid grid-cols-[repeat(2,1fr),auto] gap-2 rounded-[3px] odd:bg-[#F2F2F2] px-2 pt-[5px] pb-1.5 cursor-pointer transition-colors duration-300 hover:text-blue"
-                            @click="item.checked = !item.checked"
+                            @click="toggleItem(item)"
                         >
                             <div class="text-xs font-medium font-Inter leading-tight">
-                                {{ item.paremeter }}
+                                {{ item.parameter }}
                             </div>
                             <div class="text-xs font-medium font-Inter leading-tight px-3">
                                 {{ item.products }}
@@ -82,7 +82,7 @@
                 <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
                     Cancel
                 </button>
-                <button class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white">Save</button>
+                <button class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="saveFilters()">Save</button>
             </div>
         </div>
     </div>
@@ -94,143 +94,25 @@ import FiltersIcon from '@/assets/icons/filters.svg';
 import SearchIcon from '@/assets/icons/search.svg';
 import CaretIcon from '@/assets/icons/caret-left.svg';
 import CheckIcon from '@/assets/icons/check.svg';
+import { AddFilterInterface, ProductFiltersWrapper } from '~/model/products/response/ProductSearchResponse';
+import { documentUtil } from '~/utils';
 
-defineEmits(['close']);
+const props = defineProps<{
+    filters: ProductFiltersWrapper[] | [];
+}>();
+
+const emits = defineEmits(['close', 'update-visible-filters']);
 
 const searchValue = ref('');
 
-const items = ref([
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'ECCN (US)',
-        products: 248,
-        checked: false,
-    },
-    {
-        paremeter: 'Part Status',
-        products: 153,
-        checked: false,
-    },
-    {
-        paremeter: 'HTS',
-        products: 19,
-        checked: true,
-    },
-    {
-        paremeter: 'Automotive',
-        products: 211,
-        checked: true,
-    },
-    {
-        paremeter: 'PPAP',
-        products: 997,
-        checked: true,
-    },
-    {
-        paremeter: 'Family Name',
-        products: 997,
-        checked: true,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-    {
-        paremeter: 'EU RoHS',
-        products: 975,
-        checked: false,
-    },
-]);
+const items = ref([] as AddFilterInterface[]);
 const parametersOrder = ref(0);
 const productsOrder = ref(0);
 
 const filteredItems = computed(() => {
-    const itemsToReturn = items.value.filter((e) => e.paremeter.toLowerCase().includes(searchValue.value.toLowerCase()));
+    const itemsToReturn = items.value.filter((e: AddFilterInterface) =>
+        e.parameter.toLowerCase().includes(searchValue.value.toLowerCase())
+    );
 
     if (productsOrder.value) {
         itemsToReturn.sort((a, b) => {
@@ -256,6 +138,43 @@ const filteredItems = computed(() => {
 
     return itemsToReturn;
 });
+
+const toggleItem = (item: AddFilterInterface) => {
+    const checkedFilter = items.value.find((e: AddFilterInterface) => e.parameter.toLowerCase() === item.parameter.toLowerCase());
+    checkedFilter.checked = !checkedFilter.checked;
+};
+
+const saveFilters = () => {
+    emits('update-visible-filters', items.value);
+    emits('close');
+};
+
+const parseFilters = () => {
+    const keys = Object.keys(props.filters);
+    let index = 0;
+
+    if (!props.filters) {
+        return;
+    }
+
+    for (const key of keys) {
+        const item = {} as AddFilterInterface;
+
+        const objKeys = Object.keys(props.filters[key].feature);
+
+        item.filter = props.filters[key].feature;
+        item.feature = props.filters[key].feature;
+        item.parameter = objKeys[0];
+        item.checked = typeof props.filters[key].checked !== 'undefined' ? props.filters[key].checked : index < 11;
+        item.products = 0;
+
+        index++;
+
+        items.value.push(item);
+    }
+};
+
+parseFilters();
 
 watch(parametersOrder, (newVal) => {
     if (newVal) {

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="filteredData.length > 0" class="mb-[30px] md:mb-[60px]">
+    <div v-if="filteredData.length" class="mb-[30px] md:mb-[60px]">
         <div class="container">
             <button
                 class="flex items-center justify-center bg-blue text-white rounded px-[15px] py-[9px] text-sm font-medium w-full md:hidden"
@@ -36,8 +36,8 @@
                 <div v-if="showFilters" class="hidden grid-cols-3 gap-5 mt-5 md:grid lg:grid-cols-4 xl:grid-cols-6">
                     <SearchFilter
                         v-for="(filter, index) in filteredData"
-                        :key="getFilterSlug(filter)"
-                        :filter="filter"
+                        :key="getFilterSlug(filter.feature)"
+                        :filter="filter.feature"
                         @close="removeItem(index)"
                     />
                     <div class="flex flex-col items-center pt-[60px] pb-10">
@@ -62,7 +62,12 @@
             />
         </Transition>
         <Transition name="slide-from-top">
-            <LayoutAddRemoveSearchFilter v-if="showAddRemoveFilterModal" @close="showAddRemoveFilterModal = false" />
+            <LayoutAddRemoveSearchFilter
+                v-if="showAddRemoveFilterModal && productFiltersData"
+                :filters="productFiltersData"
+                @update-visible-filters="productFiltersData = $event"
+                @close="showAddRemoveFilterModal = false"
+            />
         </Transition>
         <Transition name="fade">
             <div
@@ -87,7 +92,7 @@ import EyeIcon from '@/assets/icons/eye.svg';
 import EyeClosedIcon from '@/assets/icons/eye-closed.svg';
 import ResetIcon from '@/assets/icons/reset.svg';
 import PlusIcon from '@/assets/icons/plus.svg';
-import { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
+import { ProductFilters, ProductFiltersWrapper, SearchData } from '~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance.js';
 
 const props = defineProps<{
@@ -97,26 +102,37 @@ const props = defineProps<{
 const showSearchFiltersModal = ref(false);
 const showAddRemoveFilterModal = ref(false);
 const productFiltersData = ref(props.filters);
-const filteredData = ref([] as ProductFilters[]);
+const filteredData = ref([] as ProductFiltersWrapper[]);
 
 const showFilters = ref(true);
 
-const filterData = () => {
-    const data: ProductFilters[] = [];
+const parseFilters = (filters: any) => {
+    const data: ProductFiltersWrapper[] = [];
+    let index = 0;
 
-    if (productFiltersData.value) {
-        const dataArray = Object.entries(productFiltersData.value as unknown as ProductFilters);
+    if (filters) {
+        const dataArray = Object.entries(filters as unknown as ProductFilters);
 
         dataArray.forEach((item) => {
             const key = item[0];
             const value = item[1];
 
             data.push({
-                [key]: value,
+                feature: { [key]: value },
+                checked: index < 11,
             });
+
+            index++;
         });
     }
-    filteredData.value = data.slice(0, 11).splice(0);
+
+    return data;
+};
+
+productFiltersData.value = parseFilters(props.filters);
+
+const filterData = () => {
+    filteredData.value = productFiltersData.value.filter((item) => item.checked);
 };
 
 const removeItem = (index: number) => {
@@ -124,14 +140,18 @@ const removeItem = (index: number) => {
 };
 
 const getFilterSlug = (filter: ProductFilters) => {
-    return filter[Object.keys(filter)[0]][0].FeatureID;
+    return filter[Object.keys(filter)[0]][0]?.FeatureID;
 };
 
 filterData();
 
 Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
-    productFiltersData.value = value.products.filters;
+    productFiltersData.value = parseFilters(value.products.filters);
 
+    filterData();
+});
+
+watch([productFiltersData], async ([_productFiltersData]) => {
     filterData();
 });
 </script>

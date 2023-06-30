@@ -62,3 +62,14 @@ export interface ProductSearchItems {
         ProductImage: ProductImage;
     };
 }
+
+export interface ProductFiltersWrapper {
+    feature: ProductFilters;
+    checked: boolean;
+}
+
+export interface AddFilterInterface extends ProductFiltersWrapper {
+    filter: SearchFiltersCategories[];
+    parameter: string;
+    products?: number;
+}

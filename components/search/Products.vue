@@ -342,6 +342,10 @@ const fetchAndSetProductsList = async (keyword, page: number, perPage: number, s
     const paginatedProductsData = data?.data?.value as ProductSearchResponse;
     const paginatedProducts = paginatedProductsData?.data?.items.items;
 
+    if (!paginatedProducts) {
+        return;
+    }
+
     totalItems.value = paginatedProductsData.data.items.total_items;
     totalPages.value = paginatedProductsData.data.items.page_count;
 
