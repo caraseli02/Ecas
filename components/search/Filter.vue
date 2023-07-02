@@ -34,7 +34,7 @@
                 >
                     <input type="checkbox" class="sr-only" @click="toggleOption(option)" />
                     <span class="text-xs font-Inter transition-colors duration-300 group-hover:text-blue">
-                        {{ useTrimText(option.value + option.unit) }}
+                        {{ `${useTrimText(option.value + option.unit)} (${option.rawFilter.count})` }}
                     </span>
                     <div
                         class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"

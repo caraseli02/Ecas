@@ -97,7 +97,6 @@ watch(route, (value) => {
 });
 
 Emitter.on('register-filter-option', async (filter: ProductFilters[]) => {
-    console.log(filter);
     await getProduct(
         keyword.value,
         1,

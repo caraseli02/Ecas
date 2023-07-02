@@ -3,6 +3,7 @@ import { NewProductResponse } from '~/model/products/response/NewProductResponse
 import { ProductResponse } from '~/model/products/response/ProductResponse';
 import { ProductSearchResponse } from '~/model/products/response/ProductSearchResponse';
 import { SearchSimilarProductResponse } from '~/model/products/response/SearchSimilarProductResponse';
+import { useFetchAPI } from '~/composables/useFetchAPI';
 
 export const fetchProductTab = async (path: string) => {
     return await useFetchAPI<ProductResponse>(`products/${path}`, {
