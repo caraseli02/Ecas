@@ -92,7 +92,7 @@
                                     class="flex w-full text-left text-sm rounded-[5px] transition-colors duration-300 hover:text-blue"
                                     @click="
                                         sortBy = option;
-                                        handleSortChange();
+                                        emits('sort-by-change', option);
                                     "
                                 >
                                     {{ option.label }}
@@ -104,7 +104,7 @@
                         class="flex"
                         @click="
                             order === 0 ? (order = 1) : (order = 0);
-                            handleSortOrderChange();
+                            emits('sort-order-change', order);
                         "
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6">
@@ -150,6 +150,7 @@
                                     @click="
                                         perPage = option;
                                         showPerPageOptions = false;
+                                        emits('per-page', option);
                                     "
                                 >
                                     {{ option }}
@@ -233,6 +234,7 @@
                                     @click="
                                         perPage = option;
                                         showPerPageOptions = false;
+                                        emits('per-page', option);
                                     "
                                 >
                                     {{ option }}
@@ -294,16 +296,25 @@ import CheckIcon from '@/assets/icons/check.svg';
 import ChevronDownIcon from '@/assets/icons/chevron-down.svg';
 import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
 import Pagination from 'vuejs-paginate-next';
-import { ProductFilters, ProductSearchResponse, SearchData } from '~/model/products/response/ProductSearchResponse';
+import { SearchData } from '~/model/products/response/ProductSearchResponse';
 import { SortInterface } from '~/model/dashboard/table/filters';
-import { fetchSearchProduct } from '~/services/product.service';
-import Emitter from 'tiny-emitter/instance';
 
 const route = useRoute();
 
 const props = defineProps<{
     products: SearchData | null;
+    keyword: string | '';
 }>();
+
+const emits = defineEmits(['at-page', 'per-page', 'sort-by-change', 'sort-order-change']);
+
+watch(
+    () => props.products,
+    () => {
+        setProductsList();
+    },
+    { deep: true }
+);
 
 const show = ref('New products only');
 const showShowOptions = ref(false);
@@ -332,22 +343,16 @@ const paginatedProductsList = ref(props.products?.items.items);
 const keywordRef = ref(route.query.keyword || '');
 const order = ref<1 | 0>(1);
 
-const fetchAndSetProductsList = async (keyword, page: number, perPage: number, sort = {}, filters = []) => {
-    const data = await fetchSearchProduct(keyword, page, perPage, sort, filters);
-
-    if (!data || !data.data) {
-        return;
-    }
-
-    const paginatedProductsData = data?.data?.value as ProductSearchResponse;
-    const paginatedProducts = paginatedProductsData?.data?.items.items;
+const setProductsList = () => {
+    const paginatedProductsData = props.products;
+    const paginatedProducts = paginatedProductsData?.items.items;
 
     if (!paginatedProducts) {
         return;
     }
 
-    totalItems.value = paginatedProductsData.data.items.total_items;
-    totalPages.value = paginatedProductsData.data.items.page_count;
+    totalItems.value = paginatedProductsData?.items.total_items;
+    totalPages.value = paginatedProductsData?.items.page_count;
 
     if (paginatedProducts) {
         paginatedProductsList.value = paginatedProducts.map((item) => ({
@@ -362,46 +367,73 @@ const fetchAndSetProductsList = async (keyword, page: number, perPage: number, s
     }
 };
 
-await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, activeSort.value);
+// const fetchAndSetProductsList = async (keyword, page: number, perPage: number, sort = {}, filters = []) => {
+//     const data = await fetchSearchProduct(keyword, page, perPage, sort, filters);
+//
+//     if (!data || !data.data) {
+//         return;
+//     }
+//
+//     const paginatedProductsData = data?.data?.value as ProductSearchResponse;
+//     const paginatedProducts = paginatedProductsData?.data?.items.items;
+//
+//     if (!paginatedProducts) {
+//         return;
+//     }
+//
+//     totalItems.value = paginatedProductsData.data.items.total_items;
+//     totalPages.value = paginatedProductsData.data.items.page_count;
+//
+//     if (paginatedProducts) {
+//         paginatedProductsList.value = paginatedProducts.map((item) => ({
+//             slug: item._id,
+//             title: item.alias,
+//             cover: item.details.ProductImage.ProductImageSmall,
+//             manufacturer: item.manufacturer,
+//             manufacturerCode: item.manufacturerCode,
+//             stock: item.stock,
+//             description: item.description,
+//         }));
+//     }
+// };
+
+// await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, activeSort.value);
 
 watch(
-    [atPage, perPage],
-    async ([_atPage, _perPage]) => {
-        if (_perPage > totalItems) {
-            _atPage = 1;
-        }
-
-        await fetchAndSetProductsList(keywordRef.value, _atPage, _perPage, {
-            sortBy: sortBy.value.name,
-            sortOrder: order.value === 0 ? 'desc' : 'asc',
-        });
+    [atPage],
+    async ([_atPage]) => {
+        emits('at-page', _atPage);
     },
     { deep: true }
 );
 
-const handleSortOrderChange = async () => {
-    await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, {
-        sortBy: sortBy.value.name,
-        sortOrder: order.value === 0 ? 'desc' : 'asc',
-    });
-};
+// const handleSortOrderChange = async () => {
+//     await fetchSearchProduct(props.keyword, atPage.value, perPage.value, {
+//         sortBy: sortBy.value.name,
+//         sortOrder: order.value === 0 ? 'desc' : 'asc',
+//     });
+//     setProductsList();
+// };
+//
+// const handleSortChange = async () => {
+//     await fetchSearchProduct(props.keyword, atPage.value, perPage.value, {
+//         sortBy: sortBy.value.name,
+//         sortOrder: order.value === 0 ? 'desc' : 'asc',
+//     });
+//     setProductsList();
+// };
 
-const handleSortChange = async () => {
-    await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, {
-        sortBy: sortBy.value.name,
-        sortOrder: order.value === 0 ? 'desc' : 'asc',
-    });
-};
+// Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
+//     keywordRef.value = value.keyword;
+//
+//     await fetchAndSetProductsList(value.keyword, atPage.value, perPage.value, activeSort.value);
+// });
 
-Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
-    keywordRef.value = value.keyword;
-
-    await fetchAndSetProductsList(value.keyword, atPage.value, perPage.value, activeSort.value);
-});
-
-Emitter.on('register-filter-option', async (filter: ProductFilters[]) => {
-    await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, activeSort.value, filter);
-});
+// Emitter.on('register-filter-option', async (filter: ProductFilters[]) => {
+//     await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, activeSort.value, filter);
+//
+//     Emitter.emit('filters-change');
+// });
 </script>
 
 <style lang="scss">

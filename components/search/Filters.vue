@@ -102,7 +102,19 @@ import Emitter from 'tiny-emitter/instance.js';
 
 const props = defineProps<{
     filters: ProductFilters | null;
+    atPage: number | 1;
+    perPage: number | 10;
+    keyword: string | '';
 }>();
+
+watch(
+    () => props.filters,
+    () => {
+        productFiltersData.value = parseFilters(props.filters);
+        filterData();
+    },
+    { deep: true }
+);
 
 const showSearchFiltersModal = ref(false);
 const showAddRemoveFilterModal = ref(false);

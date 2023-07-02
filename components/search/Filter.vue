@@ -68,7 +68,7 @@ import FiltersIcon from '@/assets/icons/filters.svg';
 import CheckIcon from '@/assets/icons/check.svg';
 import XIcon from '@/assets/icons/x.svg';
 import { useTrimText } from '@/composables/text';
-import { FilterOptions, ProductFilters, SearchFiltersCategories } from '~/model/products/response/ProductSearchResponse';
+import { FilterOptions, ProductFilters } from '~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance.js';
 
 defineEmits(['close', 'add-filter-option']);
@@ -77,15 +77,31 @@ const props = defineProps<{
     filter: ProductFilters | null;
 }>();
 
+watch(
+    () => props.filter,
+    () => {
+        if (!props.filter) {
+            return;
+        }
+
+        options.value = parseOptions();
+    },
+    { deep: true }
+);
+
 const searchValue = ref('');
-const checkedOptions = ref([] as SearchFiltersCategories[]);
 
 const filter = ref(props.filter);
 const options = ref([] as FilterOptions[]);
 
 const parseOptions = () => {
-    const keys = Object.keys(filter.value)[0];
-    const filtered = filter.value[keys].filter((item) => item.FeatureName === keys) || [];
+    const keys = Object.keys(props.filter)[0];
+
+    if (!props.filter || !keys) {
+        return;
+    }
+
+    const filtered = props.filter[keys].filter((item) => item.FeatureName === keys) || [];
 
     return filtered.map((item) => ({
         value: item.FeatureValue,
@@ -101,12 +117,8 @@ const toggleOption = (option: FilterOptions) => {
     option.checked = !option.checked;
 
     if (option.checked) {
-        // checkedOptions.value.push(option.rawFilter);
         Emitter.emit('add-filter-option', option.rawFilter);
     } else {
-        // const optionIndex = checkedOptions.value.findIndex((item) => item.FeatureID === option.rawFilter.FeatureID);
-        //
-        // checkedOptions.value.splice(optionIndex, 1);
         Emitter.emit('remove-filter-option', option.rawFilter);
     }
 };
