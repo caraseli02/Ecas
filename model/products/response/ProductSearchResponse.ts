@@ -28,6 +28,7 @@ export interface SearchFiltersCategories {
         Sign: string;
     };
     count: number;
+    checked?: boolean;
 }
 
 export interface SearchDataItems {

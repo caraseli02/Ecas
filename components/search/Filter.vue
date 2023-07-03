@@ -106,7 +106,7 @@ const parseOptions = () => {
     return filtered.map((item) => ({
         value: item.FeatureValue,
         unit: item.FeatureUnit,
-        checked: false,
+        checked: item.checked || false,
         rawFilter: item,
     }));
 };

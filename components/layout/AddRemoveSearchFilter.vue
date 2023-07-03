@@ -166,7 +166,7 @@ const parseFilters = () => {
         item.feature = props.filters[key].feature;
         item.parameter = objKeys[0];
         item.checked = typeof props.filters[key].checked !== 'undefined' ? props.filters[key].checked : index < 11;
-        item.products = 0;
+        item.products = props.filters[key].feature[objKeys[0]].reduce((total, obj) => obj.count + total, 0);
 
         index++;
 
