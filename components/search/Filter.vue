@@ -117,9 +117,9 @@ const toggleOption = (option: FilterOptions) => {
     option.checked = !option.checked;
 
     if (option.checked) {
-        Emitter.emit('add-filter-option', option.rawFilter);
+        Emitter.emit('add-filter-option', [option]);
     } else {
-        Emitter.emit('remove-filter-option', option.rawFilter);
+        Emitter.emit('remove-filter-option', [option]);
     }
 };
 
@@ -132,15 +132,21 @@ const FeatureName = computed(() => {
 });
 
 const selectedAll = computed(() => {
-    // return options.value.every((e) => e.checked);
+    return options.value.every((e) => e.checked);
 });
 
 const handleAll = () => {
-    // options.value = options.value?.map((e) => {
-    //     return {
-    //         ...e,
-    //         checked: !selectedAll.value,
-    //     };
-    // });
+    options.value = options.value?.map((e) => {
+        return {
+            ...e,
+            checked: !selectedAll.value,
+        };
+    });
+
+    if (selectedAll.value) {
+        Emitter.emit('add-filter-option', options.value);
+    } else {
+        Emitter.emit('remove-filter-option', options.value);
+    }
 };
 </script>

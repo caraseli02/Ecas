@@ -100,6 +100,7 @@ import EyeClosedIcon from '@/assets/icons/eye-closed.svg';
 import ResetIcon from '@/assets/icons/reset.svg';
 import PlusIcon from '@/assets/icons/plus.svg';
 import {
+    FilterOptions,
     ProductFilters,
     ProductFiltersWrapper,
     SearchData,
@@ -177,26 +178,37 @@ Emitter.on('product-keyword-change', async (value: { keyword: string; products: 
     filterData();
 });
 
-Emitter.on('add-filter-option', async (option: SearchFiltersCategories) => {
-    const item = checkedOptions.value.find((x) => x.FeatureName === option.FeatureName && x.FeatureValue === option.FeatureValue);
+Emitter.on('add-filter-option', async (options: FilterOptions) => {
+    console.log(options);
+    for (const option of options) {
+        const item = checkedOptions.value.find(
+            (x) => x.FeatureName === option.rawFilter.FeatureName && x.FeatureValue === option.rawFilter.FeatureValue
+        );
 
-    if (item) {
-        return;
+        if (item) {
+            continue;
+        }
+
+        console.log(option);
+        checkedOptions.value.push(option.rawFilter);
     }
 
-    checkedOptions.value.push(option);
-
+    console.log(checkedOptions.value);
     Emitter.emit('register-filter-option', checkedOptions.value);
 });
 
-Emitter.on('remove-filter-option', async (option: SearchFiltersCategories) => {
-    const itemIndex = checkedOptions.value.findIndex((x) => x.FeatureName === option.FeatureName && x.FeatureValue === option.FeatureValue);
+Emitter.on('remove-filter-option', async (options: FilterOptions) => {
+    for (const option of options) {
+        const itemIndex = checkedOptions.value.findIndex(
+            (x) => x.FeatureName === option.rawFilter.FeatureName && x.FeatureValue === option.rawFilter.FeatureValue
+        );
 
-    if (!itemIndex) {
-        return;
+        if (itemIndex < 0) {
+            continue;
+        }
+
+        checkedOptions.value.splice(itemIndex, 1);
     }
-
-    checkedOptions.value.splice(itemIndex, 1);
 
     Emitter.emit('register-filter-option', checkedOptions.value);
 });
