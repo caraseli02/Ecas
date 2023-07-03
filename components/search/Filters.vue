@@ -28,7 +28,14 @@
                     </div>
                     <button class="group flex bg-blue text-white rounded px-3 py-[9px] text-sm font-medium">
                         <ResetIcon class="w-5 h-5 mr-2 transition-transform duration-300 group-hover:rotate-[360deg]" />
-                        <span> Reset Filters </span>
+                        <span
+                            @click="
+                                Emitter.emit('reset-products-filters', true);
+                                checkedOptions = [];
+                            "
+                        >
+                            Reset Filters
+                        </span>
                     </button>
                 </div>
             </div>

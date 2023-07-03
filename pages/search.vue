@@ -1,7 +1,14 @@
 <template>
     <div>
         <SearchBreadcrumbs />
-        <SearchFilters v-if="filters" :filters="filters" :keyword="keyword" :at-page="atPage" :per-page="perPage" />
+        <SearchFilters
+            v-if="filters"
+            :filters="filters"
+            :keyword="keyword"
+            :at-page="atPage"
+            :per-page="perPage"
+            @reset-products-filters="resetProductsFilters = $event"
+        />
         <SearchProducts
             v-if="products"
             :products="products"
@@ -29,6 +36,8 @@ import { ProductFilters, SearchData } from '~/model/products/response/ProductSea
 import { fetchSearchProduct } from '~/services/product.service';
 import Emitter from 'tiny-emitter/instance.js';
 import { SortInterface } from '~/model/dashboard/table/filters';
+import _ from 'lodash-es';
+import { watch } from 'vue';
 
 useHead({
     title: 'Search',
@@ -50,6 +59,7 @@ const perPage = ref(10);
 const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
 const activeSort = ref({} as SortInterface);
 const order = ref<1 | 0>(1);
+const resetProductsFilters = ref(false);
 
 async function getProduct(keyword: string, atPage: number, perPage: number, sort = {}, filter = []) {
     const { data } = await fetchSearchProduct(keyword, atPage, perPage, sort, filter);
@@ -57,6 +67,8 @@ async function getProduct(keyword: string, atPage: number, perPage: number, sort
     products.value = data.value?.data as SearchData;
     filters.value = data.value?.data.filters as ProductFilters;
 }
+
+getProduct(keyword.value, 1, 10, {}, []);
 
 const handleSortOrderChange = async () => {
     await getProduct(keyword.value, atPage.value, perPage.value, {
@@ -109,7 +121,27 @@ Emitter.on('register-filter-option', async (filter: ProductFilters[]) => {
     );
 });
 
-getProduct(keyword.value, 1, 10, {}, []);
+Emitter.on('reset-products-filters', async (value: boolean) => {
+    if (!value) {
+        return;
+    }
+
+    const obj = _.cloneDeep(filters.value);
+    const keys = Object.keys(obj);
+
+    for (const key of keys) {
+        for (const filter of obj[key]) {
+            filter.checked = false;
+        }
+    }
+
+    filters.value = obj;
+
+    await getProduct(keyword.value, atPage.value, perPage.value, {
+        sortBy: sortBy.value.name,
+        sortOrder: order.value === 0 ? 'desc' : 'asc',
+    });
+});
 
 Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
     keyword.value = value.keyword;
