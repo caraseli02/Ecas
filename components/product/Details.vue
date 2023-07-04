@@ -76,7 +76,6 @@ import { ProductDetail } from '~~/model/products/response/ProductDetailResponse'
 const props = defineProps<{
     product: ProductDetail;
 }>();
-const product = props.product;
 
 const showCustomProductPartNumberModal = ref(false);
 </script>

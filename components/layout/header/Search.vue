@@ -30,9 +30,10 @@
 <script setup lang="ts">
 import SearchIcon from '@/assets/icons/search.svg';
 import _ from 'lodash';
-import { fetchSearchProduct } from '~/services/product.service';
-import { ProductSearchItems, ProductSearchResponse } from '~~/model/products/response/ProductSearchResponse';
+import { ProductSearchItems, ProductSearchResponse, SearchData } from '~~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance';
+import { useNuxtApp } from '#app';
+const { $api } = useNuxtApp();
 
 defineProps({
     isScrolled: {
@@ -53,21 +54,21 @@ const onInput = _.debounce(async () => {
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
     isLoading.value = true;
 
-    const { data: products } = await fetchSearchProduct(keyword, page, perPage);
+    const { data: products } = (await $api.product.fetchSearchProduct(keyword, page, perPage)) as SearchData;
 
     if (!products) {
         return;
     }
 
-    const data = products?.value as ProductSearchResponse;
+    const data = products as SearchData;
 
     if (!data) {
         return;
     }
 
-    Emitter.emit('product-keyword-change', { keyword: keyword, products: data.data });
+    Emitter.emit('product-keyword-change', { keyword: keyword, products: data });
 
-    return data.data.items.items;
+    return data.items.items;
 };
 
 function handleEnterButton() {

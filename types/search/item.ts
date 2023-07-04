@@ -1,5 +1,6 @@
 export interface SearchItem {
-    slug: string;
+    _id: string;
+    slug?: string;
     title: string;
     discount?: number;
     cover: any;

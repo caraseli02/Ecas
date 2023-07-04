@@ -17,32 +17,32 @@ export const fetchNewProducts = async () => {
     });
 };
 
-export const fetchSearchProduct = async (keyword: string, page = 1, perPage = 10, sort = {}, featuresFilters = []) => {
-    let filters = {};
-
-    keyword = keyword.trim();
-
-    if (!keyword || keyword === '') {
-        filters = { page: page, perPage: perPage, ...sort };
-    } else {
-        filters = {
-            page: page,
-            perPage: perPage,
-            ...sort,
-            operator: '$or',
-            partDescription: keyword,
-            manufacturer: keyword,
-        };
-    }
-
-    return await useFetchAPI<ProductSearchResponse>('products/search', {
-        method: 'POST',
-        params: filters,
-        body: { filters: featuresFilters },
-    }).catch((err) => {
-        console.log(err);
-    });
-};
+// export const fetchSearchProduct = async (keyword: string, page = 1, perPage = 10, sort = {}, featuresFilters = []) => {
+//     let filters = {};
+//
+//     keyword = keyword.trim();
+//
+//     if (!keyword || keyword === '') {
+//         filters = { page: page, perPage: perPage, ...sort };
+//     } else {
+//         filters = {
+//             page: page,
+//             perPage: perPage,
+//             ...sort,
+//             operator: '$or',
+//             partDescription: keyword,
+//             manufacturer: keyword,
+//         };
+//     }
+//
+//     return await useFetchAPI<ProductSearchResponse>('products/search', {
+//         method: 'POST',
+//         params: filters,
+//         body: { filters: featuresFilters },
+//     }).catch((err) => {
+//         console.log(err);
+//     });
+// };
 
 export const fetchProductByCriteria = async (payload: SearchSimilarProductRequest): Promise<SearchSimilarProductResponse> => {
     const runtimeConfig = useRuntimeConfig();

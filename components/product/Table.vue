@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import CheckIcon from '@/assets/icons/check.svg';
-import { SearchSimilarProductRequest } from '~/model/products/request/SearchSimilarProductRequest';
 import { ProductParametricDataFeaturesInterface } from '~/model/products/response/ProductResponse';
+import { fetchSearchProduct } from '~/services/product.service';
+import { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
+import Emitter from 'tiny-emitter/instance.js';
+import { useNuxtApp } from '#app/nuxt';
+import { navigateTo } from '#app';
 const { $api } = useNuxtApp();
 
 const elDOM = ref<HTMLElement | null>(null);
@@ -24,6 +28,8 @@ const features = reactive<ProductParametricDataFeaturesInterface[]>(
 );
 
 const totalSimilarProducts = ref<number>(0);
+const similarProducts = ref<SearchData | null>(null);
+const similarFilters = ref<ProductFilters | null>(null);
 
 const setFilterLine = () => {
     if (elDOM.value) {
@@ -48,12 +54,21 @@ watch(features, async () => {
 
 const searchSimilarProducts = async () => {
     isLoading.value = true;
-    const payload: SearchSimilarProductRequest = {
-        filters: features.filter((item) => item.checked),
-    };
-    const { data } = await $api.product.fetchProductByCriteria(payload);
-    totalSimilarProducts.value = data.count;
+
+    const checkedFeatures = features.filter((item) => item.checked);
+    const { data } = (await $api.product.fetchSearchProduct('', 1, 10, {}, checkedFeatures)) as SearchData;
+
+    totalSimilarProducts.value = !checkedFeatures.length ? 0 : data.items.total_items;
+    similarProducts.value = data.items.items;
+    similarFilters.value = data.filters;
+
     isLoading.value = false;
+};
+
+const showSimilarProducts = async () => {
+    Emitter.emit('show-similar-products', { products: similarProducts.value, filters: similarFilters.value });
+
+    navigateTo('/search');
 };
 
 onMounted(() => {
@@ -94,13 +109,13 @@ onMounted(() => {
                 @click="searchSimilarProducts"
             >
                 <span v-if="isLoading"> Loading... </span>
-                <span v-else> Show similar products ({{ totalSimilarProducts }}) </span>
+                <span v-else @click="showSimilarProducts()"> Show similar products ({{ totalSimilarProducts }}) </span>
             </button>
         </div>
         <div class="mb-[25px]">
             <table class="w-full">
                 <tr
-                    v-for="(item, index) in features.filter((feature) => feature.FeatureValue != '')"
+                    v-for="(item, index) in features.filter((feature) => feature.FeatureValue !== '')"
                     :key="index"
                     class="group w-full text-xs leading-tight font-medium font-Inter text-left cursor-pointer transition-colors duration-300 odd:bg-[#F2F2F2] hover:text-blue"
                     @click="item.checked = !item.checked"
@@ -130,7 +145,7 @@ onMounted(() => {
                 @click="searchSimilarProducts"
             >
                 <span v-if="isLoading"> Loading... </span>
-                <span v-else> Show similar products ({{ totalSimilarProducts }}) </span>
+                <span v-else @click="showSimilarProducts()"> Show similar products ({{ totalSimilarProducts }}) </span>
             </button>
         </div>
     </div>

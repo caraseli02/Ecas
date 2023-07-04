@@ -119,12 +119,12 @@
                 <ShareIcon class="w-6 h-6" />
             </button>
         </div>
-        <div
-            v-if="item.discount"
-            class="absolute left-0 top-[120px] flex bg-red rounded-[25px] px-1.5 py-[3px] text-xs font-extrabold leading-tight text-white md:left-[unset] md:right-0 md:top-[88px] xl:right-11 xl:top-0"
-        >
-            {{ item.discount }}%
-        </div>
+        <!--        <div-->
+        <!--            v-if="item.discount"-->
+        <!--            class="absolute left-0 top-[120px] flex bg-red rounded-[25px] px-1.5 py-[3px] text-xs font-extrabold leading-tight text-white md:left-[unset] md:right-0 md:top-[88px] xl:right-11 xl:top-0"-->
+        <!--        >-->
+        <!--            {{ item.discount }}%-->
+        <!--        </div>-->
     </div>
     <Teleport to="body">
         <Transition name="fade">

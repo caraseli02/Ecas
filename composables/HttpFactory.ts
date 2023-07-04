@@ -1,7 +1,7 @@
 import { $Fetch } from 'ohmyfetch';
 
 class HttpFactory {
-    private $fetch: $Fetch;
+    private readonly $fetch: $Fetch;
 
     constructor(fetcher: $Fetch) {
         this.$fetch = fetcher;
@@ -13,8 +13,7 @@ class HttpFactory {
      **/
     async call<T>(method: string, url: string, data?: object, extras = {}): Promise<T> {
         try {
-            const $res: T = await this.$fetch(url, { method, body: data, ...extras });
-            return $res;
+            return await this.$fetch(url, { method, body: data, ...extras });
         } catch (err) {
             return err as T;
         }

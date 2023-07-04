@@ -33,11 +33,12 @@
 
 <script setup lang="ts">
 import { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
-import { fetchSearchProduct } from '~/services/product.service';
 import Emitter from 'tiny-emitter/instance.js';
 import { SortInterface } from '~/model/dashboard/table/filters';
 import _ from 'lodash-es';
 import { watch } from 'vue';
+import { useNuxtApp } from '#app';
+const { $api } = useNuxtApp();
 
 useHead({
     title: 'Search',
@@ -62,10 +63,10 @@ const order = ref<1 | 0>(1);
 const resetProductsFilters = ref(false);
 
 async function getProduct(keyword: string, atPage: number, perPage: number, sort = {}, filter = []) {
-    const { data } = await fetchSearchProduct(keyword, atPage, perPage, sort, filter);
+    const { data } = (await $api.product.fetchSearchProduct(keyword, atPage, perPage, sort, filter)) as SearchData;
 
-    products.value = data.value?.data as SearchData;
-    filters.value = data.value?.data.filters as ProductFilters;
+    products.value = data;
+    filters.value = data.filters;
 }
 
 getProduct(keyword.value, 1, 10, {}, []);
@@ -147,5 +148,10 @@ Emitter.on('product-keyword-change', async (value: { keyword: string; products: 
     keyword.value = value.keyword;
 
     await getProduct(value.keyword, atPage.value, perPage.value, {});
+});
+
+Emitter.on('show-similar-products', async (data: { products: SearchData; filters: ProductFilters }) => {
+    products.value = data.products;
+    filters.value = data.filters;
 });
 </script>

@@ -204,7 +204,7 @@
                 </div>
             </div>
             <div class="grid grid-cols-1 gap-10 mb-[25px] md:mb-10 lg:gap-[30px] xl:gap-[15px] xl:mb-[30px]">
-                <SearchItem v-for="(item, index) in paginatedProductsList" :key="index" :item="item" />
+                <SearchItem v-for="item in paginatedProductsList" :key="item._id" :item="item" />
             </div>
             <div class="flex flex-col items-center gap-[25px] md:flex-row md:justify-between">
                 <label class="flex items-center">
@@ -334,13 +334,11 @@ const sortByOptions = ref([
     { label: 'Price', name: 'priceRon' },
 ]);
 
-const activeSort = ref({} as SortInterface);
 const atPage = ref(1);
 const perPage = ref(10);
 const totalItems = ref(props.products?.items.total_items);
 const totalPages = ref(props.products?.items.page_count);
 const paginatedProductsList = ref(props.products?.items.items);
-const keywordRef = ref(route.query.keyword || '');
 const order = ref<1 | 0>(1);
 
 const setProductsList = () => {
@@ -367,37 +365,7 @@ const setProductsList = () => {
     }
 };
 
-// const fetchAndSetProductsList = async (keyword, page: number, perPage: number, sort = {}, filters = []) => {
-//     const data = await fetchSearchProduct(keyword, page, perPage, sort, filters);
-//
-//     if (!data || !data.data) {
-//         return;
-//     }
-//
-//     const paginatedProductsData = data?.data?.value as ProductSearchResponse;
-//     const paginatedProducts = paginatedProductsData?.data?.items.items;
-//
-//     if (!paginatedProducts) {
-//         return;
-//     }
-//
-//     totalItems.value = paginatedProductsData.data.items.total_items;
-//     totalPages.value = paginatedProductsData.data.items.page_count;
-//
-//     if (paginatedProducts) {
-//         paginatedProductsList.value = paginatedProducts.map((item) => ({
-//             slug: item._id,
-//             title: item.alias,
-//             cover: item.details.ProductImage.ProductImageSmall,
-//             manufacturer: item.manufacturer,
-//             manufacturerCode: item.manufacturerCode,
-//             stock: item.stock,
-//             description: item.description,
-//         }));
-//     }
-// };
-
-// await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, activeSort.value);
+setProductsList();
 
 watch(
     [atPage],
@@ -406,34 +374,6 @@ watch(
     },
     { deep: true }
 );
-
-// const handleSortOrderChange = async () => {
-//     await fetchSearchProduct(props.keyword, atPage.value, perPage.value, {
-//         sortBy: sortBy.value.name,
-//         sortOrder: order.value === 0 ? 'desc' : 'asc',
-//     });
-//     setProductsList();
-// };
-//
-// const handleSortChange = async () => {
-//     await fetchSearchProduct(props.keyword, atPage.value, perPage.value, {
-//         sortBy: sortBy.value.name,
-//         sortOrder: order.value === 0 ? 'desc' : 'asc',
-//     });
-//     setProductsList();
-// };
-
-// Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
-//     keywordRef.value = value.keyword;
-//
-//     await fetchAndSetProductsList(value.keyword, atPage.value, perPage.value, activeSort.value);
-// });
-
-// Emitter.on('register-filter-option', async (filter: ProductFilters[]) => {
-//     await fetchAndSetProductsList(keywordRef.value, atPage.value, perPage.value, activeSort.value, filter);
-//
-//     Emitter.emit('filters-change');
-// });
 </script>
 
 <style lang="scss">
