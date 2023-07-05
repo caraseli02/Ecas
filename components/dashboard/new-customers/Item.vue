@@ -1,37 +1,48 @@
 <template>
-  <div class="flex items-center justify-between py-2 w-full">
+  <div class="flex items-center justify-between w-full">
     <NuxtLink to="/" class="group/link flex items-center w-[calc(100%-40px)]">
       <div
-        class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-3 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-[3px] after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
-        :class="[!item.avatar ? 'bg-gray-200' : '']"
+        class="relative flex items-center justify-center rounded-full overflow-hidden w-10 h-10 flex-shrink-0 mr-3"
+        :class="[
+          !item.avatar ? 'bg-gray-200' : '',
+          loading
+            ? ''
+            : 'after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100',
+        ]"
       >
-        <img
-          v-if="item.avatar"
-          :src="item.avatar"
-          :alt="item.name"
-          class="w-full h-full rounded-full object-cover"
-        />
-        <UserIcon v-else class="w-7 h-7 text-gray-100" />
+        <SkeletonLoader v-if="loading" type="circle" class="w-full h-full" />
+        <template v-else>
+          <img
+            v-if="item.avatar"
+            :src="item.avatar"
+            :alt="item.name"
+            class="w-full h-full rounded-full object-cover"
+          />
+          <UserIcon v-else class="w-7 h-7 text-gray-100" />
+        </template>
       </div>
-      <div class="truncate">
+      <div :class="[loading ? 'w-full' : 'truncate']">
+        <SkeletonLoader v-if="loading" class="block w-2/3 h-4 mb-2" />
         <div
-          class="text-sm leading-[1.43] font-semibold truncate mb-1 transition-colors duration-300 group-hover:text-blue"
+          v-else
+          class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue"
         >
-          {{ item.name }} asd asd asd asd asd asd asd
+          {{ item.name }}
         </div>
-        <div class="text-xs leading-[1.67] text-gray-300 truncate">
-          {{ item.email }}as dasd asd asd asd as
+        <SkeletonLoader v-if="loading" class="w-full h-4" />
+        <div v-else class="text-xs leading-[1.67] text-gray-300 truncate">
+          {{ item.email }}
         </div>
       </div>
     </NuxtLink>
-    <div class="relative">
+    <div v-if="!loading" class="relative">
       <button
         class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue"
         @click="showOptions = !showOptions"
       >
         <MoreVerticalIcon class="w-7 h-7" />
       </button>
-      <Transition name="fade">
+      <Transition name="fade-full">
         <div
           v-if="showOptions"
           v-click-outside="() => (showOptions = false)"
@@ -121,6 +132,16 @@ defineProps({
       avatar?: any;
     }>,
     required: true,
+  },
+  type: {
+    type: String as PropType<"default" | "detailed" | "landing">,
+    required: false,
+    default: "default",
+  },
+  loading: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 

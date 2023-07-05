@@ -15,7 +15,7 @@
               order.
             </p>
           </div>
-          <form @submit.prevent class="flex rounded-md shadow-card">
+          <form @submit.prevent class="flex rounded-md shadow-xs">
             <label class="flex items-center flex-1">
               <input
                 v-model="email"

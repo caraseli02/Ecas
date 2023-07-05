@@ -1,10 +1,12 @@
 <template>
   <div
-    class="relative bg-white rounded-md font-Inter pt-[15px] pb-2.5 shadow-card md:pb-[26px] lg:pb-4 lg:self-start"
+    class="relative bg-white rounded-md font-Inter pt-[15px] pb-2.5 shadow-m md:pb-[26px] lg:pb-4 lg:self-start"
   >
     <div class="flex items-end justify-between px-2.5 mb-[18px] md:px-[15px]">
       <div class="flex items-center">
-        <div class="text-xl leading-tight font-semibold mr-2">{{ product.alias }}</div>
+        <div class="text-xl leading-tight font-semibold mr-2">
+          {{ product.alias }}
+        </div>
         <button
           class="flex text-gray-300 transition-colors duration-300 mr-2 hover:text-blue"
         >
@@ -33,7 +35,9 @@
       <div class="text-xs leading-tight font-medium flex-shrink-0">
         Manufacturer
       </div>
-      <div class="text-xs leading-tight font-medium">{{ product.manufacturer }}</div>
+      <div class="text-xs leading-tight font-medium">
+        {{ product.manufacturer }}
+      </div>
     </div>
     <div
       class="flex items-center justify-between gap-3 px-2.5 pt-[5px] pb-1.5 bg-[#F2F2F2] md:px-[15px]"
@@ -70,7 +74,12 @@
       <div class="text-xs leading-tight font-medium flex-shrink-0">
         Technical Datasheet
       </div>
-      <a class="flex items-center" :href="product.details.SummaryData.Datasheet" :download="`${product.alias} Datasheet`" target="_blank">
+      <a
+        class="flex items-center"
+        :href="product.details.SummaryData.Datasheet"
+        :download="`${product.alias} Datasheet`"
+        target="_blank"
+      >
         <PDFIcon class="w-[22px] h-[22px] mr-[5px]" />
         <span class="text-xs leading-tight text-blue hover:underline">
           {{ product.alias }}-DataSheet
@@ -108,9 +117,9 @@ import EditIcon from "@/assets/icons/edit.svg";
 import { ProductDetail } from "~~/model/products/response/ProductDetailResponse";
 
 const props = defineProps<{
-  product: ProductDetail
-}>()
-const product = props.product
+  product: ProductDetail;
+}>();
+const product = props.product;
 
 const showCustomProductPartNumberModal = ref(false);
 </script>

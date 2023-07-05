@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-md shadow-card p-[15px]">
+  <div class="rounded-md shadow-m p-[15px]">
     <div class="flex items-start justify-between mb-10">
       <div class="relative flex items-start">
         <img

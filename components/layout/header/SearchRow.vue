@@ -7,7 +7,7 @@
         <NuxtLink to="/" class="flex flex-shrink-0">
           <Logo class="w-[142px] xl:w-[141px]" />
         </NuxtLink>
-        <LayoutHeaderSearch class="flex-1" />
+        <LayoutHeaderSearch :show-results="!isScrolled" class="flex-1" />
         <button
           class="hidden items-center text-gray-300 flex-shrink-0 md:flex xl:hidden"
           @click="showAccountModal = true"
@@ -36,6 +36,13 @@
 <script setup lang="ts">
 import Logo from "@/assets/media/logo.svg";
 import UserIcon from "@/assets/icons/user.svg";
+
+defineProps({
+  isScrolled: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const showAccountModal = ref(false);
 </script>

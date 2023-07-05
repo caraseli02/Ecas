@@ -3,7 +3,7 @@
     class="fixed z-[70] top-0 left-0 w-screen h-screen flex items-center justify-center pointer-events-none md:z-[60]"
   >
     <div
-      class="relative z-10 pointer-events-auto w-[450px] max-w-[calc(100vw-32px)] min-h-[360px] p-[15px] pb-[35px] bg-white rounded-md shadow-card flex flex-col justify-between"
+      class="relative z-10 pointer-events-auto w-[450px] max-w-[calc(100vw-32px)] min-h-[360px] p-[15px] pb-[35px] bg-white rounded-md shadow-xs flex flex-col justify-between"
     >
       <div class="flex items-center justify-between">
         <div class="flex items-center text-gray-300">

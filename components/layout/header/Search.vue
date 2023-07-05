@@ -30,7 +30,11 @@
       </div>
     </label>
     <Transition name="fade">
-      <LayoutHeaderSearchResults v-if="searchVal" :products="productList" :is-loading="isLoading" />
+      <LayoutHeaderSearchResults
+        v-if="searchVal && showResults"
+        :products="productList"
+        :is-loading="isLoading"
+      />
     </Transition>
   </div>
 </template>
@@ -39,36 +43,45 @@
 import SearchIcon from "@/assets/icons/search.svg";
 import _ from "lodash";
 import { fetchSearchProduct } from "~/services/product.service";
-import { ProductSearchItems, ProductSearchResponse, SearchData } from "~~/model/products/response/ProductSearchResponse";
+import {
+  ProductSearchItems,
+  ProductSearchResponse,
+  SearchData,
+} from "~~/model/products/response/ProductSearchResponse";
 
 defineProps({
   isScrolled: {
     type: Boolean,
     required: false,
   },
+  showResults: {
+    type: Boolean,
+    required: false,
+  },
 });
 
 const searchVal = ref("");
-let isLoading = ref<boolean>(false)
-const productList = ref<ProductSearchItems[]>([])
+let isLoading = ref<boolean>(false);
+const productList = ref<ProductSearchItems[]>([]);
 
 const onInput = _.debounce(async () => {
-  let request = await searchProduct(searchVal.value)
-  productList.value = request
-  isLoading.value = false
-}, 200)
+  let request = await searchProduct(searchVal.value);
+  productList.value = request;
+  isLoading.value = false;
+}, 200);
 
-const searchProduct = async (keyword: string): Promise<ProductSearchItems[]> => {
-  isLoading.value = true
-  const { data: products } = await fetchSearchProduct(keyword)
-  const data = products.value as ProductSearchResponse
-  return data.data.items.items
-}
+const searchProduct = async (
+  keyword: string
+): Promise<ProductSearchItems[]> => {
+  isLoading.value = true;
+  const { data: products } = await fetchSearchProduct(keyword);
+  const data = products.value as ProductSearchResponse;
+  return data.data.items.items;
+};
 
 function handleEnterButton() {
-  const router = useRouter()
-  router.push({ path: '/search', query: { keyword: searchVal.value } })
-  searchVal.value= ''
+  const router = useRouter();
+  router.push({ path: "/search", query: { keyword: searchVal.value } });
+  searchVal.value = "";
 }
-
 </script>

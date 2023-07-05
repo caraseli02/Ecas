@@ -1,12 +1,14 @@
 <template>
   <div
-    class="absolute z-50 -bottom-3 translate-y-full left-0 w-full bg-white border border-[#F2F2F2] rounded-md py-2 pl-2 pr-0.5 shadow-card md:-bottom-1"
+    class="absolute z-50 -bottom-3 translate-y-full left-0 w-full bg-white border border-[#F2F2F2] rounded-md py-2 pl-2 pr-0.5 shadow-m md:-bottom-1"
     :style="{
       boxShadow: '0px 4px 12px rgba(51, 51, 51, 0.1)',
     }"
   >
-  <div v-if="isLoading">
-      <p class="p-2 rounded text-gray-300 transition-colors duration-300">Loading...</p>
+    <div v-if="isLoading">
+      <p class="p-2 rounded text-gray-300 transition-colors duration-300">
+        Loading...
+      </p>
     </div>
     <div
       class="grid grid-cols-1 max-h-[340px] overflow-auto scrollbar-thin pr-1.5"
@@ -41,7 +43,11 @@
         </div>
       </NuxtLink>
       <div v-else>
-      <p class="p-2 rounded text-gray-300 transition-colors duration-300 hover:bg-gray-200 hover:text-blue">No data found</p>
+        <p
+          class="p-2 rounded text-gray-300 transition-colors duration-300 hover:bg-gray-200 hover:text-blue"
+        >
+          No data found
+        </p>
       </div>
     </div>
   </div>
@@ -52,12 +58,12 @@ import CaretIcon from "@/assets/icons/caret-right.svg";
 import { ProductSearchItems } from "~~/model/products/response/ProductSearchResponse";
 
 const props = defineProps<{
-  products: ProductSearchItems[],
-  isLoading: boolean
-}>()
+  products: ProductSearchItems[];
+  isLoading: boolean;
+}>();
 
 const productTitle = (product: ProductSearchItems) => {
-  const titleArray = product.details.SummaryData.TaxonomyPath.split('>')
-  return titleArray[titleArray.length - 1]
-}
+  const titleArray = product.details.SummaryData.TaxonomyPath.split(">");
+  return titleArray[titleArray.length - 1];
+};
 </script>

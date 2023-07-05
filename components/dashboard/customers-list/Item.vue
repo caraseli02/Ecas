@@ -5,19 +5,28 @@
     <div class="pl-4 pr-1.5 py-3">
       <NuxtLink to="/" class="group/link flex items-center">
         <div
-          class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-[3px] after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100"
-          :class="[!item.avatar ? 'bg-gray-200' : '']"
+          class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4"
+          :class="[
+            !item.avatar ? 'bg-gray-200' : '',
+            loading
+              ? ''
+              : 'after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100',
+          ]"
         >
-          <img
-            v-if="item.avatar"
-            :src="item.avatar"
-            :alt="item.name"
-            class="w-full h-full rounded-full object-cover"
-          />
-          <UserIcon v-else class="w-7 h-7 text-gray-100" />
+          <SkeletonLoader v-if="loading" class="w-full h-full" />
+          <template v-else>
+            <img
+              v-if="item.avatar"
+              :src="item.avatar"
+              :alt="item.name"
+              class="w-full h-full rounded-full object-cover"
+            />
+            <UserIcon v-else class="w-7 h-7 text-gray-100" />
+          </template>
         </div>
         <div class="w-[calc(100%-60px)]">
-          <div class="flex items-center justify-between gap-3 mb-1">
+          <SkeletonLoader v-if="loading" class="w-2/3 h-5 mb-2" />
+          <div v-else class="flex items-center justify-between gap-3 mb-1">
             <div
               class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue"
             >
@@ -93,54 +102,72 @@
               </Tooltip>
             </div>
           </div>
-          <div class="text-xs leading-[1.33] text-gray-300 truncate">
+          <SkeletonLoader v-if="loading" class="w-full h-4" />
+          <div v-else class="text-xs leading-[1.33] text-gray-300 truncate">
             {{ item.email }}
           </div>
         </div>
       </NuxtLink>
     </div>
     <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
-      {{ item.account }}
+      <SkeletonLoader v-if="loading" class="w-full h-6" />
+      <template v-else>
+        {{ item.account }}
+      </template>
     </div>
     <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
-      {{ item.company }}
+      <SkeletonLoader v-if="loading" class="w-full h-6" />
+      <template v-else>
+        {{ item.company }}
+      </template>
     </div>
     <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
-      {{ item.registered }}
+      <SkeletonLoader v-if="loading" class="w-full h-6" />
+      <template v-else>
+        {{ item.registered }}
+      </template>
     </div>
     <div class="text-sm leading-[1.43] font-medium truncate pl-4 pr-1.5">
-      {{ item.spent }}
+      <SkeletonLoader v-if="loading" class="w-full h-6" />
+      <template v-else>
+        {{ item.spent }}
+      </template>
     </div>
     <div class="flex justify-center pl-4 pr-1.5">
+      <SkeletonLoader v-if="loading" class="w-full h-6" />
       <div
+        v-else
         class="text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md"
       >
         {{ item.ordersCount }}
       </div>
     </div>
     <div class="flex items-center justify-end gap-4 pl-4 pr-1.5">
-      <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-        <button
-          class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-        >
-          <DocumentIcon class="w-7 h-7" />
-        </button>
-        <template #content>
-          <span>View order</span>
-        </template>
-      </Tooltip>
-      <div class="relative">
-        <button
-          class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-          @click="handleShowOptions"
-        >
-          <MoreVerticalIcon class="w-7 h-7" />
-        </button>
-      </div>
+      <SkeletonLoader v-if="loading" class="w-full h-6" />
+      <template v-else>
+        <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+          <button
+            class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+          >
+            <DocumentIcon class="w-7 h-7" />
+          </button>
+          <template #content>
+            <span>View Orders</span>
+          </template>
+        </Tooltip>
+        <div class="relative">
+          <button
+            class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+            @click="handleShowOptions"
+          >
+            <MoreVerticalIcon class="w-7 h-7" />
+          </button>
+        </div>
+      </template>
     </div>
   </div>
   <Teleport to="body">
-    <Transition name="fade">
+    <Transition :name="index > 5 ? 'fade-full-neg' : 'fade-bottom'">
       <div
         v-if="showOptions"
         v-click-outside="() => (showOptions = false)"
@@ -236,6 +263,10 @@ const props = defineProps({
     default: false,
   },
   isScrolling: {
+    type: Boolean,
+    default: false,
+  },
+  loading: {
     type: Boolean,
     default: false,
   },

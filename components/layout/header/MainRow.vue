@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-blue py-3 shadow-card md:py-2">
+  <div class="bg-blue py-3 shadow-m md:py-2">
     <div class="container">
       <div class="relative">
         <div
@@ -45,6 +45,7 @@
           </div>
           <LayoutHeaderSearch
             v-if="isScrolled"
+            :showResults="true"
             :is-scrolled="isScrolled"
             class="flex-1"
           />
@@ -148,7 +149,10 @@
           </div>
         </Transition>
         <Transition name="fade">
-          <LayoutHeaderSearchResults v-if="searchVal" />
+          <LayoutHeaderSearchResults
+            :is-scrolled="isScrolled"
+            v-if="searchVal"
+          />
         </Transition>
         <Transition name="fade">
           <LayoutHeaderMainMenuLarge
