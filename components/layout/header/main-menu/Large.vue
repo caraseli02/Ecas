@@ -1,891 +1,804 @@
 <template>
-  <div
-    class="grid grid-cols-[0px,1fr] rounded-b-md shadow-m max-h-[calc(100vh-178px)] md:h-[448px] xl:h-[550px] transition-all duration-150"
-    :class="[
-      isBannerExpanded
-        ? ''
-        : 'grid-cols-[0px,1fr] md:grid-cols-[260px,1fr] lg:grid-cols-[260px,1fr] xl:grid-cols-[290px,1fr]',
-    ]"
-    v-click-outside="() => handleClickOutside()"
-  >
     <div
-      class="relative z-40 flex flex-col gap-1 p-2.5 bg-white border-r-2 border-gray-200 max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-bl-md w-[260px] transition-opacity duration-200 xl:w-[290px] xl:py-[13px] xl:gap-1"
-      :class="[
-        isStatic ? 'hidden h-0 md:h-auto md:flex' : '',
-        isBannerExpanded ? 'md:opacity-0 md:pointer-events-none' : '',
-      ]"
+        v-click-outside="() => handleClickOutside()"
+        class="grid grid-cols-[0px,1fr] rounded-b-md shadow-m max-h-[calc(100vh-178px)] md:h-[448px] xl:h-[550px] transition-all duration-150"
+        :class="[isBannerExpanded ? '' : 'grid-cols-[0px,1fr] md:grid-cols-[260px,1fr] lg:grid-cols-[260px,1fr] xl:grid-cols-[290px,1fr]']"
     >
-      <button
-        v-for="(category, index) in categories"
-        :key="index"
-        class="group flex items-center px-2 py-1.5 rounded-[5px] w-full text-gray-300 text-left font-Inter transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue xl:px-2.5 xl:py-2"
-        :class="[selectedCategory === category ? 'text-blue bg-[#F4F4F4]' : '']"
-        @click="
-          selectedCategory = category;
-          selectedSubCategory = null;
-        "
-      >
         <div
-          class="flex items-center justify-center w-8 h-8 rounded bg-gray-200 mr-2 xl:w-10 xl:h-10 xl:mr-2.5"
+            class="relative z-40 flex flex-col gap-1 p-2.5 bg-white border-r-2 border-gray-200 max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-bl-md w-[260px] transition-opacity duration-200 xl:w-[290px] xl:py-[13px] xl:gap-1"
+            :class="[isStatic ? 'hidden h-0 md:h-auto md:flex' : '', isBannerExpanded ? 'md:opacity-0 md:pointer-events-none' : '']"
         >
-          <component :is="category.icon" class="w-[22px] h-[22px]" />
+            <button
+                v-for="(category, index) in categories"
+                :key="index"
+                class="group flex items-center px-2 py-1.5 rounded-[5px] w-full text-gray-300 text-left font-Inter transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue xl:px-2.5 xl:py-2"
+                :class="[selectedCategory === category ? 'text-blue bg-[#F4F4F4]' : '']"
+                @click="
+                    selectedCategory = category;
+                    selectedSubCategory = null;
+                "
+            >
+                <div class="flex items-center justify-center w-8 h-8 rounded bg-gray-200 mr-2 xl:w-10 xl:h-10 xl:mr-2.5">
+                    <component :is="category.icon" class="w-[22px] h-[22px]" />
+                </div>
+                <div>
+                    <div class="text-sm font-semibold leading-normal mb-px xl:text-base xl:mb-1.5">
+                        {{ category.label }}
+                    </div>
+                    <div
+                        class="text-xs font-semibold transition-colors duration-300 group-hover:text-gray-300"
+                        :class="[selectedCategory === category ? 'text-gray-300 ' : 'text-gray-100']"
+                    >
+                        {{ category.products }} Products
+                    </div>
+                </div>
+            </button>
         </div>
-        <div>
-          <div
-            class="text-sm font-semibold leading-normal mb-px xl:text-base xl:mb-1.5"
-          >
-            {{ category.label }}
-          </div>
-          <div
-            class="text-xs font-semibold transition-colors duration-300 group-hover:text-gray-300"
-            :class="[
-              selectedCategory === category
-                ? 'text-gray-300 '
-                : 'text-gray-100',
-            ]"
-          >
-            {{ category.products }} Products
-          </div>
-        </div>
-      </button>
-    </div>
-    <div
-      class="relative z-20 col-start-2 row-start-1 flex flex-col items-start px-[15px] pt-[15px] text-white h-full max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin transition-all duration-500 md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
-      :class="[
-        !selectedCategory && !selectedSubCategory
-          ? ''
-          : 'opacity-0 pointer-events-none',
-      ]"
-    >
-      <h3
-        class="relative z-20 font-semibold mb-[5px] md:text-2xl lg:text-[32px] lg:mb-2.5 xl:text-[40px]"
-      >
-        Exclusive Black Friday Offer
-      </h3>
-      <p
-        class="relative z-20 text-[11px] mb-[15px] max-w-[222px] leading-snug md:text-sm md:mb-[22px] md:max-w-[258px] lg:text-base lg:mb-[30px] lg:max-w-[415px] xl:text-lg xl:max-w-[642px] xl:mb-[46px]"
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut est
-        massa.
-      </p>
-      <button
-        class="relative z-20 flex bg-blue text-white rounded px-[15px] py-2 text-xs font-medium mb-[30px] md:px-6 md:py-[11px] md:text-sm md:mb-[60px] lg:mb-[34px] xl:mb-14"
-      >
-        View More
-      </button>
-      <Swiper
-        ref="swiperDOM"
-        :key="isBannerExpanded"
-        :modules="[A11y, Pagination]"
-        :slides-per-view="isBannerExpanded ? 4 : 3"
-        :space-between="10"
-        :grab-cursor="true"
-        :pagination="{
-          bulletElement: 'button',
-          clickable: true,
-        }"
-        :breakpoints="{
-          1024: {
-            slidesPerView: isBannerExpanded ? 5 : 4,
-            spaceBetween: 13,
-          },
-          1280: {
-            slidesPerView: isBannerExpanded ? 7 : 6,
-            spaceBetween: 15,
-          },
-        }"
-        class="headerSubmenu--swiper w-full"
-      >
-        <SwiperSlide v-for="(item, index) in slides" :key="index">
-          <div
-            class="flex flex-col items-center justify-center text-center bg-blue/50 border border-blue/50 shadow-m py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
-          >
-            <component
-              :is="item.icon"
-              class="w-[34px] h-[34px] mb-1 flex-shrink-0 md:w-[50px] md:h-[50px] md:mb-[21px] lg:w-[60px] lg:h-[60px] lg:mb-2.5 xl:mb-[15px]"
+        <div
+            class="relative z-20 col-start-2 row-start-1 flex flex-col items-start px-[15px] pt-[15px] text-white h-full max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin transition-all duration-500 md:h-[448px] md:pt-5 lg:px-5 xl:px-[30px] xl:pt-[45px] xl:h-[550px]"
+            :class="[!selectedCategory && !selectedSubCategory ? '' : 'opacity-0 pointer-events-none']"
+        >
+            <h3 class="relative z-20 font-semibold mb-[5px] md:text-2xl lg:text-[32px] lg:mb-2.5 xl:text-[40px]">
+                Exclusive Black Friday Offer
+            </h3>
+            <p
+                class="relative z-20 text-[11px] mb-[15px] max-w-[222px] leading-snug md:text-sm md:mb-[22px] md:max-w-[258px] lg:text-base lg:mb-[30px] lg:max-w-[415px] xl:text-lg xl:max-w-[642px] xl:mb-[46px]"
+            >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut est massa.
+            </p>
+            <button
+                class="relative z-20 flex bg-blue text-white rounded px-[15px] py-2 text-xs font-medium mb-[30px] md:px-6 md:py-[11px] md:text-sm md:mb-[60px] lg:mb-[34px] xl:mb-14"
+            >
+                View More
+            </button>
+            <Swiper
+                ref="swiperDOM"
+                :key="isBannerExpanded"
+                :modules="[A11y, Pagination]"
+                :slides-per-view="isBannerExpanded ? 4 : 3"
+                :space-between="10"
+                :grab-cursor="true"
+                :pagination="{
+                    bulletElement: 'button',
+                    clickable: true,
+                }"
+                :breakpoints="{
+                    1024: {
+                        slidesPerView: isBannerExpanded ? 5 : 4,
+                        spaceBetween: 13,
+                    },
+                    1280: {
+                        slidesPerView: isBannerExpanded ? 7 : 6,
+                        spaceBetween: 15,
+                    },
+                }"
+                class="headerSubmenu--swiper w-full"
+            >
+                <SwiperSlide v-for="(item, index) in slides" :key="index">
+                    <div
+                        class="flex flex-col items-center justify-center text-center bg-blue/50 border border-blue/50 shadow-m py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
+                    >
+                        <component
+                            :is="item.icon"
+                            class="w-[34px] h-[34px] mb-1 flex-shrink-0 md:w-[50px] md:h-[50px] md:mb-[21px] lg:w-[60px] lg:h-[60px] lg:mb-2.5 xl:mb-[15px]"
+                        />
+                        <div class="text-[10px] font-medium leading-[1.4] text-white md:text-xs lg:text-[13px] xl:text-sm">
+                            {{ item.title }}
+                        </div>
+                    </div>
+                </SwiperSlide>
+            </Swiper>
+            <img
+                :src="ItemImage"
+                alt="Img"
+                class="absolute z-20 top-[38px] right-[15px] w-[111px] object-contain md:w-[160px] md:top-[61px] lg:w-[240px] lg:top-[78px] lg:right-5 xl:w-[376px] xl:top-[52px] xl:right-[30px]"
+            />
+            <img
+                :src="SlideBg"
+                alt="Background"
+                class="absolute z-10 top-0 left-0 w-full h-full object-cover"
+                :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md max-md:rounded-bl-md']"
             />
             <div
-              class="text-[10px] font-medium leading-[1.4] text-white md:text-xs lg:text-[13px] xl:text-sm"
-            >
-              {{ item.title }}
-            </div>
-          </div>
-        </SwiperSlide>
-      </Swiper>
-      <img
-        :src="ItemImage"
-        alt="Img"
-        class="absolute z-20 top-[38px] right-[15px] w-[111px] object-contain md:w-[160px] md:top-[61px] lg:w-[240px] lg:top-[78px] lg:right-5 xl:w-[376px] xl:top-[52px] xl:right-[30px]"
-      />
-      <img
-        :src="SlideBg"
-        alt="Background"
-        class="absolute z-10 top-0 left-0 w-full h-full object-cover"
-        :class="[
-          isBannerExpanded
-            ? 'rounded-b-md'
-            : 'rounded-br-md max-md:rounded-bl-md',
-        ]"
-      />
-      <div
-        class="absolute z-10 top-0 left-0 w-full h-full opacity-75 pointer-events-none"
-        :class="[
-          isBannerExpanded
-            ? 'rounded-b-md'
-            : 'rounded-br-md max-md:rounded-bl-md',
-        ]"
-        :style="{
-          background:
-            'linear-gradient(85.26deg, #001238 17.24%, rgba(0, 127, 255, 0.85) 106.53%)',
-        }"
-      />
-      <button
-        v-if="isStatic"
-        class="hidden absolute z-20 top-[15px] right-0 justify-center items-center px-[3px] py-[5px] bg-blue/70 rounded-l overflow-hidden border border-blue/50 transition-all duration-300 hover:px-2 md:flex"
-        :class="{ 'sideNav--toggler_active': isBannerExpanded }"
-        :style="{
-          boxShadow: '0px 0px 5px rgba(34, 34, 34, 0.15)',
-        }"
-        @click="isBannerExpanded = !isBannerExpanded"
-        @mouseenter="handleTogglerMouseEnter"
-        @mouseleave="handleTogglerMouseLeave"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 18 18"
-          class="w-[18px] h-[18px] transition-transform duration-300"
-          :class="[isBannerExpanded ? 'rotate-180' : '']"
-        >
-          <path
-            fill="#fff"
-            d="M8.549 14.5 3.532 9l5.013-5.464a.946.946 0 0 0 .252-.643c0-.265-.11-.53-.292-.719a1.006 1.006 0 0 0-1.397.076L1.54 8.357a.943.943 0 0 0 0 1.286l5.57 6.107c.363.396.952.43 1.396.075.374-.353.407-.967.044-1.325Zm.833-6.143a.943.943 0 0 0 0 1.286l5.607 6.107c.363.397.989.43 1.396.075.408-.353.442-.967.077-1.325L11.447 9l5.012-5.464a.946.946 0 0 0 .253-.643c0-.265-.11-.53-.293-.719a1.006 1.006 0 0 0-1.396.076L9.382 8.357Z"
-          />
-        </svg>
-      </button>
-    </div>
-    <div
-      class="relative z-30 col-start-2 row-start-1 flex flex-col bg-white font-Inter max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:hidden"
-      :class="[
-        selectedCategory ? '' : 'opacity-0 pointer-events-none -translate-x-10',
-      ]"
-    >
-      <div
-        class="flex items-center justify-between border-b border-gray-200 px-[15px] py-2.5"
-      >
-        <button
-          class="flex"
-          @click="
-            selectedSubCategory
-              ? (selectedSubCategory = null)
-              : (selectedCategory = null)
-          "
-        >
-          <CaretLeft class="w-6 h-6" />
-        </button>
-        <div class="text-sm font-semibold text-blue">
-          {{
-            selectedSubCategory
-              ? selectedSubCategory.label
-              : selectedCategory?.label
-          }}
-        </div>
-      </div>
-      <div class="flex flex-col flex-1">
-        <div class="flex-1 overflow-y-auto scrollbar-thin">
-          <div
-            v-if="selectedCategory && !selectedSubCategory"
-            class="flex flex-wrap gap-x-2.5 gap-y-[15px] p-2.5 lg:p-[15px]"
-          >
+                class="absolute z-10 top-0 left-0 w-full h-full opacity-75 pointer-events-none"
+                :class="[isBannerExpanded ? 'rounded-b-md' : 'rounded-br-md max-md:rounded-bl-md']"
+                :style="{
+                    background: 'linear-gradient(85.26deg, #001238 17.24%, rgba(0, 127, 255, 0.85) 106.53%)',
+                }"
+            />
             <button
-              v-for="(subCategory, index) in selectedCategory.subCategories"
-              :key="index"
-              class="group flex items-center px-2 py-1.5 rounded-[5px] text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
-              @click="selectedSubCategory = subCategory"
+                v-if="isStatic"
+                class="hidden absolute z-20 top-[15px] right-0 justify-center items-center px-[3px] py-[5px] bg-blue/70 rounded-l overflow-hidden border border-blue/50 transition-all duration-300 hover:px-2 md:flex"
+                :class="{ 'sideNav--toggler_active': isBannerExpanded }"
+                :style="{
+                    boxShadow: '0px 0px 5px rgba(34, 34, 34, 0.15)',
+                }"
+                @click="isBannerExpanded = !isBannerExpanded"
+                @mouseenter="handleTogglerMouseEnter"
+                @mouseleave="handleTogglerMouseLeave"
             >
-              <div>
-                <div class="text-sm font-semibold">
-                  {{ subCategory.label }}
-                </div>
-                <div
-                  class="text-xs font-semibold text-gray-100 transition-colors duration-300 group-hover:text-gray-300"
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 18 18"
+                    class="w-[18px] h-[18px] transition-transform duration-300"
+                    :class="[isBannerExpanded ? 'rotate-180' : '']"
                 >
-                  {{ subCategory.products }} Products
-                </div>
-              </div>
+                    <path
+                        fill="#fff"
+                        d="M8.549 14.5 3.532 9l5.013-5.464a.946.946 0 0 0 .252-.643c0-.265-.11-.53-.292-.719a1.006 1.006 0 0 0-1.397.076L1.54 8.357a.943.943 0 0 0 0 1.286l5.57 6.107c.363.396.952.43 1.396.075.374-.353.407-.967.044-1.325Zm.833-6.143a.943.943 0 0 0 0 1.286l5.607 6.107c.363.397.989.43 1.396.075.408-.353.442-.967.077-1.325L11.447 9l5.012-5.464a.946.946 0 0 0 .253-.643c0-.265-.11-.53-.293-.719a1.006 1.006 0 0 0-1.396.076L9.382 8.357Z"
+                    />
+                </svg>
             </button>
-          </div>
-          <div
-            v-else-if="selectedSubCategory"
-            class="grid grid-cols-2 gap-3 px-4 py-2.5 lg:grid-cols-3 lg:gap-x-[25px] lg:px-5 lg:pt-[5px]"
-          >
-            <NuxtLink
-              v-for="(subCategory, index) in selectedCategory?.subCategories"
-              :key="index"
-              to="/"
-              class="relative flex items-center text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue hover:before:opacity-100"
-            >
-              <div class="text-sm font-medium truncate mr-[5px]">
-                Semiconductors ({{ subCategory.products }})
-              </div>
-              <div
-                v-if="index === 3 || index === 5"
-                class="bg-blue text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
-              >
-                New
-              </div>
-            </NuxtLink>
-          </div>
         </div>
-        <LayoutHeaderMainMenuBanners />
-      </div>
-    </div>
-    <div
-      class="hidden relative z-30 col-start-2 row-start-1 grid-cols-[1fr,340px] gap-[25px] bg-white font-Inter max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:grid xl:gap-0"
-      :class="[
-        selectedCategory ? '' : 'opacity-0 pointer-events-none -translate-x-10',
-      ]"
-    >
-      <div>
         <div
-          class="flex items-center justify-between border-b border-gray-200 px-[15px] pt-5 pb-2.5 xl:pr-0"
+            class="relative z-30 col-start-2 row-start-1 flex flex-col bg-white font-Inter max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:hidden"
+            :class="[selectedCategory ? '' : 'opacity-0 pointer-events-none -translate-x-10']"
         >
-          <button
-            class="flex"
-            @click="
-              selectedSubCategory
-                ? (selectedSubCategory = null)
-                : (selectedCategory = null)
-            "
-          >
-            <CaretLeft class="w-6 h-6" />
-          </button>
-          <div class="text-sm font-semibold text-blue">
-            {{
-              selectedSubCategory
-                ? selectedSubCategory.label
-                : selectedCategory?.label
-            }}
-          </div>
-        </div>
-        <div class="flex flex-col flex-1">
-          <div class="flex-1 overflow-y-auto scrollbar-thin">
-            <div
-              v-if="selectedCategory"
-              class="flex flex-wrap gap-2.5 pt-[15px] px-[25px] pb-5"
-            >
-              <button
-                v-for="(subCategory, index) in selectedCategory.subCategories"
-                :key="index"
-                class="group flex items-center px-2 py-1.5 rounded-[5px] text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
-                :class="[
-                  selectedSubCategory === subCategory
-                    ? 'text-blue bg-[#F4F4F4]'
-                    : '',
-                ]"
-                @click="selectedSubCategory = subCategory"
-              >
-                <div>
-                  <div class="text-sm font-semibold mb-2">
-                    {{ subCategory.label }}
-                  </div>
-                  <div
-                    class="text-xs font-semibold transition-colors duration-300 group-hover:text-gray-300"
-                    :class="[
-                      selectedSubCategory === subCategory
-                        ? 'text-gray-300'
-                        : 'text-gray-100',
-                    ]"
-                  >
-                    {{ subCategory.products }} Products
-                  </div>
+            <div class="flex items-center justify-between border-b border-gray-200 px-[15px] py-2.5">
+                <button class="flex" @click="selectedSubCategory ? (selectedSubCategory = null) : (selectedCategory = null)">
+                    <CaretLeft class="w-6 h-6" />
+                </button>
+                <div class="text-sm font-semibold text-blue">
+                    {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory?.label }}
                 </div>
-              </button>
             </div>
-            <div
-              v-if="selectedCategory && selectedSubCategory"
-              class="grid grid-cols-3 gap-x-5 gap-y-2 px-[25px] pb-5"
-            >
-              <NuxtLink
-                v-for="(subCategory, index) in selectedCategory.subCategories"
-                :key="index"
-                to="/"
-                class="relative flex items-start text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue hover:before:opacity-100"
-              >
-                <div class="text-sm font-medium truncate mr-[5px]">
-                  Semiconductors ({{ subCategory.products }})
+            <div class="flex flex-col flex-1">
+                <div class="flex-1 overflow-y-auto scrollbar-thin">
+                    <div v-if="selectedCategory && !selectedSubCategory" class="flex flex-wrap gap-x-2.5 gap-y-[15px] p-2.5 lg:p-[15px]">
+                        <button
+                            v-for="(subCategory, index) in selectedCategory.subCategories"
+                            :key="index"
+                            class="group flex items-center px-2 py-1.5 rounded-[5px] text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
+                            @click="selectedSubCategory = subCategory"
+                        >
+                            <div>
+                                <div class="text-sm font-semibold">
+                                    {{ subCategory.label }}
+                                </div>
+                                <div class="text-xs font-semibold text-gray-100 transition-colors duration-300 group-hover:text-gray-300">
+                                    {{ subCategory.products }} Products
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div
+                        v-else-if="selectedSubCategory"
+                        class="grid grid-cols-2 gap-3 px-4 py-2.5 lg:grid-cols-3 lg:gap-x-[25px] lg:px-5 lg:pt-[5px]"
+                    >
+                        <NuxtLink
+                            v-for="(subCategory, index) in selectedCategory?.subCategories"
+                            :key="index"
+                            to="/"
+                            class="relative flex items-center text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue hover:before:opacity-100"
+                        >
+                            <div class="text-sm font-medium truncate mr-[5px]">Semiconductors ({{ subCategory.products }})</div>
+                            <div
+                                v-if="index === 3 || index === 5"
+                                class="bg-blue text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
+                            >
+                                New
+                            </div>
+                        </NuxtLink>
+                    </div>
                 </div>
-                <div
-                  v-if="index === 3 || index === 5"
-                  class="bg-blue text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
-                >
-                  New
-                </div>
-              </NuxtLink>
+                <LayoutHeaderMainMenuBanners />
             </div>
-          </div>
         </div>
-      </div>
-      <LayoutHeaderMainMenuBanners />
+        <div
+            class="hidden relative z-30 col-start-2 row-start-1 grid-cols-[1fr,340px] gap-[25px] bg-white font-Inter max-h-[calc(100vh-178px)] overflow-y-auto scrollbar-thin rounded-br-md transition-all duration-500 xl:grid xl:gap-0"
+            :class="[selectedCategory ? '' : 'opacity-0 pointer-events-none -translate-x-10']"
+        >
+            <div>
+                <div class="flex items-center justify-between border-b border-gray-200 px-[15px] pt-5 pb-2.5 xl:pr-0">
+                    <button class="flex" @click="selectedSubCategory ? (selectedSubCategory = null) : (selectedCategory = null)">
+                        <CaretLeft class="w-6 h-6" />
+                    </button>
+                    <div class="text-sm font-semibold text-blue">
+                        {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory?.label }}
+                    </div>
+                </div>
+                <div class="flex flex-col flex-1">
+                    <div class="flex-1 overflow-y-auto scrollbar-thin">
+                        <div v-if="selectedCategory" class="flex flex-wrap gap-2.5 pt-[15px] px-[25px] pb-5">
+                            <button
+                                v-for="(subCategory, index) in selectedCategory.subCategories"
+                                :key="index"
+                                class="group flex items-center px-2 py-1.5 rounded-[5px] text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
+                                :class="[selectedSubCategory === subCategory ? 'text-blue bg-[#F4F4F4]' : '']"
+                                @click="selectedSubCategory = subCategory"
+                            >
+                                <div>
+                                    <div class="text-sm font-semibold mb-2">
+                                        {{ subCategory.label }}
+                                    </div>
+                                    <div
+                                        class="text-xs font-semibold transition-colors duration-300 group-hover:text-gray-300"
+                                        :class="[selectedSubCategory === subCategory ? 'text-gray-300' : 'text-gray-100']"
+                                    >
+                                        {{ subCategory.products }} Products
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                        <div v-if="selectedCategory && selectedSubCategory" class="grid grid-cols-3 gap-x-5 gap-y-2 px-[25px] pb-5">
+                            <NuxtLink
+                                v-for="(subCategory, index) in selectedCategory.subCategories"
+                                :key="index"
+                                to="/"
+                                class="relative flex items-start text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue hover:before:opacity-100"
+                            >
+                                <div class="text-sm font-medium truncate mr-[5px]">Semiconductors ({{ subCategory.products }})</div>
+                                <div
+                                    v-if="index === 3 || index === 5"
+                                    class="bg-blue text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
+                                >
+                                    New
+                                </div>
+                            </NuxtLink>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <LayoutHeaderMainMenuBanners />
+        </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
-import SemiconductorsIcon from "@/assets/icons/header/semiconductors.svg";
-import PassiveIcon from "@/assets/icons/header/passive.svg";
-import ElectromechanicsIcon from "@/assets/icons/header/electromechanics.svg";
-import CablesAndConnectorsIcon from "@/assets/icons/header/cables-and-connectors.svg";
-import PowerSupplyIcon from "@/assets/icons/header/power-supply.svg";
-import CasesIcon from "@/assets/icons/header/cases.svg";
-import ToolsIcon from "@/assets/icons/header/tools.svg";
-import IndustrialFurnitureIcon from "@/assets/icons/header/industrial-furniture.svg";
-import CaretLeft from "@/assets/icons/caret-left.svg";
-import SlideBg from "@/assets/media/home/exclusive-offer-bg.jpg";
-import ItemImage from "@/assets/media/home/exclusive-offer-item.png";
-import CablesAndConnectorsIcon2 from "@/assets/icons/header/banner/cables-and-connectors.svg";
-import OptoelectronicsIcon2 from "@/assets/icons/header/banner/optoelectronics.svg";
-import ToolsIcon2 from "@/assets/icons/header/banner/tools.svg";
-import IndustrialFurnitureIcon2 from "@/assets/icons/header/banner/industrial-furniture.svg";
-import PowerSupplyIcon2 from "@/assets/icons/header/banner/power-supply.svg";
-import DiodesIcon2 from "@/assets/icons/header/banner/diodes.svg";
-import { A11y, Pagination } from "swiper";
-import { showNavModal } from "~~/config/modal/nav";
+import SemiconductorsIcon from '@/assets/icons/header/semiconductors.svg';
+import PassiveIcon from '@/assets/icons/header/passive.svg';
+import ElectromechanicsIcon from '@/assets/icons/header/electromechanics.svg';
+import CablesAndConnectorsIcon from '@/assets/icons/header/cables-and-connectors.svg';
+import PowerSupplyIcon from '@/assets/icons/header/power-supply.svg';
+import CasesIcon from '@/assets/icons/header/cases.svg';
+import ToolsIcon from '@/assets/icons/header/tools.svg';
+import IndustrialFurnitureIcon from '@/assets/icons/header/industrial-furniture.svg';
+import CaretLeft from '@/assets/icons/caret-left.svg';
+import SlideBg from '@/assets/media/home/exclusive-offer-bg.jpg';
+import ItemImage from '@/assets/media/home/exclusive-offer-item.png';
+import CablesAndConnectorsIcon2 from '@/assets/icons/header/banner/cables-and-connectors.svg';
+import OptoelectronicsIcon2 from '@/assets/icons/header/banner/optoelectronics.svg';
+import ToolsIcon2 from '@/assets/icons/header/banner/tools.svg';
+import IndustrialFurnitureIcon2 from '@/assets/icons/header/banner/industrial-furniture.svg';
+import PowerSupplyIcon2 from '@/assets/icons/header/banner/power-supply.svg';
+import DiodesIcon2 from '@/assets/icons/header/banner/diodes.svg';
+import { A11y, Pagination } from 'swiper';
+import { showNavModal } from '~~/config/modal/nav';
 
 const props = defineProps({
-  isStatic: {
-    type: Boolean,
-    required: false,
-  },
+    isStatic: {
+        type: Boolean,
+        required: false,
+    },
 });
 
 const categories = ref([
-  {
-    label: "Semiconductors",
-    products: 1700,
-    icon: SemiconductorsIcon,
-    subCategories: [
-      {
-        label: "Capacitors",
-        products: 17000,
-      },
-      {
-        label: "High power electrolytic capacitors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Power Supply",
-        products: 17000,
-      },
-      {
-        label: "Semiconductors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Electrolytic capacitors",
-        products: 17000,
-      },
-    ],
-  },
-  {
-    label: "Pasive",
-    products: 1700,
-    icon: PassiveIcon,
-    subCategories: [
-      {
-        label: "Capacitors",
-        products: 17000,
-      },
-      {
-        label: "High power electrolytic capacitors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Power Supply",
-        products: 17000,
-      },
-      {
-        label: "Semiconductors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Electrolytic capacitors",
-        products: 17000,
-      },
-    ],
-  },
-  {
-    label: "Electromechanics",
-    products: 1700,
-    icon: ElectromechanicsIcon,
-    subCategories: [
-      {
-        label: "Capacitors",
-        products: 17000,
-      },
-      {
-        label: "High power electrolytic capacitors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Power Supply",
-        products: 17000,
-      },
-      {
-        label: "Semiconductors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Electrolytic capacitors",
-        products: 17000,
-      },
-    ],
-  },
-  {
-    label: "Cables & Connectors",
-    products: 1700,
-    icon: CablesAndConnectorsIcon,
-    subCategories: [
-      {
-        label: "Capacitors",
-        products: 17000,
-      },
-      {
-        label: "High power electrolytic capacitors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Power Supply",
-        products: 17000,
-      },
-      {
-        label: "Semiconductors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Electrolytic capacitors",
-        products: 17000,
-      },
-    ],
-  },
-  {
-    label: "Power Supply",
-    products: 1700,
-    icon: PowerSupplyIcon,
-    subCategories: [
-      {
-        label: "Capacitors",
-        products: 17000,
-      },
-      {
-        label: "High power electrolytic capacitors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Power Supply",
-        products: 17000,
-      },
-      {
-        label: "Semiconductors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Electrolytic capacitors",
-        products: 17000,
-      },
-    ],
-  },
-  {
-    label: "Cases",
-    products: 1700,
-    icon: CasesIcon,
-    subCategories: [
-      {
-        label: "Capacitors",
-        products: 17000,
-      },
-      {
-        label: "High power electrolytic capacitors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Power Supply",
-        products: 17000,
-      },
-      {
-        label: "Semiconductors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Electrolytic capacitors",
-        products: 17000,
-      },
-    ],
-  },
-  {
-    label: "Tools",
-    products: 1700,
-    icon: ToolsIcon,
-    subCategories: [
-      {
-        label: "Capacitors",
-        products: 17000,
-      },
-      {
-        label: "High power electrolytic capacitors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Power Supply",
-        products: 17000,
-      },
-      {
-        label: "Semiconductors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Electrolytic capacitors",
-        products: 17000,
-      },
-    ],
-  },
-  {
-    label: "Industrial Furniture",
-    products: 1700,
-    icon: IndustrialFurnitureIcon,
-    subCategories: [
-      {
-        label: "Capacitors",
-        products: 17000,
-      },
-      {
-        label: "High power electrolytic capacitors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Power Supply",
-        products: 17000,
-      },
-      {
-        label: "Semiconductors",
-        products: 17000,
-      },
-      {
-        label: "Electromechanics",
-        products: 17000,
-      },
-      {
-        label: "Optolelectronics",
-        products: 17000,
-      },
-      {
-        label: "Electrolytic capacitors",
-        products: 17000,
-      },
-    ],
-  },
+    {
+        label: 'Semiconductors',
+        products: 1700,
+        icon: SemiconductorsIcon,
+        subCategories: [
+            {
+                label: 'Capacitors',
+                products: 17000,
+            },
+            {
+                label: 'High power electrolytic capacitors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Power Supply',
+                products: 17000,
+            },
+            {
+                label: 'Semiconductors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Electrolytic capacitors',
+                products: 17000,
+            },
+        ],
+    },
+    {
+        label: 'Pasive',
+        products: 1700,
+        icon: PassiveIcon,
+        subCategories: [
+            {
+                label: 'Capacitors',
+                products: 17000,
+            },
+            {
+                label: 'High power electrolytic capacitors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Power Supply',
+                products: 17000,
+            },
+            {
+                label: 'Semiconductors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Electrolytic capacitors',
+                products: 17000,
+            },
+        ],
+    },
+    {
+        label: 'Electromechanics',
+        products: 1700,
+        icon: ElectromechanicsIcon,
+        subCategories: [
+            {
+                label: 'Capacitors',
+                products: 17000,
+            },
+            {
+                label: 'High power electrolytic capacitors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Power Supply',
+                products: 17000,
+            },
+            {
+                label: 'Semiconductors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Electrolytic capacitors',
+                products: 17000,
+            },
+        ],
+    },
+    {
+        label: 'Cables & Connectors',
+        products: 1700,
+        icon: CablesAndConnectorsIcon,
+        subCategories: [
+            {
+                label: 'Capacitors',
+                products: 17000,
+            },
+            {
+                label: 'High power electrolytic capacitors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Power Supply',
+                products: 17000,
+            },
+            {
+                label: 'Semiconductors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Electrolytic capacitors',
+                products: 17000,
+            },
+        ],
+    },
+    {
+        label: 'Power Supply',
+        products: 1700,
+        icon: PowerSupplyIcon,
+        subCategories: [
+            {
+                label: 'Capacitors',
+                products: 17000,
+            },
+            {
+                label: 'High power electrolytic capacitors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Power Supply',
+                products: 17000,
+            },
+            {
+                label: 'Semiconductors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Electrolytic capacitors',
+                products: 17000,
+            },
+        ],
+    },
+    {
+        label: 'Cases',
+        products: 1700,
+        icon: CasesIcon,
+        subCategories: [
+            {
+                label: 'Capacitors',
+                products: 17000,
+            },
+            {
+                label: 'High power electrolytic capacitors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Power Supply',
+                products: 17000,
+            },
+            {
+                label: 'Semiconductors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Electrolytic capacitors',
+                products: 17000,
+            },
+        ],
+    },
+    {
+        label: 'Tools',
+        products: 1700,
+        icon: ToolsIcon,
+        subCategories: [
+            {
+                label: 'Capacitors',
+                products: 17000,
+            },
+            {
+                label: 'High power electrolytic capacitors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Power Supply',
+                products: 17000,
+            },
+            {
+                label: 'Semiconductors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Electrolytic capacitors',
+                products: 17000,
+            },
+        ],
+    },
+    {
+        label: 'Industrial Furniture',
+        products: 1700,
+        icon: IndustrialFurnitureIcon,
+        subCategories: [
+            {
+                label: 'Capacitors',
+                products: 17000,
+            },
+            {
+                label: 'High power electrolytic capacitors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Power Supply',
+                products: 17000,
+            },
+            {
+                label: 'Semiconductors',
+                products: 17000,
+            },
+            {
+                label: 'Electromechanics',
+                products: 17000,
+            },
+            {
+                label: 'Optolelectronics',
+                products: 17000,
+            },
+            {
+                label: 'Electrolytic capacitors',
+                products: 17000,
+            },
+        ],
+    },
 ]);
 const selectedCategory = ref<(typeof categories.value)[0] | null>(null);
 const selectedSubCategory = ref<any>();
 
 const slides = ref([
-  {
-    title: "Cables & Connectors",
-    icon: CablesAndConnectorsIcon2,
-  },
-  {
-    title: "Optoelectronics",
-    icon: OptoelectronicsIcon2,
-  },
-  {
-    title: "Tools",
-    icon: ToolsIcon2,
-  },
-  {
-    title: "Industrial Furniture",
-    icon: IndustrialFurnitureIcon2,
-  },
-  {
-    title: "Power Supply",
-    icon: PowerSupplyIcon2,
-  },
-  {
-    title: "Diodes",
-    icon: DiodesIcon2,
-  },
-  {
-    title: "Cables & Connectors",
-    icon: CablesAndConnectorsIcon2,
-  },
-  {
-    title: "Optoelectronics",
-    icon: OptoelectronicsIcon2,
-  },
-  {
-    title: "Tools",
-    icon: ToolsIcon2,
-  },
-  {
-    title: "Industrial Furniture",
-    icon: IndustrialFurnitureIcon2,
-  },
-  {
-    title: "Power Supply",
-    icon: PowerSupplyIcon2,
-  },
-  {
-    title: "Diodes",
-    icon: DiodesIcon2,
-  },
+    {
+        title: 'Cables & Connectors',
+        icon: CablesAndConnectorsIcon2,
+    },
+    {
+        title: 'Optoelectronics',
+        icon: OptoelectronicsIcon2,
+    },
+    {
+        title: 'Tools',
+        icon: ToolsIcon2,
+    },
+    {
+        title: 'Industrial Furniture',
+        icon: IndustrialFurnitureIcon2,
+    },
+    {
+        title: 'Power Supply',
+        icon: PowerSupplyIcon2,
+    },
+    {
+        title: 'Diodes',
+        icon: DiodesIcon2,
+    },
+    {
+        title: 'Cables & Connectors',
+        icon: CablesAndConnectorsIcon2,
+    },
+    {
+        title: 'Optoelectronics',
+        icon: OptoelectronicsIcon2,
+    },
+    {
+        title: 'Tools',
+        icon: ToolsIcon2,
+    },
+    {
+        title: 'Industrial Furniture',
+        icon: IndustrialFurnitureIcon2,
+    },
+    {
+        title: 'Power Supply',
+        icon: PowerSupplyIcon2,
+    },
+    {
+        title: 'Diodes',
+        icon: DiodesIcon2,
+    },
 ]);
 
 const handleClickOutside = () => {
-  if (!props.isStatic && window.innerWidth >= 768) {
-    showNavModal.value = false;
-  } else if ((props.isStatic && selectedCategory) || selectedSubCategory) {
-    selectedCategory.value = null;
-    selectedSubCategory.value = null;
-  }
+    if (!props.isStatic && window.innerWidth >= 768) {
+        showNavModal.value = false;
+    } else if ((props.isStatic && selectedCategory) || selectedSubCategory) {
+        selectedCategory.value = null;
+        selectedSubCategory.value = null;
+    }
 };
 
 const isBannerExpanded = ref(false);
 const handleTogglerMouseEnter = (event: MouseEvent) => {
-  const svg = (event.target as HTMLInputElement).querySelector("svg");
-  if (isBannerExpanded.value) {
-    svg?.classList.add("animateToRight");
-  } else {
-    svg?.classList.add("animateToLeft");
-  }
+    const svg = (event.target as HTMLInputElement).querySelector('svg');
+    if (isBannerExpanded.value) {
+        svg?.classList.add('animateToRight');
+    } else {
+        svg?.classList.add('animateToLeft');
+    }
 
-  isMouseOverToggler.value = true;
+    isMouseOverToggler.value = true;
 };
 
 const isMouseOverToggler = ref<boolean | null>(null);
 const handleTogglerMouseLeave = (event: MouseEvent) => {
-  const svg = (event.target as HTMLInputElement).querySelector("svg");
+    const svg = (event.target as HTMLInputElement).querySelector('svg');
 
-  svg?.classList.remove("animateToRight", "animateToLeft");
+    svg?.classList.remove('animateToRight', 'animateToLeft');
 
-  isMouseOverToggler.value = null;
+    isMouseOverToggler.value = null;
 };
 
 const swiperDOM = ref<any>(null);
 
 onMounted(() => {
-  if (swiperDOM.value) {
-    swiperDOM.value.destroy = () => {};
-  }
+    if (swiperDOM.value) {
+        swiperDOM.value.destroy = () => {};
+    }
 });
 </script>
 
 <style lang="scss">
 .headerSubmenu--swiper {
-  @apply z-20 pb-[22px] mt-auto md:pb-[38px] #{!important};
+    @apply z-20 pb-[22px] mt-auto md:pb-[38px] #{!important};
 }
 .headerSubmenu--swiper .swiper-slide {
-  @apply h-auto #{!important};
+    @apply h-auto #{!important};
 }
 .headerSubmenu--swiper .swiper-pagination {
-  @apply flex justify-center w-full h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px] #{!important};
+    @apply flex justify-center w-full h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px] #{!important};
 }
 .headerSubmenu--swiper .swiper-pagination-bullet {
-  @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
-  margin-right: 0 !important;
+    @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
+    margin-right: 0 !important;
 }
-.headerSubmenu--swiper
-  .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  @apply w-[25px] bg-white #{!important};
+.headerSubmenu--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    @apply w-[25px] bg-white #{!important};
 }
 </style>
 
 <style lang="scss">
 .animateToRight {
-  animation: toRightFromLeft 0.5s forwards linear;
+    animation: toRightFromLeft 0.5s forwards linear;
 }
 
 .animateToLeft {
-  animation: toLeftFromRight 0.5s forwards linear;
+    animation: toLeftFromRight 0.5s forwards linear;
 }
 
 @keyframes toLeftFromRight {
-  49% {
-    @apply -translate-x-full rotate-180;
-    -webkit-transform: translateX(-100%) rotate(180deg);
-  }
+    49% {
+        @apply -translate-x-full rotate-180;
+        -webkit-transform: translateX(-100%) rotate(180deg);
+    }
 
-  50% {
-    @apply opacity-0 translate-x-full rotate-180;
-    -webkit-transform: translateX(100%) rotate(180deg);
-  }
+    50% {
+        @apply opacity-0 translate-x-full rotate-180;
+        -webkit-transform: translateX(100%) rotate(180deg);
+    }
 
-  51% {
-    @apply opacity-100;
-  }
+    51% {
+        @apply opacity-100;
+    }
 }
 
 @keyframes toRightFromLeft {
-  49% {
-    @apply translate-x-full;
-    -webkit-transform: translateX(100%);
-  }
+    49% {
+        @apply translate-x-full;
+        -webkit-transform: translateX(100%);
+    }
 
-  50% {
-    @apply opacity-0 -translate-x-full;
-    -webkit-transform: translateX(-100%);
-  }
+    50% {
+        @apply opacity-0 -translate-x-full;
+        -webkit-transform: translateX(-100%);
+    }
 
-  51% {
-    @apply opacity-100;
-  }
+    51% {
+        @apply opacity-100;
+    }
 }
 
 .sideNav--toggler_active {
-  @keyframes toLeftFromRight {
-    49% {
-      @apply -translate-x-full;
+    @keyframes toLeftFromRight {
+        49% {
+            @apply -translate-x-full;
+        }
+
+        50% {
+            @apply opacity-0 translate-x-full;
+        }
+
+        51% {
+            @apply opacity-100;
+        }
     }
 
-    50% {
-      @apply opacity-0 translate-x-full;
-    }
+    @keyframes toRightFromLeft {
+        49% {
+            @apply translate-x-full;
+        }
 
-    51% {
-      @apply opacity-100;
-    }
-  }
+        50% {
+            @apply opacity-0 -translate-x-full;
+        }
 
-  @keyframes toRightFromLeft {
-    49% {
-      @apply translate-x-full;
+        51% {
+            @apply opacity-100;
+        }
     }
-
-    50% {
-      @apply opacity-0 -translate-x-full;
-    }
-
-    51% {
-      @apply opacity-100;
-    }
-  }
 }
 </style>

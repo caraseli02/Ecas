@@ -1,10 +1,10 @@
 export interface ProductResponse {
-    data: [ProductInterface]
-    status: string
+    data: [ProductInterface];
+    status: string;
 }
 
 export interface ProductInterface {
-    _id: string
+    _id: string;
     class: string;
     alias: string;
     description: string;
@@ -24,7 +24,7 @@ export interface ProductInterface {
 export interface ProductDetailsInterface {
     SummaryData: ProductSummaryDataInterface;
     ParametricData: ProductParametricDataInterface;
-    ProductImage: ProductImage
+    ProductImage: ProductImage;
 }
 
 export interface ProductSummaryDataInterface {
@@ -44,7 +44,7 @@ export interface ProductParametricDataFeaturesInterface extends CountInterface {
     FeatureUnit: string;
     FeatureID?: string;
     FeatureValueDetails?: string;
-    checked?: boolean
+    checked?: boolean;
 }
 
 export interface CountInterface {
@@ -67,6 +67,6 @@ export interface AdminSettings {
 }
 
 export interface ProductImage {
-    ProductImageLarge: string
-    ProductImageSmall: string
+    ProductImageLarge: string;
+    ProductImageSmall: string;
 }

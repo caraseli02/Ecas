@@ -1,5 +1,5 @@
-import VueTouch from "@vuemod/vue-touch";
+import VueTouch from '@vuemod/vue-touch';
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.use(VueTouch);
+    nuxtApp.vueApp.use(VueTouch);
 });

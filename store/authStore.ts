@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import { UserInfoJWT } from '~~/types'
-import { UserDetails } from '~~/types/auth/user-details'
+import { defineStore } from 'pinia';
+import { UserInfoJWT } from '~~/types';
+import { UserDetails } from '~~/types/auth/user-details';
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
@@ -9,36 +9,36 @@ export const useAuthStore = defineStore({
             token: '' as string | null,
             loggedInUser: null as UserInfoJWT | null,
             userDetails: null as UserDetails | null,
-            firebaseTempToken: null as string | null
-        }
+            firebaseTempToken: null as string | null,
+        };
     },
     actions: {
         addToken(token: string) {
-            this.token = token
+            this.token = token;
         },
         addUser(user: UserInfoJWT) {
-            this.loggedInUser = user
+            this.loggedInUser = user;
         },
         addUserDetail(user: UserDetails) {
-            this.userDetails = user
+            this.userDetails = user;
         },
         addFirebaseToken(token: string) {
-            this.firebaseTempToken = token
+            this.firebaseTempToken = token;
         },
         signOut() {
-            this.loggedInUser = null
-            this.userDetails = null
-            this.token = null
+            this.loggedInUser = null;
+            this.userDetails = null;
+            this.token = null;
         },
         async firebaseSignOut() {
-            const firebaseAuth = useFirebaseAuth()
-            await firebaseAuth.logout()
-        }
+            const firebaseAuth = useFirebaseAuth();
+            await firebaseAuth.logout();
+        },
     },
     getters: {
-        getToken: state => state.token,
-        getCurrentUser: state => state.loggedInUser,
-        getUserDetails: state => state.userDetails
+        getToken: (state) => state.token,
+        getCurrentUser: (state) => state.loggedInUser,
+        getUserDetails: (state) => state.userDetails,
     },
-    persist: true
-})
+    persist: true,
+});

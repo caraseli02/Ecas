@@ -1,8 +1,8 @@
 type useFetchType = typeof useFetch;
 
 export const useFetchAPI: useFetchType = async (url, params) => {
-    const cookie = useCookie("token");
-    const runtimeConfig = useRuntimeConfig()
+    const cookie = useCookie('token');
+    const runtimeConfig = useRuntimeConfig();
 
     const opts = {
         key: url,
@@ -12,7 +12,7 @@ export const useFetchAPI: useFetchType = async (url, params) => {
             options.headers = options.headers || {};
 
             if (cookie.value) {
-                options.headers["x-access-token"] = cookie.value;
+                options.headers['x-access-token'] = cookie.value;
             }
         },
 

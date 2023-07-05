@@ -1,2 +1,2 @@
-export * from './classic'
-export * from './google'
+export * from './classic';
+export * from './google';

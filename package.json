@@ -1,46 +1,60 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "devDependencies": {
-    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
-    "@types/leaflet": "^1.9.3",
-    "@types/lodash": "^4.14.191",
-    "@types/uuid": "^9.0.0",
-    "autoprefixer": "^10.4.13",
-    "nuxt": "^3.1.0",
-    "nuxt-lodash": "^2.4.1",
-    "nuxt-svgo": "^1.1.0",
-    "postcss": "^8.4.21",
-    "sass": "^1.62.0",
-    "tailwindcss": "^3.2.4",
-    "uuid": "^9.0.0"
-  },
-  "dependencies": {
-    "@pinia/nuxt": "^0.4.7",
-    "@popperjs/core": "^2.11.8",
-    "@vueform/slider": "^2.1.7",
-    "@vuemod/vue-touch": "^0.0.22",
-    "apexcharts": "^3.40.0",
-    "firebase": "^9.19.1",
-    "leaflet": "^1.9.4",
-    "lodash": "^4.17.21",
-    "nuxt-swiper": "^0.1.9",
-    "nuxt-vuefire": "^0.1.6",
-    "ohmyfetch": "^0.4.21",
-    "pinia": "^2.0.33",
-    "sass-loader": "^13.2.0",
-    "v-calendar": "^3.0.3",
-    "vue3-apexcharts": "^1.4.1",
-    "vue3-lottie": "^2.5.0",
-    "vuejs-paginate-next": "^1.0.2"
-  },
-  "overrides": {
-    "vue": "latest"
-  }
+    "private": true,
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
+        "lint": "eslint --ext .ts,.js,.vue, --ignore-path .gitignore .",
+        "pretty": "prettier --write ."
+    },
+    "devDependencies": {
+        "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
+        "@types/leaflet": "^1.9.3",
+        "@types/lodash": "^4.14.191",
+        "@types/uuid": "^9.0.0",
+        "autoprefixer": "^10.4.13",
+        "nuxt": "^3.1.0",
+        "nuxt-lodash": "^2.4.1",
+        "nuxt-svgo": "^1.1.0",
+        "postcss": "^8.4.21",
+        "sass": "^1.62.0",
+        "tailwindcss": "^3.2.4",
+        "uuid": "^9.0.0"
+    },
+    "dependencies": {
+        "@nuxtjs/eslint-config-typescript": "^12.0.0",
+        "@pinia/nuxt": "^0.4.7",
+        "@popperjs/core": "^2.11.8",
+        "@typescript-eslint/eslint-plugin": "^5.60.1",
+        "@typescript-eslint/parser": "^5.60.1",
+        "@vue/eslint-config-typescript": "^11.0.3",
+        "@vueform/slider": "^2.1.7",
+        "@vuemod/vue-touch": "^0.0.22",
+        "apexcharts": "^3.40.0",
+        "date-fns": "^2.30.0",
+        "eslint": "^8.43.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-plugin-vue": "^9.15.1",
+        "firebase": "^9.19.1",
+        "leaflet": "^1.9.4",
+        "lodash": "^4.17.21",
+        "nuxt-swiper": "^0.1.9",
+        "nuxt-vuefire": "^0.1.6",
+        "ohmyfetch": "^0.4.21",
+        "pinia": "^2.0.33",
+        "prettier": "^2.8.8",
+        "sass-loader": "^13.2.0",
+        "tiny-emitter": "^2.1.0",
+        "typescript": "^5.1.5",
+        "v-calendar": "^3.0.3",
+        "vue3-apexcharts": "^1.4.1",
+        "vue3-lottie": "^2.5.0",
+        "vuejs-paginate-next": "^1.0.2"
+    },
+    "overrides": {
+        "vue": "latest"
+    }
 }

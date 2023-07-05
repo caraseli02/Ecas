@@ -1,2 +1,2 @@
-export * from "./text";
-export * from "./document";
+export * from './text';
+export * from './document';

@@ -1,63 +1,63 @@
-import { InputObject } from "~~/types";
+import { InputObject } from '~~/types';
 
 export const useError = () => {
-  const checkForInputErrors = (obj: Array<InputObject>) => {
-    let hasError = false;
+    const checkForInputErrors = (obj: Array<InputObject>) => {
+        let hasError = false;
 
-    obj.forEach((e) => {
-      if (e.type === "email") {
-        const emailRegex = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm;
+        obj.forEach((e) => {
+            if (e.type === 'email') {
+                const emailRegex = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm;
 
-        if (!emailRegex.test(e.value)) {
-          e.error = "Please provide a valid email address";
-        } else {
-          e.error = "";
+                if (!emailRegex.test(e.value)) {
+                    e.error = 'Please provide a valid email address';
+                } else {
+                    e.error = '';
+                }
+            } else if (!e.value) {
+                e.error = 'Please fill out this field';
+            } else {
+                e.error = '';
+            }
+        });
+
+        if (obj.find((e) => e.error)) {
+            hasError = true;
         }
-      } else if (!e.value) {
-        e.error = "Please fill out this field";
-      } else {
-        e.error = "";
-      }
-    });
 
-    if (obj.find((e) => e.error)) {
-      hasError = true;
-    }
+        return hasError;
+    };
 
-    return hasError;
-  };
+    const checkContactConfirmationEmail = (obj: { email: InputObject; confirmEmail: InputObject }) => {
+        let hasError = false;
 
-  const checkContactConfirmationEmail = (obj: { email: InputObject, confirmEmail: InputObject } ) => {
-    let hasError = false
+        if (obj.email.value != obj.confirmEmail.value) {
+            obj.confirmEmail.error = 'Confirmation email value should same';
+        }
 
-    if (obj.email.value != obj.confirmEmail.value) {
-      obj.confirmEmail.error = "Confirmation email value should same";
-    }
+        if (obj.email.error || obj.confirmEmail.error) {
+            hasError = true;
+        }
 
-    if (obj.email.error || obj.confirmEmail.error) {
-      hasError = true;
-    }
+        return hasError;
+    };
 
-    return hasError;
-  };
+    const checkProfileConfirmationEmail = (obj: { accountEmail: InputObject; confirmAccountEmail: InputObject }) => {
+        let hasError = false;
 
-  const checkProfileConfirmationEmail = (obj: { accountEmail: InputObject, confirmAccountEmail: InputObject } ) => {
-    let hasError = false
+        if (obj.accountEmail.value != obj.confirmAccountEmail.value) {
+            obj.confirmAccountEmail.error = 'Confirmation email value should same';
+        }
 
-    if (obj.accountEmail.value != obj.confirmAccountEmail.value) {
-      obj.confirmAccountEmail.error = "Confirmation email value should same"
-    }
+        if (obj.accountEmail.error || obj.confirmAccountEmail.error) {
+            hasError = true;
+        }
 
-    if (obj.accountEmail.error || obj.confirmAccountEmail.error) {
-      hasError = true;
-    }
+        return hasError;
+    };
 
-    return hasError
-  }
-
-  return {
-    checkForInputErrors,
-    checkContactConfirmationEmail,
-    checkProfileConfirmationEmail
-  };
+    return {
+        checkForInputErrors,
+        checkContactConfirmationEmail,
+        checkProfileConfirmationEmail,
+    };
 };
