@@ -41,7 +41,7 @@
                     <button
                         class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
                         :class="[!account ? 'text-gray-100' : '', showAccountOptions ? 'border-blue' : 'border-border']"
-                        @click="handleShowAccountOptions;"
+                        @click="handleShowAccountOptions"
                     >
                         <span class="text-sm flex-shrink-0 mr-1">
                             {{ account || 'Select' }}
@@ -561,6 +561,7 @@ const accountDropdownLeft = ref(0);
 const accountDropdownTop = ref(0);
 const handleShowAccountOptions = (event: MouseEvent) => {
     showAccountOptions.value = !showAccountOptions.value;
+    console.log(showAccountOptions.value);
     const target = event.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     accountDropdownLeft.value = rect.right;
