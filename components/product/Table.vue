@@ -18,14 +18,14 @@ const filterLineWidth = ref(0);
 const checkedFeatures = ref([] as ProductParametricDataFeaturesInterface);
 
 const props = defineProps<{
-  features: ProductParametricDataFeaturesInterface[];
+    features: ProductParametricDataFeaturesInterface[];
 }>();
 
 const features = reactive<ProductParametricDataFeaturesInterface[]>(
-  props.features?.map((item) => {
-    item.checked = false;
-    return item;
-  })
+    props.features?.map((item) => {
+        item.checked = false;
+        return item;
+    })
 );
 
 const totalSimilarProducts = ref<number>(0);
@@ -36,28 +36,28 @@ const setFilterLine = () => {
     if (elDOM.value) {
         const activeFilterEl = elDOM.value.querySelector(`[data-tab=${activeFilter.value}]`) as HTMLButtonElement;
 
-    if (activeFilterEl) {
-      const rect = activeFilterEl.getBoundingClientRect();
-      filterLineLeftPosition.value = activeFilterEl.offsetLeft;
-      filterLineWidth.value = rect.width;
+        if (activeFilterEl) {
+            const rect = activeFilterEl.getBoundingClientRect();
+            filterLineLeftPosition.value = activeFilterEl.offsetLeft;
+            filterLineWidth.value = rect.width;
+        }
     }
-  }
 };
 
 const setActiveFilter = (filter: string) => {
-  activeFilter.value = textUtil.slugify(filter);
-  setFilterLine();
+    activeFilter.value = textUtil.slugify(filter);
+    setFilterLine();
 };
 
 watch(features, async () => {
-  await searchSimilarProducts();
+    await searchSimilarProducts();
 });
 
 const searchSimilarProducts = async () => {
     isLoading.value = true;
 
     checkedFeatures.value = features.filter((item) => item.checked);
-  const { data } = (await $api.product.fetchSearchProduct('', 1, 10, {}, checkedFeatures.value)) as SearchData;
+    const { data } = (await $api.product.fetchSearchProduct('', 1, 10, {}, checkedFeatures.value)) as SearchData;
 
     totalSimilarProducts.value = !checkedFeatures.value.length ? 0 : data.items.total_items;
     similarProducts.value = data.items;
@@ -84,13 +84,13 @@ const showSimilarProducts = async () => {
 };
 
 onMounted(() => {
-  setFilterLine();
+    setFilterLine();
 });
 </script>
 
 <template>
     <div ref="elDOM" class="relative bg-white rounded-md font-Inter pt-7 pb-[25px] shadow-m md:py-[15px]">
-      <div
+        <div
             class="flex flex-col items-center mb-[30px] md:flex-row md:justify-between md:items-end md:mb-10 md:border-b md:border-gray-200 md:px-[15px] lg:px-5"
         >
             <div class="border-b border-gray-200 w-full px-[15px] mb-[30px] md:px-0 md:mb-0 md:border-b-0">

@@ -50,7 +50,7 @@ const props = defineProps<{
 }>();
 
 const productTitle = (product: ProductSearchItems) => {
-    const titleArray = product.details.SummaryData.TaxonomyPath.split(">");
+    const titleArray = product.details.SummaryData.TaxonomyPath.split('>');
     return titleArray[titleArray.length - 1];
 };
 </script>

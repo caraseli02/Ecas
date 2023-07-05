@@ -23,10 +23,11 @@
         </label>
         <Transition name="fade">
             <LayoutHeaderSearchResults
-        v-if="searchVal && showResults"
-        :products="productList"
-        :keyword="searchVal" :is-loading="isLoading"
-      />
+                v-if="searchVal && showResults"
+                :products="productList"
+                :keyword="searchVal"
+                :is-loading="isLoading"
+            />
         </Transition>
     </div>
 </template>
@@ -34,8 +35,7 @@
 <script setup lang="ts">
 import SearchIcon from '@/assets/icons/search.svg';
 import _ from 'lodash';
-import { ProductSearchItems, ProductSearchResponse, SearchData ,
-} from '~~/model/products/response/ProductSearchResponse';
+import { ProductSearchItems, ProductSearchResponse, SearchData } from '~~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance';
 import { useNuxtApp } from '#app';
 const { $api } = useNuxtApp();
@@ -45,10 +45,10 @@ defineProps({
         type: Boolean,
         required: false,
     },
-  showResults: {
-    type: Boolean,
-    required: false,
-  },
+    showResults: {
+        type: Boolean,
+        required: false,
+    },
 });
 
 const searchVal = ref('');

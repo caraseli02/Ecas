@@ -162,27 +162,27 @@ const elDOM = ref<HTMLElement | null>(null);
 const productList = ref<ProductCardType[]>([]);
 
 const productsMD = computed(() => {
-  const chunkedArray = [];
-  for (let i = 0; i < productList.value.length; i += 3) {
-    chunkedArray.push(productList.value.slice(i, i + 3));
-  }
-  return chunkedArray;
+    const chunkedArray = [];
+    for (let i = 0; i < productList.value.length; i += 3) {
+        chunkedArray.push(productList.value.slice(i, i + 3));
+    }
+    return chunkedArray;
 });
 
 const productsLG = computed(() => {
-  const chunkedArray = [];
-  for (let i = 0; i < productList.value.length; i += 5) {
-    chunkedArray.push(productList.value.slice(i, i + 5));
-  }
-  return chunkedArray;
+    const chunkedArray = [];
+    for (let i = 0; i < productList.value.length; i += 5) {
+        chunkedArray.push(productList.value.slice(i, i + 5));
+    }
+    return chunkedArray;
 });
 
 const productsXL = computed(() => {
-  const chunkedArray = [];
-  for (let i = 0; i < productList.value.length; i += 7) {
-    chunkedArray.push(productList.value.slice(i, i + 7));
-  }
-  return chunkedArray;
+    const chunkedArray = [];
+    for (let i = 0; i < productList.value.length; i += 7) {
+        chunkedArray.push(productList.value.slice(i, i + 7));
+    }
+    return chunkedArray;
 });
 
 const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
@@ -191,90 +191,90 @@ const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
 
 watch(activeFilter, async (value) => {
-  const { data } = await $api.product.fetchProductTab(value);
+    const { data } = await $api.product.fetchProductTab(value);
 
     if (data) {
         productList.value = data?.map((item) => ({
-      slug: item._id,
-      title: item.alias,
-      category: 'Not supported',
-      price: new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 3,
-      }).format(item.priceEur),
-      cover: item.details.ProductImage.ProductImageLarge,
-      stock: item.stock,
-    }));
-  }
+            slug: item._id,
+            title: item.alias,
+            category: 'Not supported',
+            price: new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 3,
+            }).format(item.priceEur),
+            cover: item.details.ProductImage.ProductImageLarge,
+            stock: item.stock,
+        }));
+    }
 });
 
 const setFilterLine = () => {
     if (elDOM.value) {
         const activeFilterEl = elDOM.value.querySelector(`[data-tab=${activeFilter.value}]`) as HTMLButtonElement;
 
-    if (activeFilterEl) {
-      const rect = activeFilterEl.getBoundingClientRect();
-      filterLineLeftPosition.value = activeFilterEl.offsetLeft;
-      filterLineWidth.value = rect.width;
+        if (activeFilterEl) {
+            const rect = activeFilterEl.getBoundingClientRect();
+            filterLineLeftPosition.value = activeFilterEl.offsetLeft;
+            filterLineWidth.value = rect.width;
+        }
     }
-  }
 };
 
 const setActiveFilter = (filter: string) => {
-  activeFilter.value = textUtil.slugify(filter);
-  setFilterLine();
+    activeFilter.value = textUtil.slugify(filter);
+    setFilterLine();
 };
 
 onMounted(async () => {
-  setFilterLine();
+    setFilterLine();
 
-  // fetchUser()
+    // fetchUser()
 });
 
 async function fetchUser() {
-  const payload: PaginatedUserRequest = {
-    page: 1,
-    perPage: 10,
-  };
-  const user = await $api.user.fetchPaginatedUser(payload);
+    const payload: PaginatedUserRequest = {
+        page: 1,
+        perPage: 10,
+    };
+    const user = await $api.user.fetchPaginatedUser(payload);
 }
 
 async function getProductTab() {
-  const { data } = await $api.product.fetchProductTab('featured');
-  if (data) {
-    productList.value = data?.map((item) => ({
-      slug: item._id,
-      title: item.alias,
-      category: 'Not supported',
-      price: new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 3,
-      }).format(item.priceEur),
-      cover: item.details.ProductImage.ProductImageLarge,
-      stock: item.stock,
-    }));
-  }
+    const { data } = await $api.product.fetchProductTab('featured');
+    if (data) {
+        productList.value = data?.map((item) => ({
+            slug: item._id,
+            title: item.alias,
+            category: 'Not supported',
+            price: new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 3,
+            }).format(item.priceEur),
+            cover: item.details.ProductImage.ProductImageLarge,
+            stock: item.stock,
+        }));
+    }
 }
 
 onMounted(() => {
-  getProductTab();
+    getProductTab();
 });
 </script>
 
 <style lang="scss">
 .homeFeaturedProducts--swiper {
-  @apply px-1 pt-1 pb-[30px] #{!important};
+    @apply px-1 pt-1 pb-[30px] #{!important};
 }
 
 .homeFeaturedProducts--swiper .swiper-slide {
-  @apply h-auto #{!important};
+    @apply h-auto #{!important};
 }
 
 .homeFeaturedProducts--swiper .swiper-pagination {
-  @apply bottom-0 space-x-1.5 md:space-x-2 #{!important};
+    @apply bottom-0 space-x-1.5 md:space-x-2 #{!important};
 }
 
 .homeFeaturedProducts--swiper .swiper-pagination-bullet {
-  @apply w-1.5 h-1.5 bg-[#D9D9D9] rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
-  margin-right: 0 !important;
+    @apply w-1.5 h-1.5 bg-[#D9D9D9] rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
+    margin-right: 0 !important;
 }
 
 .homeFeaturedProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {

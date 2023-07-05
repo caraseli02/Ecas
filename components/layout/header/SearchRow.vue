@@ -28,10 +28,10 @@ import Logo from '@/assets/media/logo.svg';
 import UserIcon from '@/assets/icons/user.svg';
 
 defineProps({
-  isScrolled: {
-    type: Boolean,
-    required: true,
-  },
+    isScrolled: {
+        type: Boolean,
+        required: true,
+    },
 });
 
 const showAccountModal = ref(false);
