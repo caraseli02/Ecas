@@ -11,10 +11,15 @@ class HttpFactory {
      * method - GET, POST, PUT
      * URL
      **/
-    async call<T>(method: string, url: string, data?: object, extras = {}): Promise<T> {
+    async call<T>(method: string, url: string, data?: object | null, extras = {}): Promise<T> {
         try {
-            return await this.$fetch(url, { method, body: data, ...extras });
+            if (!data) {
+                return await this.$fetch(url, { method, ...extras });
+            } else {
+                return await this.$fetch(url, { method, body: data, ...extras });
+            }
         } catch (err) {
+            console.log(err);
             return err as T;
         }
     }

@@ -64,19 +64,21 @@
 
 <script setup lang="ts">
 import { CustomersByCountryInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
-import { fetchCustomersByCountryWidget } from '~/services/dashboard/user.service';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const countries = ref([] as CustomersByCountryInterface[]);
 const countryWithMostCustomers = ref({} as CustomersByCountryInterface);
 
 const fetchAndSetCustomersByCountry = async () => {
-    const data = await fetchCustomersByCountryWidget();
+    const data = await $api.userDashboard.fetchCustomersByCountryWidget();
 
-    if (!data || !data.data) {
+    if (!data || data.status !== 'success') {
         return;
     }
 
-    const widgetData = data?.data?.value as CustomersByCountryInterface;
+    const widgetData = data as CustomersByCountryInterface;
 
     countries.value = widgetData?.data;
 

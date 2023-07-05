@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import CheckIcon from '@/assets/icons/check.svg';
 import { ProductParametricDataFeaturesInterface } from '~/model/products/response/ProductResponse';
-import { fetchSearchProduct } from '~/services/product.service';
 import { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance.js';
 import { useNuxtApp } from '#app/nuxt';
-import { navigateTo } from '#app';
+
 const { $api } = useNuxtApp();
+const router = useRouter();
 
 const elDOM = ref<HTMLElement | null>(null);
 const isLoading = ref<boolean>(false);
@@ -15,6 +15,7 @@ const filters = ref(['Specifications', 'Tab 2', 'Tab 3']);
 const activeFilter = ref('specifications');
 const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
+const checkedFeatures = ref([] as ProductParametricDataFeaturesInterface);
 
 const props = defineProps<{
     features: ProductParametricDataFeaturesInterface[];
@@ -55,20 +56,31 @@ watch(features, async () => {
 const searchSimilarProducts = async () => {
     isLoading.value = true;
 
-    const checkedFeatures = features.filter((item) => item.checked);
-    const { data } = (await $api.product.fetchSearchProduct('', 1, 10, {}, checkedFeatures)) as SearchData;
+    checkedFeatures.value = features.filter((item) => item.checked);
+    const { data } = (await $api.product.fetchSearchProduct('', 1, 10, {}, checkedFeatures.value)) as SearchData;
 
-    totalSimilarProducts.value = !checkedFeatures.length ? 0 : data.items.total_items;
-    similarProducts.value = data.items.items;
+    totalSimilarProducts.value = !checkedFeatures.value.length ? 0 : data.items.total_items;
+    similarProducts.value = data.items;
     similarFilters.value = data.filters;
 
     isLoading.value = false;
 };
 
 const showSimilarProducts = async () => {
-    Emitter.emit('show-similar-products', { products: similarProducts.value, filters: similarFilters.value });
-
-    navigateTo('/search');
+    router.push({
+        path: '/search',
+        params: {
+            features: checkedFeatures.value,
+            products: similarProducts.value,
+            filters: similarFilters.value,
+        },
+        props: true,
+    });
+    // Emitter.emit('show-similar-products', {
+    //     features: checkedFeatures.value,
+    //     products: similarProducts.value,
+    //     filters: similarFilters.value,
+    // });
 };
 
 onMounted(() => {

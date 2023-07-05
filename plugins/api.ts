@@ -3,12 +3,14 @@ import { defineNuxtPlugin } from '#app';
 import ProductService from '~/services/products.service';
 import AuthService from '~/services/auth.service';
 import UserService from '~/services/user.service';
+import UserDashboardService from '~/services/dashboard/user.service';
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
     product: ProductService;
     auth: AuthService;
     user: UserService;
+    userDashboard: UserDashboardService;
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -24,6 +26,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         product: new ProductService(apiFetcher),
         auth: new AuthService(apiFetcher),
         user: new UserService(apiFetcher),
+        userDashboard: new UserDashboardService(apiFetcher),
     };
 
     return {

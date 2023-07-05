@@ -69,22 +69,24 @@ import FilterIcon from '@/assets/icons/dashboard/filter.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import Avatar from '@/assets/icons/dashboard/avatar.png';
 import { DashboardTableItem, getAccountTypeById } from '~~/types';
-import { fetchCustomersList } from '~/services/dashboard/user.service';
 import { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { FilterLabelsEnum } from '~/types/dashboard/filter';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const activeFilters = ref([] as FilterInterface);
 const activeSort = ref({} as SortInterface);
 
 const clearFilters = async () => {
     activeFilters.value = [];
-    await fetchAndSetUsersList(atPage, perPage, activeFilters, activeSort);
+    await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters, activeSort);
 };
 
 const removeFilter = async (index) => {
     activeFilters.value.splice(index, 1);
-    await fetchAndSetUsersList(atPage, perPage, activeFilters, activeSort);
+    await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters, activeSort);
 };
 
 const atPage = ref(1);
@@ -100,16 +102,15 @@ const visibleItemsFiltered = computed(() => {
 });
 
 const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
-    const data = await fetchCustomersList(page, perPage, filters, sort);
+    const data = await $api.userDashboard.fetchCustomersList(page, perPage, filters, sort);
 
-    if (!data || !data.data) {
+    if (!data || data.status !== 'success') {
         return;
     }
 
-    const paginatedUsersData = data?.data?.value as PaginatedCustomersInterface;
-    const paginatedUsers = paginatedUsersData?.data?.items;
+    const paginatedUsers = data.data.items;
 
-    totalItems = paginatedUsersData?.data?.total_items;
+    totalItems = data.data.total_items;
 
     if (paginatedUsers) {
         listItems.value = paginatedUsers.map((user) => ({
@@ -125,7 +126,7 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {},
     }
 };
 
-await fetchAndSetUsersList(atPage, perPage, activeFilters, activeSort);
+await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 
 watch(
     [atPage, perPage, activeFilters, activeSort],

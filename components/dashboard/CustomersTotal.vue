@@ -68,10 +68,12 @@ import ArrowDownIcon from '@/assets/icons/dashboard/arrow-down.svg';
 import ChevronIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import ArrowRightIcon from '@/assets/icons/dashboard/arrow-right.svg';
 import type { ApexOptions } from 'apexcharts';
-import { fetchTotalCustomersWidget } from '~/services/dashboard/user.service';
 import { TotalCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { differenceInDays, startOfISOWeek } from 'date-fns';
 import Emitter from 'tiny-emitter/instance';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const chartOptions: ApexOptions = {
     chart: {
@@ -145,17 +147,17 @@ const total = ref(0);
 const delta = ref(0);
 
 const fetchAndSetTotalCustomers = async (time = 7) => {
-    const data = await fetchTotalCustomersWidget(time);
+    const data = await $api.userDashboard.fetchTotalCustomersWidget(time);
 
-    if (!data || !data.data) {
+    if (!data || data.status !== 'success') {
         return;
     }
 
-    const widgetData = data?.data?.value as TotalCustomersInterface;
+    const widgetData = data as TotalCustomersInterface;
 
-    series.value = widgetData?.data.series;
-    total.value = widgetData?.data.total;
-    delta.value = widgetData?.data.delta;
+    series.value = widgetData.data.series;
+    total.value = widgetData.data.total;
+    delta.value = widgetData.data.delta;
 };
 
 await fetchAndSetTotalCustomers(selectedOption.time);

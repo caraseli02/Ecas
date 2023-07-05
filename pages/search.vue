@@ -36,8 +36,9 @@ import { ProductFilters, SearchData } from '~/model/products/response/ProductSea
 import Emitter from 'tiny-emitter/instance.js';
 import { SortInterface } from '~/model/dashboard/table/filters';
 import _ from 'lodash-es';
-import { watch } from 'vue';
+import { onMounted, onUpdated, watch } from 'vue';
 import { useNuxtApp } from '#app';
+import { ProductParametricDataFeaturesInterface } from '~/model/products/response/ProductResponse';
 const { $api } = useNuxtApp();
 
 useHead({
@@ -47,18 +48,17 @@ useHead({
 const route = useRoute();
 const router = useRouter();
 
-if (!route.query.keyword) {
-    router.push('/');
-}
+// if (!route.query.keyword) {
+//     router.push('/');
+// }
 
-const keyword = ref<string>(route.query.keyword as string);
+const keyword = ref<string>(route.query.keyword as string | undefined);
 
 const products = ref<SearchData | null>(null);
 const filters = ref<ProductFilters | null>(null);
 const atPage = ref(1);
 const perPage = ref(10);
 const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
-const activeSort = ref({} as SortInterface);
 const order = ref<1 | 0>(1);
 const resetProductsFilters = ref(false);
 
@@ -69,7 +69,8 @@ async function getProduct(keyword: string, atPage: number, perPage: number, sort
     filters.value = data.filters;
 }
 
-getProduct(keyword.value, 1, 10, {}, []);
+console.log('test', route.params);
+await getProduct(keyword.value, 1, 10, {}, []);
 
 const handleSortOrderChange = async () => {
     await getProduct(keyword.value, atPage.value, perPage.value, {
@@ -109,7 +110,7 @@ watch(route, (value) => {
     getProduct(newKeyword, 1, 10, {}, []);
 });
 
-Emitter.on('register-filter-option', async (filter: ProductFilters[]) => {
+Emitter.on('register-filter-option', async (filter: ProductParametricDataFeaturesInterface[]) => {
     await getProduct(
         keyword.value,
         1,
@@ -150,8 +151,12 @@ Emitter.on('product-keyword-change', async (value: { keyword: string; products: 
     await getProduct(value.keyword, atPage.value, perPage.value, {});
 });
 
-Emitter.on('show-similar-products', async (data: { products: SearchData; filters: ProductFilters }) => {
-    products.value = data.products;
-    filters.value = data.filters;
-});
+Emitter.on(
+    'show-similar-products',
+    async (data: { features: ProductParametricDataFeaturesInterface[]; products: SearchData; filters: ProductFilters }) => {
+        // products.value = data.products;
+        // filters.value = data.filters;
+        await getProduct('', 1, perPage.value, {}, data.features);
+    }
+);
 </script>

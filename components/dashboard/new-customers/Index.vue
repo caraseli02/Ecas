@@ -16,21 +16,23 @@
 
 <script setup lang="ts">
 import { NewCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
-import { fetchNewCustomersWidget } from '~/services/dashboard/user.service';
 import { UserDetails } from '~/types/auth/user-details';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const people = ref([] as UserDetails[]);
 
 const fetchAndSetNewCustomers = async (time = 7) => {
-    const data = await fetchNewCustomersWidget();
+    const data = await $api.userDashboard.fetchNewCustomersWidget();
 
-    if (!data || !data.data) {
+    if (!data || data.status !== 'success') {
         return;
     }
 
-    const widgetData = data?.data?.value as NewCustomersInterface;
+    const widgetData = data.data as NewCustomersInterface;
 
-    people.value = widgetData?.data;
+    people.value = widgetData;
 };
 
 await fetchAndSetNewCustomers();

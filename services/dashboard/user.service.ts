@@ -6,75 +6,68 @@ import {
     TotalCustomersInterface,
 } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { useAuthStore } from '~/store/authStore';
+import HttpFactory from '~/composables/HttpFactory';
 
-export const fetchCustomersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
-    const authStore = useAuthStore();
-    const token = authStore.getToken;
+class UserDashboardService extends HttpFactory {
+    private RESOURCE = '/user';
+    private MAIN_RESOURCE = '/dashboard/users';
 
-    return await useFetchAPI<PaginatedCustomersInterface>('user', {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        params: {
-            page: page,
-            perPage: perPage,
-            ...filters,
-            ...sort,
-        },
-    });
-};
+    async fetchCustomersList(page: number, perPage: number, filters = {}, sort = {}) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
 
-export const fetchTotalCustomersWidget = async (time = 7) => {
-    const authStore = useAuthStore();
-    const token = authStore.getToken;
+        return await this.call<PaginatedCustomersInterface>('GET', this.RESOURCE, null, {
+            params: {
+                page: page,
+                perPage: perPage,
+                ...filters,
+                ...sort,
+            },
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 
-    return await useFetchAPI<TotalCustomersInterface>('/dashboard/users/total-customers', {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        params: {
-            time: time,
-        },
-    });
-};
+    async fetchTotalCustomersWidget(time = 7) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
 
-export const fetchReturningCustomersWidget = async (time = 7) => {
-    const authStore = useAuthStore();
-    const token = authStore.getToken;
+        return await this.call<TotalCustomersInterface>('GET', `${this.MAIN_RESOURCE}/total-customers`, null, {
+            params: {
+                time: time,
+            },
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 
-    return await useFetchAPI<ReturningCustomersInterface>('/dashboard/users/returning-customers', {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        params: {
-            time: time,
-        },
-    });
-};
+    async fetchReturningCustomersWidget(time = 7) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
 
-export const fetchNewCustomersWidget = async () => {
-    const authStore = useAuthStore();
-    const token = authStore.getToken;
+        return await this.call<ReturningCustomersInterface>('GET', `${this.MAIN_RESOURCE}/returning-customers`, null, {
+            params: {
+                time: time,
+            },
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 
-    return await useFetchAPI<NewCustomersInterface>('/dashboard/users/new-customers', {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        method: 'GET',
-    });
-};
+    async fetchNewCustomersWidget() {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
 
-export const fetchCustomersByCountryWidget = async () => {
-    const authStore = useAuthStore();
-    const token = authStore.getToken;
+        return await this.call<NewCustomersInterface>('GET', `${this.MAIN_RESOURCE}/new-customers`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 
-    return await useFetchAPI<CustomersByCountryInterface>('/dashboard/users/customers-top-country', {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        method: 'GET',
-    });
-};
+    async fetchCustomersByCountryWidget() {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+
+        return await this.call<CustomersByCountryInterface>('GET', `${this.MAIN_RESOURCE}/customers-top-country`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+}
+
+export default UserDashboardService;
