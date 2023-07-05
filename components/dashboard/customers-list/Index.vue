@@ -1,7 +1,7 @@
 <template>
     <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
         <div class="flex flex-col mb-6 md:block md:mb-8 lg:flex lg:flex-row lg:items-start lg:justify-between xl:items-center">
-            <div class="flex items-start justify-between mb-4 md:mb-6 xl:mb-10">
+            <div class="flex items-start justify-between">
                 <div class="leading-normal font-semibold max-lg:mb-8">Customers List</div>
                 <WarningIcon v-if="error" class="w-6 h-6 ml-6" />
             </div>

@@ -3,7 +3,7 @@
         class="relative flex flex-col bg-white rounded-xl p-4 pr-2 shadow-xs md:p-6 md:pr-3"
         :class="[type === 'default' ? 'pb-5 md:pb-8' : 'md:pb-6']"
     >
-        <div class="flex items-start justify-between mb-4 md:mb-6 xl:mb-10">
+        <div class="flex items-start justify-between">
             <div class="leading-normal font-semibold md:mb-7" :class="[type === 'default' ? 'mb-6' : 'mb-9']">New Customers</div>
             <WarningIcon v-if="error" class="w-6 h-6" />
         </div>
