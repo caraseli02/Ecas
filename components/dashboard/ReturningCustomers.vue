@@ -164,6 +164,7 @@ const delta = ref(0);
 
 const fetchAndSetReturningCustomers = async (time = 7) => {
     loading.value = true;
+    error.value = false;
 
     const data = await $api.userDashboard.fetchReturningCustomersWidget(time);
 

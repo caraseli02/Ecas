@@ -91,17 +91,23 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
 const countries = ref([] as CustomersByCountryInterface[]);
 const countryWithMostCustomers = ref({} as CustomersByCountryInterface);
+const loading = ref(true);
+const error = ref(false);
 
 const fetchAndSetCustomersByCountry = async () => {
     loading.value = true;
+    error.value = false;
 
     const data = await $api.userDashboard.fetchCustomersByCountryWidget();
 
     if (!data || data.status !== 'success') {
         loading.value = false;
+        error.value = true;
         return;
     }
+
     loading.value = false;
+
     const widgetData = data as CustomersByCountryInterface;
 
     countries.value = widgetData?.data;
@@ -114,13 +120,4 @@ const fetchAndSetCustomersByCountry = async () => {
 };
 
 await fetchAndSetCustomersByCountry();
-
-const error = ref(false);
-const loading = ref(true);
-
-onMounted(() => {
-    setTimeout(() => {
-        loading.value = false;
-    }, 5000);
-});
 </script>

@@ -1,7 +1,10 @@
 <template>
     <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
         <div class="flex flex-col mb-6 md:block md:mb-8 lg:flex lg:flex-row lg:items-start lg:justify-between xl:items-center">
-            <div class="leading-normal font-semibold max-lg:mb-8">Customers List</div>
+            <div class="flex items-start justify-between mb-4 md:mb-6 xl:mb-10">
+                <div class="leading-normal font-semibold max-lg:mb-8">Customers List</div>
+                <WarningIcon v-if="error" class="w-6 h-6 ml-6" />
+            </div>
             <div class="grid grid-cols-2 gap-4 md:flex md:items-center md:max-w-max md:ml-auto">
                 <button
                     class="flex items-center justify-center col-span-2 w-full bg-blue rounded-lg px-5 py-2 text-white md:max-w-max md:order-3"
@@ -37,30 +40,37 @@
                 </div>
             </div>
         </div>
-        <DashboardCustomersListPagination
-            :at-page="atPage"
-            :per-page="perPage"
-            :items-count="totalItems"
-            position="top"
-            class="flex-col mb-6 md:mb-8"
-            @page-change="atPage = $event"
-            @per-page-change="perPage = $event"
-        />
-        <DashboardCustomersListTable
-            :items="visibleItemsFiltered"
-            :loading="loading"
-            @active-filters="activeFilters = $event"
-            @active-sort="activeSort = $event"
-        />
-        <DashboardCustomersListPagination
-            :at-page="atPage"
-            :per-page="perPage"
-            :items-count="totalItems"
-            position="bottom"
-            class="flex-col-reverse"
-            @page-change="atPage = $event"
-            @per-page-change="perPage = $event"
-        />
+        <div v-if="visibleItemsFiltered.length">
+            <DashboardCustomersListPagination
+                :at-page="atPage"
+                :per-page="perPage"
+                :items-count="totalItems"
+                position="top"
+                class="flex-col mb-6 md:mb-8"
+                @page-change="atPage = $event"
+                @per-page-change="perPage = $event"
+            />
+            <DashboardCustomersListTable
+                :items="visibleItemsFiltered"
+                :loading="loading"
+                @active-filters="activeFilters = $event"
+                @active-sort="activeSort = $event"
+            />
+            <DashboardCustomersListPagination
+                :at-page="atPage"
+                :per-page="perPage"
+                :items-count="totalItems"
+                position="bottom"
+                class="flex-col-reverse"
+                @page-change="atPage = $event"
+                @per-page-change="perPage = $event"
+            />
+        </div>
+
+        <div v-else class="flex flex-col items-center justify-center flex-1">
+            <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+            <div class="text-sm font-medium leading-normal text-gray-100">No data available</div>
+        </div>
     </div>
 </template>
 
@@ -73,6 +83,8 @@ import { DashboardTableItem, getAccountTypeById } from '~~/types';
 import { FilterLabelsEnum } from '~/types/dashboard/filter';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import { useNuxtApp } from '#app';
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
+import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
 const { $api } = useNuxtApp();
 
@@ -93,6 +105,7 @@ const atPage = ref(1);
 const perPage = ref(10);
 const totalItems = ref(0);
 const loading = ref(true);
+const error = ref(false);
 
 const listItems = ref<DashboardTableItem[]>([]);
 
@@ -104,11 +117,13 @@ const visibleItemsFiltered = computed(() => {
 
 const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
     loading.value = true;
+    error.value = false;
 
     const data = await $api.userDashboard.fetchCustomersList(page, perPage, filters, sort);
 
     if (!data || data.status !== 'success') {
         loading.value = false;
+        error.value = true;
         return;
     }
 

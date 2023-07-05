@@ -163,6 +163,7 @@ const loading = ref(true);
 
 const fetchAndSetTotalCustomers = async (time = 7) => {
     loading.value = true;
+    error.value = false;
 
     const data = await $api.userDashboard.fetchTotalCustomersWidget(time);
 

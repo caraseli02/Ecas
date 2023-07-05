@@ -3,7 +3,10 @@
         class="relative flex flex-col bg-white rounded-xl p-4 pr-2 shadow-xs md:p-6 md:pr-3"
         :class="[type === 'default' ? 'pb-5 md:pb-8' : 'md:pb-6']"
     >
-        <div class="leading-normal font-semibold md:mb-7" :class="[type === 'default' ? 'mb-6' : 'mb-9']">New Customers</div>
+        <div class="flex items-start justify-between mb-4 md:mb-6 xl:mb-10">
+            <div class="leading-normal font-semibold md:mb-7" :class="[type === 'default' ? 'mb-6' : 'mb-9']">New Customers</div>
+            <WarningIcon v-if="error" class="w-6 h-6" />
+        </div>
         <div v-if="people.length > 0" class="grid grid-cols-1 gap-4" :class="[type === 'default' ? 'md:gap-3' : 'mb-7 md:mb-5']">
             <DashboardNewCustomersItem
                 v-for="(person, index) in people.slice(0, type === 'default' ? 7 : 6)"
@@ -76,10 +79,11 @@ import type { PropType } from 'vue';
 import ArrowUpIcon from '@/assets/icons/dashboard/arrow-up.svg';
 import ChevronIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import ArrowRightIcon from '@/assets/icons/dashboard/arrow-right.svg';
-import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import { NewCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { UserDetails } from '~/types/auth/user-details';
 import { useNuxtApp } from '#app';
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
+import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
 const { $api } = useNuxtApp();
 
@@ -87,6 +91,7 @@ const showOptions = ref(false);
 const selectedOption = ref('This Week');
 const options = ['Last 24h', 'This Week', 'Last 7 Days', 'Last 30 Days', 'All Time'];
 const loading = ref(true);
+const error = ref(false);
 const people = ref([] as UserDetails[]);
 
 defineProps({
@@ -99,25 +104,20 @@ defineProps({
 
 const fetchAndSetNewCustomers = async (time = 7) => {
     loading.value = true;
+    error.value = false;
+
     const data = await $api.userDashboard.fetchNewCustomersWidget();
 
     if (!data || data.status !== 'success') {
         loading.value = false;
+        error.value = true;
         return;
     }
 
     loading.value = false;
 
-    const widgetData = data.data as NewCustomersInterface;
-
-    people.value = widgetData;
+    people.value = data.data as NewCustomersInterface;
 };
-
-onMounted(() => {
-    setTimeout(() => {
-        loading.value = false;
-    }, 5000);
-});
 
 await fetchAndSetNewCustomers();
 </script>
