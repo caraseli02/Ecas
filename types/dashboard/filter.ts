@@ -10,5 +10,10 @@ export enum FilterLabelsEnum {
     email = 'Email',
     country = 'Country',
 
+    spentFrom = 'Spent From',
+    spentTo = 'Spent To',
+    ordersCountFrom = 'Orders Count From',
+    ordersCountTo = 'Orders Count To',
+
     combinedName = 'Name',
 }

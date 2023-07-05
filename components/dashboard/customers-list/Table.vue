@@ -311,6 +311,8 @@
                         @click="
                             spent = spentBuffer;
                             showSpentRange = false;
+                            handleFilterChange(activeFilters, emits, 'spentFrom', spentBuffer[0], true);
+                            handleFilterChange(activeFilters, emits, 'spentTo', spentBuffer[1], true);
                         "
                     >
                         Apply Filter
@@ -359,6 +361,8 @@
                         @click="
                             ordersCount = ordersCountBuffer;
                             showOrdersRange = false;
+                            handleFilterChange(activeFilters, emits, 'ordersCountFrom', ordersCountBuffer, true);
+                            handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
                         "
                     >
                         Apply Filter
@@ -431,6 +435,8 @@
                                 @click="
                                     spent = spentBuffer;
                                     showSpentRange = false;
+                                    handleFilterChange(activeFilters, emits, 'spentFrom', spentBuffer[0], true);
+                                    handleFilterChange(activeFilters, emits, 'spentTo', spentBuffer[1], true);
                                 "
                             >
                                 Apply Filter
@@ -487,6 +493,8 @@
                                 @click="
                                     ordersCount = ordersCountBuffer;
                                     showOrdersRange = false;
+                                    handleFilterChange(activeFilters, emits, 'ordersCountFrom', ordersCountBuffer, true);
+                                    handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
                                 "
                             >
                                 Apply Filter
