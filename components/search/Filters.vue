@@ -179,7 +179,6 @@ Emitter.on('product-keyword-change', async (value: { keyword: string; products: 
 });
 
 Emitter.on('add-filter-option', async (options: FilterOptions) => {
-    console.log(options);
     for (const option of options) {
         const item = checkedOptions.value.find(
             (x) => x.FeatureName === option.rawFilter.FeatureName && x.FeatureValue === option.rawFilter.FeatureValue
@@ -189,11 +188,9 @@ Emitter.on('add-filter-option', async (options: FilterOptions) => {
             continue;
         }
 
-        console.log(option);
         checkedOptions.value.push(option.rawFilter);
     }
 
-    console.log(checkedOptions.value);
     Emitter.emit('register-filter-option', checkedOptions.value);
 });
 
