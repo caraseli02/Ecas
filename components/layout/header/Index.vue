@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <LayoutHeaderSearchRow />
+        <LayoutHeaderSearchRow :isScrolled="isScrolled" />
         <LayoutHeaderMainRow :is-scrolled="isScrolled" />
     </header>
     <Teleport to="body">

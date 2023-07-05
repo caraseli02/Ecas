@@ -1,6 +1,6 @@
 <template>
     <div
-        class="relative bg-white flex flex-col rounded-md pt-[30px] px-[15px] pb-5 shadow-card lg:pt-[70px] lg:pb-[15px] lg:self-stretch xl:pt-[45px]"
+        class="relative bg-white flex flex-col rounded-md pt-[30px] px-[15px] pb-5 shadow-m lg:pt-[70px] lg:pb-[15px] lg:self-stretch xl:pt-[45px]"
     >
         <img
             :src="props.images[activeImageIndex].ProductImageLarge"

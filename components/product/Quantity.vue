@@ -1,5 +1,5 @@
 <template>
-    <div class="relative bg-white rounded-md px-2.5 pt-2 pb-5 shadow-card md:px-[15px] lg:pt-[15px] lg:self-start">
+    <div class="relative bg-white rounded-md px-2.5 pt-2 pb-5 shadow-m md:px-[15px] lg:pt-[15px] lg:self-start">
         <div class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green">
             <CheckIcon class="w-4 h-4 mr-1 text-white" />
             <span class="text-[11px] font-Inter leading-tight font-semibold text-white"> {{ product.stock }} in stock </span>

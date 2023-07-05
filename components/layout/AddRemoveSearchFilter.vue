@@ -1,7 +1,7 @@
 <template>
     <div class="fixed z-[90] top-0 left-0 w-screen h-screen flex items-center justify-center pointer-events-none">
         <div
-            class="relative z-10 w-[700px] max-w-[calc(100vw-32px)] pt-4 pb-8 bg-white rounded-md shadow-card pointer-events-auto md:pt-6 md:pb-8"
+            class="relative z-10 w-[700px] max-w-[calc(100vw-32px)] pt-4 pb-8 bg-white rounded-md shadow-xs pointer-events-auto md:pt-6 md:pb-8"
         >
             <div class="flex items-center justify-between px-4 mb-10 md:px-6">
                 <div class="flex items-center">

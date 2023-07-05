@@ -12,7 +12,7 @@
                             <strong class="font-semibold">10% discount</strong> on your first order.
                         </p>
                     </div>
-                    <form class="flex rounded-md shadow-card" @submit.prevent>
+                    <form class="flex rounded-md shadow-xs" @submit.prevent>
                         <label class="flex items-center flex-1">
                             <input
                                 v-model="email"

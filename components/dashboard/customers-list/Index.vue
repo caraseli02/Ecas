@@ -48,6 +48,7 @@
         />
         <DashboardCustomersListTable
             :items="visibleItemsFiltered"
+            :loading="loading"
             @active-filters="activeFilters = $event"
             @active-sort="activeSort = $event"
         />
@@ -69,7 +70,6 @@ import FilterIcon from '@/assets/icons/dashboard/filter.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import Avatar from '@/assets/icons/dashboard/avatar.png';
 import { DashboardTableItem, getAccountTypeById } from '~~/types';
-import { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { FilterLabelsEnum } from '~/types/dashboard/filter';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import { useNuxtApp } from '#app';
@@ -91,7 +91,8 @@ const removeFilter = async (index) => {
 
 const atPage = ref(1);
 const perPage = ref(10);
-let totalItems = ref(0);
+const totalItems = ref(0);
+const loading = ref(true);
 
 const listItems = ref<DashboardTableItem[]>([]);
 
@@ -102,15 +103,20 @@ const visibleItemsFiltered = computed(() => {
 });
 
 const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
+    loading.value = true;
+
     const data = await $api.userDashboard.fetchCustomersList(page, perPage, filters, sort);
 
     if (!data || data.status !== 'success') {
+        loading.value = false;
         return;
     }
 
+    loading.value = false;
+
     const paginatedUsers = data.data.items;
 
-    totalItems = data.data.total_items;
+    totalItems.value = data.data.total_items;
 
     if (paginatedUsers) {
         listItems.value = paginatedUsers.map((user) => ({

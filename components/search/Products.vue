@@ -1,6 +1,6 @@
-<template>
+<template v-if="products">
     <section class="mb-10 md:mb-[60px]">
-        <div v-if="totalItems > 0" class="container">
+        <div v-if="totalItems" class="container">
             <div class="font-semibold font-Inter mb-[15px] md:hidden">Products Found ({{ totalItems }})</div>
             <div
                 class="grid grid-cols-1 gap-5 bg-gray-200 p-2.5 pr-[42px] rounded-md mb-5 md:grid-cols-[auto,auto] md:justify-start md:gap-x-[30px] md:gap-y-[18px] md:px-[15px] md:mb-[30px] lg:flex lg:items-center"
@@ -26,7 +26,7 @@
                                 :class="[showShowOptions ? 'rotate-180' : '']"
                             />
                         </button>
-                        <transition name="fade">
+                        <transition name="fade-full">
                             <div
                                 v-if="showShowOptions"
                                 v-click-outside="() => (showShowOptions = false)"
@@ -80,7 +80,7 @@
                                 :class="[showSortByOptions ? 'rotate-180' : '']"
                             />
                         </button>
-                        <transition name="fade">
+                        <transition name="fade-full">
                             <div
                                 v-if="showSortByOptions"
                                 v-click-outside="() => (showSortByOptions = false)"
@@ -112,13 +112,13 @@
                                 fill="#5E6278"
                                 d="M6.21 11h11.58c1.076 0 1.614-1.396.855-2.208L12.857 2.38a1.165 1.165 0 0 0-.854-.38c-.309 0-.617.127-.851.38L5.355 8.792C4.596 9.604 5.134 11 6.21 11Z"
                                 class="transition-all duration-300"
-                                :opacity="order === 1 ? '1' : '0.4'"
+                                :opacity="order === 'asc' ? '1' : '0.4'"
                             />
                             <path
                                 fill="#5E6278"
                                 d="M17.79 13H6.21c-1.076 0-1.614 1.396-.855 2.209l5.798 6.412c.23.252.502.379.848.379.309 0 .618-.127.854-.38l5.79-6.413c.76-.81.221-2.207-.855-2.207Z"
                                 class="transition-all duration-300"
-                                :opacity="order === 1 ? '0.4' : '1'"
+                                :opacity="order === 'asc' ? '0.4' : '1'"
                             />
                         </svg>
                     </button>
@@ -137,7 +137,7 @@
                                 :class="[showPerPageOptions ? 'rotate-180' : '']"
                             />
                         </button>
-                        <transition name="fade">
+                        <transition name="fade-full">
                             <div
                                 v-if="showPerPageOptions"
                                 v-click-outside="() => (showPerPageOptions = false)"
@@ -221,7 +221,7 @@
                                 :class="[showPerPageOptions ? 'rotate-180' : '']"
                             />
                         </button>
-                        <transition name="fade">
+                        <transition name="fade-full">
                             <div
                                 v-if="showPerPageOptions"
                                 v-click-outside="() => (showPerPageOptions = false)"
@@ -256,7 +256,7 @@
                     <Pagination
                         v-model="atPage"
                         :page-count="totalPages"
-                        :page-range="10"
+                        :page-range="3"
                         :hide-prev-next="true"
                         page-link-class="searchProducts--pagination-item"
                         prev-link-class="searchProducts--pagination-item_prev cursor-pointer text-mainPurple font-medium px-2"
@@ -297,9 +297,6 @@ import ChevronDownIcon from '@/assets/icons/chevron-down.svg';
 import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
 import Pagination from 'vuejs-paginate-next';
 import { SearchData } from '~/model/products/response/ProductSearchResponse';
-import { SortInterface } from '~/model/dashboard/table/filters';
-
-const route = useRoute();
 
 const props = defineProps<{
     products: SearchData | null;
@@ -319,7 +316,6 @@ watch(
 const show = ref('New products only');
 const showShowOptions = ref(false);
 const showOptions = ref(['New products only', 'Available in stock', 'Sales only', 'All products']);
-
 const showPerPageOptions = ref(false);
 const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
 const showSortByOptions = ref(false);

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-blue py-3 shadow-card md:py-2">
+    <div class="bg-blue py-3 shadow-m md:py-2">
         <div class="container">
             <div class="relative">
                 <div class="flex items-center justify-between gap-4 lg:gap-10 xl:gap-16">
@@ -23,7 +23,7 @@
                             </li>
                         </ul>
                     </div>
-                    <LayoutHeaderSearch v-if="isScrolled" :is-scrolled="isScrolled" class="flex-1" />
+                    <LayoutHeaderSearch v-if="isScrolled" :show-results="true" :is-scrolled="isScrolled" class="flex-1" />
                     <div class="flex items-center gap-4 md:gap-6 xl:gap-[25px]">
                         <button class="flex md:hidden" @click="showMobileSearch = true">
                             <SearchIcon class="w-[26px] h-[26px] text-white md:w-[30px] md:h-[30px]" />
@@ -95,7 +95,7 @@
                     </div>
                 </Transition>
                 <Transition name="fade">
-                    <LayoutHeaderSearchResults v-if="searchVal" />
+                    <LayoutHeaderSearchResults v-if="searchVal" :is-scrolled="isScrolled" />
                 </Transition>
                 <Transition name="fade">
                     <LayoutHeaderMainMenuLarge

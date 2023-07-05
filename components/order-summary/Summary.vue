@@ -1,5 +1,5 @@
 <template>
-    <div class="border border-border shadow-card pt-[25px] px-2.5 pb-[30px] rounded-md mb-[30px] md:mb-5">
+    <div class="border border-border shadow-m pt-[25px] px-2.5 pb-[30px] rounded-md mb-[30px] md:mb-5">
         <div class="flex items-center justify-between mb-[18px]">
             <div class="font-semibold">
                 All Items Total

@@ -1,7 +1,7 @@
 <template>
     <NuxtLink
         :to="`/product/${product.slug}`"
-        class="flex flex-col relative font-Inter bg-white rounded-md shadow-card overflow-hidden h-full px-2.5 pt-[34px] pb-2 md:px-[15px] md:pt-10 md:pb-3 xl:pt-[34px]"
+        class="flex flex-col relative font-Inter bg-white rounded-md shadow-xs overflow-hidden h-full px-2.5 pt-[34px] pb-2 md:px-[15px] md:pt-10 md:pb-3 xl:pt-[34px]"
     >
         <div
             class="absolute top-0 left-0 px-2.5 py-1 flex items-center rounded-tl-md rounded-br-md"

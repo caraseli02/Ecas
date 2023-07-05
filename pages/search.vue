@@ -48,10 +48,6 @@ useHead({
 const route = useRoute();
 const router = useRouter();
 
-// if (!route.query.keyword) {
-//     router.push('/');
-// }
-
 const keyword = ref<string>(route.query.keyword as string | undefined);
 
 const products = ref<SearchData | null>(null);
@@ -69,7 +65,6 @@ async function getProduct(keyword: string, atPage: number, perPage: number, sort
     filters.value = data.filters;
 }
 
-console.log('test', route.params);
 await getProduct(keyword.value, 1, 10, {}, []);
 
 const handleSortOrderChange = async () => {

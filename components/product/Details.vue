@@ -1,5 +1,5 @@
 <template>
-    <div class="relative bg-white rounded-md font-Inter pt-[15px] pb-2.5 shadow-card md:pb-[26px] lg:pb-4 lg:self-start">
+    <div class="relative bg-white rounded-md font-Inter pt-[15px] pb-2.5 shadow-m md:pb-[26px] lg:pb-4 lg:self-start">
         <div class="flex items-end justify-between px-2.5 mb-[18px] md:px-[15px]">
             <div class="flex items-center">
                 <div class="text-xl leading-tight font-semibold mr-2">{{ product.alias }}</div>

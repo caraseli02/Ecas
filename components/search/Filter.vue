@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col bg-white rounded-md shadow-card">
+  <div class="flex flex-col bg-white rounded-md shadow-m">
         <div class="flex items-start justify-between p-2.5">
             <div class="font-Inter">
                 <div class="text-xs font-semibold leading-tight truncate w-[140px] mb-[5px]">
@@ -29,7 +29,7 @@
             <div class="grid grid-cols-1 gap-2 flex-1 max-h-[115px] overflow-y-auto scrollbar-thin pb-[13px]">
                 <label
                     v-for="option in options"
-                    :key="option.rawFilter.FeatureID"
+          :key="option.rawFilter.FeatureID"
                     class="group flex items-start justify-between cursor-pointer px-2.5"
                 >
                     <input type="checkbox" class="sr-only" @click="toggleOption(option)" />
@@ -74,7 +74,7 @@ import Emitter from 'tiny-emitter/instance.js';
 defineEmits(['close', 'add-filter-option']);
 
 const props = defineProps<{
-    filter: ProductFilters | null;
+  filter: ProductFilters | null;
 }>();
 
 watch(
@@ -101,12 +101,12 @@ const parseOptions = () => {
         return;
     }
 
-    const filtered = props.filter[keys].filter((item) => item.FeatureName === keys) || [];
+  const filtered = props.filter[keys].filter((item) => item.FeatureName === keys) || [];
 
     return filtered.map((item) => ({
-        value: item.FeatureValue,
-        unit: item.FeatureUnit,
-        checked: item.checked || false,
+    value: item.FeatureValue,
+    unit: item.FeatureUnit,
+    checked: item.checked || false,
         rawFilter: item,
     }));
 };
@@ -124,7 +124,7 @@ const toggleOption = (option: FilterOptions) => {
 };
 
 const FeatureID = computed(() => {
-    return Object.keys(filter.value)[0];
+  return Object.keys(filter.value)[0];
 });
 
 const FeatureName = computed(() => {
@@ -132,21 +132,21 @@ const FeatureName = computed(() => {
 });
 
 const selectedAll = computed(() => {
-    return options.value.every((e) => e.checked);
+  return options.value.every((e) => e.checked);
 });
 
 const handleAll = () => {
-    options.value = options.value?.map((e) => {
-        return {
-            ...e,
-            checked: !selectedAll.value,
+  options.value = options.value?.map((e) => {
+    return {
+      ...e,
+      checked: !selectedAll.value,
         };
     });
 
     if (selectedAll.value) {
-        Emitter.emit('add-filter-option', options.value);
+    Emitter.emit('add-filter-option', options.value);
     } else {
         Emitter.emit('remove-filter-option', options.value);
-    }
+  }
 };
 </script>

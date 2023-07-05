@@ -22,7 +22,7 @@
                 class="homeNews--swiper"
             >
                 <SwiperSlide v-for="(item, index) in news" :key="index">
-                    <NuxtLink :to="`/`" class="flex flex-col rounded-md bg-white shadow-card">
+                    <NuxtLink :to="`/`" class="flex flex-col rounded-md bg-white shadow-xs">
                         <img :src="item.cover" alt="Cover" class="aspect-[1.69] rounded-t-md md:aspect-[1.76] lg:aspect-[2.11]" />
                         <div
                             class="flex flex-col items-center text-center font-Inter p-[5px] md:px-[15px] md:pt-2.5 md:pb-[15px] md:items-start md:text-left xl:p-[15px]"

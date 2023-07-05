@@ -2,7 +2,7 @@
     <div class="w-[1488px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
         <DashboardBreadcrumbs />
         <div
-            class="grid grid-cols-1 gap-4 md:grid-cols-[1fr,325px] md:gap-6 lg:grid-cols-[1fr,398px] xl:grid-cols-[1fr,320px,300px] 2xl:grid-cols-[1fr,358px,358px]"
+            class="grid grid-cols-1 gap-4 md:grid-cols-[1fr,325px] md:gap-6 lg:grid-cols-[1fr,398px] lg:grid-rows-2 xl:grid-cols-[1fr,320px,300px] 2xl:grid-cols-[1fr,358px,358px]"
         >
             <DashboardCustomersByCountry class="row-start-1 md:col-span-2 xl:col-span-1 xl:row-span-2" />
             <DashboardCustomersTotal class="md:row-start-2 md:col-start-1 xl:col-start-2 xl:row-start-1" />

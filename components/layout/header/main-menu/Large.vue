@@ -1,7 +1,7 @@
 <template>
     <div
         v-click-outside="() => handleClickOutside()"
-        class="grid grid-cols-[0px,1fr] rounded-b-md shadow-card max-h-[calc(100vh-178px)] md:h-[448px] xl:h-[550px] transition-all duration-150"
+        class="grid grid-cols-[0px,1fr] rounded-b-md shadow-m max-h-[calc(100vh-178px)] md:h-[448px] xl:h-[550px] transition-all duration-150"
         :class="[isBannerExpanded ? '' : 'grid-cols-[0px,1fr] md:grid-cols-[260px,1fr] lg:grid-cols-[260px,1fr] xl:grid-cols-[290px,1fr]']"
     >
         <div
@@ -76,7 +76,7 @@
             >
                 <SwiperSlide v-for="(item, index) in slides" :key="index">
                     <div
-                        class="flex flex-col items-center justify-center text-center bg-blue/50 border border-blue/50 shadow-card py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
+                        class="flex flex-col items-center justify-center text-center bg-blue/50 border border-blue/50 shadow-m py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
                     >
                         <component
                             :is="item.icon"

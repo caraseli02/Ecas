@@ -29,11 +29,11 @@
             </span>
             <ChevronDownIcon class="w-6 h-6 text-gray-300 transition-transform duration-300" :class="{ 'rotate-180': showOptions }" />
         </button>
-        <Transition name="fade">
+        <Transition name="fade-full">
             <div
                 v-if="showOptions"
                 v-click-outside="() => (showOptions = false)"
-                class="absolute -bottom-1 left-0 translate-y-full w-full bg-white rounded-md overflow-y-auto scrollbar-thin shadow-card px-3 py-[15px]"
+                class="absolute -bottom-1 left-0 translate-y-full w-full bg-white rounded-md overflow-y-auto scrollbar-thin shadow-m px-3 py-[15px]"
                 :class="[checkboxes ? 'max-h-[200px]' : 'max-h-[250px]']"
             >
                 <div v-if="search" class="mb-[15px]">

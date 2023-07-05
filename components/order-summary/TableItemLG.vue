@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-md shadow-card px-[15px] py-2 font-Inter">
+    <div class="rounded-md shadow-m px-[15px] py-2 font-Inter">
         <div
             class="grid grid-cols-[75px,1fr,100px,64px,145px,120px,120px] items-center 2xl:grid-cols-[32px,75px,1fr,100px,64px,145px,130px,120px]"
         >

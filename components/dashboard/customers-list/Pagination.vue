@@ -18,7 +18,7 @@
                         :class="[showPerPageOptions ? 'rotate-180' : '']"
                     />
                 </button>
-                <transition name="fade">
+                <transition :name="position === 'top' ? 'fade-full' : 'fade-full-neg'">
                     <div
                         v-if="showPerPageOptions"
                         v-click-outside="() => (showPerPageOptions = false)"

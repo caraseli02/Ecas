@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded-md pt-5 pb-[25px] shadow-card md:px-[5px] md:pb-5 lg:pb-[25px]">
+    <div class="bg-white rounded-md pt-5 pb-[25px] shadow-xs md:px-[5px] md:pb-5 lg:pb-[25px]">
         <div class="flex items-center mb-[13px] px-[15px] md:px-2.5">
             <QuickBuyIcon class="w-[30px] h-[30px] mr-2" />
             <h2 class="text-xl font-semibold">Quick Buy</h2>

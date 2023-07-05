@@ -1,6 +1,6 @@
 <template>
     <div class="fixed z-[70] bottom-0 left-0 w-screen flex items-end justify-end md:hidden">
-        <div class="relative z-10 w-full py-5 bg-white rounded-t-[15px] shadow-card md:px-5">
+        <div class="relative z-10 w-full py-5 bg-white rounded-t-[15px] shadow-xs md:px-5">
             <div v-touch:drag="onDrag" class="flex items-center justify-between px-5 mb-[30px]">
                 <div class="text-lg font-semibold text-gray-300 tracking-[0.6px]">Filters</div>
                 <button
