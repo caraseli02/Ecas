@@ -561,7 +561,6 @@ const accountDropdownLeft = ref(0);
 const accountDropdownTop = ref(0);
 const handleShowAccountOptions = (event: MouseEvent) => {
     showAccountOptions.value = !showAccountOptions.value;
-    console.log(showAccountOptions.value);
     const target = event.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     accountDropdownLeft.value = rect.right;

@@ -90,6 +90,7 @@ import Pagination from 'vuejs-paginate-next';
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import ChevronLeftIcon from '@/assets/icons/dashboard/chevron-left.svg';
 import ChevronRightIcon from '@/assets/icons/dashboard/chevron-right.svg';
+import { PropType } from 'vue';
 
 const props = defineProps({
     atPage: {

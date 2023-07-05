@@ -93,12 +93,12 @@ const activeSort = ref({} as SortInterface);
 
 const clearFilters = async () => {
     activeFilters.value = [];
-    await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters, activeSort);
+    await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 };
 
 const removeFilter = async (index) => {
     activeFilters.value.splice(index, 1);
-    await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters, activeSort);
+    await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 };
 
 const atPage = ref(1);
