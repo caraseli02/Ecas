@@ -111,15 +111,15 @@
             <template v-else>
                 <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
                     <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
-                        <DocumentIcon class="w-7 h-7" />
+                        <DocumentIcon class="w-6 h-6" />
                     </button>
                     <template #content>
                         <span>View Orders</span>
                     </template>
                 </Tooltip>
                 <div class="relative">
-                    <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="handleShowOptions">
-                        <MoreVerticalIcon class="w-7 h-7" />
+                    <button class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue" @click="handleShowOptions">
+                        <MoreVerticalIcon class="w-6 h-6" />
                     </button></div
             ></template>
         </div>

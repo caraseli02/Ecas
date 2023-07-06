@@ -27,7 +27,7 @@
                                 45
                             </div>
                         </div>
-                        <Transition name="fade">
+                        <Transition name="slide-fast-from-bottom">
                             <div
                                 v-if="showNotifications"
                                 v-click-outside="() => (showNotifications = false)"
@@ -189,7 +189,7 @@
                             </div>
                             <ChevronDownIcon class="w-6 h-6 text-gray-300" />
                         </button>
-                        <Transition name="fade">
+                        <Transition name="fade-full">
                             <div
                                 v-if="showOptions"
                                 v-click-outside="() => (showOptions = false)"

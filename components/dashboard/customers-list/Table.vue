@@ -233,6 +233,17 @@
                     <BusinessIcon class="w-6 h-6 mr-3 text-current" />
                     <span class="text-sm leading-[1.71]">Business</span>
                 </button>
+                <button
+                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                    @click="
+                        account = '';
+                        showAccountOptions = false;
+                        handleFilterChange(activeFilters, emits, 'accountType', '', true);
+                    "
+                >
+                    <EyeIcon class="w-6 h-6 mr-3 text-current" />
+                    <span class="text-sm leading-[1.71]">View All</span>
+                </button>
             </div>
         </Transition>
         <Transition name="fade-bottom">
@@ -514,6 +525,7 @@ import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SoleTraderIcon from '@/assets/icons/dashboard/sole-trader.svg';
 import AgentIcon from '@/assets/icons/dashboard/agent.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business.svg';
+import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import SortUpIcon from '@/assets/icons/dashboard/sort-up.svg';
 import SortDownIcon from '@/assets/icons/dashboard/sort-down.svg';
