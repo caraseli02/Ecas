@@ -13,13 +13,13 @@
                     <span class="text-sm leading-[1.71] font-medium"> Create New </span>
                 </button>
                 <button
-                    class="flex items-center justify-center w-full bg-gray-200 rounded-lg px-4 py-2 text-gray-300 md:max-w-max md:order-1"
+                    class="flex items-center justify-center w-full bg-[#F2F2F2] rounded-lg px-6 py-2 text-gray-300 md:max-w-max md:order-1"
                 >
-                    <span class="text-sm leading-[1.71] font-medium mr-2"> Filter </span>
-                    <FilterIcon class="w-6 h-6" />
+                    <FilterIcon class="w-6 h-6 mr-2" />
+                    <span class="text-sm leading-[1.71] font-medium"> Filter </span>
                 </button>
                 <button
-                    class="group flex items-center justify-center w-full bg-gray-200 rounded-lg px-4 py-2 text-gray-300 transition-colors duration-300 md:max-w-max md:order-1"
+                    class="group flex items-center justify-center w-full bg-[#F2F2F2] rounded-lg px-4 py-2 text-gray-300 transition-colors duration-300 md:max-w-max md:order-1"
                     @click="clearFilters"
                 >
                     <span class="text-sm leading-[1.71] font-medium mr-2"> Clear Filters </span>
@@ -30,12 +30,31 @@
         <div v-if="activeFilters.length > 0" class="mb-6 md:flex md:items-start md:mb-8">
             <div class="leading-normal font-medium text-gray-300 mb-4 md:mr-4">Filters:</div>
             <div class="flex flex-wrap gap-4">
-                <div v-for="(filter, index) in activeFilters" :key="index" class="flex items-center pl-2 pr-1 py-1 bg-gray-200 rounded-md">
+                <div
+                    v-for="(filter, index) in activeFilters"
+                    :key="index"
+                    class="flex items-center pl-2 pr-1 py-1.5 bg-[#F2F2F2] rounded-md"
+                >
                     <span class="text-sm leading-normal text-gray-300 mr-2">
                         {{ `${FilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                     </span>
                     <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="removeFilter(index)">
-                        <XIcon class="w-4 h-4" />
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
+                            <path
+                                d="M3.33594 3.33398L12.6686 12.6667"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                            <path
+                                d="M3.33917 12.6667L12.6719 3.33398"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
                     </button>
                 </div>
             </div>

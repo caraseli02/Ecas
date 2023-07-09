@@ -11,7 +11,7 @@
                     class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
                     @input="onInput"
                     @keypress.enter="handleEnterButton"
-                    @blur="searchVal = ''"
+                    @blur="showSearchResults = false"
                 />
             </form>
             <div v-if="!isScrolled" class="flex items-center justify-center bg-blue cursor-pointer px-4 py-3">
@@ -23,7 +23,7 @@
         </label>
         <Transition name="fade">
             <LayoutHeaderSearchResults
-                v-if="searchVal && showResults"
+                v-if="searchVal && showResults && showSearchResults"
                 :products="productList"
                 :keyword="searchVal"
                 :is-loading="isLoading"
@@ -54,6 +54,7 @@ defineProps({
 const searchVal = ref('');
 const isLoading = ref<boolean>(false);
 const productList = ref<ProductSearchItems[]>([]);
+const showSearchResults = ref(true);
 
 const onInput = _.debounce(async () => {
     productList.value = await searchProduct(searchVal.value);
@@ -84,4 +85,12 @@ function handleEnterButton() {
     const router = useRouter();
     router.push({ path: '/search', query: { keyword: searchVal.value } });
 }
+
+watch(searchVal, (val) => {
+    if (val) {
+        showSearchResults.value = true;
+    } else {
+        showSearchResults.value = false;
+    }
+});
 </script>

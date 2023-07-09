@@ -32,7 +32,7 @@
         </NuxtLink>
         <div v-if="!loading" class="relative">
             <button class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue" @click="showOptions = !showOptions">
-                <MoreVerticalIcon class="w-7 h-7" />
+                <MoreVerticalIcon class="w-6 h-6" />
             </button>
             <Transition name="fade-full">
                 <div
