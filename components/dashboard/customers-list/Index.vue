@@ -86,7 +86,7 @@
             />
         </div>
 
-        <div v-else class="flex flex-col items-center justify-center flex-1">
+        <div v-else class="flex flex-col items-center justify-center flex-1 my-20 lg:my-[100px] xl:my-[150px]">
             <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
             <div class="text-sm font-medium leading-normal text-gray-100">No data available</div>
         </div>

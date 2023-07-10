@@ -74,7 +74,10 @@
                 </template>
             </div>
         </div>
-        <div v-else class="flex flex-col items-center justify-center flex-1">
+        <div
+            v-else
+            class="flex flex-col items-center justify-center flex-1 mt-[132px] mb-[148px] md:mt-[128px] xl:mt-[110px] xl:mb-[150px]"
+        >
             <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
             <div class="text-sm font-medium leading-normal text-gray-100">No data available</div>
         </div>
