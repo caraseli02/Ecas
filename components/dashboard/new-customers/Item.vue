@@ -12,22 +12,17 @@
             >
                 <SkeletonLoader v-if="loading" type="circle" class="w-full h-full" />
                 <template v-else>
-                    <img
-                        v-if="item.avatar"
-                        :src="item.avatar"
-                        :alt="`${item.contactDetails.firstName} ${item.contactDetails.lastName}`"
-                        class="w-full h-full rounded-full object-cover"
-                    />
+                    <img v-if="item.avatar" :src="item.avatar" :alt="`${item.name}`" class="w-full h-full rounded-full object-cover" />
                     <UserIcon v-else class="w-7 h-7 text-gray-100" />
                 </template>
             </div>
             <div :class="[loading ? 'w-full' : 'truncate']">
                 <SkeletonLoader v-if="loading" class="block w-2/3 h-4 mb-2" />
                 <div v-else class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue">
-                    {{ `${item.contactDetails.firstName} ${item.contactDetails.lastName}` }}
+                    {{ `${item.name}` }}
                 </div>
                 <SkeletonLoader v-if="loading" class="w-full h-4" />
-                <div v-else class="text-xs leading-[1.67] text-gray-300 truncate">{{ item.contactDetails.email }}</div>
+                <div v-else class="text-xs leading-[1.67] text-gray-300 truncate">{{ item.email }}</div>
             </div>
         </NuxtLink>
         <div v-if="!loading" class="relative">
@@ -84,7 +79,7 @@
     </div>
     <Teleport to="body">
         <Transition name="fade">
-            <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="(item as any)" @close="showDeactivatingModal = false" />
+            <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item" @close="showDeactivatingModal = false" />
         </Transition>
         <div
             class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
@@ -103,11 +98,11 @@ import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
 import DeactivateIcon from '@/assets/icons/dashboard/deactivate.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import UserIcon from '@/assets/icons/dashboard/user.svg';
-import { UserDetails } from '~/types/auth/user-details';
+import { DashboardTableItem } from '~/types';
 
 defineProps({
     item: {
-        type: Object as PropType<{ avatar?: string } & UserDetails>,
+        type: Object as PropType<DashboardTableItem>,
         required: true,
     },
     type: {

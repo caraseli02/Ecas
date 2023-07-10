@@ -84,6 +84,8 @@ import { UserDetails } from '~/types/auth/user-details';
 import { useNuxtApp } from '#app';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
+import Avatar from 'assets/icons/dashboard/avatar.png';
+import { DashboardTableItem, getAccountTypeById } from '~/types';
 
 const { $api } = useNuxtApp();
 
@@ -92,7 +94,7 @@ const selectedOption = ref('This Week');
 const options = ['Last 24h', 'This Week', 'Last 7 Days', 'Last 30 Days', 'All Time'];
 const loading = ref(true);
 const error = ref(false);
-const people = ref([] as UserDetails[]);
+const people = ref([] as DashboardTableItem[]);
 
 defineProps({
     type: {
@@ -116,7 +118,17 @@ const fetchAndSetNewCustomers = async (time = 7) => {
 
     loading.value = false;
 
-    people.value = data.data as NewCustomersInterface;
+    console.log(data.data);
+    people.value = data.data.map((user: UserDetails) => ({
+        avatar: Avatar,
+        name: `${user?.contactDetails?.firstName} ${user?.contactDetails?.lastName}`,
+        email: user.profileDetails.email,
+        account: getAccountTypeById(user.accountType) || '-',
+        company: user.companyDetails?.name || '-',
+        registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
+        spent: user.spent,
+        ordersCount: user.ordersCount,
+    }));
 };
 
 await fetchAndSetNewCustomers();
