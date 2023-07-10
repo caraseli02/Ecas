@@ -193,7 +193,7 @@
                             <div
                                 v-if="showOptions"
                                 v-click-outside="() => (showOptions = false)"
-                                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[250px] shadow-m md:-bottom-[18px]"
+                                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[174px] shadow-m md:-bottom-[18px] md:w-[210px] lg:w-[250px]"
                             >
                                 <button
                                     class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
