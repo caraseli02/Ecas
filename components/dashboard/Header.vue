@@ -187,7 +187,7 @@
                                 <div class="leading-normal font-medium">Madalina Popescu</div>
                                 <div class="text-xs leading-normal text-gray-300">Super Admin</div>
                             </div>
-                            <ChevronDownIcon class="w-6 h-6 text-gray-300" />
+                            <ChevronDownIcon class="w-6 h-6 text-gray-300 max-lg:hidden" />
                         </button>
                         <Transition name="fade-full">
                             <div
