@@ -88,7 +88,7 @@
                             </span>
                         </div>
                         <div
-                            v-if="item.count"
+                            v-if="item.count && !isCollapsedOnDesktop"
                             class="px-2 rounded-md font-Inter text-xs font-medium leading-[2] text-gray-200 bg-[#2F3241] transition-colors duration-300 group-hover:bg-[#1B1B28]"
                         >
                             {{ item.count }}
@@ -252,7 +252,7 @@ const showBottomNavLayer = ref(false);
 const nav = ref([
     {
         label: 'Overview',
-        to: '/',
+        to: '/dashboard',
         icon: OverviewIcon,
     },
     {
@@ -285,7 +285,7 @@ const nav = ref([
     },
     {
         label: 'Customers',
-        to: '/',
+        to: '/dashboard/customers',
         icon: CustomersIcon,
         count: '9',
     },

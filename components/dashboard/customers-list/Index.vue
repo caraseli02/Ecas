@@ -5,7 +5,7 @@
                 <div class="leading-normal font-semibold max-lg:mb-8">Customers List</div>
                 <WarningIcon v-if="error" class="w-6 h-6 ml-6" />
             </div>
-            <div class="grid grid-cols-2 gap-4 md:flex md:items-center md:max-w-max md:ml-auto">
+            <div v-if="!error" class="grid grid-cols-2 gap-4 md:flex md:items-center md:max-w-max md:ml-auto">
                 <button
                     class="flex items-center justify-center col-span-2 w-full bg-blue rounded-lg px-5 py-2 text-white md:max-w-max md:order-3"
                 >

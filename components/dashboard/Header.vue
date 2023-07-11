@@ -177,7 +177,7 @@
                     </div>
                     <div class="relative">
                         <button class="flex items-center text-left" @click="showOptions = !showOptions">
-                            <div class="relative mr-4">
+                            <div class="relative lg:mr-4">
                                 <img src="@/assets/icons/dashboard/avatar.png" alt="Avatar" class="w-11 h-11 rounded-full object-cover" />
                                 <div
                                     class="absolute -bottom-1 -right-1 box-content w-2.5 h-2.5 rounded-full bg-[#00D395] border-4 border-white"
