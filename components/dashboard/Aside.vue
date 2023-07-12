@@ -6,13 +6,13 @@
         <Transition name="fade">
             <div
                 v-if="showTopNavLayer && !isCollapsedOnDesktop"
-                class="absolute top-[106px] left-0 w-full h-[100px] pointer-events-none bg-gradient-to-t from-transparent to-[#1b1b28] md:top-[112px]"
+                class="absolute top-[106px] left-0 w-full h-[52px] pointer-events-none bg-gradient-to-t from-transparent to-[#1b1b28] md:top-[112px]"
             />
         </Transition>
         <Transition name="fade">
             <div
                 v-if="showBottomNavLayer && !isCollapsedOnDesktop"
-                class="absolute left-0 bottom-[153px] w-full h-[100px] pointer-events-none bg-gradient-to-b from-transparent to-[#1b1b28]"
+                class="absolute left-0 bottom-[153px] w-full h-[52px] pointer-events-none bg-gradient-to-b from-transparent to-[#1b1b28]"
             />
         </Transition>
         <div
@@ -76,15 +76,23 @@
                     <NuxtLink
                         v-if="item.to"
                         :to="item.to"
-                        class="flex items-center text-gray-200 p-3 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
+                        class="group flex items-center justify-between text-gray-200 p-3 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
                         :class="[isCollapsedOnDesktop ? 'justify-center w-12 h-12 mx-auto' : '']"
                         @mouseenter="handleNavItemMouseEnter($event, item)"
                         @mouseleave="hoveredNavItem = undefined"
                     >
-                        <component :is="item.icon" class="w-6 h-6" />
-                        <span v-if="!isCollapsedOnDesktop" class="text-sm leading-[1.43] font-medium ml-3">
-                            {{ item.label }}
-                        </span>
+                        <div class="flex items-center">
+                            <component :is="item.icon" class="w-6 h-6" />
+                            <span v-if="!isCollapsedOnDesktop" class="text-sm leading-[1.43] font-medium ml-3">
+                                {{ item.label }}
+                            </span>
+                        </div>
+                        <div
+                            v-if="item.count && !isCollapsedOnDesktop"
+                            class="px-2 rounded-md font-Inter text-xs font-medium leading-[2] text-gray-200 bg-[#2F3241] transition-colors duration-300 group-hover:bg-[#1B1B28]"
+                        >
+                            {{ item.count }}
+                        </div>
                     </NuxtLink>
                     <button
                         v-else
@@ -244,7 +252,7 @@ const showBottomNavLayer = ref(false);
 const nav = ref([
     {
         label: 'Overview',
-        to: '/',
+        to: '/dashboard',
         icon: OverviewIcon,
     },
     {
@@ -277,31 +285,9 @@ const nav = ref([
     },
     {
         label: 'Customers',
+        to: '/dashboard/customers',
         icon: CustomersIcon,
         count: '9',
-        dropdown: {
-            show: false,
-            items: [
-                {
-                    label: 'All products',
-                    to: '/',
-                    icon: ProductsIcon,
-                    count: '19,227',
-                },
-                {
-                    label: 'Categories',
-                    to: '/',
-                    icon: CategoriesIcon,
-                    count: '28',
-                },
-                {
-                    label: 'Stock',
-                    to: '/',
-                    icon: StockIcon,
-                    count: '358,469',
-                },
-            ],
-        },
     },
     {
         label: 'Orders',
