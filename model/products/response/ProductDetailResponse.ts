@@ -10,7 +10,7 @@ export interface ProductDetail {
     class: string;
     alias: string;
     description: string;
-    varian: string | null;
+    variant: string | null;
     manufacturer: string;
     manufacturerCode: string;
     stock: number;

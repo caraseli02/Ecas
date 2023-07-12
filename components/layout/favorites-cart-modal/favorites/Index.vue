@@ -187,6 +187,11 @@ import MergeIcon from '@/assets/icons/merge.svg';
 import FolderArrowIcon from '@/assets/icons/folder-arrow.svg';
 import ProductCover from '@/assets/media/home/product-2.jpg';
 import { A11y } from 'swiper';
+import { useNuxtApp } from '#app';
+import { ProductDetail } from '~/model/products/response/ProductDetailResponse';
+import { FavouriteFolderResponse, FavouriteFolderResponseInterface } from '~/model/favourite-folder/response/favourite-folder.interface';
+
+const { $api } = useNuxtApp();
 
 const searchVal = ref('');
 const deleteItems = ref(false);
@@ -195,191 +200,7 @@ const mergeFolders = ref(false);
 const copyItems = ref(false);
 const moveItems = ref(false);
 
-const items = ref<FavoriteItem[]>([
-    {
-        id: '1',
-        type: 'folder',
-        title: 'Gas detector Homplex',
-        items: [
-            {
-                id: '2',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-            {
-                id: '3',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-        ],
-        selected: false,
-    },
-    {
-        id: '4',
-        type: 'folder',
-        title: 'Gas detector Homplex',
-        items: [
-            {
-                id: '5',
-                type: 'folder',
-                title: 'Nested detector Homplex',
-                items: [
-                    {
-                        id: '6',
-                        type: 'product',
-                        title: 'ADIN2111BCPZ',
-                        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                        selected: false,
-                        quantity: 16,
-                        image: ProductCover,
-                    },
-                    {
-                        id: '7',
-                        type: 'product',
-                        title: 'ADIN2111BCPZ',
-                        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                        selected: false,
-                        quantity: 16,
-                        image: ProductCover,
-                    },
-                ],
-                selected: false,
-            },
-            {
-                id: '8',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-            {
-                id: '9',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-        ],
-        selected: false,
-    },
-    {
-        id: '10',
-        type: 'folder',
-        title: 'Gas detector Homplex',
-        items: [
-            {
-                id: '11',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-            {
-                id: '12',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-        ],
-        selected: false,
-    },
-    {
-        id: '13',
-        type: 'folder',
-        title: 'Gas detector Homplex',
-        items: [
-            {
-                id: '14',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-            {
-                id: '15',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-        ],
-        selected: false,
-    },
-    {
-        id: '16',
-        type: 'folder',
-        title: 'Gas detector Homplex',
-        items: [
-            {
-                id: '17',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-            {
-                id: '18',
-                type: 'product',
-                title: 'ADIN2111BCPZ',
-                description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-                selected: false,
-                quantity: 16,
-                image: ProductCover,
-            },
-        ],
-        selected: false,
-    },
-    {
-        id: '19',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        selected: false,
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '20',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        selected: false,
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '21',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        selected: false,
-        quantity: 16,
-        image: ProductCover,
-    },
-]);
+const items = ref<FavoriteItem[]>([]);
 
 const selectedFolder = ref<FavoriteItem | null>(null);
 
@@ -388,6 +209,18 @@ const filteredItems = computed(() => {
         return `${e.title} ${e.description || ''}`.toLowerCase().includes(searchVal.value.toLowerCase());
     });
 });
+
+const fetchList = async () => {
+    const { data } = (await $api.favouriteFolder.fetchFavouriteList()) as FavouriteFolderResponse;
+
+    items.value = (data as unknown as FavouriteFolderResponseInterface[]).map((item: FavouriteFolderResponseInterface) => ({
+        id: item._id,
+        type: item.isFolder ? 'folder' : 'product',
+        items: item.children,
+        title: item.isFolder ? item.name : item.products[0].productEntity.alias,
+        description: item.products[0].productEntity.description,
+    }));
+};
 
 const showMenu = ref(false);
 
@@ -406,6 +239,8 @@ const onlyFoldersSelected = computed(() => {
 const hasSelectedItem = computed(() => {
     return items.value.some((e) => e.selected);
 });
+
+await fetchList();
 
 const handleSelectAll = () => {
     if (allItemsSelected.value) {

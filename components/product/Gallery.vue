@@ -35,7 +35,10 @@
         </Swiper>
         <div class="absolute top-[15px] right-[15px]">
             <div class="flex flex-col gap-2.5">
-                <button class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue">
+                <button
+                    class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue"
+                    @click="addToFavourite(product)"
+                >
                     <HeartIcon class="w-6 h-6" />
                 </button>
                 <button class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue">
@@ -50,22 +53,34 @@
 </template>
 
 <script setup lang="ts">
-import GalleryImage1 from '@/assets/media/product/gallery-1.png';
-import GalleryImage2 from '@/assets/media/product/gallery-2.jpg';
-import GalleryImage3 from '@/assets/media/product/gallery-3.jpg';
 import HeartIcon from '@/assets/icons/heart.svg';
 import ShareIcon from '@/assets/icons/share.svg';
 import D3Icon from '@/assets/icons/3d.svg';
 import { A11y } from 'swiper';
 import { ProductImage } from '~~/model/response/products/ProductResponse';
+import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import { useNuxtApp } from '#app';
+import { ProductDetail } from '~/model/products/response/ProductDetailResponse';
+
+const { $api } = useNuxtApp();
 
 const props = defineProps<{
     images: ProductImage[];
+    product: ProductDetail;
 }>();
 
 const activeImageIndex = ref(0);
 
 const handleSlideTo = (index: number) => {
     activeImageIndex.value = index;
+};
+
+const addToFavourite = async (product: ProductDetail) => {
+    const payload: FavouriteFolderRequestInterface = {
+        name: product.alias,
+        isFolder: false,
+        products: { id: product._id, stock: product.stock || 1 },
+    };
+    await $api.favouriteFolder.addEntityToFavouriteList(payload);
 };
 </script>

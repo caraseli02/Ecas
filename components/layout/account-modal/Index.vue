@@ -154,7 +154,7 @@ const mapType = (type: number) => {
 
 const handleSignOut = async () => {
     authStore.signOut();
-    authStore.firebaseSignOut();
+    await authStore.firebaseSignOut();
     setTimeout(() => {
         emit('close');
     }, 200);
