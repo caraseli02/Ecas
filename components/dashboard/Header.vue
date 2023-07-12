@@ -177,7 +177,7 @@
                     </div>
                     <div class="relative">
                         <button class="flex items-center text-left" @click="showOptions = !showOptions">
-                            <div class="relative mr-4">
+                            <div class="relative lg:mr-4">
                                 <img src="@/assets/icons/dashboard/avatar.png" alt="Avatar" class="w-11 h-11 rounded-full object-cover" />
                                 <div
                                     class="absolute -bottom-1 -right-1 box-content w-2.5 h-2.5 rounded-full bg-[#00D395] border-4 border-white"
@@ -187,13 +187,13 @@
                                 <div class="leading-normal font-medium">Madalina Popescu</div>
                                 <div class="text-xs leading-normal text-gray-300">Super Admin</div>
                             </div>
-                            <ChevronDownIcon class="w-6 h-6 text-gray-300" />
+                            <ChevronDownIcon class="w-6 h-6 text-gray-300 max-lg:hidden" />
                         </button>
                         <Transition name="fade-full">
                             <div
                                 v-if="showOptions"
                                 v-click-outside="() => (showOptions = false)"
-                                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[250px] shadow-m md:-bottom-[18px]"
+                                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[174px] shadow-m md:-bottom-[18px] md:w-[210px] lg:w-[250px]"
                             >
                                 <button
                                     class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
