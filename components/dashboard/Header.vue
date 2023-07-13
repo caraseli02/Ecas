@@ -15,6 +15,9 @@
                 <button class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 mr-8 max-md:hidden">
                     <PlusIcon class="w-6 h-6 text-gray-300" />
                 </button>
+                <button v-if="$route.name === 'dashboard-customers-slug'" class="flex mr-4 md:mr-8">
+                    <SettingsIcon class="w-6 h-6 text-gray-300" />
+                </button>
                 <div class="relative flex items-center">
                     <div class="mr-6 max-md:relative md:mr-10">
                         <div class="relative">

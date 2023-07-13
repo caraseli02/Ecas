@@ -1,6 +1,11 @@
 <template>
     <div class="w-[1488px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
-        <DashboardBreadcrumbs />
+        <DashboardBreadcrumbs title="Customers" class="max-sm:hidden">
+            <button class="flex items-center rounded-lg bg-gray-200 px-6 py-3">
+                <span class="leading-normal text-gray-300 font-medium mr-2"> Download </span>
+                <DownloadIcon class="w-6 h-6" />
+            </button>
+        </DashboardBreadcrumbs>
         <div
             class="grid grid-cols-1 gap-4 md:grid-cols-[1fr,325px] md:gap-6 lg:grid-cols-[1fr,398px] lg:grid-rows-[repeat(3,auto)] xl:grid-cols-[1fr,320px,300px] 2xl:grid-cols-[1fr,358px,358px]"
         >
@@ -21,9 +26,10 @@
 
 <script setup lang="ts">
 import HeartIcon from '@/assets/icons/dashboard/heart.svg';
+import DownloadIcon from '@/assets/icons/dashboard/download.svg';
 
 useHead({
-    title: 'Dashboard',
+    title: 'Customers Profile',
 });
 
 definePageMeta({

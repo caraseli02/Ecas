@@ -230,7 +230,7 @@
                         handleFilterChange(activeFilters, emits, 'accountType', AccountType.Business, true);
                     "
                 >
-                    <BusinessIcon class="w-6 h-6 mr-3 text-current" />
+                    <BusinessIcon class="w-6 h-6 flex-shrink-0 mr-3 text-current" />
                     <span class="text-sm leading-[1.71]">Business</span>
                 </button>
                 <button

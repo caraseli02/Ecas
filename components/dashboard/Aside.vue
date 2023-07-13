@@ -251,7 +251,7 @@ const showBottomNavLayer = ref(false);
 
 const nav = ref([
     {
-        label: 'Overview',
+        label: 'Dashboard',
         to: '/dashboard',
         icon: OverviewIcon,
     },

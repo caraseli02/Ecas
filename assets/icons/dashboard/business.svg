@@ -1,16 +1,30 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M13 22H5C3 22 2 21 2 19V11C2 9 3 8 5 8H10V19C10 21 11 22 13 22Z" stroke="currentColor" stroke-width="1.5"
-    stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M10.11 4C10.03 4.3 10 4.63 10 5V8H5V6C5 4.9 5.9 4 7 4H10.11Z" stroke="currentColor" stroke-width="1.5"
-    stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M14 8V13" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-    stroke-linejoin="round" />
-  <path d="M18 8V13" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-    stroke-linejoin="round" />
-  <path d="M17 17H15C14.45 17 14 17.45 14 18V22H18V18C18 17.45 17.55 17 17 17Z" stroke="currentColor" stroke-width="1.5"
-    stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M6 13V17" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-    stroke-linejoin="round" />
-  <path d="M10 19V5C10 3 11 2 13 2H19C21 2 22 3 22 5V19C22 21 21 22 19 22H13C11 22 10 21 10 19Z" stroke="currentColor"
-    stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="Huge-icon/business/outline/briefcase 5">
+    <g id="vuesax/linear/buildings">
+      <g id="buildings">
+        <path id="Vector"
+          d="M23.8307 40.3327H9.16406C5.4974 40.3327 3.66406 38.4993 3.66406 34.8327V20.166C3.66406 16.4993 5.4974 14.666 9.16406 14.666H18.3307V34.8327C18.3307 38.4993 20.1641 40.3327 23.8307 40.3327Z"
+          stroke="currentColor" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path id="Vector_2"
+          d="M18.5324 7.33398C18.3857 7.88398 18.3307 8.48898 18.3307 9.16732V14.6673H9.16406V11.0007C9.16406 8.98398 10.8141 7.33398 12.8307 7.33398H18.5324Z"
+          stroke="currentColor" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path id="Vector_3" d="M25.6641 14.666V23.8327" stroke="currentColor" stroke-width="2" stroke-miterlimit="10"
+          stroke-linecap="round" stroke-linejoin="round" />
+        <path id="Vector_4" d="M33 14.666V23.8327" stroke="currentColor" stroke-width="2" stroke-miterlimit="10"
+          stroke-linecap="round" stroke-linejoin="round" />
+        <path id="Vector_5"
+          d="M31.1641 31.166H27.4974C26.4891 31.166 25.6641 31.991 25.6641 32.9993V40.3327H32.9974V32.9993C32.9974 31.991 32.1724 31.166 31.1641 31.166Z"
+          stroke="currentColor" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path id="Vector_6" d="M11 23.834V31.1673" stroke="currentColor" stroke-width="2" stroke-miterlimit="10"
+          stroke-linecap="round" stroke-linejoin="round" />
+        <path id="Vector_7"
+          d="M18.3359 34.8327V9.16602C18.3359 5.49935 20.1693 3.66602 23.8359 3.66602H34.8359C38.5026 3.66602 40.3359 5.49935 40.3359 9.16602V34.8327C40.3359 38.4993 38.5026 40.3327 34.8359 40.3327H23.8359C20.1693 40.3327 18.3359 38.4993 18.3359 34.8327Z"
+          stroke="currentColor" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </g>
+    </g>
+  </g>
 </svg>

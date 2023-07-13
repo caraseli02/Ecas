@@ -1,0 +1,61 @@
+<template>
+    <div class="w-[1488px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
+        <DashboardBreadcrumbs title="Customer Profile">
+            <div class="max-lg:hidden max-w-max">
+                <div class="grid grid-cols-[repeat(2,auto)] gap-5 text-right">
+                    <div class="flex flex-col">
+                        <div class="text-sm leading-relaxed font-medium text-gray-300 mb-3">Credit Limit</div>
+                        <div class="font-semibold leading-tight">€ 100,000.00</div>
+                    </div>
+                    <div
+                        class="relative pl-5 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:w-px before:h-[85%] before:bg-border before:rounded-[50px]"
+                    >
+                        <div class="text-sm leading-relaxed font-medium text-gray-300 mb-3">Available Credit</div>
+                        <div class="font-semibold leading-tight text-blue">€ 45,328.63</div>
+                    </div>
+                </div>
+            </div>
+        </DashboardBreadcrumbs>
+        <div class="grid grid-cols-1 gap-4 md:gap-6">
+            <div class="bg-white rounded-xl px-4 py-3 shadow-xs grid grid-cols-2 gap-4 md:py-2 lg:hidden">
+                <div class="md:flex md:items-center md:py-2">
+                    <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Credit Limit</div>
+                    <div class="text-sm font-semibold leading-tight">€ 100,000.00</div>
+                </div>
+                <div
+                    class="relative pl-4 before:absolute before:top-0 before:left-0 before:w-px before:h-full before:bg-gray-200 before:rounded-[50px] md:flex md:items-center"
+                >
+                    <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Available Credit</div>
+                    <div class="text-sm font-semibold leading-tight text-blue">€ 45,328.63</div>
+                </div>
+            </div>
+            <DashboardCustomersInfoCards />
+            <div class="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:grid-rows-[repeat(2,auto)] md:gap-6">
+                <DashboardCustomersCustomerInformation class="xl:col-start-1 xl:row-start-1 xl:row-span-2" />
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:col-start-2 xl:row-start-1">
+                    <DashboardCustomersNetMargin />
+                    <DashboardCustomersRecentTransactions />
+                </div>
+                <DashboardCustomersDefaultShippingAddress class="xl:col-start-2 xl:row-start-2" />
+            </div>
+        </div>
+        <div class="flex justify-center text-center text-xs leading-normal text-gray-300 mt-6">
+            Made with <HeartIcon class="w-[18px] h-[18px] mx-1 mt-px" /> by
+            <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 transition-colors duration-300 hover:text-blue">
+                Nezo Digital
+            </a>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+import HeartIcon from '@/assets/icons/dashboard/heart.svg';
+
+useHead({
+    title: 'Dashboard Profile',
+});
+
+definePageMeta({
+    layout: 'dashboard',
+});
+</script>

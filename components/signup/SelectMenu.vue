@@ -26,7 +26,7 @@
                 :class="[selectedType === 'business' ? 'text-white bg-blue' : 'text-gray-300 bg-[#F2F2F2]']"
                 @click="$emit('set-type', 'business')"
             >
-                <BusinessIcon class="w-8 h-8 mb-2.5" />
+                <BusinessIcon class="w-8 h-8 flex-shrink-0 mb-2.5" />
                 <span class="text-sm leading-tight font-medium">Business</span>
             </button>
         </div>
