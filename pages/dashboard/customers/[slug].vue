@@ -38,6 +38,7 @@
                 </div>
                 <DashboardCustomersDefaultShippingAddress class="xl:col-start-2 xl:row-start-2" />
             </div>
+            <DashboardCustomersOrders />
         </div>
         <div class="flex justify-center text-center text-xs leading-normal text-gray-300 mt-6">
             Made with <HeartIcon class="w-[18px] h-[18px] mx-1 mt-px" /> by

@@ -520,7 +520,7 @@ import Slider from '@vueform/slider';
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
-import { AccountType, DashboardTableItem } from '~~/types';
+import { AccountType, DashboardCustomerTableItem } from '~~/types';
 import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SoleTraderIcon from '@/assets/icons/dashboard/sole-trader.svg';
 import AgentIcon from '@/assets/icons/dashboard/agent.svg';
@@ -537,7 +537,7 @@ import { subDays } from 'date-fns';
 
 const props = defineProps({
     items: {
-        type: Array as PropType<DashboardTableItem[]>,
+        type: Array as PropType<DashboardCustomerTableItem[]>,
         required: true,
     },
     loading: {

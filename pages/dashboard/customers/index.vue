@@ -3,7 +3,7 @@
         <DashboardBreadcrumbs title="Customers" class="max-sm:hidden">
             <button class="flex items-center rounded-lg bg-gray-200 px-6 py-3">
                 <span class="leading-normal text-gray-300 font-medium mr-2"> Download </span>
-                <DownloadIcon class="w-6 h-6" />
+                <DownloadIcon class="w-6 h-6 text-gray-300" />
             </button>
         </DashboardBreadcrumbs>
         <div

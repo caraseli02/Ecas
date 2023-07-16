@@ -189,7 +189,7 @@
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import { DashboardTableItem } from '~/types';
+import { DashboardCustomerTableItem } from '~/types';
 import DocumentIcon from '@/assets/icons/dashboard/document.svg';
 import MoreVerticalIcon from '@/assets/icons/dashboard/more-vertical.svg';
 import UserIcon from '@/assets/icons/dashboard/user.svg';
@@ -201,7 +201,7 @@ import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 
 const props = defineProps({
     item: {
-        type: Object as PropType<DashboardTableItem>,
+        type: Object as PropType<DashboardCustomerTableItem>,
         required: true,
     },
     index: {
