@@ -104,8 +104,8 @@
 </template>
 
 <script setup lang="ts">
-import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import Avatar from '@/assets/icons/dashboard/avatar.png';
+import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import USAFlag from '@/assets/icons/flags/usa.svg';
 import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
 import DeactivateIcon from '@/assets/icons/dashboard/deactivate.svg';
