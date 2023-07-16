@@ -32,7 +32,8 @@
         </div>
         <div class="flex items-start">
             <BusinessIcon class="w-11 h-11 text-[#00D395] flex-shrink-0 mr-4" />
-            <div>
+            <SkeletonLoader v-if="isLoading" class="w-full h-16 md:h-11" />
+            <div v-else>
                 <div class="text-sm font-semibold mb-1">Address Alias 1</div>
                 <div class="text-sm">5073 Mark Brown Rd, NE Dalton, Georgia (GA), 30721, United States</div>
             </div>
@@ -47,4 +48,6 @@ import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
 
 const showOptions = ref(false);
+
+const isLoading = ref(false);
 </script>

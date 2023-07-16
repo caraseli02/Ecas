@@ -10,7 +10,8 @@
             </div>
             <div>
                 <div class="text-sm font-semibold text-gray-300 mb-3">Last Order</div>
-                <div class="text-xl font-semibold text-blue leading-tight">#137759224</div>
+                <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
+                <div v-else class="text-xl font-semibold text-blue leading-tight">#137759224</div>
             </div>
         </div>
         <div class="flex items-center bg-white rounded-xl p-4 shadow-xs md:p-6">
@@ -23,7 +24,8 @@
             </div>
             <div>
                 <div class="text-sm font-semibold text-gray-300 mb-3">Total Spent</div>
-                <div class="text-xl font-semibold leading-tight">$138.000,77</div>
+                <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
+                <div v-else class="text-xl font-semibold leading-tight">$138.000,77</div>
             </div>
         </div>
         <div class="flex items-center bg-white rounded-xl p-4 shadow-xs md:p-6">
@@ -36,7 +38,8 @@
             </div>
             <div>
                 <div class="text-sm font-semibold text-gray-300 mb-3">Average Order Value</div>
-                <div class="text-xl font-semibold leading-tight">$574.00</div>
+                <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
+                <div v-else class="text-xl font-semibold leading-tight">$574.00</div>
             </div>
         </div>
         <div class="flex items-center bg-white rounded-xl p-4 shadow-xs md:p-6">
@@ -49,7 +52,8 @@
             </div>
             <div>
                 <div class="text-sm font-semibold text-gray-300 mb-3">Abandoned Checkout</div>
-                <div class="text-xl font-semibold leading-tight">127</div>
+                <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
+                <div v-else class="text-xl font-semibold leading-tight">127</div>
             </div>
         </div>
     </div>
@@ -60,4 +64,6 @@ import LastOrderIcon from '@/assets/icons/dashboard/orders.svg';
 import MoneyBagIcon from '@/assets/icons/dashboard/money-bag.svg';
 import CardIcon from '@/assets/icons/dashboard/card.svg';
 import AbandonedCheckoutIcon from '@/assets/icons/dashboard/abandoned-checkout.svg';
+
+const isLoading = ref(false);
 </script>

@@ -10,12 +10,14 @@
             </div>
         </div>
         <div class="mb-6">
-            <div class="mb-4">
+            <SkeletonLoader v-if="isLoading" class="w-full h-20 mb-6" />
+            <div v-else class="mb-4">
                 <ClientOnly>
                     <apexchart width="100%" height="80" :options="chartOptions" :series="series"></apexchart>
                 </ClientOnly>
             </div>
-            <div class="text-[28px] leading-normal font-semibold">$ 1,200,539.77</div>
+            <SkeletonLoader v-if="isLoading" class="w-full h-[46px]" />
+            <div v-else class="text-[28px] leading-normal font-semibold">$ 1,200,539.77</div>
         </div>
         <div class="flex items-center justify-center">
             <button class="flex items-center">
@@ -98,4 +100,6 @@ const series = ref([
     },
 ]);
 const error = ref(false);
+
+const isLoading = ref(false);
 </script>

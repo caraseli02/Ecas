@@ -5,13 +5,15 @@
                 <div class="grid grid-cols-[repeat(2,auto)] gap-5 text-right">
                     <div class="flex flex-col">
                         <div class="text-sm leading-relaxed font-medium text-gray-300 mb-3">Credit Limit</div>
-                        <div class="font-semibold leading-tight">€ 100,000.00</div>
+                        <div v-if="!isLoading" class="font-semibold leading-tight">€ 100,000.00</div>
+                        <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
                     <div
                         class="relative pl-5 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:w-px before:h-[85%] before:bg-border before:rounded-[50px]"
                     >
                         <div class="text-sm leading-relaxed font-medium text-gray-300 mb-3">Available Credit</div>
-                        <div class="font-semibold leading-tight text-blue">€ 45,328.63</div>
+                        <div v-if="!isLoading" class="font-semibold leading-tight text-blue">€ 45,328.63</div>
+                        <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
                 </div>
             </div>
@@ -19,14 +21,20 @@
         <div class="grid grid-cols-1 gap-4 md:gap-6">
             <div class="bg-white rounded-xl px-4 py-3 shadow-xs grid grid-cols-2 gap-4 md:py-2 lg:hidden">
                 <div class="md:flex md:items-center md:py-2">
-                    <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Credit Limit</div>
-                    <div class="text-sm font-semibold leading-tight">€ 100,000.00</div>
+                    <SkeletonLoader v-if="isLoading" class="w-full h-[45px] md:h-5" />
+                    <template v-else>
+                        <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Credit Limit</div>
+                        <div class="text-sm font-semibold leading-tight">€ 100,000.00</div>
+                    </template>
                 </div>
                 <div
                     class="relative pl-4 before:absolute before:top-0 before:left-0 before:w-px before:h-full before:bg-gray-200 before:rounded-[50px] md:flex md:items-center"
                 >
-                    <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Available Credit</div>
-                    <div class="text-sm font-semibold leading-tight text-blue">€ 45,328.63</div>
+                    <SkeletonLoader v-if="isLoading" class="w-full h-[45px] md:h-5" />
+                    <template v-else>
+                        <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Available Credit</div>
+                        <div class="text-sm font-semibold leading-tight text-blue">€ 45,328.63</div>
+                    </template>
                 </div>
             </div>
             <DashboardCustomersInfoCards />
@@ -59,4 +67,6 @@ useHead({
 definePageMeta({
     layout: 'dashboard',
 });
+
+const isLoading = ref(false);
 </script>

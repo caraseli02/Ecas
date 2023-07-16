@@ -1,8 +1,13 @@
 <template>
     <div class="grid grid-cols-[212px,212px,256px,256px,232px,224px] items-center">
-        <div class="p-6 text-sm font-medium text-blue uppercase truncate">#{{ item.id }}</div>
+        <div class="p-6 text-sm font-medium text-blue uppercase truncate">
+            <SkeletonLoader v-if="isLoading" class="w-[140px] h-7" />
+            <template v-else> #{{ item.id }} </template>
+        </div>
         <div class="px-6 py-4">
+            <SkeletonLoader v-if="isLoading" class="w-[140px] h-7" />
             <div
+                v-else
                 class="capitalize rounded-md px-3 py-1 text-sm font-medium max-w-max bg-opacity-[0.15]"
                 :class="[
                     item.type === 'stock-order'
@@ -15,9 +20,14 @@
                 {{ item.type.replace(/-/g, ' ') }}
             </div>
         </div>
-        <div class="p-6 text-sm truncate">21 September 2023, 18:25</div>
+        <div class="p-6 text-sm truncate">
+            <SkeletonLoader v-if="isLoading" class="w-[170px] h-7" />
+            <template v-else> 21 September 2023, 18:25 </template>
+        </div>
         <div class="px-6 py-4">
+            <SkeletonLoader v-if="isLoading" class="w-[180px] h-7" />
             <div
+                v-else
                 class="capitalize rounded-md px-3 py-1 text-sm font-medium max-w-max bg-opacity-[0.15]"
                 :class="[
                     item.status === 'abandoned-checkout'
@@ -36,29 +46,35 @@
                 {{ item.status.replace(/-/g, ' ') }}
             </div>
         </div>
-        <div class="p-6 text-sm">$ 138,000.77</div>
+        <div class="p-6 text-sm">
+            <SkeletonLoader v-if="isLoading" class="w-[120px] mx-auto h-7" />
+            <template v-else> $ 138,000.77 </template>
+        </div>
         <div class="flex items-center justify-end gap-6 pr-4">
-            <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-                <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
-                    <DocumentIcon class="w-6 h-6" />
-                </button>
-                <template #content>
-                    <span>View Order</span>
-                </template>
-            </Tooltip>
-            <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-                <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
-                    <InvoiceIcon class="w-6 h-6" />
-                </button>
-                <template #content>
-                    <span>View Invoice</span>
-                </template>
-            </Tooltip>
-            <div class="relative">
-                <button class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue" @click="handleShowOptions">
-                    <MoreVerticalIcon class="w-6 h-6" />
-                </button>
-            </div>
+            <SkeletonLoader v-if="isLoading" class="w-[96px] h-7" />
+            <template v-else>
+                <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+                    <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
+                        <DocumentIcon class="w-6 h-6" />
+                    </button>
+                    <template #content>
+                        <span>View Order</span>
+                    </template>
+                </Tooltip>
+                <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+                    <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
+                        <InvoiceIcon class="w-6 h-6" />
+                    </button>
+                    <template #content>
+                        <span>View Invoice</span>
+                    </template>
+                </Tooltip>
+                <div class="relative">
+                    <button class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue" @click="handleShowOptions">
+                        <MoreVerticalIcon class="w-6 h-6" />
+                    </button>
+                </div>
+            </template>
         </div>
     </div>
     <Teleport to="body">
@@ -149,4 +165,6 @@ watch(scrolling, (val) => {
         showOptions.value = false;
     }
 });
+
+const isLoading = ref(false);
 </script>

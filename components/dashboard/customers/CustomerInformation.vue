@@ -10,7 +10,7 @@
                     <div
                         v-if="showOptions"
                         v-click-outside="() => (showOptions = false)"
-                        class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m"
+                        class="absolute z-10 -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m"
                     >
                         <button
                             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
@@ -37,61 +37,73 @@
                 </Transition>
             </div>
         </div>
-        <div class="flex items-start mb-5 md:items-center">
-            <img :src="Avatar" alt="Name" class="w-16 h-16 flex-shrink-0 rounded-full object-cover mr-4" />
+        <div class="flex items-start md:items-center" :class="[isLoading ? 'mb-5 md:mb-3' : 'mb-5']">
+            <SkeletonLoader v-if="isLoading" type="circle" class="w-16 h-16 mr-4" />
+            <img v-else :src="Avatar" alt="Name" class="w-16 h-16 flex-shrink-0 rounded-full object-cover mr-4" />
             <div class="md:grid md:grid-cols-[repeat(2,auto)] md:justify-between md:flex-1">
-                <div class="font-semibold mb-2 md:order-1">Madalina Popescu</div>
-                <div class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
+                <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
+                <div v-else class="font-semibold mb-2 md:order-1">Madalina Popescu</div>
+                <SkeletonLoader v-if="isLoading" class="w-[160px] h-5 mb-2 md:w-[180px]" />
+                <div v-else class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
                     <span class="text-gray-300 mr-2">Account Type:</span>
                     <span class="font-medium">Business</span>
                 </div>
-                <div class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0">Nezo Global Development s.r.l.</div>
-                <div class="flex items-center text-sm md:order-2 md:mb-2">
+                <SkeletonLoader v-if="isLoading" class="w-[180px] h-5 mb-2" />
+                <div v-else class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0">Nezo Global Development s.r.l.</div>
+                <SkeletonLoader v-if="isLoading" class="w-[180px] h-5 mb-2" />
+                <div v-else class="flex items-center text-sm md:order-2 md:mb-2">
                     <span class="text-gray-300 mr-2">Last Active:</span>
                     <span class="font-medium">21 Sep 2023, 18:25</span>
                 </div>
             </div>
         </div>
         <div>
-            <div class="text-sm font-semibold mb-4">Account Details</div>
-            <div class="grid grid-cols-1 gap-2 pb-5 border-b border-gray-200 mb-5">
-                <div class="grid grid-cols-[140px,1fr] gap-3">
-                    <div class="text-sm text-gray-300 leading-[1.75]">User Name</div>
-                    <div class="text-sm font-medium leading-[1.75] break-all">madalina.popescu@company.com</div>
-                </div>
-                <div class="grid grid-cols-[140px,1fr] gap-3">
-                    <div class="text-sm text-gray-300 leading-[1.75]">Name</div>
-                    <div class="text-sm font-medium leading-[1.75] break-all">Madalina</div>
-                </div>
-                <div class="grid grid-cols-[140px,1fr] gap-3">
-                    <div class="text-sm text-gray-300 leading-[1.75]">Surname</div>
-                    <div class="text-sm font-medium leading-[1.75] break-all">Popescu</div>
-                </div>
-                <div class="grid grid-cols-[140px,1fr] gap-3">
-                    <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
-                    <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
-                        <USAFlag class="w-6 h-6 mr-2" />
-                        <span> United States </span>
+            <div class="pb-5 border-b border-gray-200 mb-5">
+                <SkeletonLoader v-if="isLoading" class="w-full h-[304px] md:h-[232px]" />
+                <template v-else>
+                    <div class="text-sm font-semibold mb-4">Account Details</div>
+                    <div class="grid grid-cols-1 gap-2">
+                        <div class="grid grid-cols-[140px,1fr] gap-3">
+                            <div class="text-sm text-gray-300 leading-[1.75]">User Name</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">madalina.popescu@company.com</div>
+                        </div>
+                        <div class="grid grid-cols-[140px,1fr] gap-3">
+                            <div class="text-sm text-gray-300 leading-[1.75]">Name</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">Madalina</div>
+                        </div>
+                        <div class="grid grid-cols-[140px,1fr] gap-3">
+                            <div class="text-sm text-gray-300 leading-[1.75]">Surname</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">Popescu</div>
+                        </div>
+                        <div class="grid grid-cols-[140px,1fr] gap-3">
+                            <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
+                            <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
+                                <USAFlag class="w-6 h-6 mr-2" />
+                                <span> United States </span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-[140px,1fr] gap-3">
+                            <div class="text-sm text-gray-300 leading-[1.75]">Mobile Number</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">+1 (706) 275-0767</div>
+                        </div>
+                        <div class="grid grid-cols-[140px,1fr] gap-3">
+                            <div class="text-sm text-gray-300 leading-[1.75]">Address</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">5073 Mark Brown Rd NE Dalton, Georgia(GA), 30721</div>
+                        </div>
                     </div>
-                </div>
-                <div class="grid grid-cols-[140px,1fr] gap-3">
-                    <div class="text-sm text-gray-300 leading-[1.75]">Mobile Number</div>
-                    <div class="text-sm font-medium leading-[1.75] break-all">+1 (706) 275-0767</div>
-                </div>
-                <div class="grid grid-cols-[140px,1fr] gap-3">
-                    <div class="text-sm text-gray-300 leading-[1.75]">Address</div>
-                    <div class="text-sm font-medium leading-[1.75] break-all">5073 Mark Brown Rd NE Dalton, Georgia(GA), 30721</div>
-                </div>
+                </template>
             </div>
             <div class="flex items-start justify-between gap-5">
-                <div class="md:flex md:items-center">
+                <SkeletonLoader v-if="isLoading" class="w-[120px] h-10 md:w-[160px] md:h-[18px]" />
+                <div v-else class="md:flex md:items-center">
                     <div class="flex items-center mb-1 md:mb-0">
                         <div class="w-2 h-2 rounded-full bg-[#00D395] mr-2" />
                         <span class="text-sm font-medium leading-tight text-gray-300">Registered</span>
                     </div>
                     <div class="text-sm font-medium leading-tight pl-4">21 Sep 2023, 18:25</div>
                 </div>
-                <div class="md:flex md:items-center">
+                <SkeletonLoader v-if="isLoading" class="w-[120px] h-10 md:w-[160px] md:h-[18px]" />
+                <div v-else class="md:flex md:items-center">
                     <div class="flex items-center mb-1 md:mb-0">
                         <div class="w-2 h-2 rounded-full bg-blue mr-2" />
                         <span class="text-sm font-medium leading-tight text-gray-300">Email Marketing</span>
@@ -112,4 +124,6 @@ import DeactivateIcon from '@/assets/icons/dashboard/deactivate.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 
 const showOptions = ref(false);
+
+const isLoading = ref(false);
 </script>
