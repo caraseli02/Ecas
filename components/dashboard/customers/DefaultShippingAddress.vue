@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
-import BusinessIcon from '@/assets/icons/dashboard/business.svg';
+import BusinessIcon from '@/assets/icons/dashboard/business-lg.svg';
 import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
 
