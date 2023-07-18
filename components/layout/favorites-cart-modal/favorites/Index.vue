@@ -4,7 +4,7 @@
             v-if="selectedFolder"
             :folder="selectedFolder"
             @back="selectedFolder = null"
-            @open-folder="($event) => (selectedFolder = $event)"
+            @open-folder="selectedFolder = $event"
         />
         <template v-else>
             <div
@@ -130,32 +130,57 @@
     </div>
     <Teleport to="body">
         <Transition name="slide-from-top">
-            <LayoutFavoritesModalsDelete v-if="deleteItems" :products="items.filter((e) => e.selected)" @close="deleteItems = false" />
+            <LayoutFavoritesModalsDelete
+                v-if="deleteItems"
+                :products="items.filter((e) => e.selected)"
+                @close="
+                    deleteItems = false;
+                    fetchList();
+                "
+            />
         </Transition>
         <Transition name="slide-from-top">
-            <LayoutFavoritesModalsNewFolder v-if="newFolder" @close="newFolder = false" />
+            <LayoutFavoritesModalsNewFolder
+                v-if="newFolder"
+                @close="
+                    newFolder = false;
+                    fetchList();
+                "
+            />
         </Transition>
         <Transition name="slide-from-top">
             <LayoutFavoritesModalsMergeFolders
                 v-if="mergeFolders"
                 :folders="items.filter((e) => e.selected && e.type === 'folder')"
-                @close="mergeFolders = false"
+                :target-folders="folders"
+                @close="
+                    mergeFolders = false;
+                    fetchList();
+                "
             />
         </Transition>
         <Transition name="slide-from-top">
             <LayoutFavoritesModalsCopyMoveItems
                 v-if="copyItems"
                 :items="items.filter((e) => e.selected) || []"
+                :target-folders="folders"
                 action="copy"
-                @close="copyItems = false"
+                @close="
+                    copyItems = false;
+                    fetchList();
+                "
             />
         </Transition>
         <Transition name="slide-from-top">
             <LayoutFavoritesModalsCopyMoveItems
                 v-if="moveItems"
                 :items="items.filter((e) => e.selected) || []"
+                :target-folders="folders"
                 action="move"
-                @close="moveItems = false"
+                @close="
+                    moveItems = false;
+                    fetchList();
+                "
             />
         </Transition>
         <Transition name="fade">
@@ -168,6 +193,7 @@
                     mergeFolders = false;
                     copyItems = false;
                     moveItems = false;
+                    fetchList();
                 "
             />
         </Transition>
@@ -201,6 +227,7 @@ const copyItems = ref(false);
 const moveItems = ref(false);
 
 const items = ref<FavoriteItem[]>([]);
+const folders = ref<FavoriteItem[]>([]);
 
 const selectedFolder = ref<FavoriteItem | null>(null);
 
@@ -210,6 +237,16 @@ const filteredItems = computed(() => {
     });
 });
 
+const setFoldersOnly = (items: FavoriteItem[] = []) => {
+    for (const item of items) {
+        if (item.type === 'folder') {
+            folders.value.push(item);
+
+            item.items?.length && setFoldersOnly(item.items || []);
+        }
+    }
+};
+
 const fetchList = async () => {
     const { data } = (await $api.favouriteFolder.fetchFavouriteList()) as FavouriteFolderResponse;
 
@@ -218,8 +255,13 @@ const fetchList = async () => {
         type: item.isFolder ? 'folder' : 'product',
         items: item.children,
         title: item.isFolder ? item.name : item.products[0].productEntity.alias,
-        description: item.products[0].productEntity.description,
+        description: !item.isFolder && item.products[0].productEntity.description,
+        image: !item.isFolder && item.products[0].productEntity.details.ProductImage.ProductImageSmall,
     }));
+
+    folders.value = [];
+
+    setFoldersOnly(items.value);
 };
 
 const showMenu = ref(false);

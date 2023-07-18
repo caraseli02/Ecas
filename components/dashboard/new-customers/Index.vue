@@ -110,7 +110,7 @@ const fetchAndSetNewCustomers = async (time = 7) => {
 
     const data = await $api.userDashboard.fetchNewCustomersWidget();
 
-    if (!data || data.status !== 'success') {
+    if (!data || !data.data || data.status !== 'success') {
         loading.value = false;
         error.value = true;
         return;
@@ -118,8 +118,7 @@ const fetchAndSetNewCustomers = async (time = 7) => {
 
     loading.value = false;
 
-    console.log(data.data);
-    people.value = data.data.map((user: UserDetails) => ({
+    people.value = data.data?.map((user: UserDetails) => ({
         avatar: Avatar,
         name: `${user?.contactDetails?.firstName} ${user?.contactDetails?.lastName}`,
         email: user.profileDetails.email,
