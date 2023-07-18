@@ -1,6 +1,6 @@
 <template>
     <div class="relative flex flex-col bg-white rounded-xl p-4 shadow-xs md:p-6">
-        <div class="flex items-start justify-between mb-5">
+        <div class="flex items-start justify-between" :class="[isLoading ? 'mb-6' : 'mb-5']">
             <div class="leading-normal font-semibold">Net Margin</div>
             <div v-if="error" class="flex justify-end w-10 h-10">
                 <WarningIcon class="w-6 h-6" />
@@ -11,7 +11,7 @@
         </div>
         <div class="mb-6">
             <SkeletonLoader v-if="isLoading" class="w-full h-20 mb-6" />
-            <div v-else class="mb-4">
+            <div v-else class="mb-[17px]">
                 <ClientOnly>
                     <apexchart width="100%" height="80" :options="chartOptions" :series="series"></apexchart>
                 </ClientOnly>
@@ -101,5 +101,11 @@ const series = ref([
 ]);
 const error = ref(false);
 
-const isLoading = ref(false);
+const isLoading = ref(true);
+
+onMounted(() => {
+    setTimeout(() => {
+        isLoading.value = false;
+    }, 5000);
+});
 </script>

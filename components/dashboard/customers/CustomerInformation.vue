@@ -37,12 +37,12 @@
                 </Transition>
             </div>
         </div>
-        <div class="flex items-start md:items-center" :class="[isLoading ? 'mb-5 md:mb-3' : 'mb-5']">
+        <div class="flex items-start md:items-center" :class="[isLoading ? 'mb-3' : 'mb-5']">
             <SkeletonLoader v-if="isLoading" type="circle" class="w-16 h-16 mr-4" />
             <img v-else :src="Avatar" alt="Name" class="w-16 h-16 flex-shrink-0 rounded-full object-cover mr-4" />
             <div class="md:grid md:grid-cols-[repeat(2,auto)] md:justify-between md:flex-1">
                 <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
-                <div v-else class="font-semibold mb-2 md:order-1">Madalina Popescu</div>
+                <div v-else class="font-semibold leading-tight mb-2 md:order-1">Madalina Popescu</div>
                 <SkeletonLoader v-if="isLoading" class="w-[160px] h-5 mb-2 md:w-[180px]" />
                 <div v-else class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
                     <span class="text-gray-300 mr-2">Account Type:</span>
@@ -50,7 +50,7 @@
                 </div>
                 <SkeletonLoader v-if="isLoading" class="w-[180px] h-5 mb-2" />
                 <div v-else class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0">Nezo Global Development s.r.l.</div>
-                <SkeletonLoader v-if="isLoading" class="w-[180px] h-5 mb-2" />
+                <SkeletonLoader v-if="isLoading" class="w-[180px] h-5" />
                 <div v-else class="flex items-center text-sm md:order-2 md:mb-2">
                     <span class="text-gray-300 mr-2">Last Active:</span>
                     <span class="font-medium">21 Sep 2023, 18:25</span>
@@ -125,5 +125,11 @@ import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 
 const showOptions = ref(false);
 
-const isLoading = ref(false);
+const isLoading = ref(true);
+
+onMounted(() => {
+    setTimeout(() => {
+        isLoading.value = false;
+    }, 5000);
+});
 </script>
