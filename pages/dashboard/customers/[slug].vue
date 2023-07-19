@@ -19,8 +19,8 @@
             </div>
         </DashboardBreadcrumbs>
         <div class="grid grid-cols-1 gap-4 md:gap-6">
-            <div class="bg-white rounded-xl px-4 py-3 shadow-xs grid grid-cols-2 gap-4 md:py-2 lg:hidden">
-                <div class="md:flex md:items-center md:py-2">
+            <div class="bg-white rounded-xl px-4 py-3 shadow-xs grid grid-cols-2 md:py-2 lg:hidden">
+                <div class="pr-2 md:flex md:items-center md:py-2">
                     <SkeletonLoader v-if="isLoading" class="w-full h-[45px] md:h-5" />
                     <template v-else>
                         <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Credit Limit</div>
@@ -28,7 +28,7 @@
                     </template>
                 </div>
                 <div
-                    class="relative pl-4 before:absolute before:top-0 before:left-0 before:w-px before:h-full before:bg-gray-200 before:rounded-[50px] md:flex md:items-center"
+                    class="relative pl-6 before:absolute before:top-0 before:left-0 before:w-px before:h-full before:bg-gray-200 before:rounded-[50px] md:flex md:items-center"
                 >
                     <SkeletonLoader v-if="isLoading" class="w-full h-[45px] md:h-5" />
                     <template v-else>

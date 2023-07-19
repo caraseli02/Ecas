@@ -221,71 +221,35 @@
             <div
                 v-if="showStatusOptions"
                 v-click-outside="() => (showStatusOptions = false)"
-                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[224px] max-h-[328px] overflow-y-auto scrollbar-thin shadow-m"
+                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white py-3 pr-1 w-[224px] shadow-m"
                 :style="{
                     top: statusDropdownTop + 'px',
                     left: statusDropdownLeft + 'px',
                 }"
             >
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[status === 'Abandoned Checkout' ? 'text-blue bg-[#F2F2F2]' : '']"
-                    @click="
-                        status = 'Abandoned Checkout';
-                        showStatusOptions = false;
-                    "
-                >
-                    <span class="text-sm leading-[1.71]">Abandoned Checkout</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[status === 'Awaiting Payment' ? 'text-blue bg-[#F2F2F2]' : '']"
-                    @click="
-                        status = 'Awaiting Payment';
-                        showStatusOptions = false;
-                    "
-                >
-                    <span class="text-sm leading-[1.71]">Awaiting Payment</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[status === 'Partially Refunded' ? 'text-blue bg-[#F2F2F2]' : '']"
-                    @click="
-                        status = 'Partially Refunded';
-                        showStatusOptions = false;
-                    "
-                >
-                    <span class="text-sm leading-[1.71]">Partially Refunded</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[status === 'Completed' ? 'text-blue bg-[#F2F2F2]' : '']"
-                    @click="
-                        status = 'Completed';
-                        showStatusOptions = false;
-                    "
-                >
-                    <span class="text-sm leading-[1.71]">Completed</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[status === 'Processing' ? 'text-blue bg-[#F2F2F2]' : '']"
-                    @click="
-                        status = 'Processing';
-                        showStatusOptions = false;
-                    "
-                >
-                    <span class="text-sm leading-[1.71]">Processing</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="
-                        status = '';
-                        showStatusOptions = false;
-                    "
-                >
-                    <span class="text-sm leading-[1.71]">All Statuses</span>
-                </button>
+                <div class="max-h-[304px] overflow-y-auto scrollbar-thin pl-3 pr-2">
+                    <button
+                        v-for="(option, index) in statusOptions"
+                        :key="index"
+                        class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                        :class="[status === option ? 'text-blue bg-[#F2F2F2]' : '']"
+                        @click="
+                            status = option;
+                            showStatusOptions = false;
+                        "
+                    >
+                        <span class="text-sm leading-[1.71]">{{ option }}</span>
+                    </button>
+                    <button
+                        class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                        @click="
+                            status = '';
+                            showStatusOptions = false;
+                        "
+                    >
+                        <span class="text-sm leading-[1.71]">All Statuses</span>
+                    </button>
+                </div>
             </div>
         </Transition>
         <Transition name="fade-bottom">
@@ -500,6 +464,27 @@ const handleShowDate = (event: MouseEvent) => {
 };
 
 const status = ref('');
+const statusOptions = [
+    'Processing',
+    'Verification Required',
+    'Abandoned Checkout',
+    'Delivered',
+    'Shipped',
+    'Partially Shipped',
+    'Refunded',
+    'Partially Refunded',
+    'Disputed',
+    'On Dispute',
+    'Canceled',
+    'Completed',
+    'Pending',
+    'Awaiting Payment',
+    'Awaiting Fulfillment',
+    'Awaiting Shipment',
+    'Awaiting Pickup',
+    'Payment Received',
+    'Payment Declined',
+];
 const statusOrder: number = ref(0);
 const showStatusOptions = ref(false);
 const statusDropdownLeft = ref(0);
