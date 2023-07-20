@@ -1,8 +1,8 @@
 <template>
     <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center justify-between" :class="[emptyData ? 'mb-4' : 'mb-6']">
             <div class="text-sm font-semibold">Default Shipping Address</div>
-            <div class="relative">
+            <div v-if="!error" class="relative">
                 <button class="flex" @click="showOptions = !showOptions">
                     <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
                 </button>
@@ -29,14 +29,19 @@
                     </div>
                 </Transition>
             </div>
+            <WarningIcon v-else class="w-6 h-6" />
         </div>
-        <div class="flex items-start">
+        <div v-if="!emptyData" class="flex items-start">
             <BusinessIcon class="w-11 h-11 text-[#00D395] flex-shrink-0 mr-4" />
             <SkeletonLoader v-if="isLoading" class="w-full h-16 md:h-11" />
             <div v-else>
                 <div class="text-sm font-semibold mb-1">Address Alias 1</div>
                 <div class="text-sm">5073 Mark Brown Rd, NE Dalton, Georgia (GA), 30721, United States</div>
             </div>
+        </div>
+        <div v-else class="flex items-center md:justify-center">
+            <EmojiSadIcon class="w-[52px] h-[52px] mr-4" />
+            <div class="text-sm font-medium text-gray-100">No data available</div>
         </div>
     </div>
 </template>
@@ -46,14 +51,12 @@ import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business-lg.svg';
 import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
+import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
 const showOptions = ref(false);
 
-const isLoading = ref(true);
-
-onMounted(() => {
-    setTimeout(() => {
-        isLoading.value = false;
-    }, 5000);
-});
+const isLoading = ref(false);
+const error = ref(true);
+const emptyData = ref(true);
 </script>

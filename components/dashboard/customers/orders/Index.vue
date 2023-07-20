@@ -59,7 +59,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="visibleItemsFiltered.length">
+        <div v-if="!emptyData">
             <DashboardCustomersListPagination
                 :at-page="atPage"
                 :per-page="perPage"
@@ -116,7 +116,8 @@ const removeFilter = async (index) => {
 const atPage = ref(1);
 const perPage = ref(10);
 const loading = ref(false);
-const error = ref(false);
+const error = ref(true);
+const emptyData = ref(true);
 
 const listItems = ref<DashboardCustomerOrderItem[]>([
     {
