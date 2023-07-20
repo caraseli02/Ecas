@@ -26,7 +26,13 @@
                     />
                 </label>
                 <div class="flex items-center justify-center gap-2.5">
-                    <button class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="success = true">
+                    <button
+                        class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white"
+                        @click="
+                            success = true;
+                            createFolder();
+                        "
+                    >
                         Create Folder
                     </button>
                     <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
@@ -54,6 +60,10 @@
 <script setup lang="ts">
 import XIcon from '@/assets/icons/x.svg';
 import FolderPlusIcon from '@/assets/icons/folder-plus.svg';
+import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 defineEmits(['close']);
 
@@ -67,4 +77,13 @@ onMounted(() => {
 onBeforeUnmount(() => {
     documentUtil.toggleBodyScroll();
 });
+
+const createFolder = async () => {
+    const payload: FavouriteFolderRequestInterface = {
+        name: name.value,
+        isFolder: true,
+        products: [],
+    };
+    await $api.favouriteFolder.addEntityToFavouriteList(payload);
+};
 </script>

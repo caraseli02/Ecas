@@ -145,7 +145,7 @@ const parseFilters = (filters: any) => {
 
             data.push({
                 feature: { [key]: value },
-                checked: index < 11,
+                checked: value[0].checked || index < 11,
             });
 
             index++;

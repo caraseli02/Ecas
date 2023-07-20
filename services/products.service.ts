@@ -4,20 +4,60 @@ import { NewProductResponse } from '~/model/products/response/NewProductResponse
 import { ProductResponse } from '~/model/products/response/ProductResponse';
 import { ProductSearchResponse } from '~/model/products/response/ProductSearchResponse';
 import { SearchSimilarProductResponse } from '~/model/products/response/SearchSimilarProductResponse';
-import { useFetchAPI } from '~/composables/useFetchAPI';
+import { useAuthStore } from '~/store/authStore';
+import { ProductDetailResponse } from '~/model/products/response/ProductDetailResponse';
 
 class ProductService extends HttpFactory {
     private RESOURCE = '/products';
+    private authStore = useAuthStore();
+
+    async fetchSingleProduct(id: string): Promise<ProductDetailResponse> {
+        const token = this.authStore.getToken;
+
+        return await this.call<ProductDetailResponse>(
+            'GET',
+            `${this.RESOURCE}/${id}`,
+            null,
+            token
+                ? {
+                      headers: { Authorization: `Bearer ${token}` },
+                  }
+                : {}
+        );
+    }
 
     async fetchProductTab(path: string): Promise<ProductResponse> {
-        return await this.call<ProductResponse>('GET', `${this.RESOURCE}/${path}`);
+        const token = this.authStore.getToken;
+
+        return await this.call<ProductResponse>(
+            'GET',
+            `${this.RESOURCE}/${path}`,
+            null,
+            token
+                ? {
+                      headers: { Authorization: `Bearer ${token}` },
+                  }
+                : {}
+        );
     }
 
     async fetchNewProducts(): Promise<NewProductResponse> {
-        return await this.call<NewProductResponse>('GET', `${this.RESOURCE}/new-products`);
+        const token = this.authStore.getToken;
+
+        return await this.call<NewProductResponse>(
+            'GET',
+            `${this.RESOURCE}/new-products`,
+            null,
+            token
+                ? {
+                      headers: { Authorization: `Bearer ${token}` },
+                  }
+                : {}
+        );
     }
 
     async fetchSearchProduct(keyword: string, page = 1, perPage = 10, sort = {}, featuresFilters = []): Promise<ProductSearchResponse> {
+        const token = this.authStore.getToken;
         let filters = {};
 
         if (!keyword || keyword === '') {
@@ -41,12 +81,23 @@ class ProductService extends HttpFactory {
             {
                 filters: featuresFilters,
             },
-            { params: filters }
+            { params: filters, headers: { Authorization: `Bearer ${token}` } }
         );
     }
 
     async fetchProductByCriteria(payload: SearchSimilarProductRequest): Promise<SearchSimilarProductResponse> {
-        return await this.call<SearchSimilarProductResponse>('POST', `${this.RESOURCE}/filters/search`, payload);
+        const token = this.authStore.getToken;
+
+        return await this.call<SearchSimilarProductResponse>(
+            'POST',
+            `${this.RESOURCE}/filters/search`,
+            payload,
+            token
+                ? {
+                      headers: { Authorization: `Bearer ${token}` },
+                  }
+                : {}
+        );
     }
 }
 

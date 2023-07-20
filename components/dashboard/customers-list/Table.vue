@@ -322,6 +322,8 @@
                         @click="
                             spent = spentBuffer;
                             showSpentRange = false;
+                            handleFilterChange(activeFilters, emits, 'spentFrom', spentBuffer[0], true);
+                            handleFilterChange(activeFilters, emits, 'spentTo', spentBuffer[1], true);
                         "
                     >
                         Apply Filter
@@ -370,6 +372,8 @@
                         @click="
                             ordersCount = ordersCountBuffer;
                             showOrdersRange = false;
+                            handleFilterChange(activeFilters, emits, 'ordersCountFrom', ordersCountBuffer, true);
+                            handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
                         "
                     >
                         Apply Filter
@@ -442,6 +446,8 @@
                                 @click="
                                     spent = spentBuffer;
                                     showSpentRange = false;
+                                    handleFilterChange(activeFilters, emits, 'spentFrom', spentBuffer[0], true);
+                                    handleFilterChange(activeFilters, emits, 'spentTo', spentBuffer[1], true);
                                 "
                             >
                                 Apply Filter
@@ -498,6 +504,8 @@
                                 @click="
                                     ordersCount = ordersCountBuffer;
                                     showOrdersRange = false;
+                                    handleFilterChange(activeFilters, emits, 'ordersCountFrom', ordersCountBuffer, true);
+                                    handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
                                 "
                             >
                                 Apply Filter
@@ -573,7 +581,6 @@ const accountDropdownLeft = ref(0);
 const accountDropdownTop = ref(0);
 const handleShowAccountOptions = (event: MouseEvent) => {
     showAccountOptions.value = !showAccountOptions.value;
-    console.log(showAccountOptions.value);
     const target = event.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     accountDropdownLeft.value = rect.right;

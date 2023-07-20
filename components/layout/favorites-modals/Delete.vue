@@ -28,7 +28,13 @@
                     ?
                 </div>
                 <div class="flex items-center justify-center gap-2.5">
-                    <button class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="success = true">
+                    <button
+                        class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white"
+                        @click="
+                            deleteItem(products);
+                            success = true;
+                        "
+                    >
                         Delete
                     </button>
                     <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
@@ -70,6 +76,9 @@ import { PropType } from 'vue';
 import XIcon from '@/assets/icons/x.svg';
 import TrashIcon from '@/assets/icons/trash-can.svg';
 import { FavoriteItem } from '~~/types';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const props = defineProps({
     products: {
@@ -85,6 +94,12 @@ const success = ref(false);
 const isFolder = computed(() => {
     return (props.products as FavoriteItem[]).every((e) => e.type === 'folder');
 });
+
+const deleteItem = async (items: FavoriteItem[] = []) => {
+    for (const item of items) {
+        await $api.favouriteFolder.removeEntityFromFavouriteList(item.id);
+    }
+};
 
 onMounted(() => {
     documentUtil.toggleBodyScroll();

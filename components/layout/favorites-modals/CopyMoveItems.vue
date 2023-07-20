@@ -44,18 +44,19 @@
                             label="Select destination folder"
                             placeholder="Select Folder"
                             checkboxes
-                            :options="[
-                                { label: 'Folder 1', value: 'folder-1', icon: FolderIcon },
-                                { label: 'Folder 2', value: 'folder-2', icon: FolderIcon },
-                                { label: 'Folder 3', value: 'folder-3', icon: FolderIcon },
-                                { label: 'Folder 4', value: 'folder-4', icon: FolderIcon },
-                            ]"
+                            :options="options"
                         />
                     </div>
                 </div>
                 <div class="flex items-center justify-center gap-2.5 px-[15px] md:px-2.5">
-                    <button class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="success = true">
-                        {{ action === 'copy' ? 'Move items' : 'Copy items' }}
+                    <button
+                        class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white"
+                        @click="
+                            action === 'copy' ? copyItems() : moveItems();
+                            success = true;
+                        "
+                    >
+                        {{ action === 'copy' ? 'Copy items' : 'Move items' }}
                     </button>
                     <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
                         Cancel
@@ -86,9 +87,17 @@ import XIcon from '@/assets/icons/x.svg';
 import CopyIcon from '@/assets/icons/copy.svg';
 import FolderArrowIcon from '@/assets/icons/folder-arrow.svg';
 import FolderIcon from '@/assets/icons/folder.svg';
+import { useNuxtApp } from '#app';
+import { FavouriteFolderMoveInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+
+const { $api } = useNuxtApp();
 
 const props = defineProps({
     items: {
+        type: Array as PropType<FavoriteItem[]>,
+        required: true,
+    },
+    targetFolders: {
         type: Array as PropType<FavoriteItem[]>,
         required: true,
     },
@@ -102,12 +111,52 @@ defineEmits(['close']);
 
 const folder = ref<FormSelectOption | undefined>(undefined);
 const success = ref(false);
-
+const options = ref<FavoriteItem[]>([]);
 const itemsCopy = ref<FavoriteItem[]>(JSON.parse(JSON.stringify(props.items)));
 
 onMounted(() => {
     documentUtil.toggleBodyScroll();
 });
+
+const processTargetFolders = () => {
+    options.value = props.targetFolders.map((folder) => ({
+        value: folder.id,
+        label: folder.title,
+        icon: FolderIcon,
+    }));
+};
+
+const copyItemToTarget = async (sourceId: string) => {
+    const payload: FavouriteFolderMoveInterface = {
+        sourceFolderId: sourceId,
+        targetFolderId: folder.value.value,
+    };
+
+    await $api.favouriteFolder.copyEntityToFavouriteList(payload);
+};
+
+const moveItemToTarget = async (sourceId: string) => {
+    const payload: FavouriteFolderMoveInterface = {
+        sourceFolderId: sourceId,
+        targetFolderId: folder.value.value,
+    };
+
+    await $api.favouriteFolder.moveEntityToFavouriteList(payload);
+};
+
+const copyItems = async () => {
+    for (const item of props.items) {
+        await copyItemToTarget(item.id);
+    }
+};
+
+const moveItems = async () => {
+    for (const item of props.items) {
+        await moveItemToTarget(item.id);
+    }
+};
+
+processTargetFolders();
 
 onBeforeUnmount(() => {
     documentUtil.toggleBodyScroll();

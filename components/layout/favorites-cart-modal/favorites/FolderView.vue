@@ -128,9 +128,9 @@
                 <strong class="font-semibold">$ 175.413,75</strong>
             </div>
         </div>
-        <div v-if="(folder.items?.filter((e) => e.type === 'folder') || []).length > 0" class="grid grid-cols-1 gap-5 px-[15px] mb-10">
+        <div v-if="(products.filter((e) => e.type === 'folder') || []).length > 0" class="grid grid-cols-1 gap-5 px-[15px] mb-10">
             <LayoutFavoritesCartModalFavoritesFolderItem
-                v-for="(item, index) in folder.items?.filter((e) => e.type === 'folder')"
+                v-for="(item, index) in products.filter((e) => e.type === 'folder')"
                 :key="index"
                 :folder="item"
                 @select="item.selected = !item.selected"
@@ -139,7 +139,7 @@
         </div>
         <div class="grid grid-cols-1 gap-4 px-4 mb-10">
             <LayoutFavoritesCartModalFavoritesProductItem
-                v-for="(item, index) in folder.items?.filter((e) => e.type === 'product')"
+                v-for="(item, index) in products.filter((e) => e.type === 'product')"
                 :key="index"
                 :product="item"
                 @select="item.selected = !item.selected"
@@ -199,6 +199,7 @@ import CheckIcon from '@/assets/icons/check.svg';
 import PenIcon from '@/assets/icons/pen.svg';
 import XIcon from '@/assets/icons/x.svg';
 import { A11y } from 'swiper';
+import { FavouriteFolderResponseInterface } from '~/model/favourite-folder/response/favourite-folder.interface';
 
 const props = defineProps({
     folder: {
@@ -221,6 +222,8 @@ const newFolder = ref(false);
 const copyItems = ref(false);
 const moveItems = ref(false);
 
+const products = ref<FavoriteItem[]>([]);
+
 const hasSelectedItem = computed(() => {
     return props.folder.items?.some((e) => e.selected);
 });
@@ -228,6 +231,23 @@ const hasSelectedItem = computed(() => {
 const selectedItemsLength = computed(() => {
     return props.folder.items?.filter((e) => e.selected).length;
 });
+
+const parseProducts = (items: FavouriteFolderResponseInterface[]) => {
+    let children = [];
+
+    children = items.map((item: FavouriteFolderResponseInterface) => ({
+        id: item._id,
+        type: item.isFolder ? 'folder' : 'product',
+        items: item.children?.length ? parseProducts(item.children) : [],
+        title: item.isFolder ? item.name : item?.products[0].productEntity.alias,
+        description: !item.isFolder && item.products.length && item.products[0].productEntity.description,
+        image: !item.isFolder && item.products[0].productEntity.details.ProductImage.ProductImageSmall,
+    }));
+
+    return children;
+};
+
+products.value = parseProducts(props.folder.items);
 
 watch(editing, (newVal) => {
     if (newVal) {
@@ -239,11 +259,23 @@ watch(editing, (newVal) => {
     }
 });
 
+watch(
+    () => props.folder,
+    () => {
+        if (!props.folder) {
+            return;
+        }
+
+        if (props.folder.type === 'undefined') {
+            products.value = parseProducts(props.folder.items);
+        } else {
+            products.value = props.folder.items;
+        }
+    },
+    { deep: true }
+);
+
 watch(selectedItemsLength, (newVal) => {
-    if (newVal && newVal >= 2) {
-        showMenu.value = true;
-    } else {
-        showMenu.value = false;
-    }
+    showMenu.value = newVal && newVal >= 2;
 });
 </script>

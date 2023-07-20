@@ -5,7 +5,7 @@
                 <div class="text-xs font-semibold leading-tight truncate w-[140px] mb-[5px]">
                     {{ FeatureName }}
                 </div>
-                <div class="text-xs leading-tight">({{ FeatureName }})</div>
+                <div class="text-xs leading-tight">({{ TotalProducts }})</div>
             </div>
             <button
                 class="rounded w-[22px] h-[22px] bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
@@ -123,16 +123,16 @@ const toggleOption = (option: FilterOptions) => {
     }
 };
 
-const FeatureID = computed(() => {
-    return Object.keys(filter.value)[0];
-});
-
 const FeatureName = computed(() => {
     return Object.keys(filter.value)[0];
 });
 
 const selectedAll = computed(() => {
     return options.value.every((e) => e.checked);
+});
+
+const TotalProducts = computed(() => {
+    return props.filter?.[FeatureName.value].reduce((total, obj) => obj.count + total, 0);
 });
 
 const handleAll = () => {

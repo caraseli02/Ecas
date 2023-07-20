@@ -34,17 +34,18 @@
                             label="Select destination folder"
                             placeholder="Select Folder"
                             checkboxes
-                            :options="[
-                                { label: 'Folder 1', value: 'folder-1', icon: FolderIcon },
-                                { label: 'Folder 2', value: 'folder-2', icon: FolderIcon },
-                                { label: 'Folder 3', value: 'folder-3', icon: FolderIcon },
-                                { label: 'Folder 4', value: 'folder-4', icon: FolderIcon },
-                            ]"
+                            :options="options"
                         />
                     </div>
                 </div>
                 <div class="flex items-center justify-center gap-2.5">
-                    <button class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="success = true">
+                    <button
+                        class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white"
+                        @click="
+                            mergeItems();
+                            success = true;
+                        "
+                    >
                         Merge
                     </button>
                     <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
@@ -75,9 +76,17 @@ import XIcon from '@/assets/icons/x.svg';
 import MergeIcon from '@/assets/icons/merge.svg';
 import FolderIcon from '@/assets/icons/folder.svg';
 import { FavoriteItem, FormSelectOption } from '~~/types';
+import { FavouriteFolderMoveInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const props = defineProps({
     folders: {
+        type: Array as PropType<FavoriteItem[]>,
+        required: true,
+    },
+    targetFolders: {
         type: Array as PropType<FavoriteItem[]>,
         required: true,
     },
@@ -87,8 +96,34 @@ defineEmits(['close']);
 
 const folder = ref<FormSelectOption | undefined>(undefined);
 const success = ref(false);
+const options = ref<FavoriteItem[]>([]);
 
 const foldersCopy = ref(JSON.parse(JSON.stringify(props.folders)));
+
+const processTargetFolders = () => {
+    options.value = props.targetFolders.map((folder) => ({
+        value: folder.id,
+        label: folder.title,
+        icon: FolderIcon,
+    }));
+};
+
+const mergeItemToTarget = async (sourceId: string) => {
+    const payload: FavouriteFolderMoveInterface = {
+        sourceFolderId: sourceId,
+        targetFolderId: folder.value.value,
+    };
+
+    await $api.favouriteFolder.moveEntityToFavouriteList(payload);
+};
+
+const mergeItems = async () => {
+    for (const item of props.folders) {
+        await mergeItemToTarget(item.id);
+    }
+};
+
+processTargetFolders();
 
 onMounted(() => {
     documentUtil.toggleBodyScroll();

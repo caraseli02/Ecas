@@ -107,7 +107,7 @@ import CopyIcon from '@/assets/icons/copy.svg';
 import TrashIcon from '@/assets/icons/trash-can.svg';
 import InfoIcon from '@/assets/icons/info-circle.svg';
 
-defineProps({
+const props = defineProps({
     product: {
         type: Object as PropType<FavoriteItem>,
         required: true,
