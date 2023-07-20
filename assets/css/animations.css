@@ -39,7 +39,7 @@
 
 .fade-full-neg-enter-from,
 .fade-full-neg-leave-to {
-    @apply opacity-0 translate-y-[calc(-100%-100px)];
+    @apply opacity-0 translate-y-[calc(-100%-40px)];
 }
 
 .slide-from-right-enter-active,
