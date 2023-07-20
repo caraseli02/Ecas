@@ -83,13 +83,13 @@
 </template>
 
 <script setup lang="ts">
-import { DashboardTableItem } from '~/types';
+import { DashboardCustomerTableItem } from '~/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import UserIcon from '@/assets/icons/dashboard/user.svg';
 
 defineProps({
     user: {
-        type: Object as PropType<DashboardTableItem>,
+        type: Object as PropType<DashboardCustomerTableItem>,
         required: true,
     },
 });

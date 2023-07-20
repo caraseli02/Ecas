@@ -2,15 +2,15 @@
     <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
         <div class="flex flex-col mb-6 md:block md:mb-8 lg:flex lg:flex-row lg:items-start lg:justify-between xl:items-center">
             <div class="flex items-start justify-between">
-                <div class="leading-normal font-semibold max-lg:mb-8">Customers List</div>
+                <div class="leading-normal font-semibold max-lg:mb-8">Orders</div>
                 <WarningIcon v-if="error" class="w-6 h-6 ml-6" />
             </div>
             <div v-if="!error" class="grid grid-cols-2 gap-4 md:flex md:items-center md:max-w-max md:ml-auto">
                 <button
                     class="flex items-center justify-center col-span-2 w-full bg-blue rounded-lg px-5 py-2 text-white md:max-w-max md:order-3"
                 >
-                    <PlusIcon class="w-6 h-6 mr-2" />
-                    <span class="text-sm leading-[1.71] font-medium"> Create New </span>
+                    <DownloadIcon class="w-6 h-6 mr-2" />
+                    <span class="text-sm leading-[1.71] font-medium"> Download All </span>
                 </button>
                 <button
                     class="flex items-center justify-center w-full bg-[#F2F2F2] rounded-lg px-6 py-2 text-gray-300 md:max-w-max md:order-1"
@@ -63,13 +63,13 @@
             <DashboardCustomersListPagination
                 :at-page="atPage"
                 :per-page="perPage"
-                :items-count="totalItems"
+                :items-count="listItems.length"
                 position="top"
                 class="flex-col mb-6 md:mb-8"
                 @page-change="atPage = $event"
                 @per-page-change="perPage = $event"
             />
-            <DashboardCustomersListTable
+            <DashboardCustomersOrdersTable
                 :items="visibleItemsFiltered"
                 :loading="loading"
                 @active-filters="activeFilters = $event"
@@ -78,14 +78,13 @@
             <DashboardCustomersListPagination
                 :at-page="atPage"
                 :per-page="perPage"
-                :items-count="totalItems"
+                :items-count="listItems.length"
                 position="bottom"
                 class="flex-col-reverse"
                 @page-change="atPage = $event"
                 @per-page-change="perPage = $event"
             />
         </div>
-
         <div v-else class="flex flex-col items-center justify-center flex-1 my-20 lg:my-[100px] xl:my-[150px]">
             <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
             <div class="text-sm font-medium leading-normal text-gray-100">No data available</div>
@@ -94,90 +93,149 @@
 </template>
 
 <script setup lang="ts">
-import PlusIcon from '@/assets/icons/dashboard/plus.svg';
+import DownloadIcon from '@/assets/icons/dashboard/download.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import Avatar from '@/assets/icons/dashboard/avatar.png';
-import { DashboardCustomerTableItem, getAccountTypeById } from '~~/types';
+import { DashboardCustomerOrderItem } from '~~/types';
 import { FilterLabelsEnum } from '~/types/dashboard/filter';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
-import { useNuxtApp } from '#app';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
-
-const { $api } = useNuxtApp();
 
 const activeFilters = ref([] as FilterInterface);
 const activeSort = ref({} as SortInterface);
 
 const clearFilters = async () => {
     activeFilters.value = [];
-    await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 };
 
 const removeFilter = async (index) => {
     activeFilters.value.splice(index, 1);
-    await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 };
 
 const atPage = ref(1);
 const perPage = ref(10);
-const totalItems = ref(0);
-const loading = ref(true);
+const loading = ref(false);
 const error = ref(false);
 
-const listItems = ref<DashboardCustomerTableItem[]>([]);
+const listItems = ref<DashboardCustomerOrderItem[]>([
+    {
+        id: '1V9VGU48XV',
+        type: 'stock-order',
+        date: 0,
+        status: 'abandoned-checkout',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'backorder',
+        date: 0,
+        status: 'awaiting-payment',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'mixed-order',
+        date: 0,
+        status: 'partially-refunded',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV ',
+        type: 'backorder',
+        date: 0,
+        status: 'completed',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'stock-order',
+        date: 0,
+        status: 'partially-shipped',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'backorder',
+        date: 0,
+        status: 'processing',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'mixed-order',
+        date: 0,
+        status: 'payment-received',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV ',
+        type: 'backorder',
+        date: 0,
+        status: 'payment-declined',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV ',
+        type: 'backorder',
+        date: 0,
+        status: 'awaiting-fulfillment',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'stock-order',
+        date: 0,
+        status: 'abandoned-checkout',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'backorder',
+        date: 0,
+        status: 'awaiting-payment',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'mixed-order',
+        date: 0,
+        status: 'partially-refunded',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV ',
+        type: 'backorder',
+        date: 0,
+        status: 'completed',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'stock-order',
+        date: 0,
+        status: 'partially-shipped',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'backorder',
+        date: 0,
+        status: 'processing',
+        total: 138000.77,
+    },
+    {
+        id: '1V9VGU48XV',
+        type: 'mixed-order',
+        date: 0,
+        status: 'payment-received',
+        total: 138000.77,
+    },
+]);
 
 const visibleItemsFiltered = computed(() => {
     return [...listItems.value].filter((e) => {
         return true;
     });
 });
-
-const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
-    loading.value = true;
-    error.value = false;
-
-    const data = await $api.userDashboard.fetchCustomersList(page, perPage, filters, sort);
-
-    if (!data || data.status !== 'success') {
-        loading.value = false;
-        error.value = true;
-        return;
-    }
-
-    loading.value = false;
-
-    const paginatedUsers = data.data.items;
-
-    totalItems.value = data.data.total_items;
-
-    if (paginatedUsers) {
-        listItems.value = paginatedUsers.map((user) => ({
-            avatar: Avatar,
-            name: `${user.contactDetails?.firstName} ${user.contactDetails?.lastName}`,
-            email: user.profileDetails.email,
-            account: getAccountTypeById(user.accountType) || '-',
-            company: user.companyDetails?.name || '-',
-            registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
-            spent: user.spent,
-            ordersCount: user.ordersCount,
-        }));
-    }
-};
-
-await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
-
-watch(
-    [atPage, perPage, activeFilters, activeSort],
-    async ([newAtPage, newPerPage, newActiveFilters, newActiveSort]) => {
-        const filterParams = {};
-
-        for (const filter of newActiveFilters) {
-            filterParams[filter.filter] = filter.value;
-        }
-        await fetchAndSetUsersList(newAtPage, newPerPage, filterParams, newActiveSort);
-    },
-    { deep: true }
-);
 </script>
