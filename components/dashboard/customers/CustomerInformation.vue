@@ -1,6 +1,6 @@
 <template>
     <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
-        <div class="flex items-center justify-between" :class="[error ? 'mb-[169px] md:mb-[161px]' : 'mb-8']">
+        <div class="flex items-center justify-between" :class="[emptyData || error ? 'mb-[169px] md:mb-[161px]' : 'mb-8']">
             <div class="flex items-center justify-between">
                 <div class="text-sm font-semibold md:text-xl md:leading-[1.2]">Customer Information</div>
             </div>
@@ -40,7 +40,11 @@
                 </Transition>
             </div>
         </div>
-        <template v-if="!emptyData">
+        <div v-if="emptyData || error" class="flex flex-col items-center justify-center flex-1 mb-[157px] md:mb-[149px]">
+            <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+            <div class="text-sm font-medium text-gray-100">No data available</div>
+        </div>
+        <template v-else>
             <div class="flex items-start md:items-center" :class="[isLoading ? 'mb-3' : 'mb-5']">
                 <SkeletonLoader v-if="isLoading" type="circle" class="w-16 h-16 mr-4" />
                 <img v-else :src="Avatar" alt="Name" class="w-16 h-16 flex-shrink-0 rounded-full object-cover mr-4" />
@@ -119,10 +123,6 @@
                 </div>
             </div>
         </template>
-        <div v-else class="flex flex-col items-center justify-center flex-1 mb-[157px] md:mb-[149px]">
-            <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
-            <div class="text-sm font-medium text-gray-100">No data available</div>
-        </div>
     </div>
 </template>
 
@@ -138,7 +138,7 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
 const showOptions = ref(false);
 
-const error = ref(true);
-const emptyData = ref(true);
+const error = ref(false);
+const emptyData = ref(false);
 const isLoading = ref(false);
 </script>

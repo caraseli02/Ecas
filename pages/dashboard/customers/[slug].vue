@@ -1,13 +1,13 @@
 <template>
     <div class="w-[1488px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
-        <DashboardBreadcrumbs title="Customer Profile">
+        <DashboardBreadcrumbs title="Customer Profile" customer="Madalina Popescu">
             <div class="max-lg:hidden max-w-max">
                 <div class="grid grid-cols-[repeat(2,auto)] gap-5 text-right">
                     <div class="flex flex-col">
                         <div class="text-sm leading-relaxed font-medium text-gray-300 mb-3">Credit Limit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight">
-                            <div v-if="!emptyData">€ 100,000.00</div>
-                            <div v-else class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                            <div v-else>€ 100,000.00</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -16,8 +16,8 @@
                     >
                         <div class="text-sm leading-relaxed font-medium text-gray-300 mb-3">Available Credit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight text-blue">
-                            <div v-if="!emptyData">€ 45,328.63</div>
-                            <div v-else class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                            <div v-else>€ 45,328.63</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -35,8 +35,8 @@
                             <div>Credit Limit</div>
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
-                        <div v-if="!emptyData" class="text-sm font-semibold leading-tight">€ 100,000.00</div>
-                        <div v-else class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                        <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                        <div v-else class="text-sm font-semibold leading-tight">€ 100,000.00</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -51,8 +51,8 @@
                             <div>Available Credit</div>
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
-                        <div v-if="!emptyData" class="text-sm font-semibold leading-tight text-blue">€ 45,328.63</div>
-                        <div v-else class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                        <div v v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                        <div v-else class="text-sm font-semibold leading-tight text-blue">€ 45,328.63</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -89,7 +89,7 @@ definePageMeta({
     layout: 'dashboard',
 });
 
-const error = ref(true);
-const emptyData = ref(true);
+const error = ref(false);
+const emptyData = ref(false);
 const isLoading = ref(false);
 </script>

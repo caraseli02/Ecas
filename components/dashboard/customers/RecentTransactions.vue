@@ -1,10 +1,14 @@
 <template>
     <div class="relative flex flex-col bg-white rounded-xl p-4 shadow-xs md:p-6">
-        <div class="flex items-center justify-between" :class="[error ? 'mb-[93px] md:mb-[85px]' : 'mb-6']">
+        <div class="flex items-center justify-between" :class="[emptyData || error ? 'mb-[93px] md:mb-[85px]' : 'mb-6']">
             <div class="leading-normal font-semibold">Recent Transactions</div>
             <WarningIcon v-if="error" class="w-6 h-6" />
         </div>
-        <template v-if="!emptyData">
+        <div v-if="emptyData || error" class="flex flex-col items-center justify-center flex-1 mb-[69px] md:mb-[61px]">
+            <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+            <div class="text-sm font-medium text-gray-100">No data available</div>
+        </div>
+        <template v-else>
             <div class="mb-5">
                 <div
                     class="grid grid-cols-[repeat(2,1fr),20px] gap-4 bg-[#F2F2F2] rounded px-2 py-1 text-sm font-medium leading-[1.57] mb-2"
@@ -61,10 +65,6 @@
                 </button>
             </div>
         </template>
-        <div v-else class="flex flex-col items-center justify-center flex-1 mb-[69px] md:mb-[61px]">
-            <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
-            <div class="text-sm font-medium text-gray-100">No data available</div>
-        </div>
     </div>
 </template>
 
@@ -97,7 +97,7 @@ const transactions = ref([
     },
 ]);
 
-const error = ref(true);
-const emptyData = ref(true);
+const error = ref(false);
+const emptyData = ref(false);
 const isLoading = ref(false);
 </script>
