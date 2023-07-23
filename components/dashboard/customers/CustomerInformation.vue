@@ -7,29 +7,23 @@
                     <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
                 </button>
                 <Transition name="fade-full">
-                    <div
-                        v-if="showOptions"
-                        v-click-outside="() => (showOptions = false)"
-                        class="absolute z-10 -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m"
-                    >
+                    <div v-if="showOptions" v-click-outside="() => (showOptions = false)"
+                        class="absolute z-10 -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m">
                         <button
                             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                            @click="showOptions = false"
-                        >
+                            @click="showOptions = false">
                             <SettingsIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> Control Panel </span>
                         </button>
                         <button
                             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                            @click="showOptions = false"
-                        >
+                            @click="showOptions = false">
                             <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> Deactivate Account </span>
                         </button>
                         <button
                             class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
-                            @click="showOptions = false"
-                        >
+                            @click="showOptions = false">
                             <TrashIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
                         </button>
@@ -49,7 +43,8 @@
                     <span class="font-medium">Business</span>
                 </div>
                 <SkeletonLoader v-if="isLoading" class="w-[180px] h-5 mb-2" />
-                <div v-else class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0">Nezo Global Development s.r.l.</div>
+                <div v-else class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0">Nezo Global Development s.r.l.
+                </div>
                 <SkeletonLoader v-if="isLoading" class="w-[180px] h-5" />
                 <div v-else class="flex items-center text-sm md:order-2 md:mb-2">
                     <span class="text-gray-300 mr-2">Last Active:</span>
@@ -65,30 +60,30 @@
                     <div class="grid grid-cols-1 gap-2">
                         <div class="grid grid-cols-[140px,1fr] gap-3">
                             <div class="text-sm text-gray-300 leading-[1.75]">User Name</div>
-                            <div class="text-sm font-medium leading-[1.75] break-all">madalina.popescu@company.com</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">{{ customerInformation.contactDetails.email }}</div>
                         </div>
                         <div class="grid grid-cols-[140px,1fr] gap-3">
                             <div class="text-sm text-gray-300 leading-[1.75]">Name</div>
-                            <div class="text-sm font-medium leading-[1.75] break-all">Madalina</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">{{ customerInformation.contactDetails.firstName }}</div>
                         </div>
                         <div class="grid grid-cols-[140px,1fr] gap-3">
                             <div class="text-sm text-gray-300 leading-[1.75]">Surname</div>
-                            <div class="text-sm font-medium leading-[1.75] break-all">Popescu</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">{{ customerInformation.contactDetails.lastName }}</div>
                         </div>
                         <div class="grid grid-cols-[140px,1fr] gap-3">
                             <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
                             <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
-                                <USAFlag class="w-6 h-6 mr-2" />
-                                <span> United States </span>
+                                <USAFlag v-if="customerInformation?.personalDetails?.country" class="w-6 h-6 mr-2" />
+                                <span>{{ customerInformation?.personalDetails?.country || "N/A"  }} </span>
                             </div>
                         </div>
                         <div class="grid grid-cols-[140px,1fr] gap-3">
                             <div class="text-sm text-gray-300 leading-[1.75]">Mobile Number</div>
-                            <div class="text-sm font-medium leading-[1.75] break-all">+1 (706) 275-0767</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">{{ customerInformation.contactDetails.phone }}</div>
                         </div>
                         <div class="grid grid-cols-[140px,1fr] gap-3">
                             <div class="text-sm text-gray-300 leading-[1.75]">Address</div>
-                            <div class="text-sm font-medium leading-[1.75] break-all">5073 Mark Brown Rd NE Dalton, Georgia(GA), 30721</div>
+                            <div class="text-sm font-medium leading-[1.75] break-all">{{ customerInformation?.personalDetails?.address.find(x =>x.default)?.name1 }}</div>
                         </div>
                     </div>
                 </template>
@@ -122,14 +117,37 @@ import USAFlag from '@/assets/icons/flags/usa.svg';
 import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
 import DeactivateIcon from '@/assets/icons/dashboard/deactivate.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
+import { useNuxtApp } from '#app';
+import { UserDetails } from '~/types/auth/user-details';
 
 const showOptions = ref(false);
 
 const isLoading = ref(true);
+
+
+const props = defineProps({
+    id: {
+        type: String,
+        required: true,
+    },
+});
+let customerInformation = ref<UserDetails>({} as UserDetails);
+const { $api } = useNuxtApp();
+
+const fetchInformation = async () => {
+
+    const { data } = (await $api.customerProfile.fetchCustomerInformation(props.id));
+    customerInformation.value = data as UserDetails;
+    console.log(customerInformation.value)
+
+}
+
 
 onMounted(() => {
     setTimeout(() => {
         isLoading.value = false;
     }, 5000);
 });
+
+await fetchInformation()
 </script>

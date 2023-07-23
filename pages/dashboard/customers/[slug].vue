@@ -9,8 +9,7 @@
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
                     <div
-                        class="relative pl-5 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:w-px before:h-[85%] before:bg-border before:rounded-[50px]"
-                    >
+                        class="relative pl-5 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:w-px before:h-[85%] before:bg-border before:rounded-[50px]">
                         <div class="text-sm leading-relaxed font-medium text-gray-300 mb-3">Available Credit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight text-blue">€ 45,328.63</div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
@@ -23,23 +22,24 @@
                 <div class="pr-2 md:flex md:items-center md:py-2">
                     <SkeletonLoader v-if="isLoading" class="w-full h-[45px] md:h-5" />
                     <template v-else>
-                        <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Credit Limit</div>
+                        <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Credit
+                            Limit</div>
                         <div class="text-sm font-semibold leading-tight">€ 100,000.00</div>
                     </template>
                 </div>
                 <div
-                    class="relative pl-6 before:absolute before:top-0 before:left-0 before:w-px before:h-full before:bg-gray-200 before:rounded-[50px] md:flex md:items-center"
-                >
+                    class="relative pl-6 before:absolute before:top-0 before:left-0 before:w-px before:h-full before:bg-gray-200 before:rounded-[50px] md:flex md:items-center">
                     <SkeletonLoader v-if="isLoading" class="w-full h-[45px] md:h-5" />
                     <template v-else>
-                        <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">Available Credit</div>
+                        <div class="text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2">
+                            Available Credit</div>
                         <div class="text-sm font-semibold leading-tight text-blue">€ 45,328.63</div>
                     </template>
                 </div>
             </div>
             <DashboardCustomersInfoCards />
             <div class="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:grid-rows-[repeat(2,auto)] md:gap-6">
-                <DashboardCustomersCustomerInformation class="xl:col-start-1 xl:row-start-1 xl:row-span-2" />
+                <DashboardCustomersCustomerInformation class="xl:col-start-1 xl:row-start-1 xl:row-span-2" :id="route.params.slug" />
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:col-start-2 xl:row-start-1">
                     <DashboardCustomersNetMargin />
                     <DashboardCustomersRecentTransactions />
@@ -49,8 +49,10 @@
             <DashboardCustomersOrders />
         </div>
         <div class="flex justify-center text-center text-xs leading-normal text-gray-300 mt-6">
-            Made with <HeartIcon class="w-[18px] h-[18px] mx-1 mt-px" /> by
-            <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 transition-colors duration-300 hover:text-blue">
+            Made with
+            <HeartIcon class="w-[18px] h-[18px] mx-1 mt-px" /> by
+            <a href="#" target="_blank" rel="noopener noreferrer"
+                class="ml-1 transition-colors duration-300 hover:text-blue">
                 Nezo Digital
             </a>
         </div>
@@ -70,9 +72,14 @@ definePageMeta({
 
 const isLoading = ref(true);
 
-onMounted(() => {
+const route = useRoute();
+console.log(route.params);
+onMounted(async () => {
+
     setTimeout(() => {
+
         isLoading.value = false;
     }, 5000);
 });
+
 </script>

@@ -5,6 +5,7 @@ import AuthService from '~/services/auth.service';
 import UserService from '~/services/user.service';
 import UserDashboardService from '~/services/dashboard/user.service';
 import FavouriteFolderService from '~/services/favourite-folder.service';
+import CustomerProfileService from '~/services/customer-profile.service';
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -13,6 +14,7 @@ interface IApiInstance {
     user: UserService;
     userDashboard: UserDashboardService;
     favouriteFolder: FavouriteFolderService;
+    customerProfile : CustomerProfileService;
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -30,6 +32,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         user: new UserService(apiFetcher),
         userDashboard: new UserDashboardService(apiFetcher),
         favouriteFolder: new FavouriteFolderService(apiFetcher),
+        customerProfile : new CustomerProfileService(apiFetcher),
     };
 
     return {
