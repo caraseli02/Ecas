@@ -2,7 +2,7 @@
     <div class="relative bg-white rounded-md px-2.5 pt-2 pb-5 shadow-m md:px-[15px] lg:pt-[15px] lg:self-start">
         <div class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green">
             <CheckIcon class="w-4 h-4 mr-1 text-white" />
-            <span class="text-[11px] font-Inter leading-tight font-semibold text-white"> {{ product.stock }} in stock </span>
+            <span class="text-[11px] font-Inter leading-tight font-semibold text-white"> {{ props.product.stock }} in stock </span>
         </div>
         <div class="flex justify-end text-xs mb-[18px] lg:hidden">
             For larger quantities ask
@@ -58,9 +58,9 @@
                 </div>
                 <div class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end">
                     <div class="lg:mr-[15px]">
-                        <div class="text-sm leading-tight line-through">$ {{ (product.priceEur * 100).toFixed(3) }} (100+)</div>
+                        <div class="text-sm leading-tight line-through">$ {{ (props.product.priceEur * 100).toFixed(3) }} (100+)</div>
                         <div class="text-lg leading-tight text-red">
-                            <strong>$ {{ ((product.priceEur * 100 * 20) / 100).toFixed(3) }}</strong> (100+)
+                            <strong>$ {{ ((props.product.priceEur * 100 * 20) / 100).toFixed(3) }}</strong> (100+)
                         </div>
                     </div>
                     <div class="bg-red rounded-[25px] px-2.5 py-1 font-Inter text-sm leading-tight font-semibold text-white">20%</div>
@@ -69,10 +69,10 @@
         </div>
         <div class="flex gap-2.5">
             <QuantityButtons v-model="quantity" size="lg" />
-            <NuxtLink to="/order-summary" class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]">
+            <div class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]" @click="addToCart(props.product)">
                 <CartIcon class="w-6 h-6 mr-2" />
                 <span class="text-sm font-medium">Add to cart</span>
-            </NuxtLink>
+            </div>
         </div>
     </div>
 </template>
@@ -81,16 +81,28 @@
 import CheckIcon from '@/assets/icons/check-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import { ProductDetail } from '~~/model/products/response/ProductDetailResponse';
+import { ProductCard } from '~/types';
+import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const props = defineProps<{
     product: ProductDetail;
 }>();
-const product = props.product;
 const quantity = ref(0);
 
 const bulkQuantities = new Map<number, number>();
 
 for (let i = 1; i < 26; i += 5) {
-    bulkQuantities.set(i, product.priceRon * i);
+    bulkQuantities.set(i, props.product.priceRon * i);
 }
+
+const addToCart = async (product: ProductDetail) => {
+    const payload: AddToCartRequestInterface = {
+        userId: '',
+        products: [{ id: product._id, stock: quantity.value, isFolder: false }],
+    };
+    await $api.cart.addEntityToCart(payload);
+};
 </script>

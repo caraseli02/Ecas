@@ -46,10 +46,10 @@
                     </defs>
                 </svg>
             </button>
-            <NuxtLink to="/order-summary" class="flex items-center justify-center flex-1 bg-blue rounded text-white py-2">
+            <div class="flex items-center justify-center flex-1 bg-blue rounded text-white py-2" @click="addToCart()">
                 <CartIcon class="w-6 h-6 mr-[5px]" />
                 <span class="text-sm font-medium">Add to cart</span>
-            </NuxtLink>
+            </div>
         </div>
     </div>
 </template>
@@ -57,6 +57,11 @@
 <script setup lang="ts">
 import QuickBuyIcon from '@/assets/icons/quick-buy-2.svg';
 import CartIcon from '@/assets/icons/cart.svg';
+import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
+import { useNuxtApp } from '#app';
+import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+
+const { $api } = useNuxtApp();
 
 const products = ref([
     {
@@ -68,6 +73,20 @@ const products = ref([
         quantity: 0,
     },
 ]);
+
+const addToCart = async () => {
+    const productsPayload: CartProductsInterface[] = [];
+
+    for (const product of products.value) {
+        productsPayload.push({ id: product.code, stock: product.quantity, isFolder: false });
+    }
+
+    const payload: AddToCartRequestInterface = {
+        userId: '',
+        products: productsPayload,
+    };
+    await $api.cart.addEntityToCart(payload);
+};
 
 onMounted(() => {
     if (window.innerWidth < 768) {

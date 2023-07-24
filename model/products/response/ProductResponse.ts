@@ -19,12 +19,18 @@ export interface ProductInterface {
     sold: number;
     adminSettings?: AdminSettings;
     additionalInfo?: AdditionalInfoInterface;
+    favourite?: boolean;
 }
 
 export interface ProductDetailsInterface {
     SummaryData: ProductSummaryDataInterface;
     ParametricData: ProductParametricDataInterface;
-    ProductImage: ProductImage;
+    ProductImage: ProductImageInterface;
+}
+
+export interface ProductImageInterface {
+    ProductImageSmall: string;
+    ProductImageLarge: string;
 }
 
 export interface ProductSummaryDataInterface {
@@ -44,11 +50,11 @@ export interface ProductParametricDataFeaturesInterface extends CountInterface {
     FeatureUnit: string;
     FeatureID?: string;
     FeatureValueDetails?: string;
-    checked?: boolean;
 }
 
 export interface CountInterface {
     count?: number;
+    checked?: boolean;
 }
 
 export interface DiscountInterface {
@@ -64,9 +70,4 @@ export interface AdditionalInfoInterface {
 export interface AdminSettings {
     discount?: DiscountInterface;
     featured?: boolean;
-}
-
-export interface ProductImage {
-    ProductImageLarge: string;
-    ProductImageSmall: string;
 }

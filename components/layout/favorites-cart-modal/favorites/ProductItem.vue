@@ -2,28 +2,28 @@
     <div class="flex flex-col pb-4" :class="[inModal ? '' : 'border-b border-gray-200 mx-2.5']">
         <div class="flex" :class="[inModal ? 'items-center' : 'items-start']">
             <label v-if="inModal" class="flex cursor-pointer mr-2.5">
-                <input :value="product.selected" type="checkbox" class="sr-only" @change="$emit('select')" />
+                <input :value="productItem.selected" type="checkbox" class="sr-only" @change="$emit('select')" />
                 <div
                     class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                     :class="[
-                        product.selected
+                        productItem.selected
                             ? 'bg-blue border-blue group-hover:bg-white'
                             : 'bg-white  border-border group-hover:border-gray-300',
                     ]"
                 >
-                    <CheckIcon v-if="product.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
+                    <CheckIcon v-if="productItem.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
                 </div>
             </label>
             <img
-                v-if="product.image"
-                :src="product.image"
-                :alt="product.title"
+                v-if="productItem.image"
+                :src="productItem.image"
+                :alt="productItem.title"
                 :class="[inModal ? 'w-9 h-9 mr-2' : 'w-[70px] h-[70px] mr-2.5']"
             />
             <div :class="[inModal ? 'truncate' : '']">
                 <div class="flex items-center" :class="[inModal ? '' : 'mb-2.5']">
                     <div class="leading-tight font-semibold font-Inter mr-2" :class="[inModal ? 'text-xs' : '']">
-                        {{ product.title }}
+                        {{ productItem.title }}
                     </div>
                     <button
                         v-if="!inModal && !inCart"
@@ -37,7 +37,7 @@
                     </button>
                 </div>
                 <div v-if="product.description" class="text-gray-300 truncate" :class="[inModal ? 'text-xs' : 'text-sm mb-2.5 w-[205px]']">
-                    {{ product.description }}
+                    {{ productItem.description }}
                 </div>
                 <div v-if="!inModal">
                     <div class="text-xs leading-tight font-Inter line-through">$ 0,15 (100+)</div>
@@ -57,16 +57,19 @@
         <div v-if="!inModal" class="flex items-end justify-between mt-2">
             <div v-if="!inCart" class="flex items-center">
                 <label class="flex cursor-pointer mr-[15px]">
-                    <input :value="product.selected" type="checkbox" class="sr-only" @change="$emit('select')" />
+                    <input :value="productItem.selected" type="checkbox" class="sr-only" @change="$emit('select')" />
                     <div
                         class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                         :class="[
-                            product.selected
+                            productItem.selected
                                 ? 'bg-blue border-blue group-hover:bg-white'
                                 : 'bg-white  border-border group-hover:border-gray-300',
                         ]"
                     >
-                        <CheckIcon v-if="product.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
+                        <CheckIcon
+                            v-if="productItem.selected"
+                            class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                        />
                     </div>
                 </label>
                 <div class="flex items-center text-green">
@@ -75,15 +78,16 @@
                 </div>
             </div>
             <div v-else class="font-Inter font-bold leading-tight">$ 175.413,75</div>
-            <QuantityButtons v-if="typeof product.quantity === 'number'" v-model="product.quantity" />
+            {{ productItem }}
+            <QuantityButtons v-if="typeof productItem.quantity === 'number'" v-model="productItem.quantity" />
         </div>
     </div>
     <Teleport to="body">
         <Transition name="slide-from-top">
-            <LayoutFavoritesModalsDelete v-if="deleteItem" :products="[product]" @close="deleteItem = false" />
+            <LayoutFavoritesModalsDelete v-if="deleteItem" :products="[productItem]" @close="deleteItem = false" />
         </Transition>
         <Transition name="slide-from-top">
-            <LayoutFavoritesModalsCopyMoveItems v-if="copyItems" :items="[product]" action="copy" @close="copyItems = false" />
+            <LayoutFavoritesModalsCopyMoveItems v-if="copyItems" :items="[productItem]" action="copy" @close="copyItems = false" />
         </Transition>
         <Transition name="fade">
             <div
@@ -122,6 +126,8 @@ const props = defineProps({
     },
 });
 
+const productItem = ref<FavoriteItem>(props.product);
+console.log(productItem.value);
 defineEmits(['select']);
 
 const deleteItem = ref(false);

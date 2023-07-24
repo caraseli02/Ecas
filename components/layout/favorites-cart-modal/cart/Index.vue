@@ -58,79 +58,28 @@
 import { FavoriteItem } from '@/types';
 import ProductCover from '@/assets/media/home/product-2.jpg';
 import InfoIcon from '@/assets/icons/info-circle.svg';
+import { useNuxtApp } from '#app';
+import { FavouriteFolderResponse, FavouriteFolderResponseInterface } from '~/model/favourite-folder/response/favourite-folder.interface';
+import { CartInterface, CartProductsInterface, CartResponse } from '~/model/cart/response/cart.interface';
 
-const items = ref<FavoriteItem[]>([
-    {
-        id: '1',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '2',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '3',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '4',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '5',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '6',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '7',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '8',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        quantity: 16,
-        image: ProductCover,
-    },
-    {
-        id: '9',
-        type: 'product',
-        title: 'ADIN2111BCPZ',
-        description: 'Diode: rectifying; SMD; 100V Diode: rectifying; SMD; 100V ',
-        quantity: 16,
-        image: ProductCover,
-    },
-]);
+const { $api } = useNuxtApp();
+
+const items = ref<CartInterface>({} as CartInterface);
+
+const fetchList = async () => {
+    const { data } = await $api.cart.fetchCartList();
+
+    const cartData = data as CartInterface;
+
+    items.value = cartData.products.map((item: CartProductsInterface) => ({
+        id: item.id,
+        type: item.isFolder ? 'folder' : 'product',
+        quantity: item.stock,
+        title: item.productEntity?.alias,
+        description: item.productEntity?.description,
+        image: item.productEntity?.details.ProductImage.ProductImageSmall,
+    }));
+};
+
+await fetchList();
 </script>

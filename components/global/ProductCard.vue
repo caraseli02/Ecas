@@ -61,7 +61,7 @@
         <div
             v-if="product.stock"
             class="absolute bottom-0 right-0 bg-blue px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]"
-            @click.prevent="$router.push('/order-summary')"
+            @click.prevent="addToCart(product)"
         >
             <CartIcon class="w-6 h-6 text-white" />
         </div>
@@ -83,6 +83,7 @@ import ShareIcon from '@/assets/icons/share.svg';
 import D3Icon from '@/assets/icons/3d.svg';
 import { useNuxtApp } from '#app';
 import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 
 const { $api } = useNuxtApp();
 
@@ -100,5 +101,13 @@ const addToFavourite = async (product: ProductCard) => {
         products: { id: product.slug, stock: product.stock || 1 },
     };
     await $api.favouriteFolder.addEntityToFavouriteList(payload);
+};
+
+const addToCart = async (product: ProductCard) => {
+    const payload: AddToCartRequestInterface = {
+        userId: '',
+        products: [{ id: product.slug, stock: 1, isFolder: false }],
+    };
+    await $api.cart.addEntityToCart(payload);
 };
 </script>
