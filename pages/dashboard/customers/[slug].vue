@@ -73,7 +73,7 @@ definePageMeta({
 const isLoading = ref(true);
 
 const route = useRoute();
-console.log(route.params);
+// console.log(route.params);
 onMounted(async () => {
 
     setTimeout(() => {
