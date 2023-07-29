@@ -35,7 +35,7 @@
                     :key="index"
                     class="flex items-center pl-2 pr-1 py-1.5 bg-[#F2F2F2] rounded-md"
                 >
-                    <span class="text-sm leading-normal text-gray-300 mr-2">
+                    <span class="text-sm leading-[1.43] text-gray-300 mr-2">
                         {{ `${FilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                     </span>
                     <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="removeFilter(index)">
@@ -102,7 +102,7 @@ import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters'
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
-const activeFilters = ref([] as FilterInterface);
+const activeFilters = ref(['asd', 'asdas'] as FilterInterface);
 const activeSort = ref({} as SortInterface);
 
 const clearFilters = async () => {

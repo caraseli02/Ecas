@@ -99,7 +99,7 @@ const { getUserDetails } = storeToRefs(authStore);
 const navItems = ref([
     {
         label: 'Dashboard',
-        to: '/',
+        to: '/dashboard',
         icon: DashboardIcon,
     },
     {
