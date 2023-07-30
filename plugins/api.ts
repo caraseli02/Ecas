@@ -32,7 +32,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         user: new UserService(apiFetcher),
         userDashboard: new UserDashboardService(apiFetcher),
         favouriteFolder: new FavouriteFolderService(apiFetcher),
-        customerProfile : new CustomerProfileService(apiFetcher),
+        customerProfile : new CustomerProfileService(apiFetcher)
     };
 
     return {

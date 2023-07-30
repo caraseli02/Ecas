@@ -16,6 +16,41 @@ class CustomerProfileService extends HttpFactory {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
+    async fetchCustomerLastOrder(userID : string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/last-order`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+    async fetchCustomerTotalSpent(userID : string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/total-spent`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+    async fetchCustomerAvgOrderValue(userID : string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/average-order`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+    async fetchCustomerAbandonedCheckout(userID : string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/abandoned-checkout`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+    async fetchCustomerShippingInformation(userID : string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/shipping-information`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 }
 
 export default CustomerProfileService;

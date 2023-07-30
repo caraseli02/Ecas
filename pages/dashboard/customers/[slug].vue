@@ -37,7 +37,7 @@
                     </template>
                 </div>
             </div>
-            <DashboardCustomersInfoCards />
+            <DashboardCustomersInfoCards  :id="route.params.slug"/>
             <div class="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:grid-rows-[repeat(2,auto)] md:gap-6">
                 <DashboardCustomersCustomerInformation class="xl:col-start-1 xl:row-start-1 xl:row-span-2" :id="route.params.slug" />
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:col-start-2 xl:row-start-1">

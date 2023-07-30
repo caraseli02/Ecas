@@ -34,8 +34,8 @@
             <BusinessIcon class="w-11 h-11 text-[#00D395] flex-shrink-0 mr-4" />
             <SkeletonLoader v-if="isLoading" class="w-full h-16 md:h-11" />
             <div v-else>
-                <div class="text-sm font-semibold mb-1">Address Alias 1</div>
-                <div class="text-sm">5073 Mark Brown Rd, NE Dalton, Georgia (GA), 30721, United States</div>
+                <div class="text-sm font-semibold mb-1">{{shippingInformation.personalDetails?.address[0]  || "N/A"}}</div>
+                <div class="text-sm">{{ shippingInformation.personalDetails?.address[1]  || "N/A" }}</div>
             </div>
         </div>
     </div>
@@ -46,14 +46,32 @@ import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business-lg.svg';
 import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
+import { UserDetails } from '~/types/auth/user-details';
 
 const showOptions = ref(false);
 
 const isLoading = ref(true);
+
+const props = defineProps({
+    id: {
+        type: String,
+        required: true,
+    },
+});
+let shippingInformation = ref<UserDetails>({} as UserDetails);
+const { $api } = useNuxtApp();
+
+const fetchShippingInformation = async () => {
+
+    const { data } = (await $api.customerProfile.fetchCustomerShippingInformation(props.id));
+    shippingInformation.value = data as UserDetails;
+    console.log(shippingInformation.value.personalDetails?.address[0],shippingInformation.value.personalDetails?.address[1])
+}
 
 onMounted(() => {
     setTimeout(() => {
         isLoading.value = false;
     }, 5000);
 });
+await fetchShippingInformation()
 </script>
