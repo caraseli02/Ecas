@@ -30,11 +30,7 @@
         <div v-if="activeFilters.length > 0" class="mb-6 md:flex md:items-start md:mb-8">
             <div class="leading-normal font-medium text-gray-300 mb-4 md:mr-4">Filters:</div>
             <div class="flex flex-wrap gap-4">
-                <div
-                    v-for="(filter, index) in activeFilters"
-                    :key="index"
-                    class="flex items-center pl-2 pr-1 py-1.5 bg-[#F2F2F2] rounded-md"
-                >
+                <div v-for="(filter, index) in activeFilters" :key="index" class="flex items-center p-1 bg-[#F2F2F2] rounded-md">
                     <span class="text-sm leading-[1.43] text-gray-300 mr-2">
                         {{ `${FilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                     </span>
