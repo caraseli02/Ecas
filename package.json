@@ -41,6 +41,7 @@
         "firebase": "^9.19.1",
         "leaflet": "^1.9.4",
         "lodash": "^4.17.21",
+        "moment": "^2.29.4",
         "nuxt-swiper": "^0.1.9",
         "nuxt-vuefire": "^0.1.6",
         "ohmyfetch": "^0.4.21",

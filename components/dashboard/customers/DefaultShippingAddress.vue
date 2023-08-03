@@ -39,8 +39,8 @@
             <BusinessIcon class="w-11 h-11 text-[#00D395] flex-shrink-0 mr-4" />
             <SkeletonLoader v-if="isLoading" class="w-full h-16 md:h-11" />
             <div v-else>
-                <div class="text-sm font-semibold mb-1">{{shippingInformation.personalDetails?.address[0]  || "N/A"}}</div>
-                <div class="text-sm">{{ shippingInformation.personalDetails?.address[1]  || "N/A" }}</div>
+                <div class="text-sm font-semibold mb-1">{{ shippingInformation?.find((x) => x.default)?.name1 || 'N/A' }}</div>
+                <div class="text-sm">{{ shippingInformation?.find((x) => x.default)?.name2 || 'N/A' }}</div>
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@ import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
-import { UserDetails } from '~/types/auth/user-details';
+import { AddressInterface, UserDetails } from '~/types/auth/user-details';
 
 const showOptions = ref(false);
 
@@ -67,20 +67,28 @@ const props = defineProps({
         required: true,
     },
 });
-let shippingInformation = ref<UserDetails>({} as UserDetails);
+const shippingInformation = ref<UserDetails>({} as UserDetails);
 const { $api } = useNuxtApp();
 
 const fetchShippingInformation = async () => {
+    error.value = false;
+    isLoading.value = true;
 
-    const { data } = (await $api.customerProfile.fetchCustomerShippingInformation(props.id));
-    shippingInformation.value = data as UserDetails;
-    console.log(shippingInformation.value.personalDetails?.address[0],shippingInformation.value.personalDetails?.address[1])
-}
+    const response = (await $api.customerProfile.fetchCustomerShippingInformation(props.id || '')) as {
+        status: string;
+        data: AddressInterface[];
+    };
 
-onMounted(() => {
-    setTimeout(() => {
+    if (response.status !== 'success') {
         isLoading.value = false;
-    }, 5000);
-});
-await fetchShippingInformation()
+        error.value = true;
+
+        return;
+    } else {
+        isLoading.value = false;
+    }
+
+    shippingInformation.value = response.data;
+};
+await fetchShippingInformation();
 </script>

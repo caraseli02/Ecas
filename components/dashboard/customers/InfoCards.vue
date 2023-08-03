@@ -14,7 +14,9 @@
                     <div class="text-sm font-semibold text-gray-300 mb-3">Last Order</div>
                     <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
                     <div v-else-if="emptyData || error" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
-                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold text-blue leading-[1.2]">{{ lastOrder && lastOrder.title ? lastOrder?.title : 0 }}</div>
+                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold text-blue leading-[1.2]">
+                        {{ lastOrder._id || 0 }}
+                    </div>
                 </div>
             </div>
             <WarningIcon v-if="error" class="w-6 h-6" />
@@ -33,7 +35,7 @@
                     <div class="text-sm font-semibold text-gray-300 mb-3">Total Spent</div>
                     <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
                     <div v-else-if="emptyData || error" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
-                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold leading-[1.2]">${{ (totalSpent && totalSpent?.spent ) ? totalSpent.spent : 0 }}</div>
+                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold leading-[1.2]">${{ totalSpent || 0 }}</div>
                 </div>
             </div>
             <WarningIcon v-if="error" class="w-6 h-6" />
@@ -52,7 +54,9 @@
                     <div class="text-sm font-semibold text-gray-300 mb-3">Average Order Value</div>
                     <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
                     <div v-else-if="emptyData || error" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
-                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold leading-[1.2]">{{ (avgOrderValue && avgOrderValue?.spent && avgOrderValue?.ordersCount) ? `$${Number(avgOrderValue?.spent)/Number(avgOrderValue?.ordersCount)}`  : "$0" }}</div>
+                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold leading-[1.2]">
+                        {{ avgOrderValue || 0 }}
+                    </div>
                 </div>
             </div>
             <WarningIcon v-if="error" class="w-6 h-6" />
@@ -71,7 +75,7 @@
                     <div class="text-sm font-semibold text-gray-300 mb-3">Abandoned Checkout</div>
                     <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
                     <div v-else-if="emptyData || error" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
-                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold leading-[1.2]">N/A</div>
+                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold leading-[1.2]">{{ abandonedCheckout || 0 }}</div>
                 </div>
             </div>
             <WarningIcon v-if="error" class="w-6 h-6" />
@@ -86,16 +90,12 @@ import CardIcon from '@/assets/icons/dashboard/card.svg';
 import AbandonedCheckoutIcon from '@/assets/icons/dashboard/abandoned-checkout.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
-import { OrderSummaryItem, DashboardCustomerTableItem } from '~/types';
-
+import { OrderInterface } from '~/types';
 
 const showOptions = ref(false);
-
 const error = ref(false);
 const emptyData = ref(false);
-const isLoading = ref(true);
-
-
+const isLoading = ref(false);
 const props = defineProps({
     id: {
         type: String,
@@ -103,49 +103,32 @@ const props = defineProps({
     },
 });
 
-const lastOrder = ref<OrderSummaryItem>({} as OrderSummaryItem);
-const totalSpent = ref<DashboardCustomerTableItem>({} as DashboardCustomerTableItem);
-const avgOrderValue = ref<DashboardCustomerTableItem>({} as DashboardCustomerTableItem);
-// let abandonedCheckout = ref<OrderSummaryItem>({} as OrderSummaryItem);
+const lastOrder = ref<OrderInterface>({} as OrderInterface);
+const totalSpent = ref(0);
+const avgOrderValue = ref(0);
+const abandonedCheckout = ref(0);
+
 const { $api } = useNuxtApp();
 
 const fetchLastOrder = async () => {
-
-    const { data } = (await $api.customerProfile.fetchCustomerLastOrder(props.id));
-    lastOrder.value = data as OrderSummaryItem;
-    console.log(lastOrder.value);
-}
+    const { data } = await $api.customerProfile.fetchCustomerLastOrder(props.id || '');
+    lastOrder.value = data as OrderInterface;
+};
 
 const fetchTotalSpent = async () => {
-
-    const { data } = (await $api.customerProfile.fetchCustomerTotalSpent(props.id));
-    totalSpent.value = data as DashboardCustomerTableItem;
-    console.log(totalSpent.value);
-}
+    const { data } = await $api.customerProfile.fetchCustomerTotalSpent(props.id || '');
+    totalSpent.value = data as number;
+};
 
 const fetchAvgOrderValue = async () => {
+    const { data } = await $api.customerProfile.fetchCustomerAvgOrderValue(props.id || '');
+    avgOrderValue.value = data as number;
+};
 
-    const { data } = (await $api.customerProfile.fetchCustomerAvgOrderValue(props.id));
-    avgOrderValue.value = data as DashboardCustomerTableItem;
-    console.log(avgOrderValue.value);
-}
+const fetchAbandonedCheckout = async () => {
+    const { data } = await $api.customerProfile.fetchCustomerAbandonedCheckout(props.id || '');
+    abandonedCheckout.value = data as number;
+};
 
-// const fetchAbandonedCheckout = async () => {
-
-//     const { data } = (await $api.customerProfile.fetchAbandonedCheckout(props.id));
-//     abandonedCheckout.value = data as OrderSummaryItem;
-//     console.log(abandonedCheckout.value);
-// }
-
-onMounted(() => {
-    setTimeout(() => {
-        isLoading.value = false;
-    }, 5000);
-});
-
-// await fetchLastOrder()
-// await fetchTotalSpent()
-// await fetchAvgOrderValue()
-// await fetchAbandonedCheckout()
-await Promise.all([fetchLastOrder(),fetchTotalSpent(),fetchAvgOrderValue()])
+await Promise.all([fetchLastOrder(), fetchTotalSpent(), fetchAvgOrderValue(), fetchAbandonedCheckout()]);
 </script>

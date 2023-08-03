@@ -10,23 +10,29 @@
                     <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
                 </button>
                 <Transition name="fade-full">
-                    <div v-if="showOptions" v-click-outside="() => (showOptions = false)"
-                        class="absolute z-10 -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m">
+                    <div
+                        v-if="showOptions"
+                        v-click-outside="() => (showOptions = false)"
+                        class="absolute z-10 -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m"
+                    >
                         <button
                             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                            @click="showOptions = false">
+                            @click="showOptions = false"
+                        >
                             <SettingsIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> Control Panel </span>
                         </button>
                         <button
                             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                            @click="showOptions = false">
+                            @click="showOptions = false"
+                        >
                             <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> Deactivate Account </span>
                         </button>
                         <button
                             class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
-                            @click="showOptions = false">
+                            @click="showOptions = false"
+                        >
                             <TrashIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
                         </button>
@@ -44,24 +50,27 @@
                 <img v-else :src="Avatar" alt="Name" class="w-16 h-16 flex-shrink-0 rounded-full object-cover mr-4" />
                 <div class="md:grid md:grid-cols-[repeat(2,auto)] md:justify-between md:flex-1">
                     <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
-                    <div v-else class="font-semibold leading-tight mb-2 md:order-1">{{
-                    customerInformation.contactDetails.firstName + " " + customerInformation.contactDetails.lastName }}
-                </div>
-                <SkeletonLoader v-if="isLoading" class="w-[160px] h-5 mb-2 md:w-[180px]" />
-                <div v-else class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
-                    <span class="text-gray-300 mr-2">Account Type:</span>
-                    <span class="font-medium">{{ AccountType[customerInformation.accountType as unknown as keyof typeof
-                        AccountType] }}</span>
+                    <div v-else class="font-semibold leading-tight mb-2 md:order-1">
+                        {{ customerInformation.contactDetails.firstName + ' ' + customerInformation.contactDetails.lastName }}
+                    </div>
+                    <SkeletonLoader v-if="isLoading" class="w-[160px] h-5 mb-2 md:w-[180px]" />
+                    <div v-else class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
+                        <span class="text-gray-300 mr-2">Account Type:</span>
+                        <span class="font-medium">{{
+                            AccountType[customerInformation.accountType as unknown as keyof typeof AccountType]
+                        }}</span>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[180px] h-5 mb-2" />
-                    <div v-else="customerInformation.accountType === 2 || customerInformation.accountType === 3"
-                    class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0">{{
-                        customerInformation?.companyDetails?.name }}
-                </div>
-                <SkeletonLoader v-if="isLoading" class="w-[180px] h-5" />
-                <div v-else class="flex items-center text-sm md:order-2 md:mb-2">
-                    <span class="text-gray-300 mr-2">Last Active:</span>
-                    <span class="font-medium">{{ "-" }}</span>
+                    <div
+                        v-else="customerInformation.accountType === 2 || customerInformation.accountType === 3"
+                        class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0"
+                    >
+                        {{ customerInformation?.companyDetails?.name }}
+                    </div>
+                    <SkeletonLoader v-if="isLoading" class="w-[180px] h-5" />
+                    <div v-else class="flex items-center text-sm md:order-2 md:mb-2">
+                        <span class="text-gray-300 mr-2">Last Active:</span>
+                        <span class="font-medium">{{ '-' }}</span>
                     </div>
                 </div>
             </div>
@@ -73,36 +82,39 @@
                         <div class="grid grid-cols-1 gap-2">
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">User Name</div>
-                                <div class="text-sm font-medium leading-[1.75] break-all">{{
-                                customerInformation.contactDetails.email }}</div>
+                                <div class="text-sm font-medium leading-[1.75] break-all">
+                                    {{ customerInformation.contactDetails.email }}
+                                </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Name</div>
-                                <div class="text-sm font-medium leading-[1.75] break-all">{{
-                                customerInformation.contactDetails.firstName }}</div>
+                                <div class="text-sm font-medium leading-[1.75] break-all">
+                                    {{ customerInformation.contactDetails.firstName }}
+                                </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Surname</div>
-                                <div class="text-sm font-medium leading-[1.75] break-all">{{
-                                customerInformation.contactDetails.lastName }}</div>
+                                <div class="text-sm font-medium leading-[1.75] break-all">
+                                    {{ customerInformation.contactDetails.lastName }}
+                                </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
                                 <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
                                     <USAFlag v-if="customerInformation?.personalDetails?.country" class="w-6 h-6 mr-2" />
-                                <span>{{ customerInformation?.personalDetails?.country || "N/A" }} </span>
+                                    <span>{{ customerInformation?.personalDetails?.country || 'N/A' }} </span>
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Mobile Number</div>
-                                <div class="text-sm font-medium leading-[1.75] break-all">{{
-                                customerInformation.contactDetails.phone }}</div>
+                                <div class="text-sm font-medium leading-[1.75] break-all">
+                                    {{ customerInformation.contactDetails.phone }}
+                                </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Address</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{
-                                customerInformation?.personalDetails?.address.find(x => x.default)?.name1 || "N/A"}}
+                                    {{ customerInformation?.personalDetails?.address.find((x) => x.default)?.name1 || 'N/A' }}
                                 </div>
                             </div>
                         </div>
@@ -115,16 +127,15 @@
                             <div class="w-2 h-2 rounded-full bg-[#00D395] mr-2" />
                             <span class="text-sm font-medium leading-tight text-gray-300">Registered</span>
                         </div>
-                        <div class="text-sm font-medium leading-tight pl-4">{{ getCurrentDate(customerInformation.createdAt) }}
+                        <div class="text-sm font-medium leading-tight pl-4">{{ getCurrentDate(customerInformation.createdAt) }}</div>
                     </div>
-                </div>
-                <SkeletonLoader v-if="isLoading" class="w-[120px] h-10 md:w-[160px] md:h-[18px]" />
-                <div v-else class="md:flex md:items-center">
-                    <div class="flex items-center mb-1 md:mb-0">
-                        <div class="w-2 h-2 rounded-full bg-blue mr-2" />
-                        <span class="text-sm font-medium leading-tight text-gray-300">Email Marketing</span>
-                    </div>
-                    <div class="text-sm font-medium leading-tight pl-4">Subscribed / N/A?</div>
+                    <SkeletonLoader v-if="isLoading" class="w-[120px] h-10 md:w-[160px] md:h-[18px]" />
+                    <div v-else class="md:flex md:items-center">
+                        <div class="flex items-center mb-1 md:mb-0">
+                            <div class="w-2 h-2 rounded-full bg-blue mr-2" />
+                            <span class="text-sm font-medium leading-tight text-gray-300">Email Marketing</span>
+                        </div>
+                        <div class="text-sm font-medium leading-tight pl-4">Subscribed / N/A?</div>
                     </div>
                 </div>
             </div>
@@ -144,13 +155,12 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
 import { UserDetails } from '~/types/auth/user-details';
 import { AccountType } from '~/types';
-
+import moment from 'moment';
 const showOptions = ref(false);
 
 const error = ref(false);
 const emptyData = ref(false);
 const isLoading = ref(false);
-
 
 const props = defineProps({
     id: {
@@ -162,25 +172,25 @@ const customerInformation = ref<UserDetails>({} as UserDetails);
 const { $api } = useNuxtApp();
 
 const fetchInformation = async () => {
+    error.value = false;
+    isLoading.value = true;
 
-    const { data } = (await $api.customerProfile.fetchCustomerInformation(props.id));
-    customerInformation.value = data as UserDetails;
-    // console.log(customerInformation.value)
-}
+    const response = (await $api.customerProfile.fetchCustomerInformation(props.id || '')) as { status: string; data: UserDetails };
 
-
-onMounted(() => {
-    setTimeout(() => {
+    if (response.status !== 'success') {
         isLoading.value = false;
-    }, 5000);
-});
+        error.value = true;
+
+        return;
+    } else {
+        isLoading.value = false;
+    }
+
+    customerInformation.value = response.data;
+};
 
 const getCurrentDate = (date: string) => {
-    const months = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"];
-    let month = Number((date).split("T")[0].split("-")[1]);
-    let hour = (date).split("T")[1].split(":")[0] + ":" + (date).split("T")[1].split(":")[1];
-    return (date).split("T")[0].split("-")[2]+" "+months[month-1]+" "+(date).split("T")[0].split("-")[0]+", "+hour
-}
-await fetchInformation()
+    return moment(date).format('DD MMM YYYY, HH:mm');
+};
+await fetchInformation();
 </script>
