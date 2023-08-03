@@ -227,7 +227,7 @@
                     left: statusDropdownLeft + 'px',
                 }"
             >
-                <div class="max-h-[304px] overflow-y-auto scrollbar-thin pl-3 pr-2">
+                <div class="grid grid-cols-1 gap-1 max-h-[304px] overflow-y-auto scrollbar-thin pl-3 pr-2">
                     <button
                         v-for="(option, index) in statusOptions"
                         :key="index"

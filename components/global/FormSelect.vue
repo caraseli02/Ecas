@@ -4,7 +4,7 @@
             {{ label }}
         </div>
         <button
-            class="flex items-center justify-between px-3 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none"
+            class="flex items-center justify-between px-3 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none"
             :class="[error ? 'border-red' : showOptions ? 'border-blue' : 'border-border']"
             :disabled="disabled"
             @click="showOptions = !showOptions"

@@ -27,3 +27,12 @@ export interface DashboardCustomerOrderItem {
         | 'awaiting-fulfillment';
     total: number;
 }
+
+export interface DashboardControlPanelTransactionHistoryItem {
+    id: string;
+    invoiceId: string;
+    amount: string;
+    type: 'debit' | 'credit';
+    date: number;
+    status: 'success' | 'pending' | 'declined';
+}

@@ -166,11 +166,5 @@ watch(scrolling, (val) => {
     }
 });
 
-const isLoading = ref(true);
-
-onMounted(() => {
-    setTimeout(() => {
-        isLoading.value = false;
-    }, 5000);
-});
+const isLoading = ref(false);
 </script>
