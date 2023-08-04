@@ -16,6 +16,7 @@ export interface UserDetails {
     updatedAt: string;
     currentStatus?: 'online' | 'offline';
     __v: number;
+    lastActivityDate : string;
 }
 
 export interface PersonalDetails {

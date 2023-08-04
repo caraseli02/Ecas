@@ -3,7 +3,7 @@
         <div class="flex items-start justify-between bg-white rounded-xl p-4 shadow-xs md:p-6">
             <div class="flex items-center">
                 <div class="mr-4">
-                    <EmojiSadIcon v-if="emptyData || error" class="w-[52px] h-[52px]" />
+                    <EmojiSadIcon v-if="emptyData || error.lastOrder" class="w-[52px] h-[52px]" />
                     <div v-else class="flex items-center justify-center w-14 h-14 bg-blue/25 rounded-full">
                         <div class="flex items-center justify-center w-10 h-10 bg-blue rounded-full">
                             <LastOrderIcon class="w-6 h-6 text-white" />
@@ -12,19 +12,19 @@
                 </div>
                 <div>
                     <div class="text-sm font-semibold text-gray-300 mb-3">Last Order</div>
-                    <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
-                    <div v-else-if="emptyData || error" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
-                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold text-blue leading-[1.2]">
+                    <SkeletonLoader v-if="isLoading.lastOrder" class="w-[160px] h-6 -mt-1" />
+                    <div v-else-if="emptyData || error.lastOrder" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
+                    <div v-else-if="!emptyData && !error.lastOrder" class="text-xl font-semibold text-blue leading-[1.2]">
                         {{ lastOrder._id || 0 }}
                     </div>
                 </div>
             </div>
-            <WarningIcon v-if="error" class="w-6 h-6" />
+            <WarningIcon v-if="error.lastOrder" class="w-6 h-6" />
         </div>
         <div class="flex items-start justify-between bg-white rounded-xl p-4 shadow-xs md:p-6">
             <div class="flex items-center">
                 <div class="mr-4">
-                    <EmojiSadIcon v-if="emptyData || error" class="w-[52px] h-[52px]" />
+                    <EmojiSadIcon v-if="emptyData || error.totalSpent" class="w-[52px] h-[52px]" />
                     <div v-else class="flex items-center justify-center w-14 h-14 bg-[#00D395] bg-opacity-25 rounded-full">
                         <div class="flex items-center justify-center w-10 h-10 bg-[#00D395] rounded-full">
                             <MoneyBagIcon class="w-6 h-6 text-white" />
@@ -33,17 +33,17 @@
                 </div>
                 <div>
                     <div class="text-sm font-semibold text-gray-300 mb-3">Total Spent</div>
-                    <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
-                    <div v-else-if="emptyData || error" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
-                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold leading-[1.2]">${{ totalSpent || 0 }}</div>
+                    <SkeletonLoader v-if="isLoading.totalSpent" class="w-[160px] h-6 -mt-1" />
+                    <div v-else-if="emptyData || error.totalSpent" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
+                    <div v-else-if="!emptyData && !error.totalSpent" class="text-xl font-semibold leading-[1.2]">${{ totalSpent || 0 }}</div>
                 </div>
             </div>
-            <WarningIcon v-if="error" class="w-6 h-6" />
+            <WarningIcon v-if="error.totalSpent" class="w-6 h-6" />
         </div>
         <div class="flex items-start justify-between bg-white rounded-xl p-4 shadow-xs md:p-6">
             <div class="flex items-center">
                 <div class="mr-4">
-                    <EmojiSadIcon v-if="emptyData || error" class="w-[52px] h-[52px]" />
+                    <EmojiSadIcon v-if="emptyData || error.avgOrderValue" class="w-[52px] h-[52px]" />
                     <div v-else class="flex items-center justify-center w-14 h-14 bg-[#FFB100] bg-opacity-25 rounded-full">
                         <div class="flex items-center justify-center w-10 h-10 bg-[#FFB100] rounded-full">
                             <CardIcon class="w-6 h-6 text-white" />
@@ -52,19 +52,19 @@
                 </div>
                 <div>
                     <div class="text-sm font-semibold text-gray-300 mb-3">Average Order Value</div>
-                    <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
-                    <div v-else-if="emptyData || error" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
-                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold leading-[1.2]">
+                    <SkeletonLoader v-if="isLoading.avgOrderValue" class="w-[160px] h-6 -mt-1" />
+                    <div v-else-if="emptyData || error.avgOrderValue" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
+                    <div v-else-if="!emptyData && !error.avgOrderValue" class="text-xl font-semibold leading-[1.2]">
                         {{ avgOrderValue || 0 }}
                     </div>
                 </div>
             </div>
-            <WarningIcon v-if="error" class="w-6 h-6" />
+            <WarningIcon v-if="error.avgOrderValue" class="w-6 h-6" />
         </div>
         <div class="flex items-start justify-between bg-white rounded-xl p-4 shadow-xs md:p-6">
             <div class="flex items-center">
                 <div class="mr-4">
-                    <EmojiSadIcon v-if="emptyData || error" class="w-[52px] h-[52px]" />
+                    <EmojiSadIcon v-if="emptyData || error.abandonedCheckout" class="w-[52px] h-[52px]" />
                     <div v-else class="flex items-center justify-center w-14 h-14 bg-[#FA4B4B] bg-opacity-25 rounded-full">
                         <div class="flex items-center justify-center w-10 h-10 bg-[#FA4B4B] rounded-full">
                             <AbandonedCheckoutIcon class="w-6 h-6 text-white" />
@@ -73,12 +73,12 @@
                 </div>
                 <div>
                     <div class="text-sm font-semibold text-gray-300 mb-3">Abandoned Checkout</div>
-                    <SkeletonLoader v-if="isLoading" class="w-[160px] h-6 -mt-1" />
-                    <div v-else-if="emptyData || error" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
-                    <div v-else-if="!emptyData && !error" class="text-xl font-semibold leading-[1.2]">{{ abandonedCheckout || 0 }}</div>
+                    <SkeletonLoader v-if="isLoading.abandonedCheckout" class="w-[160px] h-6 -mt-1" />
+                    <div v-else-if="emptyData || error.abandonedCheckout" class="text-sm font-medium leading-[1.714] text-gray-100">No data available</div>
+                    <div v-else-if="!emptyData && !error.abandonedCheckout" class="text-xl font-semibold leading-[1.2]">{{ abandonedCheckout || 0 }}</div>
                 </div>
             </div>
-            <WarningIcon v-if="error" class="w-6 h-6" />
+            <WarningIcon v-if="error.abandonedCheckout" class="w-6 h-6" />
         </div>
     </div>
 </template>
@@ -93,9 +93,19 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { OrderInterface } from '~/types';
 
 const showOptions = ref(false);
-const error = ref(false);
+const error = ref({
+    lastOrder : false,
+    totalSpent : false,
+    avgOrderValue : false,
+    abandonedCheckout :  false,
+});
 const emptyData = ref(false);
-const isLoading = ref(false);
+const isLoading = ref({
+    lastOrder : false,
+    totalSpent : false,
+    avgOrderValue : false,
+    abandonedCheckout :  false,
+});
 const props = defineProps({
     id: {
         type: String,
@@ -111,24 +121,80 @@ const abandonedCheckout = ref(0);
 const { $api } = useNuxtApp();
 
 const fetchLastOrder = async () => {
-    const { data } = await $api.customerProfile.fetchCustomerLastOrder(props.id || '');
-    lastOrder.value = data as OrderInterface;
+
+    error.value.lastOrder = false;
+    isLoading.value.lastOrder = true;
+
+    const response = await $api.customerProfile.fetchCustomerLastOrder(props.id || '') as { status: string; data: OrderInterface };
+
+    if (response.status !== 'success') {
+        isLoading.value.lastOrder = false;
+        error.value.lastOrder = true;
+
+        return;
+    } else {
+        isLoading.value.lastOrder = false;
+    }
+
+    lastOrder.value = response.data
 };
 
 const fetchTotalSpent = async () => {
-    const { data } = await $api.customerProfile.fetchCustomerTotalSpent(props.id || '');
-    totalSpent.value = data as number;
+
+error.value.totalSpent = false;
+isLoading.value.totalSpent = true;
+
+const response = await $api.customerProfile.fetchCustomerTotalSpent(props.id || '') as { status: string; data: number };
+
+if (response.status !== 'success') {
+    isLoading.value.totalSpent = false;
+    error.value.totalSpent = true;
+
+    return;
+} else {
+    isLoading.value.totalSpent = false;
+}
+totalSpent.value = response.data
 };
 
 const fetchAvgOrderValue = async () => {
-    const { data } = await $api.customerProfile.fetchCustomerAvgOrderValue(props.id || '');
-    avgOrderValue.value = data as number;
+
+error.value.avgOrderValue = false;
+isLoading.value.avgOrderValue = true;
+
+const response = await $api.customerProfile.fetchCustomerAvgOrderValue(props.id || '') as { status: string; data: number };
+
+if (response.status !== 'success') {
+    isLoading.value.avgOrderValue = false;
+    error.value.avgOrderValue = true;
+
+    return;
+} else {
+    isLoading.value.avgOrderValue = false;
+}
+
+avgOrderValue.value = response.data
 };
 
 const fetchAbandonedCheckout = async () => {
-    const { data } = await $api.customerProfile.fetchCustomerAbandonedCheckout(props.id || '');
-    abandonedCheckout.value = data as number;
+
+error.value.abandonedCheckout = false;
+isLoading.value.abandonedCheckout = true;
+
+const response = await $api.customerProfile.fetchCustomerAbandonedCheckout(props.id || '') as { status: string; data: number };
+
+if (response.status !== 'success') {
+    isLoading.value.abandonedCheckout = false;
+    error.value.abandonedCheckout = true;
+
+    return;
+} else {
+    isLoading.value.abandonedCheckout = false;
+}
+
+abandonedCheckout.value = response.data
 };
+
 
 await Promise.all([fetchLastOrder(), fetchTotalSpent(), fetchAvgOrderValue(), fetchAbandonedCheckout()]);
 </script>
