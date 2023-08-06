@@ -1,5 +1,6 @@
 import { AddressInterface, PersonalDetails } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { AccountRole } from '~/types';
+import { AccountAdminSettings } from '~/types/auth/account-settings';
 
 export interface UserDetails {
     _id: string;
@@ -16,6 +17,7 @@ export interface UserDetails {
     createdAt: string;
     updatedAt: string;
     currentStatus?: 'online' | 'offline';
+    adminSettings?: AccountAdminSettings;
     __v: number;
 }
 

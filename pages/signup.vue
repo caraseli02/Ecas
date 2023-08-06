@@ -28,17 +28,17 @@
 <script setup lang="ts">
 import { useAuthStore } from '~~/store/authStore';
 import {
+    AccountType,
+    FirebaseBusinessAccount as SignupBusinessPayload,
+    FirebasePersonalAccount as SignupPersonalPayload,
+    InputObject,
+    SignupAccountType,
     SignupBusinessDetails as SignupBusinessDetailsType,
     SignupContactDetails as SignupContactDetailsType,
     SignupPersonalDetails as SignupPersonalDetailsType,
     SignupProfileDetails as SignupProfileDetailsType,
-    FirebasePersonalAccount as SignupPersonalPayload,
-    FirebaseBusinessAccount as SignupBusinessPayload,
-    UserInfoJWT,
-    AccountType,
-    SignupAccountType,
-    InputObject,
 } from '~~/types';
+
 const { $api } = useNuxtApp();
 
 const { checkForInputErrors, checkContactConfirmationEmail, checkProfileConfirmationEmail } = useError();
@@ -311,18 +311,15 @@ const registerClassicSignup = async (payload: SignupPersonalPayload | SignupBusi
     payload.isAlreadyRegisteredWithFirebase = false;
     payload.account.profileDetails.password = profileDetails.value.password.value;
 
-    const fetch = await $api.auth.registerClassic(payload);
-
-    return fetch;
+    return await $api.auth.registerClassic(payload);
 };
 
 const registerFirebaseSignup = async (payload: SignupPersonalPayload | SignupBusinessPayload): Promise<any> => {
     delete payload.account.profileDetails.password;
     payload.account.firebaseId = UserInfo?.user_id;
     payload.isAlreadyRegisteredWithFirebase = true;
-    const fetch = await $api.auth.registerFirebase(payload);
 
-    return fetch;
+    return await $api.auth.registerFirebase(payload);
 };
 
 const handleSubmit = async () => {
@@ -348,6 +345,7 @@ const handleSubmit = async () => {
 
     if (!hasError) {
         let payload: SignupBusinessPayload | SignupPersonalPayload | null = null;
+
         if (selectedType.value === 'personal') {
             const personalPayload: SignupPersonalPayload = {
                 account: {
@@ -378,9 +376,15 @@ const handleSubmit = async () => {
                             },
                         ],
                     },
+                    adminSettings: {
+                        marketingPreferences: {
+                            newsletter: profileDetails.value.subscribeToNewsletter,
+                            cookiesPolicy: profileDetails.value.agreeToTerms,
+                        },
+                    },
                 },
             };
-
+            console.log(personalPayload);
             payload = Object.assign({}, personalPayload);
         } else {
             const businessPayload: SignupBusinessPayload = {
@@ -407,6 +411,12 @@ const handleSubmit = async () => {
                         phone: contactDetails.value.phone.value,
                         email: contactDetails.value.companyEmail.value,
                     },
+                    adminSettings: {
+                        marketingPreferences: {
+                            newsletter: profileDetails.value.subscribeToNewsletter.value,
+                            cookiesPolicy: profileDetails.value.agreeToTerms.value,
+                        },
+                    },
                 },
             };
             payload = Object.assign({}, businessPayload);
@@ -414,10 +424,6 @@ const handleSubmit = async () => {
 
         try {
             const request = firebaseToken ? await registerFirebaseSignup(payload) : await registerClassicSignup(payload);
-
-            console.log(request);
-
-            console.log(true);
 
             await logout();
             // TODO: Notification banner
