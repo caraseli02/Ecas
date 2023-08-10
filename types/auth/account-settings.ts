@@ -14,9 +14,9 @@ export interface AlertsAndNotificationsInterface {
 }
 
 export interface MarketingPreferencesInterface {
-    cookiesPolicy?: boolean;
-    newsletter: boolean;
-    emailMarketing?: boolean;
+    cookiesPolicy?: AlertsAndNotificationsTypes;
+    newsletter: AlertsAndNotificationsTypes;
+    emailMarketing?: AlertsAndNotificationsTypes;
 }
 
 export interface CustomerCreditInterface {
@@ -27,8 +27,8 @@ export interface CustomerCreditInterface {
 }
 
 export interface AlertsAndNotificationsTypes {
-    email: boolean;
-    app: boolean;
+    email?: boolean;
+    app?: boolean;
 }
 
 export interface DiscountInterface {

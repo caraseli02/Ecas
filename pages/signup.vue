@@ -378,13 +378,13 @@ const handleSubmit = async () => {
                     },
                     adminSettings: {
                         marketingPreferences: {
-                            newsletter: profileDetails.value.subscribeToNewsletter,
-                            cookiesPolicy: profileDetails.value.agreeToTerms,
+                            newsletter: {email: profileDetails.value.subscribeToNewsletter},
+                            cookiesPolicy: {email: profileDetails.value.agreeToTerms},
                         },
                     },
                 },
             };
-            console.log(personalPayload);
+
             payload = Object.assign({}, personalPayload);
         } else {
             const businessPayload: SignupBusinessPayload = {
@@ -413,8 +413,8 @@ const handleSubmit = async () => {
                     },
                     adminSettings: {
                         marketingPreferences: {
-                            newsletter: profileDetails.value.subscribeToNewsletter.value,
-                            cookiesPolicy: profileDetails.value.agreeToTerms.value,
+                            newsletter: {email: profileDetails.value.subscribeToNewsletter},
+                            cookiesPolicy: {email: profileDetails.value.agreeToTerms},
                         },
                     },
                 },
