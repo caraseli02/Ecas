@@ -1,6 +1,18 @@
 <template>
     <div class="grid grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(197px,1fr)] items-center">
-        <div class="flex items-center justify-center p-4">CH</div>
+        <div class="flex items-center justify-center p-4">
+            <label class="flex cursor-pointer">
+                <input :value="item.checked" type="checkbox" class="sr-only" @change="$emit('check')" />
+                <div
+                    class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
+                    :class="[
+                        item.checked ? 'bg-blue border-blue group-hover:bg-white' : 'bg-white  border-border group-hover:border-gray-300',
+                    ]"
+                >
+                    <CheckIcon v-if="item.checked" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
+                </div>
+            </label>
+        </div>
         <div class="px-2 py-4 text-sm font-medium leading-[1.71] text-blue">#{{ item.id }}</div>
         <div class="px-2 py-4 text-sm font-medium leading-[1.71] text-blue">{{ item.invoiceId }}</div>
         <div class="px-2 py-4 text-sm font-medium leading-[1.71]">{{ item.amount }}</div>
@@ -35,8 +47,9 @@
 import { PropType } from 'vue';
 import { DashboardControlPanelTransactionHistoryItem } from '~/types';
 import DownloadIcon from '@/assets/icons/dashboard/download-2.svg';
+import CheckIcon from '@/assets/icons/check.svg';
 
-const props = defineProps({
+defineProps({
     item: {
         type: Object as PropType<DashboardControlPanelTransactionHistoryItem>,
         required: true,

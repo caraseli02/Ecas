@@ -33,4 +33,5 @@ export interface DashboardControlPanelTransactionHistoryItem {
     type: 'debit' | 'credit';
     date: number;
     status: 'success' | 'pending' | 'declined';
+    checked: boolean;
 }

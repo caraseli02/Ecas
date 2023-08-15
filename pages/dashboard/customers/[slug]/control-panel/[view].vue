@@ -3,6 +3,7 @@
         <DashboardControlPanelOrganizationView v-if="activeView === 'organization'" />
         <DashboardControlPanelShippingView v-else-if="activeView === 'shipping'" />
         <DashboardControlPanelTransactionHistoryView v-else-if="activeView === 'transaction-history'" />
+        <DashboardControlPanelBillingView v-else-if="activeView === 'billing'" />
     </div>
 </template>
 
