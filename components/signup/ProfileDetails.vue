@@ -143,12 +143,14 @@ const firebaseToken = useAuthStore().firebaseTempToken;
 if (firebaseToken) {
     const { getParsedFirebaseJWTToken } = useFirebaseAuth();
     const parsedToken = await getParsedFirebaseJWTToken();
+
     details.value.accountEmail.value = parsedToken.email;
     details.value.confirmAccountEmail.value = parsedToken.email;
 }
 
 const useContactEmailCheck = () => {
     details.value.useContactEmail = !details.value.useContactEmail;
+
     if (!firebaseToken) {
         if (selectedType.value === 'business' || selectedType.value === 'sole-trader') {
             details.value.accountEmail.value = details.value.useContactEmail ? contact.value.companyEmail.value : '';
