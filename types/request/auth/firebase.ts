@@ -1,3 +1,5 @@
+import { AccountAdminSettings } from '~/types/auth/account-settings';
+
 export interface FirebasePersonalAccount {
     account: PersonalAccount;
     isAlreadyRegisteredWithFirebase?: boolean;
@@ -15,6 +17,7 @@ interface BusinessAccount {
     profileDetails: ProfileDetails;
     contactDetails: ContactDetails;
     companyDetails: CompanyDetails;
+    adminSettings?: AccountAdminSettings;
 }
 
 interface PersonalAccount {
@@ -24,6 +27,7 @@ interface PersonalAccount {
     profileDetails: ProfileDetails;
     contactDetails: ContactDetails;
     personalDetails: PersonalDetails;
+    adminSettings?: AccountAdminSettings;
 }
 
 interface PersonalDetails {
