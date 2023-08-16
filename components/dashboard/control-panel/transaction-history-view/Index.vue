@@ -5,7 +5,7 @@
                 <div class="mb-9 md:flex md:items-start md:justify-between">
                     <h2 class="text-xl leading-[1.4] font-semibold">Transaction History</h2>
                     <div class="flex items-center gap-4">
-                        <DashboardSearch v-model="searchVal" placeholder="Search #ID" size="md" class="max-xl:hidden 2xl:w-[400px]" />
+                        <DashboardSearch v-model="searchVal" placeholder="Search #ID" size="md" class="mr-2 max-xl:hidden 2xl:w-[400px]" />
                         <button class="flex items-center justify-center bg-[#F2F2F2] rounded-lg px-6 py-2 text-gray-300 max-xl:hidden">
                             <FilterIcon class="w-6 h-6 mr-2" />
                             <span class="text-sm leading-[1.71] font-medium"> Filter </span>

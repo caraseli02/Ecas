@@ -8,10 +8,11 @@
                 :value="modelValue"
                 :type="type"
                 :placeholder="placeholder"
-                class="bg-transparent border rounded px-3 py-2 text-sm placeholder:text-gray-100 w-full transition-colors duration-300 focus:outline-none"
+                class="bg-transparent border px-3 text-sm placeholder:text-gray-100 w-full transition-colors duration-300 focus:outline-none"
                 :class="[
                     error ? 'border-red' : 'border-border focus:border-blue',
                     disabled ? 'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none' : '',
+                    size === 'lg' ? 'py-2.5 rounded-lg' : 'py-2 rounded',
                 ]"
                 :disabled="disabled"
                 @input="handleInput"
@@ -37,6 +38,11 @@ defineProps({
         type: String as PropType<'text' | 'number' | 'tel' | 'email'>,
         required: false,
         default: 'text',
+    },
+    size: {
+        type: String as PropType<'default' | 'lg'>,
+        required: false,
+        default: 'default',
     },
     label: String,
     placeholder: String,

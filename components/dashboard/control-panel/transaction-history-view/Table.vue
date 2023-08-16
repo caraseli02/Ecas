@@ -1,7 +1,7 @@
 <template>
     <div class="mb-6 min-h-[350px] md:mb-8">
         <div class="dashboardTable grid grid-cols-1 gap-1 rounded-t-lg overflow-x-auto scrollbar-thin">
-            <div class="grid grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(197px,1fr)] items-center rounded-t-lg">
+            <div class="grid grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(196px,1fr)] items-center rounded-t-lg">
                 <div class="flex justify-center items-center py-4 bg-[#F2F2F2] rounded-l-lg">
                     <label class="flex cursor-pointer">
                         <input :value="checkAll" type="checkbox" class="sr-only" @change="$emit('checkAll')" />

@@ -25,6 +25,7 @@
                 :error="form.companyName.error"
                 :disabled="!isEditing"
                 label="Company Name"
+                size="lg"
                 placeholder="Company Name srl"
             />
             <FormInput
@@ -32,14 +33,23 @@
                 :error="form.companyRegistrationNumber.error"
                 :disabled="!isEditing"
                 label="Company Registration Number"
+                size="lg"
                 placeholder="RO123456"
             />
-            <FormInput v-model="form.taxID.value" :error="form.taxID.error" :disabled="!isEditing" label="Tax ID" placeholder="RO123456" />
+            <FormInput
+                v-model="form.taxID.value"
+                :error="form.taxID.error"
+                :disabled="!isEditing"
+                label="Tax ID"
+                size="lg"
+                placeholder="RO123456"
+            />
             <FormInput
                 v-model="form.vatNumber.value"
                 :error="form.vatNumber.error"
                 :disabled="!isEditing"
                 label="V.A.T Number"
+                size="lg"
                 placeholder="RO123456"
             />
             <FormSelect
@@ -50,6 +60,7 @@
                 label="Country"
                 placeholder="United States"
                 search
+                size="lg"
                 class="relative z-20"
             />
             <FormSelect
@@ -60,14 +71,23 @@
                 label="County/Region"
                 placeholder="Georgia"
                 search
+                size="lg"
                 class="relative z-10"
             />
-            <FormInput v-model="form.city.value" :error="form.city.error" :disabled="!isEditing" label="City" placeholder="Georgia" />
+            <FormInput
+                v-model="form.city.value"
+                :error="form.city.error"
+                :disabled="!isEditing"
+                label="City"
+                size="lg"
+                placeholder="Georgia"
+            />
             <FormInput
                 v-model="form.addressLine1.value"
                 :error="form.addressLine1.error"
                 :disabled="!isEditing"
                 label="Address Line 1"
+                size="lg"
                 placeholder="5073 Mark Brown Rd"
             />
             <FormInput
@@ -75,6 +95,7 @@
                 :error="form.addressLine2.error"
                 :disabled="!isEditing"
                 label="Address Line 2"
+                size="lg"
                 placeholder="NE Dalton"
             />
             <FormInput
@@ -82,6 +103,7 @@
                 :error="form.postcode.error"
                 :disabled="!isEditing"
                 label="Postcode"
+                size="lg"
                 placeholder="W1A5AB"
             />
             <FormInput
@@ -89,6 +111,7 @@
                 :error="form.postcode.error"
                 :disabled="!isEditing"
                 label="Postcode"
+                size="lg"
                 placeholder="+1 (706) 275-0767"
             />
             <FormInput
@@ -96,6 +119,7 @@
                 :error="form.phoneNumber.error"
                 :disabled="!isEditing"
                 label="Phone Number"
+                size="lg"
                 placeholder="+1 (706) 275-0767"
             />
             <FormInput
@@ -105,6 +129,7 @@
                 label="Company Email"
                 placeholder="madalina.dobrovolski@company.com"
                 type="email"
+                size="lg"
                 class="md:col-span-2"
             />
         </div>

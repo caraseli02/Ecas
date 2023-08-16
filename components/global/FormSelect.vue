@@ -4,8 +4,11 @@
             {{ label }}
         </div>
         <button
-            class="flex items-center justify-between px-3 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none"
-            :class="[error ? 'border-red' : showOptions ? 'border-blue' : 'border-border']"
+            class="flex items-center justify-between px-3 text-sm w-full border transition-colors duration-300 focus:outline-none disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none"
+            :class="[
+                error ? 'border-red' : showOptions ? 'border-blue' : 'border-border',
+                size === 'lg' ? 'py-[9px] rounded-lg' : 'py-2 rounded',
+            ]"
             :disabled="disabled"
             @click="showOptions = !showOptions"
         >
@@ -132,6 +135,11 @@ const props = defineProps({
     options: {
         type: Array as PropType<FormSelectOption[]>,
         required: true,
+    },
+    size: {
+        type: String as PropType<'default' | 'lg'>,
+        required: false,
+        default: 'default',
     },
     disabled: Boolean,
     checkboxes: Boolean,

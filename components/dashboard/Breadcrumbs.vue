@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center justify-between mb-6">
         <div>
-            <div class="flex items-center overflow-x-auto scrollbar-none max-w-full mb-3">
+            <div class="flex items-center overflow-x-auto scrollbar-none max-w-[calc(100%-50px)] mb-3">
                 <NuxtLink
                     to="/dashboard"
                     class="flex items-center flex-shrink-0 text-gray-300 transition-colors duration-300 hover:text-blue"

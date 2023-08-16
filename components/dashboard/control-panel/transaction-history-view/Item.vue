@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(197px,1fr)] items-center">
+    <div class="grid grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(196px,1fr)] items-center">
         <div class="flex items-center justify-center p-4">
             <label class="flex cursor-pointer">
                 <input :value="item.checked" type="checkbox" class="sr-only" @change="$emit('check')" />
