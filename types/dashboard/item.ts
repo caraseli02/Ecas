@@ -7,6 +7,8 @@ export interface DashboardCustomerTableItem {
     registered: string;
     spent: number;
     ordersCount: number;
+    id : string;
+    firebaseId : string;
 }
 
 export interface DashboardCustomerOrderItem {

@@ -1,4 +1,3 @@
-import { AddressInterface, PersonalDetails } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { AccountRole } from '~/types';
 import { AccountAdminSettings } from '~/types/auth/account-settings';
 
@@ -19,6 +18,7 @@ export interface UserDetails {
     currentStatus?: 'online' | 'offline';
     adminSettings?: AccountAdminSettings;
     __v: number;
+    lastActivityDate : string;
 }
 
 export interface PersonalDetails {
