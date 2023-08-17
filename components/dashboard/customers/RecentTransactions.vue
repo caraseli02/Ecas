@@ -18,7 +18,7 @@
                     <div />
                 </div>
                 <div
-                    v-for="(transaction, index) in transactions"
+                    v-for="(transaction, index) in recentTransactionArray"
                     :key="index"
                     class="grid grid-cols-[repeat(2,1fr),20px] gap-4 text-sm font-medium pb-2 last:pb-0"
                     :class="[isLoading ? '' : 'px-2']"
@@ -73,31 +73,59 @@ import ArrowRightIcon from '@/assets/icons/dashboard/arrow-right.svg';
 import ArrowSquareRightIcon from '@/assets/icons/dashboard/arrow-square-right.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
-
-const transactions = ref([
-    {
-        amount: '$ 120.17',
-        status: 'success',
-    },
-    {
-        amount: '$ 89,420.17',
-        status: 'declined',
-    },
-    {
-        amount: '€ 189,420.17',
-        status: 'success',
-    },
-    {
-        amount: 'LEI 789,420.27',
-        status: 'declined',
-    },
-    {
-        amount: 'LEI 3,420.17',
-        status: 'pending',
-    },
-]);
+import { Currency, OrderInterface } from '~/types';
 
 const error = ref(false);
 const emptyData = ref(false);
-const isLoading = ref(false);
+const showOptions = ref(false);
+const isLoading = ref(true);
+const props = defineProps({
+    id: {
+        type: String,
+        required: true,
+    },
+});
+const recentTransactions = ref<OrderInterface[]>({} as OrderInterface[]);
+
+const { $api } = useNuxtApp();
+
+interface OrderInfo {
+    amount: string;
+    status: string;
+}
+
+const recentTransactionArray: OrderInfo[] = [];
+
+const fetchRecentTransactions = async () => {
+    error.value = false;
+    isLoading.value = true;
+
+    const response = (await $api.customerProfile.fetchCustomerRecentTransactions(props.id || '')) as {
+        status: string;
+        data: OrderInterface[];
+    };
+
+    if (response.status !== 'success') {
+        isLoading.value = false;
+        error.value = true;
+
+        return;
+    } else {
+        isLoading.value = false;
+    }
+
+    recentTransactions.value = response.data;
+
+    const transactionInfo = {} as OrderInfo;
+
+    recentTransactions.value.map((transaction, index) => {
+        transactionInfo.amount = `${Currency[transaction.currency as unknown as keyof typeof Currency]} ${transaction.finalPrice
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+        transactionInfo.status = `${transaction.status.replace('Payment ', '').toLocaleLowerCase()}`;
+        recentTransactionArray.push(transactionInfo);
+    });
+};
+
+await fetchRecentTransactions();
 </script>

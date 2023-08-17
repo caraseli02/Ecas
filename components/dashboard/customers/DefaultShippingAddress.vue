@@ -39,8 +39,8 @@
             <BusinessIcon class="w-11 h-11 text-[#00D395] flex-shrink-0 mr-4" />
             <SkeletonLoader v-if="isLoading" class="w-full h-16 md:h-11" />
             <div v-else>
-                <div class="text-sm font-semibold mb-1">Address Alias 1</div>
-                <div class="text-sm">5073 Mark Brown Rd, NE Dalton, Georgia (GA), 30721, United States</div>
+                <div class="text-sm font-semibold mb-1">{{ shippingInformation?.find((x) => x.default)?.name1 || 'N/A' }}</div>
+                <div class="text-sm">{{ shippingInformation?.find((x) => x.default)?.name2 || 'N/A' }}</div>
             </div>
         </div>
     </div>
@@ -53,10 +53,42 @@ import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
+import { AddressInterface, UserDetails } from '~/types/auth/user-details';
 
 const showOptions = ref(false);
 
-const isLoading = ref(false);
 const error = ref(false);
 const emptyData = ref(false);
+const isLoading = ref(true);
+
+const props = defineProps({
+    id: {
+        type: String,
+        required: true,
+    },
+});
+const shippingInformation = ref<UserDetails>({} as UserDetails);
+const { $api } = useNuxtApp();
+
+const fetchShippingInformation = async () => {
+    error.value = false;
+    isLoading.value = true;
+
+    const response = (await $api.customerProfile.fetchCustomerShippingInformation(props.id || '')) as {
+        status: string;
+        data: AddressInterface[];
+    };
+
+    if (response.status !== 'success') {
+        isLoading.value = false;
+        error.value = true;
+
+        return;
+    } else {
+        isLoading.value = false;
+    }
+
+    shippingInformation.value = response.data;
+};
+await fetchShippingInformation();
 </script>
