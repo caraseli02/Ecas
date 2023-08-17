@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded-xl px-4 py-6 shadow-xs md:px-6 md:py-9">
+    <div class="bg-white rounded-xl px-4 py-6 shadow-xs md:px-6">
         <DashboardControlPanelOrganizationView v-if="activeView === 'organization'" />
         <DashboardControlPanelShippingView v-else-if="activeView === 'shipping'" />
         <DashboardControlPanelTransactionHistoryView v-else-if="activeView === 'transaction-history'" />

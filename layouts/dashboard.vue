@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-[#f9f9f9]">
+    <div class="flex flex-col min-h-screen bg-[#f9f9f9]">
         <DashboardHeader :is-collapsed-on-desktop="isSideNavCollapsedOnDesktop" @show-side-nav="showSideNav = true" />
         <transition name="slide-from-left">
             <DashboardAside v-if="showSideNav" class="w-full md:hidden" @close="showSideNav = false" />
@@ -11,7 +11,7 @@
             @close="isSideNavCollapsedOnDesktop = !isSideNavCollapsedOnDesktop"
         />
         <main
-            class="pt-[68px] transition-all duration-300 md:pt-[76px] md:ml-[96px] md:max-w-[calc(100vw-96px)]"
+            class="pt-[68px] flex-1 transition-all duration-300 flex flex-col justify-center md:pt-[76px] md:ml-[96px] md:max-w-[calc(100vw-96px)]"
             :class="[isSideNavCollapsedOnDesktop ? '' : '2xl:ml-[280px] 2xl:max-w-[calc(100vw-280px)]']"
         >
             <slot />
