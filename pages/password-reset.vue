@@ -2,7 +2,7 @@
     <div class="py-20 md:py-[120px] lg:py-[150px] xl:pb-[276px]">
         <div class="container max-w-[406px]">
             <h1 class="text-xl leading-[1.4] font-semibold text-center mb-10">Password Reset</h1>
-            <form @submit="handleSubmit" class="grid grid-cols-1 gap-6">
+            <form @submit.prevent="handleSubmit" class="grid grid-cols-1 gap-6">
                 <FormInput
                     v-model="form.email.value"
                     :error="form.email.error"

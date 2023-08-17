@@ -1,0 +1,40 @@
+<template>
+    <div class="py-20 md:py-[120px] lg:py-[150px] xl:pt-[200px] xl:pb-[354px]">
+        <div class="container max-w-[406px]">
+            <h1 class="text-xl leading-[1.4] font-semibold text-center mb-6">Forgot your password?</h1>
+            <p class="text-sm leading-[1.71] text-center mb-10">
+                Enter your email address and we will share a link to create a new password.
+            </p>
+            <form @submit.prevent="handleSubmit" class="grid grid-cols-1 gap-6">
+                <FormInput
+                    v-model="form.email.value"
+                    :error="form.email.error"
+                    type="email"
+                    label="Email Address"
+                    placeholder="Enter Your Email Address"
+                />
+                <button
+                    class="flex items-center justify-center p-2 rounded-lg bg-blue leading-[1.67] h-12 text-white font-medium"
+                    @click="handleSubmit"
+                >
+                    Reset Password
+                </button>
+            </form>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+const form = ref({
+    email: {
+        value: '',
+        error: '',
+    },
+});
+
+const handleSubmit = async () => {};
+
+useHead({
+    title: 'Forgot Password',
+});
+</script>
