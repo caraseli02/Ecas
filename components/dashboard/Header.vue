@@ -21,7 +21,7 @@
                 <div class="relative flex items-center">
                     <div class="mr-6 max-md:relative md:mr-10">
                         <div class="relative">
-                            <button class="flex" @click="showNotifications = true">
+                            <button class="flex" @click="showNotifications = true; fetchNofications()">
                                 <BellIcon class="w-6 h-6 text-gray-300" />
                             </button>
                             <div
@@ -264,6 +264,7 @@ import SignOutIcon from '@/assets/icons/dashboard/sign-out.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
 import { DashboardNotification } from '@/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
+import { Notifications } from '~/types/dashboard/notification';
 
 defineProps({
     isCollapsedOnDesktop: {
@@ -277,68 +278,95 @@ defineEmits(['show-side-nav']);
 const showMobileSearch = ref(false);
 const searchValue = ref('');
 
-const notifications = ref<DashboardNotification[]>([
-    {
-        type: 'others',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: true,
-    },
-    {
-        type: 'new',
-        message: 'Notification content goes here. More content goes here.',
-        date: '15 m',
-        read: false,
-    },
-    {
-        type: 'removed',
-        message: 'Notification content goes here. More content goes here.',
-        date: '2 d',
-        read: true,
-    },
-    {
-        type: 'completed',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-    {
-        type: 'pending',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: true,
-    },
-    {
-        type: 'processing',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-    {
-        type: 'removed',
-        message: 'Notification content goes here. More content goes here.',
-        date: '2 d',
-        read: false,
-    },
-    {
-        type: 'completed',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-    {
-        type: 'pending',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-    {
-        type: 'processing',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-]);
+// const notifications = ref<DashboardNotification[]>([
+//     {
+//         type: 'others',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '16 h',
+//         read: true,
+//     },
+//     {
+//         type: 'new',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '15 m',
+//         read: false,
+//     },
+//     {
+//         type: 'removed',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '2 d',
+//         read: true,
+//     },
+//     {
+//         type: 'completed',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '16 h',
+//         read: false,
+//     },
+//     {
+//         type: 'pending',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '16 h',
+//         read: true,
+//     },
+//     {
+//         type: 'processing',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '16 h',
+//         read: false,
+//     },
+//     {
+//         type: 'removed',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '2 d',
+//         read: false,
+//     },
+//     {
+//         type: 'completed',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '16 h',
+//         read: false,
+//     },
+//     {
+//         type: 'pending',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '16 h',
+//         read: false,
+//     },
+//     {
+//         type: 'processing',
+//         message: 'Notification content goes here. More content goes here.',
+//         date: '16 h',
+//         read: false,
+//     },
+// ]);
+
+const notifications = ref<Notifications>({} as Notifications);
+const { $api } = useNuxtApp();
+const error = ref(false);
+const emptyData = ref(false);
+const isLoading = ref(false);
+
+
+const fetchNofications = async () => {
+    error.value = false;
+    isLoading.value = true;
+
+    const response = (await $api.notifications.fetchGetNotifications());
+    console.log(response.value)
+    if (response.status !== 'success') {
+        isLoading.value = false;
+        error.value = true;
+
+        return;
+    } else {
+        isLoading.value = false;
+    }
+
+    notifications.value = response.data;
+    console.log(notifications.value);
+};
+
 
 const showOptions = ref(false);
 const showNotifications = ref(false);
