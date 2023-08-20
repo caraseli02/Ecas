@@ -121,7 +121,7 @@
                 }">
                 <button
                     class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="showOptions = false">
+                    @click="showOptions = false, $router.push(`/dashboard/customers/${item.firebaseId}`)">
                     <ProfileIcon class="w-6 h-6 mr-3 text-current" />
                     <span class="text-sm leading-[1.71] font-medium">Profile</span>
                 </button>
