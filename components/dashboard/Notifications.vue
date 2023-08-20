@@ -135,7 +135,6 @@ import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
 import { DashboardNotification } from '@/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import { Notifications } from '~/types/dashboard/notification';
 
 defineProps({
     notifications: {
@@ -148,30 +147,6 @@ defineProps({
         default: false,
     },
 });
-
-const notifications = ref<Notifications>({} as Notifications);
-const { $api } = useNuxtApp();
-
-const fetchInformation = async () => {
-    error.value = false;
-    isLoading.value = true;
-
-    const response = (await $api.customerProfile.fetchCustomerInformation(props.id || '')) as { status: string; data: UserDetails };
-
-    if (response.status !== 'success') {
-        isLoading.value = false;
-        error.value = true;
-
-        return;
-    } else {
-        isLoading.value = false;
-    }
-
-    customerInformation.value = response.data;
-};
-
-
-
 
 
 defineEmits(['close', 'remove']);

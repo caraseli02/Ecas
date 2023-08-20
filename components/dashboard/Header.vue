@@ -353,7 +353,6 @@ const fetchNofications = async () => {
     isLoading.value = true;
 
     const response = (await $api.notifications.fetchGetNotifications());
-    console.log(response.value)
     if (response.status !== 'success') {
         isLoading.value = false;
         error.value = true;
@@ -363,7 +362,7 @@ const fetchNofications = async () => {
         isLoading.value = false;
     }
 
-    notifications.value = response.data;
+    notifications.value = response.description;
     console.log(notifications.value);
 };
 

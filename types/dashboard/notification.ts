@@ -8,15 +8,14 @@ export interface DashboardNotification {
 export interface Notifications extends Array<Notification>{}
 
 export interface Notification  {
-    _id? : string;
-    type : string;
-    seenBy : Array<string>;
-    details : NotificationDetails;
-    createdAt : string;
-    updatedAt : string;
+    id: string;
+    title: string;
+    description: string;
+    seen: boolean;
+    details: NotificationDetailsInterface;
 }
 
-export interface NotificationDetails {
+export interface NotificationDetailsInterface {
     entityId? : string,
     entityName? : string,
     _id? : string
