@@ -13,10 +13,22 @@ export interface Notification  {
     description: string;
     seen: boolean;
     details: NotificationDetailsInterface;
+    date : string;
 }
 
 export interface NotificationDetailsInterface {
     entityId? : string,
     entityName? : string,
     _id? : string
+}
+
+
+export enum NotificationsType { 
+    PasswordChange =  "Password change",
+    PasswordReset = "Reset password",
+    News = "News",
+    Other = "Others",
+    Removed = "Removed",
+    Complete = "Completed",
+    Pending = "Pending",
 }

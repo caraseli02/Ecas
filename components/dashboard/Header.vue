@@ -89,30 +89,31 @@
                                                 <NotificationIcon
                                                     class="w-5 h-5 mr-2"
                                                     :class="[
-                                                        notificaton.type === 'others'
+                                                        (notificaton.title) === 'Others'
                                                             ? 'text-gray-300'
-                                                            : notificaton.type === 'new'
+                                                            : ( (notificaton.title) === 'Password change' || 
+                                                             (notificaton.title) === 'Reset password' )
                                                             ? 'text-blue'
-                                                            : notificaton.type === 'removed'
+                                                            : (notificaton.title) === 'Removed'
                                                             ? 'text-[#FA4B4B]'
-                                                            : notificaton.type === 'completed'
+                                                            : (notificaton.title) === 'Completed'
                                                             ? 'text-[#00D395]'
-                                                            : notificaton.type === 'pending'
+                                                            : (notificaton.title) === 'Pending'
                                                             ? 'text-[#FFB100]'
                                                             : 'text-[#A460BC]',
                                                     ]"
                                                 />
                                                 <span
-                                                    v-if="!notificaton.read"
+                                                    v-if="!notificaton.seen"
                                                     class="flex w-2 h-2 flex-shrink-0 bg-blue rounded-full mr-2"
                                                 />
                                                 <span class="capitalize text-sm leading-[1.43] font-medium">
-                                                    {{ notificaton.type }}
+                                                    {{ notificaton.title }}
                                                 </span>
                                             </div>
                                             <div class="flex items-center">
                                                 <span class="text-xs leading-[1.67] text-gray-300 mr-4">
-                                                    {{ notificaton.date }}
+                                                    {{ getCurrentDate(notificaton.date) }}
                                                 </span>
                                                 <button
                                                     class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
@@ -124,7 +125,7 @@
                                         </div>
                                         <div class="flex items-center justify-between">
                                             <div class="text-sm leading-[1.43] text-gray-300 mr-1">
-                                                {{ notificaton.message }}
+                                                {{ notificaton.description }}
                                             </div>
                                             <svg
                                                 width="18"
@@ -264,7 +265,10 @@ import SignOutIcon from '@/assets/icons/dashboard/sign-out.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
 import { DashboardNotification } from '@/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import { Notifications } from '~/types/dashboard/notification';
+import { Notifications , NotificationsType } from '~/types/dashboard/notification';
+import { getDate } from 'date-fns';
+import moment from 'moment';
+
 
 defineProps({
     isCollapsedOnDesktop: {
@@ -341,7 +345,7 @@ const searchValue = ref('');
 //     },
 // ]);
 
-const notifications = ref<Notifications>({} as Notifications);
+const notifications = ref<Notifications>([] as Notifications);
 const { $api } = useNuxtApp();
 const error = ref(false);
 const emptyData = ref(false);
@@ -363,7 +367,6 @@ const fetchNofications = async () => {
     }
 
     notifications.value = response.description;
-    console.log(notifications.value);
 };
 
 
@@ -373,6 +376,17 @@ const showNotifications = ref(false);
 const removeNotification = (index: number) => {
     notifications.value.splice(index, 1);
 };
+
+const getCurrentDate = (date: string) => {
+    const currentDate = moment();
+    const receivedDate = moment(date);
+    return (currentDate.diff(receivedDate , "hours") < 24 ? currentDate.diff(receivedDate , "hours")  + "h" : currentDate.diff(receivedDate , "days") + "d")
+};
+const getNotificationType = (type : string) => {
+    const notification =  NotificationsType[type as unknown as keyof typeof NotificationsType];
+    console.log(notification)
+    return notification;
+}
 </script>
 
 <style lang="scss">
