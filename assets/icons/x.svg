@@ -1,4 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-  <path fill="currentColor"
-    d="m13.972 12 6.425-6.448a1.378 1.378 0 0 0-1.949-1.948L12 10.029 5.552 3.604a1.378 1.378 0 0 0-1.948 1.948L10.029 12l-6.425 6.448a1.378 1.378 0 0 0 1.948 1.949L12 13.972l6.448 6.425a1.378 1.378 0 0 0 1.949-1.949L13.972 12Z" />
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="vuesax/linear/add">
+    <g id="add">
+      <g id="Group 33824">
+        <path id="Vector" d="M5 5L18.9991 18.9991" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path id="Vector_2" d="M5.00094 18.9991L19 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </g>
+    </g>
+  </g>
 </svg>

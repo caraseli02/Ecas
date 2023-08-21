@@ -11,15 +11,23 @@
             @close="isSideNavCollapsedOnDesktop = !isSideNavCollapsedOnDesktop"
         />
         <main
-            class="pt-[68px] flex-1 transition-all duration-300 flex flex-col justify-center md:pt-[76px] md:ml-[96px] md:max-w-[calc(100vw-96px)]"
+            class="pt-[68px] flex-1 transition-all duration-300 flex flex-col justify-between md:pt-[76px] md:ml-[96px] md:max-w-[calc(100vw-96px)]"
             :class="[isSideNavCollapsedOnDesktop ? '' : '2xl:ml-[280px] 2xl:max-w-[calc(100vw-280px)]']"
         >
             <slot />
+            <div class="flex justify-center text-center text-xs leading-normal text-gray-300 mt-2 mb-6 md:mt-0">
+                Made with <HeartIcon class="w-[18px] h-[18px] mx-1 mt-px" /> by
+                <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 transition-colors duration-300 hover:text-blue">
+                    Nezo Digital
+                </a>
+            </div>
         </main>
     </div>
 </template>
 
 <script setup lang="ts">
+import HeartIcon from '@/assets/icons/dashboard/heart.svg';
+
 const isSideNavCollapsedOnDesktop = ref(true);
 const showSideNav = ref(false);
 </script>

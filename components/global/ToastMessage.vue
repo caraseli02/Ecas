@@ -94,19 +94,10 @@
                 </div>
             </div>
             <button
-                class="rounded w-6 h-6 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 lg:w-8 lg:h-8"
+                class="rounded-md w-6 h-6 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 lg:w-8 lg:h-8 lg:rounded-lg"
                 @click="$emit('close')"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4 lg:w-6 lg:h-6">
-                    <g id="vuesax/linear/add">
-                        <g id="add">
-                            <g id="Group 33824" stroke="#BDBDBD" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-                                <path id="Vector" d="m5 5 14 14" />
-                                <path id="Vector_2" d="M5 19 19 5" />
-                            </g>
-                        </g>
-                    </g>
-                </svg>
+                <XIcon class="w-4 h-4 lg:w-6 lg:h-6" />
             </button>
         </div>
     </div>
@@ -114,11 +105,7 @@
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import XIcon from '@/assets/icons/x.svg';
-import InfoIcon from '@/assets/icons/info-circle.svg';
-import WarningIcon from '@/assets/icons/triangle.svg';
-import SuccessIcon from '@/assets/icons/check-circle.svg';
-import ErrorIcon from '@/assets/icons/error.svg';
+import XIcon from '@/assets/icons/dashboard/x.svg';
 
 defineProps({
     type: {

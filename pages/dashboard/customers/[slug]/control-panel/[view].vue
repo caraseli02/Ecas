@@ -1,10 +1,12 @@
 <template>
-    <div class="bg-white rounded-xl px-4 py-6 shadow-xs md:px-6">
-        <DashboardControlPanelOrganizationView v-if="activeView === 'organization'" />
-        <DashboardControlPanelShippingView v-else-if="activeView === 'shipping'" />
-        <DashboardControlPanelTransactionHistoryView v-else-if="activeView === 'transaction-history'" />
-        <DashboardControlPanelBillingView v-else-if="activeView === 'billing'" />
-        <DashboardControlPanelSettingsView v-else-if="activeView === 'settings'" />
+    <div>
+        <div v-if="activeView !== 'settings'" class="bg-white rounded-xl px-4 py-6 shadow-xs md:px-6">
+            <DashboardControlPanelOrganizationView v-if="activeView === 'organization'" />
+            <DashboardControlPanelShippingView v-else-if="activeView === 'shipping'" />
+            <DashboardControlPanelTransactionHistoryView v-else-if="activeView === 'transaction-history'" />
+            <DashboardControlPanelBillingView v-else-if="activeView === 'billing'" />
+        </div>
+        <DashboardControlPanelSettingsView v-if="activeView === 'settings'" />
     </div>
 </template>
 

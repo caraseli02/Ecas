@@ -4,7 +4,7 @@
             <div class="flex flex-wrap gap-y-2 items-center mb-3">
                 <NuxtLink
                     to="/dashboard"
-                    class="flex items-center flex-shrink-0 text-gray-300 transition-colors duration-300 hover:text-blue"
+                    class="flex items-center flex-shrink-0 font-medium text-gray-300 transition-colors duration-300 hover:text-blue"
                 >
                     <HomeIcon class="w-[18px] h-[18px] mr-2" />
                     <span class="text-xs leading-[1.33]">Home</span>
