@@ -81,7 +81,7 @@
                                     <NuxtLink
                                         v-for="(notificaton, index) in notifications"
                                         :key="index"
-                                        to="/"
+                                        event="" @click.native="MarkNotificationAsRead(notificaton)"
                                         class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
                                     >
                                         <div class="flex items-center justify-between w-full mb-2">
@@ -91,7 +91,7 @@
                                                     :class="[
                                                         (notificaton.title) === 'Others'
                                                             ? 'text-gray-300'
-                                                            : ( (notificaton.title) === 'Password change' || 
+                                                            : ((notificaton.title) === 'Password change' || 
                                                              (notificaton.title) === 'Reset password' )
                                                             ? 'text-blue'
                                                             : (notificaton.title) === 'Removed'
@@ -117,7 +117,7 @@
                                                 </span>
                                                 <button
                                                     class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-                                                    @click.prevent="removeNotification(index)"
+                                                    @click.prevent="removeNotification(index), DeleteNotification(notificaton)"
                                                 >
                                                     <XIcon class="w-4 h-4" />
                                                 </button>
@@ -265,7 +265,7 @@ import SignOutIcon from '@/assets/icons/dashboard/sign-out.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
 import { DashboardNotification } from '@/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import { Notifications , NotificationsType } from '~/types/dashboard/notification';
+import { Notifications , NotificationsType , Notification } from '~/types/dashboard/notification';
 import { getDate } from 'date-fns';
 import moment from 'moment';
 
@@ -387,6 +387,32 @@ const getNotificationType = (type : string) => {
     console.log(notification)
     return notification;
 }
+
+const MarkNotificationAsRead =  async(notification : Notification ) => {
+    
+    const response = (await $api.notifications.fetchMarkNotificationAsRead(notification.id));
+    if (response.status == 'success') {
+        console.log("Notification " + notification.id + " marked as seen");
+        fetchNofications()
+    } else {
+        console.log(notification.id);
+        console.log("Notification " + notification.id + "couldn't be marked as seen");
+    }
+}
+
+const DeleteNotification =  async(notification : Notification ) => {
+    
+    const response = (await $api.notifications.fetchDeleteNotification(notification.id));
+    if (response.status == 'success') {
+        console.log("Notification " + notification.id + " was deleted");
+        fetchNofications()
+    } else {
+        console.log(notification.id);
+        console.log("Notification " + notification.id + "couldn't be deleted");
+    }
+}
+
+
 </script>
 
 <style lang="scss">
