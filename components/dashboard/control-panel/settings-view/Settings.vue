@@ -65,7 +65,7 @@
                         size="lg"
                         class="max-md:mb-4"
                     />
-                    <button class="flex items-center justify-center w-full bg-blue rounded-lg px-5 py-2.5 text-white">
+                    <button class="flex items-center justify-center w-full bg-blue rounded-lg px-6 py-2.5 text-white">
                         <SecurityUserIcon class="w-6 h-6 mr-2" />
                         <span class="text-sm leading-[1.71] font-medium"> Send Password Reset </span>
                     </button>

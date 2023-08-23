@@ -19,6 +19,7 @@
                     'font-semibold text-gray-300': checkboxes,
                 }"
             >
+                <component :is="icon" v-if="icon" class="w-6 h-6 text-gray-300 mr-2" />
                 <img
                     v-if="modelValue?.icon && typeof modelValue.icon === 'string'"
                     :src="modelValue.icon"

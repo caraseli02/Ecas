@@ -5,7 +5,10 @@
         <div class="mb-4">
             <div class="flex items-start justify-between">
                 <h2 class="text-xl leading-[1.4] font-semibold">Customer Credit</h2>
-                <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
+                <button
+                    class="flex items-center justify-center rounded-lg w-8 h-8 text-gray-300 transition-colors duration-300 hover:text-blue"
+                    @click="$emit('toggle-editing')"
+                >
                     <EditIcon class="w-6 h-6" />
                 </button>
             </div>
@@ -84,6 +87,8 @@
 
 <script setup lang="ts">
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
+
+defineEmits(['toggle-editing']);
 
 const credit = ref(2438.77);
 
