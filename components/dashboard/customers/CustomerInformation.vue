@@ -70,7 +70,7 @@
                     <SkeletonLoader v-if="isLoading" class="w-[180px] h-5" />
                     <div v-else class="flex items-center text-sm md:order-2 md:mb-2">
                         <span class="text-gray-300 mr-2">Last Active:</span>
-                        <span class="font-medium">{{ customerInformation.lastActivityDate }}</span>
+                        <span class="font-medium">{{ customerInformation.lastActivityDate || "-"}}</span>
                     </div>
                 </div>
             </div>
