@@ -22,7 +22,7 @@ class NotificationsService extends HttpFactory {
         });
     }
 
-    async fetchDeleteNotification(id : string) {
+    async deleteNotificationById(id : string) {
         const authStore = useAuthStore();
         const token = authStore.getToken;
         return await this.call<any>('DELETE', `${this.MAIN_RESOURCE}/${id}`, null, {

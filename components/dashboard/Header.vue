@@ -79,9 +79,10 @@
                                 </div>
                                 <div class="flex-1 overflow-y-auto notifications-scroll">
                                     <NuxtLink
-                                        v-for="(notificaton, index) in notifications"
+                                        v-for="(notification, index) in notifications"
                                         :key="index"
-                                        event="" @click.native="MarkNotificationAsRead(notificaton)"
+                                        to="/dashboard" 
+                                        event="" @click.prevent="markNotificationAsRead(notification, index)"
                                         class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
                                     >
                                         <div class="flex items-center justify-between w-full mb-2">
@@ -89,35 +90,35 @@
                                                 <NotificationIcon
                                                     class="w-5 h-5 mr-2"
                                                     :class="[
-                                                        (notificaton.title) === 'Others'
+                                                        (notification.title) === 'Others'
                                                             ? 'text-gray-300'
-                                                            : ((notificaton.title) === 'Password change' || 
-                                                             (notificaton.title) === 'Reset password' )
+                                                            : ((notification.title) === 'Password change' || 
+                                                             (notification.title) === 'Reset password' )
                                                             ? 'text-blue'
-                                                            : (notificaton.title) === 'Removed'
+                                                            : (notification.title) === 'Removed'
                                                             ? 'text-[#FA4B4B]'
-                                                            : (notificaton.title) === 'Completed'
+                                                            : (notification.title) === 'Completed'
                                                             ? 'text-[#00D395]'
-                                                            : (notificaton.title) === 'Pending'
+                                                            : (notification.title) === 'Pending'
                                                             ? 'text-[#FFB100]'
                                                             : 'text-[#A460BC]',
                                                     ]"
                                                 />
                                                 <span
-                                                    v-if="!notificaton.seen"
+                                                    v-if="!notification.seen"
                                                     class="flex w-2 h-2 flex-shrink-0 bg-blue rounded-full mr-2"
                                                 />
                                                 <span class="capitalize text-sm leading-[1.43] font-medium">
-                                                    {{ notificaton.title }}
+                                                    {{ notification.title }}
                                                 </span>
                                             </div>
                                             <div class="flex items-center">
                                                 <span class="text-xs leading-[1.67] text-gray-300 mr-4">
-                                                    {{ getCurrentDate(notificaton.date) }}
+                                                    {{ getCurrentDate(notification.date) }}
                                                 </span>
                                                 <button
                                                     class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-                                                    @click.prevent="removeNotification(index), DeleteNotification(notificaton)"
+                                                    @click.stop.prevent="deleteNotification(notification, index)"
                                                 >
                                                     <XIcon class="w-4 h-4" />
                                                 </button>
@@ -125,7 +126,7 @@
                                         </div>
                                         <div class="flex items-center justify-between">
                                             <div class="text-sm leading-[1.43] text-gray-300 mr-1">
-                                                {{ notificaton.description }}
+                                                {{ notification.description }}
                                             </div>
                                             <svg
                                                 width="18"
@@ -281,75 +282,13 @@ defineEmits(['show-side-nav']);
 
 const showMobileSearch = ref(false);
 const searchValue = ref('');
-
-// const notifications = ref<DashboardNotification[]>([
-//     {
-//         type: 'others',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '16 h',
-//         read: true,
-//     },
-//     {
-//         type: 'new',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '15 m',
-//         read: false,
-//     },
-//     {
-//         type: 'removed',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '2 d',
-//         read: true,
-//     },
-//     {
-//         type: 'completed',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '16 h',
-//         read: false,
-//     },
-//     {
-//         type: 'pending',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '16 h',
-//         read: true,
-//     },
-//     {
-//         type: 'processing',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '16 h',
-//         read: false,
-//     },
-//     {
-//         type: 'removed',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '2 d',
-//         read: false,
-//     },
-//     {
-//         type: 'completed',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '16 h',
-//         read: false,
-//     },
-//     {
-//         type: 'pending',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '16 h',
-//         read: false,
-//     },
-//     {
-//         type: 'processing',
-//         message: 'Notification content goes here. More content goes here.',
-//         date: '16 h',
-//         read: false,
-//     },
-// ]);
-
-const notifications = ref<Notifications>([] as Notifications);
+const notifications = ref<Notifications[]>([] as Notifications[]);
 const { $api } = useNuxtApp();
 const error = ref(false);
 const emptyData = ref(false);
 const isLoading = ref(false);
+const showOptions = ref(false);
+const showNotifications = ref(false);
 
 
 const fetchNofications = async () => {
@@ -369,14 +308,6 @@ const fetchNofications = async () => {
     notifications.value = response.description;
 };
 
-
-const showOptions = ref(false);
-const showNotifications = ref(false);
-
-const removeNotification = (index: number) => {
-    notifications.value.splice(index, 1);
-};
-
 const getCurrentDate = (date: string) => {
     const currentDate = moment();
     const receivedDate = moment(date);
@@ -388,28 +319,19 @@ const getNotificationType = (type : string) => {
     return notification;
 }
 
-const MarkNotificationAsRead =  async(notification : Notification ) => {
-    
+const markNotificationAsRead =  async(notification : Notification , index : number ) => {
     const response = (await $api.notifications.fetchMarkNotificationAsRead(notification.id));
-    if (response.status == 'success') {
-        console.log("Notification " + notification.id + " marked as seen");
-        fetchNofications()
-    } else {
-        console.log(notification.id);
-        console.log("Notification " + notification.id + "couldn't be marked as seen");
-    }
+    if (response.status !== 'success') {
+        return ;
+    } 
+    notifications.value[index].seen =  true;
 }
-
-const DeleteNotification =  async(notification : Notification ) => {
-    
-    const response = (await $api.notifications.fetchDeleteNotification(notification.id));
-    if (response.status == 'success') {
-        console.log("Notification " + notification.id + " was deleted");
-        fetchNofications()
-    } else {
-        console.log(notification.id);
-        console.log("Notification " + notification.id + "couldn't be deleted");
+const deleteNotification =  async(notification : Notification , index : number) => {  
+    const response = (await $api.notifications.deleteNotificationById(notification.id));
+    if (response.status !== 'success') {
+       return ;
     }
+    notifications.value.splice(index, 1); 
 }
 
 

@@ -72,7 +72,7 @@ export interface MarketingPreferences {
 }
 
 export interface EmailMarketing  {
-    app? : true | false,
-    email? : string | false,
-    _id? : string | false,
+    app? : boolean,
+    email : string,
+    _id? : string,
 }
