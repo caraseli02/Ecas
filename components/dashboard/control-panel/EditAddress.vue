@@ -37,6 +37,7 @@
                         :error="data.region.error"
                         :options="regions"
                         :disabled="regions.length === 0"
+                        :showDisabledStyles="false"
                         search
                         label="County/Region"
                         placeholder="Georgia"
