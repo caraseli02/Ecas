@@ -44,7 +44,7 @@
                 v-for="(notificaton, index) in notifications"
                 :key="index"
                 to="/"
-                class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
+                class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]  cursor: 'pointer'"
             >
                 <div class="flex items-center justify-between w-full mb-2">
                     <div class="flex items-center">
@@ -147,6 +147,7 @@ defineProps({
         default: false,
     },
 });
+
 
 defineEmits(['close', 'remove']);
 </script>

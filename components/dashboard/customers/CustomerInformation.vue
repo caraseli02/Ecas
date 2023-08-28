@@ -135,7 +135,7 @@
                             <div class="w-2 h-2 rounded-full bg-blue mr-2" />
                             <span class="text-sm font-medium leading-tight text-gray-300">Email Marketing</span>
                         </div>
-                        <div class="text-sm font-medium leading-tight pl-4">Subscribed / N/A?</div>
+                        <div class="text-sm font-medium leading-tight pl-4">{{ customerInformation.adminSettings?.marketingPreferences?.emailMarketing?.email ? "Subscribed" : "Not Subscribed"}}</div>
                     </div>
                 </div>
             </div>
