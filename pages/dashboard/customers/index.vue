@@ -15,17 +15,10 @@
             <DashboardNewCustomers class="md:row-start-2 md:row-span-2 md:col-start-2 xl:col-start-3 xl:row-start-1 xl:row-span-2" />
             <DashboardCustomersList class="md:col-span-2 xl:col-span-3" />
         </div>
-        <div class="flex justify-center text-center text-xs leading-normal text-gray-300 mt-6">
-            Made with <HeartIcon class="w-[18px] h-[18px] mx-1 mt-px" /> by
-            <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 transition-colors duration-300 hover:text-blue">
-                Nezo Digital
-            </a>
-        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import HeartIcon from '@/assets/icons/dashboard/heart.svg';
 import DownloadIcon from '@/assets/icons/dashboard/download.svg';
 
 useHead({

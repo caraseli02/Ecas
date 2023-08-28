@@ -1,0 +1,51 @@
+<template>
+    <div class="flex flex-col bg-white rounded-xl p-4 shadow-xs md:p-6 xl:pt-10 xl:shadow-none xl:rounded-none">
+        <div class="mb-4">
+            <div class="flex items-start justify-between">
+                <h2 class="text-xl leading-[1.4] font-semibold">Customer Discount</h2>
+                <button class="flex text-white bg-blue text-xs leading-[1.66] font-semibold rounded-full px-2">10 %</button>
+            </div>
+        </div>
+        <p class="text-sm leading-[1.71] mb-9">Apply a customer discount (i.e. 5, 10, 17 etc).</p>
+        <div class="mb-9">
+            <div class="text-sm text-gray-300 mb-1">Customer Discount</div>
+            <div class="flex border border-border rounded-lg h-11 overflow-hidden">
+                <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">%</div>
+                <input
+                    v-model="customerDiscountBuffer"
+                    type="number"
+                    placeholder="Discount (i.e. 5, 10, 17)"
+                    class="bg-transparent px-2 text-sm w-full transition-colors duration-300 focus:outline-none"
+                />
+            </div>
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-[auto,1fr] lg:grid-cols-1 lg:mt-auto">
+            <button
+                v-if="customerDiscount"
+                class="flex items-center justify-center w-full border-[1.5px] border-[#FA4B4B] rounded-lg px-5 py-2 text-[#FA4B4B] h-11"
+                @click="
+                    customerDiscount = null;
+                    customerDiscountBuffer = null;
+                "
+            >
+                <TrashIcon class="w-6 h-6 mr-2" />
+                <span class="leading-[1.71] font-medium"> Cancel Discount </span>
+            </button>
+            <button
+                class="flex items-center justify-center w-full bg-blue rounded-lg px-5 py-2 text-white h-11"
+                @click="customerDiscount = customerDiscountBuffer"
+            >
+                <PercentageIcon class="w-6 h-6 mr-2" />
+                <span class="leading-[1.71] font-medium"> {{ customerDiscount ? 'Update' : 'Apply' }} Discount </span>
+            </button>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+import TrashIcon from '@/assets/icons/dashboard/trash.svg';
+import PercentageIcon from '@/assets/icons/dashboard/percentage.svg';
+
+const customerDiscountBuffer = ref<number | null>(10);
+const customerDiscount = ref<number | null>(10);
+</script>
