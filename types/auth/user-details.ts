@@ -17,6 +17,7 @@ export interface UserDetails {
     updatedAt: string;
     currentStatus?: 'online' | 'offline';
     adminSettings?: AccountAdminSettings;
+    marketingPreferences?: MarketingPreferences;
     __v: number;
     lastActivityDate : string;
 }
@@ -62,4 +63,17 @@ export interface AddressInterface {
     name1: string;
     name2?: string;
     default: boolean;
+}
+
+export interface MarketingPreferences {
+    cookiesPolicy? : object,
+    newsletter? : object,
+    emailMarketing? : EmailMarketing,
+    _id? : string
+}
+
+export interface EmailMarketing  {
+    app? : boolean,
+    email : string,
+    _id? : string,
 }
