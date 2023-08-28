@@ -59,6 +59,7 @@ interface CompanyDetails {
 }
 
 export interface AddressInterface {
+    alias: string;
     name1: string;
     name2?: string;
     default: boolean;

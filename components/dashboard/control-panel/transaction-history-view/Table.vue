@@ -1,9 +1,21 @@
 <template>
     <div class="mb-6 min-h-[350px] md:mb-8">
         <div class="dashboardTable grid grid-cols-1 gap-1 rounded-t-lg overflow-x-auto scrollbar-thin">
-            <div class="grid grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(197px,1fr)] items-center rounded-t-lg">
+            <div class="grid grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(196px,1fr)] items-center rounded-t-lg">
                 <div class="flex justify-center items-center py-4 bg-[#F2F2F2] rounded-l-lg">
-                    <span class="text-sm font-medium leading-[1.43]"> CH </span>
+                    <label class="flex cursor-pointer">
+                        <input :value="checkAll" type="checkbox" class="sr-only" @change="$emit('checkAll')" />
+                        <div
+                            class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
+                            :class="[
+                                checkAll
+                                    ? 'bg-blue border-blue group-hover:bg-white'
+                                    : 'bg-white  border-border group-hover:border-gray-300',
+                            ]"
+                        >
+                            <CheckIcon v-if="checkAll" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
+                        </div>
+                    </label>
                 </div>
                 <div class="px-2 py-4 bg-[#F2F2F2]">
                     <button
@@ -93,6 +105,7 @@
                 :item="item"
                 :index="index"
                 :loading="loading"
+                @check="$emit('check', item.id)"
             />
         </div>
     </div>
@@ -100,17 +113,11 @@
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import Slider from '@vueform/slider';
-import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
-import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
-import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import { DashboardCustomerOrderItem } from '~~/types';
-import XIcon from '@/assets/icons/dashboard/x.svg';
 import SortUpIcon from '@/assets/icons/dashboard/sort-up.svg';
 import SortDownIcon from '@/assets/icons/dashboard/sort-down.svg';
-import { DatePicker } from 'v-calendar';
-import { FilterInterface } from '~/model/dashboard/table/filters';
-import { handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
+import { handleSortChange } from '~/services/dashboard/filter.service';
+import CheckIcon from '@/assets/icons/check.svg';
 
 defineProps({
     items: {
@@ -121,21 +128,18 @@ defineProps({
         type: Boolean,
         default: true,
     },
+    checkAll: {
+        type: Boolean,
+        default: false,
+    },
 });
 
-const emits = defineEmits(['active-filters', 'active-sort']);
+const emits = defineEmits(['active-filters', 'active-sort', 'check', 'checkAll']);
 
-const activeFilters: FilterInterface[] = [];
-
-const idOrder: number = ref(0);
-const invoiceIdOrder: number = ref(0);
-const amountOrder: number = ref(0);
-const typeOrder: number = ref(0);
-const dateOrder: number = ref(0);
-const statusOrder: number = ref(0);
-
-const formattedDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('en-GB');
-};
+const idOrder = ref(0);
+const invoiceIdOrder = ref(0);
+const amountOrder = ref(0);
+const typeOrder = ref(0);
+const dateOrder = ref(0);
+const statusOrder = ref(0);
 </script>
-import { DashboardControlPanelTransactionHistoryViewTable } from '~/.nuxt/components';

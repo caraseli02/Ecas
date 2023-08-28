@@ -5,14 +5,15 @@
                 {{ label }}
             </div>
             <div
-                class="relative border rounded w-full transition-colors duration-300"
-                :class="[error ? 'border-red' : 'border-border focus-within:border-blue']"
+                class="relative border w-full transition-colors duration-300"
+                :class="[error ? 'border-red' : 'border-border focus-within:border-blue', size === 'lg' ? 'rounded-lg' : 'rounded']"
             >
                 <input
                     :value="modelValue"
                     :type="showPassword ? 'text' : 'password'"
                     :placeholder="placeholder"
-                    class="bg-transparent pl-3 pr-10 py-2 text-sm placeholder:text-gray-100 w-full focus:outline-none"
+                    class="bg-transparent pl-3 pr-10 text-sm placeholder:text-gray-100 w-full focus:outline-none"
+                    :class="[size === 'lg' ? 'py-2.5' : 'py-2']"
                     @input="handleInput"
                 />
                 <div class="flex cursor-pointer" @click="showPassword = !showPassword">
@@ -48,6 +49,11 @@ const props = defineProps({
     modelValue: {
         type: String,
         required: true,
+    },
+    size: {
+        type: String as PropType<'default' | 'lg'>,
+        required: false,
+        default: 'default',
     },
     label: String,
     placeholder: String,

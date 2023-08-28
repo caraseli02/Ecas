@@ -188,17 +188,16 @@
                                     class="absolute -bottom-1 -right-1 box-content w-2.5 h-2.5 rounded-full bg-[#00D395] border-4 border-white"
                                 />
                             </div>
-                            <div class="flex flex-col mr-4 max-lg:hidden">
+                            <div class="flex flex-col max-lg:hidden">
                                 <div class="leading-normal font-medium">Madalina Popescu</div>
                                 <div class="text-xs leading-normal text-gray-300">Super Admin</div>
                             </div>
-                            <ChevronDownIcon class="w-6 h-6 text-gray-300 max-lg:hidden" />
                         </button>
                         <Transition name="fade-full">
                             <div
                                 v-if="showOptions"
                                 v-click-outside="() => (showOptions = false)"
-                                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[174px] shadow-m md:-bottom-[18px] md:w-[210px] lg:w-[250px]"
+                                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[174px] shadow-m md:-bottom-[18px] md:w-[210px]"
                             >
                                 <button
                                     class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
@@ -258,7 +257,6 @@
 import BurgerIcon from '@/assets/icons/dashboard/burger.svg';
 import SearchIcon from '@/assets/icons/dashboard/search.svg';
 import BellIcon from '@/assets/icons/dashboard/bell.svg';
-import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import PlusIcon from '@/assets/icons/dashboard/plus.svg';
 import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SettingsIcon from '@/assets/icons/dashboard/setting.svg';

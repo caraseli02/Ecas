@@ -1,16 +1,21 @@
 import HttpFactory from '@/composables/HttpFactory';
-import { FirebaseError } from 'firebase/app';
-import { LoginRequest } from '~/model/auth/request/LoginRequest';
-import { ProductResponse } from '~/model/products/response/ProductResponse';
-import { FirebasePersonalAccount as SignupPersonalPayload, FirebaseBusinessAccount as SignupBusinessPayload } from '~~/types';
+import {FirebaseError} from 'firebase/app';
+import {LoginRequest} from '~/model/auth/request/LoginRequest';
+import {ProductResponse} from '~/model/products/response/ProductResponse';
+import {
+    FirebaseBusinessAccount as SignupBusinessPayload,
+    FirebasePersonalAccount as SignupPersonalPayload
+} from '~~/types';
+import {useAuthStore} from '~/store/authStore';
+import useFirebaseAuth from '~/composables/useFirebaseAuth';
 
 class AuthService extends HttpFactory {
     private RESOURCE = '/auth';
+    private authStore = useAuthStore();
 
     async login(payload: LoginRequest): Promise<ProductResponse | FirebaseError | unknown> {
         try {
-            const fetch = await this.call('POST', `${this.RESOURCE}/login`, payload);
-            return fetch;
+            return await this.call('POST', `${this.RESOURCE}/login`, payload);
         } catch (err) {
             if (err instanceof FirebaseError) {
                 return err;
@@ -20,7 +25,14 @@ class AuthService extends HttpFactory {
     }
 
     async registerFirebase(payload: SignupPersonalPayload | SignupBusinessPayload) {
-        return await this.call('POST', `${this.RESOURCE}/firebase/register`, payload);
+        const token = await useFirebaseAuth().getUserToken();
+
+        return await this.call('POST', `${this.RESOURCE}/firebase/register`, payload,
+            token
+                ? {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+                : {});
     }
 
     async registerClassic(payload: SignupPersonalPayload | SignupBusinessPayload) {

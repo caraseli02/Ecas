@@ -15,7 +15,7 @@
                 </div>
                 <span class="text-xs text-gray-300 select-none"> Remember me </span>
             </label>
-            <NuxtLink to="/" class="flex text-xs font-medium text-gray-100 hover:underline"> Forgot password? </NuxtLink>
+            <NuxtLink to="/forgot-password" class="flex text-xs font-medium text-gray-100 hover:underline"> Forgot password? </NuxtLink>
         </div>
         <button class="flex items-center justify-center w-full bg-blue rounded py-[9px] text-white mb-5" @click="handleSignIn">
             <div v-if="isLoading" aria-label="Loading..." role="status" class="mr-3">

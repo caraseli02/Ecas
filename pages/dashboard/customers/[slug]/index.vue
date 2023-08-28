@@ -68,18 +68,10 @@
             </div>
             <DashboardCustomersOrders />
         </div>
-        <div class="flex justify-center text-center text-xs leading-normal text-gray-300 mt-6">
-            Made with
-            <HeartIcon class="w-[18px] h-[18px] mx-1 mt-px" /> by
-            <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 transition-colors duration-300 hover:text-blue">
-                Nezo Digital
-            </a>
-        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import HeartIcon from '@/assets/icons/dashboard/heart.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
 useHead({
