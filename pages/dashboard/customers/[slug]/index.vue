@@ -82,12 +82,12 @@ definePageMeta({
     layout: 'dashboard',
 });
 
+
 const error = ref(false);
 const emptyData = ref(false);
 const isLoading = ref(false);
 
 const route = useRoute();
-// console.log(route.params);
 onMounted(async () => {
     setTimeout(() => {
         isLoading.value = false;
