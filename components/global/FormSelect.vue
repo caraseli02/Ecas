@@ -4,8 +4,14 @@
             {{ label }}
         </div>
         <button
-            class="flex items-center justify-between px-3 py-2 text-sm w-full rounded border transition-colors duration-300 focus:outline-none disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none"
-            :class="[error ? 'border-red' : showOptions ? 'border-blue' : 'border-border']"
+            class="flex items-center justify-between px-3 text-sm w-full border transition-colors duration-300 focus:outline-none"
+            :class="[
+                error ? 'border-red' : showOptions ? 'border-blue' : 'border-border',
+                disabled && showDisabledStyles
+                    ? 'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
+                    : '',
+                size === 'lg' ? 'py-[9px] rounded-lg h-11' : 'py-2 rounded h-10',
+            ]"
             :disabled="disabled"
             @click="showOptions = !showOptions"
         >
@@ -16,6 +22,7 @@
                     'font-semibold text-gray-300': checkboxes,
                 }"
             >
+                <component :is="icon" v-if="icon" class="w-6 h-6 text-gray-300 mr-2" />
                 <img
                     v-if="modelValue?.icon && typeof modelValue.icon === 'string'"
                     :src="modelValue.icon"
@@ -23,11 +30,26 @@
                     class="w-8 rounded mr-2"
                 />
                 <component :is="modelValue.icon" v-else-if="modelValue?.icon" class="w-6 h-6 text-gray-300 mr-2" />
-                <span>
+                <span :class="[disabled ? 'text-gray-100' : 'text-gray-300']">
                     {{ modelValue?.label || placeholder }}
                 </span>
             </span>
-            <ChevronDownIcon class="w-6 h-6 text-gray-300 transition-transform duration-300" :class="{ 'rotate-180': showOptions }" />
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="none"
+                class="w-5 h-5 transition-all duration-300"
+                :class="[showOptions ? 'rotate-180' : '', disabled ? 'text-gray-100' : 'text-gray-300']"
+            >
+                <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="m5.836 8.332 4.167 3.333 4.166-3.333"
+                />
+            </svg>
         </button>
         <Transition name="fade-full">
             <div
@@ -133,6 +155,11 @@ const props = defineProps({
         type: Array as PropType<FormSelectOption[]>,
         required: true,
     },
+    size: {
+        type: String as PropType<'default' | 'lg'>,
+        required: false,
+        default: 'default',
+    },
     disabled: Boolean,
     checkboxes: Boolean,
     icon: {
@@ -140,6 +167,11 @@ const props = defineProps({
     },
     search: Boolean,
     error: String,
+    showDisabledStyles: {
+        type: Boolean,
+        required: false,
+        default: true,
+    },
 });
 
 const emits = defineEmits(['update:modelValue']);

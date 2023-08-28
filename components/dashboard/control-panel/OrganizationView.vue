@@ -24,22 +24,36 @@
                 v-model="form.companyName.value"
                 :error="form.companyName.error"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="Company Name"
+                size="lg"
                 placeholder="Company Name srl"
             />
             <FormInput
                 v-model="form.companyRegistrationNumber.value"
                 :error="form.companyRegistrationNumber.error"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="Company Registration Number"
+                size="lg"
                 placeholder="RO123456"
             />
-            <FormInput v-model="form.taxID.value" :error="form.taxID.error" :disabled="!isEditing" label="Tax ID" placeholder="RO123456" />
+            <FormInput
+                v-model="form.taxID.value"
+                :error="form.taxID.error"
+                :disabled="!isEditing"
+                :showDisabledStyles="false"
+                label="Tax ID"
+                size="lg"
+                placeholder="RO123456"
+            />
             <FormInput
                 v-model="form.vatNumber.value"
                 :error="form.vatNumber.error"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="V.A.T Number"
+                size="lg"
                 placeholder="RO123456"
             />
             <FormSelect
@@ -47,9 +61,11 @@
                 :error="form.country.error"
                 :options="countries"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="Country"
                 placeholder="United States"
                 search
+                size="lg"
                 class="relative z-20"
             />
             <FormSelect
@@ -57,54 +73,76 @@
                 :error="form.region.error"
                 :options="regions"
                 :disabled="regions.length === 0 || !isEditing"
+                :showDisabledStyles="false"
                 label="County/Region"
                 placeholder="Georgia"
                 search
+                size="lg"
                 class="relative z-10"
             />
-            <FormInput v-model="form.city.value" :error="form.city.error" :disabled="!isEditing" label="City" placeholder="Georgia" />
+            <FormInput
+                v-model="form.city.value"
+                :error="form.city.error"
+                :disabled="!isEditing"
+                :showDisabledStyles="false"
+                label="City"
+                size="lg"
+                placeholder="Georgia"
+            />
             <FormInput
                 v-model="form.addressLine1.value"
                 :error="form.addressLine1.error"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="Address Line 1"
+                size="lg"
                 placeholder="5073 Mark Brown Rd"
             />
             <FormInput
                 v-model="form.addressLine2.value"
                 :error="form.addressLine2.error"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="Address Line 2"
+                size="lg"
                 placeholder="NE Dalton"
             />
             <FormInput
                 v-model="form.postcode.value"
                 :error="form.postcode.error"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="Postcode"
+                size="lg"
                 placeholder="W1A5AB"
             />
             <FormInput
                 v-model="form.postcode.value"
                 :error="form.postcode.error"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="Postcode"
+                size="lg"
                 placeholder="+1 (706) 275-0767"
             />
             <FormInput
                 v-model="form.phoneNumber.value"
                 :error="form.phoneNumber.error"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="Phone Number"
+                size="lg"
                 placeholder="+1 (706) 275-0767"
             />
             <FormInput
                 v-model="form.companyEmail.value"
                 :error="form.companyEmail.error"
                 :disabled="!isEditing"
+                :showDisabledStyles="false"
                 label="Company Email"
                 placeholder="madalina.dobrovolski@company.com"
                 type="email"
+                size="lg"
                 class="md:col-span-2"
             />
         </div>

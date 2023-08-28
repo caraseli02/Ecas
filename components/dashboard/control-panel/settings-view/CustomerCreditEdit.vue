@@ -1,0 +1,105 @@
+<template>
+    <div class="flex flex-col h-full relative bg-white rounded-xl p-4 shadow-xs md:p-6 xl:shadow-none xl:rounded-none xl:row-span-2">
+        <div class="mb-4">
+            <div class="flex items-start justify-between">
+                <h2 class="text-xl leading-[1.4] font-semibold">Customer Credit</h2>
+                <button
+                    class="flex items-center justify-center rounded-lg w-8 h-8 bg-gray-200 text-gray-300 transition-colors duration-300 hover:text-blue"
+                    @click="$emit('toggle-editing')"
+                >
+                    <XIcon class="w-6 h-6" />
+                </button>
+            </div>
+        </div>
+        <p class="text-sm leading-[1.71] mb-8">Change to customer credit account.</p>
+        <div class="flex flex-col flex-1">
+            <div class="grid grid-cols-1 gap-2 mb-8">
+                <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
+                    <span class="text-gray-300"> Credit Limit </span>
+                    <span class="font-medium"> € 10,000.00 </span>
+                </div>
+                <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
+                    <span class="text-gray-300"> Credit Term </span>
+                    <span class="font-medium"> 60 Days </span>
+                </div>
+                <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
+                    <span class="text-gray-300"> Due Date </span>
+                    <span class="font-medium"> 26 Sep 2023 </span>
+                </div>
+                <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
+                    <span class="text-gray-300"> Till Due </span>
+                    <span class="font-medium"> 42 Days </span>
+                </div>
+                <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
+                    <span class="text-gray-300"> Total Spent </span>
+                    <span class="font-medium"> € 7,561.23 </span>
+                </div>
+                <div class="flex items-center justify-between text-sm leading-[1.42]">
+                    <span class="text-gray-300"> Available Credit </span>
+                    <span class="font-medium text-[#EE514E]"> € 2,438.77 </span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 mb-6">
+                <button class="flex items-center justify-center border-[1.5px] border-[#FA4B4B] rounded-md px-4 py-1 text-[#FA4B4B] h-8">
+                    <TrashIcon class="w-4 h-4 mr-2" />
+                    <span class="text-sm leading-[1.71] font-medium"> Close Credit </span>
+                </button>
+                <button class="flex items-center justify-center border-[1.5px] border-blue rounded-md px-4 py-1 text-blue h-8">
+                    <FreezeIcon class="w-4 h-4 mr-2" />
+                    <span class="text-sm leading-[1.71] font-medium"> Freeze Credit </span>
+                </button>
+            </div>
+            <div class="mb-6">
+                <FormSelect
+                    v-model="creditTerm"
+                    :options="[
+                        {
+                            label: 'Option',
+                            value: 'Option',
+                        },
+                    ]"
+                    :icon="CalendarIcon"
+                    label="Credit Term"
+                    placeholder="Select Credit Term"
+                    size="lg"
+                    class="relative z-10"
+                />
+            </div>
+            <div class="mb-10">
+                <div class="text-sm text-gray-300 mb-1">Credit Amount</div>
+                <div class="flex border border-border rounded-lg h-11 overflow-hidden">
+                    <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">€</div>
+                    <input
+                        :value="creditAmount"
+                        type="number"
+                        placeholder="Discount (i.e. 5, 10, 17)"
+                        class="bg-transparent px-2 text-sm w-full transition-colors duration-300 focus:outline-none"
+                    />
+                </div>
+            </div>
+            <div class="grid grid-cols-[auto,1fr] gap-4 mt-auto">
+                <button class="flex px-8 py-2 rounded-lg bg-gray-200 leading-[1.75] text-gray-300 font-medium" @click="$emit('cancel')">
+                    Cancel
+                </button>
+                <button
+                    class="flex items-center justify-center px-5 py-2 rounded-lg bg-blue leading-[1.75] text-white font-medium"
+                    @click="$emit('close')"
+                >
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+import XIcon from '@/assets/icons/dashboard/x.svg';
+import TrashIcon from '@/assets/icons/dashboard/trash.svg';
+import FreezeIcon from '@/assets/icons/dashboard/freeze.svg';
+import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
+
+defineEmits(['toggle-editing', 'cancel']);
+
+const creditTerm = ref('');
+const creditAmount = ref('10000');
+</script>
