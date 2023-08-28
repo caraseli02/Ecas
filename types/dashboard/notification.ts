@@ -5,8 +5,6 @@ export interface DashboardNotification {
     read: boolean;
 }
 
-export interface Notifications extends Array<Notification>{}
-
 export interface Notification  {
     id: string;
     title: string;
