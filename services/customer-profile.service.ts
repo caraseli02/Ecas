@@ -5,7 +5,7 @@ import {OrderInterface} from '~/types';
 
 class CustomerProfileService extends HttpFactory {
     private RESOURCE = '/user';
-    private MAIN_RESOURCE = '/dashboard/users/profile';
+    private MAIN_RESOURCE = '/dashboard/profile';
 
     async fetchCustomerInformation(userID: string) {
         const authStore = useAuthStore();
