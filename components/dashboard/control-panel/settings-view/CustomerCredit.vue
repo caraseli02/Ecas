@@ -111,7 +111,7 @@ const chartOptions = ref({
         radialBar: {
             hollow: {
                 margin: 0,
-                size: '72%',
+                size: '75%',
                 background: '#fff',
                 image: undefined,
                 imageOffsetX: 0,
@@ -129,12 +129,11 @@ const chartOptions = ref({
         },
     },
     fill: {
-        type: 'gradient',
-        gradient: {
-            type: 'horizontal',
-            gradientToColors: ['#00D395', '#FFB100', '#FF8A00', '#DF3030'],
-            inverseColors: true,
-            stops: [0, 25, 50, 100],
+        type: 'image',
+        image: {
+            src: ['/customer-credit-chart-bg.png'],
+            width: 228,
+            height: 228,
         },
     },
     stroke: {
@@ -150,6 +149,6 @@ onMounted(() => {
     setTimeout(() => {
         loading.value = false;
         error.value = false;
-    }, 5000);
+    }, 1000);
 });
 </script>
