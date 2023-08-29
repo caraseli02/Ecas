@@ -110,7 +110,7 @@ const chartOptions = ref({
             },
             track: {
                 background: '#EBEBEB',
-                strokeWidth: '70%',
+                strokeWidth: '100%',
                 margin: 0,
             },
             dataLabels: {
