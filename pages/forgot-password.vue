@@ -36,7 +36,7 @@ const form = ref({
 });
 const resetPassword = async (email: string) => {
 
-  const response = await $api.user.resetPassword(email);
+  const response = await $api.user.resetPasswordLink(email);
 
   if (response.status !== 'success') {
     return;

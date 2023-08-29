@@ -24,9 +24,21 @@ class UserService extends HttpFactory {
         return data;
     }
 
-    async resetPassword(email: string): Promise<ProductResponse | FirebaseError | unknown> {
+    async resetPasswordLink(email: string): Promise<ProductResponse | FirebaseError | unknown> {
         try {
             return await this.call('POST', `${this.RESOURCE}/password/email/reset`, {email: email});
+        } catch (err) {
+            if (err instanceof FirebaseError) {
+                return err;
+            }
+            return err;
+        }
+    }
+
+    async resetPassword(email: string, newPassword: string, code: string): Promise<ProductResponse | FirebaseError | unknown> {
+        try {
+            console.log(email, newPassword, code)
+            return await this.call('POST', `${this.RESOURCE}/password/reset`, {email: email, newPassword: newPassword, code: code});
         } catch (err) {
             if (err instanceof FirebaseError) {
                 return err;
