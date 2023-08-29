@@ -37,8 +37,11 @@ class UserService extends HttpFactory {
 
     async resetPassword(email: string, newPassword: string, code: string): Promise<ProductResponse | FirebaseError | unknown> {
         try {
-            console.log(email, newPassword, code)
-            return await this.call('POST', `${this.RESOURCE}/password/reset`, {email: email, newPassword: newPassword, code: code});
+            return await this.call('POST', `${this.RESOURCE}/password/reset`, {
+                email: email,
+                newPassword: newPassword,
+                code: code
+            });
         } catch (err) {
             if (err instanceof FirebaseError) {
                 return err;
