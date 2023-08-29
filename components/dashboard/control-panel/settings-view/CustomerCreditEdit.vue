@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col h-full relative bg-white rounded-xl p-4 shadow-xs md:p-6 xl:shadow-none xl:rounded-none xl:row-span-2">
+    <div
+        class="absolute z-10 top-0 left-0 flex flex-col w-full h-full bg-white rounded-xl p-4 md:p-6 xl:shadow-none xl:rounded-none xl:row-span-2"
+    >
         <div class="mb-4">
             <div class="flex items-start justify-between">
                 <h2 class="text-xl leading-[1.4] font-semibold">Customer Credit</h2>
@@ -42,11 +44,11 @@
             <div class="flex items-center gap-4 mb-6">
                 <button class="flex items-center justify-center border-[1.5px] border-[#FA4B4B] rounded-md px-4 py-1 text-[#FA4B4B] h-8">
                     <TrashIcon class="w-4 h-4 mr-2" />
-                    <span class="text-sm leading-[1.71] font-medium"> Close Credit </span>
+                    <span class="text-sm leading-[1.71] font-medium min-w-max"> Close Credit </span>
                 </button>
                 <button class="flex items-center justify-center border-[1.5px] border-blue rounded-md px-4 py-1 text-blue h-8">
                     <FreezeIcon class="w-4 h-4 mr-2" />
-                    <span class="text-sm leading-[1.71] font-medium"> Freeze Credit </span>
+                    <span class="text-sm leading-[1.71] font-medium min-w-max"> Freeze Credit </span>
                 </button>
             </div>
             <div class="mb-6">
