@@ -364,22 +364,30 @@ const handleSubmit = async () => {
                     personalDetails: {
                         firstName: personalDetails.value.firstName.value,
                         lastName: personalDetails.value.lastName.value,
-                        country: personalDetails.value.country.value.value,
-                        region: personalDetails.value.region.value.value,
-                        city: personalDetails.value.city.value,
-                        postcode: personalDetails.value.postcode.value,
-                        address: [
+                        address: {
+                            name1: personalDetails.value.addressLine1.value,
+                            name2: personalDetails.value.addressLine2.value,
+                            country: personalDetails.value.country.value.value,
+                            region: personalDetails.value.region.value.value,
+                            city: personalDetails.value.city.value,
+                            postcode: personalDetails.value.postcode.value,
+                        },
+
+                        shippingAddress: [
                             {
                                 name1: personalDetails.value.addressLine1.value,
                                 name2: personalDetails.value.addressLine2.value,
-                                default: true,
+                                country: personalDetails.value.country.value.value,
+                                region: personalDetails.value.region.value.value,
+                                city: personalDetails.value.city.value,
+                                postcode: personalDetails.value.postcode.value,
                             },
                         ],
                     },
                     adminSettings: {
                         marketingPreferences: {
-                            newsletter: {email: profileDetails.value.subscribeToNewsletter},
-                            cookiesPolicy: {email: profileDetails.value.agreeToTerms},
+                            newsletter: { email: profileDetails.value.subscribeToNewsletter },
+                            cookiesPolicy: { email: profileDetails.value.agreeToTerms },
                         },
                     },
                 },
@@ -399,11 +407,24 @@ const handleSubmit = async () => {
                         name: businessDetails.value.fullCompanyName.value,
                         registrationNumber: businessDetails.value.companyRegistrationNumber.value,
                         vat: businessDetails.value.vatNumber.value,
-                        country: businessDetails.value.country.value.value.value,
-                        region: businessDetails.value.region.value.value.value,
-                        city: businessDetails.value.city.value,
-                        postcode: businessDetails.value.postcode.value,
-                        address1: businessDetails.value.addressLine1.value,
+                        address: {
+                            name1: businessDetails.value.addressLine1.value,
+                            name2: businessDetails.value.addressLine2.value,
+                            country: businessDetails.value.country.value.value.value,
+                            region: businessDetails.value.region.value.value.value,
+                            city: businessDetails.value.city.value,
+                            postcode: businessDetails.value.postcode.value,
+                        },
+                        shippingAddress: [
+                            {
+                                name1: businessDetails.value.addressLine1.value,
+                                name2: businessDetails.value.addressLine2.value,
+                                country: businessDetails.value.country.value.value.value,
+                                region: businessDetails.value.region.value.value.value,
+                                city: businessDetails.value.city.value,
+                                postcode: businessDetails.value.postcode.value,
+                            },
+                        ],
                     },
                     contactDetails: {
                         firstName: contactDetails.value.firstName.value,
@@ -413,8 +434,8 @@ const handleSubmit = async () => {
                     },
                     adminSettings: {
                         marketingPreferences: {
-                            newsletter: {email: profileDetails.value.subscribeToNewsletter},
-                            cookiesPolicy: {email: profileDetails.value.agreeToTerms},
+                            newsletter: { email: profileDetails.value.subscribeToNewsletter },
+                            cookiesPolicy: { email: profileDetails.value.agreeToTerms },
                         },
                     },
                 },

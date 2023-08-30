@@ -103,7 +103,7 @@
                 <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
                 <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
                   <USAFlag v-if="customerInformation?.personalDetails?.country" class="w-6 h-6 mr-2"/>
-                  <span>{{ customerInformation?.personalDetails?.country || 'N/A' }} </span>
+                  <span>{{ customerInformation?.personalDetails?.address.country || 'N/A' }} </span>
                 </div>
               </div>
               <div class="grid grid-cols-[140px,1fr] gap-3">
@@ -115,7 +115,7 @@
               <div class="grid grid-cols-[140px,1fr] gap-3">
                 <div class="text-sm text-gray-300 leading-[1.75]">Address</div>
                 <div class="text-sm font-medium leading-[1.75] break-all">
-                  {{ customerInformation?.personalDetails?.address.find((x) => x.default)?.name1 || 'N/A' }}
+                  {{ customerInformation?.personalDetails?.address.name1 || 'N/A' }}
                 </div>
               </div>
             </div>
@@ -141,7 +141,8 @@
             </div>
             <div class="text-sm font-medium leading-tight pl-4">
               {{
-                customerInformation.adminSettings?.marketingPreferences?.emailMarketing?.email ? 'Subscribed' : 'Not Subscribed'
+                customerInformation.adminSettings?.marketingPreferences?.emailMarketing?.email ? 'Subscribed'
+                                    : 'Not Subscribed'
               }}
             </div>
           </div>
@@ -190,7 +191,8 @@ const fetchInformation = async () => {
   const response = (await $api.customerProfile.fetchCustomerInformation(props.id || '')) as {
     status: string;
     data: UserDetails
-  };
+ ;
+    };
 
   if (response.status !== 'success') {
     isLoading.value = false;
@@ -207,5 +209,6 @@ const fetchInformation = async () => {
 const getCurrentDate = (date: string) => {
   return moment(date).format('DD MMM YYYY, HH:mm');
 };
+
 await fetchInformation();
 </script>
