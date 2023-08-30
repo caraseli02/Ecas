@@ -11,6 +11,7 @@ export interface AlertsAndNotificationsInterface {
     hotDeals?: AlertsAndNotificationsTypes;
     securityAlerts?: AlertsAndNotificationsTypes;
     shippingUpdates?: AlertsAndNotificationsTypes;
+    priceChange?: AlertsAndNotificationsTypes;
 }
 
 export interface MarketingPreferencesInterface {
@@ -41,6 +42,6 @@ export enum AlertAndNotificationLabelsEnum {
     newProducts = 'New Products',
     hotDeals = 'HOT Deals',
     outOfStock = 'Out of stock',
-    princeChange = 'Prince Change',
+    priceChange = 'Prince Change',
     shippingUpdates = 'Shipping Updates'
 }

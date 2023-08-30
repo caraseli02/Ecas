@@ -126,8 +126,8 @@ const alertsAndNotifications = ref([
     app: false,
   },
   {
-    label: AlertAndNotificationLabelsEnum.princeChange,
-    key: 'princeChange',
+    label: AlertAndNotificationLabelsEnum.priceChange,
+    key: 'priceChange',
     email: false,
     app: false,
   },
