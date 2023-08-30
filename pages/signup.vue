@@ -378,8 +378,8 @@ const handleSubmit = async () => {
                     },
                     adminSettings: {
                         marketingPreferences: {
-                            newsletter: {email: profileDetails.value.subscribeToNewsletter},
-                            cookiesPolicy: {email: profileDetails.value.agreeToTerms},
+                            newsletter: { email: profileDetails.value.subscribeToNewsletter },
+                            cookiesPolicy: { email: profileDetails.value.agreeToTerms },
                         },
                     },
                 },
@@ -403,7 +403,13 @@ const handleSubmit = async () => {
                         region: businessDetails.value.region.value.value.value,
                         city: businessDetails.value.city.value,
                         postcode: businessDetails.value.postcode.value,
-                        address1: businessDetails.value.addressLine1.value,
+                        address: [
+                            {
+                                name1: personalDetails.value.addressLine1.value,
+                                name2: personalDetails.value.addressLine2.value,
+                                default: true,
+                            },
+                        ],
                     },
                     contactDetails: {
                         firstName: contactDetails.value.firstName.value,
@@ -413,8 +419,8 @@ const handleSubmit = async () => {
                     },
                     adminSettings: {
                         marketingPreferences: {
-                            newsletter: {email: profileDetails.value.subscribeToNewsletter},
-                            cookiesPolicy: {email: profileDetails.value.agreeToTerms},
+                            newsletter: { email: profileDetails.value.subscribeToNewsletter },
+                            cookiesPolicy: { email: profileDetails.value.agreeToTerms },
                         },
                     },
                 },

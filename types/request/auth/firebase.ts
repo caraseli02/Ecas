@@ -52,7 +52,11 @@ interface CompanyDetails {
     region: string;
     city: string;
     postcode: number;
-    address1: string;
+    address: {
+        name1: string;
+        name2: string;
+        default: true;
+    }[];
 }
 
 interface ProfileDetails {
