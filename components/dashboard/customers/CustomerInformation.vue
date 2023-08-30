@@ -202,5 +202,6 @@ const fetchInformation = async () => {
 const getCurrentDate = (date: string) => {
     return moment(date).format('DD MMM YYYY, HH:mm');
 };
+
 await fetchInformation();
 </script>
