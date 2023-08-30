@@ -7,7 +7,7 @@
             <div class="relative">
                 <div
                     v-if="icon"
-                    class="absolute top-1/2 -translate-y-1/2 left-px w-11 h-[42px] bg-[#F5F5F5] flex items-center justify-center rounded-l-lg border-r border-border"
+                    class="absolute top-1/2 -translate-y-1/2 left-px w-11 h-[40px] bg-[#F5F5F5] flex items-center justify-center rounded-l-lg border-r border-border"
                 >
                     <component :is="icon" class="w-5 h-5 text-gray-300" />
                 </div>

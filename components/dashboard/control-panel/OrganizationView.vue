@@ -117,20 +117,20 @@
                 placeholder="W1A5AB"
             />
             <FormInput
-                v-model="form.postcode.value"
-                :error="form.postcode.error"
-                :disabled="!isEditing"
-                :showDisabledStyles="false"
-                label="Postcode"
-                size="lg"
-                placeholder="+1 (706) 275-0767"
-            />
-            <FormInput
                 v-model="form.phoneNumber.value"
                 :error="form.phoneNumber.error"
                 :disabled="!isEditing"
                 :showDisabledStyles="false"
                 label="Phone Number"
+                size="lg"
+                placeholder="+1 (706) 275-0767"
+            />
+            <FormInput
+                v-model="form.mobileNumber.value"
+                :error="form.mobileNumber.error"
+                :disabled="!isEditing"
+                :showDisabledStyles="false"
+                label="Mobile Number"
                 size="lg"
                 placeholder="+1 (706) 275-0767"
             />
@@ -151,12 +151,12 @@
                 class="flex items-center justify-center w-full text-left px-[31px] py-2 rounded-lg transition-colors duration-300 bg-[#F2F2F2] text-gray-300 md:px-[91px] xl:px-[61px]"
                 @click="isEditing = false"
             >
-                <span class="text-sm leading-[1.42857] font-medium"> Cancel </span>
+                <span class="leading-[1.75] font-medium"> Cancel </span>
             </button>
             <button
                 class="flex items-center justify-center w-full text-left px-[31px] py-2 rounded-lg transition-colors duration-300 bg-blue text-white"
             >
-                <span class="text-sm leading-[1.42857] font-medium"> Save </span>
+                <span class="leading-[1.75] font-medium"> Save </span>
             </button>
         </div>
     </div>

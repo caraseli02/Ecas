@@ -140,7 +140,6 @@
 import { PropType } from 'vue';
 import { FormSelectOption } from '~~/types';
 import CheckIcon from '@/assets/icons/check.svg';
-import ChevronDownIcon from '@/assets/icons/chevron-down.svg';
 import SearchIcon from '@/assets/icons/search.svg';
 import XIcon from '@/assets/icons/x.svg';
 

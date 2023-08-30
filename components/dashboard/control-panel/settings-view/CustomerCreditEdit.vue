@@ -52,20 +52,70 @@
                 </button>
             </div>
             <div class="mb-6">
-                <FormSelect
-                    v-model="creditTerm"
-                    :options="[
-                        {
-                            label: 'Option',
-                            value: 'Option',
-                        },
-                    ]"
-                    :icon="CalendarIcon"
-                    label="Credit Term"
-                    placeholder="Select Credit Term"
-                    size="lg"
-                    class="relative z-10"
-                />
+                <div class="relative z-10">
+                    <div class="text-sm text-gray-300 mb-1">Credit Term</div>
+                    <button
+                        class="flex items-center justify-between px-3 text-sm w-full border py-[9px] rounded-lg h-11 transition-colors duration-300 focus:outline-none"
+                        :class="[showCreditTermOptions ? 'border-blue' : 'border-border']"
+                        @click="showCreditTermOptions = !showCreditTermOptions"
+                    >
+                        <span
+                            class="flex items-center text-left truncate"
+                            :class="{
+                                'text-gray-300': !creditTerm,
+                            }"
+                        >
+                            <CalendarIcon class="w-6 h-6 text-gray-300 mr-2" />
+                            <span>
+                                {{ creditTerm?.label || 'Select Credit Term' }}
+                            </span>
+                        </span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            fill="none"
+                            class="w-5 h-5 text-gray-300 transition-all duration-300"
+                            :class="[showCreditTermOptions ? 'rotate-180' : '']"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="m5.836 8.332 4.167 3.333 4.166-3.333"
+                            />
+                        </svg>
+                    </button>
+                    <Transition name="fade-full">
+                        <div
+                            v-if="showCreditTermOptions"
+                            v-click-outside="() => (showCreditTermOptions = false)"
+                            class="grid grid-cols-1 gap-1 absolute -bottom-1 left-0 translate-y-full w-full bg-white rounded-lg overflow-y-auto scrollbar-thin shadow-m p-3 max-h-[250px]"
+                        >
+                            <button
+                                v-for="option in creditTermOptions"
+                                :key="option.value"
+                                class="group flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                                :class="[option.value === creditTerm?.value ? '' : 'text-dark']"
+                                @click="
+                                    creditTerm = option;
+                                    showCreditTermOptions = false;
+                                "
+                            >
+                                <span>
+                                    {{ option.label }}
+                                </span>
+                                <div
+                                    class="flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 transition-colors duration-300"
+                                    :class="[option.value === creditTerm?.value ? 'border-blue' : 'border-border group-hover:border-dark']"
+                                >
+                                    <div v-if="option.value === creditTerm?.value" class="w-2.5 h-2.5 bg-blue rounded-full" />
+                                </div>
+                            </button>
+                        </div>
+                    </Transition>
+                </div>
             </div>
             <div class="mb-10">
                 <div class="text-sm text-gray-300 mb-1">Credit Amount</div>
@@ -102,6 +152,30 @@ import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
 
 defineEmits(['toggle-editing', 'cancel']);
 
-const creditTerm = ref('');
+const creditTerm = ref();
 const creditAmount = ref('10000');
+
+const showCreditTermOptions = ref(false);
+const creditTermOptions = ref([
+    {
+        label: '7 Days',
+        value: 7,
+    },
+    {
+        label: '15 Days',
+        value: 15,
+    },
+    {
+        label: '30 Days',
+        value: 30,
+    },
+    {
+        label: '45 Days',
+        value: 45,
+    },
+    {
+        label: '60 Days',
+        value: 60,
+    },
+]);
 </script>
