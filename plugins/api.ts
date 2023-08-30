@@ -1,5 +1,5 @@
-import { $fetch, FetchOptions } from 'ohmyfetch';
-import { defineNuxtPlugin } from '#app';
+import {$fetch, FetchOptions} from 'ohmyfetch';
+import {defineNuxtPlugin} from '#app';
 import ProductService from '~/services/products.service';
 import AuthService from '~/services/auth.service';
 import UserService from '~/services/user.service';
@@ -7,6 +7,7 @@ import UserDashboardService from '~/services/dashboard/user.service';
 import FavouriteFolderService from '~/services/favourite-folder.service';
 import CustomerProfileService from '~/services/customer-profile.service';
 import NotificationsService from '~/services/notifications.service'
+import ControlPanelService from '~/services/dashboard/control-panel.service';
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -15,8 +16,9 @@ interface IApiInstance {
     user: UserService;
     userDashboard: UserDashboardService;
     favouriteFolder: FavouriteFolderService;
-    customerProfile : CustomerProfileService;
-    notifications : NotificationsService;
+    customerProfile: CustomerProfileService;
+    notifications: NotificationsService;
+    controlPanel: ControlPanelService;
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -34,8 +36,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         user: new UserService(apiFetcher),
         userDashboard: new UserDashboardService(apiFetcher),
         favouriteFolder: new FavouriteFolderService(apiFetcher),
-        customerProfile : new CustomerProfileService(apiFetcher),
-        notifications : new NotificationsService(apiFetcher)
+        customerProfile: new CustomerProfileService(apiFetcher),
+        notifications: new NotificationsService(apiFetcher),
+        controlPanel: new ControlPanelService(apiFetcher)
     };
 
     return {

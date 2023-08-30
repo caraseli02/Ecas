@@ -36,3 +36,11 @@ export interface DiscountInterface {
     startDate: string;
     endDate: string;
 }
+
+export enum AlertAndNotificationLabelsEnum {
+    newProducts = 'New Products',
+    hotDeals = 'HOT Deals',
+    outOfStock = 'Out of stock',
+    princeChange = 'Prince Change',
+    shippingUpdates = 'Shipping Updates'
+}
