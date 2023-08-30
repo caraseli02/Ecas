@@ -405,8 +405,8 @@ const handleSubmit = async () => {
                         postcode: businessDetails.value.postcode.value,
                         address: [
                             {
-                                name1: personalDetails.value.addressLine1.value,
-                                name2: personalDetails.value.addressLine2.value,
+                                name1: businessDetails.value.addressLine1.value,
+                                name2: businessDetails.value.addressLine2.value,
                                 default: true,
                             },
                         ],
