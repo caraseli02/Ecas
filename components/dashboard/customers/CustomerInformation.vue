@@ -70,7 +70,7 @@
                     <SkeletonLoader v-if="isLoading" class="w-[180px] h-5" />
                     <div v-else class="flex items-center text-sm md:order-2 md:mb-2">
                         <span class="text-gray-300 mr-2">Last Active:</span>
-                        <span class="font-medium">{{ customerInformation.lastActivityDate || "-"}}</span>
+                        <span class="font-medium">{{ customerInformation.lastActivityDate || '-' }}</span>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                                 <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
                                 <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
                                     <USAFlag v-if="customerInformation?.personalDetails?.country" class="w-6 h-6 mr-2" />
-                                    <span>{{ customerInformation?.personalDetails?.country || 'N/A' }} </span>
+                                    <span>{{ customerInformation?.personalDetails?.address.country || 'N/A' }} </span>
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
@@ -114,7 +114,7 @@
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Address</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation?.personalDetails?.address.find((x) => x.default)?.name1 || 'N/A' }}
+                                    {{ customerInformation?.personalDetails?.address.name1 || 'N/A' }}
                                 </div>
                             </div>
                         </div>
@@ -135,7 +135,13 @@
                             <div class="w-2 h-2 rounded-full bg-blue mr-2" />
                             <span class="text-sm font-medium leading-tight text-gray-300">Email Marketing</span>
                         </div>
-                        <div class="text-sm font-medium leading-tight pl-4">{{ customerInformation.adminSettings?.marketingPreferences?.emailMarketing?.email ? "Subscribed" : "Not Subscribed"}}</div>
+                        <div class="text-sm font-medium leading-tight pl-4">
+                            {{
+                                customerInformation.adminSettings?.marketingPreferences?.emailMarketing?.email
+                                    ? 'Subscribed'
+                                    : 'Not Subscribed'
+                            }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,6 +162,7 @@ import { useNuxtApp } from '#app';
 import { UserDetails } from '~/types/auth/user-details';
 import { AccountType } from '~/types';
 import moment from 'moment';
+
 const showOptions = ref(false);
 
 const error = ref(false);
@@ -175,7 +182,10 @@ const fetchInformation = async () => {
     error.value = false;
     isLoading.value = true;
 
-    const response = (await $api.customerProfile.fetchCustomerInformation(props.id || '')) as { status: string; data: UserDetails };
+    const response = (await $api.customerProfile.fetchCustomerInformation(props.id || '')) as {
+        status: string;
+        data: UserDetails;
+    };
 
     if (response.status !== 'success') {
         isLoading.value = false;
@@ -192,5 +202,6 @@ const fetchInformation = async () => {
 const getCurrentDate = (date: string) => {
     return moment(date).format('DD MMM YYYY, HH:mm');
 };
+
 await fetchInformation();
 </script>
