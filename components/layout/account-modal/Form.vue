@@ -1,21 +1,23 @@
 <template>
-    <div class="max-w-[340px] mx-auto">
-        <div class="grid grid-cols-1 gap-[15px] mb-[15px]">
-            <FormInput v-model="email.value" :error="email.error" type="email" placeholder="you@company.com" />
-            <FormPassword v-model="password.value" :error="password.error" placeholder="Your Password" />
+  <div class="max-w-[340px] mx-auto">
+    <div class="grid grid-cols-1 gap-[15px] mb-[15px]">
+      <FormInput v-model="email.value" :error="email.error" type="email" placeholder="you@company.com"/>
+      <FormPassword v-model="password.value" :error="password.error" placeholder="Your Password"/>
+    </div>
+    <div class="flex items-center justify-between mb-[30px]">
+      <label class="flex items-center cursor-pointer">
+        <input v-model="rememberMe" type="checkbox" class="sr-only"/>
+        <div
+            class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2"
+            :class="[rememberMe ? 'bg-blue border-blue' : 'border-[#CBCDD7]']"
+        >
+          <CheckIcon v-if="rememberMe" class="w-4 text-white"/>
         </div>
-        <div class="flex items-center justify-between mb-[30px]">
-            <label class="flex items-center cursor-pointer">
-                <input v-model="rememberMe" type="checkbox" class="sr-only" />
-                <div
-                    class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2"
-                    :class="[rememberMe ? 'bg-blue border-blue' : 'border-[#CBCDD7]']"
-                >
-                    <CheckIcon v-if="rememberMe" class="w-4 text-white" />
-                </div>
-                <span class="text-xs text-gray-300 select-none"> Remember me </span>
-            </label>
-            <NuxtLink to="/forgot-password" class="flex text-xs font-medium text-gray-100 hover:underline"> Forgot password? </NuxtLink>
+        <span class="text-xs text-gray-300 select-none"> Remember me </span>
+      </label>
+      <NuxtLink to="/actions?mode=forgotPassword" class="flex text-xs font-medium text-gray-100 hover:underline">
+                Forgot password?
+            </NuxtLink>
         </div>
         <button class="flex items-center justify-center w-full bg-blue rounded py-[9px] text-white mb-5" @click="handleSignIn">
             <div v-if="isLoading" aria-label="Loading..." role="status" class="mr-3">
@@ -92,114 +94,113 @@
 <script setup lang="ts">
 import KeyholeIcon from '@/assets/icons/keyhole.svg';
 import CheckIcon from '@/assets/icons/check.svg';
-import { UserInfoJWT, SigninResponse, UserDetailsResponse } from '~~/types';
+import {SigninResponse, UserDetailsResponse, UserInfoJWT } from '~~/types';
 import { useAuthStore } from '~~/store/authStore';
 import { UserDetails } from '~~/types/auth/user-details';
-import { ProductResponse } from '~/model/products/response/ProductResponse';
 
-const { checkForInputErrors } = useError();
-const { $api } = useNuxtApp();
+const {checkForInputErrors} = useError();
+const {$api} = useNuxtApp();
 
 const email = ref({
-    value: '',
-    error: '',
-    type: 'email',
+  value: '',
+  error: '',
+  type: 'email',
 });
 const password = ref({
-    value: '',
-    error: '',
+  value: '',
+  error: '',
 });
 
 const rememberMe = ref(false);
 const isLoading = ref(false);
 
 const errorResponse = reactive({
-    show: false,
-    status: '',
-    description: '',
-    code: 0,
+  show: false,
+  status: '',
+  description: '',
+  code: 0,
 });
 
 const authStore = useAuthStore();
-const { registerUser, getParsedFirebaseJWTToken, getUserToken } = useFirebaseAuth();
+const {registerUser, getParsedFirebaseJWTToken, getUserToken} = useFirebaseAuth();
 
 const handleSignIn = async () => {
-    const hasError = checkForInputErrors([email.value, password.value]);
+  const hasError = checkForInputErrors([email.value, password.value]);
 
-    if (!hasError) {
-        const payload = {
-            email: email.value.value,
-            password: password.value.value,
-        };
+  if (!hasError) {
+    const payload = {
+      email: email.value.value,
+      password: password.value.value,
+    };
 
-        isLoading.value = true;
+    isLoading.value = true;
 
-        try {
-            const response = (await $api.auth.login(payload)) as SigninResponse;
+    try {
+      const response = (await $api.auth.login(payload)) as SigninResponse;
 
-            const parsedTokenResponse = useParser().parseJwt(response.token);
-            isLoading.value = false;
-            authStore.addUser(parsedTokenResponse);
-            authStore.addToken(response.token);
-            await fetchUserDetails(parsedTokenResponse, response.token);
-        } catch (error) {
-            errorResponse.code = 404;
-            errorResponse.status = 'Internal server error';
-            errorResponse.description = 'Please try again';
-            errorResponse.show = true;
-            console.error(error);
-        }
-
-        isLoading.value = false;
+      const parsedTokenResponse = useParser().parseJwt(response.token);
+      isLoading.value = false;
+      authStore.addUser(parsedTokenResponse);
+      authStore.addToken(response.token);
+      await fetchUserDetails(parsedTokenResponse, response.token);
+    } catch (error) {
+      errorResponse.code = 404;
+      errorResponse.status = 'Internal server error';
+      errorResponse.description = 'Please try again';
+      errorResponse.show = true;
+      console.error(error);
     }
+
+    isLoading.value = false;
+  }
 };
 
 const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
-    const { data, error } = await useFetchAPI<UserDetailsResponse>(`user/${parsedToken.user_id}/details`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        method: 'GET',
-    });
+  const {data, error} = await useFetchAPI<UserDetailsResponse>(`user/${parsedToken.user_id}/details`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method: 'GET',
+  });
 
-    if (error.value) {
-        switch (error.value.response?.status) {
-            case 404:
-                errorResponse.code = error.value.response.status as number;
-                errorResponse.description = '404 - Something invalid just happened.';
-                errorResponse.show = true;
-                break;
-            case 500:
-                errorResponse.code = error.value.response.status as number;
-                errorResponse.description = '500 - Server error';
-                errorResponse.show = true;
-                break;
-            case 401:
-                errorResponse.code = error.value.response.status as number;
-                errorResponse.description = '401 - Unauthorized';
-                errorResponse.show = true;
-                break;
-            default:
-                break;
-        }
-        return;
+  if (error.value) {
+    switch (error.value.response?.status) {
+      case 404:
+        errorResponse.code = error.value.response.status as number;
+        errorResponse.description = '404 - Something invalid just happened.';
+        errorResponse.show = true;
+        break;
+      case 500:
+        errorResponse.code = error.value.response.status as number;
+        errorResponse.description = '500 - Server error';
+        errorResponse.show = true;
+        break;
+      case 401:
+        errorResponse.code = error.value.response.status as number;
+        errorResponse.description = '401 - Unauthorized';
+        errorResponse.show = true;
+        break;
+      default:
+        break;
     }
+    return;
+  }
 
-    const userDetails = data.value?.data;
-    authStore.addUserDetail(userDetails as UserDetails);
+  const userDetails = data.value?.data;
+  authStore.addUserDetail(userDetails as UserDetails);
 };
 
 const loginWithGoogle = async () => {
-    await registerUser();
-    const parsedToken = await getParsedFirebaseJWTToken();
-    const token = await getUserToken();
-    authStore.addUser(parsedToken);
+  await registerUser();
+  const parsedToken = await getParsedFirebaseJWTToken();
+  const token = await getUserToken();
+  authStore.addUser(parsedToken);
 
-    if (!parsedToken.hasOwnProperty('permissions')) {
-        authStore.addFirebaseToken(token);
-        return navigateTo('/signup');
-    } else {
-        await fetchUserDetails(parsedToken, token);
-    }
+  if (!parsedToken.hasOwnProperty('permissions')) {
+    authStore.addFirebaseToken(token);
+    return navigateTo('/signup');
+  } else {
+    await fetchUserDetails(parsedToken, token);
+  }
 };
 </script>
