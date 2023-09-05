@@ -3,8 +3,8 @@
     <div class="pl-4 pr-1.5 py-3">
       <NuxtLink
 :to="`/dashboard/customers/${item.firebaseId}`" class="group/link flex items-center" event=""
-                @click.native="showCustomerInformation(item)">
-        <div
+                @click.native="showCustomerInformation(item)"
+        ><div
 class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4"
              :class="[
                         !item.avatar ? 'bg-gray-200' : '',
@@ -36,8 +36,8 @@ id="mask0_801_26126" style="mask-type: luminance" maskUnits="userSpaceOnUse" x="
                         y="2" width="20" height="16">
                     <path
                         d="M0 4.85742C0 3.75285 0.895431 2.85742 2 2.85742H18C19.1046 2.85742 20 3.75285 20 4.85742V15.1431C20 16.2477 19.1046 17.1431 18 17.1431H2C0.895431 17.1431 0 16.2477 0 15.1431V4.85742Z"
-                        fill="white"/>
-                  </mask>
+                        fill="white"
+                  /></mask>
                   <g mask="url(#mask0_801_26126)">
                     <rect x="9.52344" y="2.85742" width="10.4762" height="14.2857" fill="#E5253D"/>
                     <path
@@ -128,15 +128,14 @@ v-if="showOptions" v-click-outside="() => (showOptions = false)"
                 }">
         <button
             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-            @click="showOptions = false,
-                    $router.push(`/dashboard/customers/${item.firebaseId}`)">
-          <ProfileIcon class="w-6 h-6 mr-3 text-current"/>
+            @click="(showOptions = false), $router.push(`/dashboard/customers/${item.firebaseId}`)"
+          ><ProfileIcon class="w-6 h-6 mr-3 text-current"/>
           <span class="text-sm leading-[1.71] font-medium">Profile</span>
         </button>
         <button
             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-            @click="showOptions = false">
-          <OrdersIcon class="w-6 h-6 mr-3 text-current"/>
+            @click="showOptions = false"
+          ><OrdersIcon class="w-6 h-6 mr-3 text-current"/>
           <span class="text-sm leading-[1.71] font-medium">Orders</span>
         </button>
         <button
@@ -149,15 +148,15 @@ v-if="showOptions" v-click-outside="() => (showOptions = false)"
             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
             @click="
                         showDeactivatingModal = true;
-                    showOptions = false;
-                    ">
-          <DeactivateIcon class="w-6 h-6 mr-3 text-current"/>
+                        showOptions = false;
+                    "
+          ><DeactivateIcon class="w-6 h-6 mr-3 text-current"/>
           <span class="text-sm leading-[1.71] font-medium"> Deactivate Account </span>
         </button>
         <button
             class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
-            @click="showOptions = false">
-          <TrashIcon class="w-6 h-6 mr-3 text-current"/>
+            @click="showOptions = false"
+          ><TrashIcon class="w-6 h-6 mr-3 text-current"/>
           <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
         </button>
       </div>

@@ -61,18 +61,25 @@
           </template>
         </div>
       </div>
-      <div class="flex items-center gap-1 bg-white rounded-xl p-2 shadow-xs overflow-x-auto hide-scrollbar">
+      <div class="relative flex items-center gap-1 bg-white rounded-xl p-2 shadow-xs overflow-x-auto hide-scrollbar">
         <NuxtLink
             v-for="(view, index) in panelViews"
             :key="index"
             :to="`/dashboard/customers/${route.params.slug}/control-panel/${view
                         .toLowerCase()
                         .replace(/ /g, '-')}`"
-            class="text-sm font-medium leading-[1.42857] px-6 py-3 rounded-lg flex-shrink-0 transition-colors duration-300 hover:text-white hover:bg-blue"
-            :class="[view.toLowerCase().replace(/ /, '-') === activeView ? 'text-white bg-blue' : '']"
+            class="panelView relative z-10 text-sm font-medium leading-[1.42857] px-6 py-3 rounded-lg flex-shrink-0 transition-colors duration-300"
+            :class="[view.toLowerCase().replace(/ /, '-') === activeView ? 'text-white ' : 'hover:text-blue']"
         >
           {{ view }}
         </NuxtLink>
+                <div
+                    class="absolute top-1/2 -translate-y-1/2 bg-blue h-11 rounded-lg transition-all duration-300"
+                    :style="{
+                        width: viewHighlightWidth + 'px',
+                        left: viewHightlightLeft + 'px',
+                    }"
+                />
       </div>
       <NuxtPage/>
     </div>
@@ -91,8 +98,28 @@ const customer = ref('');
 
 const panelViews = ['Organization', 'Shipping', 'Billing', 'Transaction History', 'Settings'];
 
+const viewHighlightWidth = ref(0);
+const viewHightlightLeft = ref(0);
+
 const activeView = computed(() => {
   return route.params.view;
+});
+
+const setActivePanelHighlight = () => {
+    const view = activeView.value;
+    const index = panelViews.findIndex((panelView) => panelView.toLowerCase().replace(/ /g, '-') === view);
+    if (index !== -1) {
+        const viewElement = document.querySelectorAll('.panelView')[index] as HTMLElement;
+
+        if (viewElement) {
+            viewHighlightWidth.value = viewElement.clientWidth;
+            viewHightlightLeft.value = viewElement.offsetLeft;
+        }
+    }
+};
+
+watch(activeView, () => {
+    setActivePanelHighlight();
 });
 
 onMounted(() => {
@@ -104,6 +131,7 @@ onMounted(() => {
       path: newPath,
     });
   }
+    setActivePanelHighlight();
 });
 
 definePageMeta({
