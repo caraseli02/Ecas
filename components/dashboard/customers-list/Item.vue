@@ -1,198 +1,208 @@
 <template>
-    <div class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center">
-        <div class="pl-4 pr-1.5 py-3">
-            <NuxtLink :to="`/dashboard/customers/${item.firebaseId}`" class="group/link flex items-center" event=""
+  <div class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center">
+    <div class="pl-4 pr-1.5 py-3">
+      <NuxtLink
+:to="`/dashboard/customers/${item.firebaseId}`" class="group/link flex items-center" event=""
                 @click.native="showCustomerInformation(item)">
-                <div class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4"
-                    :class="[
+        <div
+class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4"
+             :class="[
                         !item.avatar ? 'bg-gray-200' : '',
                         loading
                             ? ''
                             : 'after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100',
                     ]">
-                    <SkeletonLoader v-if="loading" class="w-full h-full" />
-                    <template v-else>
-                        <img v-if="item.avatar" :src="item.avatar" :alt="item.name"
-                            class="w-full h-full rounded-full object-cover" />
-                        <UserIcon v-else class="w-7 h-7 text-gray-100" />
-                    </template>
-                </div>
-                <div class="w-[calc(100%-60px)]">
-                    <SkeletonLoader v-if="loading" class="w-2/3 h-5 mb-2" />
-                    <div v-else class="flex items-center justify-between gap-3 mb-1">
-                        <div
-                            class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue">
-                            {{ item.name }}
-                        </div>
-                        <div class="flex items-center gap-3 cursor-default">
-                            <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-                                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                                    <rect y="2.85742" width="20" height="14.2857" rx="4" fill="white" />
-                                    <mask id="mask0_801_26126" style="mask-type: luminance" maskUnits="userSpaceOnUse" x="0"
-                                        y="2" width="20" height="16">
-                                        <path
-                                            d="M0 4.85742C0 3.75285 0.895431 2.85742 2 2.85742H18C19.1046 2.85742 20 3.75285 20 4.85742V15.1431C20 16.2477 19.1046 17.1431 18 17.1431H2C0.895431 17.1431 0 16.2477 0 15.1431V4.85742Z"
-                                            fill="white" />
-                                    </mask>
-                                    <g mask="url(#mask0_801_26126)">
-                                        <rect x="9.52344" y="2.85742" width="10.4762" height="14.2857" fill="#E5253D" />
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M0 17.1431H6.66667V2.85742H0V17.1431Z" fill="#0A3D9C" />
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M6.66797 17.1431H13.3346V2.85742H6.66797V17.1431Z" fill="#FFD955" />
-                                    </g>
-                                </svg>
-                                <template #content>
-                                    <span>Romania</span>
-                                </template>
-                            </Tooltip>
-                            <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-                                <div class="bg-blue px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-white">10%
-                                </div>
-                                <template #content>
-                                    <span>Customer Discount: <strong class="font-semibold">10%</strong></span>
-                                </template>
-                            </Tooltip>
-                        </div>
-                    </div>
-                    <SkeletonLoader v-if="loading" class="w-full h-4" />
-                    <div v-else class="text-xs leading-[1.33] text-gray-300 truncate">
-                        {{ item.email }}
-                    </div>
-                </div>
-            </NuxtLink>
+          <SkeletonLoader v-if="loading" class="w-full h-full"/>
+          <template v-else>
+            <img
+v-if="item.avatar" :src="item.avatar" :alt="item.name"
+                 class="w-full h-full rounded-full object-cover"/>
+            <UserIcon v-else class="w-7 h-7 text-gray-100"/>
+          </template>
         </div>
-        <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <template v-else> {{ item.account }}</template>
-        </div>
-        <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <template v-else>
-                {{ item.company }}
-            </template>
-        </div>
-        <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <template v-else>
-                {{ item.registered }}
-            </template>
-        </div>
-        <div class="text-sm leading-[1.43] font-medium truncate pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <template v-else>
-                {{ item.spent }}
-            </template>
-        </div>
-        <div class="flex justify-center pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <div v-else class="text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md">
-                {{ item.ordersCount }}
+        <div class="w-[calc(100%-60px)]">
+          <SkeletonLoader v-if="loading" class="w-2/3 h-5 mb-2"/>
+          <div v-else class="flex items-center justify-between gap-3 mb-1">
+            <div
+                class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue">
+              {{ item.name }}
             </div>
-        </div>
-        <div class="flex items-center justify-end gap-4 pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <template v-else>
-                <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-                    <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
-                        <DocumentIcon class="w-6 h-6" />
-                    </button>
-                    <template #content>
-                        <span>View Orders</span>
-                    </template>
-                </Tooltip>
-                <div class="relative">
-                    <button class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue"
-                        @click="handleShowOptions">
-                        <MoreVerticalIcon class="w-6 h-6" />
-                    </button>
+            <div class="flex items-center gap-3 cursor-default">
+              <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+                  <rect y="2.85742" width="20" height="14.2857" rx="4" fill="white"/>
+                  <mask
+id="mask0_801_26126" style="mask-type: luminance" maskUnits="userSpaceOnUse" x="0"
+                        y="2" width="20" height="16">
+                    <path
+                        d="M0 4.85742C0 3.75285 0.895431 2.85742 2 2.85742H18C19.1046 2.85742 20 3.75285 20 4.85742V15.1431C20 16.2477 19.1046 17.1431 18 17.1431H2C0.895431 17.1431 0 16.2477 0 15.1431V4.85742Z"
+                        fill="white"/>
+                  </mask>
+                  <g mask="url(#mask0_801_26126)">
+                    <rect x="9.52344" y="2.85742" width="10.4762" height="14.2857" fill="#E5253D"/>
+                    <path
+fill-rule="evenodd" clip-rule="evenodd"
+                          d="M0 17.1431H6.66667V2.85742H0V17.1431Z" fill="#0A3D9C"/>
+                    <path
+fill-rule="evenodd" clip-rule="evenodd"
+                          d="M6.66797 17.1431H13.3346V2.85742H6.66797V17.1431Z" fill="#FFD955"/>
+                  </g>
+                </svg>
+                <template #content>
+                  <span>Romania</span>
+                </template>
+              </Tooltip>
+              <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+                <div class="bg-blue px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-white">10%
                 </div>
-            </template>
+                <template #content>
+                  <span>Customer Discount: <strong class="font-semibold">10%</strong></span>
+                </template>
+              </Tooltip>
+            </div>
+          </div>
+          <SkeletonLoader v-if="loading" class="w-full h-4"/>
+          <div v-else class="text-xs leading-[1.33] text-gray-300 truncate">
+            {{ item.email }}
+          </div>
         </div>
+      </NuxtLink>
     </div>
-    <Teleport to="body">
-        <Transition :name="index > 5 ? 'fade-full-neg' : 'fade-bottom'">
-            <div v-if="showOptions" v-click-outside="() => (showOptions = false)"
-                class="absolute z-10 grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[224px] shadow-m -translate-x-full"
-                :class="[index > 5 ? '-translate-y-[calc(100%+42px)]' : '']" :style="{
+    <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
+      <SkeletonLoader v-if="loading" class="w-full h-6"/>
+      <template v-else> {{ item.account }}</template>
+    </div>
+    <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
+      <SkeletonLoader v-if="loading" class="w-full h-6"/>
+      <template v-else>
+        {{ item.company }}
+      </template>
+    </div>
+    <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
+      <SkeletonLoader v-if="loading" class="w-full h-6"/>
+      <template v-else>
+        {{ item.registered }}
+      </template>
+    </div>
+    <div class="text-sm leading-[1.43] font-medium truncate pl-4 pr-1.5">
+      <SkeletonLoader v-if="loading" class="w-full h-6"/>
+      <template v-else>
+        {{ item.spent }}
+      </template>
+    </div>
+    <div class="flex justify-center pl-4 pr-1.5">
+      <SkeletonLoader v-if="loading" class="w-full h-6"/>
+      <div v-else class="text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md">
+        {{ item.ordersCount }}
+      </div>
+    </div>
+    <div class="flex items-center justify-end gap-4 pl-4 pr-1.5">
+      <SkeletonLoader v-if="loading" class="w-full h-6"/>
+      <template v-else>
+        <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+          <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
+            <DocumentIcon class="w-6 h-6"/>
+          </button>
+          <template #content>
+            <span>View Orders</span>
+          </template>
+        </Tooltip>
+        <div class="relative">
+          <button
+class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue"
+                  @click="handleShowOptions">
+            <MoreVerticalIcon class="w-6 h-6"/>
+          </button>
+        </div>
+      </template>
+    </div>
+  </div>
+  <Teleport to="body">
+    <Transition :name="index > 5 ? 'fade-full-neg' : 'fade-bottom'">
+      <div
+v-if="showOptions" v-click-outside="() => (showOptions = false)"
+           class="absolute z-10 grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[224px] shadow-m -translate-x-full"
+           :class="[index > 5 ? '-translate-y-[calc(100%+42px)]' : '']" :style="{
                     top: optionsDropdownTop + 'px',
                     left: optionsDropdownLeft + 'px',
                 }">
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="showOptions = false,
+        <button
+            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            @click="showOptions = false,
                     $router.push(`/dashboard/customers/${item.firebaseId}`)">
-                    <ProfileIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71] font-medium">Profile</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="showOptions = false">
-                    <OrdersIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71] font-medium">Orders</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="showOptions = false">
-                    <SettingsIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71] font-medium">Settings</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="
+          <ProfileIcon class="w-6 h-6 mr-3 text-current"/>
+          <span class="text-sm leading-[1.71] font-medium">Profile</span>
+        </button>
+        <button
+            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            @click="showOptions = false">
+          <OrdersIcon class="w-6 h-6 mr-3 text-current"/>
+          <span class="text-sm leading-[1.71] font-medium">Orders</span>
+        </button>
+        <button
+            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            @click="showOptions = false">
+          <SettingsIcon class="w-6 h-6 mr-3 text-current"/>
+          <span class="text-sm leading-[1.71] font-medium">Settings</span>
+        </button>
+        <button
+            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            @click="
                         showDeactivatingModal = true;
                     showOptions = false;
                     ">
-                    <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71] font-medium"> Deactivate Account </span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
-                    @click="showOptions = false">
-                    <TrashIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
-                </button>
-            </div>
-        </Transition>
-        <Transition name="fade">
-            <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item"
-                @close="showDeactivatingModal = false" />
-        </Transition>
-        <div class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
-            :class="[showDeactivatingModal ? 'backdrop-blur-[7.5px]' : 'backdrop-blur-0 opacity-0 pointer-events-none']"
-            @click="showDeactivatingModal = false" />
-    </Teleport>
+          <DeactivateIcon class="w-6 h-6 mr-3 text-current"/>
+          <span class="text-sm leading-[1.71] font-medium"> Deactivate Account </span>
+        </button>
+        <button
+            class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
+            @click="showOptions = false">
+          <TrashIcon class="w-6 h-6 mr-3 text-current"/>
+          <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
+        </button>
+      </div>
+    </Transition>
+    <Transition name="fade">
+      <DashboardDeactivateUserModal
+v-if="showDeactivatingModal" :user="item"
+                                    @close="showDeactivatingModal = false"/>
+    </Transition>
+    <div
+class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
+         :class="[showDeactivatingModal ? 'backdrop-blur-[7.5px]' : 'backdrop-blur-0 opacity-0 pointer-events-none']"
+         @click="showDeactivatingModal = false"/>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
-import { DashboardCustomerTableItem } from '~/types';
+import {PropType} from 'vue';
+import {DashboardCustomerTableItem} from '~/types';
 import DocumentIcon from '@/assets/icons/dashboard/document.svg';
+import OrdersIcon from '@/assets/icons/dashboard/document.svg';
 import MoreVerticalIcon from '@/assets/icons/dashboard/more-vertical.svg';
 import UserIcon from '@/assets/icons/dashboard/user.svg';
 import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
-import OrdersIcon from '@/assets/icons/dashboard/document.svg';
 import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
 import DeactivateIcon from '@/assets/icons/dashboard/deactivate.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 
 const props = defineProps({
-    item: {
-        type: Object as PropType<DashboardCustomerTableItem>,
-        required: true,
-    },
-    index: {
-        type: Number,
-        default: false,
-    },
-    isScrolling: {
-        type: Boolean,
-        default: false,
-    },
-    loading: {
-        type: Boolean,
-        default: false,
-    },
+  item: {
+    type: Object as PropType<DashboardCustomerTableItem>,
+    required: true,
+  },
+  index: {
+    type: Number,
+    default: false,
+  },
+  isScrolling: {
+    type: Boolean,
+    default: false,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const showOptions = ref(false);
@@ -201,22 +211,21 @@ const optionsDropdownLeft = ref(0);
 const optionsDropdownTop = ref(0);
 
 const handleShowOptions = (event: MouseEvent) => {
-    showOptions.value = !showOptions.value;
-    const target = event.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    optionsDropdownLeft.value = rect.left + 28;
-    optionsDropdownTop.value = rect.top + window.scrollY + 36;
+  showOptions.value = !showOptions.value;
+  const target = event.currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
+  optionsDropdownLeft.value = rect.left + 28;
+  optionsDropdownTop.value = rect.top + window.scrollY + 36;
 };
 const showCustomerInformation = (item) => {
-    console.log(item)
 }
 const scrolling = computed(() => {
-    return props.isScrolling;
+  return props.isScrolling;
 });
 
 watch(scrolling, (val) => {
-    if (val) {
-        showOptions.value = false;
-    }
+  if (val) {
+    showOptions.value = false;
+  }
 });
 </script>
