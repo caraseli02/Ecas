@@ -17,7 +17,9 @@
             <div class="text-sm leading-[1.71] text-left">{{ item.label }}</div>
             <div class="flex justify-center">
               <label class="flex cursor-pointer">
-                <input :value="item.email" type="checkbox" class="sr-only" @change="item.email = !item.email"/>
+                <input
+                    :value="item.email" type="checkbox" class="sr-only"
+                    @change="item.email = !item.email; markSettingAsRead(item,'email')"/>
                 <div
                     class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                     :class="[
@@ -35,7 +37,9 @@
             </div>
             <div class="flex justify-end">
               <label class="flex cursor-pointer">
-                <input :value="item.app" type="checkbox" class="sr-only" @change="item.app = !item.app"/>
+                <input
+                    :value="item.app" type="checkbox" class="sr-only"
+                    @change="item.app = !item.app; markSettingAsRead(item,'app')"/>
                 <div
                     class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                     :class="[
@@ -65,7 +69,9 @@
               size="lg"
               class="max-md:mb-4"
           />
-          <button class="flex items-center justify-center w-full bg-blue rounded-lg px-6 py-2.5 text-white">
+          <button
+              class="flex items-center justify-center w-full bg-blue rounded-lg px-6 py-2.5 text-white"
+              @:click="resetPassword(securityEmail)">
             <SecurityUserIcon class="w-6 h-6 mr-2"/>
             <span class="text-sm leading-[1.71] font-medium"> Send Password Reset </span>
           </button>
@@ -77,17 +83,17 @@
           <div v-for="(item, index) in marketingPreferences" :key="index" class="flex items-center justify-between">
             <div class="text-sm leading-[1.71] text-left">{{ item.label }}</div>
             <label class="flex cursor-pointer">
-              <input :value="item.checked" type="checkbox" class="sr-only" @change="item.checked = !item.checked"/>
+              <input :value="item.email" type="checkbox" class="sr-only" @change="item.email = !item.email"/>
               <div
                   class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                   :class="[
-                                    item.checked
+                                    item.email
                                         ? 'bg-blue border-blue group-hover:bg-white'
                                         : 'bg-white  border-border group-hover:border-gray-300',
                                 ]"
               >
                 <CheckIcon
-                    v-if="item.checked"
+                    v-if="item.email"
                     class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
                 />
               </div>
@@ -103,7 +109,11 @@
 import CheckIcon from '@/assets/icons/check.svg';
 import SecurityUserIcon from '@/assets/icons/dashboard/security-user.svg';
 import {useNuxtApp} from '#app';
-import {AccountAdminSettings, AlertAndNotificationLabelsEnum} from '~/types/auth/account-settings';
+import {
+  AccountAdminSettings,
+  AlertAndNotificationLabelsEnum,
+  MarketingPreferencesEnum
+} from '~/types/auth/account-settings';
 
 const {$api} = useNuxtApp();
 const alertsAndNotifications = ref([
@@ -156,7 +166,13 @@ const getCustomerSettings = async () => {
   if (!settings.alertsAndNotifications) {
     return;
   }
-
+  if (!settings.marketingPreferences) {
+    return;
+  }
+  marketingPreferences.value.forEach(preference => {
+    preference.email = (settings?.marketingPreferences as any)[preference.key]?.email || false;
+    preference.app = (settings?.marketingPreferences as any)[preference.key]?.app || false
+  })
   alertsAndNotifications.value.forEach(alert => {
     alert.email = (settings?.alertsAndNotifications as any)[alert.key]?.email || false;
     alert.app = (settings?.alertsAndNotifications as any)[alert.key]?.app || false
@@ -166,18 +182,37 @@ const getCustomerSettings = async () => {
 const securityEmail = ref('');
 const marketingPreferences = ref([
   {
-    label: 'Cookies Policy Consent',
-    checked: false,
+    label: MarketingPreferencesEnum.cookiesPolicy,
+    key: 'cookiesPolicy',
+    email: false,
+    app: false,
   },
   {
-    label: 'Subscribed to Newsletter',
-    checked: false,
+    label: MarketingPreferencesEnum.subscribedNewsletter,
+    key: 'newsletter',
+    email: false,
+    app: false,
   },
   {
-    label: 'E-mail marketing consent',
-    checked: false,
+    label: MarketingPreferencesEnum.emailMarketing,
+    key: 'emailMarketing',
+    email: false,
+    app: false,
   },
 ]);
-
+const markSettingAsRead = async (item: object, type: string) => {
+  const response = (await $api.controlPanel.markSettingsAsRead(item, type, props.id))
+}
 await getCustomerSettings()
+
+const resetPassword = async (email: string) => {
+  console.log(email)
+  const response = await $api.user.resetPasswordLink(email);
+
+  if (response.status !== 'success') {
+    return;
+  }
+};
+
+
 </script>

@@ -45,3 +45,9 @@ export enum AlertAndNotificationLabelsEnum {
     priceChange = 'Prince Change',
     shippingUpdates = 'Shipping Updates'
 }
+
+export enum MarketingPreferencesEnum {
+    cookiesPolicy = 'Cookies Policy Consent',
+    subscribedNewsletter = 'Subscribed to Newsletter',
+    emailMarketing = 'E-mail marketing consent'
+}
