@@ -118,7 +118,7 @@ import { DashboardControlPanelTransactionHistoryItem } from '~~/types';
 
 const atPage = ref(1);
 const perPage = ref(10);
-const loading = ref(false);
+const loading = ref(true);
 
 const activeFilters = ref(['Filter 1', 'Filter 2']);
 
@@ -340,5 +340,11 @@ watch(checkAll, (newVal) => {
             e.checked = false;
         });
     }
+});
+
+onMounted(() => {
+    setTimeout(() => {
+        loading.value = false;
+    }, 5000);
 });
 </script>

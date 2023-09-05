@@ -3,23 +3,31 @@
         <div class="mb-4">
             <div class="flex items-start justify-between">
                 <h2 class="text-xl leading-[1.4] font-semibold">Customer Discount</h2>
-                <button class="flex text-white bg-blue text-xs leading-[1.66] font-semibold rounded-full px-2">10 %</button>
+                <SkeletonLoader v-if="loading" class="w-[60px] h-7" />
+                <WarningIcon v-else-if="error" class="w-6 h-6" />
+                <div v-else class="flex text-white bg-blue text-xs leading-[1.66] font-semibold rounded-full px-2">10 %</div>
             </div>
         </div>
         <p class="text-sm leading-[1.71] mb-9">Apply a customer discount (i.e. 5, 10, 17 etc).</p>
         <div class="mb-9">
-            <div class="text-sm text-gray-300 mb-1">Customer Discount</div>
-            <div class="flex border border-border rounded-lg h-11 overflow-hidden">
-                <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">%</div>
-                <input
-                    v-model="customerDiscountBuffer"
-                    type="number"
-                    placeholder="Discount (i.e. 5, 10, 17)"
-                    class="bg-transparent px-2 text-sm w-full transition-colors duration-300 focus:outline-none"
-                />
-            </div>
+            <SkeletonLoader v-if="loading || error" class="w-full h-[68px]" />
+            <template v-else>
+                <div class="text-sm text-gray-300 mb-1">Customer Discount</div>
+                <div class="flex border border-border rounded-lg h-11 overflow-hidden">
+                    <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">%</div>
+                    <input
+                        v-model="customerDiscountBuffer"
+                        type="number"
+                        placeholder="Discount (i.e. 5, 10, 17)"
+                        class="bg-transparent px-2 text-sm w-full transition-colors duration-300 focus:outline-none"
+                    />
+                </div>
+            </template>
         </div>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-[auto,1fr] lg:grid-cols-1 lg:mt-auto">
+        <div
+            class="grid grid-cols-1 gap-4 md:grid-cols-[auto,1fr] lg:grid-cols-1 lg:mt-auto"
+            :class="[error || loading ? ' opacity-0 pointer-events-none' : '']"
+        >
             <button
                 v-if="customerDiscount"
                 class="flex items-center justify-center w-full border-[1.5px] border-[#FA4B4B] rounded-lg px-5 py-2 text-[#FA4B4B] h-11"
@@ -45,7 +53,18 @@
 <script setup lang="ts">
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import PercentageIcon from '@/assets/icons/dashboard/percentage.svg';
+import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
 const customerDiscountBuffer = ref<number | null>(10);
 const customerDiscount = ref<number | null>(10);
+
+const loading = ref(true);
+const error = ref(true);
+
+onMounted(() => {
+    setTimeout(() => {
+        loading.value = false;
+        error.value = false;
+    }, 5000);
+});
 </script>

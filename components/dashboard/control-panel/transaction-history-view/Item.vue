@@ -13,29 +13,54 @@
                 </div>
             </label>
         </div>
-        <div class="px-2 py-4 text-sm font-medium leading-[1.71] text-blue">#{{ item.id }}</div>
-        <div class="px-2 py-4 text-sm font-medium leading-[1.71] text-blue">{{ item.invoiceId }}</div>
-        <div class="px-2 py-4 text-sm font-medium leading-[1.71]">{{ item.amount }}</div>
-        <div class="flex items-center px-2 py-4 text-sm font-medium leading-[1.71]">
-            <div class="w-2 h-2 rounded-full mr-2" :class="item.type === 'debit' ? 'bg-[#00D395]' : 'bg-blue'" />
-            <span class="text-sm font-medium leading-[1.43] capitalize" :class="item.type === 'debit' ? 'text-[#00D395]' : 'text-blue'">{{
-                item.type
-            }}</span>
+        <div class="px-2 py-4 text-sm font-medium leading-[1.71] text-blue">
+            <SkeletonLoader v-if="loading" class="w-[140px] h-6" />
+            <template v-else> #{{ item.id }} </template>
         </div>
-        <div class="px-2 py-4 text-sm leading-[1.71]">21 Sep 2023, 18:25</div>
+        <div class="px-2 py-4 text-sm font-medium leading-[1.71] text-blue">
+            <SkeletonLoader v-if="loading" class="w-[140px] h-6" />
+            <template v-else>
+                {{ item.invoiceId }}
+            </template>
+        </div>
+        <div class="px-2 py-4 text-sm font-medium leading-[1.71]">
+            <SkeletonLoader v-if="loading" class="w-20 h-6" />
+            <template v-else>
+                {{ item.amount }}
+            </template>
+        </div>
         <div class="flex items-center px-2 py-4 text-sm font-medium leading-[1.71]">
-            <div
-                class="w-2 h-2 rounded-full mr-2"
-                :class="item.status === 'success' ? 'bg-[#00D395]' : item.status === 'pending' ? 'bg-[#FF8A00]' : 'bg-[#FA4B4B]'"
-            />
-            <span
-                class="text-sm font-medium leading-[1.43] capitalize"
-                :class="item.status === 'success' ? 'text-[#00D395]' : item.status === 'pending' ? 'text-[#FF8A00]' : 'text-[#FA4B4B]'"
-                >{{ item.status }}</span
-            >
+            <SkeletonLoader v-if="loading" class="w-20 h-6" />
+            <template v-else>
+                <div class="w-2 h-2 rounded-full mr-2" :class="item.type === 'debit' ? 'bg-[#00D395]' : 'bg-blue'" />
+                <span
+                    class="text-sm font-medium leading-[1.43] capitalize"
+                    :class="item.type === 'debit' ? 'text-[#00D395]' : 'text-blue'"
+                    >{{ item.type }}</span
+                >
+            </template>
+        </div>
+        <div class="px-2 py-4 text-sm leading-[1.71]">
+            <SkeletonLoader v-if="loading" class="w-[140px] h-6" />
+            <template v-else> 21 Sep 2023, 18:25 </template>
+        </div>
+        <div class="flex items-center px-2 py-4 text-sm font-medium leading-[1.71]">
+            <SkeletonLoader v-if="loading" class="w-[120px] h-6" />
+            <template v-else>
+                <div
+                    class="w-2 h-2 rounded-full mr-2"
+                    :class="item.status === 'success' ? 'bg-[#00D395]' : item.status === 'pending' ? 'bg-[#FF8A00]' : 'bg-[#FA4B4B]'"
+                />
+                <span
+                    class="text-sm font-medium leading-[1.43] capitalize"
+                    :class="item.status === 'success' ? 'text-[#00D395]' : item.status === 'pending' ? 'text-[#FF8A00]' : 'text-[#FA4B4B]'"
+                    >{{ item.status }}</span
+                >
+            </template>
         </div>
         <div class="flex items-center justify-end p-4 pr-[26px]">
-            <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
+            <SkeletonLoader v-if="loading" class="w-[120px] h-6" />
+            <button v-else class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
                 <DownloadIcon class="w-5 h-5 mr-2" />
                 <span class="text-sm font-medium leading-[1.71]">Download</span>
             </button>
