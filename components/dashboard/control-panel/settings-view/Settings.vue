@@ -206,7 +206,6 @@ const markSettingAsRead = async (item: object, type: string) => {
 await getCustomerSettings()
 
 const resetPassword = async (email: string) => {
-  console.log(email)
   const response = await $api.user.resetPasswordLink(email);
 
   if (response.status !== 'success') {

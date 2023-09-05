@@ -17,7 +17,6 @@ class ControlPanelService extends HttpFactory {
     async markSettingsAsRead(setting: object, type: string, id: string) {
         const authStore = useAuthStore();
         const token = authStore.getToken;
-        console.log(setting)
         const data = {
             setting: {
                 name: (setting as object as any).key,
