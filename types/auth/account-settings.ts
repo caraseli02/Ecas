@@ -25,6 +25,8 @@ export interface CustomerCreditInterface {
     spent: number;
     available: number;
     dueDate: string;
+    tillDue: string;
+    term: number;
 }
 
 export interface AlertsAndNotificationsTypes {

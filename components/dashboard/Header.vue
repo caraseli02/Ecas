@@ -26,6 +26,7 @@
                 <BellIcon class="w-6 h-6 text-gray-300"/>
               </button>
               <div
+                  v-if="unreadNotifications > 0"
                   class="flex absolute -top-1 right-0 translate-x-1/2 bg-[#FA4B4B] rounded-[100px] px-1 py-0.5 text-[10px] font-semibold tracking-[-0.03em] leading-[1.1] text-white font-Inter"
               >
                 {{ unreadNotifications }}

@@ -29,6 +29,46 @@ class ControlPanelService extends HttpFactory {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
+
+    async fetchCustomerDiscount(id: string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        return await this.call<AccountAdminSettings>('GET', `${this.MAIN_RESOURCE}/discount/${id}`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
+    async updateCustomerDiscount(discount: number, id: string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        const data = {
+            value: discount
+        }
+        return await this.call<AccountAdminSettings>('PUT', `${this.MAIN_RESOURCE}/discount/${id}`, data, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
+    async fetchCustomerCredit(id: string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        return await this.call<AccountAdminSettings>('GET', `${this.MAIN_RESOURCE}/customer-credit/${id}`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
+    async updateCustomerCredit(term: number, limit: string, id: string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        const data = {
+            term: term,
+            limit: limit,
+        }
+        return await this.call<AccountAdminSettings>('PUT', `${this.MAIN_RESOURCE}/customer-credit/${id}`, data, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
 }
 
 export default ControlPanelService;
