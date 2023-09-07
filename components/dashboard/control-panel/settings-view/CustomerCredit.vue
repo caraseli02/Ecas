@@ -19,7 +19,7 @@
     <div
         class="md:grid md:grid-cols-[200px,1fr] md:grid-rows-[repeat(2,auto)] md:items-center md:gap-x-9 md:gap-y-8 lg:grid-cols-1 lg:gap-y-9 xl:gap-y-4"
     >
-      <SkeletonLoader v-if="loading || error" class="w-full h-[71px] max-md:mb-12"/>
+      <SkeletonLoader v-if="loading" class="w-full h-[71px] max-md:mb-12"/>
       <div
           v-else-if="chartSeries[0] !== null"
           class="grid grid-cols-3 border border-border rounded-lg p-3 max-md:mb-12 md:order-2 lg:order-1"
@@ -43,7 +43,7 @@
           </div>
         </div>
       </div>
-      <div v-if="loading || error" class="flex items-center justify-center w-full h-[249px] max-md:mb-8">
+      <div v-if="loading" class="flex items-center justify-center w-full h-[249px] max-md:mb-8">
         <SkeletonLoader class="w-[180px] h-[180px] mx-auto" type="circle"/>
       </div>
       <div v-else class="relative flex justify-center max-md:mb-8 md:order-1 md:row-span-2 lg:order-2">
@@ -73,7 +73,7 @@
       </button>
       <div v-else class="md:order-3">
         <div class="text-sm leading-[1.71] font-semibold mb-6">Total Spent</div>
-        <SkeletonLoader v-if="loading || error" class="w-full h-12"/>
+        <SkeletonLoader v-if="loading" class="w-full h-12"/>
         <template v-else>
           <div
               v-if="creditObject?.limit"
@@ -164,13 +164,8 @@ const chartOptions = ref({
 const {$api} = useNuxtApp();
 
 const loading = ref(true);
-const error = ref(true);
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
-    error.value = false;
-  }, 1000);
-});
+const error = ref(false);
+
 
 const props = defineProps({
   id: {
@@ -183,7 +178,17 @@ const getCustomerCredit = async () => {
   const response = (await $api.controlPanel.fetchCustomerCredit(props.id))
 
   if (response.status !== 'success') {
+    setTimeout(() => {
+      loading.value = false;
+      error.value = true;
+    }, 100);
     return;
+  } else {
+    setTimeout(() => {
+      loading.value = false;
+      error.value = false;
+    }, 100);
+
   }
 
   creditObject.value = response.data;

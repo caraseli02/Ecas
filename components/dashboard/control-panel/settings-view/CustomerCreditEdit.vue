@@ -56,11 +56,14 @@
       </div>
       <div class="flex items-center gap-4 mb-6">
         <button
-            class="flex items-center justify-center border-[1.5px] border-[#FA4B4B] rounded-md px-4 py-1 text-[#FA4B4B] h-8">
+            class="flex items-center justify-center border-[1.5px] border-[#FA4B4B] rounded-md px-4 py-1 text-[#FA4B4B] h-8"
+            @click="switchClose()">
           <TrashIcon class="w-4 h-4 mr-2"/>
           <span class="text-sm leading-[1.71] font-medium min-w-max"> Close Credit </span>
         </button>
-        <button class="flex items-center justify-center border-[1.5px] border-blue rounded-md px-4 py-1 text-blue h-8">
+        <button
+            class="flex items-center justify-center border-[1.5px] border-blue rounded-md px-4 py-1 text-blue h-8"
+            @click="switchFreeze()">
           <FreezeIcon class="w-4 h-4 mr-2"/>
           <span class="text-sm leading-[1.71] font-medium min-w-max"> Freeze Credit </span>
         </button>
@@ -151,7 +154,7 @@
         </button>
         <button
             class="flex items-center justify-center px-5 py-2 rounded-lg bg-blue leading-[1.75] text-white font-medium"
-            @click="$emit('close');updateCustomerCredit(creditTerm?.value , creditAmount )"
+            @click="$emit('close');updateCreditTerm(creditTerm?.value , creditAmount )"
         >
           Save
         </button>
@@ -221,18 +224,37 @@ const getAmountFormat = (money: number) => {
 const getCurrentDate = (date: string) => {
   return moment(date).format('DD MMM YYYY');
 };
-const updateCustomerCredit = async (term: any, value: any) => {
-  if (term && value) {
+const updateCreditTerm = async (term: any, value: any) => {
+  console.log(term, value)
+  if (term || value) {
     const response = (await $api.controlPanel.updateCustomerCredit(term, value, props.id))
 
     if (response.status !== 'success') {
       return;
+    } else {
+
+      creditObjectToEdit.value.limit = value || creditObjectToEdit.value.limit;
+      creditObjectToEdit.value.term = term || creditObjectToEdit.value.term;
+      creditObjectToEdit.value.dueDate = term ? moment(moment(), 'DD-MM-YYYY').add(term, 'days').toString() : creditObjectToEdit.value.dueDate;
+      creditObjectToEdit.value.tillDue = term || creditObjectToEdit.value.tillDue;
+      creditObjectToEdit.value.available = creditObjectToEdit.value.limit - creditObjectToEdit.value.spent;
     }
-    creditObjectToEdit.value.limit = value;
-    creditObjectToEdit.value.term = term;
-    creditObjectToEdit.value.dueDate = moment(moment(), 'DD-MM-YYYY').add(term, 'days').toString();
-    creditObjectToEdit.value.tillDue = term;
-    creditObjectToEdit.value.available = creditObjectToEdit.value.limit - creditObjectToEdit.value.spent;
   }
 }
+
+const switchFreeze = async () => {
+  const response = (await $api.controlPanel.toggleFreezeCustomerCredit(props.id))
+
+  if (response.status !== 'success') {
+    return;
+  }
+}
+const switchClose = async () => {
+  const response = (await $api.controlPanel.toggleCloseCustomerCredit(props.id))
+
+  if (response.status !== 'success') {
+    return;
+  }
+}
+
 </script>

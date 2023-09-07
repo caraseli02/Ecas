@@ -12,7 +12,7 @@
     </div>
     <p class="text-sm leading-[1.71] mb-9">Apply a customer discount (i.e. 5, 10, 17 etc).</p>
     <div class="mb-9">
-      <SkeletonLoader v-if="loading || error" class="w-full h-[68px]"/>
+      <SkeletonLoader v-if="loading" class="w-full h-[68px]"/>
       <template v-else>
         <div class="text-sm text-gray-300 mb-1">Customer Discount</div>
         <div class="flex border border-border rounded-lg h-11 overflow-hidden">
@@ -57,12 +57,13 @@ import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import PercentageIcon from '@/assets/icons/dashboard/percentage.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import {useNuxtApp} from '#app';
+import {DiscountInterface} from '~/types/auth/account-settings';
 
-const customerDiscountBuffer = ref<number>(10);
-const customerDiscount = ref<number>(10);
+const customerDiscountBuffer = ref<number>(0);
+const customerDiscount = ref<number>(0);
 
 const loading = ref(true);
-const error = ref(true);
+const error = ref(false);
 const {$api} = useNuxtApp();
 
 const props = defineProps({
@@ -71,21 +72,20 @@ const props = defineProps({
     required: true,
   },
 });
-
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
-    error.value = false;
-  }, 5000);
-});
 const getCustomerSettings = async () => {
-  const response = (await $api.controlPanel.fetchCustomerDiscount(props.id))
+  const response = (await $api.controlPanel.fetchCustomerDiscount(props.id)) as { 'status': string, data: DiscountInterface }
 
   if (response.status !== 'success') {
+    error.value = true;
+    loading.value = false;
     return;
+  } else {
+    loading.value = false;
+    error.value = false;
+    customerDiscount.value = response.data.value;
+    customerDiscountBuffer.value = response.data.value;
   }
-  customerDiscount.value = response.data.value;
-  customerDiscountBuffer.value = response.data.value;
+
 
 }
 
@@ -93,6 +93,9 @@ const updateDiscount = async (discount: number | 0) => {
   const response = (await $api.controlPanel.updateCustomerDiscount(discount, props.id))
   if (response.status !== 'success') {
     return;
+  } else {
+    loading.value = false;
+    error.value = false;
   }
 }
 

@@ -5,7 +5,7 @@ import AuthService from '~/services/auth.service';
 import UserService from '~/services/user.service';
 import UserDashboardService from '~/services/dashboard/user.service';
 import FavouriteFolderService from '~/services/favourite-folder.service';
-import CustomerProfileService from '~/services/customer-profile.service';
+import CustomerProfileService from '~/services/dashboard/customer-profile.service';
 import NotificationsService from '~/services/notifications.service'
 import ControlPanelService from '~/services/dashboard/control-panel.service';
 
