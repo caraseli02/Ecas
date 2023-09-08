@@ -1,6 +1,8 @@
 <template>
   <div class="w-[1488px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
-    <DashboardBreadcrumbs title="Control Panel" :customer="customer" :panel-view="activeView">
+    <DashboardBreadcrumbs
+        title="Control Panel" :customer="customer" :panel-view="activeView"
+        :account-type="accountType">
       <div class="max-lg:hidden max-w-max">
         <div class="grid grid-cols-[repeat(2,auto)] gap-5 text-right">
           <div class="flex flex-col">
@@ -73,13 +75,13 @@
         >
           {{ view }}
         </NuxtLink>
-                <div
-                    class="absolute top-1/2 -translate-y-1/2 bg-blue h-11 rounded-lg transition-all duration-300"
-                    :style="{
+        <div
+            class="absolute top-1/2 -translate-y-1/2 bg-blue h-11 rounded-lg transition-all duration-300"
+            :style="{
                         width: viewHighlightWidth + 'px',
                         left: viewHightlightLeft + 'px',
                     }"
-                />
+        />
       </div>
       <NuxtPage/>
     </div>
@@ -87,6 +89,9 @@
 </template>
 
 <script setup lang="ts">
+import {UserDetails} from '~/types/auth/user-details';
+import {useNuxtApp} from '#app';
+
 const route = useRoute();
 const router = useRouter();
 
@@ -96,42 +101,57 @@ useHead({
 
 const customer = ref('');
 
-const panelViews = ['Organization', 'Shipping', 'Billing', 'Transaction History', 'Settings'];
 
 const viewHighlightWidth = ref(0);
 const viewHightlightLeft = ref(0);
-
+const {$api} = useNuxtApp();
 const activeView = computed(() => {
   return route.params.view;
 });
-
+const accountType = ref(0)
 const setActivePanelHighlight = () => {
-    const view = activeView.value;
-    const index = panelViews.findIndex((panelView) => panelView.toLowerCase().replace(/ /g, '-') === view);
-    if (index !== -1) {
-        const viewElement = document.querySelectorAll('.panelView')[index] as HTMLElement;
+  const view = activeView.value;
+  const index = panelViews.findIndex((panelView) => panelView.toLowerCase().replace(/ /g, '-') === view);
+  if (index !== -1) {
+    const viewElement = document.querySelectorAll('.panelView')[index] as HTMLElement;
 
-        if (viewElement) {
-            viewHighlightWidth.value = viewElement.clientWidth;
-            viewHightlightLeft.value = viewElement.offsetLeft;
-        }
+    if (viewElement) {
+      viewHighlightWidth.value = viewElement.clientWidth;
+      viewHightlightLeft.value = viewElement.offsetLeft;
     }
+  }
 };
 
 watch(activeView, () => {
-    setActivePanelHighlight();
+  setActivePanelHighlight();
 });
 
+const fetchInformation = async () => {
+
+  const response = (await $api.customerProfile.fetchCustomerInformation(route.params.slug || '')) as {
+    status: string;
+    data: UserDetails;
+  };
+
+  if (response.status !== 'success') {
+    return;
+  }
+  accountType.value = response.data.accountType as any;
+};
+
+await fetchInformation()
+const panelViews = [(accountType.value == 0 ? 'Account' : 'Organization'), 'Shipping', 'Billing', 'Transaction History', 'Settings'];
+console.log(panelViews)
 onMounted(() => {
   if (!route.params.view) {
     const fixedPath = route.path.replace(/\/+$/, '');
-    const newPath = `${fixedPath}/organization`;
+    const newPath = `${fixedPath}/${accountType.value == 0 ? 'Account' : 'Organization'}`;
 
     router.replace({
       path: newPath,
     });
   }
-    setActivePanelHighlight();
+  setActivePanelHighlight();
 });
 
 definePageMeta({

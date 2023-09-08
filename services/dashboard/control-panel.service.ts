@@ -4,6 +4,8 @@ import {AccountAdminSettings} from '~/types/auth/account-settings';
 
 class ControlPanelService extends HttpFactory {
     private MAIN_RESOURCE = '/dashboard/control-panel/settings';
+    private MAIN = '/dashboard/control-panel/';
+
     private authStore = useAuthStore();
 
 
@@ -76,6 +78,14 @@ class ControlPanelService extends HttpFactory {
         return await this.call<AccountAdminSettings>('PUT', `${this.MAIN_RESOURCE}/customer-credit/freeze/${id}`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
+    }
+
+    async fetchShipping(id: string, type: number) {
+        const token = this.authStore.getToken;
+        console.log(id, type, typeof type);
+        // return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${(type === 0 ? 'personal' : 'organization')}`, null, {
+        //     headers: {Authorization: `Bearer ${token}`},
+        // });
     }
 
 }

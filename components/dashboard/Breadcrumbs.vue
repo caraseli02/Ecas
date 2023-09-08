@@ -30,7 +30,7 @@
         <template v-if="panelView && customer">
           <span class="text-xs leading-[1.33] flex-shrink-0 mx-1">/</span>
           <NuxtLink
-              :to="`/dashboard/customers/${customer}/control-panel/organization`"
+              :to="`/dashboard/customers/${customer}/control-panel/${accountType == 0 ? 'account' : 'organization'}`"
               class="text-xs leading-[1.33] font-medium text-gray-300 flex-shrink-0 transition-colors duration-300 hover:text-blue"
           >
             Control Panel
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import HomeIcon from '@/assets/icons/dashboard/home.svg';
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     required: true,
@@ -63,5 +63,11 @@ defineProps({
     type: String,
     required: false,
   },
+  accountType: {
+    type: Number,
+    required: true,
+  }
 });
+
+console.log(props.accountType)
 </script>
