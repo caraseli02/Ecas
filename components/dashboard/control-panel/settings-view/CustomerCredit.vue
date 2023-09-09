@@ -192,7 +192,6 @@ const getCustomerCredit = async () => {
 
   creditObject.value = response.data;
   credit.value = response.data?.available;
-  console.log(creditObject.value)
   if (creditObject?.value) {
     chartSeries.value[0] = (parseFloat(((creditObject?.value.spent / creditObject?.value.limit) * 100).toFixed(2)));
   } else {
