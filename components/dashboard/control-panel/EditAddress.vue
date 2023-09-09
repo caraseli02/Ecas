@@ -73,7 +73,7 @@
         <div class="grid grid-cols-1 gap-4 pl-4 pr-3 md:pl-6 md:pr-3 md:grid-cols-[auto,auto,1fr]">
           <button
               class="flex items-center justify-center rounded-lg text-[#FA4B4B] py-[7px] px-7 border border-[#FA4B4B]"
-              @click="$emit('close')"
+              @click="$emit('close');Emitter.emit('delete', props.index)"
           >
             <TrashIcon class="w-6 h-6 mr-2"/>
             <span class="font-medium leading-[1.75]"> Delete </span>

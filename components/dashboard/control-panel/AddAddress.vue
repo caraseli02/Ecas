@@ -15,8 +15,8 @@
       <div class="flex-1 overflow-y-auto scrollbar-thin mr-1">
         <div class="grid grid-cols-1 gap-6 pl-4 pr-3 mb-9 md:pl-6 md:pr-3">
           <FormInput
-              v-model="data.addressAlias.value"
-              :error="data.addressAlias.error"
+              v-model="data.alias.value"
+              :error="data.alias.error"
               :icon="BusinessIcon"
               label="Address Alias"
               size="lg"
@@ -45,15 +45,15 @@
               class="relative z-10"
           />
           <FormInput
-              v-model="data.addressLine1.value"
-              :error="data.addressLine1.error"
+              v-model="data.name1.value"
+              :error="data.name1.error"
               label="Address Line 1"
               size="lg"
               placeholder="5073 Mark Brown Rd"
           />
           <FormInput
-              v-model="data.addressLine2.value"
-              :error="data.addressLine2.error"
+              v-model="data.name2.value"
+              :error="data.name2.error"
               label="Address Line 2"
               size="lg"
               placeholder="NE Dalton"
@@ -79,7 +79,7 @@
           </button>
           <button
               class="flex justify-center px-5 py-2 rounded-lg bg-blue leading-[1.75] text-white font-medium"
-              @click="$emit('add', data)"
+              @click="$emit('close');Emitter.emit('add', {address: data})"
           >
             Save
           </button>
@@ -94,11 +94,12 @@ import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import {countries} from '@/data/countries';
 import {FormSelectOption} from '~/types';
+import Emitter from 'tiny-emitter/instance.js';
 
 defineEmits(['close', 'add']);
 
 const data = ref({
-  addressAlias: {
+  alias: {
     value: '',
     error: '',
   },
@@ -110,11 +111,11 @@ const data = ref({
     value: '',
     error: '',
   },
-  addressLine1: {
+  name1: {
     value: '',
     error: '',
   },
-  addressLine2: {
+  name2: {
     value: '',
     error: '',
   },
@@ -125,7 +126,7 @@ const data = ref({
   phone: {
     value: '',
     error: '',
-  }
+  },
 });
 const regions = ref<FormSelectOption[]>([]);
 
@@ -146,4 +147,6 @@ watch(data.value.country, (newVal) => {
         }) || [];
   }
 });
+
+
 </script>

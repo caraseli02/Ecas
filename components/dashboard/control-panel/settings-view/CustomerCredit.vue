@@ -54,12 +54,10 @@
           <div class="text-xl font-bold leading-[1.4] mb-2" :class="[chartSeries[0] !== 0 ? 'text-[#EE514E]' : '']">
             €
             {{
-              chartSeries[0] === 0
-                  ? '0,00'
-                  : creditObject?.available.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                  })
+              creditObject?.available.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })
             }}
           </div>
           <div class="text-sm leading-[1.14]">Available Credit</div>
@@ -68,6 +66,7 @@
       <button
           v-if="chartSeries[0] === 0"
           class="flex items-center justify-center w-full bg-blue rounded-lg px-5 py-2 text-white h-11 md:order-3"
+          @click="$emit('toggle-editing')"
       >
         Credit Account
       </button>
@@ -193,7 +192,7 @@ const getCustomerCredit = async () => {
 
   creditObject.value = response.data;
   credit.value = response.data?.available;
-  // chartSeries.value[0] = 2;
+  console.log(creditObject.value)
   if (creditObject?.value) {
     chartSeries.value[0] = (parseFloat(((creditObject?.value.spent / creditObject?.value.limit) * 100).toFixed(2)));
   } else {

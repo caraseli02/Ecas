@@ -30,8 +30,8 @@
                 (address.name2 ? address.name2 + ', ' : '') +
                 address.region +
                 ', ' +
-                address.postcode +
-                ', ' +
+                (address.postcode ? address.postcode +
+                    ', ' : '') +
                 address.country
               }}
             </div>
@@ -60,6 +60,7 @@
             </button>
             <button
                 class="flex items-center justify-center w-11 h-11 bg-[#F2F2F2] bg-opacity-95 rounded-full text-gray-300 transition-colors duration-300 hover:bg-blue hover:text-white"
+                @click="Emitter.emit('delete', index)"
             >
               <TrashIcon class="w-5 h-5"/>
             </button>
@@ -118,7 +119,7 @@ const addAddressModal = ref(false);
 const editAddressModal = ref();
 const indexOfEditAddressModal = ref(0)
 const {$api} = useNuxtApp();
-
+const defaultAddressIndex = ref(0)
 const props = defineProps({
   id: {
     type: String,
@@ -131,13 +132,15 @@ const props = defineProps({
 });
 const route = useRoute();
 const addresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterface[]);
+const newAddress = ref<ShippingAddressInterface>({} as ShippingAddressInterface)
 
-
-const setAsDefault = (address: any) => {
+const setAsDefault = async (address: any) => {
   addresses.value.forEach((item: any) => {
     item.default = false;
   });
   address.default = true;
+  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.account)
+
 };
 const handleAddAddress = (val: any) => {
   (addresses as any).value.push({
@@ -173,12 +176,42 @@ Emitter.on('edit', async (object: any) => {
   addresses.value[object.index].country = object.address.country.value.value;
   addresses.value[object.index].city = object.address.region.value.value;
   addresses.value[object.index].region = object.address.region.value.value;
+  addresses.value[object.index].postcode = object.address.postcode.value;
   addresses.value[object.index].phone = object.address.phone.value;
 
   await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.account)
 
 
 });
+
+Emitter.on('delete', async (index: number) => {
+
+  addresses.value.splice(index, 1)
+  console.log(addresses.value)
+  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.account)
+
+
+});
+
+Emitter.on('add', async (object: any) => {
+
+  newAddress.value.alias = object.address.alias.value
+  newAddress.value.name1 = object.address.name1.value;
+  newAddress.value.name2 = object.address.name2.value;
+  newAddress.value.country = object.address.country.value.value;
+  newAddress.value.city = object.address.region.value.value;
+  newAddress.value.region = object.address.region.value.value;
+  newAddress.value.phone = object.address.phone.value;
+  newAddress.value.postcode = object.address.postcode.value;
+
+
+  addresses.value.push(newAddress.value)
+  console.log(addresses)
+  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.account)
+
+
+});
+
 
 </script>
 
