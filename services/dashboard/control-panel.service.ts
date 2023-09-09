@@ -1,10 +1,11 @@
 import {useAuthStore} from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import {AccountAdminSettings} from '~/types/auth/account-settings';
+import {ShippingAddressInterface} from '~/types/auth/user-details';
 
 class ControlPanelService extends HttpFactory {
     private MAIN_RESOURCE = '/dashboard/control-panel/settings';
-    private MAIN = '/dashboard/control-panel/';
+    private MAIN = '/dashboard/control-panel';
 
     private authStore = useAuthStore();
 
@@ -82,10 +83,17 @@ class ControlPanelService extends HttpFactory {
 
     async fetchShipping(id: string, type: number) {
         const token = this.authStore.getToken;
-        console.log(id, type, typeof type);
-        // return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${(type === 0 ? 'personal' : 'organization')}`, null, {
-        //     headers: {Authorization: `Bearer ${token}`},
-        // });
+        return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${(type === 0 ? 'personal' : 'organization')}`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
+    async updateShipping(id: string, address: ShippingAddressInterface[], type: number) {
+        const token = this.authStore.getToken;
+
+        return await this.call<AccountAdminSettings>('POST', `${this.MAIN}/${id}/${(type === 0 ? 'personal/shipping-address' : 'organization/shipping-address')}`, {address: address}, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
     }
 
 }
