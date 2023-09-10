@@ -1,4 +1,4 @@
-import { AccountType } from '~/types';
+import {AccountType} from '~/types';
 
 export interface CustomerSettings {
     _id: string;
@@ -88,3 +88,15 @@ export type ControlPanelTabs =
     | ControlPanelTabsEnum.Billing
     | ControlPanelTabsEnum.TransactionHistory
     | ControlPanelTabsEnum.Settings;
+
+export interface CountryInterface {
+    label: string,
+    value: string,
+    icon: string,
+    regions: RegionInterface[]
+}
+
+export interface RegionInterface {
+    name: string,
+    shortCode: string
+}

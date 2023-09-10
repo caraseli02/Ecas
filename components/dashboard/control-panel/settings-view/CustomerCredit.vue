@@ -50,14 +50,16 @@
         <ClientOnly>
           <apexchart width="270" height="270" :options="chartOptions" :series="chartSeries"></apexchart>
         </ClientOnly>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-max flex flex-col text-center">
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-max flex flex-col text-center">
           <div class="text-xl font-bold leading-[1.4] mb-2" :class="[chartSeries[0] !== 0 ? 'text-[#EE514E]' : '']">
             €
             {{
-              creditObject?.available.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })
+              chartSeries[0] === 0 ? '0,00' :
+                  creditObject?.available.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })
             }}
           </div>
           <div class="text-sm leading-[1.14]">Available Credit</div>

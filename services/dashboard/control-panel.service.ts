@@ -91,10 +91,18 @@ class ControlPanelService extends HttpFactory {
     async updateShipping(id: string, address: ShippingAddressInterface[], type: number) {
         const token = this.authStore.getToken;
 
-        return await this.call<AccountAdminSettings>('POST', `${this.MAIN}/${id}/${(type === 0 ? 'personal/shipping-address' : 'organization/shipping-address')}`, {address: address}, {
+        return await this.call<AccountAdminSettings>('POST', `${this.MAIN}/${id}/${(type === 0 ? 'personal/shipping-address' : 'business/shipping-address')}`, {address: address}, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
+
+    async fetchAccountDetails(id: string, type: number) {
+        const token = this.authStore.getToken;
+        return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${(type === 0 ? 'personal' : 'business')}`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
 
 }
 

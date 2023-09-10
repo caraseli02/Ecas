@@ -21,8 +21,17 @@
     </div>
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-x-9">
       <FormInput
-          v-model="form.name.value"
-          :error="form.name.error"
+          v-model="form.firstName.value"
+          :error="form.firstName.error"
+          :disabled="!isEditing"
+          :show-disabled-styles="false"
+          label="Name"
+          size="lg"
+          placeholder="Name"
+      />
+      <FormInput
+          v-model="form.lastName.value"
+          :error="form.lastName.error"
           :disabled="!isEditing"
           :show-disabled-styles="false"
           label="Name"
@@ -45,7 +54,7 @@
           v-model="form.region.value"
           :error="form.region.error"
           :options="regions"
-          :disabled="regions.length === 0 || !isEditing"
+          :disabled="!isEditing"
           :show-disabled-styles="false"
           label="County/Region"
           placeholder="Georgia"
@@ -63,8 +72,8 @@
           placeholder="Georgia"
       />
       <FormInput
-          v-model="form.addressLine1.value"
-          :error="form.addressLine1.error"
+          v-model="form.name1.value"
+          :error="form.name1.error"
           :disabled="!isEditing"
           :show-disabled-styles="false"
           label="Address Line 1"
@@ -72,8 +81,8 @@
           placeholder="5073 Mark Brown Rd"
       />
       <FormInput
-          v-model="form.addressLine2.value"
-          :error="form.addressLine2.error"
+          v-model="form.name2.value"
+          :error="form.name2.error"
           :disabled="!isEditing"
           :show-disabled-styles="false"
           label="Address Line 2"
@@ -90,20 +99,11 @@
           placeholder="W1A5AB"
       />
       <FormInput
-          v-model="form.phoneNumber.value"
-          :error="form.phoneNumber.error"
+          v-model="form.phone.value"
+          :error="form.phone.error"
           :disabled="!isEditing"
           :show-disabled-styles="false"
           label="Phone Number"
-          size="lg"
-          placeholder="+1 (706) 275-0767"
-      />
-      <FormInput
-          v-model="form.mobileNumber.value"
-          :error="form.mobileNumber.error"
-          :disabled="!isEditing"
-          :show-disabled-styles="false"
-          label="Mobile Number"
           size="lg"
           placeholder="+1 (706) 275-0767"
       />
@@ -116,7 +116,6 @@
           placeholder="madalina.dobrovolski@company.com"
           type="email"
           size="lg"
-          class="md:col-span-2"
       />
     </div>
     <div v-if="isEditing" class="grid grid-cols-[auto,1fr] gap-4 mt-9 xl:w-1/2 xl:ml-auto xl:pl-4">
@@ -128,6 +127,7 @@
       </button>
       <button
           class="flex items-center justify-center w-full text-left px-[31px] py-2 rounded-lg transition-colors duration-300 bg-blue text-white"
+          @click="updateAccountDetails"
       >
         <span class="leading-[1.75] font-medium"> Save </span>
       </button>
@@ -140,37 +140,51 @@ import EditIcon from '@/assets/icons/dashboard/edit.svg';
 import CopyIcon from '@/assets/icons/dashboard/copy.svg';
 import {countries} from '@/data/countries';
 import {FormSelectOption} from '~~/types';
+import {useNuxtApp} from '#app';
+import {AddressInterface, PersonalDetails} from '~/types/auth/user-details';
+import {CountryInterface, RegionInterface} from '~/types/dashboard/control-panel';
 
-const isEditing = ref(false);
+const {$api} = useNuxtApp();
 
-const regions = ref<FormSelectOption[]>([]);
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+  accountType: {
+    type: Number,
+    required: true,
+  }
+});
+const accountDetails = ref<PersonalDetails>({} as PersonalDetails)
+
 
 const form = ref({
-  name: {
+  firstName: {
     value: '',
     error: '',
   },
-  vatNumber: {
+  lastName: {
     value: '',
     error: '',
   },
   country: {
-    value: '',
+    value: {},
     error: '',
   },
   region: {
-    value: '',
+    value: {},
     error: '',
   },
   city: {
     value: '',
     error: '',
   },
-  addressLine1: {
+  name1: {
     value: '',
     error: '',
   },
-  addressLine2: {
+  name2: {
     value: '',
     error: '',
   },
@@ -178,11 +192,7 @@ const form = ref({
     value: '',
     error: '',
   },
-  phoneNumber: {
-    value: '',
-    error: '',
-  },
-  mobileNumber: {
+  phone: {
     value: '',
     error: '',
   },
@@ -191,6 +201,42 @@ const form = ref({
     error: '',
   },
 });
+const getCountryRegion = async (country: any, region: any) => {
+  //
+  const countryToFind = countries.find(obj => obj.value === country) as CountryInterface;
+  const regionToFind = countryToFind.regions.find(obj => obj.name === region) as RegionInterface;
+  form.value.country.value = countryToFind;
+  form.value.region.value = regionToFind;
+
+}
+
+const getAccountDetails = async () => {
+  const response = (await $api.controlPanel.fetchShipping(props.id || '', props.accountType)) as {
+    status: string,
+    data: PersonalDetails
+  }
+  if (response.status !== 'success') {
+    return;
+  }
+  accountDetails.value = response.data;
+  form.value.city.value = accountDetails.value.address.city;
+  form.value.firstName.value = accountDetails.value.firstName;
+  form.value.lastName.value = accountDetails.value.lastName;
+  form.value.name1.value = accountDetails.value.address.name1;
+  form.value.name2.value = accountDetails.value.address.name2 || '';
+  form.value.postcode.value = accountDetails.value.address.postcode;
+  form.value.phone.value = '';
+  form.value.email.value = '';
+
+
+  getCountryRegion(accountDetails.value.address.country, accountDetails.value.address.region);
+}
+await getAccountDetails()
+
+const isEditing = ref(false);
+
+const regions = ref<FormSelectOption[]>([]);
+
 
 watch(form.value.country, (newVal) => {
   if (newVal?.value) {
@@ -210,4 +256,29 @@ watch(form.value.country, (newVal) => {
         }) || [];
   }
 });
+
+const updateAccountDetails = async () => {
+
+  const newAddres = {} as AddressInterface;
+
+  newAddres.country = accountDetails.value.address.country
+  newAddres.region = accountDetails.value.address.region
+  newAddres.city = form.value.city.value
+  newAddres.name1 = form.value.name1.value
+  newAddres.name2 = form.value.name2?.value || ''
+
+
+  const payload = {} as PersonalDetails;
+  payload.firstName = form.value.firstName.value
+  payload.lastName = form.value.lastName.value
+  payload.email = form.value.email.value
+  payload.phone = form.value.phone.value
+  payload.shippingAddress = accountDetails.value.shippingAddress
+  payload.address = newAddres;
+
+  console.log(payload);
+
+}
+
+
 </script>

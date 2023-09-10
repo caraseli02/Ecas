@@ -232,7 +232,6 @@ const updateCreditTerm = async (term: any, value: any) => {
     if (response.status !== 'success') {
       return;
     } else {
-
       creditObjectToEdit.value.limit = value || creditObjectToEdit.value.limit;
       creditObjectToEdit.value.term = term || creditObjectToEdit.value.term;
       creditObjectToEdit.value.dueDate = term ? moment(moment(), 'DD-MM-YYYY').add(term, 'days').toString() : creditObjectToEdit.value.dueDate;
