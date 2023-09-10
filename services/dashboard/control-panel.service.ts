@@ -98,7 +98,7 @@ class ControlPanelService extends HttpFactory {
 
     async fetchAccountDetails(id: string, type: number) {
         const token = this.authStore.getToken;
-        return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${(type === 0 ? 'personal' : 'business')}`, null, {
+        return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${(type === 0 ? 'personal' : 'organization')}`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }

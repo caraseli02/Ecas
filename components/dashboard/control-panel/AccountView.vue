@@ -211,7 +211,7 @@ const getCountryRegion = async (country: any, region: any) => {
 }
 
 const getAccountDetails = async () => {
-  const response = (await $api.controlPanel.fetchShipping(props.id || '', props.accountType)) as {
+  const response = (await $api.controlPanel.fetchAccountDetails(props.id || '', props.accountType)) as {
     status: string,
     data: PersonalDetails
   }
