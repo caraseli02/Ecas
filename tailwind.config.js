@@ -24,6 +24,9 @@ module.exports = {
                 border: '#D4D4D4',
                 yellow: '#FFC900',
             },
+            animation: {
+                'ping-once': 'ping 1s cubic-bezier(0, 0, 0.2, 1) 1'
+            },
             fontFamily: {
                 Inter: ['Inter', 'sans-serif'],
                 Poppins: ['Poppins', 'sans-serif'],

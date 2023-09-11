@@ -7,8 +7,8 @@ export interface DashboardCustomerTableItem {
     registered: string;
     spent: number;
     ordersCount: number;
-    id : string;
-    firebaseId : string;
+    id: string;
+    firebaseId: string;
 }
 
 export interface DashboardCustomerOrderItem {
@@ -36,4 +36,29 @@ export interface DashboardControlPanelTransactionHistoryItem {
     date: number;
     status: 'success' | 'pending' | 'declined';
     checked: boolean;
+}
+
+export interface DashboardOrderItem {
+    id: string;
+    note?: string;
+    type: 'stock-order' | 'back-order' | 'mixed-order';
+    date: number;
+    customer: {
+        name: string;
+        email: string;
+        flag: any;
+        locked?: boolean;
+    };
+    payment: 'paid' | 'pending' | 'canceled' | 'declined';
+    fulfillment:
+        | 'abandoned-checkout'
+        | 'awaiting-payment'
+        | 'partially-refunded'
+        | 'completed'
+        | 'partially-shipped'
+        | 'processing'
+        | 'payment-received'
+        | 'payment-declined'
+        | 'awaiting-fulfillment';
+    total: number;
 }
