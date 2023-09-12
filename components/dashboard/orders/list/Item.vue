@@ -26,7 +26,18 @@
         <div class="px-5 py-6 text-sm leading-[1.43] truncate">21 September 2023, 18:25</div>
         <div class="px-4 py-3">
             <div class="flex items-center gap-3 mb-2">
-                <component :is="item.customer.flag" class="w-5 h-5" />
+                <!-- <component :is="item.customer.flag"  /> -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="w-5 h-5">
+                    <rect width="20" height="14.286" y="2.857" fill="#fff" rx="4" />
+                    <mask id="mask0_1302_65779" width="20" height="16" x="0" y="2" maskUnits="userSpaceOnUse" style="mask-type: luminance">
+                        <path fill="#fff" d="M0 4.857a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10.286a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4.857Z" />
+                    </mask>
+                    <g mask="url(#mask0_1302_65779)">
+                        <path fill="#E5253D" d="M9.523 2.857h10.476v14.286H9.523z" />
+                        <path fill="#0A3D9C" fill-rule="evenodd" d="M0 17.143h6.667V2.857H0v14.286Z" clip-rule="evenodd" />
+                        <path fill="#FFD955" fill-rule="evenodd" d="M6.664 17.143h6.667V2.857H6.664v14.286Z" clip-rule="evenodd" />
+                    </g>
+                </svg>
                 <span class="text-sm font-semibold leading-[1.43]">
                     {{ item.customer.name }}
                 </span>
@@ -87,12 +98,12 @@
         </div>
     </div>
     <Teleport to="body">
-        <Transition :name="index > 5 ? 'fade-full-neg' : 'fade-bottom'">
+        <Transition :name="index > 8 ? 'fade-full-neg' : 'fade-bottom'">
             <div
                 v-if="showOptions"
                 v-click-outside="() => (showOptions = false)"
-                class="absolute z-10 grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[180px] shadow-m -translate-x-full"
-                :class="[index > 5 ? '-translate-y-[calc(100%+42px)]' : '']"
+                class="absolute z-10 grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[172px] shadow-m -translate-x-full"
+                :class="[index > 8 ? '-translate-y-[calc(100%+42px)]' : '']"
                 :style="{
                     top: optionsDropdownTop + 'px',
                     left: optionsDropdownLeft + 'px',

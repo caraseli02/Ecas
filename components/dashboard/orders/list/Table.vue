@@ -168,7 +168,7 @@
                         </button>
                     </div>
                     <button
-                        class="flex items-center justify-center relative w-full border rounded-lg px-2.5 py-[7px] bg-white transition-colors duration-300"
+                        class="flex items-center justify-between relative w-full border rounded-lg px-4 py-[7px] bg-white transition-colors duration-300"
                         :class="[!total[0] && !total[1] ? 'text-gray-100' : '', showTotalRange ? 'border-blue' : 'border-border']"
                         @click="handleShowTotalRange"
                     >
@@ -201,7 +201,7 @@
             <div
                 v-if="showTypeOptions"
                 v-click-outside="() => (showTypeOptions = false)"
-                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[180px] shadow-m"
+                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[160px] shadow-m"
                 :style="{
                     top: typeDropdownTop + 'px',
                     left: typeDropdownLeft + 'px',
@@ -256,7 +256,7 @@
             <div
                 v-if="showPaymentOptions"
                 v-click-outside="() => (showPaymentOptions = false)"
-                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[180px] shadow-m"
+                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[160px] shadow-m"
                 :style="{
                     top: paymentDropdownTop + 'px',
                     left: paymentDropdownLeft + 'px',
@@ -326,15 +326,6 @@
                         "
                     >
                         <span class="text-sm leading-[1.71]">{{ option }}</span>
-                    </button>
-                    <button
-                        class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                        @click="
-                            fulfillment = '';
-                            showFulfillmentOptions = false;
-                        "
-                    >
-                        <span class="text-sm leading-[1.71]">All Statuses</span>
                     </button>
                 </div>
             </div>

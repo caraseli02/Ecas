@@ -7,20 +7,20 @@
                         <div
                             class="flex items-center justify-center w-14 h-14 rounded-full"
                             :style="{
-                                background: `${card.theme}40`,
+                                background: `${card.menu.selected.theme || card.theme}40`,
                             }"
                         >
                             <div
                                 class="relative flex items-center justify-center w-10 h-10 rounded-full"
                                 :style="{
-                                    background: card.theme,
+                                    background: card.menu.selected.theme || card.theme,
                                 }"
                             >
                                 <component :is="card.menu.selected.icon" class="relative z-10 w-6 h-6 text-white" />
                                 <div
                                     class="absolute top-0 left-0 w-full h-full rounded-full group-hover:animate-ping-once"
                                     :style="{
-                                        background: card.theme,
+                                        background: card.menu.selected.theme || card.theme,
                                     }"
                                 />
                             </div>
@@ -235,22 +235,26 @@ const cards = ref([
                     label: 'Products Sold',
                     value: 'products-sold',
                     icon: ProductsSoldIcon,
+                    theme: '#A460BC',
                 },
                 {
                     label: 'Returns',
                     value: 'returns',
                     icon: ReturnsIcon,
+                    theme: '#FA4B4B',
                 },
                 {
                     label: 'Refunds',
                     value: 'refunds',
                     icon: RefundsIcon,
+                    theme: '#FA4B4B',
                 },
             ],
             selected: {
                 label: 'Products Sold',
                 value: 'products-sold',
                 icon: ProductsSoldIcon,
+                theme: '#A460BC',
             },
             showOptions: false,
         },
