@@ -72,10 +72,10 @@
           v-model="form.region.value"
           :error="form.region.error"
           :options="regions"
-          :disabled="regions.length === 0 || !isEditing"
+          :disabled="!isEditing"
           :show-disabled-styles="false"
           label="County/Region"
-          placeholder="Georgia"
+          placeholder=""
           search
           size="lg"
           class="relative z-10"
@@ -145,6 +145,7 @@
       </button>
       <button
           class="flex items-center justify-center w-full text-left px-[31px] py-2 rounded-lg transition-colors duration-300 bg-blue text-white"
+          @click="updateAccountDetails();isEditing = false"
       >
         <span class="leading-[1.75] font-medium"> Save </span>
       </button>
@@ -157,9 +158,9 @@ import EditIcon from '@/assets/icons/dashboard/edit.svg';
 import CopyIcon from '@/assets/icons/dashboard/copy.svg';
 import {countries} from '@/data/countries';
 import {FormSelectOption} from '~~/types';
-
 import {useNuxtApp} from '#app';
 import {CompanyDetails} from '~/types/auth/user-details';
+import {CountryInterface, RegionInterface} from '~/types/dashboard/control-panel';
 
 const companyInformation = ref<CompanyDetails>({} as CompanyDetails)
 const {$api} = useNuxtApp();
@@ -173,9 +174,6 @@ const props = defineProps({
     required: true,
   }
 });
-
-
-const isEditing = ref(false);
 
 const regions = ref<FormSelectOption[]>([]);
 
@@ -234,32 +232,27 @@ const form = ref({
   },
 });
 
-watch(form.value.country, (newVal) => {
-  if (newVal?.value) {
-    console.log(newVal.value.regions);
-    form.value.region = {
-      value: '',
-      error: '',
-      label: '',
-      icon: '',
-    };
-    regions.value =
-        newVal.value.regions.map((e) => {
-          return {
-            label: e.name,
-            value: e.name,
-          };
-        }) || [];
+const getCountryRegion = async (country: any, region: any) => {
+  //
+  const countryToFind = countries.find(obj => obj.value === country) as CountryInterface;
+  const regionToFind = countryToFind.regions.find(obj => obj.name === region) as RegionInterface;
+  const formRegion = {} as {
+    value: string,
+    label: string
   }
-});
-// const getCountryRegion = async (country: any, region: any) => {
-//   //
-//   console.log(country, region);
-//   const countryToFind = countries.find(obj => obj.value === country) as CountryInterface;
-//   const regionToFind = countryToFind.regions.find(obj => obj.name === region) as RegionInterface;
-//   form.value.country.value = countryToFind;
-//   form.value.region.value = regionToFind;
-// }
+  form.value.country.value = countryToFind;
+  formRegion.value = regionToFind?.name;
+  formRegion.label = regionToFind?.name;
+  console.log(formRegion);
+  form.value.region.value = formRegion;
+  regions.value = countryToFind.regions.map((e) => {
+    return {
+      label: e.name,
+      value: e.name,
+    };
+  }) || [];
+
+}
 
 const getAccountDetails = async () => {
   const response = (await $api.controlPanel.fetchAccountDetails(props.id || '', props.accountType)) as {
@@ -283,10 +276,37 @@ const getAccountDetails = async () => {
   form.value.phone.value = '';
   form.value.companyEmail.value = '';
 
+  getCountryRegion(companyInformation.value.address.country, companyInformation.value.address.region);
 
-  // getCountryRegion(companyInformation.value.address.country, companyInformation.value.address.region);
 }
 await getAccountDetails()
+
+const isEditing = ref(false);
+
+
+watch(form.value.country, (newVal) => {
+  if (newVal?.value) {
+    form.value.region = {
+      value: '',
+      error: '',
+      label: '',
+      icon: '',
+    };
+    regions.value =
+        newVal.value.regions.map((e) => {
+          return {
+            label: e.name,
+            value: e.name,
+          };
+        }) || [];
+  }
+});
+
+const updateAccountDetails = async () => {
+
+  console.log('test');
+
+}
 
 
 </script>

@@ -57,7 +57,7 @@
           :disabled="!isEditing"
           :show-disabled-styles="false"
           label="County/Region"
-          placeholder="Georgia"
+          placeholder=""
           search
           size="lg"
           class="relative z-10"
@@ -96,7 +96,7 @@
           :show-disabled-styles="false"
           label="Postcode"
           size="lg"
-          placeholder="W1A5AB"
+          placeholder=""
       />
       <FormInput
           v-model="form.phone.value"
@@ -127,7 +127,7 @@
       </button>
       <button
           class="flex items-center justify-center w-full text-left px-[31px] py-2 rounded-lg transition-colors duration-300 bg-blue text-white"
-          @click="updateAccountDetails"
+          @click="updateAccountDetails(); isEditing=false"
       >
         <span class="leading-[1.75] font-medium"> Save </span>
       </button>
@@ -201,12 +201,23 @@ const form = ref({
     error: '',
   },
 });
+const regions = ref<FormSelectOption[]>([]);
+
 const getCountryRegion = async (country: any, region: any) => {
   //
   const countryToFind = countries.find(obj => obj.value === country) as CountryInterface;
   const regionToFind = countryToFind.regions.find(obj => obj.name === region) as RegionInterface;
+  const formRegion = {} as { value: string, label: string }
   form.value.country.value = countryToFind;
-  form.value.region.value = regionToFind;
+  formRegion.value = regionToFind?.name;
+  formRegion.label = regionToFind?.name;
+  form.value.region.value = formRegion;
+  regions.value = countryToFind.regions.map((e) => {
+    return {
+      label: e.name,
+      value: e.name,
+    };
+  }) || [];
 
 }
 
@@ -228,19 +239,16 @@ const getAccountDetails = async () => {
   form.value.phone.value = '';
   form.value.email.value = '';
 
-
   getCountryRegion(accountDetails.value.address.country, accountDetails.value.address.region);
+
 }
 await getAccountDetails()
 
 const isEditing = ref(false);
 
-const regions = ref<FormSelectOption[]>([]);
-
 
 watch(form.value.country, (newVal) => {
   if (newVal?.value) {
-    console.log(newVal.value.regions);
     form.value.region = {
       value: '',
       error: '',
@@ -261,12 +269,11 @@ const updateAccountDetails = async () => {
 
   const newAddres = {} as AddressInterface;
 
-  newAddres.country = accountDetails.value.address.country
-  newAddres.region = accountDetails.value.address.region
+  newAddres.country = form.value.country.value.value
+  newAddres.region = form.value.region.value.label
   newAddres.city = form.value.city.value
   newAddres.name1 = form.value.name1.value
   newAddres.name2 = form.value.name2?.value || ''
-
 
   const payload = {} as PersonalDetails;
   payload.firstName = form.value.firstName.value
@@ -277,8 +284,12 @@ const updateAccountDetails = async () => {
   payload.address = newAddres;
 
   console.log(payload);
-
 }
+
+onMounted(() => {
+
+
+});
 
 
 </script>
