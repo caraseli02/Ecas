@@ -25,8 +25,6 @@ export interface UserDetails {
 export interface PersonalDetails {
     firstName: string;
     lastName: string;
-    email: string;
-    phone: string;
     address: AddressInterface;
     shippingAddress: ShippingAddressInterface[];
 }
@@ -34,7 +32,7 @@ export interface PersonalDetails {
 export interface ContactDetails {
     firstName: string;
     lastName: string;
-    phone: number;
+    phone: string;
     mobile?: number;
     email: string;
     _id: string;

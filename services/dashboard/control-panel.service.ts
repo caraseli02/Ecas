@@ -1,7 +1,7 @@
 import {useAuthStore} from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import {AccountAdminSettings} from '~/types/auth/account-settings';
-import {ShippingAddressInterface} from '~/types/auth/user-details';
+import {ShippingAddressInterface, UserDetails} from '~/types/auth/user-details';
 
 class ControlPanelService extends HttpFactory {
     private MAIN_RESOURCE = '/dashboard/control-panel/settings';
@@ -99,6 +99,14 @@ class ControlPanelService extends HttpFactory {
     async fetchAccountDetails(id: string, type: number) {
         const token = this.authStore.getToken;
         return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${(type === 0 ? 'personal' : 'organization')}`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
+    async updateAccountDetails(id: string, account: UserDetails, type: number) {
+        const token = this.authStore.getToken;
+
+        return await this.call<AccountAdminSettings>('POST', `${this.MAIN}/${id}/${(type === 0 ? 'personal' : 'organization')}`, account, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }

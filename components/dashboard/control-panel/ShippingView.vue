@@ -125,7 +125,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  account: {
+  accountType: {
     type: Number,
     required: true,
   },
@@ -139,7 +139,7 @@ const setAsDefault = async (address: any) => {
     item.default = false;
   });
   address.default = true;
-  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.account)
+  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
 
 };
 const handleAddAddress = (val: any) => {
@@ -159,7 +159,7 @@ const handleAddAddress = (val: any) => {
 };
 
 const getShippingInformation = async () => {
-  const response = (await $api.controlPanel.fetchShipping(props.id || '', props.account))
+  const response = (await $api.controlPanel.fetchShipping(props.id || '', props.accountType))
 
   if (response.status !== 'success') {
     return;
@@ -179,7 +179,7 @@ Emitter.on('edit', async (object: any) => {
   addresses.value[object.index].postcode = object.address.postcode.value;
   addresses.value[object.index].phone = object.address.phone.value;
 
-  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.account)
+  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
 
 
 });
@@ -188,7 +188,7 @@ Emitter.on('delete', async (index: number) => {
 
   addresses.value.splice(index, 1)
   console.log(addresses.value)
-  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.account)
+  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
 
 
 });
@@ -207,7 +207,7 @@ Emitter.on('add', async (object: any) => {
 
   addresses.value.push(newAddress.value)
   console.log(addresses)
-  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.account)
+  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
 
 
 });

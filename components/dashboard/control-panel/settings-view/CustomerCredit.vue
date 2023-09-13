@@ -55,11 +55,10 @@
           <div class="text-xl font-bold leading-[1.4] mb-2" :class="[chartSeries[0] !== 0 ? 'text-[#EE514E]' : '']">
             €
             {{
-              chartSeries[0] === 0 ? '0,00' :
-                  creditObject?.available.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                  })
+              creditObject?.available.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })
             }}
           </div>
           <div class="text-sm leading-[1.14]">Available Credit</div>

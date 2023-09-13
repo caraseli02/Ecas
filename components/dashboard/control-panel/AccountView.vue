@@ -141,8 +141,9 @@ import CopyIcon from '@/assets/icons/dashboard/copy.svg';
 import {countries} from '@/data/countries';
 import {FormSelectOption} from '~~/types';
 import {useNuxtApp} from '#app';
-import {AddressInterface, PersonalDetails} from '~/types/auth/user-details';
+import {AddressInterface, ContactDetails, PersonalDetails, UserDetails} from '~/types/auth/user-details';
 import {CountryInterface, RegionInterface} from '~/types/dashboard/control-panel';
+import {PropType} from 'nuxt/dist/app/compat/capi';
 
 const {$api} = useNuxtApp();
 
@@ -151,13 +152,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  accountType: {
-    type: Number,
+  account: {
+    type: Object as PropType<UserDetails>,
     required: true,
   }
 });
-const accountDetails = ref<PersonalDetails>({} as PersonalDetails)
-
 
 const form = ref({
   firstName: {
@@ -203,15 +202,17 @@ const form = ref({
 });
 const regions = ref<FormSelectOption[]>([]);
 
-const getCountryRegion = async (country: any, region: any) => {
+const getCountryRegion = (country: any, region: any) => {
   //
   const countryToFind = countries.find(obj => obj.value === country) as CountryInterface;
   const regionToFind = countryToFind.regions.find(obj => obj.name === region) as RegionInterface;
   const formRegion = {} as { value: string, label: string }
+
   form.value.country.value = countryToFind;
   formRegion.value = regionToFind?.name;
   formRegion.label = regionToFind?.name;
   form.value.region.value = formRegion;
+
   regions.value = countryToFind.regions.map((e) => {
     return {
       label: e.name,
@@ -220,32 +221,28 @@ const getCountryRegion = async (country: any, region: any) => {
   }) || [];
 
 }
-
+console.log(props.account?.contactDetails, props.account?.personalDetails)
 const getAccountDetails = async () => {
-  const response = (await $api.controlPanel.fetchAccountDetails(props.id || '', props.accountType)) as {
-    status: string,
-    data: PersonalDetails
-  }
-  if (response.status !== 'success') {
+
+  if (!props.account?.personalDetails || !props.account?.contactDetails) {
     return;
   }
-  accountDetails.value = response.data;
-  form.value.city.value = accountDetails.value.address.city;
-  form.value.firstName.value = accountDetails.value.firstName;
-  form.value.lastName.value = accountDetails.value.lastName;
-  form.value.name1.value = accountDetails.value.address.name1;
-  form.value.name2.value = accountDetails.value.address.name2 || '';
-  form.value.postcode.value = accountDetails.value.address.postcode;
-  form.value.phone.value = '';
-  form.value.email.value = '';
 
-  getCountryRegion(accountDetails.value.address.country, accountDetails.value.address.region);
+  form.value.city.value = props.account.personalDetails.address.city;
+  form.value.firstName.value = props.account.personalDetails.firstName;
+  form.value.lastName.value = props.account.personalDetails.lastName;
+  form.value.name1.value = props.account.personalDetails.address.name1;
+  form.value.name2.value = props.account.personalDetails.address.name2 || '';
+  form.value.postcode.value = props.account.personalDetails.address.postcode;
+  form.value.phone.value = props.account.contactDetails.phone;
+  form.value.email.value = props.account.contactDetails.email;
+
+  getCountryRegion(props.account.personalDetails.address.country, props.account.personalDetails.address.region);
 
 }
 await getAccountDetails()
 
 const isEditing = ref(false);
-
 
 watch(form.value.country, (newVal) => {
   if (newVal?.value) {
@@ -267,23 +264,29 @@ watch(form.value.country, (newVal) => {
 
 const updateAccountDetails = async () => {
 
-  const newAddres = {} as AddressInterface;
+  const newAddress = {} as AddressInterface;
 
-  newAddres.country = form.value.country.value.value
-  newAddres.region = form.value.region.value.label
-  newAddres.city = form.value.city.value
-  newAddres.name1 = form.value.name1.value
-  newAddres.name2 = form.value.name2?.value || ''
+  newAddress.country = form.value.country.value.value
+  newAddress.region = form.value.region.value.label
+  newAddress.city = form.value.city.value
+  newAddress.name1 = form.value.name1.value
+  newAddress.name2 = form.value.name2?.value || ''
+  newAddress.postcode = form.value.postcode?.value
+  
+  const payload = {
+    personalDetails: {} as PersonalDetails,
+    contactDetails: {} as ContactDetails
+  }
+  payload.personalDetails.firstName = form.value.firstName.value
+  payload.personalDetails.lastName = form.value.lastName.value
+  payload.contactDetails = {...props.account?.contactDetails}
+  payload.contactDetails.email = form.value.email.value
+  payload.contactDetails.phone = form.value.phone.value
+  payload.personalDetails.shippingAddress = props.account.personalDetails?.shippingAddress || []
+  payload.personalDetails.address = newAddress;
 
-  const payload = {} as PersonalDetails;
-  payload.firstName = form.value.firstName.value
-  payload.lastName = form.value.lastName.value
-  payload.email = form.value.email.value
-  payload.phone = form.value.phone.value
-  payload.shippingAddress = accountDetails.value.shippingAddress
-  payload.address = newAddres;
+  await $api.controlPanel.updateAccountDetails(props.id || '', payload as UserDetails, props.account.accountType)
 
-  console.log(payload);
 }
 
 onMounted(() => {
