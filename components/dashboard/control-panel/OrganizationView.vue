@@ -159,8 +159,9 @@ import CopyIcon from '@/assets/icons/dashboard/copy.svg';
 import {countries} from '@/data/countries';
 import {FormSelectOption} from '~~/types';
 import {useNuxtApp} from '#app';
-import {CompanyDetails} from '~/types/auth/user-details';
+import {AddressInterface, CompanyDetails, ContactDetails, UserDetails} from '~/types/auth/user-details';
 import {CountryInterface, RegionInterface} from '~/types/dashboard/control-panel';
+import {PropType} from 'nuxt/dist/app/compat/capi';
 
 const companyInformation = ref<CompanyDetails>({} as CompanyDetails)
 const {$api} = useNuxtApp();
@@ -169,13 +170,12 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  accountType: {
-    type: Number,
+  account: {
+    type: Object as PropType<UserDetails>,
     required: true,
   }
 });
 
-const regions = ref<FormSelectOption[]>([]);
 
 const form = ref({
   companyName: {
@@ -222,15 +222,12 @@ const form = ref({
     value: '',
     error: '',
   },
-  mobileNumber: {
-    value: '',
-    error: '',
-  },
   companyEmail: {
     value: '',
     error: '',
   },
 });
+const regions = ref<FormSelectOption[]>([]);
 
 const getCountryRegion = async (country: any, region: any) => {
   //
@@ -255,28 +252,22 @@ const getCountryRegion = async (country: any, region: any) => {
 }
 
 const getAccountDetails = async () => {
-  const response = (await $api.controlPanel.fetchAccountDetails(props.id || '', props.accountType)) as {
-    status: string,
-    data: CompanyDetails
-  }
-  if (response.status !== 'success') {
+  if (!props.account?.companyDetails || !props.account?.contactDetails) {
     return;
   }
-  console.log(response);
 
-  companyInformation.value = response.data;
-  form.value.companyName.value = companyInformation.value.name;
-  form.value.companyRegistrationNumber.value = companyInformation.value.registrationNumber;
+  form.value.companyName.value = props.account.companyDetails?.name;
+  form.value.companyRegistrationNumber.value = props.account.companyDetails?.registrationNumber || '';
   form.value.taxID.value = '';
-  form.value.vatNumber.value = companyInformation.value.vat || '';
-  form.value.city.value = companyInformation.value.address.city;
-  form.value.name1.value = companyInformation.value.address.name1;
-  form.value.name2.value = companyInformation.value.address.name2 || '';
-  form.value.postcode.value = companyInformation.value.address.postcode || '';
-  form.value.phone.value = '';
-  form.value.companyEmail.value = '';
+  form.value.vatNumber.value = props.account.companyDetails?.vat || '';
+  form.value.city.value = props.account.companyDetails?.address.city || '';
+  form.value.name1.value = props.account.companyDetails?.address.name1 || '';
+  form.value.name2.value = props.account.companyDetails?.address.name2 || '';
+  form.value.postcode.value = props.account.companyDetails?.address.postcode || '';
+  form.value.phone.value = props.account.contactDetails.phone;
+  form.value.companyEmail.value = props.account.contactDetails.email;
 
-  getCountryRegion(companyInformation.value.address.country, companyInformation.value.address.region);
+  getCountryRegion(props.account.companyDetails?.address.country, props.account.companyDetails?.address.region);
 
 }
 await getAccountDetails()
@@ -304,7 +295,30 @@ watch(form.value.country, (newVal) => {
 
 const updateAccountDetails = async () => {
 
-  console.log('test');
+  const newAddress = {} as AddressInterface;
+
+  newAddress.country = form.value.country.value.value
+  newAddress.region = form.value.region.value.label
+  newAddress.city = form.value.city.value
+  newAddress.name1 = form.value.name1.value
+  newAddress.name2 = form.value.name2?.value || ''
+  newAddress.postcode = form.value.postcode?.value
+
+  const payload = {
+    companyDetails: {} as CompanyDetails,
+    contactDetails: {} as ContactDetails
+  }
+  payload.companyDetails.name = form.value.companyName.value
+  payload.companyDetails.registrationNumber = form.value.companyRegistrationNumber.value
+  payload.companyDetails.taxId = form.value.taxID.value
+  payload.companyDetails.vat = form.value.vatNumber.value
+
+  payload.contactDetails = {...props.account?.contactDetails}
+  payload.contactDetails.email = form.value.companyEmail.value
+  payload.contactDetails.phone = form.value.phone.value
+  payload.companyDetails.shippingAddress = props.account.companyDetails?.shippingAddress || []
+  payload.companyDetails.address = newAddress;
+  await $api.controlPanel.updateAccountDetails(props.id || '', payload as UserDetails, props.account.accountType)
 
 }
 

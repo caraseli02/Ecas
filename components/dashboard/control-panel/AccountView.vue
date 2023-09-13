@@ -221,6 +221,7 @@ const getCountryRegion = (country: any, region: any) => {
   }) || [];
 
 }
+
 console.log(props.account?.contactDetails, props.account?.personalDetails)
 const getAccountDetails = async () => {
 
@@ -272,7 +273,7 @@ const updateAccountDetails = async () => {
   newAddress.name1 = form.value.name1.value
   newAddress.name2 = form.value.name2?.value || ''
   newAddress.postcode = form.value.postcode?.value
-  
+
   const payload = {
     personalDetails: {} as PersonalDetails,
     contactDetails: {} as ContactDetails

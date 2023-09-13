@@ -47,6 +47,7 @@ export interface CompanyDetails {
     name: string;
     registrationNumber: string;
     vat?: string;
+    taxId: string;
     address: AddressInterface;
     shippingAddress: ShippingAddressInterface[];
     _id: string;
