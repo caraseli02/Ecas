@@ -58,7 +58,7 @@
               creditObject?.available.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
-              })
+              }) || '0,00'
             }}
           </div>
           <div class="text-sm leading-[1.14]">Available Credit</div>

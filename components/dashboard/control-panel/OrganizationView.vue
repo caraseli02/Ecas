@@ -175,8 +175,6 @@ const props = defineProps({
     required: true,
   }
 });
-
-
 const form = ref({
   companyName: {
     value: '',
@@ -195,11 +193,19 @@ const form = ref({
     error: '',
   },
   country: {
-    value: {},
+    value: {
+      value: '',
+      label: '',
+      error: '',
+      icon: '',
+    },
     error: '',
   },
   region: {
-    value: {},
+    value: {
+      value: '',
+      label: ''
+    },
     error: '',
   },
   city: {
@@ -258,7 +264,7 @@ const getAccountDetails = async () => {
 
   form.value.companyName.value = props.account.companyDetails?.name;
   form.value.companyRegistrationNumber.value = props.account.companyDetails?.registrationNumber || '';
-  form.value.taxID.value = '';
+  form.value.taxID.value = '-';
   form.value.vatNumber.value = props.account.companyDetails?.vat || '';
   form.value.city.value = props.account.companyDetails?.address.city || '';
   form.value.name1.value = props.account.companyDetails?.address.name1 || '';
@@ -273,7 +279,6 @@ const getAccountDetails = async () => {
 await getAccountDetails()
 
 const isEditing = ref(false);
-
 
 watch(form.value.country, (newVal) => {
   if (newVal?.value) {
@@ -310,7 +315,7 @@ const updateAccountDetails = async () => {
   }
   payload.companyDetails.name = form.value.companyName.value
   payload.companyDetails.registrationNumber = form.value.companyRegistrationNumber.value
-  payload.companyDetails.taxId = form.value.taxID.value
+  payload.companyDetails.taxId = '-'
   payload.companyDetails.vat = form.value.vatNumber.value
 
   payload.contactDetails = {...props.account?.contactDetails}
