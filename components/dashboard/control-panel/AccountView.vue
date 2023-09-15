@@ -142,8 +142,8 @@ import {countries} from '@/data/countries';
 import {FormSelectOption} from '~~/types';
 import {useNuxtApp} from '#app';
 import {AddressInterface, ContactDetails, PersonalDetails, UserDetails} from '~/types/auth/user-details';
-import {CountryInterface, RegionInterface} from '~/types/dashboard/control-panel';
 import {PropType} from 'nuxt/dist/app/compat/capi';
+import {CountryRegion} from '~/helpers/control-panel.helpers';
 
 const {$api} = useNuxtApp();
 
@@ -168,11 +168,18 @@ const form = ref({
     error: '',
   },
   country: {
-    value: {},
+    value: {
+      value: '',
+      label: '',
+      icon: '',
+    },
     error: '',
   },
   region: {
-    value: {},
+    value: {
+      value: '',
+      label: ''
+    },
     error: '',
   },
   city: {
@@ -202,24 +209,12 @@ const form = ref({
 });
 const regions = ref<FormSelectOption[]>([]);
 
-const getCountryRegion = (country: any, region: any) => {
+const getCountryRegion = async (country: any, region: any) => {
   //
-  const countryToFind = countries.find(obj => obj.value === country) as CountryInterface;
-  const regionToFind = countryToFind.regions.find(obj => obj.name === region) as RegionInterface;
-  const formRegion = {} as { value: string, label: string }
-
-  form.value.country.value = countryToFind;
-  formRegion.value = regionToFind?.name;
-  formRegion.label = regionToFind?.name;
-  form.value.region.value = formRegion;
-
-  regions.value = countryToFind.regions.map((e) => {
-    return {
-      label: e.name,
-      value: e.name,
-    };
-  }) || [];
-
+  const CountryRegionObj = CountryRegion(country, region);
+  regions.value = CountryRegionObj.regions;
+  form.value.country.value = CountryRegionObj.country;
+  form.value.region.value = CountryRegionObj.region;
 }
 
 console.log(props.account?.contactDetails, props.account?.personalDetails)
