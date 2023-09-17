@@ -69,7 +69,6 @@ const fetchInformation = async () => {
   }
 
   customerDetails.value = response.data;
-  console.log(customerDetails.value)
 };
 
 await fetchInformation();

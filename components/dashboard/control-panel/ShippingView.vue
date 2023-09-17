@@ -59,6 +59,7 @@
               <EditIcon class="w-5 h-5"/>
             </button>
             <button
+                v-if="addresses.length > 1"
                 class="flex items-center justify-center w-11 h-11 bg-[#F2F2F2] bg-opacity-95 rounded-full text-gray-300 transition-colors duration-300 hover:bg-blue hover:text-white"
                 @click="Emitter.emit('delete', index)"
             >
@@ -89,6 +90,7 @@
         <DashboardControlPanelEditAddress
             v-if="editAddressModal" :index="indexOfEditAddressModal"
             :address="editAddressModal"
+            :delete-button-enable="addresses.length > 1"
             @close="editAddressModal = null;indexOfEditAddressModal = 0"
 
 
@@ -130,7 +132,6 @@ const props = defineProps({
     required: true,
   },
 });
-const route = useRoute();
 const addresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterface[]);
 const newAddress = ref<ShippingAddressInterface>({} as ShippingAddressInterface)
 
@@ -139,7 +140,14 @@ const setAsDefault = async (address: any) => {
     item.default = false;
   });
   address.default = true;
-  if (!props.id || !props.accountType) {
+
+  addresses.value.forEach((item: any, index: number) => {
+    if (item.default === true) {
+      defaultAddressIndex.value = index;
+    }
+  })
+
+  if (!props.id || props.accountType === null) {
     return;
   }
   await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
@@ -162,7 +170,7 @@ const handleAddAddress = (val: any) => {
 };
 
 const getShippingInformation = async () => {
-  if (!props.id || !props.accountType) {
+  if (!props.id || props.accountType === null) {
     return;
   }
   const response = (await $api.controlPanel.fetchShipping(props.id || '', props.accountType))
@@ -185,7 +193,8 @@ Emitter.on('edit', async (object: any) => {
   addresses.value[object.index].postcode = object.address.postcode.value;
   addresses.value[object.index].phone = object.address.phone.value;
 
-  if (!props.id || !props.accountType) {
+
+  if (!props.id || props.accountType === null) {
     return;
   }
   await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
@@ -196,8 +205,11 @@ Emitter.on('edit', async (object: any) => {
 Emitter.on('delete', async (index: number) => {
 
   addresses.value.splice(index, 1)
-  if (!props.id || !props.accountType) {
+  if (!props.id || props.accountType === null) {
     return;
+  }
+  if (defaultAddressIndex.value === index) {
+    addresses.value[0].default = true;
   }
   await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
 
@@ -205,6 +217,8 @@ Emitter.on('delete', async (index: number) => {
 
 Emitter.on('add', async (object: any) => {
 
+  newAddress.value = {} as ShippingAddressInterface;
+  
   newAddress.value.alias = object.address.alias.value
   newAddress.value.name1 = object.address.name1.value;
   newAddress.value.name2 = object.address.name2.value;
@@ -213,9 +227,10 @@ Emitter.on('add', async (object: any) => {
   newAddress.value.region = object.address.region.value.value;
   newAddress.value.phone = object.address.phone.value;
   newAddress.value.postcode = object.address.postcode.value;
+  newAddress.value.default = false;
 
   addresses.value.push(newAddress.value)
-  if (!props.id || !props.accountType) {
+  if (!props.id || props.accountType === null) {
     return;
   }
   await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)

@@ -49,7 +49,7 @@ export enum AlertAndNotificationLabelsEnum {
 }
 
 export enum MarketingPreferencesEnum {
-    cookiesPolicyConsent = 'Cookies Policy Consent',
+    cookiesPolicy = 'Cookies Policy Consent',
     newsletter = 'Subscribed to Newsletter',
-    emailConsent = 'E-mail marketing consent'
+    eMailMarketing = 'E-mail marketing consent'
 }

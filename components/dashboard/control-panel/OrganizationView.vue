@@ -161,7 +161,7 @@ import {FormSelectOption} from '~~/types';
 import {useNuxtApp} from '#app';
 import {AddressInterface, CompanyDetails, ContactDetails, UserDetails} from '~/types/auth/user-details';
 import {PropType} from 'nuxt/dist/app/compat/capi';
-import {CountryRegion} from '~/helpers/control-panel.helpers';
+import {getRegionByCountry} from '~/helpers/form.helpers';
 
 const companyInformation = ref<CompanyDetails>({} as CompanyDetails)
 const {$api} = useNuxtApp();
@@ -236,7 +236,7 @@ const regions = ref<FormSelectOption[]>([]);
 
 const getCountryRegion = async (country: any, region: any) => {
   //
-  const CountryRegionObj = CountryRegion(country, region);
+  const CountryRegionObj = getRegionByCountry(country, region);
   regions.value = CountryRegionObj.regions;
   form.value.country.value = CountryRegionObj.country;
   form.value.region.value = CountryRegionObj.region;

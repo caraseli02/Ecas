@@ -40,7 +40,7 @@
               :show-disabled-styles="false"
               search
               label="County/Region"
-              placeholder="Georgia"
+              placeholder=""
               size="lg"
               class="relative z-10"
           />
@@ -72,6 +72,7 @@
         </div>
         <div class="grid grid-cols-1 gap-4 pl-4 pr-3 md:pl-6 md:pr-3 md:grid-cols-[auto,auto,1fr]">
           <button
+              v-if="props.deleteButtonEnable"
               class="flex items-center justify-center rounded-lg text-[#FA4B4B] py-[7px] px-7 border border-[#FA4B4B]"
               @click="$emit('close');Emitter.emit('delete', props.index)"
           >
@@ -106,6 +107,7 @@ import {countries} from '@/data/countries';
 import {FormSelectOption} from '~/types';
 import Emitter from 'tiny-emitter/instance.js';
 import {ShippingAddressInterface} from '~/types/auth/user-details';
+import {getRegionByCountry} from '~/helpers/form.helpers';
 
 const props = defineProps({
   address: {
@@ -115,8 +117,11 @@ const props = defineProps({
   index: {
     type: Number,
     required: true,
+  },
+  deleteButtonEnable: {
+    type: Boolean,
+    required: true,
   }
-
 });
 
 defineEmits(['close']);
@@ -126,11 +131,18 @@ const data = ref({
     error: '',
   },
   country: {
-    value: '',
+    value: {
+      value: '',
+      label: '',
+      icon: '',
+    },
     error: '',
   },
   region: {
-    value: '',
+    value: {
+      value: '',
+      label: '',
+    },
     error: '',
   },
   name1: {
@@ -153,6 +165,27 @@ const data = ref({
 const newAddress = ref<ShippingAddressInterface>({} as ShippingAddressInterface)
 const regions = ref<FormSelectOption[]>([]);
 
+
+const getCountryRegion = async (country: any, region: any) => {
+  const CountryRegionObj = getRegionByCountry(country, region);
+  regions.value = CountryRegionObj.regions;
+  data.value.country.value = CountryRegionObj.country;
+  data.value.region.value = CountryRegionObj.region;
+}
+console.log(props.deleteButtonEnable)
+const setCustomerInformation = () => {
+
+  data.value.alias.value = props.address.alias;
+  data.value.name1.value = props.address.name1;
+  data.value.name2.value = props.address.name2;
+  data.value.postcode.value = props.address.postcode;
+  data.value.phone.value = props.address.phone;
+  getCountryRegion(props.address.country, props.address.region);
+}
+
+await setCustomerInformation()
+
+
 watch(data.value.country, (newVal) => {
   if (newVal?.value) {
     data.value.region = {
@@ -172,14 +205,9 @@ watch(data.value.country, (newVal) => {
 });
 
 
-onMounted(() => {
-  data.value.alias.value = props.address.alias;
-  data.value.country.value = props.address.country.value?.value;
-  data.value.region.value = props.address.region.value?.value;
-  data.value.name1.value = props.address.name1;
-  data.value.name2.value = props.address.name2;
-  data.value.postcode.value = props.address.postcode;
-  data.value.phone.value = props.address.phone;
-});
+// onMounted(() => {
+//
+//
+// });
 
 </script>

@@ -184,8 +184,8 @@ const getCustomerSettings = async () => {
 const securityEmail = ref('');
 const marketingPreferences = ref([
   {
-    label: MarketingPreferencesEnum.cookiesPolicyConsent,
-    key: 'cookiesPolicyConsent',
+    label: MarketingPreferencesEnum.cookiesPolicy,
+    key: 'cookiesPolicy',
     email: false,
     app: false,
   },
@@ -196,8 +196,8 @@ const marketingPreferences = ref([
     app: false,
   },
   {
-    label: MarketingPreferencesEnum.emailConsent,
-    key: 'emailConsent',
+    label: MarketingPreferencesEnum.eMailMarketing,
+    key: 'emailMarketing',
     email: false,
     app: false,
   },
