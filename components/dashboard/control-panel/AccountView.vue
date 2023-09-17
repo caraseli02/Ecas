@@ -216,8 +216,6 @@ const getCountryRegion = async (country: any, region: any) => {
   form.value.country.value = CountryRegionObj.country;
   form.value.region.value = CountryRegionObj.region;
 }
-
-console.log(props.account?.contactDetails, props.account?.personalDetails)
 const getAccountDetails = async () => {
 
   if (!props.account?.personalDetails || !props.account?.contactDetails) {
@@ -284,11 +282,4 @@ const updateAccountDetails = async () => {
   await $api.controlPanel.updateAccountDetails(props.id || '', payload as UserDetails, props.account.accountType)
 
 }
-
-onMounted(() => {
-
-
-});
-
-
 </script>

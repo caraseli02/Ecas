@@ -61,11 +61,9 @@ import {DiscountInterface} from '~/types/auth/account-settings';
 
 const customerDiscountBuffer = ref<number>(0);
 const customerDiscount = ref<number>(0);
-
 const loading = ref(true);
 const error = ref(false);
 const {$api} = useNuxtApp();
-
 const props = defineProps({
   id: {
     type: String,
@@ -73,6 +71,9 @@ const props = defineProps({
   },
 });
 const getCustomerSettings = async () => {
+  if (!props.id) {
+    return;
+  }
   const response = (await $api.controlPanel.fetchCustomerDiscount(props.id)) as { 'status': string, data: DiscountInterface }
 
   if (response.status !== 'success') {
@@ -86,11 +87,13 @@ const getCustomerSettings = async () => {
     customerDiscountBuffer.value = response.data.value;
   }
 
-
 }
-
 const updateDiscount = async (discount: number | 0) => {
+  if (!props.id) {
+    return;
+  }
   const response = (await $api.controlPanel.updateCustomerDiscount(discount, props.id))
+
   if (response.status !== 'success') {
     return;
   } else {
@@ -98,7 +101,6 @@ const updateDiscount = async (discount: number | 0) => {
     error.value = false;
   }
 }
-
 
 await getCustomerSettings()
 

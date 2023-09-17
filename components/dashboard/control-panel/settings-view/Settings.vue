@@ -83,7 +83,9 @@
           <div v-for="(item, index) in marketingPreferences" :key="index" class="flex items-center justify-between">
             <div class="text-sm leading-[1.71] text-left">{{ item.label }}</div>
             <label class="flex cursor-pointer">
-              <input :value="item.email" type="checkbox" class="sr-only" @change="item.email = !item.email"/>
+              <input
+                  :value="item.email" type="checkbox" class="sr-only"
+                  @change="item.email = !item.email; markSettingAsRead(item,'email')"/>
               <div
                   class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                   :class="[
@@ -155,6 +157,9 @@ const props = defineProps({
   },
 });
 const getCustomerSettings = async () => {
+  if (!props.id) {
+    return;
+  }
   const response = (await $api.controlPanel.fetchCustomerSettings(props.id))
 
   if (response.status !== 'success') {
@@ -163,10 +168,7 @@ const getCustomerSettings = async () => {
 
   const settings = response.description.adminSettings as AccountAdminSettings;
 
-  if (!settings.alertsAndNotifications) {
-    return;
-  }
-  if (!settings.marketingPreferences) {
+  if (!settings.alertsAndNotifications || !settings.marketingPreferences) {
     return;
   }
   marketingPreferences.value.forEach(preference => {
@@ -182,30 +184,37 @@ const getCustomerSettings = async () => {
 const securityEmail = ref('');
 const marketingPreferences = ref([
   {
-    label: MarketingPreferencesEnum.cookiesPolicy,
-    key: 'cookiesPolicy',
+    label: MarketingPreferencesEnum.cookiesPolicyConsent,
+    key: 'cookiesPolicyConsent',
     email: false,
     app: false,
   },
   {
-    label: MarketingPreferencesEnum.subscribedNewsletter,
+    label: MarketingPreferencesEnum.newsletter,
     key: 'newsletter',
     email: false,
     app: false,
   },
   {
-    label: MarketingPreferencesEnum.emailMarketing,
-    key: 'emailMarketing',
+    label: MarketingPreferencesEnum.emailConsent,
+    key: 'emailConsent',
     email: false,
     app: false,
   },
 ]);
 const markSettingAsRead = async (item: object, type: string) => {
-  const response = (await $api.controlPanel.markSettingsAsRead(item, type, props.id))
+  if (!props.id || !type || !item) {
+    return;
+  }
+  console.log(props.id, item, type);
+  await $api.controlPanel.markSettingsAsRead(item, type, props.id)
 }
 await getCustomerSettings()
 
 const resetPassword = async (email: string) => {
+  if (!email) {
+    return;
+  }
   const response = await $api.user.resetPasswordLink(email);
 
   if (response.status !== 'success') {

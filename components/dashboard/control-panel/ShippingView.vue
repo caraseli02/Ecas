@@ -139,6 +139,9 @@ const setAsDefault = async (address: any) => {
     item.default = false;
   });
   address.default = true;
+  if (!props.id || !props.accountType) {
+    return;
+  }
   await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
 
 };
@@ -159,6 +162,9 @@ const handleAddAddress = (val: any) => {
 };
 
 const getShippingInformation = async () => {
+  if (!props.id || !props.accountType) {
+    return;
+  }
   const response = (await $api.controlPanel.fetchShipping(props.id || '', props.accountType))
 
   if (response.status !== 'success') {
@@ -179,6 +185,9 @@ Emitter.on('edit', async (object: any) => {
   addresses.value[object.index].postcode = object.address.postcode.value;
   addresses.value[object.index].phone = object.address.phone.value;
 
+  if (!props.id || !props.accountType) {
+    return;
+  }
   await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
 
 
@@ -187,9 +196,10 @@ Emitter.on('edit', async (object: any) => {
 Emitter.on('delete', async (index: number) => {
 
   addresses.value.splice(index, 1)
-  console.log(addresses.value)
+  if (!props.id || !props.accountType) {
+    return;
+  }
   await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
-
 
 });
 
@@ -204,9 +214,10 @@ Emitter.on('add', async (object: any) => {
   newAddress.value.phone = object.address.phone.value;
   newAddress.value.postcode = object.address.postcode.value;
 
-
   addresses.value.push(newAddress.value)
-  console.log(addresses)
+  if (!props.id || !props.accountType) {
+    return;
+  }
   await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
 
 

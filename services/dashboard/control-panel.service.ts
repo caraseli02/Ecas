@@ -4,15 +4,13 @@ import {AccountAdminSettings} from '~/types/auth/account-settings';
 import {ShippingAddressInterface, UserDetails} from '~/types/auth/user-details';
 
 class ControlPanelService extends HttpFactory {
-    private MAIN_RESOURCE = '/dashboard/control-panel/settings';
     private MAIN = '/dashboard/control-panel';
-
+    private SETTINGS_RESOURCE = `${this.MAIN}/settings`;
     private authStore = useAuthStore();
-
-
+    
     async fetchCustomerSettings(id: string) {
         const token = this.authStore.getToken;
-        return await this.call<AccountAdminSettings>('GET', `${this.MAIN_RESOURCE}/${id}`, null, {
+        return await this.call<AccountAdminSettings>('GET', `${this.SETTINGS_RESOURCE}/${id}`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
@@ -27,14 +25,14 @@ class ControlPanelService extends HttpFactory {
 
             }
         }
-        return await this.call<AccountAdminSettings>('POST', `${this.MAIN_RESOURCE}/${id}`, data, {
+        return await this.call<AccountAdminSettings>('POST', `${this.SETTINGS_RESOURCE}/${id}`, data, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
 
     async fetchCustomerDiscount(id: string) {
         const token = this.authStore.getToken;
-        return await this.call<AccountAdminSettings>('GET', `${this.MAIN_RESOURCE}/discount/${id}`, null, {
+        return await this.call<AccountAdminSettings>('GET', `${this.SETTINGS_RESOURCE}/discount/${id}`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
@@ -44,14 +42,14 @@ class ControlPanelService extends HttpFactory {
         const data = {
             value: discount
         }
-        return await this.call<AccountAdminSettings>('PUT', `${this.MAIN_RESOURCE}/discount/${id}`, data, {
+        return await this.call<AccountAdminSettings>('PUT', `${this.SETTINGS_RESOURCE}/discount/${id}`, data, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
 
     async fetchCustomerCredit(id: string) {
         const token = this.authStore.getToken;
-        return await this.call<AccountAdminSettings>('GET', `${this.MAIN_RESOURCE}/customer-credit/${id}`, null, {
+        return await this.call<AccountAdminSettings>('GET', `${this.SETTINGS_RESOURCE}/customer-credit/${id}`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
@@ -62,21 +60,21 @@ class ControlPanelService extends HttpFactory {
             term: term,
             limit: limit,
         }
-        return await this.call<AccountAdminSettings>('PUT', `${this.MAIN_RESOURCE}/customer-credit/${id}`, data, {
+        return await this.call<AccountAdminSettings>('PUT', `${this.SETTINGS_RESOURCE}/customer-credit/${id}`, data, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
 
     async toggleCloseCustomerCredit(id: string) {
         const token = this.authStore.getToken;
-        return await this.call<AccountAdminSettings>('PUT', `${this.MAIN_RESOURCE}/customer-credit/close/${id}`, null, {
+        return await this.call<AccountAdminSettings>('PUT', `${this.SETTINGS_RESOURCE}/customer-credit/close/${id}`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
 
     async toggleFreezeCustomerCredit(id: string) {
         const token = this.authStore.getToken;
-        return await this.call<AccountAdminSettings>('PUT', `${this.MAIN_RESOURCE}/customer-credit/freeze/${id}`, null, {
+        return await this.call<AccountAdminSettings>('PUT', `${this.SETTINGS_RESOURCE}/customer-credit/freeze/${id}`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
