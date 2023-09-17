@@ -225,7 +225,6 @@ const getCurrentDate = (date: string) => {
   return moment(date).format('DD MMM YYYY');
 };
 const updateCreditTerm = async (term: any, value: any) => {
-  console.log(term, value)
   if (term || value) {
     const response = (await $api.controlPanel.updateCustomerCredit(term, value, props.id))
 

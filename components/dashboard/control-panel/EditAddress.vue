@@ -172,7 +172,6 @@ const getCountryRegion = async (country: any, region: any) => {
   data.value.country.value = CountryRegionObj.country;
   data.value.region.value = CountryRegionObj.region;
 }
-console.log(props.deleteButtonEnable)
 const setCustomerInformation = () => {
 
   data.value.alias.value = props.address.alias;

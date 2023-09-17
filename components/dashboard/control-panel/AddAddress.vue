@@ -79,7 +79,7 @@
           </button>
           <button
               class="flex justify-center px-5 py-2 rounded-lg bg-blue leading-[1.75] text-white font-medium"
-              @click="$emit('close');Emitter.emit('add', {address: data});ShowData(data)"
+              @click="$emit('close');Emitter.emit('add', {address: data})"
           >
             Save
           </button>
@@ -129,10 +129,6 @@ const data = ref({
   },
 });
 const regions = ref<FormSelectOption[]>([]);
-
-const ShowData = (data: object) => {
-  console.log(data);
-}
 
 watch(data.value.country, (newVal) => {
   if (newVal?.value) {

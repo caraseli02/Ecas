@@ -142,7 +142,7 @@
             <div class="text-sm font-medium leading-tight pl-4">
               {{
                 customerInformation.adminSettings?.marketingPreferences?.emailMarketing?.email ? 'Subscribed'
-                                    : 'Not Subscribed'
+                    : 'Not Subscribed'
               }}
             </div>
           </div>
@@ -181,18 +181,14 @@ const props = defineProps({
 const customerInformation = ref<UserDetails>({} as UserDetails);
 const {$api} = useNuxtApp();
 
-const showRoute = async (route: any) => {
-  console.log(route);
-}
 const fetchInformation = async () => {
   error.value = false;
   isLoading.value = true;
 
   const response = (await $api.customerProfile.fetchCustomerInformation(props.id || '')) as {
     status: string;
-    data: UserDetails
- ;
-    };
+    data: UserDetails;
+  };
 
   if (response.status !== 'success') {
     isLoading.value = false;

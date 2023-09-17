@@ -206,7 +206,6 @@ const markSettingAsRead = async (item: object, type: string) => {
   if (!props.id || !type || !item) {
     return;
   }
-  console.log(props.id, item, type);
   await $api.controlPanel.markSettingsAsRead(item, type, props.id)
 }
 await getCustomerSettings()
