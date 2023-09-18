@@ -225,17 +225,19 @@ const getCurrentDate = (date: string) => {
   return moment(date).format('DD MMM YYYY');
 };
 const updateCreditTerm = async (term: any, value: any) => {
-  if (term || value) {
+  if ((creditObjectToEdit.value && (term || value)) || (!creditObjectToEdit.value && (term && value))) {
     const response = (await $api.controlPanel.updateCustomerCredit(term, value, props.id))
-
     if (response.status !== 'success') {
       return;
     } else {
+      if (!creditObjectToEdit.value) {
+        creditObjectToEdit.value = {} as CustomerCreditInterface
+      }
       creditObjectToEdit.value.limit = value || creditObjectToEdit.value.limit;
       creditObjectToEdit.value.term = term || creditObjectToEdit.value.term;
       creditObjectToEdit.value.dueDate = term ? moment(moment(), 'DD-MM-YYYY').add(term, 'days').toString() : creditObjectToEdit.value.dueDate;
       creditObjectToEdit.value.tillDue = term || creditObjectToEdit.value.tillDue;
-      creditObjectToEdit.value.available = creditObjectToEdit.value.limit - creditObjectToEdit.value.spent;
+      creditObjectToEdit.value.available = value - creditObjectToEdit.value.spent;
     }
   }
 }

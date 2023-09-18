@@ -188,7 +188,6 @@ const getCustomerCredit = async () => {
       loading.value = false;
       error.value = false;
     }, 100);
-
   }
 
   creditObject.value = response.data;
