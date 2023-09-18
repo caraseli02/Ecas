@@ -10,7 +10,7 @@
         <Transition name="fade">
             <div
                 v-if="showTooltipContent"
-                class="absolute z-10 rounded px-3 py-1 text-sm tracking-[-0.02em] leading-[1.43] font-Inter text-white min-w-max"
+                class="absolute z-10 rounded-lg px-3 py-1 text-sm tracking-[-0.02em] leading-[1.43] font-Inter text-white min-w-max"
                 :class="[
                     position === 'left'
                         ? 'top-1/2 -left-2 -translate-x-full -translate-y-1/2'

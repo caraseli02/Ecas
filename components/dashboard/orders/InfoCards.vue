@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-1 gap-4 mb-9 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
+    <div class="relative z-30 grid grid-cols-1 gap-4 mb-9 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
         <div v-for="(card, index) in cards" :key="index" class="group bg-white rounded-xl p-4 pr-2 shadow-xs md:p-6 md:pr-4">
             <div class="flex items-start justify-between w-full mb-8 xl:mb-12">
                 <div class="flex items-center">
@@ -29,7 +29,7 @@
                     <div>
                         <div class="text-sm font-semibold text-gray-300 mb-3">{{ card.menu.selected.label }}</div>
                         <div class="text-xl font-semibold leading-[1.2] md:text-2xl md:leading-none">
-                            {{ card.value || 0 }}
+                            {{ card.menu.selected.value || 0 }}
                         </div>
                     </div>
                 </div>
@@ -48,9 +48,9 @@
                         >
                             <button
                                 v-for="option in card.menu.options"
-                                :key="option.value"
+                                :key="option.label"
                                 class="group/option flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                                :class="[option.value === card.menu.selected.value ? '' : 'text-dark']"
+                                :class="[option.label === card.menu.selected.label ? '' : 'text-dark']"
                                 @click="
                                     card.menu.selected = option;
                                     card.menu.showOptions = false;
@@ -62,12 +62,12 @@
                                 <div
                                     class="flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 transition-colors duration-300"
                                     :class="[
-                                        option.value === card.menu.selected.value
+                                        option.label === card.menu.selected.label
                                             ? 'border-blue'
                                             : 'border-border group-hover/option:border-dark',
                                     ]"
                                 >
-                                    <div v-if="option.value === card.menu.selected.value" class="w-2.5 h-2.5 bg-blue rounded-full" />
+                                    <div v-if="option.label === card.menu.selected.label" class="w-2.5 h-2.5 bg-blue rounded-full" />
                                 </div>
                             </button>
                         </div>
@@ -135,7 +135,6 @@ import ChevronIcon from '@/assets/icons/dashboard/chevron-down.svg';
 
 const cards = ref([
     {
-        value: '257',
         range: {
             selected: { label: 'This week', value: 1 },
             showOptions: false,
@@ -144,26 +143,25 @@ const cards = ref([
             options: [
                 {
                     label: 'Total Orders',
-                    value: 'total-orders',
                     icon: TotalOrdersIcon,
+                    value: '257',
                 },
                 {
                     label: 'Revenue Growth',
-                    value: 'revenue-growth',
                     icon: RevenueGrowthIcon,
+                    value: '+$ 1692.58',
                 },
             ],
             selected: {
                 label: 'Total Orders',
-                value: 'total-orders',
                 icon: TotalOrdersIcon,
+                value: '257',
             },
             showOptions: false,
         },
         theme: '#007FFF',
     },
     {
-        value: '$ 38,341.62',
         range: {
             selected: { label: 'This week', value: 1 },
             showOptions: false,
@@ -172,31 +170,30 @@ const cards = ref([
             options: [
                 {
                     label: 'Gross Revenue',
-                    value: 'gross-revenue',
                     icon: GrossRevenueIcon,
+                    value: '$ 38,341.62',
                 },
                 {
                     label: 'Gross Margin',
-                    value: 'gross-margin',
                     icon: GrossMarginIcon,
+                    value: '$ 18,341.62',
                 },
                 {
                     label: 'Total Stock Value',
-                    value: 'total-stock-value',
                     icon: TotalStockValueIcon,
+                    value: '$ 158,341.62',
                 },
             ],
             selected: {
                 label: 'Gross Revenue',
-                value: 'gross-revenue',
                 icon: GrossRevenueIcon,
+                value: '$ 38,341.62',
             },
             showOptions: false,
         },
         theme: '#00D395',
     },
     {
-        value: '$ 574.00',
         range: {
             selected: { label: 'This week', value: 1 },
             showOptions: false,
@@ -205,26 +202,25 @@ const cards = ref([
             options: [
                 {
                     label: 'Average Order Value',
-                    value: 'average-order-value',
                     icon: AvgOrderValueIcon,
+                    value: '$ 574.00',
                 },
                 {
                     label: 'Active Cart Sessions',
-                    value: 'active-cart-sessions',
                     icon: ActiveCartSessionsIcon,
+                    value: '73',
                 },
             ],
             selected: {
                 label: 'Average Order Value',
-                value: 'average-order-value',
                 icon: AvgOrderValueIcon,
+                value: '$ 574.00',
             },
             showOptions: false,
         },
         theme: '#FFB100',
     },
     {
-        value: '19,336',
         range: {
             selected: { label: 'This week', value: 1 },
             showOptions: false,
@@ -233,28 +229,28 @@ const cards = ref([
             options: [
                 {
                     label: 'Products Sold',
-                    value: 'products-sold',
                     icon: ProductsSoldIcon,
                     theme: '#A460BC',
+                    value: '19,336',
                 },
                 {
                     label: 'Returns',
-                    value: 'returns',
                     icon: ReturnsIcon,
                     theme: '#FA4B4B',
+                    value: '16',
                 },
                 {
                     label: 'Refunds',
-                    value: 'refunds',
                     icon: RefundsIcon,
                     theme: '#FA4B4B',
+                    value: '22',
                 },
             ],
             selected: {
                 label: 'Products Sold',
-                value: 'products-sold',
                 icon: ProductsSoldIcon,
                 theme: '#A460BC',
+                value: '19,336',
             },
             showOptions: false,
         },

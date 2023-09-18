@@ -3,7 +3,7 @@
         <div class="flex items-center gap-4 p-6 text-sm leading-[1.43]">
             <span class="uppercase"> #{{ item.id }} </span>
             <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
-                <MessageIcon v-if="item.note" class="w-4 h-4" />
+                <MessageIcon v-if="item.note" class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
                 <template #content>
                     <span>This order has a note</span>
                 </template>
@@ -42,7 +42,7 @@
                     {{ item.customer.name }}
                 </span>
                 <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
-                    <LockIcon v-if="item.customer.locked" class="w-4 h-4" />
+                    <LockIcon v-if="item.customer.locked" class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
                     <template #content>
                         <span class="capitalize">Account Locked</span>
                     </template>
