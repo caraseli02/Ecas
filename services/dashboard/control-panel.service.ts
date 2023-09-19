@@ -98,12 +98,12 @@ class ControlPanelService extends HttpFactory {
         );
     }
 
-    // async fetchAccountDetails(id: string, type: number) {
-    //     const token = this.authStore.getToken;
-    //     return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${(type === 0 ? 'personal' : 'organization')}`, null, {
-    //         headers: {Authorization: `Bearer ${token}`},
-    //     });
-    // }
+    async fetchAccountDetails(id: string, type: number) {
+        const token = this.authStore.getToken;
+        return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 
     async updateAccountDetails(id: string, account: UserDetails, type: number) {
         const token = this.authStore.getToken;
