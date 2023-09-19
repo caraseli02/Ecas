@@ -20,11 +20,11 @@
         <template v-if="customer">
           <span class="text-xs leading-[1.33] flex-shrink-0 mx-1">/</span>
           <NuxtLink
-              :to="`/dashboard/customers/${customer.toLowerCase().replace(/ /g, '-')}`"
+              :to="`/dashboard/customers/${customer.replace(/ /g, '-')}`"
               class="text-xs leading-[1.33] font-medium flex-shrink-0 text-blue transition-colors duration-300 hover:text-blue"
               :class="[panelView ? 'text-gray-300' : 'text-blue']"
           >
-            {{ customer }}
+            {{ customerName }}
           </NuxtLink>
         </template>
         <template v-if="panelView && customer">
@@ -66,6 +66,11 @@ const props = defineProps({
   accountType: {
     type: Number,
     required: true,
+  },
+  customerName: {
+    type: String,
+    required: true,
   }
 });
+
 </script>

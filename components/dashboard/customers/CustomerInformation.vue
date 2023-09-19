@@ -165,6 +165,7 @@ import {useNuxtApp} from '#app';
 import {UserDetails} from '~/types/auth/user-details';
 import {AccountType} from '~/types';
 import moment from 'moment';
+import Emitter from 'tiny-emitter/instance.js';
 
 const showOptions = ref(false);
 
@@ -200,6 +201,7 @@ const fetchInformation = async () => {
   }
 
   customerInformation.value = response.data;
+  Emitter.emit('customer-info', {name: customerInformation.value.personalDetails?.firstName + ' ' + customerInformation.value.personalDetails?.lastName})
 };
 
 const getCurrentDate = (date: string) => {
