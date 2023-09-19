@@ -11,6 +11,7 @@ export interface AlertsAndNotificationsInterface {
     hotDeals?: AlertsAndNotificationsTypes;
     securityAlerts?: AlertsAndNotificationsTypes;
     shippingUpdates?: AlertsAndNotificationsTypes;
+    priceChange?: AlertsAndNotificationsTypes;
 }
 
 export interface MarketingPreferencesInterface {
@@ -24,6 +25,8 @@ export interface CustomerCreditInterface {
     spent: number;
     available: number;
     dueDate: string;
+    tillDue: string;
+    term: number;
 }
 
 export interface AlertsAndNotificationsTypes {
@@ -35,4 +38,18 @@ export interface DiscountInterface {
     value: number;
     startDate: string;
     endDate: string;
+}
+
+export enum AlertAndNotificationLabelsEnum {
+    newProducts = 'New Products',
+    hotDeals = 'HOT Deals',
+    outOfStock = 'Out of stock',
+    priceChange = 'Prince Change',
+    shippingUpdates = 'Shipping Updates'
+}
+
+export enum MarketingPreferencesEnum {
+    cookiesPolicy = 'Cookies Policy Consent',
+    newsletter = 'Subscribed to Newsletter',
+    eMailMarketing = 'E-mail marketing consent'
 }
