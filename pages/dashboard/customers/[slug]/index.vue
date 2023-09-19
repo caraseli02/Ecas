@@ -1,6 +1,8 @@
 <template>
   <div class="w-[1488px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
-    <DashboardBreadcrumbs title="Customer Profile" :customer="route.params.slug" :customer-name="customerName">
+    <DashboardBreadcrumbs
+        :key="updateBreadcrumbs" title="Customer Profile"
+        :customer="route.params.slug" :customer-name="customerName">
       <div class="max-lg:hidden max-w-max">
         <div class="grid grid-cols-[repeat(2,auto)] gap-5 text-right">
           <div class="flex flex-col">
@@ -82,6 +84,7 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import Emitter from 'tiny-emitter/instance.js';
 
 const customerName = ref('')
+const updateBreadcrumbs = ref(false);
 
 useHead({
   title: 'Dashboard Profile',
@@ -90,7 +93,7 @@ useHead({
 Emitter.on('customer-info', async (object: { name: string }) => {
 
   customerName.value = object.name;
-
+  updateBreadcrumbs.value = !updateBreadcrumbs.value;
 });
 
 definePageMeta({
