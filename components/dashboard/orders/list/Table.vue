@@ -44,7 +44,7 @@
                         @click="handleShowTypeOptions"
                     >
                         <span class="text-sm flex-shrink-0 mr-1">
-                            {{ type || 'Stock Order' }}
+                            {{ type || 'Select' }}
                         </span>
                         <ChevronDownIcon
                             class="w-5 h-5 text-gray-300 flex-shrink-0 rounded-full"
