@@ -1,5 +1,5 @@
 <template>
-    <div class="relative z-30 grid grid-cols-1 gap-4 mb-9 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
+    <div class="relative z-20 grid grid-cols-1 gap-4 mb-9 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
         <div v-for="(card, index) in cards" :key="index" class="group bg-white rounded-xl p-4 pr-2 shadow-xs md:p-6 md:pr-4">
             <div class="flex items-start w-full mb-8 xl:mb-12" :class="[loading ? 'justify-center md:justify-between' : 'justify-between']">
                 <div v-if="loading" class="flex items-center justify-center gap-4">
