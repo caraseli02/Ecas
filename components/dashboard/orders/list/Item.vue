@@ -1,16 +1,21 @@
 <template>
     <div class="grid grid-cols-[158px,149px,228px,275px,141px,220px,136px,85px] items-center">
-        <div class="flex items-center gap-4 p-6 text-sm leading-[1.43]">
-            <span class="uppercase"> #{{ item.id }} </span>
-            <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
-                <MessageIcon v-if="item.note" class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
-                <template #content>
-                    <span>This order has a note</span>
-                </template>
-            </Tooltip>
+        <div class="flex items-center gap-4 text-sm leading-[1.43]" :class="[loading ? 'px-4 py-[22px]' : 'p-6']">
+            <SkeletonLoader v-if="loading" class="w-[94px] h-6" />
+            <template v-else>
+                <span class="uppercase"> #{{ item.id }} </span>
+                <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
+                    <MessageIcon v-if="item.note" class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
+                    <template #content>
+                        <span>This order has a note</span>
+                    </template>
+                </Tooltip>
+            </template>
         </div>
-        <div class="p-5">
+        <div class="p-5" :class="[loading ? 'px-2' : '']">
+            <SkeletonLoader v-if="loading" class="w-[133px] h-6" />
             <div
+                v-else
                 class="capitalize rounded-md px-3 py-1 text-sm font-medium max-w-max bg-opacity-[0.15]"
                 :class="[
                     item.type === 'stock-order'
@@ -23,37 +28,59 @@
                 {{ item.type.replace(/-/g, ' ') }}
             </div>
         </div>
-        <div class="px-5 py-6 text-sm leading-[1.43] truncate">21 September 2023, 18:25</div>
-        <div class="px-4 py-3">
-            <div class="flex items-center gap-3 mb-2">
-                <!-- <component :is="item.customer.flag"  /> -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="w-5 h-5">
-                    <rect width="20" height="14.286" y="2.857" fill="#fff" rx="4" />
-                    <mask id="mask0_1302_65779" width="20" height="16" x="0" y="2" maskUnits="userSpaceOnUse" style="mask-type: luminance">
-                        <path fill="#fff" d="M0 4.857a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10.286a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4.857Z" />
-                    </mask>
-                    <g mask="url(#mask0_1302_65779)">
-                        <path fill="#E5253D" d="M9.523 2.857h10.476v14.286H9.523z" />
-                        <path fill="#0A3D9C" fill-rule="evenodd" d="M0 17.143h6.667V2.857H0v14.286Z" clip-rule="evenodd" />
-                        <path fill="#FFD955" fill-rule="evenodd" d="M6.664 17.143h6.667V2.857H6.664v14.286Z" clip-rule="evenodd" />
-                    </g>
-                </svg>
-                <span class="text-sm font-semibold leading-[1.43]">
-                    {{ item.customer.name }}
-                </span>
-                <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
-                    <LockIcon v-if="item.customer.locked" class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
-                    <template #content>
-                        <span class="capitalize">Account Locked</span>
-                    </template>
-                </Tooltip>
-            </div>
-            <div class="text-xs text-gray-300 leading-[1.33]">
-                {{ item.customer.email }}
-            </div>
+        <div class="text-sm leading-[1.43] truncate" :class="[loading ? 'px-3.5 py-[22px]' : 'px-5 py-6']">
+            <SkeletonLoader v-if="loading" class="w-[200px] h-6" />
+            <template v-else> 21 September 2023, 18:25 </template>
         </div>
-        <div class="px-6 py-5">
+        <div class="py-3" :class="[loading ? 'px-[17px]' : 'px-4']">
+            <template v-if="loading">
+                <SkeletonLoader class="w-[140px] h-5 mb-2" />
+                <SkeletonLoader class="w-[240px] h-4" />
+            </template>
+            <template v-else>
+                <div class="flex items-center gap-3 mb-2">
+                    <!-- <component :is="item.customer.flag"  /> -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="w-5 h-5">
+                        <rect width="20" height="14.286" y="2.857" fill="#fff" rx="4" />
+                        <mask
+                            id="mask0_1302_65779"
+                            width="20"
+                            height="16"
+                            x="0"
+                            y="2"
+                            maskUnits="userSpaceOnUse"
+                            style="mask-type: luminance"
+                        >
+                            <path fill="#fff" d="M0 4.857a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10.286a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4.857Z" />
+                        </mask>
+                        <g mask="url(#mask0_1302_65779)">
+                            <path fill="#E5253D" d="M9.523 2.857h10.476v14.286H9.523z" />
+                            <path fill="#0A3D9C" fill-rule="evenodd" d="M0 17.143h6.667V2.857H0v14.286Z" clip-rule="evenodd" />
+                            <path fill="#FFD955" fill-rule="evenodd" d="M6.664 17.143h6.667V2.857H6.664v14.286Z" clip-rule="evenodd" />
+                        </g>
+                    </svg>
+                    <span class="text-sm font-semibold leading-[1.43]">
+                        {{ item.customer.name }}
+                    </span>
+                    <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
+                        <LockIcon
+                            v-if="item.customer.locked"
+                            class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue"
+                        />
+                        <template #content>
+                            <span class="capitalize">Account Locked</span>
+                        </template>
+                    </Tooltip>
+                </div>
+                <div class="text-xs text-gray-300 leading-[1.33]">
+                    {{ item.customer.email }}
+                </div>
+            </template>
+        </div>
+        <div class="py-5" :class="[loading ? 'px-4' : 'px-6']">
+            <SkeletonLoader v-if="loading" class="w-[109px] h-6" />
             <div
+                v-else
                 class="capitalize rounded-md px-3 py-1 text-sm font-medium max-w-max bg-opacity-[0.15]"
                 :class="[
                     item.payment === 'paid'
@@ -68,8 +95,10 @@
                 {{ item.payment.replace(/-/g, ' ') }}
             </div>
         </div>
-        <div class="p-5">
+        <div class="p-5" :class="[loading ? 'px-3' : '']">
+            <SkeletonLoader v-if="loading" class="w-[196px] h-6" />
             <div
+                v-else
                 class="capitalize rounded-md px-3 py-1 text-sm font-medium max-w-max bg-opacity-[0.15]"
                 :class="[
                     item.fulfillment === 'abandoned-checkout'
@@ -88,9 +117,13 @@
                 {{ item.fulfillment.replace(/-/g, ' ') }}
             </div>
         </div>
-        <div class="p-6 pr-4 text-sm font-medium">$ 138,000.77</div>
-        <div class="flex items-center justify-end gap-6 pr-4">
-            <div class="relative">
+        <div class="text-sm font-medium" :class="[loading ? 'px-4 py-[22px]' : 'p-6 pr-4']">
+            <SkeletonLoader v-if="loading" class="w-[94px] h-6" />
+            <template v-else> $ 138,000.77 </template>
+        </div>
+        <div class="flex items-center justify-end gap-6 pr-4" :class="[loading ? 'px-4' : '']">
+            <SkeletonLoader v-if="loading" class="w-12 h-6" />
+            <div v-else class="relative">
                 <button class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue" @click="handleShowOptions">
                     <MoreVerticalIcon class="w-6 h-6" />
                 </button>

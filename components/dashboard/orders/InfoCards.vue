@@ -1,81 +1,101 @@
 <template>
     <div class="relative z-30 grid grid-cols-1 gap-4 mb-9 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
         <div v-for="(card, index) in cards" :key="index" class="group bg-white rounded-xl p-4 pr-2 shadow-xs md:p-6 md:pr-4">
-            <div class="flex items-start justify-between w-full mb-8 xl:mb-12">
-                <div class="flex items-center">
-                    <div class="mr-4">
-                        <div
-                            class="flex items-center justify-center w-14 h-14 rounded-full"
-                            :style="{
-                                background: `${card.menu.selected.theme || card.theme}40`,
-                            }"
-                        >
+            <div class="flex items-start w-full mb-8 xl:mb-12" :class="[loading ? 'justify-center md:justify-between' : 'justify-between']">
+                <div v-if="loading" class="flex items-center justify-center gap-4">
+                    <SkeletonLoader class="w-14 h-14" type="circle" />
+                    <div>
+                        <SkeletonLoader class="w-[120px] h-5 mb-3" />
+                        <SkeletonLoader class="w-[180px] h-6 xl:w-full 2xl:w-[180px]" />
+                    </div>
+                </div>
+                <template v-else>
+                    <div class="flex items-center">
+                        <div class="mr-4">
+                            <EmojiSadIcon v-if="error || !card.menu.selected.value" class="w-[52px] h-[52px] py-0.5" />
                             <div
-                                class="relative flex items-center justify-center w-10 h-10 rounded-full"
+                                v-else
+                                class="flex items-center justify-center w-14 h-14 rounded-full"
                                 :style="{
-                                    background: card.menu.selected.theme || card.theme,
+                                    background: `${card.menu.selected.theme || card.theme}40`,
                                 }"
                             >
-                                <component :is="card.menu.selected.icon" class="relative z-10 w-6 h-6 text-white" />
                                 <div
-                                    class="absolute top-0 left-0 w-full h-full rounded-full group-hover:animate-ping-once"
+                                    class="relative flex items-center justify-center w-10 h-10 rounded-full"
                                     :style="{
                                         background: card.menu.selected.theme || card.theme,
                                     }"
-                                />
+                                >
+                                    <component :is="card.menu.selected.icon" class="relative z-10 w-6 h-6 text-white" />
+                                    <div
+                                        class="absolute top-0 left-0 w-full h-full rounded-full group-hover:animate-ping-once"
+                                        :style="{
+                                            background: card.menu.selected.theme || card.theme,
+                                        }"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="text-sm font-semibold text-gray-300">{{ card.menu.selected.label }}</div>
+                                <WarningIcon v-if="error" class="w-5 h-5" />
+                            </div>
+                            <div v-if="error || !card.menu.selected.value" class="text-sm font-medium leading-[1.71] text-gray-100">
+                                No data available
+                            </div>
+                            <div v-else class="text-xl font-semibold leading-[1.2] md:text-2xl md:leading-none">
+                                {{ card.menu.selected.value || 0 }}
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="text-sm font-semibold text-gray-300 mb-3">{{ card.menu.selected.label }}</div>
-                        <div class="text-xl font-semibold leading-[1.2] md:text-2xl md:leading-none">
-                            {{ card.menu.selected.value || 0 }}
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <button
-                        class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue"
-                        @click="card.menu.showOptions = !card.menu.showOptions"
-                    >
-                        <DotsVerticalIcon class="w-6 h-6" />
-                    </button>
-                    <Transition name="fade-full">
-                        <div
-                            v-if="card.menu.showOptions"
-                            v-click-outside="() => (card.menu.showOptions = false)"
-                            class="grid grid-cols-1 gap-1 absolute z-10 -bottom-2 right-0 translate-y-full min-w-max bg-white rounded-lg shadow-m p-3"
+                    <div class="relative">
+                        <button
+                            class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue"
+                            @click="card.menu.showOptions = !card.menu.showOptions"
                         >
-                            <button
-                                v-for="option in card.menu.options"
-                                :key="option.label"
-                                class="group/option flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                                :class="[option.label === card.menu.selected.label ? '' : 'text-dark']"
-                                @click="
-                                    card.menu.selected = option;
-                                    card.menu.showOptions = false;
-                                "
+                            <DotsVerticalIcon class="w-6 h-6" />
+                        </button>
+                        <Transition name="fade-full">
+                            <div
+                                v-if="card.menu.showOptions"
+                                v-click-outside="() => (card.menu.showOptions = false)"
+                                class="grid grid-cols-1 gap-1 absolute z-10 -bottom-2 right-0 translate-y-full min-w-max bg-white rounded-lg shadow-m p-3"
                             >
-                                <span class="mr-4">
-                                    {{ option.label }}
-                                </span>
-                                <div
-                                    class="flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 transition-colors duration-300"
-                                    :class="[
-                                        option.label === card.menu.selected.label
-                                            ? 'border-blue'
-                                            : 'border-border group-hover/option:border-dark',
-                                    ]"
+                                <button
+                                    v-for="option in card.menu.options"
+                                    :key="option.label"
+                                    class="group/option flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                                    :class="[option.label === card.menu.selected.label ? '' : 'text-dark']"
+                                    @click="
+                                        card.menu.selected = option;
+                                        card.menu.showOptions = false;
+                                    "
                                 >
-                                    <div v-if="option.label === card.menu.selected.label" class="w-2.5 h-2.5 bg-blue rounded-full" />
-                                </div>
-                            </button>
-                        </div>
-                    </Transition>
-                </div>
+                                    <span class="mr-4">
+                                        {{ option.label }}
+                                    </span>
+                                    <div
+                                        class="flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 transition-colors duration-300"
+                                        :class="[
+                                            option.label === card.menu.selected.label
+                                                ? 'border-blue'
+                                                : 'border-border group-hover/option:border-dark',
+                                        ]"
+                                    >
+                                        <div v-if="option.label === card.menu.selected.label" class="w-2.5 h-2.5 bg-blue rounded-full" />
+                                    </div>
+                                </button>
+                            </div>
+                        </Transition>
+                    </div>
+                </template>
             </div>
             <div class="flex items-center justify-between">
-                <div class="relative">
+                <div v-if="card.menu.selected.noDropdownLabel" class="text-sm font-medium leading-[1.43] text-gray-300">
+                    {{ card.menu.selected.noDropdownLabel }}
+                </div>
+                <div v-else class="relative">
                     <button class="flex items-center" @click="card.range.showOptions = !card.range.showOptions">
                         <span class="text-sm left-[1.43] text-gray-300 font-medium mr-1">
                             {{ card.range.selected.label }}
@@ -132,6 +152,8 @@ import ProductsSoldIcon from '@/assets/icons/dashboard/orders/products-sold.svg'
 import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import ArrowRightIcon from '@/assets/icons/dashboard/arrow-right.svg';
 import ChevronIcon from '@/assets/icons/dashboard/chevron-down.svg';
+import WarningIcon from '@/assets/icons/dashboard/warning.svg';
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 
 const cards = ref([
     {
@@ -156,6 +178,7 @@ const cards = ref([
                 label: 'Total Orders',
                 icon: TotalOrdersIcon,
                 value: '257',
+                noDropdownLabel: '',
             },
             showOptions: false,
         },
@@ -182,12 +205,14 @@ const cards = ref([
                     label: 'Total Stock Value',
                     icon: TotalStockValueIcon,
                     value: '$ 158,341.62',
+                    noDropdownLabel: 'Total shop stock value',
                 },
             ],
             selected: {
                 label: 'Gross Revenue',
                 icon: GrossRevenueIcon,
                 value: '$ 38,341.62',
+                noDropdownLabel: '',
             },
             showOptions: false,
         },
@@ -209,12 +234,14 @@ const cards = ref([
                     label: 'Active Cart Sessions',
                     icon: ActiveCartSessionsIcon,
                     value: '73',
+                    noDropdownLabel: 'Total open cart sessions',
                 },
             ],
             selected: {
                 label: 'Average Order Value',
                 icon: AvgOrderValueIcon,
                 value: '$ 574.00',
+                noDropdownLabel: '',
             },
             showOptions: false,
         },
@@ -251,6 +278,7 @@ const cards = ref([
                 icon: ProductsSoldIcon,
                 theme: '#A460BC',
                 value: '19,336',
+                noDropdownLabel: '',
             },
             showOptions: false,
         },
@@ -265,4 +293,13 @@ const options = [
     { label: 'Last 30 Days', value: 4 },
     { label: 'All Time', value: 5 },
 ];
+
+const loading = ref(true);
+const error = ref(false);
+
+onMounted(() => {
+    setTimeout(() => {
+        loading.value = false;
+    }, 5000);
+});
 </script>

@@ -29,7 +29,10 @@
         <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
             <div class="flex flex-col mb-6 md:block lg:flex">
                 <div class="flex items-center justify-between mb-6 lg:mb-0 md:items-start">
-                    <div class="leading-normal font-semibold md:text-[20px] md:leading-[1.4]">Orders list</div>
+                    <div class="flex items-center gap-3">
+                        <div class="leading-normal font-semibold md:text-[20px] md:leading-[1.4]">Orders list</div>
+                        <WarningIcon v-if="error" class="w-6 h-6" />
+                    </div>
                     <div class="flex items-center gap-4">
                         <button
                             v-if="activeFilters.length > 0"
@@ -103,6 +106,7 @@
                 <DashboardOrdersListTable
                     :items="visibleItemsFiltered"
                     :loading="loading"
+                    :error="error"
                     @active-filters="activeFilters = $event"
                     @active-sort="activeSort = $event"
                 />
@@ -127,6 +131,7 @@ import XIcon from '@/assets/icons/dashboard/x.svg';
 import { DashboardOrderItem } from '~~/types';
 import { FilterLabelsEnum } from '~/types/dashboard/filter';
 import USAFlag from '@/assets/icons/flags/usa.svg';
+import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
 const orderFilters = [
     {
@@ -200,7 +205,8 @@ const removeFilter = async (index: number) => {
 
 const atPage = ref(1);
 const perPage = ref(10);
-const loading = ref(false);
+const loading = ref(true);
+const error = ref(false);
 
 const listItems = ref<DashboardOrderItem[]>([
     {
@@ -427,5 +433,9 @@ const visibleItemsFiltered = computed(() => {
 
 onMounted(() => {
     setActiveFilterHighlight();
+
+    setTimeout(() => {
+        loading.value = false;
+    }, 5000);
 });
 </script>
