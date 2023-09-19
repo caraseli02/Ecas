@@ -201,7 +201,8 @@ const fetchInformation = async () => {
   }
 
   customerInformation.value = response.data;
-  Emitter.emit('customer-info', {name: customerInformation.value.personalDetails?.firstName + ' ' + customerInformation.value.personalDetails?.lastName})
+  console.log(customerInformation.value.personalDetails)
+  Emitter.emit('customer-info', {name: customerInformation.value.contactDetails?.firstName + ' ' + customerInformation.value.contactDetails?.lastName})
 };
 
 const getCurrentDate = (date: string) => {
