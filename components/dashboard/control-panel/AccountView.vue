@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mb-9 md:flex md:items-center md:justify-between">
-      <h2 class="text-xl leading-[1.4] font-semibold max-md:mb-9">Company Details</h2>
+      <h2 class="text-xl leading-[1.4] font-semibold max-md:mb-9">Account Details</h2>
       <div class="grid grid-cols-2 gap-3 md:grid-cols-[repeat(2,auto)]">
         <button
             class="flex items-center justify-center w-full text-left px-4 py-2 rounded-md transition-colors duration-300 bg-[#F2F2F2] text-gray-300 hover:text-white hover:bg-blue xl:px-6"
@@ -21,40 +21,22 @@
     </div>
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-x-9">
       <FormInput
-          v-model="form.companyName.value"
-          :error="form.companyName.error"
+          v-model="form.firstName.value"
+          :error="form.firstName.error"
           :disabled="!isEditing"
           :show-disabled-styles="false"
-          label="Company Name"
+          label="Name"
           size="lg"
-          placeholder="Company Name srl"
+          placeholder="Name"
       />
       <FormInput
-          v-model="form.companyRegistrationNumber.value"
-          :error="form.companyRegistrationNumber.error"
+          v-model="form.lastName.value"
+          :error="form.lastName.error"
           :disabled="!isEditing"
           :show-disabled-styles="false"
-          label="Company Registration Number"
+          label="Name"
           size="lg"
-          placeholder="RO123456"
-      />
-      <FormInput
-          v-model="form.taxID.value"
-          :error="form.taxID.error"
-          :disabled="!isEditing"
-          :show-disabled-styles="false"
-          label="Tax ID"
-          size="lg"
-          placeholder="RO123456"
-      />
-      <FormInput
-          v-model="form.vatNumber.value"
-          :error="form.vatNumber.error"
-          :disabled="!isEditing"
-          :show-disabled-styles="false"
-          label="V.A.T Number"
-          size="lg"
-          placeholder="RO123456"
+          placeholder="Name"
       />
       <FormSelect
           v-model="form.country.value"
@@ -114,23 +96,23 @@
           :show-disabled-styles="false"
           label="Postcode"
           size="lg"
-          placeholder="W1A5AB"
+          placeholder=""
       />
       <FormInput
           v-model="form.phone.value"
           :error="form.phone.error"
           :disabled="!isEditing"
           :show-disabled-styles="false"
-          label="Mobile Number"
+          label="Phone Number"
           size="lg"
           placeholder="+1 (706) 275-0767"
       />
       <FormInput
-          v-model="form.companyEmail.value"
-          :error="form.companyEmail.error"
+          v-model="form.email.value"
+          :error="form.email.error"
           :disabled="!isEditing"
           :show-disabled-styles="false"
-          label="Company Email"
+          label="Email"
           placeholder="madalina.dobrovolski@company.com"
           type="email"
           size="lg"
@@ -145,7 +127,7 @@
       </button>
       <button
           class="flex items-center justify-center w-full text-left px-[31px] py-2 rounded-lg transition-colors duration-300 bg-blue text-white"
-          @click="updateAccountDetails();isEditing = false"
+          @click="updateAccountDetails(); isEditing=false"
       >
         <span class="leading-[1.75] font-medium"> Save </span>
       </button>
@@ -159,12 +141,12 @@ import CopyIcon from '@/assets/icons/dashboard/copy.svg';
 import {countries} from '@/data/countries';
 import {FormSelectOption} from '~~/types';
 import {useNuxtApp} from '#app';
-import {AddressInterface, CompanyDetails, ContactDetails, UserDetails} from '~/types/auth/user-details';
+import {AddressInterface, ContactDetails, PersonalDetails, UserDetails} from '~/types/auth/user-details';
 import {PropType} from 'nuxt/dist/app/compat/capi';
 import {getRegionByCountry} from '~/helpers/form.helpers';
 
-const companyInformation = ref<CompanyDetails>({} as CompanyDetails)
 const {$api} = useNuxtApp();
+
 const props = defineProps({
   id: {
     type: String,
@@ -175,20 +157,13 @@ const props = defineProps({
     required: true,
   }
 });
+
 const form = ref({
-  companyName: {
+  firstName: {
     value: '',
     error: '',
   },
-  companyRegistrationNumber: {
-    value: '',
-    error: '',
-  },
-  taxID: {
-    value: '',
-    error: '',
-  },
-  vatNumber: {
+  lastName: {
     value: '',
     error: '',
   },
@@ -227,7 +202,7 @@ const form = ref({
     value: '',
     error: '',
   },
-  companyEmail: {
+  email: {
     value: '',
     error: '',
   },
@@ -241,24 +216,22 @@ const getCountryRegion = async (country: any, region: any) => {
   form.value.country.value = CountryRegionObj.country;
   form.value.region.value = CountryRegionObj.region;
 }
-
 const getAccountDetails = async () => {
-  if (!props.account?.companyDetails || !props.account?.contactDetails) {
+
+  if (!props.account?.personalDetails || !props.account?.contactDetails) {
     return;
   }
 
-  form.value.companyName.value = props.account.companyDetails?.name;
-  form.value.companyRegistrationNumber.value = props.account.companyDetails?.registrationNumber || '';
-  form.value.taxID.value = '-';
-  form.value.vatNumber.value = props.account.companyDetails?.vat || '';
-  form.value.city.value = props.account.companyDetails?.address.city || '';
-  form.value.name1.value = props.account.companyDetails?.address.name1 || '';
-  form.value.name2.value = props.account.companyDetails?.address.name2 || '';
-  form.value.postcode.value = props.account.companyDetails?.address.postcode || '';
+  form.value.city.value = props.account.personalDetails.address.city;
+  form.value.firstName.value = props.account.personalDetails.firstName;
+  form.value.lastName.value = props.account.personalDetails.lastName;
+  form.value.name1.value = props.account.personalDetails.address.name1;
+  form.value.name2.value = props.account.personalDetails.address.name2 || '';
+  form.value.postcode.value = props.account.personalDetails.address.postcode;
   form.value.phone.value = props.account.contactDetails.phone;
-  form.value.companyEmail.value = props.account.contactDetails.email;
+  form.value.email.value = props.account.contactDetails.email;
 
-  getCountryRegion(props.account.companyDetails?.address.country, props.account.companyDetails?.address.region);
+  getCountryRegion(props.account.personalDetails.address.country, props.account.personalDetails.address.region);
 
 }
 await getAccountDetails()
@@ -295,22 +268,18 @@ const updateAccountDetails = async () => {
   newAddress.postcode = form.value.postcode?.value
 
   const payload = {
-    companyDetails: {} as CompanyDetails,
+    personalDetails: {} as PersonalDetails,
     contactDetails: {} as ContactDetails
   }
-  payload.companyDetails.name = form.value.companyName.value
-  payload.companyDetails.registrationNumber = form.value.companyRegistrationNumber.value
-  payload.companyDetails.taxId = '-'
-  payload.companyDetails.vat = form.value.vatNumber.value
-
+  payload.personalDetails.firstName = form.value.firstName.value
+  payload.personalDetails.lastName = form.value.lastName.value
   payload.contactDetails = {...props.account?.contactDetails}
-  payload.contactDetails.email = form.value.companyEmail.value
+  payload.contactDetails.email = form.value.email.value
   payload.contactDetails.phone = form.value.phone.value
-  payload.companyDetails.shippingAddress = props.account.companyDetails?.shippingAddress || []
-  payload.companyDetails.address = newAddress;
+  payload.personalDetails.shippingAddress = props.account.personalDetails?.shippingAddress || []
+  payload.personalDetails.address = newAddress;
+
   await $api.controlPanel.updateAccountDetails(props.id || '', payload as UserDetails, props.account.accountType)
 
 }
-
-
 </script>
