@@ -119,7 +119,7 @@ const fetchRecentTransactions = async () => {
     const transactionInfo = {} as OrderInfo;
 
     recentTransactions.value.map((transaction, index) => {
-        transactionInfo.amount = `${Currency[transaction.currency as unknown as keyof typeof Currency]} ${transaction.finalPrice
+        transactionInfo.amount = `${Currency[transaction.currency as unknown as keyof typeof Currency]} ${transaction.total
             .toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
         transactionInfo.status = `${transaction.status.replace('Payment ', '').toLocaleLowerCase()}`;
