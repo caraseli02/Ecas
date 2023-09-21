@@ -71,7 +71,6 @@ export default defineComponent({
       const { limit, spent } = this.value;
       let barValues = [0, 0, 0, 0];
       const progress = spent / limit;
-      console.log(progress)
       if (progress < 0.5) {
         barValues = [progress*2, 0, 0, 0];
       } else if (progress >= 0.5 && progress <= (1/2 + 1/6)) {
