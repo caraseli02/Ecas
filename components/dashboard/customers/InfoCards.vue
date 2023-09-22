@@ -137,8 +137,10 @@ const fetchLastOrder = async () => {
 
   error.value.lastOrder = false;
   isLoading.value.lastOrder = true;
-
-  const response = await $api.customerProfile.fetchCustomerLastOrder(props.id || '') as {
+  if (!props.id) {
+    return;
+  }
+  const response = await $api.customerProfile.fetchCustomerLastOrder(props.id) as {
     status: string;
     data: OrderInterface
   };
@@ -159,8 +161,10 @@ const fetchTotalSpent = async () => {
 
   error.value.totalSpent = false;
   isLoading.value.totalSpent = true;
-
-  const response = await $api.customerProfile.fetchCustomerTotalSpent(props.id || '') as {
+  if (!props.id) {
+    return;
+  }
+  const response = await $api.customerProfile.fetchCustomerTotalSpent(props.id) as {
     status: string;
     data: number
   };
@@ -180,8 +184,10 @@ const fetchAvgOrderValue = async () => {
 
   error.value.avgOrderValue = false;
   isLoading.value.avgOrderValue = true;
-
-  const response = await $api.customerProfile.fetchCustomerAvgOrderValue(props.id || '') as {
+  if (!props.id) {
+    return;
+  }
+  const response = await $api.customerProfile.fetchCustomerAvgOrderValue(props.id) as {
     status: string;
     data: number
   };
@@ -202,8 +208,10 @@ const fetchAbandonedCheckout = async () => {
 
   error.value.abandonedCheckout = false;
   isLoading.value.abandonedCheckout = true;
-
-  const response = await $api.customerProfile.fetchCustomerAbandonedCheckout(props.id || '') as {
+  if (!props.id) {
+    return;
+  }
+  const response = await $api.customerProfile.fetchCustomerAbandonedCheckout(props.id) as {
     status: string;
     data: number
   };

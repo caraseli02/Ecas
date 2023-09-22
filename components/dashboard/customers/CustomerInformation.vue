@@ -185,8 +185,10 @@ const {$api} = useNuxtApp();
 const fetchInformation = async () => {
   error.value = false;
   isLoading.value = true;
-
-  const response = (await $api.customerProfile.fetchCustomerInformation(props.id || '')) as {
+  if (!props.id) {
+    return;
+  }
+  const response = (await $api.customerProfile.fetchCustomerInformation(props.id)) as {
     status: string;
     data: UserDetails;
   };
