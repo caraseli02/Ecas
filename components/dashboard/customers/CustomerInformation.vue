@@ -165,6 +165,7 @@ import {useNuxtApp} from '#app';
 import {UserDetails} from '~/types/auth/user-details';
 import {AccountType} from '~/types';
 import moment from 'moment';
+import Emitter from 'tiny-emitter/instance.js';
 
 const showOptions = ref(false);
 
@@ -184,8 +185,10 @@ const {$api} = useNuxtApp();
 const fetchInformation = async () => {
   error.value = false;
   isLoading.value = true;
-
-  const response = (await $api.customerProfile.fetchCustomerInformation(props.id || '')) as {
+  if (!props.id) {
+    return;
+  }
+  const response = (await $api.customerProfile.fetchCustomerInformation(props.id)) as {
     status: string;
     data: UserDetails;
   };
@@ -200,6 +203,8 @@ const fetchInformation = async () => {
   }
 
   customerInformation.value = response.data;
+  console.log(customerInformation.value.personalDetails)
+  Emitter.emit('customer-info', {name: customerInformation.value.contactDetails?.firstName + ' ' + customerInformation.value.contactDetails?.lastName})
 };
 
 const getCurrentDate = (date: string) => {

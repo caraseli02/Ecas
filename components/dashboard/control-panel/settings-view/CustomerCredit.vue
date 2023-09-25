@@ -161,6 +161,9 @@ const props = defineProps({
 });
 
 const getCustomerCredit = async () => {
+  if (!props.id) {
+    return;
+  }
   const response = (await $api.controlPanel.fetchCustomerCredit(props.id))
 
   if (response.status !== 'success') {

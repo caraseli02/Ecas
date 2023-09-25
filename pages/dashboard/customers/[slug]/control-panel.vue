@@ -1,7 +1,7 @@
 <template>
   <div class="w-[1488px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
     <DashboardBreadcrumbs
-        title="Control Panel" :customer="customer" :panel-view="activeView"
+        title="Control Panel" :customer="customer" :panel-view="activeView" :customer-name="customerName"
         :account-type="accountType">
       <div class="max-lg:hidden max-w-max">
         <div class="grid grid-cols-[repeat(2,auto)] gap-5 text-right">
@@ -94,7 +94,7 @@ import {AccountType} from '~/types';
 
 const route = useRoute();
 const router = useRouter();
-
+const customerName = ref('')
 useHead({
   title: 'Dashboard Control Panel',
 });
@@ -142,6 +142,8 @@ const fetchInformation = async () => {
     return;
   }
   accountType.value = response.data.accountType as AccountType;
+  customer.value = response.data.firebaseId;
+  customerName.value = response.data.personalDetails?.firstName + ' ' + response.data.personalDetails?.lastName
 };
 
 await fetchInformation();
