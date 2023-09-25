@@ -89,22 +89,7 @@
               }}</span>
             <span class="text-sm leading-[1.71]"> limit </span>
           </div>
-          <div class="grid grid-cols-2 gap-1">
-            <div class="relative rounded-[100px] h-2 overflow-hidden bg-[#F2F2F2]">
-              <div class="absolute top-0 left-0 w-full h-full bg-[#00D395]"/>
-            </div>
-            <div class="grid grid-cols-3 gap-1">
-              <div class="relative rounded-[100px] h-2 overflow-hidden bg-[#F2F2F2]">
-                <div class="absolute top-0 left-0 w-full h-full bg-[#FFB100]"/>
-              </div>
-              <div class="relative rounded-[100px] h-2 overflow-hidden bg-[#F2F2F2]">
-                <div class="absolute top-0 left-0 w-1/3 h-full bg-[#FF8A00]"/>
-              </div>
-              <div class="relative rounded-[100px] h-2 overflow-hidden bg-[#F2F2F2]">
-                <div class="absolute top-0 left-0 w-0 h-full bg-[#FA4B4B]"/>
-              </div>
-            </div>
-          </div>
+          <progress-bar :value="creditObject"></progress-bar>
         </template>
       </div>
     </div>
@@ -117,6 +102,7 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import {useNuxtApp} from '#app';
 import {CustomerCreditInterface} from '~/types/auth/account-settings';
 import moment from 'moment';
+import ProgressBar from './ProgressBar.vue';
 
 defineEmits(['toggle-editing']);
 
@@ -175,6 +161,9 @@ const props = defineProps({
 });
 
 const getCustomerCredit = async () => {
+  if (!props.id) {
+    return;
+  }
   const response = (await $api.controlPanel.fetchCustomerCredit(props.id))
 
   if (response.status !== 'success') {

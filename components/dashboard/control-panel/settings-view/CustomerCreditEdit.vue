@@ -208,6 +208,9 @@ const props = defineProps({
   },
 });
 const getCustomerCredit = async () => {
+  if (!props.id) {
+    return;
+  }
   const response = (await $api.controlPanel.fetchCustomerCredit(props.id))
 
   if (response.status !== 'success') {
@@ -226,6 +229,9 @@ const getCurrentDate = (date: string) => {
 };
 const updateCreditTerm = async (term: any, value: any) => {
   if ((creditObjectToEdit.value && (term || value)) || (!creditObjectToEdit.value && (term && value))) {
+    if (!props.id) {
+      return;
+    }
     const response = (await $api.controlPanel.updateCustomerCredit(term, value, props.id))
     if (response.status !== 'success') {
       return;
@@ -237,12 +243,15 @@ const updateCreditTerm = async (term: any, value: any) => {
       creditObjectToEdit.value.term = term || creditObjectToEdit.value.term;
       creditObjectToEdit.value.dueDate = term ? moment(moment(), 'DD-MM-YYYY').add(term, 'days').toString() : creditObjectToEdit.value.dueDate;
       creditObjectToEdit.value.tillDue = term || creditObjectToEdit.value.tillDue;
-      creditObjectToEdit.value.available = value - creditObjectToEdit.value.spent;
+      creditObjectToEdit.value.available = creditObjectToEdit.value.limit - creditObjectToEdit.value.spent;
     }
   }
 }
 
 const switchFreeze = async () => {
+  if (!props.id) {
+    return;
+  }
   const response = (await $api.controlPanel.toggleFreezeCustomerCredit(props.id))
 
   if (response.status !== 'success') {
@@ -250,6 +259,9 @@ const switchFreeze = async () => {
   }
 }
 const switchClose = async () => {
+  if (!props.id) {
+    return;
+  }
   const response = (await $api.controlPanel.toggleCloseCustomerCredit(props.id))
 
   if (response.status !== 'success') {
