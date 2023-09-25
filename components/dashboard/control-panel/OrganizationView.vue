@@ -308,7 +308,10 @@ const updateAccountDetails = async () => {
   payload.contactDetails.phone = form.value.phone.value
   payload.companyDetails.shippingAddress = props.account.companyDetails?.shippingAddress || []
   payload.companyDetails.address = newAddress;
-  await $api.controlPanel.updateAccountDetails(props.id || '', payload as UserDetails, props.account.accountType)
+  if (!props.id || props.account.accountType === null || typeof props.account.accountType === 'undefined') {
+    return;
+  }
+  await $api.controlPanel.updateAccountDetails(props.id, payload as UserDetails, props.account.accountType)
 
 }
 
