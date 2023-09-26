@@ -14,16 +14,8 @@
                     <SortAscDesc @sortChange="
                         accountOrder === 0 ? (accountOrder = 1) : (accountOrder = 0);
                     handleSortChange(emits, 'accountType', accountOrder);" :order="accountOrder" :title="'Account'" />
-                    <button
-                        class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
-                        :class="[!account ? 'text-gray-100' : '', showAccountOptions ? 'border-blue' : 'border-border']"
-                        @click="handleShowAccountOptions">
-                        <span class="text-sm flex-shrink-0 mr-1">
-                            {{ account || 'Select' }}
-                        </span>
-                        <ChevronDownIcon class="w-5 h-5 text-gray-300 flex-shrink-0 rounded-full"
-                            :class="[showAccountOptions ? 'rotate-180' : '']" />
-                    </button>
+                    <CustomSelect @handleShow="handleShowAccountOptions" :selectedItem="account"
+                        :optionsVisible="showAccountOptions" />
                 </div>
                 <div class="p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4">
                     <SortAscDesc @sortChange="
@@ -35,7 +27,8 @@
                 <div class="relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4">
                     <SortAscDesc @sortChange="
                         registeredOrder === 0 ? (registeredOrder = 1) : (registeredOrder = 0);
-                    handleSortChange(emits, 'createdAt', registeredOrder);" :order="registeredOrder" :title="'Registered'" />
+                    handleSortChange(emits, 'createdAt', registeredOrder);" :order="registeredOrder"
+                        :title="'Registered'" />
                     <button
                         class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
                         :class="[
@@ -96,63 +89,13 @@
     </div>
     <Teleport to="body">
         <Transition name="fade-bottom">
-            <div v-if="showAccountOptions" v-click-outside="() => (showAccountOptions = false)"
-                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[163px] shadow-m"
-                :style="{
-                    top: accountDropdownTop + 'px',
-                    left: accountDropdownLeft + 'px',
-                }">
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[account === 'Personal' ? 'text-blue bg-[#F2F2F2]' : '']" @click="
-                        account = 'Personal';
+            <CustomSelectDropdown v-if="showAccountOptions" v-click-outside="() => showAccountOptions = false" :items="accountOptions"
+                :dropdownTop="accountDropdownTop" :dropdownLeft="accountDropdownLeft"
+                :selectedItem="account" @handleSelection="(event: MouseEvent, item) => {
+                    account = item.label;
                     showAccountOptions = false;
-                    handleFilterChange(activeFilters, emits, 'accountType', AccountType.Personal, true);
-                    ">
-                    <ProfileIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71]">Personal</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[account === 'Sole Trader' ? 'text-blue bg-[#F2F2F2]' : '']" @click="
-                        account = 'Sole Trader';
-                    showAccountOptions = false;
-                    handleFilterChange(activeFilters, emits, 'accountType', AccountType.SoleTrader, true);
-                    ">
-                    <SoleTraderIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71]">Sole Trader</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[account === 'Agent' ? 'text-blue bg-[#F2F2F2]' : '']" @click="
-                        account = 'Agent';
-                    showAccountOptions = false;
-                    handleFilterChange(activeFilters, emits, 'accountType', AccountType.Agent, true);
-                    ">
-                    <AgentIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71]">Agent</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[account === 'Business' ? 'text-blue bg-[#F2F2F2]' : '']" @click="
-                        account = 'Business';
-                    showAccountOptions = false;
-                    handleFilterChange(activeFilters, emits, 'accountType', AccountType.Business, true);
-                    ">
-                    <BusinessIcon class="w-6 h-6 flex-shrink-0 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71]">Business</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="
-                        account = '';
-                    showAccountOptions = false;
-                    handleFilterChange(activeFilters, emits, 'accountType', '', true);
-                    ">
-                    <EyeIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71]">View All</span>
-                </button>
-            </div>
+                    handleFilterChange(activeFilters, emits, 'accountType', item.value, true);
+                }" :customClasses="'w-[163px]'" />
         </Transition>
         <Transition name="fade-bottom">
             <div v-if="showRegisteredRange" v-click-outside="() => (showRegisteredRange = false)"
@@ -370,7 +313,6 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import Slider from '@vueform/slider';
-import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import { AccountType, DashboardCustomerTableItem } from '~~/types';
@@ -385,7 +327,9 @@ import { FilterInterface } from '~/model/dashboard/table/filters';
 import { handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
 import Emitter from 'tiny-emitter/instance';
 import { subDays } from 'date-fns';
-import SortAscDesc from '~/components/shared/tables/SortAscDesc.vue';
+import SortAscDesc from '~/components/shared/tables/micro/SortAscDesc.vue';
+import CustomSelect from '~/components/shared/tables/micro/CustomSelect.vue';
+import CustomSelectDropdown from '~/components/shared/tables/micro/CustomSelectDropdown.vue';
 
 const props = defineProps({
     items: {
@@ -397,6 +341,33 @@ const props = defineProps({
         default: true,
     },
 });
+
+const accountOptions = [
+    {
+        label: 'Personal',
+        value: AccountType.Personal,
+        iconType: ProfileIcon,
+    },
+    {
+        label: 'Sole Trader',
+        value: AccountType.SoleTrader,
+        iconType: SoleTraderIcon,
+    },
+    {
+        label: 'Agent',
+        value: AccountType.Agent,
+        iconType: AgentIcon,
+    },
+    {
+        label: 'Business',
+        value: AccountType.Business,
+        iconType: BusinessIcon,
+    },
+    {
+        label: 'View All',
+        value: '',
+        iconType: EyeIcon,
+    },];
 
 const emits = defineEmits(['active-filters', 'active-sort']);
 
@@ -578,4 +549,5 @@ const handleScroll = () => {
 
 .vc-highlight-content-light.vc-blue {
     @apply text-blue font-semibold;
-}</style>
+}
+</style>

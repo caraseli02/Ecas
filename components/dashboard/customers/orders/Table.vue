@@ -14,16 +14,8 @@
                     <SortAscDesc @sortChange="
                         typeOrder === 0 ? (typeOrder = 1) : (typeOrder = 0);
                     handleSortChange(emits, 'type', typeOrder);" :order="typeOrder" :title="'Order Type'" />
-                    <button
-                        class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
-                        :class="[!type ? 'text-gray-100' : '', showTypeOptions ? 'border-blue' : 'border-border']"
-                        @click="handleShowTypeOptions">
-                        <span class="text-sm flex-shrink-0 mr-1">
-                            {{ type || 'Stock Order' }}
-                        </span>
-                        <ChevronDownIcon class="w-5 h-5 text-gray-300 flex-shrink-0 rounded-full"
-                            :class="[showTypeOptions ? 'rotate-180' : '']" />
-                    </button>
+                    <CustomSelect :selectedItem="type" :optionsVisible="showTypeOptions"
+                        @handleShow="handleShowTypeOptions" />
                 </div>
                 <div class="relative p-4 bg-[#F2F2F2] flex flex-col gap-4">
                     <SortAscDesc @sortChange="
@@ -47,16 +39,8 @@
                     <SortAscDesc @sortChange="
                         statusOrder === 0 ? (statusOrder = 1) : (statusOrder = 0);
                     handleSortChange(emits, 'status', statusOrder);" :order="statusOrder" :title="'Order Status'" />
-                    <button
-                        class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
-                        :class="[!status ? 'text-gray-100' : '', showStatusOptions ? 'border-blue' : 'border-border']"
-                        @click="handleShowStatusOptions">
-                        <span class="text-sm flex-shrink-0 mr-1">
-                            {{ status || 'Select' }}
-                        </span>
-                        <ChevronDownIcon class="w-5 h-5 text-gray-300 flex-shrink-0 rounded-full"
-                            :class="[showStatusOptions ? 'rotate-180' : '']" />
-                    </button>
+                    <CustomSelect :selectedItem="status" :optionsVisible="showStatusOptions"
+                        @handleShow="handleShowStatusOptions" />
                 </div>
                 <div class="relative p-4 bg-[#F2F2F2] flex flex-col gap-4">
                     <SortAscDesc @sortChange="
@@ -87,45 +71,12 @@
     </div>
     <Teleport to="body">
         <Transition name="fade-bottom">
-            <div v-if="showTypeOptions" v-click-outside="() => (showTypeOptions = false)"
-                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[180px] shadow-m"
-                :style="{
-                    top: typeDropdownTop + 'px',
-                    left: typeDropdownLeft + 'px',
-                }">
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[type === 'Stock Order' ? 'text-blue bg-[#F2F2F2]' : '']" @click="
-                        type = 'Stock Order';
+            <CustomSelectDropdown v-if="showTypeOptions" v-click-outside="() => (showTypeOptions = false)"
+                :items="typeOptions" :dropdownTop="typeDropdownTop" :dropdownLeft="typeDropdownLeft" :selectedItem="type"
+                @handleSelection="(event: MouseEvent, item) => {
+                    type = item.label;
                     showTypeOptions = false;
-                    ">
-                    <span class="text-sm leading-[1.71]">Stock Order</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[type === 'Backorder' ? 'text-blue bg-[#F2F2F2]' : '']" @click="
-                        type = 'Backorder';
-                    showTypeOptions = false;
-                    ">
-                    <span class="text-sm leading-[1.71]">Backorder</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[type === 'Mixed Order' ? 'text-blue bg-[#F2F2F2]' : '']" @click="
-                        type = 'Mixed Order';
-                    showTypeOptions = false;
-                    ">
-                    <span class="text-sm leading-[1.71]">Mixed Order</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="
-                        type = '';
-                    showTypeOptions = false;
-                    ">
-                    <span class="text-sm leading-[1.71]">All Orders</span>
-                </button>
-            </div>
+                }" :customClasses="'w-[180px]'" />
         </Transition>
         <Transition name="fade-bottom">
             <div v-if="showDateRange" v-click-outside="() => (showDateRange = false)"
@@ -137,31 +88,12 @@
             </div>
         </Transition>
         <Transition name="fade-bottom">
-            <div v-if="showStatusOptions" v-click-outside="() => (showStatusOptions = false)"
-                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white py-3 pr-1 w-[224px] shadow-m"
-                :style="{
-                    top: statusDropdownTop + 'px',
-                    left: statusDropdownLeft + 'px',
-                }">
-                <div class="grid grid-cols-1 gap-1 max-h-[304px] overflow-y-auto scrollbar-thin pl-3 pr-2">
-                    <button v-for="(option, index) in statusOptions" :key="index"
-                        class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                        :class="[status === option ? 'text-blue bg-[#F2F2F2]' : '']" @click="
-                            status = option;
-                        showStatusOptions = false;
-                        ">
-                        <span class="text-sm leading-[1.71]">{{ option }}</span>
-                    </button>
-                    <button
-                        class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                        @click="
-                            status = '';
-                        showStatusOptions = false;
-                        ">
-                        <span class="text-sm leading-[1.71]">All Statuses</span>
-                    </button>
-                </div>
-            </div>
+            <CustomSelectDropdown v-if="showStatusOptions" v-click-outside="() => (showStatusOptions = false)"
+                :items="statusOptionsList" :dropdownTop="statusDropdownTop" :dropdownLeft="statusDropdownLeft"
+                :selectedItem="status" @handleSelection="(event: MouseEvent, item) => {
+                    status = item.label;
+                    showStatusOptions = false;
+                }" :customClasses="'w-[224px]'" />
         </Transition>
         <Transition name="fade-bottom">
             <div v-if="showTotalRange" v-click-outside="() => (showTotalRange = false)"
@@ -283,7 +215,6 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import Slider from '@vueform/slider';
-import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import { DashboardCustomerOrderItem } from '~~/types';
@@ -291,7 +222,9 @@ import XIcon from '@/assets/icons/dashboard/x.svg';
 import { DatePicker } from 'v-calendar';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
-import SortAscDesc from '~/components/shared/tables/SortAscDesc.vue';
+import SortAscDesc from '~/components/shared/tables/micro/SortAscDesc.vue';
+import CustomSelect from '~/components/shared/tables/micro/CustomSelect.vue';
+import CustomSelectDropdown from '~/components/shared/tables/micro/CustomSelectDropdown.vue';
 
 defineProps({
     items: {
@@ -307,6 +240,83 @@ defineProps({
 const emits = defineEmits(['active-filters', 'active-sort']);
 
 const activeFilters: FilterInterface[] = [];
+
+const typeOptions = [
+    {
+        label: 'Stock Order',
+    },
+    {
+        label: 'Backorder',
+    },
+    {
+        label: 'Mixed Order',
+    },
+];
+
+
+
+// const statusOptions = [
+//     {
+//         label: 'Processing',
+//     },
+//     {
+//         label: 'Verification Required',
+//     },
+//     {
+//         label: 'Abandoned Checkout',
+//     },
+//     {
+//         label: 'Delivered',
+//     },
+//     {
+//         label: 'Shipped',
+//     },
+//     {
+//         label: 'Partially Shipped',
+//     },
+//     {
+//         label: 'Refunded',
+//     },
+//     {
+//         label: 'Partially Refunded',
+//     },
+//     {
+//         label: 'Disputed',
+//     },
+//     {
+//         label: 'On Dispute',
+//     },
+//     {
+//         label: 'Canceled',
+//     },
+//     {
+//         label: 'Completed',
+//     },
+//     {
+//         label: 'Pending',
+//     },
+//     {
+//         label: 'Awaiting Payment',
+//     },
+//     {
+//         label: 'Awaiting Fulfillment',
+//     },
+//     {
+//         label: 'Awaiting Shipment',
+//     },
+//     {
+//         label: 'Awaiting Pickup',
+//     },
+//     {
+//         label: 'Payment Received',
+//     },
+//     {
+//         label: 'Payment Declined',
+//     },
+//     {
+//         label: 'All Statuses',
+//     }
+// ];
 
 const id = ref('');
 const idOrder: number = ref(0);
@@ -361,6 +371,11 @@ const statusOptions = [
     'Payment Received',
     'Payment Declined',
 ];
+const statusOptionsList = statusOptions.map((option) => {
+    return {
+        label: option,
+    };
+});
 const statusOrder: number = ref(0);
 const showStatusOptions = ref(false);
 const statusDropdownLeft = ref(0);

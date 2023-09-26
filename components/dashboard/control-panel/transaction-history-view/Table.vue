@@ -63,7 +63,7 @@ import { PropType } from 'vue';
 import { DashboardCustomerOrderItem } from '~~/types';
 import { handleSortChange } from '~/services/dashboard/filter.service';
 import CheckIcon from '@/assets/icons/check.svg';
-import SortAscDesc from '~/components/shared/tables/SortAscDesc.vue';
+import SortAscDesc from '~/components/shared/tables/micro/SortAscDesc.vue';
 
 defineProps({
     items: {
