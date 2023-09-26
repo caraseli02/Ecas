@@ -147,10 +147,10 @@ const setAsDefault = async (address: any) => {
     }
   })
 
-  if (!props.id || props.accountType === null) {
+  if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
     return;
   }
-  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
+  await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType)
 
 };
 const handleAddAddress = (val: any) => {
@@ -170,10 +170,10 @@ const handleAddAddress = (val: any) => {
 };
 
 const getShippingInformation = async () => {
-  if (!props.id || props.accountType === null) {
+  if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
     return;
   }
-  const response = (await $api.controlPanel.fetchShipping(props.id || '', props.accountType))
+  const response = (await $api.controlPanel.fetchShipping(props.id, props.accountType))
 
   if (response.status !== 'success') {
     return;
@@ -194,10 +194,10 @@ Emitter.on('edit', async (object: any) => {
   addresses.value[object.index].phone = object.address.phone.value;
 
 
-  if (!props.id || props.accountType === null) {
+  if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
     return;
   }
-  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
+  await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType)
 
 
 });
@@ -205,20 +205,20 @@ Emitter.on('edit', async (object: any) => {
 Emitter.on('delete', async (index: number) => {
 
   addresses.value.splice(index, 1)
-  if (!props.id || props.accountType === null) {
+  if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
     return;
   }
   if (defaultAddressIndex.value === index) {
     addresses.value[0].default = true;
   }
-  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
+  await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType)
 
 });
 
 Emitter.on('add', async (object: any) => {
 
   newAddress.value = {} as ShippingAddressInterface;
-  
+
   newAddress.value.alias = object.address.alias.value
   newAddress.value.name1 = object.address.name1.value;
   newAddress.value.name2 = object.address.name2.value;
@@ -230,10 +230,10 @@ Emitter.on('add', async (object: any) => {
   newAddress.value.default = false;
 
   addresses.value.push(newAddress.value)
-  if (!props.id || props.accountType === null) {
+  if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
     return;
   }
-  await $api.controlPanel.updateShipping(props.id || '', addresses.value, props.accountType)
+  await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType)
 
 
 });
