@@ -29,51 +29,25 @@
                         registeredOrder === 0 ? (registeredOrder = 1) : (registeredOrder = 0);
                     handleSortChange(emits, 'createdAt', registeredOrder);" :order="registeredOrder"
                         :title="'Registered'" />
-                    <button
-                        class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
-                        :class="[
-                            !registered.start && !registered.end ? 'text-gray-100' : '',
-                            showRegisteredRange ? 'border-blue' : 'border-border',
-                        ]" @click="handleShowRegistered">
-                        <span class="text-sm tracking-[-0.02em] flex-shrink-0 mr-1">
-                            {{
-                                registered.start && registered.end
-                                ? `${formattedDate(registered.start)} - ${formattedDate(registered.end)}`
-                                : '23/9/2023 - 23/9/2023'
-                            }}
-                        </span>
-                        <CalendarIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
-                    </button>
+                    <DatePickerButton :range="registered" :datePickerVisible="showRegisteredRange"
+                        @showDatePicker="handleShowRegistered" />
                 </div>
                 <div class="relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4">
                     <SortAscDesc @sortChange="
                         spentOrder === 0 ? (spentOrder = 1) : (spentOrder = 0);
                     handleSortChange(emits, 'spent', spentOrder);" :order="spentOrder" :title="'Spent'" />
-                    <button
-                        class="flex items-center justify-between relative w-full border rounded-lg px-2.5 py-[7px] bg-white transition-colors duration-300"
-                        :class="[!spent[0] && !spent[1] ? 'text-gray-100' : '', showSpentRange ? 'border-blue' : 'border-border']"
-                        @click="handleShowSpentRange">
-                        <span class="text-sm truncate flex-shrink-0 mr-1"
-                            :class="[spent[0] || spent[1] ? '-tracking-widest' : '']">
-                            {{ spentValue }}
-                        </span>
-                        <FilterIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
-                    </button>
+                    <FilterButton :rangeValue="spentValue" :rangeVisible="showSpentRange"
+                        :textGrayCondition="!spent[0] && !spent[1]" :trackingWidestCondition="spent[0] || spent[1]"
+                        @showSpentRange="handleShowSpentRange" customClasses="justify-between w-full" />
                 </div>
                 <div class="relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4">
                     <SortAscDesc @sortChange="
                         ordersCountOrder === 0 ? (ordersCountOrder = 1) : (ordersCountOrder = 0);
                     handleSortChange(emits, 'ordersCount', ordersCountOrder);" :order="ordersCountOrder"
                         :title="'Orders count'" />
-                    <button
-                        class="flex relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
-                        :class="[!ordersCount ? 'text-gray-100' : '', showOrdersRange ? 'border-blue' : 'border-border']"
-                        @click="handleShowOrdersRange">
-                        <span class="text-sm">
-                            {{ ordersCount || 'Filter' }}
-                        </span>
-                        <FilterIcon class="absolute top-1/2 -translate-y-1/2 right-3 w-5 h-5 text-gray-300" />
-                    </button>
+                    <FilterButton :rangeValue="ordersCount" :rangeVisible="showOrdersRange"
+                        :textGrayCondition="!ordersCount" :trackingWidestCondition="false"
+                        @showSpentRange="handleShowOrdersRange" customClasses="justify-between w-full" />
                 </div>
                 <div class="p-4 pr-1.5 w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
                     <div class="relative">
@@ -313,8 +287,6 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import Slider from '@vueform/slider';
-import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
-import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import { AccountType, DashboardCustomerTableItem } from '~~/types';
 import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SoleTraderIcon from '@/assets/icons/dashboard/sole-trader.svg';
@@ -330,6 +302,8 @@ import { subDays } from 'date-fns';
 import SortAscDesc from '~/components/shared/tables/micro/SortAscDesc.vue';
 import CustomSelect from '~/components/shared/tables/micro/CustomSelect.vue';
 import CustomSelectDropdown from '~/components/shared/tables/micro/CustomSelectDropdown.vue';
+import DatePickerButton from '~/components/shared/tables/micro/DatePickerButton.vue';
+import FilterButton from '~/components/shared/tables/micro/FilterButton.vue';
 
 const props = defineProps({
     items: {

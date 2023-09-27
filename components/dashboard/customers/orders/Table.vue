@@ -21,19 +21,7 @@
                     <SortAscDesc @sortChange="
                         dateOrder === 0 ? (dateOrder = 1) : (dateOrder = 0);
                     handleSortChange(emits, 'date', dateOrder);" :order="dateOrder" :title="'Order Date'" />
-                    <button
-                        class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
-                        :class="[!date.start && !date.end ? 'text-gray-100' : '', showDateRange ? 'border-blue' : 'border-border']"
-                        @click="handleShowDate">
-                        <span class="text-sm tracking-[-0.02em] flex-shrink-0 mr-1">
-                            {{
-                                date.start && date.end
-                                ? `${formattedDate(date.start)} - ${formattedDate(date.end)}`
-                                : '23/9/2023 - 23/9/2023'
-                            }}
-                        </span>
-                        <CalendarIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
-                    </button>
+                    <DatePickerButton :range="date" :datePickerVisible="showDateRange" @showDatePicker="handleShowDate" />
                 </div>
                 <div class="relative p-4 bg-[#F2F2F2] flex flex-col gap-4">
                     <SortAscDesc @sortChange="
@@ -46,16 +34,9 @@
                     <SortAscDesc @sortChange="
                         totalOrder === 0 ? (totalOrder = 1) : (totalOrder = 0);
                     handleSortChange(emits, 'total', totalOrder);" :order="totalOrder" :title="'Total'" />
-                    <button
-                        class="flex items-center justify-center relative w-full border rounded-lg px-2.5 py-[7px] bg-white transition-colors duration-300"
-                        :class="[!total[0] && !total[1] ? 'text-gray-100' : '', showTotalRange ? 'border-blue' : 'border-border']"
-                        @click="handleShowTotalRange">
-                        <span class="text-sm truncate flex-shrink-0 mr-2"
-                            :class="[total[0] || total[1] ? '-tracking-widest' : '']">
-                            {{ totalValue }}
-                        </span>
-                        <FilterIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
-                    </button>
+                    <FilterButton :rangeValue="totalValue" :rangeVisible="showTotalRange"
+                        :textGrayCondition="!total[0] && !total[1]" :trackingWidestCondition="total[0] || total[1]"
+                        @showSpentRange="handleShowTotalRange" customClasses="justify-center gap-2 w-[120px]" />
                 </div>
                 <div class="p-4 pr-[50px] w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
                     <div class="relative">
@@ -215,7 +196,6 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import Slider from '@vueform/slider';
-import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import { DashboardCustomerOrderItem } from '~~/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
@@ -225,6 +205,8 @@ import { handleFilterChange, handleSortChange } from '~/services/dashboard/filte
 import SortAscDesc from '~/components/shared/tables/micro/SortAscDesc.vue';
 import CustomSelect from '~/components/shared/tables/micro/CustomSelect.vue';
 import CustomSelectDropdown from '~/components/shared/tables/micro/CustomSelectDropdown.vue';
+import DatePickerButton from '~/components/shared/tables/micro/DatePickerButton.vue';
+import FilterButton from '~/components/shared/tables/micro/FilterButton.vue';
 
 defineProps({
     items: {
@@ -252,71 +234,6 @@ const typeOptions = [
         label: 'Mixed Order',
     },
 ];
-
-
-
-// const statusOptions = [
-//     {
-//         label: 'Processing',
-//     },
-//     {
-//         label: 'Verification Required',
-//     },
-//     {
-//         label: 'Abandoned Checkout',
-//     },
-//     {
-//         label: 'Delivered',
-//     },
-//     {
-//         label: 'Shipped',
-//     },
-//     {
-//         label: 'Partially Shipped',
-//     },
-//     {
-//         label: 'Refunded',
-//     },
-//     {
-//         label: 'Partially Refunded',
-//     },
-//     {
-//         label: 'Disputed',
-//     },
-//     {
-//         label: 'On Dispute',
-//     },
-//     {
-//         label: 'Canceled',
-//     },
-//     {
-//         label: 'Completed',
-//     },
-//     {
-//         label: 'Pending',
-//     },
-//     {
-//         label: 'Awaiting Payment',
-//     },
-//     {
-//         label: 'Awaiting Fulfillment',
-//     },
-//     {
-//         label: 'Awaiting Shipment',
-//     },
-//     {
-//         label: 'Awaiting Pickup',
-//     },
-//     {
-//         label: 'Payment Received',
-//     },
-//     {
-//         label: 'Payment Declined',
-//     },
-//     {
-//         label: 'All Statuses',
-//     }
-// ];
 
 const id = ref('');
 const idOrder: number = ref(0);
@@ -414,10 +331,6 @@ const totalValue = computed(() => {
 
     return total.value[0] || total.value[1] ? totalValue : 'Filter';
 });
-
-const formattedDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('en-GB');
-};
 
 const isScrolling = ref(false);
 const scrollTimeout = ref();

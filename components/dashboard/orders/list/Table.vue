@@ -27,19 +27,7 @@
                             dateOrder === 0 ? (dateOrder = 1) : (dateOrder = 0);
                         handleSortChange(emits, 'date', dateOrder);" :order="dateOrder" :title="'Date'" />
                     </div>
-                    <button
-                        class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
-                        :class="[!date.start && !date.end ? 'text-gray-100' : '', showDateRange ? 'border-blue' : 'border-border']"
-                        @click="handleShowDate">
-                        <span class="text-sm tracking-[-0.02em] flex-shrink-0 mr-1">
-                            {{
-                                date.start && date.end
-                                ? `${formattedDate(date.start)} - ${formattedDate(date.end)}`
-                                : '23/9/2023 - 23/9/2023'
-                            }}
-                        </span>
-                        <CalendarIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
-                    </button>
+                    <DatePickerButton :range="date" :datePickerVisible="showDateRange" @showDatePicker="handleShowDate" />
                 </div>
                 <div class="relative px-2 py-4 bg-[#F2F2F2]">
                     <div class="mb-4">
@@ -76,16 +64,9 @@
                             totalOrder === 0 ? (totalOrder = 1) : (totalOrder = 0);
                         handleSortChange(emits, 'total', totalOrder);" :order="totalOrder" :title="'Total'" />
                     </div>
-                    <button
-                        class="flex items-center justify-between relative w-full border rounded-lg px-4 py-[7px] bg-white transition-colors duration-300"
-                        :class="[!total[0] && !total[1] ? 'text-gray-100' : '', showTotalRange ? 'border-blue' : 'border-border']"
-                        @click="handleShowTotalRange">
-                        <span class="text-sm truncate flex-shrink-0 mr-2"
-                            :class="[total[0] || total[1] ? '-tracking-widest' : '']">
-                            {{ totalValue }}
-                        </span>
-                        <FilterIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
-                    </button>
+                    <FilterButton :rangeValue="totalValue" :rangeVisible="showTotalRange"
+                        :textGrayCondition="!total[0] && !total[1]" :trackingWidestCondition="total[0] || total[1]"
+                        @showSpentRange="handleShowTotalRange" customClasses="justify-between w-full" />
                 </div>
                 <div class="p-4 w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
                     <div class="relative">
@@ -128,14 +109,16 @@
                 :items="paymentOptionsList" :selectedItem="payment" @handleSelection="(event: MouseEvent, item) => {
                     payment = item.label;
                     showPaymentOptions = false;
-                }" :dropdownTop="paymentDropdownTop" :dropdownLeft="paymentDropdownLeft" :customClasses="'w-[160px]'" />
+                }" :dropdownTop="paymentDropdownTop" :dropdownLeft="paymentDropdownLeft"
+                :customClasses="'w-[160px]'" />
         </Transition>
         <Transition name="fade-bottom">
             <CustomSelectDropdown v-if="showFulfillmentOptions" v-click-outside="() => (showFulfillmentOptions = false)"
                 :items="fulfillmentOptionsList" :selectedItem="fulfillment" @handleSelection="(event: MouseEvent, item) => {
                     fulfillment = item.label;
                     showFulfillmentOptions = false;
-                }" :dropdownTop="fulfillmentDropdownTop" :dropdownLeft="fulfillmentDropdownLeft" :customClasses="'w-[224px]'" />
+                }" :dropdownTop="fulfillmentDropdownTop" :dropdownLeft="fulfillmentDropdownLeft"
+                :customClasses="'w-[224px]'" />
         </Transition>
         <Transition name="fade-bottom">
             <div v-if="showTotalRange" v-click-outside="() => (showTotalRange = false)"
@@ -257,8 +240,6 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import Slider from '@vueform/slider';
-import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
-import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import { DashboardOrderItem } from '~~/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
@@ -268,6 +249,8 @@ import { handleFilterChange, handleSortChange } from '~/services/dashboard/filte
 import SortAscDesc from '~/components/shared/tables/micro/SortAscDesc.vue';
 import CustomSelect from '~/components/shared/tables/micro/CustomSelect.vue';
 import CustomSelectDropdown from '~/components/shared/tables/micro/CustomSelectDropdown.vue';
+import DatePickerButton from '~/components/shared/tables/micro/DatePickerButton.vue';
+import FilterButton from '~/components/shared/tables/micro/FilterButton.vue';
 
 defineProps({
     items: {
@@ -429,10 +412,6 @@ const totalValue = computed(() => {
 
     return total.value[0] || total.value[1] ? totalValue : 'Filter';
 });
-
-const formattedDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('en-GB');
-};
 
 const isScrolling = ref(false);
 const scrollTimeout = ref();
