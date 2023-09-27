@@ -77,128 +77,25 @@
                 }" :customClasses="'w-[224px]'" />
         </Transition>
         <Transition name="fade-bottom">
-            <div v-if="showTotalRange" v-click-outside="() => (showTotalRange = false)"
-                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-6 w-[358px] shadow-m max-md:hidden"
-                :style="{
-                    left: totalRangeDropdownLeft + 'px',
-                    top: totalRangeDropdownTop + 'px',
-                }">
-                <div class="text-sm leading-[1.71] font-semibold mb-8">Total range</div>
-                <div class="mb-16">
-                    <div class="flex items-end gap-3 mb-6">
-                        <label>
-                            <div class="text-sm leading-[1.43] text-gray-300 mb-4">From</div>
-                            <div class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
-                                <span class="font-medium mr-1">$</span>
-                                <input v-model.number="totalBuffer[0]" type="number"
-                                    class="bg-transparent py-2 w-full focus:outline-none" />
-                            </div>
-                        </label>
-                        <div class="text-sm leading-[1.43] mb-3">-</div>
-                        <label>
-                            <div class="text-sm leading-[1.43] text-gray-300 mb-4">To</div>
-                            <div class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
-                                <span class="font-medium mr-1">$</span>
-                                <input v-model.number="totalBuffer[1]" type="number"
-                                    class="bg-transparent py-2 w-full focus:outline-none" />
-                            </div>
-                        </label>
-                    </div>
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="text-sm leading-[1.43] font-medium">${{ totalBuffer[0] }}</div>
-                        <div class="text-sm leading-[1.43] font-medium">${{ totalBuffer[1] }}</div>
-                    </div>
-                    <Slider v-model="totalBuffer" :min="0" :max="100000" :step="10" :tooltips="false" class="rangeSlider"
-                        @slide="totalBuffer = $event" />
-                </div>
-                <div class="grid grid-cols-[auto,1fr] gap-4">
-                    <button
-                        class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
-                        @click="showTotalRange = false">
-                        Cancel
-                    </button>
-                    <button
-                        class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
-                        @click="
-                            total = totalBuffer;
-                        showTotalRange = false;
-                        ">
-                        Apply Filter
-                    </button>
-                </div>
-            </div>
+            <RangeFilter v-if="showTotalRange" v-click-outside="() => (showTotalRange = false)" :title="'Total'"
+                :range="total" :dropdownTop="totalRangeDropdownTop" :dropdownLeft="totalRangeDropdownLeft" @apply="(buffer) => {
+                    total = buffer;
+                    showTotalRange = false;
+                }" @cancel="() => showTotalRange = false" />
         </Transition>
         <Transition name="fade">
-            <div v-if="showTotalRange"
-                class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center md:hidden">
-                <div class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-6 bg-white rounded-xl shadow-xs">
-                    <div class="grid grid-cols-1 gap-1">
-                        <div class="flex items-center justify-between mb-8">
-                            <div class="text-sm leading-[1.71] font-semibold">Total range</div>
-                            <button class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg"
-                                @click="showTotalRange = false">
-                                <XIcon class="w-6 h-6" />
-                            </button>
-                        </div>
-                        <div class="mb-16">
-                            <div class="flex items-end gap-3 mb-6">
-                                <label>
-                                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">From</div>
-                                    <div
-                                        class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
-                                        <span class="font-medium mr-1">$</span>
-                                        <input v-model.number="totalBuffer[0]" type="number"
-                                            class="bg-transparent py-2 w-full focus:outline-none" />
-                                    </div>
-                                </label>
-                                <div class="text-sm leading-[1.43] mb-3">-</div>
-                                <label>
-                                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">To</div>
-                                    <div
-                                        class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
-                                        <span class="font-medium mr-1">$</span>
-                                        <input v-model.number="totalBuffer[1]" type="number"
-                                            class="bg-transparent py-2 w-full focus:outline-none" />
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="text-sm leading-[1.43] font-medium">${{ totalBuffer[0] }}</div>
-                                <div class="text-sm leading-[1.43] font-medium">${{ totalBuffer[1] }}</div>
-                            </div>
-                            <Slider v-model="totalBuffer" :min="0" :max="100000" :step="10" :tooltips="false"
-                                class="rangeSlider" @slide="totalBuffer = $event" />
-                        </div>
-                        <div class="grid grid-cols-[auto,1fr] gap-4">
-                            <button
-                                class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
-                                @click="showTotalRange = false">
-                                Cancel
-                            </button>
-                            <button
-                                class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
-                                @click="
-                                    total = totalBuffer;
-                                showTotalRange = false;
-                                ">
-                                Apply Filter
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="absolute top-0 left-0 w-full h-full bg-[#2F3241]/10 backdrop-blur-[7.5px] cursor-pointer"
-                    @click="showTotalRange = false" />
-            </div>
+            <RangeFilterMobile v-if="showTotalRange" :title="'Total'"
+                :range="total" @apply="(buffer) => {
+                    total = buffer;
+                    showTotalRange = false;
+                }" @cancel="() => showTotalRange = false" />
         </Transition>
     </Teleport>
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import Slider from '@vueform/slider';
-import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import { DashboardCustomerOrderItem } from '~~/types';
-import XIcon from '@/assets/icons/dashboard/x.svg';
 import { DatePicker } from 'v-calendar';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
@@ -207,6 +104,8 @@ import CustomSelect from '~/components/shared/tables/micro/CustomSelect.vue';
 import CustomSelectDropdown from '~/components/shared/tables/micro/CustomSelectDropdown.vue';
 import DatePickerButton from '~/components/shared/tables/micro/DatePickerButton.vue';
 import FilterButton from '~/components/shared/tables/micro/FilterButton.vue';
+import RangeFilter from '~/components/shared/tables/micro/RangeFilter.vue';
+import RangeFilterMobile from '~/components/shared/tables/micro/RangeFilterMobile.vue';
 
 defineProps({
     items: {

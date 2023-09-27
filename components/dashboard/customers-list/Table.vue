@@ -63,8 +63,8 @@
     </div>
     <Teleport to="body">
         <Transition name="fade-bottom">
-            <CustomSelectDropdown v-if="showAccountOptions" v-click-outside="() => showAccountOptions = false" :items="accountOptions"
-                :dropdownTop="accountDropdownTop" :dropdownLeft="accountDropdownLeft"
+            <CustomSelectDropdown v-if="showAccountOptions" v-click-outside="() => showAccountOptions = false"
+                :items="accountOptions" :dropdownTop="accountDropdownTop" :dropdownLeft="accountDropdownLeft"
                 :selectedItem="account" @handleSelection="(event: MouseEvent, item) => {
                     account = item.label;
                     showAccountOptions = false;
@@ -81,219 +81,54 @@
             </div>
         </Transition>
         <Transition name="fade-bottom">
-            <div v-if="showSpentRange" v-click-outside="() => (showSpentRange = false)"
-                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-6 w-[358px] shadow-m"
-                :style="{
-                    left: spentRangeDropdownLeft + 'px',
-                    top: spentRangeDropdownTop + 'px',
-                }">
-                <div class="text-sm leading-[1.71] font-semibold mb-8">Spent range</div>
-                <div class="mb-16">
-                    <div class="flex items-end gap-3 mb-6">
-                        <label>
-                            <div class="text-sm leading-[1.43] text-gray-300 mb-4">From</div>
-                            <div class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
-                                <span class="font-medium mr-1">$</span>
-                                <input v-model.number="spentBuffer[0]" type="number"
-                                    class="bg-transparent py-2 w-full focus:outline-none" />
-                            </div>
-                        </label>
-                        <div class="text-sm leading-[1.43] mb-3">-</div>
-                        <label>
-                            <div class="text-sm leading-[1.43] text-gray-300 mb-4">To</div>
-                            <div class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
-                                <span class="font-medium mr-1">$</span>
-                                <input v-model.number="spentBuffer[1]" type="number"
-                                    class="bg-transparent py-2 w-full focus:outline-none" />
-                            </div>
-                        </label>
-                    </div>
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="text-sm leading-[1.43] font-medium">${{ spentBuffer[0] }}</div>
-                        <div class="text-sm leading-[1.43] font-medium">${{ spentBuffer[1] }}</div>
-                    </div>
-                    <Slider v-model="spentBuffer" :min="0" :max="100000" :step="10" :tooltips="false" class="rangeSlider"
-                        @slide="spentBuffer = $event" />
-                </div>
-                <div class="grid grid-cols-[auto,1fr] gap-4">
-                    <button
-                        class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
-                        @click="showSpentRange = false">
-                        Cancel
-                    </button>
-                    <button
-                        class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
-                        @click="
-                            spent = spentBuffer;
-                        showSpentRange = false;
-                        handleFilterChange(activeFilters, emits, 'spentFrom', spentBuffer[0], true);
-                        handleFilterChange(activeFilters, emits, 'spentTo', spentBuffer[1], true);
-                        ">
-                        Apply Filter
-                    </button>
-                </div>
-            </div>
+            <RangeFilter v-if="showSpentRange" v-click-outside="() => (showSpentRange = false)" title="Spent" :range="spent"
+                :dropdownLeft="spentRangeDropdownLeft" :dropdownTop="spentRangeDropdownTop" @cancel="showSpentRange = false"
+                @apply="(buffer) => {
+                    spent = buffer;
+                    showSpentRange = false;
+                    handleFilterChange(activeFilters, emits, 'spentFrom', buffer[0], true);
+                    handleFilterChange(activeFilters, emits, 'spentTo', buffer[1], true);
+                }" />
         </Transition>
         <Transition name="fade-bottom">
-            <div v-if="showOrdersRange" v-click-outside="() => (showOrdersRange = false)"
-                class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-6 w-[358px] shadow-m"
-                :style="{
-                    left: ordersRangeDropdownLeft + 'px',
-                    top: ordersRangeDropdownTop + 'px',
-                }">
-                <div class="text-sm leading-[1.71] font-semibold mb-[76px]">Orders range</div>
-                <div class="mb-14">
-                    <Slider v-model="ordersCountBuffer" :min="0" :max="1000" :step="5" :format="(val: number) => {
-                        return `${val === 1000 ? 'Any' : val + ' +'}`;
-                    }
-                        " class="rangeSlider" />
-                    <div class="flex items-center justify-between">
-                        <div class="text-sm leading-[1.43] font-medium">0</div>
-                        <div class="text-sm leading-[1.43] font-medium">Any</div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-[auto,1fr] gap-4">
-                    <button
-                        class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
-                        @click="showOrdersRange = false">
-                        Cancel
-                    </button>
-                    <button
-                        class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
-                        @click="
-                            ordersCount = ordersCountBuffer;
-                        showOrdersRange = false;
-                        handleFilterChange(activeFilters, emits, 'ordersCountFrom', ordersCountBuffer, true);
-                        handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
-                        ">
-                        Apply Filter
-                    </button>
-                </div>
-            </div>
+            <SliderFilter v-if="showOrdersRange" v-click-outside="() => (showOrdersRange = false)" title="Orders"
+                :range="ordersCount" :dropdownLeft="ordersRangeDropdownLeft" :dropdownTop="ordersRangeDropdownTop"
+                @cancel="showOrdersRange = false" @apply="(buffer) => {
+                    ordersCount = buffer;
+                    showOrdersRange = false;
+                    handleFilterChange(activeFilters, emits, 'ordersCountFrom', buffer[0], true);
+                    handleFilterChange(activeFilters, emits, 'ordersCountTo', buffer[1], true);
+                }" />
         </Transition>
         <Transition name="fade">
-            <div v-if="showSpentRange"
-                class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center md:hidden">
-                <div class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-6 bg-white rounded-xl shadow-xs">
-                    <div class="grid grid-cols-1 gap-1">
-                        <div class="flex items-center justify-between mb-8">
-                            <div class="text-sm leading-[1.71] font-semibold">Spent range</div>
-                            <button class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg"
-                                @click="showSpentRange = false">
-                                <XIcon class="w-6 h-6" />
-                            </button>
-                        </div>
-                        <div class="mb-16">
-                            <div class="flex items-end gap-3 mb-6">
-                                <label>
-                                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">From</div>
-                                    <div
-                                        class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
-                                        <span class="font-medium mr-1">$</span>
-                                        <input v-model.number="spentBuffer[0]" type="number"
-                                            class="bg-transparent py-2 w-full focus:outline-none" />
-                                    </div>
-                                </label>
-                                <div class="text-sm leading-[1.43] mb-3">-</div>
-                                <label>
-                                    <div class="text-sm leading-[1.43] text-gray-300 mb-4">To</div>
-                                    <div
-                                        class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
-                                        <span class="font-medium mr-1">$</span>
-                                        <input v-model.number="spentBuffer[1]" type="number"
-                                            class="bg-transparent py-2 w-full focus:outline-none" />
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="text-sm leading-[1.43] font-medium">${{ spentBuffer[0] }}</div>
-                                <div class="text-sm leading-[1.43] font-medium">${{ spentBuffer[1] }}</div>
-                            </div>
-                            <Slider v-model="spentBuffer" :min="0" :max="100000" :step="10" :tooltips="false"
-                                class="rangeSlider" @slide="spentBuffer = $event" />
-                        </div>
-                        <div class="grid grid-cols-[auto,1fr] gap-4">
-                            <button
-                                class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
-                                @click="showSpentRange = false">
-                                Cancel
-                            </button>
-                            <button
-                                class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
-                                @click="
-                                    spent = spentBuffer;
-                                showSpentRange = false;
-                                handleFilterChange(activeFilters, emits, 'spentFrom', spentBuffer[0], true);
-                                handleFilterChange(activeFilters, emits, 'spentTo', spentBuffer[1], true);
-                                ">
-                                Apply Filter
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="absolute top-0 left-0 w-full h-full bg-[#2F3241]/10 backdrop-blur-[7.5px] cursor-pointer"
-                    @click="showSpentRange = false" />
-            </div>
+            <RangeFilterMobile v-if="showSpentRange" title="Spent"
+                :range="spent" @cancel="showSpentRange = false" @apply="(buffer) => {
+                    spent = buffer;
+                    showSpentRange = false;
+                    handleFilterChange(activeFilters, emits, 'spentFrom', buffer[0], true);
+                    handleFilterChange(activeFilters, emits, 'spentTo', buffer[1], true);
+                }" />
         </Transition>
         <Transition name="fade">
-            <div v-if="showOrdersRange"
-                class="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center md:hidden">
-                <div class="relative z-10 w-[358px] max-w-[calc(100vw-32px)] p-4 bg-white rounded-xl shadow-xs md:p-6">
-                    <div class="grid grid-cols-1 gap-1">
-                        <div class="flex items-center justify-between mb-[76px]">
-                            <div class="text-sm leading-[1.71] font-semibold">Orders range</div>
-                            <button
-                                class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg ml-auto"
-                                @click="showOrdersRange = false">
-                                <XIcon class="w-6 h-6" />
-                            </button>
-                        </div>
-                        <div class="mb-14">
-                            <Slider v-model="ordersCountBuffer" :min="0" :max="1000" :step="5" :format="(val: number) => {
-                                return `${val === 1000 ? 'Any' : val + ' +'}`;
-                            }
-                                " class="rangeSlider" />
-                            <div class="flex items-center justify-between">
-                                <div class="text-sm leading-[1.43] font-medium">0</div>
-                                <div class="text-sm leading-[1.43] font-medium">Any</div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-[auto,1fr] gap-4">
-                            <button
-                                class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
-                                @click="showOrdersRange = false">
-                                Cancel
-                            </button>
-                            <button
-                                class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
-                                @click="
-                                    ordersCount = ordersCountBuffer;
-                                showOrdersRange = false;
-                                handleFilterChange(activeFilters, emits, 'ordersCountFrom', ordersCountBuffer, true);
-                                handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
-                                ">
-                                Apply Filter
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="absolute top-0 left-0 w-full h-full bg-[#2F3241]/10 backdrop-blur-[7.5px] cursor-pointer"
-                    @click="showOrdersRange = false" />
-            </div>
+            <SliderFilterMobile v-if="showOrdersRange" title="Orders"
+                :range="ordersCount" @cancel="showOrdersRange = false" @apply="(buffer) => {
+                    ordersCount = buffer;
+                    showOrdersRange = false;
+                    handleFilterChange(activeFilters, emits, 'ordersCountFrom', buffer[0], true);
+                    handleFilterChange(activeFilters, emits, 'ordersCountTo', buffer[1], true);
+                }" />
         </Transition>
     </Teleport>
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import Slider from '@vueform/slider';
 import { AccountType, DashboardCustomerTableItem } from '~~/types';
 import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SoleTraderIcon from '@/assets/icons/dashboard/sole-trader.svg';
 import AgentIcon from '@/assets/icons/dashboard/agent.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import EyeIcon from '@/assets/icons/dashboard/eye.svg';
-import XIcon from '@/assets/icons/dashboard/x.svg';
 import { DatePicker } from 'v-calendar';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
@@ -304,6 +139,10 @@ import CustomSelect from '~/components/shared/tables/micro/CustomSelect.vue';
 import CustomSelectDropdown from '~/components/shared/tables/micro/CustomSelectDropdown.vue';
 import DatePickerButton from '~/components/shared/tables/micro/DatePickerButton.vue';
 import FilterButton from '~/components/shared/tables/micro/FilterButton.vue';
+import RangeFilter from '~/components/shared/tables/micro/RangeFilter.vue';
+import RangeFilterMobile from '~/components/shared/tables/micro/RangeFilterMobile.vue';
+import SliderFilter from '~/components/shared/tables/micro/SliderFilter.vue';
+import SliderFilterMobile from '~/components/shared/tables/micro/SliderFilterMobile.vue';
 
 const props = defineProps({
     items: {
