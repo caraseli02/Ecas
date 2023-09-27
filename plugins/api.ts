@@ -8,6 +8,7 @@ import FavouriteFolderService from '~/services/favourite-folder.service';
 import CustomerProfileService from '~/services/dashboard/customer-profile.service';
 import NotificationsService from '~/services/notifications.service'
 import ControlPanelService from '~/services/dashboard/control-panel.service';
+import OrdersService from '~/services/dashboard/orders.service';
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -19,6 +20,7 @@ interface IApiInstance {
     customerProfile: CustomerProfileService;
     notifications: NotificationsService;
     controlPanel: ControlPanelService;
+    orders: OrdersService;
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -38,7 +40,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         favouriteFolder: new FavouriteFolderService(apiFetcher),
         customerProfile: new CustomerProfileService(apiFetcher),
         notifications: new NotificationsService(apiFetcher),
-        controlPanel: new ControlPanelService(apiFetcher)
+        controlPanel: new ControlPanelService(apiFetcher),
+        orders: new OrdersService(apiFetcher)
+
     };
 
     return {
