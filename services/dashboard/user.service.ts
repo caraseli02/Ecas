@@ -5,8 +5,9 @@ import {
     ReturningCustomersInterface,
     TotalCustomersInterface,
 } from '~/model/dashboard/response/CustomerInterfaceResponse';
-import { useAuthStore } from '~/store/authStore';
+import {useAuthStore} from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
+import {OrderInterface} from '~/types';
 
 class UserDashboardService extends HttpFactory {
     private RESOURCE = '/user';
@@ -23,7 +24,7 @@ class UserDashboardService extends HttpFactory {
                 ...filters,
                 ...sort,
             },
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -35,7 +36,7 @@ class UserDashboardService extends HttpFactory {
             params: {
                 time: time,
             },
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -47,7 +48,7 @@ class UserDashboardService extends HttpFactory {
             params: {
                 time: time,
             },
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -56,7 +57,7 @@ class UserDashboardService extends HttpFactory {
         const token = authStore.getToken;
 
         return await this.call<NewCustomersInterface>('GET', `${this.MAIN_RESOURCE}/new-customers`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -65,9 +66,18 @@ class UserDashboardService extends HttpFactory {
         const token = authStore.getToken;
 
         return await this.call<CustomersByCountryInterface>('GET', `${this.MAIN_RESOURCE}/customers-top-country`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
+
+    async deactivateUser(userID: string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        return await this.call<OrderInterface[]>('DELETE', `${this.RESOURCE}/${userID}`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
 }
 
 export default UserDashboardService;

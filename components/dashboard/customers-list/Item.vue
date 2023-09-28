@@ -222,11 +222,13 @@ const handleShowOptions = (event: MouseEvent) => {
   optionsDropdownLeft.value = rect.left + 28;
   optionsDropdownTop.value = rect.top + window.scrollY + 36;
 };
-const showCustomerInformation = (item: any) => {
+const showCustomerInformation = (item: object) => {
+  console.log(item);
 }
 const scrolling = computed(() => {
   return props.isScrolling;
 });
+
 
 watch(scrolling, (val) => {
   if (val) {
