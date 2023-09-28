@@ -3,7 +3,6 @@
     <div class="pl-4 pr-1.5 py-3">
       <NuxtLink
           :to="`/dashboard/customers/${item.firebaseId}`" class="group/link flex items-center" event=""
-          @click.native="showCustomerInformation(item)"
       >
         <div
             class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4"
@@ -160,7 +159,7 @@
         </button>
         <button
             class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
-            @click="showOptions = false"
+            @click="showOptions = false, deleteAccount(item.firebaseId)"
         >
           <TrashIcon class="w-6 h-6 mr-3 text-current"/>
           <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
@@ -190,7 +189,9 @@ import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
 import DeactivateIcon from '@/assets/icons/dashboard/deactivate.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
+import {useNuxtApp} from '#app';
 
+const {$api} = useNuxtApp();
 const props = defineProps({
   item: {
     type: Object as PropType<DashboardCustomerTableItem>,
@@ -222,12 +223,18 @@ const handleShowOptions = (event: MouseEvent) => {
   optionsDropdownLeft.value = rect.left + 28;
   optionsDropdownTop.value = rect.top + window.scrollY + 36;
 };
-const showCustomerInformation = (item: object) => {
-  console.log(item);
-}
+
 const scrolling = computed(() => {
   return props.isScrolling;
 });
+
+const deleteAccount = async (id: string) => {
+  const response = await $api.userDashboard.deactivateUser(id)
+  if (response.status !== 'success') {
+    console.log(response.status);
+    return;
+  }
+}
 
 
 watch(scrolling, (val) => {

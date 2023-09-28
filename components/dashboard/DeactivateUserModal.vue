@@ -74,7 +74,7 @@
         </button>
         <button
             class="flex px-5 py-2 rounded-lg bg-[#FA4B4B] text-sm leading-[1.71] text-white font-medium"
-            @click="$emit('close'),deactivateAccountAsAdmin(user.id)"
+            @click="$emit('close'),deactivateAccountAsAdmin(user.firebaseId)"
 
         >
           Deactivate Account
@@ -100,8 +100,9 @@ defineProps({
 });
 
 const deactivateAccountAsAdmin = async (id: string) => {
-  const response = await $api.user.deactivateUser(id)
+  const response = await $api.userDashboard.deactivateUser(id)
   if (response.status !== 'success') {
+    console.log(response.status);
     return;
   }
 }
