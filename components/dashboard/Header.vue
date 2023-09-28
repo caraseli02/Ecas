@@ -83,7 +83,7 @@
                   <NuxtLink
                       v-for="(notification, index) in notifications"
                       :key="index"
-                      to="/dashboard"
+                      :to="`${route.path}`"
                       event=""
                       class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
                       @click.prevent="markNotificationAsRead(notification, index)"
@@ -314,7 +314,7 @@ const fetchNofications = async () => {
     }
   })
 };
-
+const route = useRoute()
 const getCurrentDate = (date: string) => {
   const currentDate = moment();
   const receivedDate = moment(date);
