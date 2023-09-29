@@ -132,6 +132,7 @@ import { DashboardOrderItem } from '~~/types';
 import { FilterLabelsEnum } from '~/types/dashboard/filter';
 import USAFlag from '@/assets/icons/flags/usa.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
+import Avatar from '@/assets/icons/dashboard/avatar.png';
 
 const orderFilters = [
     {
@@ -215,6 +216,7 @@ const listItems = ref<DashboardOrderItem[]>([
         date: 0,
         note: 'This order has a note',
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -226,9 +228,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '100001',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -242,6 +245,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'mixed-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -252,9 +256,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '1V9VGU48XV ',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -269,6 +274,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'stock-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -279,9 +285,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '100001',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -295,6 +302,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'mixed-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -305,9 +313,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '1V9VGU48XV ',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -318,9 +327,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '1V9VGU48XV ',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -335,6 +345,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'stock-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -345,9 +356,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '100001',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -361,6 +373,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'mixed-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -371,9 +384,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '1V9VGU48XV ',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -387,6 +401,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'stock-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -397,9 +412,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '100001',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,
@@ -414,6 +430,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'mixed-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: USAFlag,

@@ -41,9 +41,10 @@ export interface DashboardControlPanelTransactionHistoryItem {
 export interface DashboardOrderItem {
     id: string;
     note?: string;
-    type: 'stock-order' | 'back-order' | 'mixed-order';
+    type: 'stock-order' | 'backorder' | 'mixed-order';
     date: number;
     customer: {
+        avatar?: any;
         name: string;
         email: string;
         flag: any;

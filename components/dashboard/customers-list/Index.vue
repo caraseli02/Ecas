@@ -100,6 +100,7 @@ import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters'
 import { useNuxtApp } from '#app';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
+import USAFlag from '@/assets/icons/flags/usa.svg';
 
 const { $api } = useNuxtApp();
 
@@ -153,6 +154,7 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {},
             avatar: Avatar,
             name: `${user.contactDetails?.firstName} ${user.contactDetails?.lastName}`,
             email: user.profileDetails.email,
+            flag: USAFlag,
             account: getAccountTypeById(user.accountType) || '-',
             company: user.companyDetails?.name || '-',
             registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
