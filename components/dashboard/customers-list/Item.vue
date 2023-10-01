@@ -215,7 +215,6 @@ const showOptions = ref(false);
 const showDeactivatingModal = ref(false);
 const optionsDropdownLeft = ref(0);
 const optionsDropdownTop = ref(0);
-
 const handleShowOptions = (event: MouseEvent) => {
   showOptions.value = !showOptions.value;
   const target = event.currentTarget as HTMLElement;
@@ -229,7 +228,7 @@ const scrolling = computed(() => {
 });
 
 const deleteAccount = async (id: string) => {
-  const response = await $api.userDashboard.deactivateUser(id)
+  const response = await $api.userDashboard.deleteUser(id)
   if (response.status !== 'success') {
     console.log(response.status);
     return;

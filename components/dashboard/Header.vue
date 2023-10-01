@@ -194,8 +194,10 @@
                 />
               </div>
               <div class="flex flex-col mr-4 max-lg:hidden">
-                <div class="leading-normal font-medium">Madalina Popescu</div>
-                <div class="text-xs leading-normal text-gray-300">Super Admin</div>
+                <div class="leading-normal font-medium">
+                  {{ user.contactDetails.firstName + ' ' + user.contactDetails.lastName }}
+                </div>
+                <div class="text-xs leading-normal text-gray-300">{{ AccountType[user.role] }}</div>
               </div>
               <ChevronDownIcon class="w-6 h-6 text-gray-300 max-lg:hidden"/>
             </button>
@@ -272,6 +274,9 @@ import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg'
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import {Notification, NotificationsType} from '~/types/dashboard/notification';
 import moment from 'moment';
+import {useAuthStore} from '~/store/authStore';
+import {UserDetails} from '~/types/auth/user-details';
+import {AccountType} from '../../types';
 
 
 defineProps({
@@ -293,7 +298,7 @@ const isLoading = ref(false);
 const showOptions = ref(false);
 const showNotifications = ref(false);
 const unreadNotifications = ref(0)
-
+const user = ref<UserDetails>({} as UserDetails)
 const fetchNofications = async () => {
   error.value = false;
   isLoading.value = true;
@@ -314,6 +319,15 @@ const fetchNofications = async () => {
     }
   })
 };
+
+const fetchUserData = async () => {
+  const authStore = useAuthStore();
+  if (authStore.userDetails) {
+    user.value = authStore.userDetails
+  }
+}
+
+
 const route = useRoute()
 const getCurrentDate = (date: string) => {
   const currentDate = moment();
@@ -343,8 +357,7 @@ const deleteNotification = async (notification: Notification, index: number) => 
   }
   notifications.value.splice(index, 1);
 }
-
-await fetchNofications()
+Promise.all([fetchUserData(), fetchNofications()])
 </script>
 
 <style lang="scss">

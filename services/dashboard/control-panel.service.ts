@@ -1,7 +1,7 @@
-import { useAuthStore } from '~/store/authStore';
+import {useAuthStore} from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import { AccountAdminSettings } from '~/types/auth/account-settings';
-import { ShippingAddressInterface, UserDetails } from '~/types/auth/user-details';
+import {AccountAdminSettings} from '~/types/auth/account-settings';
+import {ShippingAddressInterface, UserDetails} from '~/types/auth/user-details';
 
 class ControlPanelService extends HttpFactory {
     private MAIN = '/dashboard/control-panel';
@@ -11,7 +11,7 @@ class ControlPanelService extends HttpFactory {
     async fetchCustomerSettings(id: string) {
         const token = this.authStore.getToken;
         return await this.call<AccountAdminSettings>('GET', `${this.SETTINGS_RESOURCE}/${id}`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -25,14 +25,14 @@ class ControlPanelService extends HttpFactory {
             },
         };
         return await this.call<AccountAdminSettings>('POST', `${this.SETTINGS_RESOURCE}/${id}`, data, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
     async fetchCustomerDiscount(id: string) {
         const token = this.authStore.getToken;
         return await this.call<AccountAdminSettings>('GET', `${this.SETTINGS_RESOURCE}/discount/${id}`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -42,14 +42,14 @@ class ControlPanelService extends HttpFactory {
             value: discount,
         };
         return await this.call<AccountAdminSettings>('PUT', `${this.SETTINGS_RESOURCE}/discount/${id}`, data, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
     async fetchCustomerCredit(id: string) {
         const token = this.authStore.getToken;
         return await this.call<AccountAdminSettings>('GET', `${this.SETTINGS_RESOURCE}/customer-credit/${id}`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -60,28 +60,28 @@ class ControlPanelService extends HttpFactory {
             limit: limit,
         };
         return await this.call<AccountAdminSettings>('PUT', `${this.SETTINGS_RESOURCE}/customer-credit/${id}`, data, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
     async toggleCloseCustomerCredit(id: string) {
         const token = this.authStore.getToken;
         return await this.call<AccountAdminSettings>('PUT', `${this.SETTINGS_RESOURCE}/customer-credit/close/${id}`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
     async toggleFreezeCustomerCredit(id: string) {
         const token = this.authStore.getToken;
         return await this.call<AccountAdminSettings>('PUT', `${this.SETTINGS_RESOURCE}/customer-credit/freeze/${id}`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
     async fetchShipping(id: string, type: number) {
         const token = this.authStore.getToken;
         return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -91,9 +91,9 @@ class ControlPanelService extends HttpFactory {
         return await this.call<AccountAdminSettings>(
             'POST',
             `${this.MAIN}/${id}/${type === 0 ? 'personal/shipping-address' : 'business/shipping-address'}`,
-            { address: address },
+            {address: address},
             {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: {Authorization: `Bearer ${token}`},
             }
         );
     }
@@ -101,7 +101,7 @@ class ControlPanelService extends HttpFactory {
     async fetchAccountDetails(id: string, type: number) {
         const token = this.authStore.getToken;
         return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -109,7 +109,7 @@ class ControlPanelService extends HttpFactory {
         const token = this.authStore.getToken;
 
         return await this.call<AccountAdminSettings>('POST', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, account, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 }
