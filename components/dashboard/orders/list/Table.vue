@@ -81,7 +81,7 @@
                         <CalendarIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
                     </button>
                 </div>
-                <div class="relative px-2 py-4 bg-[#F2F2F2] rounded-l-lg h-[104px]">
+                <div class="relative px-2 py-4 bg-[#F2F2F2] h-[104px]">
                     <div class="mb-4">
                         <button
                             class="relative flex items-center h-5"

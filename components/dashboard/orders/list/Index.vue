@@ -130,7 +130,7 @@ import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import { DashboardOrderItem } from '~~/types';
 import { FilterLabelsEnum } from '~/types/dashboard/filter';
-import USAFlag from '@/assets/icons/flags/usa.svg';
+import Flag from '@/assets/icons/flags/ron.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 
 const orderFilters = [
@@ -217,7 +217,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
             locked: true,
         },
         payment: 'paid',
@@ -231,7 +231,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'canceled',
         fulfillment: 'awaiting-payment',
@@ -244,7 +244,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'pending',
         fulfillment: 'partially-refunded',
@@ -257,7 +257,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'paid',
         fulfillment: 'completed',
@@ -271,7 +271,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'pending',
         fulfillment: 'partially-shipped',
@@ -284,7 +284,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'declined',
         fulfillment: 'processing',
@@ -297,7 +297,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'paid',
         fulfillment: 'payment-received',
@@ -310,7 +310,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'paid',
         fulfillment: 'payment-declined',
@@ -323,7 +323,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
             locked: true,
         },
         payment: 'paid',
@@ -337,7 +337,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'paid',
         fulfillment: 'abandoned-checkout',
@@ -350,7 +350,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'paid',
         fulfillment: 'awaiting-payment',
@@ -363,7 +363,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'paid',
         fulfillment: 'partially-refunded',
@@ -376,7 +376,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'paid',
         fulfillment: 'completed',
@@ -389,7 +389,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'paid',
         fulfillment: 'partially-shipped',
@@ -402,7 +402,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
         },
         payment: 'paid',
         fulfillment: 'processing',
@@ -416,7 +416,7 @@ const listItems = ref<DashboardOrderItem[]>([
         customer: {
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
-            flag: USAFlag,
+            flag: Flag,
             locked: true,
         },
         payment: 'paid',

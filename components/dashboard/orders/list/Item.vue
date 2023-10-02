@@ -39,26 +39,7 @@
             </template>
             <template v-else>
                 <div class="flex items-center gap-3 mb-2">
-                    <!-- <component :is="item.customer.flag"  /> -->
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="w-5 h-5">
-                        <rect width="20" height="14.286" y="2.857" fill="#fff" rx="4" />
-                        <mask
-                            id="mask0_1302_65779"
-                            width="20"
-                            height="16"
-                            x="0"
-                            y="2"
-                            maskUnits="userSpaceOnUse"
-                            style="mask-type: luminance"
-                        >
-                            <path fill="#fff" d="M0 4.857a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10.286a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4.857Z" />
-                        </mask>
-                        <g mask="url(#mask0_1302_65779)">
-                            <path fill="#E5253D" d="M9.523 2.857h10.476v14.286H9.523z" />
-                            <path fill="#0A3D9C" fill-rule="evenodd" d="M0 17.143h6.667V2.857H0v14.286Z" clip-rule="evenodd" />
-                            <path fill="#FFD955" fill-rule="evenodd" d="M6.664 17.143h6.667V2.857H6.664v14.286Z" clip-rule="evenodd" />
-                        </g>
-                    </svg>
+                    <component :is="item.customer.flag" class="w-5 h-5" />
                     <span class="text-sm font-semibold leading-[1.43]">
                         {{ item.customer.name }}
                     </span>

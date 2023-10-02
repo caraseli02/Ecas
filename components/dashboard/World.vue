@@ -1,11 +1,54 @@
 <template>
-    <div id="mapid" class="rounded-xl" />
+    <ClientOnly>
+        <div class="rounded-xl w-full h-[300px]">
+            <LMap
+                ref="map"
+                id="mapid"
+                :zoom="zoom"
+                :min-zoom="1"
+                :max-zoom="5"
+                :center="[51, 0]"
+                :max-bounds="[
+                    [100.673, -200.023],
+                    [-60.995, 210.2421],
+                ]"
+                :options="{
+                    scrollWheelZoom: true,
+                    doubleClickZoom: true,
+                    zoomControl: false,
+                    attributionControl: false,
+                    minZoom: 1,
+                    maxZoom: 5,
+                }"
+            >
+                <LControlZoom position="topright" />
+                <LTileLayer url="" :no-wrap="true" />
+                <LGeoJson
+                    :geojson="LeafletMapData"
+                    :options-style="style"
+                    :options="{
+                        onEachFeature: onEachFeature,
+                    }"
+                />
+                <!-- <LTooltip
+                    v-if="tooltipCountry"
+                    :options="{
+                        direction: 'top',
+                        permanent: false,
+                        sticky: true,
+                        offset: [0, -10],
+                        className: 'dashboard--map-tooltip',
+                    }"
+                    :content="`${tooltipCountry.label} <span class='font-semibold'>${tooltipCountry.count}</span>`"
+                /> -->
+            </LMap>
+        </div>
+    </ClientOnly>
 </template>
 
 <script setup lang="ts">
-import Leaflet, { Layer } from 'leaflet';
 import { LeafletMapData } from '@/data/geojson.ts';
-import { PropType } from 'nuxt/dist/app/compat/capi';
+import { PropType } from 'vue';
 
 const props = defineProps({
     countries: {
@@ -20,79 +63,39 @@ const props = defineProps({
     },
 });
 
-onMounted(() => {
-    // if (window) {
-    //   const map = Leaflet.map("mapid", {
-    //     scrollWheelZoom: true,
-    //     doubleClickZoom: true,
-    //     maxZoom: 5,
-    //     minZoom: 1,
-    //     zoomControl: false,
-    //     attributionControl: false,
-    //   }).setView([51, 0], 1);
-    //   map.setMaxBounds([
-    //     [100.673, -200.023],
-    //     [-60.995, 210.2421],
-    //   ]);
-    //   Leaflet.control
-    //     .zoom({
-    //       position: "topright",
-    //     })
-    //     .addTo(map);
-    //   Leaflet.tileLayer("", {
-    //     noWrap: true,
-    //   }).addTo(map);
-    //   const getColor = (countryName: string) => {
-    //     const country = props.countries.find(
-    //       (country) => country.label === countryName
-    //     );
-    //     if (country) {
-    //       return country.theme;
-    //     } else {
-    //       return "#D9D9D9";
-    //     }
-    //   };
-    //   const style = (feature: any) => {
-    //     return {
-    //       fillColor: getColor(feature.properties.name),
-    //       fillOpacity: 1,
-    //     };
-    //   };
-    //   const highlightFeatureClick = (e: any) => {
-    //     const clickedCountryName = e.target.feature.properties.name;
-    //     const country = props.countries.find(
-    //       (c) => c.label === clickedCountryName
-    //     );
-    //     if (country) {
-    //       Leaflet.tooltip({
-    //         direction: "top",
-    //         permanent: false,
-    //         sticky: true,
-    //         offset: [0, -10],
-    //         className: "dashboard--map-tooltip",
-    //       })
-    //         .setLatLng([e.latlng.lat, e.latlng.lng])
-    //         .setContent(
-    //           `${clickedCountryName} <span class="font-semibold">${country.count}</span>`
-    //         )
-    //         .addTo(map);
-    //     }
-    //   };
-    //   const onEachFeature = (_: any, layer: any) => {
-    //     layer.on({
-    //       click: highlightFeatureClick,
-    //     });
-    //   };
-    //   const geojson = Leaflet.geoJson(LeafletMapData, {
-    //     style,
-    //     onEachFeature,
-    //   }).addTo(map);
-    // }
-});
+const zoom = ref(1);
+
+const getColor = (countryName: string) => {
+    const country = props.countries.find((country) => country.label === countryName);
+    if (country) {
+        return country.theme;
+    } else {
+        return '#D9D9D9';
+    }
+};
+const style = (feature: any) => {
+    return {
+        fillColor: getColor(feature.properties.name),
+        fillOpacity: 1,
+    };
+};
+const tooltipCountry = ref();
+const highlightFeatureClick = (e: any) => {
+    const clickedCountryName = e.target.feature.properties.name;
+    const country = props.countries.find((c) => c.label === clickedCountryName);
+    if (country) {
+        tooltipCountry.value = country;
+    }
+};
+const onEachFeature = (_: any, layer: any) => {
+    layer.on({
+        click: highlightFeatureClick,
+    });
+};
 </script>
 
 <style lang="scss">
-#mapid {
+.leaflet-container {
     @apply bg-white aspect-[2.3] xl:h-full xl:w-full;
     .leaflet-pane {
         z-index: 1;
