@@ -40,9 +40,7 @@
                 "barHeight": 8,
                 "borderRadius": 4,
                 "colors": {
-                    "backgroundBarColors": [
-                        "#EBEBEB"
-                    ],
+                    "backgroundBarColors": ["#EBEBEB"],
                     "backgroundBarOpacity": 1,
                     "backgroundBarRadius": 4
                 }
@@ -52,9 +50,7 @@
             }
         },
         "fill": {
-            "colors": [
-                "#00D395"
-            ]
+            "colors": ["#00D395"]
         },
         "grid": {
             "show": false
@@ -122,9 +118,7 @@
                 "barHeight": 8,
                 "borderRadius": 4,
                 "colors": {
-                    "backgroundBarColors": [
-                        "#EBEBEB"
-                    ],
+                    "backgroundBarColors": ["#EBEBEB"],
                     "backgroundBarOpacity": 1,
                     "backgroundBarRadius": 4
                 }
@@ -134,9 +128,7 @@
             }
         },
         "fill": {
-            "colors": [
-                "#FFB100"
-            ]
+            "colors": ["#FFB100"]
         },
         "grid": {
             "show": false
@@ -204,9 +196,7 @@
                 "barHeight": 8,
                 "borderRadius": 4,
                 "colors": {
-                    "backgroundBarColors": [
-                        "#EBEBEB"
-                    ],
+                    "backgroundBarColors": ["#EBEBEB"],
                     "backgroundBarOpacity": 1,
                     "backgroundBarRadius": 4
                 }
@@ -216,9 +206,7 @@
             }
         },
         "fill": {
-            "colors": [
-                "#FF8A00"
-            ]
+            "colors": ["#FF8A00"]
         },
         "grid": {
             "show": false
@@ -286,9 +274,7 @@
                 "barHeight": 8,
                 "borderRadius": 4,
                 "colors": {
-                    "backgroundBarColors": [
-                        "#EBEBEB"
-                    ],
+                    "backgroundBarColors": ["#EBEBEB"],
                     "backgroundBarOpacity": 1,
                     "backgroundBarRadius": 4
                 }
@@ -298,9 +284,7 @@
             }
         },
         "fill": {
-            "colors": [
-                "#FA4B4B"
-            ]
+            "colors": ["#FA4B4B"]
         },
         "grid": {
             "show": false

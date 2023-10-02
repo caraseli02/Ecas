@@ -1,5 +1,5 @@
-import {AccountRole} from '~/types';
-import {AccountAdminSettings} from '~/types/auth/account-settings';
+import { AccountRole } from '~/types';
+import { AccountAdminSettings } from '~/types/auth/account-settings';
 
 export interface UserDetails {
     _id: string;
