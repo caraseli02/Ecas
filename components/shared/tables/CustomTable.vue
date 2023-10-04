@@ -26,7 +26,7 @@
                 </div>
             </div>
             <component :is="customItem" v-for="(item, index) in items" :key="index" :item="item" :index="index"
-                :is-scrolling="isScrolling" :loading="loading" />
+                :is-scrolling="isScrolling" :loading="loading" :fields="fields" :actionsMenuType="actionsMenuType" :columnWidths="colsWidthsCalculated"/>
         </div>
     </div>
     <Teleport to="body">
@@ -113,14 +113,22 @@ export default defineComponent({
     props: ['items', 'loading', 'customItem', 'nameAndProfile', 'accountType', 'companyName', 'registerDate', 'spentAmount', 'ordersNumber',
         'actionsHeader', 'nameOrder', 'accountOrder', 'companyOrder', 'registeredOrder', 'spentOrder', 'ordersCountOrder', 'name', 'account',
         'company', 'registered', 'spent', 'ordersCount', 'nameAndProfileColWidth', 'accountTypeColWidth', 'companyNameColWidth', 'registerDateColWidth',
-        'spentAmountColWidth', 'ordersNumberColWidth', 'actionsHeaderColWidth', 'filters', 'fields'],
+        'spentAmountColWidth', 'ordersNumberColWidth', 'actionsHeaderColWidth', 'filters', 'fields', 'actionsMenuType'],
     data() {
         return {
             // filter logic
             activeFilters: [] as FilterInterface[],
 
             // dynamic column widths
-            colsWidths: [] as object[],
+            colsWidths: {
+                nameAndProfile: '359px',
+                accountType: '154px',
+                companyName: '254px',
+                registerDate: '244px',
+                spentAmount: '129px',
+                ordersCount: '148px',
+                actionsHeader: '104px',
+            },
 
             // toggle floating windows on/off
             showAccountOptions: ref(false),
@@ -195,20 +203,20 @@ export default defineComponent({
     computed: {
 
         // automatic grid columns width assignation as per needed
-        colsWidthsCalculated() {
-            const widths: string[] = [];
-            this.colsWidths.forEach((item: any) => {
-                const key = Object.keys(item)[0];
-                widths.push(item[key]);
-            });
-            return `grid-cols-[${widths.join(',')}]`;
-        },
+            colsWidthsCalculated() {
+                const widths = [] as string[];
+                this.fields.forEach((field: string) => {
+                    widths.push(this.colsWidths[field as keyof typeof this.colsWidths]);
+                });
+                widths.push(this.colsWidths.actionsHeader);
+                return `grid-cols-[${widths.join(',')}]`;
+            },
 
         // all possible sections predefined
         sections(): object {
             const sections = {
                 nameAndProfile: {
-                    class: "p-4 pr-1.5 bg-[#F2F2F2] rounded-l-lg flex flex-col gap-4",
+                    class: "p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
                     sortChange: this.handleNameOrderChange,
                     order: this.nameOrder,
                     title: "Name",
@@ -226,7 +234,6 @@ export default defineComponent({
                     handleShow: this.handleShowAccountOptions,
                     selectedItem: this.account,
                     optionsVisible: this.showAccountOptions,
-
                 },
                 companyName: {
                     class: "p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
@@ -286,6 +293,7 @@ export default defineComponent({
                     orderedSection.push(this.sections[field as keyof typeof this.sections]);
                 }
             });
+            orderedSection[0].class = orderedSection[0].class + ' rounded-l-lg';
             return orderedSection;
         },
     },
@@ -297,15 +305,15 @@ export default defineComponent({
     },
     methods: {
 
-        // custom column width construction
-        calculateColWidths() {
-            if (this.fields.includes('nameAndProfile')) this.colsWidths.push({ nameAndProfile: this.nameAndProfileColWidth || '359px' });
-            if (this.fields.includes('accountType')) this.colsWidths.push({ accountType: this.accountTypeColWidth || '154px' });
-            if (this.fields.includes('companyName')) this.colsWidths.push({ companyName: this.companyNameColWidth || '254px' });
-            if (this.fields.includes('registerDate')) this.colsWidths.push({ registerDate: this.registerDateColWidth || '244px' });
-            if (this.fields.includes('spentAmount')) this.colsWidths.push({ spentAmount: this.spentAmountColWidth || '129px' });
-            if (this.fields.includes('ordersCount')) this.colsWidths.push({ ordersNumber: this.ordersNumberColWidth || '148px' });
-            this.colsWidths.push({ actionsHeader: this.actionsHeaderColWidth || '104px' });
+        // dynamic column widths assignation for manual overwrite
+        overwriteColWidths() {
+            if (this.nameAndProfileColWidth) this.colsWidths.nameAndProfile = this.nameAndProfileColWidth;
+            if (this.accountTypeColWidth) this.colsWidths.accountType = this.accountTypeColWidth;
+            if (this.companyNameColWidth) this.colsWidths.companyName = this.companyNameColWidth;
+            if (this.registerDateColWidth) this.colsWidths.registerDate = this.registerDateColWidth;
+            if (this.spentAmountColWidth) this.colsWidths.spentAmount = this.spentAmountColWidth;
+            if (this.ordersCountColWidth) this.colsWidths.ordersCount = this.ordersCountColWidth;
+            if (this.actionsHeaderColWidth) this.colsWidths.actionsHeader = this.actionsHeaderColWidth;
         },
 
         // floating window behaviour methods
@@ -414,7 +422,7 @@ export default defineComponent({
         },
     },
     created() {
-        this.calculateColWidths();
+        this.overwriteColWidths();
     },
 });
 </script>

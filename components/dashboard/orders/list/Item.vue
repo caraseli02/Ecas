@@ -7,8 +7,7 @@
             <OrderType :item="item" :loading="loading" />
         </div>
         <div class="text-sm leading-[1.43] truncate" :class="[loading ? 'px-3.5 py-[22px]' : 'px-5 py-6']">
-            <SkeletonLoader v-if="loading" class="w-[200px] h-6" />
-            <template v-else> 21 September 2023, 18:25 </template>
+            <TextBox :text="'21 September 2023, 18:25'" :loading="loading" />
         </div>
         <NameAndProfile :item="item.customer" :index="index" :loading="loading" :showAvatar="true" :showFlag="true"
             :showLock="true" class="py-3" :class="[loading ? 'px-[17px]' : 'px-4']" />
@@ -19,8 +18,7 @@
             <OrderStatus :status="item.fulfillment" :loading="loading" />
         </div>
         <div class="text-sm font-medium" :class="[loading ? 'px-4 py-[22px]' : 'p-6 pr-4']">
-            <SkeletonLoader v-if="loading" class="w-[94px] h-6" />
-            <template v-else> $ 138,000.77 </template>
+            <TextBox :text="'$ 138,000.77'" :loading="loading" />
         </div>
         <div class="flex items-center justify-end gap-6 pr-4" :class="[loading ? 'px-4' : '']">
             <ActionsMenu :loading="loading" :index="index" :threeDotButton="true" @showOptions="handleShowOptions" />
@@ -53,6 +51,7 @@ import PaymentStatus from '~/components/shared/tables/micro/row-items/PaymentSta
 import OrderId from '~/components/shared/tables/micro/row-items/OrderId.vue';
 import ActionsMenu from '~/components/shared/tables/micro/row-items/ActionsMenu.vue';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
+import TextBox from '~/components/shared/tables/micro/row-items/TextBox.vue';
 
 const props = defineProps({
     item: {

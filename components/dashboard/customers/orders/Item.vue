@@ -7,15 +7,13 @@
             <OrderType :item="item" :loading="isLoading" />
         </div>
         <div class="p-6 text-sm truncate">
-            <SkeletonLoader v-if="isLoading" class="w-[170px] h-7" />
-            <template v-else> 21 September 2023, 18:25 </template>
+            <TextBox :text="'21 September 2023, 18:25'" :loading="isLoading" />
         </div>
         <div class="px-6 py-4">
             <OrderStatus :status="item.status" :loading="isLoading" />
         </div>
         <div class="p-6 text-sm">
-            <SkeletonLoader v-if="isLoading" class="w-[120px] mx-auto h-7" />
-            <template v-else> $ 138,000.77 </template>
+            <TextBox :text="'$ 138,000.77'" :loading="isLoading" />
         </div>
         <div class="flex items-center justify-end gap-6 pr-4">
             <ActionsMenu :loading="isLoading" :index="index" :documentButton="true" :invoiceButton="true"
@@ -47,6 +45,7 @@ import OrderStatus from '~/components/shared/tables/micro/row-items/OrderStatus.
 import OrderId from '~/components/shared/tables/micro/row-items/OrderId.vue';
 import ActionsMenu from '~/components/shared/tables/micro/row-items/ActionsMenu.vue';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
+import TextBox from '~/components/shared/tables/micro/row-items/TextBox.vue';
 
 const props = defineProps({
     item: {

@@ -48,7 +48,7 @@
                         statusOrder === 0 ? (statusOrder = 1) : (statusOrder = 0);
                     handleSortChange(emits, 'status', statusOrder);" :order="statusOrder" :title="'Status'" />
                 </div>
-                <div class="flex justify-center px-2 py-4 bg-[#F2F2F2]">
+                <div class="flex justify-center px-2 py-4 bg-[#F2F2F2] rounded-r-lg">
                     <span class="text-sm font-medium leading-[1.43]">Actions</span>
                 </div>
             </div>

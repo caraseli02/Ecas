@@ -7,23 +7,16 @@
             <OrderId :item="item" :loading="loading"/>
         </div>
         <div class="px-2 py-4 text-sm font-medium leading-[1.71] text-blue">
-            <SkeletonLoader v-if="loading" class="w-[140px] h-6" />
-            <template v-else>
-                {{ item.invoiceId }}
-            </template>
+            <TextBox :text="item.invoiceId" :loading="loading" />
         </div>
         <div class="px-2 py-4 text-sm font-medium leading-[1.71]">
-            <SkeletonLoader v-if="loading" class="w-20 h-6" />
-            <template v-else>
-                {{ item.amount }}
-            </template>
+            <TextBox :text="item.amount" :loading="loading" />
         </div>
         <div class="flex items-center px-2 py-4 text-sm font-medium leading-[1.71]">
             <TxType :item="item" :loading="loading" />
         </div>
         <div class="px-2 py-4 text-sm leading-[1.71]">
-            <SkeletonLoader v-if="loading" class="w-[140px] h-6" />
-            <template v-else> 21 Sep 2023, 18:25 </template>
+            <TextBox :text="'21 Sep 2023, 18:25'" :loading="loading" />
         </div>
         <div class="flex items-center px-2 py-4 text-sm font-medium leading-[1.71]">
             <TxStatus :item="item" :loading="loading" />
@@ -42,6 +35,7 @@ import CustomCheckBox from '~/components/shared/tables/micro/row-items/CustomChe
 import TxType from '~/components/shared/tables/micro/row-items/TxType.vue';
 import TxStatus from '~/components/shared/tables/micro/row-items/TxStatus.vue';
 import ActionsMenu from '~/components/shared/tables/micro/row-items/ActionsMenu.vue';
+import TextBox from '~/components/shared/tables/micro/row-items/TextBox.vue';
 
 defineProps({
     item: {

@@ -5,32 +5,19 @@
                 :showDiscount="true" :showLock="true" @showInformation="showCustomerInformation" />
         </div>
         <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <template v-else> {{ item.account }}</template>
+            <TextBox :text="item.account" :loading="loading" />
         </div>
         <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <template v-else>
-                {{ item.company }}
-            </template>
+            <TextBox :text="item.company" :loading="loading" />
         </div>
         <div class="text-sm leading-[1.43] truncate pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <template v-else>
-                {{ item.registered }}
-            </template>
+            <TextBox :text="item.registered" :loading="loading" />
         </div>
         <div class="text-sm leading-[1.43] font-medium truncate pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <template v-else>
-                {{ item.spent }}
-            </template>
+            <TextBox :text="item.spent" :loading="loading" />
         </div>
         <div class="flex justify-center pl-4 pr-1.5">
-            <SkeletonLoader v-if="loading" class="w-full h-6" />
-            <div v-else class="text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md">
-                {{ item.ordersCount }}
-            </div>
+            <TextBox :text="item.ordersCount" :loading="loading" :customClass="'text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md'" />
         </div>
         <div class="flex items-center justify-end gap-4 pl-4 pr-1.5">
             <ActionsMenu :loading="loading" :index="index" :documentButton="true" :threeDotButton="true"
@@ -63,6 +50,7 @@ import { DashboardCustomerTableItem } from '~/types';
 import NameAndProfile from '~/components/shared/tables/micro/row-items/NameAndProfile.vue';
 import ActionsMenu from '~/components/shared/tables/micro/row-items/ActionsMenu.vue';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
+import TextBox from '~/components/shared/tables/micro/row-items/TextBox.vue';
 
 const props = defineProps({
     item: {
