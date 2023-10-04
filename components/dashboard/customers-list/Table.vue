@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-6 min-h-[350px] md:mb-8">
+    <!-- <div class="mb-6 min-h-[350px] md:mb-8">
         <div class="dashboardTable grid grid-cols-1 gap-1 rounded-t-lg overflow-x-auto scrollbar-thin"
             @scroll="handleScroll">
             <div class="grid grid-cols-[359px,154px,254px,244px,129px,148px,104px] items-center rounded-t-lg">
@@ -96,8 +96,8 @@
                 @cancel="showOrdersRange = false" @apply="(buffer) => {
                     ordersCount = buffer;
                     showOrdersRange = false;
-                    handleFilterChange(activeFilters, emits, 'ordersCountFrom', buffer[0], true);
-                    handleFilterChange(activeFilters, emits, 'ordersCountTo', buffer[1], true);
+                    handleFilterChange(activeFilters, emits, 'ordersCountFrom', buffer, true);
+                    handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
                 }" />
         </Transition>
         <Transition name="fade">
@@ -114,35 +114,86 @@
                 :range="ordersCount" @cancel="showOrdersRange = false" @apply="(buffer) => {
                     ordersCount = buffer;
                     showOrdersRange = false;
-                    handleFilterChange(activeFilters, emits, 'ordersCountFrom', buffer[0], true);
-                    handleFilterChange(activeFilters, emits, 'ordersCountTo', buffer[1], true);
+                    handleFilterChange(activeFilters, emits, 'ordersCountFrom', buffer, true);
+                    handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
                 }" />
         </Transition>
-    </Teleport>
+    </Teleport> -->
+    <!-- :nameAndProfile="true"
+        :accountType="true" :companyName="true" :registerDate="true" :spentAmount="true" :ordersNumber="true" -->
+    <CustomTable :items="items" :loading="loading" :customItem="DashboardCustomersListItem" :filters="true" :fields="fields"
+        :actionsHeader="true" :name="name" :account="account" :company="company" :registered="registered" :spent="spent"
+        :ordersCount="ordersCount" :nameOrder="nameOrder" :accountOrder="accountOrder" :companyOrder="companyOrder"
+        :registeredOrder="registeredOrder" :spentOrder="spentOrder" :ordersCountOrder="ordersCountOrder"
+        @nameOrderChange="
+            nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0);
+            handleSortChange(emits, 'email', nameOrder);" 
+        @accountOrderChange="
+            accountOrder === 0 ? (accountOrder = 1) : (accountOrder = 0);
+            handleSortChange(emits, 'accountType', accountOrder);" 
+        @companyOrderChange="
+            companyOrder === 0 ? (companyOrder = 1) : (companyOrder = 0);
+            handleSortChange(emits, 'companyName', companyOrder);" 
+        @registeredOrderChange="
+            registeredOrder === 0 ? (registeredOrder = 1) : (registeredOrder = 0);
+            handleSortChange(emits, 'createdAt', registeredOrder);" 
+        @spentOrderChange="
+            spentOrder === 0 ? (spentOrder = 1) : (spentOrder = 0);
+            handleSortChange(emits, 'spent', spentOrder);" 
+        @ordersCountOrderChange="
+            ordersCountOrder === 0 ? (ordersCountOrder = 1) : (ordersCountOrder = 0);
+            handleSortChange(emits, 'ordersCount', ordersCountOrder);" 
+        @nameFilterChange="
+            handleFilterChange(activeFilters, emits, 'combinedName', $event)
+        "
+        @accountFilterChange="(event: MouseEvent, item) => {
+            account = item.label;
+            handleFilterChange(activeFilters, emits, 'accountType', item.value, true);
+        }"
+        @companyFilterChange="
+            handleFilterChange(activeFilters, emits, 'companyName', $event)
+        "
+        @dateFilterChange="(buffer) => {
+            registered = buffer;
+            handleFilterChange(activeFilters, emits, 'startDate', formattedDate(buffer.start), true);
+            handleFilterChange(activeFilters, emits, 'endDate', formattedDate(buffer.end), true);
+        }"
+        @spentFilterChange="(buffer) => {
+            spent = buffer;
+            handleFilterChange(activeFilters, emits, 'spentFrom', buffer[0], true);
+            handleFilterChange(activeFilters, emits, 'spentTo', buffer[1], true);
+        }"
+        @ordersFilterChange="(buffer) => {
+            ordersCount = buffer;
+            handleFilterChange(activeFilters, emits, 'ordersCountFrom', buffer, true);
+            handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
+        }" />
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue';
+import CustomTable from '~/components/shared/tables/CustomTable.vue';
+import DashboardCustomersListItem from '~/components/dashboard/customers-list/Item.vue';
 import { AccountType, DashboardCustomerTableItem } from '~~/types';
-import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
-import SoleTraderIcon from '@/assets/icons/dashboard/sole-trader.svg';
-import AgentIcon from '@/assets/icons/dashboard/agent.svg';
-import BusinessIcon from '@/assets/icons/dashboard/business.svg';
-import EyeIcon from '@/assets/icons/dashboard/eye.svg';
-import { DatePicker } from 'v-calendar';
+// import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
+// import SoleTraderIcon from '@/assets/icons/dashboard/sole-trader.svg';
+// import AgentIcon from '@/assets/icons/dashboard/agent.svg';
+// import BusinessIcon from '@/assets/icons/dashboard/business.svg';
+// import EyeIcon from '@/assets/icons/dashboard/eye.svg';
+// import { DatePicker } from 'v-calendar';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
 import Emitter from 'tiny-emitter/instance';
 import { subDays } from 'date-fns';
-import SortAscDesc from '~/components/shared/tables/micro/SortAscDesc.vue';
-import CustomSelect from '~/components/shared/tables/micro/CustomSelect.vue';
-import CustomSelectDropdown from '~/components/shared/tables/micro/CustomSelectDropdown.vue';
-import DatePickerButton from '~/components/shared/tables/micro/DatePickerButton.vue';
-import FilterButton from '~/components/shared/tables/micro/FilterButton.vue';
-import RangeFilter from '~/components/shared/tables/micro/RangeFilter.vue';
-import RangeFilterMobile from '~/components/shared/tables/micro/RangeFilterMobile.vue';
-import SliderFilter from '~/components/shared/tables/micro/SliderFilter.vue';
-import SliderFilterMobile from '~/components/shared/tables/micro/SliderFilterMobile.vue';
+// import SortAscDesc from '~/components/shared/tables/micro/SortAscDesc.vue';
+// import CustomSelect from '~/components/shared/tables/micro/CustomSelect.vue';
+// import CustomSelectDropdown from '~/components/shared/tables/micro/CustomSelectDropdown.vue';
+// import DatePickerButton from '~/components/shared/tables/micro/DatePickerButton.vue';
+// import FilterButton from '~/components/shared/tables/micro/FilterButton.vue';
+// import RangeFilter from '~/components/shared/tables/micro/RangeFilter.vue';
+// import RangeFilterMobile from '~/components/shared/tables/micro/RangeFilterMobile.vue';
+// import SliderFilter from '~/components/shared/tables/micro/SliderFilter.vue';
+// import SliderFilterMobile from '~/components/shared/tables/micro/SliderFilterMobile.vue';
 
 const props = defineProps({
     items: {
@@ -155,32 +206,41 @@ const props = defineProps({
     },
 });
 
-const accountOptions = [
-    {
-        label: 'Personal',
-        value: AccountType.Personal,
-        iconType: ProfileIcon,
-    },
-    {
-        label: 'Sole Trader',
-        value: AccountType.SoleTrader,
-        iconType: SoleTraderIcon,
-    },
-    {
-        label: 'Agent',
-        value: AccountType.Agent,
-        iconType: AgentIcon,
-    },
-    {
-        label: 'Business',
-        value: AccountType.Business,
-        iconType: BusinessIcon,
-    },
-    {
-        label: 'View All',
-        value: '',
-        iconType: EyeIcon,
-    },];
+const fields = [
+    'nameAndProfile',
+    'accountType',
+    'companyName',
+    'registerDate',
+    'spentAmount',
+    'ordersCount',
+]
+
+// const accountOptions = [
+//     {
+//         label: 'Personal',
+//         value: AccountType.Personal,
+//         iconType: ProfileIcon,
+//     },
+//     {
+//         label: 'Sole Trader',
+//         value: AccountType.SoleTrader,
+//         iconType: SoleTraderIcon,
+//     },
+//     {
+//         label: 'Agent',
+//         value: AccountType.Agent,
+//         iconType: AgentIcon,
+//     },
+//     {
+//         label: 'Business',
+//         value: AccountType.Business,
+//         iconType: BusinessIcon,
+//     },
+//     {
+//         label: 'View All',
+//         value: '',
+//         iconType: EyeIcon,
+//     },];
 
 const emits = defineEmits(['active-filters', 'active-sort']);
 
@@ -197,56 +257,56 @@ const registered = ref({
     end: null,
 });
 const registeredOrder: number = ref(0);
-const spentBuffer = ref([0, 0]);
+// const spentBuffer = ref([0, 0]);
 const spent = ref([0, 0]);
 const spentOrder: number = ref(0);
-const ordersCountBuffer = ref(0);
+// const ordersCountBuffer = ref(0);
 const ordersCount = ref(0);
 const ordersCountOrder: number = ref(0);
 
-const showAccountOptions = ref(false);
-const accountDropdownLeft = ref(0);
-const accountDropdownTop = ref(0);
-const handleShowAccountOptions = (event: MouseEvent) => {
-    showAccountOptions.value = !showAccountOptions.value;
-    const target = event.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    accountDropdownLeft.value = rect.right;
-    accountDropdownTop.value = rect.bottom + window.scrollY + 8;
-};
+// const showAccountOptions = ref(false);
+// const accountDropdownLeft = ref(0);
+// const accountDropdownTop = ref(0);
+// const handleShowAccountOptions = (event: MouseEvent) => {
+//     showAccountOptions.value = !showAccountOptions.value;
+//     const target = event.currentTarget as HTMLElement;
+//     const rect = target.getBoundingClientRect();
+//     accountDropdownLeft.value = rect.right;
+//     accountDropdownTop.value = rect.bottom + window.scrollY + 8;
+// };
 
-const showRegisteredRange = ref(false);
-const registeredDropdownLeft = ref(0);
-const registeredDropdownTop = ref(0);
-const handleShowRegistered = (event: MouseEvent) => {
-    showRegisteredRange.value = !showRegisteredRange.value;
-    const target = event.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    registeredDropdownTop.value = rect.bottom + window.scrollY + 8;
-    registeredDropdownLeft.value = rect.right;
-};
+// const showRegisteredRange = ref(false);
+// const registeredDropdownLeft = ref(0);
+// const registeredDropdownTop = ref(0);
+// const handleShowRegistered = (event: MouseEvent) => {
+//     showRegisteredRange.value = !showRegisteredRange.value;
+//     const target = event.currentTarget as HTMLElement;
+//     const rect = target.getBoundingClientRect();
+//     registeredDropdownTop.value = rect.bottom + window.scrollY + 8;
+//     registeredDropdownLeft.value = rect.right;
+// };
 
-const showSpentRange = ref(false);
-const spentRangeDropdownLeft = ref(0);
-const spentRangeDropdownTop = ref(0);
-const handleShowSpentRange = (event: MouseEvent) => {
-    showSpentRange.value = !showSpentRange.value;
-    const target = event.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    spentRangeDropdownTop.value = rect.bottom + window.scrollY + 8;
-    spentRangeDropdownLeft.value = rect.right;
-};
+// const showSpentRange = ref(false);
+// const spentRangeDropdownLeft = ref(0);
+// const spentRangeDropdownTop = ref(0);
+// const handleShowSpentRange = (event: MouseEvent) => {
+//     showSpentRange.value = !showSpentRange.value;
+//     const target = event.currentTarget as HTMLElement;
+//     const rect = target.getBoundingClientRect();
+//     spentRangeDropdownTop.value = rect.bottom + window.scrollY + 8;
+//     spentRangeDropdownLeft.value = rect.right;
+// };
 
-const showOrdersRange = ref(false);
-const ordersRangeDropdownLeft = ref(0);
-const ordersRangeDropdownTop = ref(0);
-const handleShowOrdersRange = (event: MouseEvent) => {
-    showOrdersRange.value = !showOrdersRange.value;
-    const target = event.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    ordersRangeDropdownTop.value = rect.bottom + window.scrollY + 8;
-    ordersRangeDropdownLeft.value = rect.right;
-};
+// const showOrdersRange = ref(false);
+// const ordersRangeDropdownLeft = ref(0);
+// const ordersRangeDropdownTop = ref(0);
+// const handleShowOrdersRange = (event: MouseEvent) => {
+//     showOrdersRange.value = !showOrdersRange.value;
+//     const target = event.currentTarget as HTMLElement;
+//     const rect = target.getBoundingClientRect();
+//     ordersRangeDropdownTop.value = rect.bottom + window.scrollY + 8;
+//     ordersRangeDropdownLeft.value = rect.right;
+// };
 
 const formattedDate = (date: Date) => {
     return new Date(date).toLocaleDateString('en-GB');
@@ -273,33 +333,33 @@ watch(
     { deep: true }
 );
 
-const spentValue = computed(() => {
-    const spentValue = spent.value
-        ?.map((value) => {
-            if (value >= 1000) {
-                return `${Math.round(value / 1000)}K`;
-            }
-            return Math.round(value);
-        })
-        .join(' - ');
+// const spentValue = computed(() => {
+//     const spentValue = spent.value
+//         ?.map((value) => {
+//             if (value >= 1000) {
+//                 return `${Math.round(value / 1000)}K`;
+//             }
+//             return Math.round(value);
+//         })
+//         .join(' - ');
 
-    return spent.value[0] || spent.value[1] ? spentValue : 'Filter';
-});
+//     return spent.value[0] || spent.value[1] ? spentValue : 'Filter';
+// });
 
-const isScrolling = ref(false);
-const scrollTimeout = ref();
+// const isScrolling = ref(false);
+// const scrollTimeout = ref();
 
-const handleScroll = () => {
-    showAccountOptions.value = false;
-    showRegisteredRange.value = false;
-    showSpentRange.value = false;
-    showOrdersRange.value = false;
-    isScrolling.value = true;
-    clearTimeout(scrollTimeout.value);
-    scrollTimeout.value = setTimeout(() => {
-        isScrolling.value = false;
-    }, 66);
-};
+// const handleScroll = () => {
+//     showAccountOptions.value = false;
+//     showRegisteredRange.value = false;
+//     showSpentRange.value = false;
+//     showOrdersRange.value = false;
+//     isScrolling.value = true;
+//     clearTimeout(scrollTimeout.value);
+//     scrollTimeout.value = setTimeout(() => {
+//         isScrolling.value = false;
+//     }, 66);
+// };
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>

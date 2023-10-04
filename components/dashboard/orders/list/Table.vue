@@ -322,6 +322,7 @@ const handleScroll = () => {
     showDateRange.value = false;
     showFulfillmentOptions.value = false;
     showTotalRange.value = false;
+    showPaymentOptions.value = false;
     isScrolling.value = true;
     clearTimeout(scrollTimeout.value);
     scrollTimeout.value = setTimeout(() => {
