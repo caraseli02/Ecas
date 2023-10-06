@@ -3,13 +3,13 @@
     <button
       class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
       :class="[
-        !range.start && !range.end ? 'text-gray-100' : '',
+        !range?.start && !range?.end ? 'text-gray-100' : '',
         datePickerVisible ? 'border-blue' : 'border-border',
       ]" @click="handleShow">
       <span class="text-sm tracking-[-0.02em] flex-shrink-0 mr-1">
         {{
-          range.start && range.end
-          ? `${formattedDate(range.start)} - ${formattedDate(range.end)}`
+          range?.start && range?.end
+          ? `${formattedDate(range?.start)} - ${formattedDate(range?.end)}`
           : '23/9/2023 - 23/9/2023'
         }}
       </span>

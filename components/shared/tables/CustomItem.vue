@@ -4,21 +4,32 @@
             <NameAndProfile v-if="section.profile" :item="item" :loading="loading" :index="index" :showAvatar="true"
                 :showFlag="true" :showDiscount="true" :showLock="true" @showInformation="section.event" />
             <TextBox v-if="section.text" :text="item[section.name]" :loading="loading" :customClass="section.customClass" />
+            <OrderId v-if="section.orderId" :item="item" :loading="loading" />
+            <OrderType v-if="section.orderType" :item="item" :loading="loading" />
+            <OrderStatus v-if="section.orderStatus" :status="item.status" :loading="loading" />
         </div>
         <div class="flex items-center justify-end gap-4 pl-4 pr-1.5">
             <ActionsMenu v-if="actionsMenuType === 'customers-list'" :loading="loading" :index="index" :documentButton="true" :threeDotButton="true"
                 @showOptions="handleShowOptions" :txtDocument="'View Orders'" />
+            <ActionsMenu v-if="actionsMenuType === 'customer-orders'" :loading="loading" :index="index" :documentButton="true" :invoiceButton="true"
+                :threeDotButton="true" @showOptions="handleShowOptions" :txtDocument="'View Order'" :txtInvoice="'View Invoice'" />
         </div>
     </div>
     <Teleport to="body">
         <Transition :name="index > 5 ? 'fade-full-neg' : 'fade-bottom'">
-            <ThreeDotMenu v-if="showOptions" v-click-outside="() => (showOptions = false)" :index="index"
+            <ThreeDotMenu v-if="showOptions && (actionsMenuType === 'customers-list')" v-click-outside="() => (showOptions = false)" :index="index"
                 :dropdownTop="optionsDropdownTop" :dropdownLeft="optionsDropdownLeft" :profileButton="true" :profile="item"
                 :profileText="'Profile'" :documentButton="true" :documentText="'Orders'" :settingsButton="true"
                 :settingsText="'Settings'" :deactivateButton="true" :deactivateText="'Deactivate Account'"
                 :trashButton="true" :trashText="'Delete Account'" @profileClicked="showOptions = false"
                 @documentClicked="showOptions = false" @settingsClicked="showOptions = false" @deactivateClicked="showDeactivatingModal = true;
                 showOptions = false;" @trashClicked="showOptions = false" />
+        </Transition>
+        <Transition :name="index > 5 ? 'fade-full-neg' : 'fade-bottom'">
+            <ThreeDotMenu v-if="showOptions && (actionsMenuType === 'customer-orders')" v-click-outside="() => (showOptions = false)" :index="index"
+                :dropdownTop="optionsDropdownTop" :dropdownLeft="optionsDropdownLeft" :invoiceButton="true"
+                :invoiceText="'View Invoice'" :editButton="true" :editText="'Edit Order'" @invoiceClicked="showOptions = false"
+                @editClicked="showOptions = false" />
         </Transition>
         <Transition name="fade">
             <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item"
@@ -34,6 +45,9 @@ import NameAndProfile from '~/components/shared/tables/micro/row-items/NameAndPr
 import ActionsMenu from '~/components/shared/tables/micro/row-items/ActionsMenu.vue';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 import TextBox from './micro/row-items/TextBox.vue';
+import OrderId from './micro/row-items/OrderId.vue';
+import OrderType from './micro/row-items/OrderType.vue';
+import OrderStatus from './micro/row-items/OrderStatus.vue';
 
 interface Section {
     name: string;
@@ -42,6 +56,9 @@ interface Section {
     profile: boolean;
     text: boolean;
     event: any;
+    orderId: boolean;
+    orderType: boolean;
+    orderStatus: boolean;
 };
 
 export default defineComponent({
@@ -52,6 +69,9 @@ export default defineComponent({
         ActionsMenu,
         ThreeDotMenu,
         TextBox,
+        OrderId,
+        OrderType,
+        OrderStatus,
     },
     data() {
         return {
@@ -94,6 +114,28 @@ export default defineComponent({
                     text: true,
                     class: 'flex justify-center pl-4 pr-1.5',
                     customClass: 'text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md',
+                },
+                orderId: {
+                    orderId: true,
+                    class: 'p-6 text-sm font-medium truncate',
+                },
+                orderType: {
+                    orderType: true,
+                    class: 'px-6 py-4',
+                },
+                orderDate: {
+                    text: true,
+                    class: 'p-6 text-sm truncate',
+                    name: 'date',
+                },
+                orderStatus: {
+                    orderStatus: true,
+                    class: 'px-6 py-4',
+                },
+                orderTotal: {
+                    text: true,
+                    class: 'p-6 text-sm',
+                    name: 'total',
                 },
             };
             return sections;

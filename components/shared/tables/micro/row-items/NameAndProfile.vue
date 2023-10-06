@@ -70,8 +70,8 @@ export default defineComponent({
     LockIcon,
   },
   methods: {
-    showCustomerInformation(item) {
-      this.$emits('showInformation', item);
+    showCustomerInformation(item: any) {
+      this.$emit('showInformation', item);
     },
   },
 });

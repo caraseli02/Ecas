@@ -16,7 +16,7 @@
                         :trackingWidestCondition="section.trackingWidestCondition" @showSpentRange="section.handleShow"
                         :customClasses="section.customClasses" />
                 </div>
-                <div v-if="actionsHeader" :class="filters ? 'p-4' : 'px-4 pt-4'"
+                <div v-if="actionsHeader && (actionsMenuType === 'customers-list')" :class="filters ? 'p-4' : 'px-4 pt-4'"
                     class="pr-1.5 w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
                     <div class="relative">
                         <div class="flex items-center mb-4">
@@ -24,9 +24,17 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="actionsHeader && (actionsMenuType === 'customer-orders')" class="p-4 pr-[50px] w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
+                    <div class="relative">
+                        <div class="flex items-center justify-end mb-4">
+                            <span class="text-sm leading-[1.43] font-medium"> Actions </span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <component :is="customItem" v-for="(item, index) in items" :key="index" :item="item" :index="index"
-                :is-scrolling="isScrolling" :loading="loading" :fields="fields" :actionsMenuType="actionsMenuType" :columnWidths="colsWidthsCalculated"/>
+                :is-scrolling="isScrolling" :loading="loading" :fields="fields" :actionsMenuType="actionsMenuType"
+                :columnWidths="colsWidthsCalculated" />
         </div>
     </div>
     <Teleport to="body">
@@ -61,6 +69,35 @@
         <Transition name="fade">
             <SliderFilterMobile v-if="showOrdersRange" title="Orders" :range="ordersCount" @cancel="showOrdersRange = false"
                 @apply="handleOrdersFilterChange" />
+        </Transition>
+        <Transition name="fade-bottom">
+            <CustomSelectDropdown v-if="showOrderTypeOptions" v-click-outside="() => showOrderTypeOptions = false"
+                :items="orderTypeOptions" :dropdownTop="orderTypeDropdownTop" :dropdownLeft="orderTypeDropdownLeft"
+                :selectedItem="orderType" @handleSelection="handleOrderTypeFilterChange" :customClasses="'w-[180px]'" />
+        </Transition>
+        <Transition name="fade-bottom">
+            <div v-if="showOrderDateRange" v-click-outside="() => (showOrderDateRange = false)"
+                class="absolute z-10 -translate-x-full rounded-lg overflow-hidden shadow-m" :style="{
+                    left: orderDateDropdownLeft + 'px',
+                    top: orderDateDropdownTop + 'px',
+                }">
+                <DatePicker v-model.range="orderDateRange" borderless />
+            </div>
+        </Transition>
+        <Transition name="fade-bottom">
+            <CustomSelectDropdown v-if="showOrderStatusOptions" v-click-outside="() => showOrderStatusOptions = false"
+                :items="orderStatusOptionsList" :dropdownTop="orderStatusDropdownTop"
+                :dropdownLeft="orderStatusDropdownLeft" :selectedItem="orderStatus"
+                @handleSelection="handleOrderStatusFilterChange" :customClasses="'w-[224px]'" />
+        </Transition>
+        <Transition name="fade-bottom">
+            <RangeFilter v-if="showOrderTotalRange" v-click-outside="() => (showOrderTotalRange = false)" title="Total"
+                :range="orderTotal" :dropdownLeft="orderTotalDropdownLeft" :dropdownTop="orderTotalDropdownTop"
+                @cancel="showOrderTotalRange = false" @apply="handleOrderTotalFilterChange" />
+        </Transition>
+        <Transition name="fade">
+            <RangeFilterMobile v-if="showOrderTotalRange" title="Total" :range="orderTotal"
+                @cancel="showOrderTotalRange = false" @apply="handleOrderTotalFilterChange" />
         </Transition>
     </Teleport>
 </template>
@@ -110,10 +147,13 @@ interface Section {
 
 export default defineComponent({
     name: 'CustomTable',
-    props: ['items', 'loading', 'customItem', 'nameAndProfile', 'accountType', 'companyName', 'registerDate', 'spentAmount', 'ordersNumber',
-        'actionsHeader', 'nameOrder', 'accountOrder', 'companyOrder', 'registeredOrder', 'spentOrder', 'ordersCountOrder', 'name', 'account',
-        'company', 'registered', 'spent', 'ordersCount', 'nameAndProfileColWidth', 'accountTypeColWidth', 'companyNameColWidth', 'registerDateColWidth',
-        'spentAmountColWidth', 'ordersNumberColWidth', 'actionsHeaderColWidth', 'filters', 'fields', 'actionsMenuType'],
+    props: [
+        'items', 'loading', 'customItem', 'filters', 'fields', 'actionsMenuType', // functional props (do not change)
+        'actionsHeader', // actions header on/off switch
+        'nameOrder', 'accountOrder', 'companyOrder', 'registeredOrder', 'spentOrder', 'ordersCountOrder', 'orderIdOrder', 'orderTypeOrder', 'orderDateOrder', 'orderStatusOrder', 'orderTotalOrder', // order props (add here new order props)
+        'name', 'account', 'company', 'registered', 'spent', 'ordersCount', 'orderId', 'orderType', 'orderDateRange', 'orderStatus', 'orderTotal', // filter props (add here new filter props)
+        'nameAndProfileColWidth', 'accountTypeColWidth', 'companyNameColWidth', 'registerDateColWidth', 'spentAmountColWidth', 'ordersNumberColWidth', 'actionsHeaderColWidth', 'orderTypeColWidth', 'orderIdColWidth', 'orderDateColWidth', 'orderStatusColWidth', // column width overwrite props (add here new column width props) 
+    ],
     data() {
         return {
             // filter logic
@@ -127,6 +167,11 @@ export default defineComponent({
                 registerDate: '244px',
                 spentAmount: '129px',
                 ordersCount: '148px',
+                orderId: '212px',
+                orderType: '212px',
+                orderDate: '256px',
+                orderStatus: '256px',
+                orderTotal: '232px',
                 actionsHeader: '104px',
             },
 
@@ -135,6 +180,10 @@ export default defineComponent({
             showRegisteredRange: ref(false),
             showSpentRange: ref(false),
             showOrdersRange: ref(false),
+            showOrderTypeOptions: ref(false),
+            showOrderDateRange: ref(false),
+            showOrderStatusOptions: ref(false),
+            showOrderTotalRange: ref(false),
 
             // floating windows position
             isScrolling: ref(false),
@@ -147,9 +196,19 @@ export default defineComponent({
             spentRangeDropdownTop: ref(0),
             ordersRangeDropdownLeft: ref(0),
             ordersRangeDropdownTop: ref(0),
+            orderTypeDropdownLeft: ref(0),
+            orderTypeDropdownTop: ref(0),
+            orderDateDropdownLeft: ref(0),
+            orderDateDropdownTop: ref(0),
+            orderStatusDropdownLeft: ref(0),
+            orderStatusDropdownTop: ref(0),
+            orderTotalDropdownLeft: ref(0),
+            orderTotalDropdownTop: ref(0),
 
             registeredDateRange: ref([subDays(new Date(), 30), new Date()]),
-            spentValue: '',
+            orderDateRange: ref([subDays(new Date(), 30), new Date()]),
+            spentValue: 'Filter',
+            orderTotalValue: 'Filter',
 
             // filter options
             accountOptions: ref([
@@ -179,6 +238,38 @@ export default defineComponent({
                     iconType: EyeIcon,
                 },
             ]),
+            orderTypeOptions: ref([
+                {
+                    label: 'Stock Order',
+                },
+                {
+                    label: 'Backorder',
+                },
+                {
+                    label: 'Mixed Order',
+                },
+            ]),
+            orderStatusOptions: ref([
+                'Processing',
+                'Verification Required',
+                'Abandoned Checkout',
+                'Delivered',
+                'Shipped',
+                'Partially Shipped',
+                'Refunded',
+                'Partially Refunded',
+                'Disputed',
+                'On Dispute',
+                'Canceled',
+                'Completed',
+                'Pending',
+                'Awaiting Payment',
+                'Awaiting Fulfillment',
+                'Awaiting Shipment',
+                'Awaiting Pickup',
+                'Payment Received',
+                'Payment Declined',
+            ]),
         };
     },
     components: {
@@ -203,14 +294,14 @@ export default defineComponent({
     computed: {
 
         // automatic grid columns width assignation as per needed
-            colsWidthsCalculated() {
-                const widths = [] as string[];
-                this.fields.forEach((field: string) => {
-                    widths.push(this.colsWidths[field as keyof typeof this.colsWidths]);
-                });
-                widths.push(this.colsWidths.actionsHeader);
-                return `grid-cols-[${widths.join(',')}]`;
-            },
+        colsWidthsCalculated() {
+            const widths = [] as string[];
+            this.fields.forEach((field: string) => {
+                widths.push(this.colsWidths[field as keyof typeof this.colsWidths]);
+            });
+            widths.push(this.colsWidths.actionsHeader);
+            return `grid-cols-[${widths.join(',')}]`;
+        },
 
         // all possible sections predefined
         sections(): object {
@@ -263,8 +354,8 @@ export default defineComponent({
                     filterButton: this.filters,
                     rangeValue: this.spentValue,
                     rangeVisible: this.showSpentRange,
-                    textGrayCondition: !this.spent[0] && !this.spent[1],
-                    trackingWidestCondition: this.spent[0] || this.spent[1],
+                    textGrayCondition: this.spentValue === 'Filter',
+                    trackingWidestCondition: this.spentValue !== 'Filter',
                     handleShow: this.handleShowSpentRange,
                     customClasses: "justify-between w-full",
                 },
@@ -281,6 +372,59 @@ export default defineComponent({
                     handleShow: this.handleShowOrdersRange,
                     customClasses: "justify-between w-full",
                 },
+                orderId: {
+                    class: 'p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: 'Order #ID',
+                    order: this.orderIdOrder,
+                    sortChange: this.handleOrderIdOrderChange,
+                    search: this.filters,
+                    value: this.orderId,
+                    placeholder: 'Search #ID',
+                    filterChange: this.handleOrderIdFilterChange,
+                },
+                orderType: {
+                    class: 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: 'Order Type',
+                    select: this.filters,
+                    order: this.orderTypeOrder,
+                    handleShow: this.handleShowOrderTypeOptions,
+                    selectedItem: this.orderType,
+                    optionsVisible: this.showOrderTypeOptions,
+                    sortChange: this.handleOrderTypeOrderChange,
+                },
+                orderDate: {
+                    class: 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: 'Order Date',
+                    datePicker: this.filters,
+                    range: this.orderDateRange,
+                    order: this.orderDateOrder,
+                    datePickerVisible: this.showOrderDateRange,
+                    handleShow: this.handleShowOrderDateRange,
+                    sortChange: this.handleOrderDateOrderChange,
+                },
+                orderStatus: {
+                    class: 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: 'Order Status',
+                    select: this.filters,
+                    order: this.orderStatusOrder,
+                    handleShow: this.handleShowOrderStatusOptions,
+                    selectedItem: this.orderStatus,
+                    optionsVisible: this.showOrderStatusOptions,
+                    sortChange: this.handleOrderStatusOrderChange,
+                },
+                orderTotal: {
+                    class: 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: 'Total',
+                    order: this.orderTotalOrder,
+                    sortChange: this.handleOrderTotalOrderChange,
+                    filterButton: this.filters,
+                    rangeValue: this.orderTotalValue,
+                    rangeVisible: this.showOrderTotalRange,
+                    textGrayCondition: this.orderTotalValue === 'Filter',
+                    trackingWidestCondition: this.orderTotalValue[0] !== 'Filter',
+                    handleShow: this.handleShowOrderTotalRange,
+                    customClasses: 'justify-center gap-2 w-[120px]',
+                }
             };
             return sections;
         },
@@ -296,12 +440,25 @@ export default defineComponent({
             orderedSection[0].class = orderedSection[0].class + ' rounded-l-lg';
             return orderedSection;
         },
+
+        // misc
+        orderStatusOptionsList() {
+            const options = this.orderStatusOptions.map((option) => {
+                return {
+                    label: option,
+                };
+            });
+            return options;
+        },
     },
     watch: {
         // watch for registered date range changes
         registeredDateRange() {
             this.handleDateFilterChange();
-        }
+        },
+        orderDateRange() {
+            this.handleOrderDateFilterChange();
+        },
     },
     methods: {
 
@@ -313,7 +470,20 @@ export default defineComponent({
             if (this.registerDateColWidth) this.colsWidths.registerDate = this.registerDateColWidth;
             if (this.spentAmountColWidth) this.colsWidths.spentAmount = this.spentAmountColWidth;
             if (this.ordersCountColWidth) this.colsWidths.ordersCount = this.ordersCountColWidth;
+            if (this.orderIdColWidth) this.colsWidths.orderId = this.orderIdColWidth;
+            if (this.orderTypeColWidth) this.colsWidths.orderType = this.orderTypeColWidth;
+            if (this.orderDateColWidth) this.colsWidths.orderDate = this.orderDateColWidth;
+            if (this.orderStatusColWidth) this.colsWidths.orderStatus = this.orderStatusColWidth;
+            if (this.orderTotalColWidth) this.colsWidths.orderTotal = this.orderTotalColWidth;
             if (this.actionsHeaderColWidth) this.colsWidths.actionsHeader = this.actionsHeaderColWidth;
+
+            switch(this.actionsMenuType) {
+                case 'customer-orders':
+                    this.colsWidths.actionsHeader = '224px';
+                    break;
+                default: 
+                    break;
+            };
         },
 
         // floating window behaviour methods
@@ -322,6 +492,10 @@ export default defineComponent({
             this.showRegisteredRange = false;
             this.showSpentRange = false;
             this.showOrdersRange = false;
+            this.showOrderTypeOptions = false;
+            this.showOrderDateRange = false;
+            this.showOrderStatusOptions = false;
+            this.showOrderTotalRange = false;
             this.isScrolling = true;
             clearTimeout(this.scrollTimeout);
             this.scrollTimeout = setTimeout(() => {
@@ -356,6 +530,34 @@ export default defineComponent({
             this.ordersRangeDropdownLeft = rect.right;
             this.ordersRangeDropdownTop = rect.bottom + window.scrollY + 8;
         },
+        handleShowOrderTypeOptions(event: MouseEvent) {
+            this.showOrderTypeOptions = !this.showOrderTypeOptions;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.orderTypeDropdownLeft = rect.right;
+            this.orderTypeDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowOrderDateRange(event: MouseEvent) {
+            this.showOrderDateRange = !this.showOrderDateRange;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.orderDateDropdownLeft = rect.right;
+            this.orderDateDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowOrderStatusOptions(event: MouseEvent) {
+            this.showOrderStatusOptions = !this.showOrderStatusOptions;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.orderStatusDropdownLeft = rect.right;
+            this.orderStatusDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowOrderTotalRange(event: MouseEvent) {
+            this.showOrderTotalRange = !this.showOrderTotalRange;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.orderTotalDropdownLeft = rect.right;
+            this.orderTotalDropdownTop = rect.bottom + window.scrollY + 8;
+        },
 
         // datepicker methods
         formattedDate(date: Date) {
@@ -380,6 +582,21 @@ export default defineComponent({
         },
         handleOrdersCountOrderChange() {
             this.$emit('ordersCountOrderChange', this.ordersCountOrder);
+        },
+        handleOrderIdOrderChange() {
+            this.$emit('orderIdOrderChange', this.orderIdOrder);
+        },
+        handleOrderTypeOrderChange() {
+            this.$emit('orderTypeOrderChange', this.orderTypeOrder);
+        },
+        handleOrderDateOrderChange() {
+            this.$emit('orderDateOrderChange', this.orderDateOrder);
+        },
+        handleOrderStatusOrderChange() {
+            this.$emit('orderStatusOrderChange', this.orderStatusOrder);
+        },
+        handleOrderTotalOrderChange() {
+            this.$emit('orderTotalOrderChange', this.orderTotalOrder);
         },
 
         // filter methods
@@ -406,8 +623,28 @@ export default defineComponent({
             this.showOrdersRange = false;
             this.$emit('ordersFilterChange', buffer);
         },
+        handleOrderIdFilterChange(event: InputEvent) {
+            this.$emit('orderIdFilterChange', event);
+        },
+        handleOrderTypeFilterChange(event: MouseEvent, item: any) {
+            this.showOrderTypeOptions = false;
+            this.$emit('orderTypeFilterChange', event, item);
+        },
+        handleOrderDateFilterChange() {
+            this.showOrderDateRange = false;
+            this.$emit('orderDateFilterChange', this.orderDateRange);
+        },
+        handleOrderStatusFilterChange(event: MouseEvent, item: any) {
+            this.showOrderStatusOptions = false;
+            this.$emit('orderStatusFilterChange', event, item);
+        },
+        handleOrderTotalFilterChange(buffer: number[]) {
+            this.showOrderTotalRange = false;
+            this.$emit('orderTotalFilterChange', buffer);
+            this.calculateOrderTotalValue(buffer);
+        },
 
-        // misc methods       
+        // filter button text formatters
         calculateSpentValue(buffer: number[]) {
             const spentValue: string = buffer
                 .map((value: number) => {
@@ -419,6 +656,18 @@ export default defineComponent({
                 .join(' - ');
             const result = buffer[0] || buffer[1] ? spentValue : 'Filter';
             this.spentValue = result;
+        },
+        calculateOrderTotalValue(buffer: number[]) {
+            const orderTotalValue: string = buffer
+                .map((value: number) => {
+                    if (value >= 1000) {
+                        return `${Math.round(value / 1000)}K`;
+                    }
+                    return Math.round(value);
+                })
+                .join(' - ');
+            const result = buffer[0] || buffer[1] ? orderTotalValue : 'Filter';
+            this.orderTotalValue = result;
         },
     },
     created() {
