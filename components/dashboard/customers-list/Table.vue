@@ -51,9 +51,8 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import CustomTable from '~/components/shared/tables/CustomTable.vue';
-import DashboardCustomersListItem from '~/components/dashboard/customers-list/Item.vue';
 import CustomItem from '~/components/shared/tables/CustomItem.vue';
-import { AccountType, DashboardCustomerTableItem } from '~~/types';
+import { DashboardCustomerTableItem } from '~~/types';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
 import Emitter from 'tiny-emitter/instance';
