@@ -39,7 +39,8 @@
             </template>
             <template v-else>
                 <div class="flex items-center gap-3 mb-2">
-                    <component :is="item.customer.flag" class="w-5 h-5" />
+                    <!-- <component :is="item.customer.flag"  /> -->
+                    <img src="@/assets/icons/dashboard/ro.svg?inline" alt="Flag" class="w-5 h-5" />
                     <span class="text-sm font-semibold leading-[1.43]">
                         {{ item.customer.name }}
                     </span>

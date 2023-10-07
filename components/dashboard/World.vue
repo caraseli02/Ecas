@@ -30,17 +30,24 @@
                         onEachFeature: onEachFeature,
                     }"
                 />
-                <!-- <LTooltip
-                    v-if="tooltipCountry"
-                    :options="{
-                        direction: 'top',
-                        permanent: false,
-                        sticky: true,
-                        offset: [0, -10],
-                        className: 'dashboard--map-tooltip',
-                    }"
-                    :content="`${tooltipCountry.label} <span class='font-semibold'>${tooltipCountry.count}</span>`"
-                /> -->
+                <LMarker v-if="tooltipCountry" :lat-lng="tooltipCountry.latLng" :draggable="false">
+                    <LIcon :tooltip-anchor="[0, -5]" :icon-size="20" />
+                    <LTooltip
+                        :options="{
+                            direction: 'top',
+                            permanent: false,
+                            sticky: true,
+                            offset: [0, 0],
+                            className: 'dashboard--map-tooltip',
+                        }"
+                        :content="`${tooltipCountry.label} <span class='font-semibold'>${tooltipCountry.count}</span>`"
+                    >
+                        {{ tooltipCountry.label }}
+                        <span class="font-semibold">
+                            {{ tooltipCountry.count }}
+                        </span>
+                    </LTooltip>
+                </LMarker>
             </LMap>
         </div>
     </ClientOnly>
@@ -85,6 +92,7 @@ const highlightFeatureClick = (e: any) => {
     const country = props.countries.find((c) => c.label === clickedCountryName);
     if (country) {
         tooltipCountry.value = country;
+        tooltipCountry.value.latLng = e.latlng;
     }
 };
 const onEachFeature = (_: any, layer: any) => {
@@ -121,6 +129,9 @@ const onEachFeature = (_: any, layer: any) => {
                 @apply leading-[0];
             }
         }
+    }
+    .leaflet-marker-icon {
+        @apply opacity-20;
     }
     .dashboard--map-tooltip {
         @apply bg-[#1B1B28] text-white border-none shadow-none rounded px-3 py-1 text-sm leading-[1.43] tracking-[-0.02em] font-Poppins before:hidden after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:translate-y-full after:bg-no-repeat after:w-2 after:h-2;
