@@ -1,18 +1,26 @@
 <template>
     <div class="grid items-center" :class="columnWidths">
         <div v-for="section in activeSections" :class="section.class">
+            <CustomCheckBox v-if="section.checkbox" :item="item" @check="$emit('check')" />
             <NameAndProfile v-if="section.profile" :item="item" :loading="loading" :index="index" :showAvatar="true"
                 :showFlag="true" :showDiscount="true" :showLock="true" @showInformation="section.event" />
             <TextBox v-if="section.text" :text="item[section.name]" :loading="loading" :customClass="section.customClass" />
             <OrderId v-if="section.orderId" :item="item" :loading="loading" />
             <OrderType v-if="section.orderType" :item="item" :loading="loading" />
             <OrderStatus v-if="section.orderStatus" :status="item.status" :loading="loading" />
+            <TxType v-if="section.txType" :item="item" :loading="loading" />
+            <TxStatus v-if="section.txStatus" :item="item" :loading="loading" />
         </div>
-        <div class="flex items-center justify-end gap-4 pl-4 pr-1.5">
-            <ActionsMenu v-if="actionsMenuType === 'customers-list'" :loading="loading" :index="index" :documentButton="true" :threeDotButton="true"
+        <div v-if="actionsMenuType === 'customers-list'" class="flex items-center justify-end gap-4 pl-4 pr-1.5">
+            <ActionsMenu :loading="loading" :index="index" :documentButton="true" :threeDotButton="true"
                 @showOptions="handleShowOptions" :txtDocument="'View Orders'" />
-            <ActionsMenu v-if="actionsMenuType === 'customer-orders'" :loading="loading" :index="index" :documentButton="true" :invoiceButton="true"
+        </div>
+        <div v-if="actionsMenuType === 'customer-orders'" class="flex items-center justify-end gap-4 pl-4 pr-1.5">
+            <ActionsMenu :loading="loading" :index="index" :documentButton="true" :invoiceButton="true"
                 :threeDotButton="true" @showOptions="handleShowOptions" :txtDocument="'View Order'" :txtInvoice="'View Invoice'" />
+        </div>
+        <div v-if="actionsMenuType === 'tx-history'" class="flex items-center justify-end p-4 pr-[26px]">
+            <ActionsMenu :loading="loading" :index="index" :downloadButton="true" :txtDownload="'Download'" />
         </div>
     </div>
     <Teleport to="body">
@@ -48,8 +56,12 @@ import TextBox from './micro/row-items/TextBox.vue';
 import OrderId from './micro/row-items/OrderId.vue';
 import OrderType from './micro/row-items/OrderType.vue';
 import OrderStatus from './micro/row-items/OrderStatus.vue';
+import CustomCheckBox from './micro/row-items/CustomCheckBox.vue';
+import TxType from './micro/row-items/TxType.vue';
+import TxStatus from './micro/row-items/TxStatus.vue';
 
 interface Section {
+    checkbox: boolean;
     name: string;
     class: string;
     customClass: string;
@@ -59,6 +71,8 @@ interface Section {
     orderId: boolean;
     orderType: boolean;
     orderStatus: boolean;
+    txType: boolean;
+    txStatus: boolean;
 };
 
 export default defineComponent({
@@ -72,6 +86,9 @@ export default defineComponent({
         OrderId,
         OrderType,
         OrderStatus,
+        CustomCheckBox,
+        TxType,
+        TxStatus,
     },
     data() {
         return {
@@ -84,6 +101,10 @@ export default defineComponent({
     computed: {
         sections(): object {
             const sections = {
+                checkBox: {
+                    checkbox: true,
+                    class: 'flex items-center justify-center p-4',
+                },
                 nameAndProfile: {
                     profile: true,
                     event: this.showCustomerInformation,
@@ -136,6 +157,29 @@ export default defineComponent({
                     text: true,
                     class: 'p-6 text-sm',
                     name: 'total',
+                },
+                invoiceId: {
+                    text: true,
+                    class: 'px-2 py-4 text-sm font-medium leading-[1.71] text-blue',
+                    name: 'invoiceId',
+                },
+                orderAmount: {
+                    text: true,
+                    class: 'px-2 py-4 text-sm font-medium leading-[1.71]',
+                    name: 'amount',
+                },
+                txType: {
+                    txType: true,
+                    class: 'flex items-center px-2 py-4 text-sm font-medium leading-[1.71]',
+                },
+                txDate: {
+                    text: true,
+                    class: 'px-2 py-4 text-sm leading-[1.71]',
+                    name: 'date',
+                },
+                txStatus: {
+                    txStatus: true,
+                    class: 'flex items-center px-2 py-4 text-sm font-medium leading-[1.71]',
                 },
             };
             return sections;

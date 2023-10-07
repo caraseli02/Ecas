@@ -4,7 +4,8 @@
             @scroll="handleScroll">
             <div class="grid items-center rounded-t-lg" :class="colsWidthsCalculated">
                 <div v-for="(section, index) in activeSections" :key="index" :class="section.class">
-                    <SortAscDesc @sortChange="section.sortChange" :order="section.order" :title="section.title" />
+                    <CheckBoxAll v-if="section.checkbox" :checkAll="checkAll" @checkAll="$emit('checkAll')" />
+                    <SortAscDesc v-if="!section.checkbox" @sortChange="section.sortChange" :order="section.order" :title="section.title" />
                     <DashboardSearch v-if="section.search" v-model="section.value" :placeholder="section.placeholder"
                         size="sm" class="w-full" @input="section.filterChange" />
                     <CustomSelect v-if="section.select" @handleShow="section.handleShow"
@@ -31,10 +32,13 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="actionsHeader && (actionsMenuType === 'tx-history')" class="flex justify-center px-2 py-4 bg-[#F2F2F2] rounded-r-lg">
+                    <span class="text-sm font-medium leading-[1.43]">Actions</span>
+                </div>
             </div>
             <component :is="customItem" v-for="(item, index) in items" :key="index" :item="item" :index="index"
                 :is-scrolling="isScrolling" :loading="loading" :fields="fields" :actionsMenuType="actionsMenuType"
-                :columnWidths="colsWidthsCalculated" />
+                :columnWidths="colsWidthsCalculated" @check="$emit('check', item.id)" />
         </div>
     </div>
     <Teleport to="body">
@@ -120,9 +124,11 @@ import { DatePicker } from 'v-calendar';
 import { AccountType } from '~~/types';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { subDays } from 'date-fns';
+import CheckBoxAll from '~/components/shared/tables/micro/CheckBoxAll.vue';
 
 interface Section {
     class: string;
+    checkbox?: boolean;
     sortChange?: () => void;
     order?: string;
     title: string;
@@ -150,9 +156,9 @@ export default defineComponent({
     props: [
         'items', 'loading', 'customItem', 'filters', 'fields', 'actionsMenuType', // functional props (do not change)
         'actionsHeader', // actions header on/off switch
-        'nameOrder', 'accountOrder', 'companyOrder', 'registeredOrder', 'spentOrder', 'ordersCountOrder', 'orderIdOrder', 'orderTypeOrder', 'orderDateOrder', 'orderStatusOrder', 'orderTotalOrder', // order props (add here new order props)
-        'name', 'account', 'company', 'registered', 'spent', 'ordersCount', 'orderId', 'orderType', 'orderDateRange', 'orderStatus', 'orderTotal', // filter props (add here new filter props)
-        'nameAndProfileColWidth', 'accountTypeColWidth', 'companyNameColWidth', 'registerDateColWidth', 'spentAmountColWidth', 'ordersNumberColWidth', 'actionsHeaderColWidth', 'orderTypeColWidth', 'orderIdColWidth', 'orderDateColWidth', 'orderStatusColWidth', // column width overwrite props (add here new column width props) 
+        'nameOrder', 'accountOrder', 'companyOrder', 'registeredOrder', 'spentOrder', 'ordersCountOrder', 'orderIdOrder', 'orderTypeOrder', 'orderDateOrder', 'orderStatusOrder', 'orderTotalOrder', 'invoiceIdOrder', 'orderAmountOrder', 'txTypeOrder', 'txDateOrder', 'txStatusOrder', // order props (add here new order props)
+        'checkAll', 'name', 'account', 'company', 'registered', 'spent', 'ordersCount', 'orderId', 'orderType', 'orderDateRange', 'orderStatus', 'orderTotal', // filter props (add here new filter props)
+        'checkBoxColWidth', 'nameAndProfileColWidth', 'accountTypeColWidth', 'companyNameColWidth', 'registerDateColWidth', 'spentAmountColWidth', 'ordersNumberColWidth', 'actionsHeaderColWidth', 'orderTypeColWidth', 'orderIdColWidth', 'orderDateColWidth', 'orderStatusColWidth', // column width overwrite props (add here new column width props) 
     ],
     data() {
         return {
@@ -161,6 +167,7 @@ export default defineComponent({
 
             // dynamic column widths
             colsWidths: {
+                checkBox: '50px',
                 nameAndProfile: '359px',
                 accountType: '154px',
                 companyName: '254px',
@@ -172,6 +179,11 @@ export default defineComponent({
                 orderDate: '256px',
                 orderStatus: '256px',
                 orderTotal: '232px',
+                invoiceId: '191px',
+                orderAmount: '191px',
+                txType: '191px',
+                txDate: '191px',
+                txStatus: '191px',
                 actionsHeader: '104px',
             },
 
@@ -283,6 +295,7 @@ export default defineComponent({
         SliderFilter,
         SliderFilterMobile,
         DatePicker,
+        CheckBoxAll,
 
         // icons
         ProfileIcon,
@@ -306,6 +319,10 @@ export default defineComponent({
         // all possible sections predefined
         sections(): object {
             const sections = {
+                checkBox: {
+                    class: "flex justify-center items-center py-4 bg-[#F2F2F2]",
+                    checkbox: true,
+                },
                 nameAndProfile: {
                     class: "p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
                     sortChange: this.handleNameOrderChange,
@@ -424,7 +441,37 @@ export default defineComponent({
                     trackingWidestCondition: this.orderTotalValue[0] !== 'Filter',
                     handleShow: this.handleShowOrderTotalRange,
                     customClasses: 'justify-center gap-2 w-[120px]',
-                }
+                },
+                invoiceId: {
+                    class: 'px-2 py-4 bg-[#F2F2F2]',
+                    title: 'Invoice #ID',
+                    order: this.invoiceIdOrder,
+                    sortChange: this.handleInvoiceIdOrderChange,
+                },
+                orderAmount: {
+                    class: 'px-2 py-4 bg-[#F2F2F2]',
+                    title: 'Amount',
+                    order: this.orderAmountOrder,
+                    sortChange: this.handleOrderAmountOrderChange,
+                },
+                txType: {
+                    class: 'px-2 py-4 bg-[#F2F2F2]',
+                    title: 'Type',
+                    order: this.txTypeOrder,
+                    sortChange: this.handleTxTypeOrderChange,
+                },
+                txDate: {
+                    class: 'px-2 py-4 bg-[#F2F2F2]',
+                    title: 'Date',
+                    order: this.txDateOrder,
+                    sortChange: this.handleTxDateOrderChange,
+                },
+                txStatus: {
+                    class: 'px-2 py-4 bg-[#F2F2F2]',
+                    title: 'Status',
+                    order: this.txStatusOrder,
+                    sortChange: this.handleTxStatusOrderChange,
+                },
             };
             return sections;
         },
@@ -464,6 +511,7 @@ export default defineComponent({
 
         // dynamic column widths assignation for manual overwrite
         overwriteColWidths() {
+            if (this.checkBoxColWidth) this.colsWidths.checkBox = this.checkBoxColWidth;
             if (this.nameAndProfileColWidth) this.colsWidths.nameAndProfile = this.nameAndProfileColWidth;
             if (this.accountTypeColWidth) this.colsWidths.accountType = this.accountTypeColWidth;
             if (this.companyNameColWidth) this.colsWidths.companyName = this.companyNameColWidth;
@@ -480,6 +528,10 @@ export default defineComponent({
             switch(this.actionsMenuType) {
                 case 'customer-orders':
                     this.colsWidths.actionsHeader = '224px';
+                    break;
+                case 'tx-history':
+                    this.colsWidths.orderId = '191px';
+                    this.colsWidths.actionsHeader = 'minmax(196px,1fr)';
                     break;
                 default: 
                     break;
@@ -597,6 +649,21 @@ export default defineComponent({
         },
         handleOrderTotalOrderChange() {
             this.$emit('orderTotalOrderChange', this.orderTotalOrder);
+        },
+        handleInvoiceIdOrderChange() {
+            this.$emit('invoiceIdOrderChange', this.invoiceIdOrder);
+        },
+        handleOrderAmountOrderChange() {
+            this.$emit('orderAmountOrderChange', this.orderAmountOrder);
+        },
+        handleTxTypeOrderChange() {
+            this.$emit('txTypeOrderChange', this.txTypeOrder);
+        },
+        handleTxDateOrderChange() {
+            this.$emit('txDateOrderChange', this.txDateOrder);
+        },
+        handleTxStatusOrderChange() {
+            this.$emit('txStatusOrderChange', this.txStatusOrder);
         },
 
         // filter methods
