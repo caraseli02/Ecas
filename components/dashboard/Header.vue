@@ -223,7 +223,7 @@
                 </button>
                 <button
                     class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="showOptions = false"
+                    @click="showOptions = false; handleSignOut();$router.push('/')"
                 >
                   <SignOutIcon class="w-6 h-6 mr-3 text-current"/>
                   <span class="text-sm leading-[1.71] font-medium"> Sign out </span>
@@ -285,8 +285,13 @@ defineProps({
     required: true,
   },
 });
+const authStore = useAuthStore();
 
-defineEmits(['show-side-nav']);
+const emit = defineEmits<{
+  (e: 'close'): void,
+  'show-side-nav': any
+}>();
+
 
 const showMobileSearch = ref(false);
 const searchValue = ref('');
@@ -326,6 +331,14 @@ const fetchUserData = async () => {
     user.value = authStore.userDetails
   }
 }
+
+const handleSignOut = async () => {
+  authStore.signOut();
+  await authStore.firebaseSignOut();
+  setTimeout(() => {
+    emit('close');
+  }, 200);
+};
 
 
 const route = useRoute()

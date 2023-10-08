@@ -203,14 +203,12 @@ const fetchInformation = async () => {
   }
 
   customerInformation.value = response.data;
-  console.log(customerInformation.value.personalDetails)
   Emitter.emit('customer-info', {name: customerInformation.value.contactDetails?.firstName + ' ' + customerInformation.value.contactDetails?.lastName})
 };
 
 const deleteAccountAsAdmin = async (id: string) => {
   const response = await $api.userDashboard.deleteUser(id)
   if (response.status !== 'success') {
-    console.log(response.status);
     return;
   }
 }
@@ -218,7 +216,6 @@ const deleteAccountAsAdmin = async (id: string) => {
 const deactivateAccountAsAdmin = async (id: string) => {
   const response = await $api.userDashboard.deactivateUser(id)
   if (response.status !== 'success') {
-    console.log(response.status);
     return;
   }
 }
