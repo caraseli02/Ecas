@@ -1,10 +1,8 @@
-
-import { emits } from 'v-calendar/dist/types/src/use/datePicker';
 <template>
   <NuxtLink :to="`/dashboard/customers/${item.firebaseId}`" class="group/link flex items-center" event=""
     @click.native="showCustomerInformation(item)">
-    <div v-if="showAvatar" class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4"
-      :class="[
+    <div v-if="showAvatar"
+      class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4" :class="[
         !item.avatar ? 'bg-gray-200' : '',
         loading
           ? ''
@@ -16,22 +14,31 @@ import { emits } from 'v-calendar/dist/types/src/use/datePicker';
         <UserIcon v-else class="w-7 h-7 text-gray-100" />
       </template>
     </div>
-    <div class="w-[calc(100%-60px)]">
+    <div :class="customClass">
       <SkeletonLoader v-if="loading" class="w-2/3 h-5 mb-2" />
-      <div v-else class="flex items-center justify-between gap-3 mb-1">
+      <div v-else class="flex items-center gap-3 mb-1">
+        <div v-if="!showAvatar && showFlag" class="flex items-center gap-3 cursor-default">
+          <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+            <component :is="item.flag" />
+            <template #content>
+              <span>United States</span>
+            </template>
+          </Tooltip>
+        </div>
         <div
           class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue">
           {{ item.name }}
         </div>
         <div class="flex items-center gap-3 cursor-default">
           <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-            <component v-if="showFlag" :is="item.flag"/>
+            <component v-if="showFlag && showAvatar" :is="item.flag" />
             <template #content>
               <span>United States</span>
             </template>
           </Tooltip>
           <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
-            <div v-if="showDiscount" class="border-blue border-[1px] px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-[#007FFF]">
+            <div v-if="showDiscount"
+              class="border-blue border-[1px] px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-[#007FFF]">
               10%
             </div>
             <template #content>
@@ -62,7 +69,7 @@ import LockIcon from '@/assets/icons/dashboard/orders/lock.svg';
 
 export default defineComponent({
   name: 'NameAndProfile',
-  props: ['item', 'index', 'loading', 'showAvatar', 'showFlag', 'showDiscount', 'showLock'],
+  props: ['item', 'index', 'loading', 'showAvatar', 'showFlag', 'showDiscount', 'showLock', 'customClass'],
   components: {
     SkeletonLoader,
     UserIcon,

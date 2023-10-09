@@ -2,7 +2,7 @@
     <CustomTable :items="items" :loading="loading" :fields="fields" :customItem="CustomItem" :filters="true" :actionsMenuType="actionsMenuType"
         :actionsHeader="true" :name="name" :account="account" :company="company" :registered="registered" :spent="spent"
         :ordersCount="ordersCount" :nameOrder="nameOrder" :accountOrder="accountOrder" :companyOrder="companyOrder"
-        :registeredOrder="registeredOrder" :spentOrder="spentOrder" :ordersCountOrder="ordersCountOrder"
+        :registeredOrder="registeredOrder" :spentOrder="spentOrder" :ordersCountOrder="ordersCountOrder" :nameAndProfileClass="'w-[calc(100%-60px)]'"
         @nameOrderChange="
             nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0);
             handleSortChange(emits, 'email', nameOrder);" 

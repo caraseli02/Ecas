@@ -3,7 +3,7 @@
         <div v-for="section in activeSections" :class="section.class">
             <CustomCheckBox v-if="section.checkbox" :item="item" @check="$emit('check')" />
             <NameAndProfile v-if="section.profile" :item="item" :loading="loading" :index="index" :showAvatar="true"
-                :showFlag="true" :showDiscount="true" :showLock="true" @showInformation="section.event" />
+                :showFlag="true" :showDiscount="true" :showLock="true" @showInformation="section.event" :customClass="section.customClass" />
             <TextBox v-if="section.text" :text="item[section.name]" :loading="loading" :customClass="section.customClass" />
             <OrderId v-if="section.orderId" :item="item" :loading="loading" />
             <OrderType v-if="section.orderType" :item="item" :loading="loading" />
@@ -77,7 +77,7 @@ interface Section {
 
 export default defineComponent({
     name: 'CustomItem',
-    props: ['fields', 'item', 'index', 'loading', 'isScrolling', 'actionsMenuType', 'columnWidths'],
+    props: ['fields', 'item', 'index', 'loading', 'isScrolling', 'actionsMenuType', 'columnWidths', 'nameAndProfileClass'],
     components: {
         NameAndProfile,
         ActionsMenu,
@@ -108,7 +108,8 @@ export default defineComponent({
                 nameAndProfile: {
                     profile: true,
                     event: this.showCustomerInformation,
-                    class: 'pl-4 pr-1.5 py-3'
+                    class: 'pl-4 pr-1.5 py-3',
+                    customClass: this.nameAndProfileClass,
                 },
                 accountType: {
                     name: 'account',

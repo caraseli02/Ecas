@@ -38,7 +38,7 @@
             </div>
             <component :is="customItem" v-for="(item, index) in items" :key="index" :item="item" :index="index"
                 :is-scrolling="isScrolling" :loading="loading" :fields="fields" :actionsMenuType="actionsMenuType"
-                :columnWidths="colsWidthsCalculated" @check="$emit('check', item.id)" />
+                :columnWidths="colsWidthsCalculated" @check="$emit('check', item.id)" :nameAndProfileClass="nameAndProfileClass"/>
         </div>
     </div>
     <Teleport to="body">
@@ -159,6 +159,7 @@ export default defineComponent({
         'nameOrder', 'accountOrder', 'companyOrder', 'registeredOrder', 'spentOrder', 'ordersCountOrder', 'orderIdOrder', 'orderTypeOrder', 'orderDateOrder', 'orderStatusOrder', 'orderTotalOrder', 'invoiceIdOrder', 'orderAmountOrder', 'txTypeOrder', 'txDateOrder', 'txStatusOrder', // order props (add here new order props)
         'checkAll', 'name', 'account', 'company', 'registered', 'spent', 'ordersCount', 'orderId', 'orderType', 'orderDateRange', 'orderStatus', 'orderTotal', // filter props (add here new filter props)
         'checkBoxColWidth', 'nameAndProfileColWidth', 'accountTypeColWidth', 'companyNameColWidth', 'registerDateColWidth', 'spentAmountColWidth', 'ordersNumberColWidth', 'actionsHeaderColWidth', 'orderTypeColWidth', 'orderIdColWidth', 'orderDateColWidth', 'orderStatusColWidth', // column width overwrite props (add here new column width props) 
+        'nameAndProfileClass', // custom class for name and profile column
     ],
     data() {
         return {

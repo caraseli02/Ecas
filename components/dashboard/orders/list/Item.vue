@@ -9,8 +9,8 @@
         <div class="text-sm leading-[1.43] truncate" :class="[loading ? 'px-3.5 py-[22px]' : 'px-5 py-6']">
             <TextBox :text="'21 September 2023, 18:25'" :loading="loading" />
         </div>
-        <NameAndProfile :item="item.customer" :index="index" :loading="loading" :showAvatar="true" :showFlag="true"
-            :showLock="true" class="py-3" :class="[loading ? 'px-[17px]' : 'px-4']" />
+        <NameAndProfile :item="item.customer" :index="index" :loading="loading" :showAvatar="false" :showFlag="true"
+            :showLock="true" class="py-3" :class="[loading ? 'px-[17px]' : 'px-4']"/>
         <div class="py-5" :class="[loading ? 'px-4' : 'px-6']">
             <PaymentStatus :status="item.payment" :loading="loading" />
         </div>
