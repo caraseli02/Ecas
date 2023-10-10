@@ -2,14 +2,15 @@
     <div class="grid items-center" :class="columnWidths">
         <div v-for="section in activeSections" :class="section.class">
             <CustomCheckBox v-if="section.checkbox" :item="item" @check="$emit('check')" />
-            <NameAndProfile v-if="section.profile" :item="item" :loading="loading" :index="index" :showAvatar="true"
+            <NameAndProfile v-if="section.profile" :item="section.profileKey ? item[section.profileKey] : item" :loading="loading" :index="index" :showAvatar="section.showAvatar"
                 :showFlag="true" :showDiscount="true" :showLock="true" @showInformation="section.event" :customClass="section.customClass" />
             <TextBox v-if="section.text" :text="item[section.name]" :loading="loading" :customClass="section.customClass" />
             <OrderId v-if="section.orderId" :item="item" :loading="loading" />
             <OrderType v-if="section.orderType" :item="item" :loading="loading" />
-            <OrderStatus v-if="section.orderStatus" :status="item.status" :loading="loading" />
+            <OrderStatus v-if="section.orderStatus" :status="item[section.statusKey]" :loading="loading" />
             <TxType v-if="section.txType" :item="item" :loading="loading" />
             <TxStatus v-if="section.txStatus" :item="item" :loading="loading" />
+            <PaymentStatus v-if="section.paymentStatus" :status="item.payment" :loading="loading" />
         </div>
         <div v-if="actionsMenuType === 'customers-list'" class="flex items-center justify-end gap-4 pl-4 pr-1.5">
             <ActionsMenu :loading="loading" :index="index" :documentButton="true" :threeDotButton="true"
@@ -21,6 +22,9 @@
         </div>
         <div v-if="actionsMenuType === 'tx-history'" class="flex items-center justify-end p-4 pr-[26px]">
             <ActionsMenu :loading="loading" :index="index" :downloadButton="true" :txtDownload="'Download'" />
+        </div>
+        <div v-if="actionsMenuType === 'orders-list'" class="flex items-center justify-end gap-6 pr-4" :class="[loading ? 'px-4' : '']">
+            <ActionsMenu :loading="loading" :index="index" :threeDotButton="true" @showOptions="handleShowOptions" />
         </div>
     </div>
     <Teleport to="body">
@@ -38,6 +42,12 @@
                 :dropdownTop="optionsDropdownTop" :dropdownLeft="optionsDropdownLeft" :invoiceButton="true"
                 :invoiceText="'View Invoice'" :editButton="true" :editText="'Edit Order'" @invoiceClicked="showOptions = false"
                 @editClicked="showOptions = false" />
+        </Transition>
+        <Transition :name="index > 8 ? 'fade-full-neg' : 'fade-bottom'">
+            <ThreeDotMenu v-if="showOptions && (actionsMenuType === 'orders-list')" v-click-outside="() => (showOptions = false)" :index="index"
+                :dropdownTop="optionsDropdownTop" :dropdownLeft="optionsDropdownLeft" :documentButton="true"
+                :documentText="'View Order'" :invoiceButton="true" :invoiceText="'View Invoice'"
+                @documentClicked="showOptions = false" @invoiceClicked="showOptions = false" />
         </Transition>
         <Transition name="fade">
             <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item"
@@ -59,6 +69,7 @@ import OrderStatus from './micro/row-items/OrderStatus.vue';
 import CustomCheckBox from './micro/row-items/CustomCheckBox.vue';
 import TxType from './micro/row-items/TxType.vue';
 import TxStatus from './micro/row-items/TxStatus.vue';
+import PaymentStatus from './micro/row-items/PaymentStatus.vue';
 
 interface Section {
     checkbox: boolean;
@@ -73,11 +84,22 @@ interface Section {
     orderStatus: boolean;
     txType: boolean;
     txStatus: boolean;
+    fulfillmentStatus: boolean;
+    paymentStatus: boolean;
+    statusKey: string;
+    profileKey: string;
+    showAvatar: boolean;
 };
 
 export default defineComponent({
     name: 'CustomItem',
-    props: ['fields', 'item', 'index', 'loading', 'isScrolling', 'actionsMenuType', 'columnWidths', 'nameAndProfileClass'],
+    props: [
+        'fields', 'item', 'index', 'loading', 'isScrolling', 'actionsMenuType', 'columnWidths',
+        'nameAndProfileClass',
+        'orderStatusKey', 'profileKey',
+        'showAvatar',
+        'checkBoxItemClass', 'nameAndProfileItemClass', 'accountTypeItemClass', 'companyNameItemClass', 'registerDateItemClass', 'spentAmountItemClass', 'ordersCountItemClass', 'orderIdItemClass', 'orderTypeItemClass', 'orderDateItemClass', 'orderStatusItemClass', 'orderTotalItemClass', 'invoiceIdItemClass', 'orderAmountItemClass', 'txTypeItemClass', 'txDateItemClass', 'txStatusItemClass', 'paymentStatusItemClass', // specific class overwrites
+    ],
     components: {
         NameAndProfile,
         ActionsMenu,
@@ -89,6 +111,7 @@ export default defineComponent({
         CustomCheckBox,
         TxType,
         TxStatus,
+        PaymentStatus,
     },
     data() {
         return {
@@ -103,84 +126,91 @@ export default defineComponent({
             const sections = {
                 checkBox: {
                     checkbox: true,
-                    class: 'flex items-center justify-center p-4',
+                    class: this.checkBoxItemClass || 'flex items-center justify-center p-4',
                 },
                 nameAndProfile: {
                     profile: true,
                     event: this.showCustomerInformation,
-                    class: 'pl-4 pr-1.5 py-3',
+                    class: this.nameAndProfileItemClass || 'pl-4 pr-1.5 py-3',
                     customClass: this.nameAndProfileClass,
+                    profileKey: this.profileKey,
+                    showAvatar: this.showAvatar,
                 },
                 accountType: {
                     name: 'account',
                     text: true,
-                    class: 'text-sm leading-[1.43] truncate pl-4 pr-1.5',
+                    class: this.accountTypeItemClass || 'text-sm leading-[1.43] truncate pl-4 pr-1.5',
                 },
                 companyName: {
                     name: 'company',
                     text: true,
-                    class: 'text-sm leading-[1.43] truncate pl-4 pr-1.5',
+                    class: this.companyNameItemClass || 'text-sm leading-[1.43] truncate pl-4 pr-1.5',
                 },
                 registerDate: {
                     name: 'registered',
                     text: true,
-                    class: 'text-sm leading-[1.43] truncate pl-4 pr-1.5',
+                    class: this.registerDateItemClass || 'text-sm leading-[1.43] truncate pl-4 pr-1.5',
                 },
                 spentAmount: {
                     name: 'spent',
                     text: true,
-                    class: 'text-sm leading-[1.43] font-medium truncate pl-4 pr-1.5',
+                    class: this.spentAmountItemClass || 'text-sm leading-[1.43] font-medium truncate pl-4 pr-1.5',
                 },
                 ordersCount: {
                     name: 'ordersCount',
                     text: true,
-                    class: 'flex justify-center pl-4 pr-1.5',
+                    class: this.ordersCountItemClass || 'flex justify-center pl-4 pr-1.5',
                     customClass: 'text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md',
                 },
                 orderId: {
                     orderId: true,
-                    class: 'p-6 text-sm font-medium truncate',
+                    class: this.orderIdItemClass || 'p-6 text-sm font-medium truncate',
                 },
                 orderType: {
                     orderType: true,
-                    class: 'px-6 py-4',
+                    class: this.orderTypeItemClass || 'px-6 py-4',
                 },
                 orderDate: {
                     text: true,
-                    class: 'p-6 text-sm truncate',
+                    class: this.orderDateItemClass || 'p-6 text-sm truncate',
                     name: 'date',
                 },
                 orderStatus: {
                     orderStatus: true,
-                    class: 'px-6 py-4',
+                    class: this.orderStatusItemClass || 'px-6 py-4',
+                    statusKey: this.orderStatusKey,
                 },
                 orderTotal: {
                     text: true,
-                    class: 'p-6 text-sm',
+                    class: this.orderTotalItemClass || 'p-6 text-sm',
                     name: 'total',
                 },
                 invoiceId: {
                     text: true,
-                    class: 'px-2 py-4 text-sm font-medium leading-[1.71] text-blue',
+                    class: this.invoiceIdItemClass || 'px-2 py-4 text-sm font-medium leading-[1.71] text-blue',
                     name: 'invoiceId',
                 },
                 orderAmount: {
                     text: true,
-                    class: 'px-2 py-4 text-sm font-medium leading-[1.71]',
+                    class: this.orderAmountItemClass || 'px-2 py-4 text-sm font-medium leading-[1.71]',
                     name: 'amount',
                 },
                 txType: {
                     txType: true,
-                    class: 'flex items-center px-2 py-4 text-sm font-medium leading-[1.71]',
+                    class: this.txTypeItemClass || 'flex items-center px-2 py-4 text-sm font-medium leading-[1.71]',
                 },
                 txDate: {
                     text: true,
-                    class: 'px-2 py-4 text-sm leading-[1.71]',
+                    class: this.txDateItemClass || 'px-2 py-4 text-sm leading-[1.71]',
                     name: 'date',
                 },
                 txStatus: {
                     txStatus: true,
-                    class: 'flex items-center px-2 py-4 text-sm font-medium leading-[1.71]',
+                    class: this.txStatusItemClass || 'flex items-center px-2 py-4 text-sm font-medium leading-[1.71]',
+                },
+                paymentStatus: {
+                    paymentStatus: true,
+                    class: this.paymentStatusItemClass || 'py-5 px-6',
                 },
             };
             return sections;

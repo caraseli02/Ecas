@@ -3,6 +3,7 @@
         :actionsHeader="true" 
         :orderIdOrder="idOrder" :orderTypeOrder="typeOrder" :orderDateOrder="dateOrder" :orderStatusOrder="statusOrder" :orderTotalOrder="totalOrder"
         :orderId="id" :orderType="type" :orderDate="date" :orderStatus="status" :orderTotal="total"
+        :orderStatusKey="'status'"
         @orderIdOrderChange="
             idOrder === 0 ? (idOrder = 1) : (idOrder = 0);
             handleSortChange(emits, 'id', idOrder);"

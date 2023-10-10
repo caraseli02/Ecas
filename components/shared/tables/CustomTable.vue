@@ -5,7 +5,8 @@
             <div class="grid items-center rounded-t-lg" :class="colsWidthsCalculated">
                 <div v-for="(section, index) in activeSections" :key="index" :class="section.class">
                     <CheckBoxAll v-if="section.checkbox" :checkAll="checkAll" @checkAll="$emit('checkAll')" />
-                    <SortAscDesc v-if="!section.checkbox" @sortChange="section.sortChange" :order="section.order" :title="section.title" />
+                    <SortAscDesc v-if="!section.checkbox" @sortChange="section.sortChange" :order="section.order"
+                        :title="section.title" />
                     <DashboardSearch v-if="section.search" v-model="section.value" :placeholder="section.placeholder"
                         size="sm" class="w-full" @input="section.filterChange" />
                     <CustomSelect v-if="section.select" @handleShow="section.handleShow"
@@ -25,20 +26,38 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="actionsHeader && (actionsMenuType === 'customer-orders')" class="p-4 pr-[50px] w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
+                <div v-if="actionsHeader && (actionsMenuType === 'customer-orders')"
+                    class="p-4 pr-[50px] w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
                     <div class="relative">
                         <div class="flex items-center justify-end mb-4">
                             <span class="text-sm leading-[1.43] font-medium"> Actions </span>
                         </div>
                     </div>
                 </div>
-                <div v-if="actionsHeader && (actionsMenuType === 'tx-history')" class="flex justify-center px-2 py-4 bg-[#F2F2F2] rounded-r-lg">
+                <div v-if="actionsHeader && (actionsMenuType === 'tx-history')"
+                    class="flex justify-center px-2 py-4 bg-[#F2F2F2] rounded-r-lg">
                     <span class="text-sm font-medium leading-[1.43]">Actions</span>
                 </div>
+                <div v-if="actionsHeader && (actionsMenuType === 'orders-list')" 
+                    class="p-4 w-full rounded-r-lg bg-[#F2F2F2] self-stretch">
+                    <div class="relative">
+                        <div class="flex items-center justify-end mb-4">
+                            <span class="text-sm leading-[1.43] font-medium"> Actions </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="items.length === 0 || error"
+                class="flex flex-col items-center justify-center flex-1 my-20 lg:my-[200px] xl:my-[320px]">
+                <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+                <div class="text-sm font-medium leading-[1.43] text-gray-100">No data available</div>
             </div>
             <component :is="customItem" v-for="(item, index) in items" :key="index" :item="item" :index="index"
                 :is-scrolling="isScrolling" :loading="loading" :fields="fields" :actionsMenuType="actionsMenuType"
-                :columnWidths="colsWidthsCalculated" @check="$emit('check', item.id)" :nameAndProfileClass="nameAndProfileClass"/>
+                :columnWidths="colsWidthsCalculated" @check="$emit('check', item.id)"
+                :nameAndProfileClass="nameAndProfileClass" :orderStatusKey="orderStatusKey" :profileKey="profileKey" :showAvatar="showAvatar"
+                :nameAndProfileItemClass="nameAndProfileItemClass" :accountTypeItemClass="accountTypeItemClass" :companyNameItemClass="companyNameItemClass" :registerDateItemClass="registerDateItemClass" :spentAmountItemClass="spentAmountItemClass" :ordersCountItemClass="ordersCountItemClass" :orderIdItemClass="orderIdItemClass" :orderTypeItemClass="orderTypeItemClass" :orderDateItemClass="orderDateItemClass" :orderStatusItemClass="orderStatusItemClass" :orderTotalItemClass="orderTotalItemClass" :invoiceIdItemClass="invoiceIdItemClass" :orderAmountItemClass="orderAmountItemClass" :txTypeItemClass="txTypeItemClass" :txDateItemClass="txDateItemClass" :txStatusItemClass="txStatusItemClass" :paymentStatusItemClass="paymentStatusItemClass"
+                />
         </div>
     </div>
     <Teleport to="body">
@@ -103,6 +122,12 @@
             <RangeFilterMobile v-if="showOrderTotalRange" title="Total" :range="orderTotal"
                 @cancel="showOrderTotalRange = false" @apply="handleOrderTotalFilterChange" />
         </Transition>
+        <Transition name="fade-bottom">
+            <CustomSelectDropdown v-if="showPaymentStatusOptions" v-click-outside="() => showPaymentStatusOptions = false"
+                :items="paymentStatusOptions" :dropdownTop="paymentStatusDropdownTop"
+                :dropdownLeft="paymentStatusDropdownLeft" :selectedItem="paymentStatus"
+                @handleSelection="handlePaymentStatusFilterChange" :customClasses="'w-[160px]'" />
+        </Transition>
     </Teleport>
 </template>
 <script lang="ts">
@@ -115,6 +140,7 @@ import RangeFilter from '~/components/shared/tables/micro/RangeFilter.vue';
 import RangeFilterMobile from '~/components/shared/tables/micro/RangeFilterMobile.vue';
 import SliderFilter from '~/components/shared/tables/micro/SliderFilter.vue';
 import SliderFilterMobile from '~/components/shared/tables/micro/SliderFilterMobile.vue';
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SoleTraderIcon from '@/assets/icons/dashboard/sole-trader.svg';
 import AgentIcon from '@/assets/icons/dashboard/agent.svg';
@@ -154,12 +180,19 @@ interface Section {
 export default defineComponent({
     name: 'CustomTable',
     props: [
-        'items', 'loading', 'customItem', 'filters', 'fields', 'actionsMenuType', // functional props (do not change)
+        'items', 'error', 'loading', 'customItem', 'filters', 'fields', 'actionsMenuType', // functional props (do not change)
         'actionsHeader', // actions header on/off switch
-        'nameOrder', 'accountOrder', 'companyOrder', 'registeredOrder', 'spentOrder', 'ordersCountOrder', 'orderIdOrder', 'orderTypeOrder', 'orderDateOrder', 'orderStatusOrder', 'orderTotalOrder', 'invoiceIdOrder', 'orderAmountOrder', 'txTypeOrder', 'txDateOrder', 'txStatusOrder', // order props (add here new order props)
-        'checkAll', 'name', 'account', 'company', 'registered', 'spent', 'ordersCount', 'orderId', 'orderType', 'orderDateRange', 'orderStatus', 'orderTotal', // filter props (add here new filter props)
-        'checkBoxColWidth', 'nameAndProfileColWidth', 'accountTypeColWidth', 'companyNameColWidth', 'registerDateColWidth', 'spentAmountColWidth', 'ordersNumberColWidth', 'actionsHeaderColWidth', 'orderTypeColWidth', 'orderIdColWidth', 'orderDateColWidth', 'orderStatusColWidth', // column width overwrite props (add here new column width props) 
-        'nameAndProfileClass', // custom class for name and profile column
+        'nameOrder', 'accountOrder', 'companyOrder', 'registeredOrder', 'spentOrder', 'ordersCountOrder', 'orderIdOrder', 'orderTypeOrder', 'orderDateOrder', 'orderStatusOrder', 'orderTotalOrder', 'invoiceIdOrder', 'orderAmountOrder', 'txTypeOrder', 'txDateOrder', 'txStatusOrder', 'paymentStatusOrder', // order props (add here new order props)
+        'checkAll', 'name', 'account', 'company', 'registered', 'spent', 'ordersCount', 'orderId', 'orderType', 'orderDateRange', 'orderStatus', 'orderTotal', 'paymentStatus', // filter props (add here new filter props)
+        'checkBoxColWidth', 'nameAndProfileColWidth', 'accountTypeColWidth', 'companyNameColWidth', 'registerDateColWidth', 'spentAmountColWidth', 'ordersCountColWidth', 'actionsHeaderColWidth', 'orderTypeColWidth', 'orderIdColWidth', 'orderDateColWidth', 'orderStatusColWidth', 'invoiceIdColWidth', 'orderTotalColWidth', 'txTypeColWidth', 'txDateColWidth', 'txStatusColWidth', 'paymentStatusColWidth', // column width overwrite props (add here new column width props) 
+        'nameAndProfileTitle', 'accountTypeTitle', 'companyNameTitle', 'registerDateTitle', 'spentAmountTitle', 'ordersCountTitle', 'orderTypeTitle', 'orderIdTitle', 'orderDateTitle', 'orderStatusTitle', 'orderTotalTitle', 'invoiceIdTitle', 'orderAmountTitle', 'txTypeTitle', 'txDateTitle', 'txStatusTitle', 'paymentStatusTitle', // column title overwrite props (add here new column title props) 
+        'nameAndProfileClass', 'orderTotalInnerClass', 'ordersCountInnerClass', 'spentAmountInnerClass', // custom classes for individual components
+        'customGeneralHeaderClass', //custom class that applies to all header elements
+        'checkBoxHeaderClass', 'nameAndProfileHeaderClass', 'accountTypeHeaderClass', 'companyNameHeaderClass', 'registerDateHeaderClass', 'spentAmountHeaderClass', 'ordersCountHeaderClass', 'orderIdHeaderClass', 'orderTypeHeaderClass', 'orderDateHeaderClass', 'orderStatusHeaderClass', 'orderTotalHeaderClass', 'invoiceIdHeaderClass', 'orderAmountHeaderClass', 'txTypeHeaderClass', 'txDateHeaderClass', 'txStatusHeaderClass', 'paymentStatusHeaderClass', // specific header class overwrites
+        'checkBoxItemClass', 'nameAndProfileItemClass', 'accountTypeItemClass', 'companyNameItemClass', 'registerDateItemClass', 'spentAmountItemClass', 'ordersCountItemClass', 'orderIdItemClass', 'orderTypeItemClass', 'orderDateItemClass', 'orderStatusItemClass', 'orderTotalItemClass', 'invoiceIdItemClass', 'orderAmountItemClass', 'txTypeItemClass', 'txDateItemClass', 'txStatusItemClass', 'paymentStatusItemClass', // specific item class overwrites
+        'applyCustomClasses', // on/off switch for custom classes
+        'orderStatusKey', 'profileKey', // keys of different objects within the components
+        'showAvatar', // show avatar in name and profile column
     ],
     data() {
         return {
@@ -185,6 +218,7 @@ export default defineComponent({
                 txType: '191px',
                 txDate: '191px',
                 txStatus: '191px',
+                paymentStatus: '141px',
                 actionsHeader: '104px',
             },
 
@@ -197,6 +231,8 @@ export default defineComponent({
             showOrderDateRange: ref(false),
             showOrderStatusOptions: ref(false),
             showOrderTotalRange: ref(false),
+            showPaymentStatusOptions: ref(false),
+            showFulfillmentStatusOptions: ref(false),
 
             // floating windows position
             isScrolling: ref(false),
@@ -217,6 +253,8 @@ export default defineComponent({
             orderStatusDropdownTop: ref(0),
             orderTotalDropdownLeft: ref(0),
             orderTotalDropdownTop: ref(0),
+            paymentStatusDropdownLeft: ref(0),
+            paymentStatusDropdownTop: ref(0),
 
             registeredDateRange: ref([subDays(new Date(), 30), new Date()]),
             orderDateRange: ref([subDays(new Date(), 30), new Date()]),
@@ -283,6 +321,24 @@ export default defineComponent({
                 'Payment Received',
                 'Payment Declined',
             ]),
+            paymentStatusOptions: ref([
+                {
+                    label: 'Paid',
+                    value: 'Paid',
+                },
+                {
+                    label: 'Pending',
+                    value: 'Pending',
+                },
+                {
+                    label: 'Canceled',
+                    value: 'Canceled',
+                },
+                {
+                    label: 'Declined',
+                    value: 'Declined',
+                },
+            ]),
         };
     },
     components: {
@@ -304,6 +360,7 @@ export default defineComponent({
         AgentIcon,
         BusinessIcon,
         EyeIcon,
+        EmojiSadIcon,
     },
     computed: {
 
@@ -321,78 +378,78 @@ export default defineComponent({
         sections(): object {
             const sections = {
                 checkBox: {
-                    class: "flex justify-center items-center py-4 bg-[#F2F2F2]",
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.checkBoxHeaderClass) : "flex justify-center items-center py-4 bg-[#F2F2F2]",
                     checkbox: true,
                 },
                 nameAndProfile: {
-                    class: "p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.nameAndProfileHeaderClass) : "p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
                     sortChange: this.handleNameOrderChange,
                     order: this.nameOrder,
-                    title: "Name",
+                    title: this.nameAndProfileTitle || "Name",
                     search: this.filters,
                     value: this.name,
                     placeholder: "Search name, email, country, discount",
                     filterChange: this.handleNameFilterChange,
                 },
                 accountType: {
-                    class: "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.accountTypeHeaderClass) : "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
                     sortChange: this.handleAccountOrderChange,
                     order: this.accountOrder,
-                    title: "Account",
+                    title: this.accountTypeTitle || "Account",
                     select: this.filters,
                     handleShow: this.handleShowAccountOptions,
                     selectedItem: this.account,
                     optionsVisible: this.showAccountOptions,
                 },
                 companyName: {
-                    class: "p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.companyNameHeaderClass) : "p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
                     sortChange: this.handleCompanyOrderChange,
                     order: this.companyOrder,
-                    title: "Company",
+                    title: this.companyNameTitle || "Company",
                     search: this.filters,
                     value: this.company,
                     placeholder: "Search company",
                     filterChange: this.handleCompanyFilterChange,
                 },
                 registerDate: {
-                    class: "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.registerDateHeaderClass) : "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
                     sortChange: this.handleRegisteredOrderChange,
                     order: this.registeredOrder,
-                    title: "Registered",
+                    title: this.registerDateTitle || "Registered",
                     datePicker: this.filters,
                     range: this.registered,
                     datePickerVisible: this.showRegisteredRange,
                     handleShow: this.handleShowRegistered,
                 },
                 spentAmount: {
-                    class: "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.spentAmountHeaderClass) : "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
                     sortChange: this.handleSpentOrderChange,
                     order: this.spentOrder,
-                    title: "Spent",
+                    title: this.spentAmountTitle || "Spent",
                     filterButton: this.filters,
                     rangeValue: this.spentValue,
                     rangeVisible: this.showSpentRange,
                     textGrayCondition: this.spentValue === 'Filter',
                     trackingWidestCondition: this.spentValue !== 'Filter',
                     handleShow: this.handleShowSpentRange,
-                    customClasses: "justify-between w-full",
+                    customClasses: this.spentAmountInnerClass || "justify-center w-full",
                 },
                 ordersCount: {
-                    class: "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.ordersCountHeaderClass) : "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
                     sortChange: this.handleOrdersCountOrderChange,
                     order: this.ordersCountOrder,
-                    title: "Orders count",
+                    title: this.ordersCountTitle || "Orders count",
                     filterButton: this.filters,
                     rangeValue: this.ordersCount,
                     rangeVisible: this.showOrdersRange,
                     textGrayCondition: !this.ordersCount,
                     trackingWidestCondition: false,
                     handleShow: this.handleShowOrdersRange,
-                    customClasses: "justify-between w-full",
+                    customClasses: this.ordersCountInnerClass || "justify-center w-full",
                 },
                 orderId: {
-                    class: 'p-4 bg-[#F2F2F2] flex flex-col gap-4',
-                    title: 'Order #ID',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.orderIdHeaderClass) : 'p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: this.orderIdTitle || 'Order #ID',
                     order: this.orderIdOrder,
                     sortChange: this.handleOrderIdOrderChange,
                     search: this.filters,
@@ -401,8 +458,8 @@ export default defineComponent({
                     filterChange: this.handleOrderIdFilterChange,
                 },
                 orderType: {
-                    class: 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
-                    title: 'Order Type',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.orderTypeHeaderClass) : 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: this.orderTypeTitle || 'Order Type',
                     select: this.filters,
                     order: this.orderTypeOrder,
                     handleShow: this.handleShowOrderTypeOptions,
@@ -411,8 +468,8 @@ export default defineComponent({
                     sortChange: this.handleOrderTypeOrderChange,
                 },
                 orderDate: {
-                    class: 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
-                    title: 'Order Date',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.orderDateHeaderClass) : 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: this.orderDateTitle || 'Order Date',
                     datePicker: this.filters,
                     range: this.orderDateRange,
                     order: this.orderDateOrder,
@@ -421,8 +478,8 @@ export default defineComponent({
                     sortChange: this.handleOrderDateOrderChange,
                 },
                 orderStatus: {
-                    class: 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
-                    title: 'Order Status',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.orderStatusHeaderClass) : 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: this.orderStatusTitle || 'Order Status',
                     select: this.filters,
                     order: this.orderStatusOrder,
                     handleShow: this.handleShowOrderStatusOptions,
@@ -431,8 +488,8 @@ export default defineComponent({
                     sortChange: this.handleOrderStatusOrderChange,
                 },
                 orderTotal: {
-                    class: 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
-                    title: 'Total',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.orderTotalHeaderClass) : 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: this.orderTotalTitle || 'Total',
                     order: this.orderTotalOrder,
                     sortChange: this.handleOrderTotalOrderChange,
                     filterButton: this.filters,
@@ -441,37 +498,47 @@ export default defineComponent({
                     textGrayCondition: this.orderTotalValue === 'Filter',
                     trackingWidestCondition: this.orderTotalValue[0] !== 'Filter',
                     handleShow: this.handleShowOrderTotalRange,
-                    customClasses: 'justify-center gap-2 w-[120px]',
+                    customClasses: this.orderTotalInnerClass || 'justify-center gap-2 w-[120px]',
                 },
                 invoiceId: {
-                    class: 'px-2 py-4 bg-[#F2F2F2]',
-                    title: 'Invoice #ID',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.invoiceIdHeaderClass) : 'px-2 py-4 bg-[#F2F2F2]',
+                    title: this.invoiceIdTitle || 'Invoice #ID',
                     order: this.invoiceIdOrder,
                     sortChange: this.handleInvoiceIdOrderChange,
                 },
                 orderAmount: {
-                    class: 'px-2 py-4 bg-[#F2F2F2]',
-                    title: 'Amount',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.orderAmountHeaderClass) : 'px-2 py-4 bg-[#F2F2F2]',
+                    title: this.orderAmountTitle || 'Amount',
                     order: this.orderAmountOrder,
                     sortChange: this.handleOrderAmountOrderChange,
                 },
                 txType: {
-                    class: 'px-2 py-4 bg-[#F2F2F2]',
-                    title: 'Type',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.txTypeHeaderClass) : 'px-2 py-4 bg-[#F2F2F2]',
+                    title: this.txTypeTitle || 'Type',
                     order: this.txTypeOrder,
                     sortChange: this.handleTxTypeOrderChange,
                 },
                 txDate: {
-                    class: 'px-2 py-4 bg-[#F2F2F2]',
-                    title: 'Date',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.txDateHeaderClass) : 'px-2 py-4 bg-[#F2F2F2]',
+                    title: this.txDateTitle || 'Date',
                     order: this.txDateOrder,
                     sortChange: this.handleTxDateOrderChange,
                 },
                 txStatus: {
-                    class: 'px-2 py-4 bg-[#F2F2F2]',
-                    title: 'Status',
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.txStatusHeaderClass) : 'px-2 py-4 bg-[#F2F2F2]',
+                    title: this.txStatusTitle || 'Status',
                     order: this.txStatusOrder,
                     sortChange: this.handleTxStatusOrderChange,
+                },
+                paymentStatus: {
+                    class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.paymentStatusHeaderClass) : 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: this.paymentStatusTitle || 'Payment',
+                    order: this.paymentStatusOrder,
+                    sortChange: this.handlePaymentStatusOrderChange,
+                    select: this.filters,
+                    handleShow: this.handleShowPaymentStatusOptions,
+                    selectedItem: this.paymentStatus,
+                    optionsVisible: this.showPaymentStatusOptions,
                 },
             };
             return sections;
@@ -524,9 +591,15 @@ export default defineComponent({
             if (this.orderDateColWidth) this.colsWidths.orderDate = this.orderDateColWidth;
             if (this.orderStatusColWidth) this.colsWidths.orderStatus = this.orderStatusColWidth;
             if (this.orderTotalColWidth) this.colsWidths.orderTotal = this.orderTotalColWidth;
+            if (this.invoiceIdColWidth) this.colsWidths.invoiceId = this.invoiceIdColWidth;
+            if (this.orderAmountColWidth) this.colsWidths.orderAmount = this.orderAmountColWidth;
+            if (this.txTypeColWidth) this.colsWidths.txType = this.txTypeColWidth;
+            if (this.txDateColWidth) this.colsWidths.txDate = this.txDateColWidth;
+            if (this.txStatusColWidth) this.colsWidths.txStatus = this.txStatusColWidth;
+            if (this.paymentStatusColWidth) this.colsWidths.paymentStatus = this.paymentStatusColWidth;
             if (this.actionsHeaderColWidth) this.colsWidths.actionsHeader = this.actionsHeaderColWidth;
 
-            switch(this.actionsMenuType) {
+            switch (this.actionsMenuType) {
                 case 'customer-orders':
                     this.colsWidths.actionsHeader = '224px';
                     break;
@@ -534,7 +607,10 @@ export default defineComponent({
                     this.colsWidths.orderId = '191px';
                     this.colsWidths.actionsHeader = 'minmax(196px,1fr)';
                     break;
-                default: 
+                case 'orders-list':
+                    this.colsWidths.actionsHeader = '85px';
+                    break;
+                default:
                     break;
             };
         },
@@ -549,6 +625,7 @@ export default defineComponent({
             this.showOrderDateRange = false;
             this.showOrderStatusOptions = false;
             this.showOrderTotalRange = false;
+            this.showPaymentStatusOptions = false;
             this.isScrolling = true;
             clearTimeout(this.scrollTimeout);
             this.scrollTimeout = setTimeout(() => {
@@ -611,6 +688,13 @@ export default defineComponent({
             this.orderTotalDropdownLeft = rect.right;
             this.orderTotalDropdownTop = rect.bottom + window.scrollY + 8;
         },
+        handleShowPaymentStatusOptions(event: MouseEvent) {
+            this.showPaymentStatusOptions = !this.showPaymentStatusOptions;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.paymentStatusDropdownLeft = rect.right;
+            this.paymentStatusDropdownTop = rect.bottom + window.scrollY + 8;
+        },
 
         // datepicker methods
         formattedDate(date: Date) {
@@ -666,6 +750,9 @@ export default defineComponent({
         handleTxStatusOrderChange() {
             this.$emit('txStatusOrderChange', this.txStatusOrder);
         },
+        handlePaymentStatusOrderChange() {
+            this.$emit('paymentStatusOrderChange', this.paymentStatusOrder);
+        },
 
         // filter methods
         handleNameFilterChange(event: InputEvent) {
@@ -710,6 +797,10 @@ export default defineComponent({
             this.showOrderTotalRange = false;
             this.$emit('orderTotalFilterChange', buffer);
             this.calculateOrderTotalValue(buffer);
+        },
+        handlePaymentStatusFilterChange(event: MouseEvent, item: any) {
+            this.showPaymentStatusOptions = false;
+            this.$emit('paymentStatusFilterChange', event, item);
         },
 
         // filter button text formatters

@@ -3,6 +3,7 @@
         :actionsHeader="true" :name="name" :account="account" :company="company" :registered="registered" :spent="spent"
         :ordersCount="ordersCount" :nameOrder="nameOrder" :accountOrder="accountOrder" :companyOrder="companyOrder"
         :registeredOrder="registeredOrder" :spentOrder="spentOrder" :ordersCountOrder="ordersCountOrder" :nameAndProfileClass="'w-[calc(100%-60px)]'"
+        :showAvatar="true"
         @nameOrderChange="
             nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0);
             handleSortChange(emits, 'email', nameOrder);" 

@@ -10,7 +10,7 @@
             <TextBox :text="'21 September 2023, 18:25'" :loading="loading" />
         </div>
         <NameAndProfile :item="item.customer" :index="index" :loading="loading" :showAvatar="false" :showFlag="true"
-            :showLock="true" class="py-3" :class="[loading ? 'px-[17px]' : 'px-4']"/>
+            :showLock="true" class="py-3" :class="[loading ? 'px-[17px]' : 'px-4']" :customClass="'w-full'"/>
         <div class="py-5" :class="[loading ? 'px-4' : 'px-6']">
             <PaymentStatus :status="item.payment" :loading="loading" />
         </div>

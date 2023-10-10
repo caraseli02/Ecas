@@ -15,7 +15,7 @@
       </template>
     </div>
     <div :class="customClass">
-      <SkeletonLoader v-if="loading" class="w-2/3 h-5 mb-2" />
+      <SkeletonLoader v-if="loading" class="w-full h-5 mb-2" />
       <div v-else class="flex items-center gap-3 mb-1">
         <div v-if="!showAvatar && showFlag" class="flex items-center gap-3 cursor-default">
           <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
