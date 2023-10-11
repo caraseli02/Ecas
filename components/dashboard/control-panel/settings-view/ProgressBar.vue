@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="relative translate-y-6 grid grid-cols-2 gap-1 z-0">
+    <div class="relative grid grid-cols-2 gap-1 z-0">
       <div class="relative h-2 bg-[#F2F2F2] rounded-lg"></div>
       <div class="grid grid-cols-3 gap-1">
         <div class="relative h-2 bg-[#F2F2F2] rounded-lg"></div>
@@ -8,7 +8,7 @@
         <div class="relative h-2 bg-[#F2F2F2] rounded-lg"></div>
       </div>
     </div>
-    <div class="relative h-8 grid grid-cols-2 gap-1">
+    <div class="relative h-2 grid grid-cols-2 gap-1 -translate-y-6">
       <div ref="chart1"></div>
       <div class="grid grid-cols-3 gap-1">
         <div ref="chart2"></div>
