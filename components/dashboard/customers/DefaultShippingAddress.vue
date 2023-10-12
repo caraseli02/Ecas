@@ -74,8 +74,10 @@ const { $api } = useNuxtApp();
 const fetchShippingInformation = async () => {
     error.value = false;
     isLoading.value = true;
-
-    const response = (await $api.customerProfile.fetchCustomerShippingInformation(props.id || '')) as {
+    if (!props.id) {
+        return;
+    }
+    const response = (await $api.customerProfile.fetchCustomerShippingInformation(props.id)) as {
         status: string;
         data: ShippingAddressInterface[];
     };

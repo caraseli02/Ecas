@@ -44,7 +44,7 @@
                         @click="handleShowTypeOptions"
                     >
                         <span class="text-sm flex-shrink-0 mr-1">
-                            {{ type || 'Stock Order' }}
+                            {{ type || 'Select' }}
                         </span>
                         <ChevronDownIcon
                             class="w-5 h-5 text-gray-300 flex-shrink-0 rounded-full"
@@ -81,7 +81,7 @@
                         <CalendarIcon class="w-5 h-5 text-gray-300 flex-shrink-0" />
                     </button>
                 </div>
-                <div class="relative px-2 py-4 bg-[#F2F2F2] rounded-l-lg h-[104px]">
+                <div class="relative px-2 py-4 bg-[#F2F2F2] h-[104px]">
                     <div class="mb-4">
                         <button
                             class="relative flex items-center h-5"
@@ -186,14 +186,23 @@
                     </div>
                 </div>
             </div>
-            <DashboardOrdersListItem
-                v-for="(item, index) in items"
-                :key="index"
-                :item="item"
-                :index="index"
-                :is-scrolling="isScrolling"
-                :loading="loading"
-            />
+            <div
+                v-if="items.length === 0 || error"
+                class="flex flex-col items-center justify-center flex-1 my-20 lg:my-[200px] xl:my-[320px]"
+            >
+                <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+                <div class="text-sm font-medium leading-[1.43] text-gray-100">No data available</div>
+            </div>
+            <template v-else>
+                <DashboardOrdersListItem
+                    v-for="(item, index) in items"
+                    :key="index"
+                    :item="item"
+                    :index="index"
+                    :is-scrolling="isScrolling"
+                    :loading="loading"
+                />
+            </template>
         </div>
     </div>
     <Teleport to="body">
@@ -489,6 +498,7 @@ import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import { DashboardOrderItem } from '~~/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import SortUpIcon from '@/assets/icons/dashboard/sort-up.svg';
 import SortDownIcon from '@/assets/icons/dashboard/sort-down.svg';
 import { DatePicker } from 'v-calendar';
@@ -503,6 +513,10 @@ defineProps({
     loading: {
         type: Boolean,
         default: true,
+    },
+    error: {
+        type: Boolean,
+        default: false,
     },
 });
 

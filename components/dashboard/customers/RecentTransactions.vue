@@ -99,8 +99,10 @@ const recentTransactionArray: OrderInfo[] = [];
 const fetchRecentTransactions = async () => {
     error.value = false;
     isLoading.value = true;
-
-    const response = (await $api.customerProfile.fetchCustomerRecentTransactions(props.id || '')) as {
+    if (!props.id) {
+        return;
+    }
+    const response = (await $api.customerProfile.fetchCustomerRecentTransactions(props.id)) as {
         status: string;
         data: OrderInterface[];
     };
