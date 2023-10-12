@@ -2,17 +2,17 @@
     <div class="bg-blue py-3 shadow-m md:py-2">
         <div class="container">
             <div class="relative">
-                <div class="flex items-center justify-between gap-4 lg:gap-10 xl:gap-16">
+                <div class="flex items-center justify-between gap-4 lg:gap-[35px] xl:gap-[78px]" :class="[isScrolled ? 'md:gap-0' : '']">
                     <div class="flex items-center">
-                        <div class="flex items-center md:mr-4 lg:mr-[30px]">
+                        <div class="flex items-center" :class="[isScrolled ? 'md:mr-[29px] lg:mr-0' : 'md:mr-4 lg:mr-6']">
                             <button class="flex items-center mr-6 md:mr-0" @click="toggleNavModal">
-                                <BurgerIcon class="w-[26px] h-[26px] md:w-7 md:h-7" />
+                                <BurgerIcon class="w-6 h-6" />
                                 <span v-if="!isScrolled" class="hidden leading-normal font-medium text-white ml-6 md:inline-block">
                                     Products
                                 </span>
                             </button>
-                            <NuxtLink to="/" class="flex" :class="[isScrolled ? 'md:ml-5 lg:ml-[30px]' : 'md:hidden']">
-                                <Logo class="w-[102px] grayscale brightness-0 invert lg:w-[121px]" />
+                            <NuxtLink to="/" class="flex" :class="[isScrolled ? 'md:ml-6 lg:ml-6' : 'md:hidden']">
+                                <Logo class="w-[102px] grayscale brightness-0 invert md:w-[122px]" />
                             </NuxtLink>
                         </div>
                         <ul v-if="!isScrolled" class="hidden items-center gap-4 md:flex lg:gap-6">
@@ -23,20 +23,27 @@
                             </li>
                         </ul>
                     </div>
-                    <LayoutHeaderSearch v-if="isScrolled" :show-results="true" :is-scrolled="isScrolled" class="flex-1" />
-                    <div class="flex items-center gap-4 md:gap-6 xl:gap-[25px]">
-                        <button class="flex md:hidden" @click="showMobileSearch = true">
-                            <SearchIcon class="w-[26px] h-[26px] text-white md:w-[30px] md:h-[30px]" />
-                        </button>
-                        <button class="flex md:hidden" @click="showAccountModal = true">
-                            <UserIcon class="w-[26px] h-[26px] text-white md:w-[30px] md:h-[30px]" />
-                        </button>
-                        <button class="hidden items-center xl:flex" @click="showAccountModal = true">
-                            <UserIcon class="w-[26px] h-[26px] text-white md:w-7 md:h-7 xl:mr-2" />
-                            <span class="hidden text-sm font-medium text-white lg:text-base xl:inline-block"> My Account </span>
+                    <LayoutHeaderSearch
+                        v-if="isScrolled"
+                        :show-results="true"
+                        :isVisible="showMobileSearch"
+                        :is-scrolled="isScrolled"
+                        class="flex-1 max-md:hidden lg:block"
+                        :class="[showMobileSearch ? '' : 'md:hidden']"
+                        @blur="showMobileSearch = false"
+                    />
+                    <div class="flex items-center gap-4 lg:ml-0 lg:gap-6 xl:gap-[25px]" :class="[isScrolled ? 'md:ml-4' : 'md:gap-6']">
+                        <button
+                            class="items-center"
+                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex lg:hidden') : 'md:hidden']"
+                            @click="showMobileSearch = true"
+                        >
+                            <SearchIcon class="w-6 h-6 text-white md:w-6 md:h-6 md:mr-2" />
+                            <span class="hidden leading-normal font-medium text-white md:inline-block"> Search </span>
                         </button>
                         <button
                             class="flex items-center"
+                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden xl:flex' : 'lg:hidden xl:flex') : '']"
                             @click="
                                 favoritesCartModal = {
                                     show: true,
@@ -44,8 +51,19 @@
                                 }
                             "
                         >
-                            <HeartIcon class="w-[26px] h-[26px] text-white md:w-7 md:h-7 md:mr-2" />
+                            <HeartIcon class="w-6 h-6 text-white md:mr-2" />
                             <span class="hidden leading-normal font-medium text-white md:inline-block"> Favorites </span>
+                        </button>
+                        <button class="flex items-center md:hidden" @click="showAccountModal = true">
+                            <UserIcon class="w-6 h-6 text-white md:w-6 md:h-6" />
+                        </button>
+                        <button
+                            class="hidden items-center xl:flex"
+                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden' : 'md:flex') : '']"
+                            @click="showAccountModal = true"
+                        >
+                            <UserIcon class="w-6 h-6 text-white mr-2 md:w-6 md:h-6" />
+                            <span class="hidden font-medium text-white md:inline-block lg:text-base"> My Account </span>
                         </button>
                         <button
                             class="flex items-center text-left"
@@ -56,41 +74,35 @@
                                 }
                             "
                         >
-                            <CartIcon class="w-[26px] h-[26px] text-white md:w-7 md:h-7 md:mr-2" />
+                            <CartIcon class="w-6 h-6 text-white md:mr-2" />
                             <div class="hidden flex-col text-white flex-shrink-0 md:flex">
-                                <div class="text-xs font-Inter leading-[1.17] mb-0.5">0 items</div>
-                                <div class="leading-none font-Inter font-medium mb-0.5">0,00 RON</div>
+                                <div class="text-xs leading-[1.17] mb-px">15 items</div>
+                                <div class="leading-[1.25] font-medium mb-px">0,00 RON</div>
                                 <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
                             </div>
                         </button>
                     </div>
                 </div>
                 <Transition name="fade">
-                    <div
-                        v-if="showMobileSearch"
-                        v-click-outside="() => (showMobileSearch = false)"
-                        class="absolute z-50 top-1/2 -translate-y-1/2 left-0 w-full md:hidden"
-                    >
-                        <div class="flex items-center border border-gray-100 bg-white rounded px-4">
-                            <label class="relative z-10 flex-1 flex items-center">
-                                <SearchIcon class="flex-shrink-0 w-[18px] h-[18px] text-gray-100" />
+                    <div v-if="showMobileSearch && isMobile" class="absolute z-50 top-1/2 -translate-y-1/2 left-0 w-full md:hidden">
+                        <div class="flex items-center border border-border bg-white rounded-lg px-3">
+                            <label class="relative z-10 flex-1 flex items-center justify-between">
                                 <form action="" @submit.prevent="showMobileSearch = false">
                                     <input
                                         ref="searchDOM"
                                         v-model="searchVal"
                                         type="search"
                                         placeholder="Search products"
-                                        class="bg-transparent flex-1 w-full px-2 py-2.5 text-sm leading-tight placeholder:text-gray-100 focus:outline-none"
+                                        class="bg-transparent flex-1 w-full py-[7px] text-sm leading-[1.71] placeholder:text-gray-100 focus:outline-none"
                                         @keypress.enter="
                                             $router.push('/search');
                                             searchVal = '';
                                         "
+                                        @blur="showMobileSearch = false"
                                     />
                                 </form>
+                                <SearchIcon class="flex-shrink-0 w-5 h-5 text-gray-100" />
                             </label>
-                            <button class="flex" @click="showMobileSearch = false">
-                                <XIcon class="flex-shrink-0 w-[18px] h-[18px] text-gray-100" />
-                            </button>
                         </div>
                     </div>
                 </Transition>
@@ -137,8 +149,8 @@
 import Logo from '@/assets/media/logo.svg';
 import BurgerIcon from '@/assets/icons/header/burger.svg';
 import SearchIcon from '@/assets/icons/search.svg';
-import UserIcon from '@/assets/icons/user.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
+import UserIcon from '@/assets/icons/user.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import XIcon from '@/assets/icons/x.svg';
 import { showNavModal } from '~~/config/modal/nav';
@@ -152,6 +164,8 @@ defineProps({
 });
 
 const route = useRoute();
+
+const isMobile = ref(false);
 
 const signinQuery = computed(() => route.query.signin);
 
@@ -211,6 +225,7 @@ watch(signinQuery, (newVal) => {
 });
 
 onMounted(() => {
+    isMobile.value = window.innerWidth <= 767;
     if (signinQuery.value === 'true') {
         showAccountModal.value = true;
     }
