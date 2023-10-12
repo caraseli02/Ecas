@@ -148,7 +148,6 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {},
 
     totalItems.value = data.data.total_items;
     if (paginatedUsers) {
-
         listItems.value = paginatedUsers.map((user) => ({
             avatar: Avatar,
             name: `${user.contactDetails?.firstName} ${user.contactDetails?.lastName}`,
@@ -158,8 +157,8 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {},
             registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
             spent: user.spent || 0,
             ordersCount: user.ordersCount || 0,
-            id : user._id,
-            firebaseId : user.firebaseId,
+            id: user._id,
+            firebaseId: user.firebaseId,
         }));
     }
 };

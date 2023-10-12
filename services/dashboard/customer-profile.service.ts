@@ -1,7 +1,7 @@
-import {CustomersProfileInformation} from '~/model/dashboard/customer-information/customer-information';
-import {useAuthStore} from '~/store/authStore';
+import { CustomersProfileInformation } from '~/model/dashboard/customer-information/customer-information';
+import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import {OrderInterface} from '~/types';
+import { OrderInterface } from '~/types';
 
 class CustomerProfileService extends HttpFactory {
     private RESOURCE = '/user';
@@ -11,7 +11,7 @@ class CustomerProfileService extends HttpFactory {
         const authStore = useAuthStore();
         const token = authStore.getToken;
         return await this.call<CustomersProfileInformation>('GET', `${this.MAIN_RESOURCE}/${userID}/customer-information`, null, {
-            headers: {Authorization: `Bearer ${token}`},
+            headers: { Authorization: `Bearer ${token}` },
         });
     }
 
@@ -19,7 +19,7 @@ class CustomerProfileService extends HttpFactory {
         const authStore = useAuthStore();
         const token = authStore.getToken;
         return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/last-order`, null, {
-            headers: {Authorization: `Bearer ${token}`},
+            headers: { Authorization: `Bearer ${token}` },
         });
     }
 
@@ -27,7 +27,7 @@ class CustomerProfileService extends HttpFactory {
         const authStore = useAuthStore();
         const token = authStore.getToken;
         return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/total-spent`, null, {
-            headers: {Authorization: `Bearer ${token}`},
+            headers: { Authorization: `Bearer ${token}` },
         });
     }
 
@@ -35,7 +35,7 @@ class CustomerProfileService extends HttpFactory {
         const authStore = useAuthStore();
         const token = authStore.getToken;
         return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/average-order`, null, {
-            headers: {Authorization: `Bearer ${token}`},
+            headers: { Authorization: `Bearer ${token}` },
         });
     }
 
@@ -43,7 +43,7 @@ class CustomerProfileService extends HttpFactory {
         const authStore = useAuthStore();
         const token = authStore.getToken;
         return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/abandoned-checkout`, null, {
-            headers: {Authorization: `Bearer ${token}`},
+            headers: { Authorization: `Bearer ${token}` },
         });
     }
 
@@ -51,7 +51,7 @@ class CustomerProfileService extends HttpFactory {
         const authStore = useAuthStore();
         const token = authStore.getToken;
         return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/shipping-information`, null, {
-            headers: {Authorization: `Bearer ${token}`},
+            headers: { Authorization: `Bearer ${token}` },
         });
     }
 
@@ -59,7 +59,7 @@ class CustomerProfileService extends HttpFactory {
         const authStore = useAuthStore();
         const token = authStore.getToken;
         return await this.call<OrderInterface[]>('GET', `${this.MAIN_RESOURCE}/${userID}/recent-transactions`, null, {
-            headers: {Authorization: `Bearer ${token}`},
+            headers: { Authorization: `Bearer ${token}` },
         });
     }
 }
