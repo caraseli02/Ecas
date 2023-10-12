@@ -5,28 +5,27 @@ export interface DashboardNotification {
     read: boolean;
 }
 
-export interface Notification  {
+export interface Notification {
     id: string;
     title: string;
     description: string;
     seen: boolean;
     details: NotificationDetailsInterface;
-    date : string;
+    date: string;
 }
 
 export interface NotificationDetailsInterface {
-    entityId? : string,
-    entityName? : string,
-    _id? : string
+    entityId?: string;
+    entityName?: string;
+    _id?: string;
 }
 
-
-export enum NotificationsType { 
-    PasswordChange =  "Password change",
-    PasswordReset = "Reset password",
-    News = "News",
-    Other = "Others",
-    Removed = "Removed",
-    Complete = "Completed",
-    Pending = "Pending",
+export enum NotificationsType {
+    PasswordChange = 'Password change',
+    PasswordReset = 'Reset password',
+    News = 'News',
+    Other = 'Others',
+    Removed = 'Removed',
+    Complete = 'Completed',
+    Pending = 'Pending',
 }
