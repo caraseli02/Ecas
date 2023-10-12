@@ -45,11 +45,11 @@ export enum AlertAndNotificationLabelsEnum {
     hotDeals = 'HOT Deals',
     outOfStock = 'Out of stock',
     priceChange = 'Prince Change',
-    shippingUpdates = 'Shipping Updates'
+    shippingUpdates = 'Shipping Updates',
 }
 
 export enum MarketingPreferencesEnum {
     cookiesPolicy = 'Cookies Policy Consent',
     newsletter = 'Subscribed to Newsletter',
-    eMailMarketing = 'E-mail marketing consent'
+    eMailMarketing = 'E-mail marketing consent',
 }

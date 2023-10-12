@@ -26,7 +26,7 @@ module.exports = {
                 yellow: '#FFC900',
             },
             animation: {
-                'ping-once': 'ping 1s cubic-bezier(0, 0, 0.2, 1) 1'
+                'ping-once': 'ping 1s cubic-bezier(0, 0, 0.2, 1) 1',
             },
             fontFamily: {
                 Inter: ['Inter', 'sans-serif'],

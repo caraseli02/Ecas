@@ -52,6 +52,7 @@ import ActionsMenu from '~/components/shared/tables/micro/row-items/ActionsMenu.
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 import TextBox from '~/components/shared/tables/micro/row-items/TextBox.vue';
 
+const {$api} = useNuxtApp();
 const props = defineProps({
     item: {
         type: Object as PropType<DashboardCustomerTableItem>,
@@ -75,7 +76,6 @@ const showOptions = ref(false);
 const showDeactivatingModal = ref(false);
 const optionsDropdownLeft = ref(0);
 const optionsDropdownTop = ref(0);
-
 const handleShowOptions = (event: MouseEvent) => {
     showOptions.value = !showOptions.value;
     const target = event.currentTarget as HTMLElement;
@@ -83,11 +83,19 @@ const handleShowOptions = (event: MouseEvent) => {
     optionsDropdownLeft.value = rect.left + 28;
     optionsDropdownTop.value = rect.top + window.scrollY + 36;
 };
-const showCustomerInformation = (item: any) => {
-}
+
 const scrolling = computed(() => {
     return props.isScrolling;
 });
+
+const deleteAccount = async (id: string) => {
+  const response = await $api.userDashboard.deleteUser(id)
+  if (response.status !== 'success') {
+    console.log(response.status);
+    return;
+  }
+}
+
 
 watch(scrolling, (val) => {
     if (val) {
