@@ -1,4 +1,4 @@
-export enum FilterLabelsEnum {
+export enum CustomersListFilterLabelsEnum {
     accountType = 'Account type',
     companyName = 'Company',
     startDate = 'Start date',
@@ -16,4 +16,15 @@ export enum FilterLabelsEnum {
     ordersCountTo = 'Orders Count To',
 
     combinedName = 'Name',
+}
+
+export enum OrdersFilterLabelsEnum {
+    shortId = 'ID',
+    type = 'Order type',
+    status = 'Order status',
+    startDate = 'Start date',
+    endDate = 'End date',
+
+    totalFrom = 'Total From',
+    totalTo = 'Total To',
 }

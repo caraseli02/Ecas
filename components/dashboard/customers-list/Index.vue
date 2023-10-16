@@ -32,7 +32,7 @@
             <div class="flex flex-wrap gap-4">
                 <div v-for="(filter, index) in activeFilters" :key="index" class="flex items-center p-1 bg-[#F2F2F2] rounded-md">
                     <span class="text-sm leading-[1.43] text-gray-300 mr-2">
-                        {{ `${FilterLabelsEnum[filter.filter]}: ${filter.value}` }}
+                        {{ `${CustomersListFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                     </span>
                     <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="removeFilter(index)">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
@@ -95,15 +95,16 @@ import FilterIcon from '@/assets/icons/dashboard/filter.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import Avatar from '@/assets/icons/dashboard/avatar.png';
 import { DashboardCustomerTableItem, getAccountTypeById } from '~~/types';
-import { FilterLabelsEnum } from '~/types/dashboard/filter';
+import { CustomersListFilterLabelsEnum } from '~/types/dashboard/filter';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import { useNuxtApp } from '#app';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
+import USAFlag from '@/assets/icons/flags/usa.svg';
 
 const { $api } = useNuxtApp();
 
-const activeFilters = ref([] as FilterInterface);
+const activeFilters = ref([] as FilterInterface[]);
 const activeSort = ref({} as SortInterface);
 
 const clearFilters = async () => {
@@ -111,7 +112,7 @@ const clearFilters = async () => {
     await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 };
 
-const removeFilter = async (index) => {
+const removeFilter = async (index: number) => {
     activeFilters.value.splice(index, 1);
     await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 };
@@ -148,18 +149,18 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {},
 
     totalItems.value = data.data.total_items;
     if (paginatedUsers) {
-
         listItems.value = paginatedUsers.map((user) => ({
             avatar: Avatar,
             name: `${user.contactDetails?.firstName} ${user.contactDetails?.lastName}`,
             email: user.profileDetails.email,
+            flag: USAFlag,
             account: getAccountTypeById(user.accountType) || '-',
             company: user.companyDetails?.name || '-',
             registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
             spent: user.spent || 0,
             ordersCount: user.ordersCount || 0,
-            id : user._id,
-            firebaseId : user.firebaseId,
+            id: user._id,
+            firebaseId: user.firebaseId,
         }));
     }
 };
