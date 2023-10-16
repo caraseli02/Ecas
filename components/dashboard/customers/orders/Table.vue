@@ -1,53 +1,80 @@
 <template>
-    <CustomTable :items="items" :loading="loading" :customItem="CustomItem" :filters="true" :fields="tableFields" :actionsMenuType="'customer-orders'"
-        :actionsHeader="true" 
-        :orderIdOrder="idOrder" :orderTypeOrder="typeOrder" :orderDateOrder="dateOrder" :orderStatusOrder="statusOrder" :orderTotalOrder="totalOrder"
-        :orderId="id" :orderType="type" :orderDate="date" :orderStatus="status" :orderTotal="total"
-        :orderStatusKey="'status'"
+    <CustomTable
+        :items="items"
+        :loading="loading"
+        :custom-item="CustomItem"
+        :filters="true"
+        :fields="tableFields"
+        :actions-menu-type="'customer-orders'"
+        :actions-header="true"
+        :order-id-order="idOrder"
+        :order-type-order="typeOrder"
+        :order-date-order="dateOrder"
+        :order-status-order="statusOrder"
+        :order-total-order="totalOrder"
+        :order-id="id"
+        :order-type="type"
+        :order-date="date"
+        :order-status="status"
+        :order-total="total"
+        :order-status-key="'status'"
         @orderIdOrderChange="
             idOrder === 0 ? (idOrder = 1) : (idOrder = 0);
-            handleSortChange(emits, 'id', idOrder);"
-        @orderTypeOrderChange="    
+            handleSortChange(emits, 'shortId', idOrder);
+        "
+        @orderTypeOrderChange="
             typeOrder === 0 ? (typeOrder = 1) : (typeOrder = 0);
-            handleSortChange(emits, 'type', typeOrder);"
+            handleSortChange(emits, 'type', typeOrder);
+        "
         @orderDateOrderChange="
             dateOrder === 0 ? (dateOrder = 1) : (dateOrder = 0);
-            handleSortChange(emits, 'date', dateOrder);"
+            handleSortChange(emits, 'createdAt', dateOrder);
+        "
         @orderStatusOrderChange="
             statusOrder === 0 ? (statusOrder = 1) : (statusOrder = 0);
-            handleSortChange(emits, 'status', statusOrder);"
+            handleSortChange(emits, 'status', statusOrder);
+        "
         @orderTotalOrderChange="
             totalOrder === 0 ? (totalOrder = 1) : (totalOrder = 0);
-            handleSortChange(emits, 'total', totalOrder);"
-        @orderIdFilterChange="   
-            handleFilterChange(activeFilters, emits, 'id', $event);"
+            handleSortChange(emits, 'total', totalOrder);
+        "
+        @orderIdFilterChange="handleFilterChange(activeFilters, emits, 'shortId', $event)"
         @orderTypeFilterChange="(event: MouseEvent, item) => {
             type = item.label;
+            handleFilterChange(activeFilters, emits, 'type', item.key, true);
         }"
-        @orderDateFilterChange="(buffer) => {
-            date = buffer;
-        }"
+        @orderDateFilterChange="
+            (buffer) => {
+                date = buffer;
+                handleFilterChange(activeFilters, emits, 'startDate', formattedDate(buffer.start), true);
+                handleFilterChange(activeFilters, emits, 'endDate', formattedDate(buffer.end), true);
+            }
+        "
         @orderStatusFilterChange="(event: MouseEvent, item) => {
             status = item.label;
-            handleFilterChange(activeFilters, emits, 'status', $event);
+            handleFilterChange(activeFilters, emits, 'status', status, true);
         }"
-        @orderTotalFilterChange="(buffer) => {   
-            total = buffer;
-        }"
+        @orderTotalFilterChange="
+            (buffer) => {
+                total = buffer;
+                handleFilterChange(activeFilters, emits, 'totalFrom', buffer[0], true);
+                handleFilterChange(activeFilters, emits, 'totalTo', buffer[1], true);
+            }
+        "
     />
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import { DashboardCustomerOrderItem } from '~~/types';
+import { DashboardOrderItem } from '~~/types';
 import { FilterInterface } from '~/model/dashboard/table/filters';
-import { handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
+import { formattedDate, handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
 import CustomTable from '~/components/shared/tables/CustomTable.vue';
 import CustomItem from '~/components/shared/tables/CustomItem.vue';
 
 defineProps({
     items: {
-        type: Array as PropType<DashboardCustomerOrderItem[]>,
+        type: Array as PropType<DashboardOrderItem[]>,
         required: true,
     },
     loading: {
@@ -60,13 +87,7 @@ const emits = defineEmits(['active-filters', 'active-sort']);
 
 const activeFilters: FilterInterface[] = [];
 
-const tableFields = [
-    'orderId',
-    'orderType',
-    'orderDate',
-    'orderStatus',
-    'orderTotal',
-];
+const tableFields = ['orderId', 'orderType', 'orderDate', 'orderStatus', 'orderTotal'];
 
 const id = ref('');
 const idOrder: number = ref(0);

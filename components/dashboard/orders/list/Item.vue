@@ -9,35 +9,54 @@
         <div class="text-sm leading-[1.43] truncate" :class="[loading ? 'px-3.5 py-[22px]' : 'px-5 py-6']">
             <TextBox :text="'21 September 2023, 18:25'" :loading="loading" />
         </div>
-        <NameAndProfile :item="item.customer" :index="index" :loading="loading" :showAvatar="false" :showFlag="true"
-            :showLock="true" class="py-3" :class="[loading ? 'px-[17px]' : 'px-4']" :customClass="'w-full'"/>
+        <NameAndProfile
+            :item="item.customer"
+            :index="index"
+            :loading="loading"
+            :show-avatar="false"
+            :show-flag="true"
+            :show-lock="true"
+            class="py-3"
+            :class="[loading ? 'px-[17px]' : 'px-4']"
+            :custom-class="'w-full'"
+        />
         <div class="py-5" :class="[loading ? 'px-4' : 'px-6']">
             <PaymentStatus :status="item.payment" :loading="loading" />
         </div>
         <div class="p-5" :class="[loading ? 'px-3' : '']">
-            <OrderStatus :status="item.fulfillment" :loading="loading" />
+            <OrderStatus :status="item.status" :loading="loading" />
         </div>
         <div class="text-sm font-medium" :class="[loading ? 'px-4 py-[22px]' : 'p-6 pr-4']">
             <TextBox :text="'$ 138,000.77'" :loading="loading" />
         </div>
         <div class="flex items-center justify-end gap-6 pr-4" :class="[loading ? 'px-4' : '']">
-            <ActionsMenu :loading="loading" :index="index" :threeDotButton="true" @showOptions="handleShowOptions" />
+            <ActionsMenu :loading="loading" :index="index" :three-dot-button="true" @showOptions="handleShowOptions" />
         </div>
     </div>
     <Teleport to="body">
         <Transition :name="index > 8 ? 'fade-full-neg' : 'fade-bottom'">
-            <ThreeDotMenu v-if="showOptions" v-click-outside="() => (showOptions = false)" :index="index"
-                :dropdownTop="optionsDropdownTop" :dropdownLeft="optionsDropdownLeft" :documentButton="true"
-                :documentText="'View Order'" :invoiceButton="true" :invoiceText="'View Invoice'"
-                @documentClicked="showOptions = false" @invoiceClicked="showOptions = false" />
+            <ThreeDotMenu
+                v-if="showOptions"
+                v-click-outside="() => (showOptions = false)"
+                :index="index"
+                :dropdown-top="optionsDropdownTop"
+                :dropdown-left="optionsDropdownLeft"
+                :document-button="true"
+                :document-text="'View Order'"
+                :invoice-button="true"
+                :invoice-text="'View Invoice'"
+                @documentClicked="showOptions = false"
+                @invoiceClicked="showOptions = false"
+            />
         </Transition>
         <Transition name="fade">
-            <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item"
-                @close="showDeactivatingModal = false" />
+            <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item" @close="showDeactivatingModal = false" />
         </Transition>
-        <div class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
+        <div
+            class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
             :class="[showDeactivatingModal ? 'backdrop-blur-[7.5px]' : 'backdrop-blur-0 opacity-0 pointer-events-none']"
-            @click="showDeactivatingModal = false" />
+            @click="showDeactivatingModal = false"
+        />
     </Teleport>
 </template>
 

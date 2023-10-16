@@ -1,52 +1,78 @@
 <template>
-    <CustomTable :items="items" :loading="loading" :fields="fields" :customItem="CustomItem" :filters="true" :actionsMenuType="actionsMenuType"
-        :actionsHeader="true" :name="name" :account="account" :company="company" :registered="registered" :spent="spent"
-        :ordersCount="ordersCount" :nameOrder="nameOrder" :accountOrder="accountOrder" :companyOrder="companyOrder"
-        :registeredOrder="registeredOrder" :spentOrder="spentOrder" :ordersCountOrder="ordersCountOrder" :nameAndProfileClass="'w-[calc(100%-60px)]'"
-        :showAvatar="true"
+    <CustomTable
+        :items="items"
+        :loading="loading"
+        :fields="fields"
+        :custom-item="CustomItem"
+        :filters="true"
+        :actions-menu-type="actionsMenuType"
+        :actions-header="true"
+        :name="name"
+        :account="account"
+        :company="company"
+        :registered="registered"
+        :spent="spent"
+        :orders-count="ordersCount"
+        :name-order="nameOrder"
+        :account-order="accountOrder"
+        :company-order="companyOrder"
+        :registered-order="registeredOrder"
+        :spent-order="spentOrder"
+        :orders-count-order="ordersCountOrder"
+        :name-and-profile-class="'w-[calc(100%-60px)]'"
+        :show-avatar="true"
         @nameOrderChange="
             nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0);
-            handleSortChange(emits, 'email', nameOrder);" 
+            handleSortChange(emits, 'email', nameOrder);
+        "
         @accountOrderChange="
             accountOrder === 0 ? (accountOrder = 1) : (accountOrder = 0);
-            handleSortChange(emits, 'accountType', accountOrder);" 
+            handleSortChange(emits, 'accountType', accountOrder);
+        "
         @companyOrderChange="
             companyOrder === 0 ? (companyOrder = 1) : (companyOrder = 0);
-            handleSortChange(emits, 'companyName', companyOrder);" 
+            handleSortChange(emits, 'companyName', companyOrder);
+        "
         @registeredOrderChange="
             registeredOrder === 0 ? (registeredOrder = 1) : (registeredOrder = 0);
-            handleSortChange(emits, 'createdAt', registeredOrder);" 
+            handleSortChange(emits, 'createdAt', registeredOrder);
+        "
         @spentOrderChange="
             spentOrder === 0 ? (spentOrder = 1) : (spentOrder = 0);
-            handleSortChange(emits, 'spent', spentOrder);" 
+            handleSortChange(emits, 'spent', spentOrder);
+        "
         @ordersCountOrderChange="
             ordersCountOrder === 0 ? (ordersCountOrder = 1) : (ordersCountOrder = 0);
-            handleSortChange(emits, 'ordersCount', ordersCountOrder);" 
-        @nameFilterChange="
-            handleFilterChange(activeFilters, emits, 'combinedName', $event)
+            handleSortChange(emits, 'ordersCount', ordersCountOrder);
         "
+        @nameFilterChange="handleFilterChange(activeFilters, emits, 'combinedName', $event)"
         @accountFilterChange="(event: MouseEvent, item) => {
             account = item.label;
             handleFilterChange(activeFilters, emits, 'accountType', item.value, true);
         }"
-        @companyFilterChange="
-            handleFilterChange(activeFilters, emits, 'companyName', $event)
+        @companyFilterChange="handleFilterChange(activeFilters, emits, 'companyName', $event)"
+        @dateFilterChange="
+            (buffer) => {
+                registered = buffer;
+                handleFilterChange(activeFilters, emits, 'startDate', formattedDate(buffer.start), true);
+                handleFilterChange(activeFilters, emits, 'endDate', formattedDate(buffer.end), true);
+            }
         "
-        @dateFilterChange="(buffer) => {
-            registered = buffer;
-            handleFilterChange(activeFilters, emits, 'startDate', formattedDate(buffer.start), true);
-            handleFilterChange(activeFilters, emits, 'endDate', formattedDate(buffer.end), true);
-        }"
-        @spentFilterChange="(buffer) => {
-            spent = buffer;
-            handleFilterChange(activeFilters, emits, 'spentFrom', buffer[0], true);
-            handleFilterChange(activeFilters, emits, 'spentTo', buffer[1], true);
-        }"
-        @ordersFilterChange="(buffer) => {
-            ordersCount = buffer;
-            handleFilterChange(activeFilters, emits, 'ordersCountFrom', buffer, true);
-            handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
-        }" />
+        @spentFilterChange="
+            (buffer) => {
+                spent = buffer;
+                handleFilterChange(activeFilters, emits, 'spentFrom', buffer[0], true);
+                handleFilterChange(activeFilters, emits, 'spentTo', buffer[1], true);
+            }
+        "
+        @ordersFilterChange="
+            (buffer) => {
+                ordersCount = buffer;
+                handleFilterChange(activeFilters, emits, 'ordersCountFrom', buffer, true);
+                handleFilterChange(activeFilters, emits, 'ordersCountTo', 'any', true);
+            }
+        "
+    />
 </template>
 
 <script setup lang="ts">
@@ -55,7 +81,7 @@ import CustomTable from '~/components/shared/tables/CustomTable.vue';
 import CustomItem from '~/components/shared/tables/CustomItem.vue';
 import { DashboardCustomerTableItem } from '~~/types';
 import { FilterInterface } from '~/model/dashboard/table/filters';
-import { handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
+import { formattedDate, handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
 import Emitter from 'tiny-emitter/instance';
 import { subDays } from 'date-fns';
 
@@ -70,14 +96,7 @@ const props = defineProps({
     },
 });
 
-const fields = [
-    'nameAndProfile',
-    'accountType',
-    'companyName',
-    'registerDate',
-    'spentAmount',
-    'ordersCount',
-]
+const fields = ['nameAndProfile', 'accountType', 'companyName', 'registerDate', 'spentAmount', 'ordersCount'];
 
 const actionsMenuType = 'customers-list';
 
@@ -100,10 +119,6 @@ const spent = ref([0, 0]);
 const spentOrder: number = ref(0);
 const ordersCount = ref(0);
 const ordersCountOrder: number = ref(0);
-
-const formattedDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('en-GB');
-};
 
 Emitter.on('registered-filter', (filter) => {
     if (filter.time === -1) {
