@@ -8,7 +8,7 @@
                     <SortAscDesc v-if="!section.checkbox" @sortChange="section.sortChange" :order="section.order"
                         :title="section.title" />
                     <DashboardSearch v-if="section.search" v-model="section.value" :placeholder="section.placeholder"
-                        size="sm" class="w-full" @input="section.filterChange" />
+                        size="sm" class="w-full" @input="section.filterChange" @clearSearch="clearSearch(section)"/>
                     <CustomSelect v-if="section.select" @handleShow="section.handleShow"
                         :selectedItem="section.selectedItem" :optionsVisible="section.optionsVisible" />
                     <DatePickerButton v-if="section.datePicker" :range="section.range"
@@ -175,6 +175,7 @@ interface Section {
     datePicker?: boolean;
     range?: Date[];
     datePickerVisible?: boolean;
+    emit: string;
 }
 
 export default defineComponent({
@@ -390,6 +391,7 @@ export default defineComponent({
                     value: this.name,
                     placeholder: "Search name, email, country, discount",
                     filterChange: this.handleNameFilterChange,
+                    emit:'nameFilterChange',
                 },
                 accountType: {
                     class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.accountTypeHeaderClass) : "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
@@ -410,6 +412,7 @@ export default defineComponent({
                     value: this.company,
                     placeholder: "Search company",
                     filterChange: this.handleCompanyFilterChange,
+                    emit: 'companyFilterChange',
                 },
                 registerDate: {
                     class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.registerDateHeaderClass) : "relative p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4",
@@ -456,6 +459,7 @@ export default defineComponent({
                     value: this.orderId,
                     placeholder: 'Search #ID',
                     filterChange: this.handleOrderIdFilterChange,
+                    emit: 'orderIdFilterChange',
                 },
                 orderType: {
                     class: (this.customGeneralHeaderClass || this.applyCustomClasses) ? (this.customGeneralHeaderClass + ' ' + this.orderTypeHeaderClass) : 'relative p-4 bg-[#F2F2F2] flex flex-col gap-4',
@@ -827,6 +831,12 @@ export default defineComponent({
                 .join(' - ');
             const result = buffer[0] || buffer[1] ? orderTotalValue : 'Filter';
             this.orderTotalValue = result;
+        },
+
+        // clear SearchBar input
+        clearSearch(section: Section) {
+            section.value = '';
+            this.$emit(section.emit, '');
         },
     },
     created() {
