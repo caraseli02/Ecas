@@ -70,7 +70,7 @@
                 <div class="flex flex-wrap gap-4">
                     <div v-for="(filter, index) in activeFilters" :key="index" class="flex items-center p-1 bg-[#F2F2F2] rounded-md">
                         <span class="text-sm leading-[1.43] text-gray-300 mr-2">
-                            {{ `${FilterLabelsEnum[filter.filter]}: ${filter.value}` }}
+                            {{ `${CustomersListFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                         </span>
                         <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="removeFilter(index)">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
@@ -129,9 +129,10 @@ import PlusIcon from '@/assets/icons/dashboard/plus.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import { DashboardOrderItem } from '~~/types';
-import { FilterLabelsEnum } from '~/types/dashboard/filter';
+import { CustomersListFilterLabelsEnum } from '~/types/dashboard/filter';
 import Flag from '@/assets/icons/flags/ron.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
+import Avatar from '@/assets/icons/dashboard/avatar.png';
 
 const orderFilters = [
     {
@@ -215,6 +216,7 @@ const listItems = ref<DashboardOrderItem[]>([
         date: 0,
         note: 'This order has a note',
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -226,9 +228,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '100001',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -242,6 +245,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'mixed-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -252,9 +256,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '1V9VGU48XV ',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -269,6 +274,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'stock-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -279,9 +285,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '100001',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -295,6 +302,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'mixed-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -305,9 +313,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '1V9VGU48XV ',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -318,9 +327,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '1V9VGU48XV ',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -335,6 +345,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'stock-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -345,9 +356,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '100001',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -361,6 +373,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'mixed-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -371,9 +384,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '1V9VGU48XV ',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -387,6 +401,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'stock-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -397,9 +412,10 @@ const listItems = ref<DashboardOrderItem[]>([
     },
     {
         id: '100001',
-        type: 'back-order',
+        type: 'backorder',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
@@ -414,6 +430,7 @@ const listItems = ref<DashboardOrderItem[]>([
         type: 'mixed-order',
         date: 0,
         customer: {
+            avatar: Avatar,
             name: 'Madalina Popescu',
             email: 'madalina.popescu@company.com',
             flag: Flag,
