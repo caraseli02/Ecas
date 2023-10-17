@@ -46,7 +46,7 @@
             </template>
           </Tooltip>
           <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
-            <LockIcon v-if="item.locked && showLock"
+            <LockIcon v-if="!item.active && showLock"
               class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
             <template #content>
               <span class="capitalize">Account Locked</span>
