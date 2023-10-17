@@ -161,6 +161,7 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {},
             ordersCount: user.ordersCount || 0,
             id: user._id,
             firebaseId: user.firebaseId,
+            active: user.active,
         }));
     }
 };

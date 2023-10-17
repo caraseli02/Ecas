@@ -11,6 +11,7 @@ export interface DashboardCustomerTableItem {
     ordersCount: number;
     id: string;
     firebaseId: string;
+    active: boolean;
 }
 
 export interface DashboardCustomerOrderItem {
@@ -50,7 +51,7 @@ export interface DashboardOrderItem {
         name: string;
         email: string;
         flag: any;
-        locked?: boolean;
+        active: boolean;
     };
     payment: PaymentStatusEnum;
     status: OrderStatus;
