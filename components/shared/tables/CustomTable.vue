@@ -111,6 +111,9 @@
                 :tx-status-item-class="txStatusItemClass"
                 :payment-status-item-class="paymentStatusItemClass"
                 @check="$emit('check', item.id)"
+                :documentDisabled="item.documentDisabled"
+                :invoiceDisabled="item.invoiceDisabled"
+                :downloadDisabled="item.downloadDisabled"
             />
         </div>
     </div>
