@@ -71,6 +71,19 @@ export interface PaymentDetails {
     paymentIntentId?: string;
 }
 
+export enum PaymentStatusEnum {
+    Pending = 0,
+    Paid = 1,
+    Canceled = 2,
+    Declined = 3,
+}
+
+export enum PaymentTypeEnum {
+    Card = 0,
+    Credit = 1,
+    Cash = 2,
+}
+
 export interface CartProductsInterface {
     /**
      * Product id
@@ -132,3 +145,8 @@ export enum OrderType {
     Back = 1,
     Mixed = 2,
 }
+
+export const getOrderById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
+    const keys = Object.keys(OrderType).filter((x) => OrderType[x] === enumValue);
+    return keys.length > 0 ? keys[0] : null;
+};

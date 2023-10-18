@@ -1,3 +1,5 @@
+import { OrderStatus, OrderType, PaymentStatusEnum } from '~/types';
+
 export interface DashboardCustomerTableItem {
     avatar?: any;
     name: string;
@@ -9,6 +11,7 @@ export interface DashboardCustomerTableItem {
     ordersCount: number;
     id: string;
     firebaseId: string;
+    active: boolean;
 }
 
 export interface DashboardCustomerOrderItem {
@@ -41,24 +44,16 @@ export interface DashboardControlPanelTransactionHistoryItem {
 export interface DashboardOrderItem {
     id: string;
     note?: string;
-    type: 'stock-order' | 'back-order' | 'mixed-order';
-    date: number;
-    customer: {
+    type: OrderType;
+    date: string;
+    customer?: {
+        avatar?: any;
         name: string;
         email: string;
         flag: any;
-        locked?: boolean;
+        active: boolean;
     };
-    payment: 'paid' | 'pending' | 'canceled' | 'declined';
-    fulfillment:
-        | 'abandoned-checkout'
-        | 'awaiting-payment'
-        | 'partially-refunded'
-        | 'completed'
-        | 'partially-shipped'
-        | 'processing'
-        | 'payment-received'
-        | 'payment-declined'
-        | 'awaiting-fulfillment';
+    payment: PaymentStatusEnum;
+    status: OrderStatus;
     total: number;
 }

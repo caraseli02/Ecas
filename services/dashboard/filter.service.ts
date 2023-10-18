@@ -19,5 +19,9 @@ export const handleFilterChange = (activeFilters: FilterInterface[], emits, filt
 };
 
 export const handleSortChange = (emits, sortBy: string, sortOrder: number) => {
-    emits('active-sort', { sortBy: sortBy, sortOrder: sortOrder === 0 ? 'desc' : 'asc' } as SortInterface);
+    emits('active-sort', { sortBy: sortBy, sortOrder: sortOrder === 0 ? 'desc' : 'asc' } as unknown as SortInterface);
+};
+
+export const formattedDate = (date: Date) => {
+    return new Date(date).toLocaleDateString('en-GB');
 };
