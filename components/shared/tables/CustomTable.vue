@@ -110,10 +110,10 @@
                 :tx-date-item-class="txDateItemClass"
                 :tx-status-item-class="txStatusItemClass"
                 :payment-status-item-class="paymentStatusItemClass"
+                :document-disabled="item.documentDisabled"
+                :invoice-disabled="item.invoiceDisabled"
+                :download-disabled="item.downloadDisabled"
                 @check="$emit('check', item.id)"
-                :documentDisabled="item.documentDisabled"
-                :invoiceDisabled="item.invoiceDisabled"
-                :downloadDisabled="item.downloadDisabled"
             />
         </div>
     </div>
@@ -247,7 +247,7 @@
             <CustomSelectDropdown
                 v-if="showPaymentStatusOptions"
                 v-click-outside="() => (showPaymentStatusOptions = false)"
-                :items="paymentStatusOptions"
+                :items="orderPaymentStatusOptionsList"
                 :dropdown-top="paymentStatusDropdownTop"
                 :dropdown-left="paymentStatusDropdownLeft"
                 :selected-item="paymentStatus"
@@ -274,7 +274,7 @@ import AgentIcon from '@/assets/icons/dashboard/agent.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import { DatePicker } from 'v-calendar';
-import { AccountType, getOrderById, OrderType } from '~~/types';
+import { AccountType, getOrderById, getPaymentStatusById, OrderType, PaymentStatusEnum, PaymentTypeEnum } from '~~/types';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { subDays } from 'date-fns';
 import CheckBoxAll from '~/components/shared/tables/micro/CheckBoxAll.vue';
@@ -565,24 +565,7 @@ export default defineComponent({
                 'Payment Received',
                 'Payment Declined',
             ]),
-            paymentStatusOptions: ref([
-                {
-                    label: 'Paid',
-                    value: 'Paid',
-                },
-                {
-                    label: 'Pending',
-                    value: 'Pending',
-                },
-                {
-                    label: 'Canceled',
-                    value: 'Canceled',
-                },
-                {
-                    label: 'Declined',
-                    value: 'Declined',
-                },
-            ]),
+            paymentStatusOptions: ref(PaymentTypeEnum),
         };
     },
     computed: {
@@ -849,6 +832,16 @@ export default defineComponent({
                 .map((type) => {
                     return {
                         label: getOrderById(type),
+                        key: type,
+                    };
+                });
+        },
+        orderPaymentStatusOptionsList() {
+            return Object.values(PaymentStatusEnum)
+                .filter((v) => !isNaN(Number(v)))
+                .map((type) => {
+                    return {
+                        label: getPaymentStatusById(type),
                         key: type,
                     };
                 });

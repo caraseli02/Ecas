@@ -20,6 +20,7 @@ export enum CustomersListFilterLabelsEnum {
 
 export enum OrdersFilterLabelsEnum {
     shortId = 'ID',
+    userId = 'User ID',
     type = 'Order type',
     status = 'Order status',
     startDate = 'Start date',

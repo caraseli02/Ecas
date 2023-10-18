@@ -70,7 +70,7 @@
                 <div class="flex flex-wrap gap-4">
                     <div v-for="(filter, index) in activeFilters" :key="index" class="flex items-center p-1 bg-[#F2F2F2] rounded-md">
                         <span class="text-sm leading-[1.43] text-gray-300 mr-2">
-                            {{ `${CustomersListFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
+                            {{ `${OrdersFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                         </span>
                         <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="removeFilter(index)">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
@@ -97,7 +97,7 @@
                 <DashboardCustomersListPagination
                     :at-page="atPage"
                     :per-page="perPage"
-                    :items-count="listItems.length"
+                    :items-count="totalItems"
                     position="top"
                     class="flex-col mb-6 md:mb-8"
                     @page-change="atPage = $event"
@@ -113,7 +113,7 @@
                 <DashboardCustomersListPagination
                     :at-page="atPage"
                     :per-page="perPage"
-                    :items-count="listItems.length"
+                    :items-count="totalItems"
                     position="bottom"
                     class="flex-col-reverse"
                     @page-change="atPage = $event"
@@ -128,11 +128,14 @@
 import PlusIcon from '@/assets/icons/dashboard/plus.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import { DashboardOrderItem } from '~~/types';
-import { CustomersListFilterLabelsEnum } from '~/types/dashboard/filter';
-import Flag from '@/assets/icons/flags/ron.svg';
+import { DashboardOrderItem, OrderInterface, PaymentStatusEnum } from '~~/types';
+import { OrdersFilterLabelsEnum } from '~/types/dashboard/filter';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
-import Avatar from '@/assets/icons/dashboard/avatar.png';
+import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
+import moment from 'moment/moment';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const orderFilters = [
     {
@@ -193,8 +196,8 @@ watch(activeOrderFilter, () => {
     setActiveFilterHighlight();
 });
 
-const activeFilters = ref([]);
-const activeSort = ref({});
+const activeFilters = ref([] as FilterInterface[]);
+const activeSort = ref({} as SortInterface);
 
 const clearFilters = async () => {
     activeFilters.value = [];
@@ -204,249 +207,63 @@ const removeFilter = async (index: number) => {
     activeFilters.value.splice(index, 1);
 };
 
+const listItems = ref<DashboardOrderItem[]>([]);
+
 const atPage = ref(1);
 const perPage = ref(10);
 const loading = ref(true);
 const error = ref(false);
+const totalItems = ref(0);
 
-const listItems = ref<DashboardOrderItem[]>([
-    {
-        id: '100001',
-        type: 'stock-order',
-        date: 0,
-        note: 'This order has a note',
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-            locked: true,
-        },
-        payment: 'paid',
-        fulfillment: 'abandoned-checkout',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'backorder',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'canceled',
-        fulfillment: 'awaiting-payment',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'mixed-order',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'pending',
-        fulfillment: 'partially-refunded',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'backorder',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'completed',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        note: 'This order has a note',
-        type: 'stock-order',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'pending',
-        fulfillment: 'partially-shipped',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'backorder',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'declined',
-        fulfillment: 'processing',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'mixed-order',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'payment-received',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'backorder',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'payment-declined',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'backorder',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-            locked: true,
-        },
-        payment: 'paid',
-        fulfillment: 'awaiting-fulfillment',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'stock-order',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'abandoned-checkout',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'backorder',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'awaiting-payment',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'mixed-order',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'partially-refunded',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'backorder',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'completed',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'stock-order',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'partially-shipped',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'backorder',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'processing',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        note: 'This order has a note',
-        type: 'mixed-order',
-        date: 0,
-        customer: {
-            avatar: Avatar,
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-            locked: true,
-        },
-        payment: 'paid',
-        fulfillment: 'payment-received',
-        total: 138000.77,
-    },
-]);
+const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
+    loading.value = true;
+    error.value = false;
+
+    const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
+
+    if (!data || data.status !== 'success') {
+        loading.value = false;
+        error.value = true;
+        return;
+    }
+
+    loading.value = false;
+    totalItems.value = data.data.total_items;
+
+    const paginatedOrders = data.data.items as OrderInterface[];
+
+    if (paginatedOrders) {
+        listItems.value = paginatedOrders.map((order) => ({
+            id: order.shortId,
+            type: order.type,
+            date: moment(order.createdAt).format('DD/MM/YYYY'),
+            payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
+            status: order.status,
+            total: order.total,
+        })) as unknown as DashboardOrderItem[];
+    }
+};
+
+await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 
 const visibleItemsFiltered = computed(() => {
     return [...listItems.value].filter((e) => {
         return true;
     });
 });
+
+watch(
+    [atPage, perPage, activeFilters, activeSort],
+    async ([newAtPage, newPerPage, newActiveFilters, newActiveSort]) => {
+        const filterParams = {};
+
+        for (const filter of newActiveFilters) {
+            filterParams[filter.filter] = filter.value;
+        }
+        await fetchAndSetOrdersList(newAtPage, newPerPage, filterParams, newActiveSort);
+    },
+    { deep: true }
+);
 
 onMounted(() => {
     setActiveFilterHighlight();

@@ -15,7 +15,7 @@ class OrdersService extends HttpFactory {
         });
     }
 
-    async fetchCustomerOrders(page: number, perPage: number, filters = {}, sort = {}) {
+    async fetchOrders(page: number, perPage: number, filters = {}, sort = {}) {
         const authStore = useAuthStore();
         const token = authStore.getToken;
 
