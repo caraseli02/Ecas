@@ -46,13 +46,7 @@ export interface DashboardOrderItem {
     note?: string;
     type: OrderType;
     date: string;
-    customer?: {
-        avatar?: any;
-        name: string;
-        email: string;
-        flag: any;
-        active: boolean;
-    };
+    name?: string;
     payment: PaymentStatusEnum;
     status: OrderStatus;
     total: number;

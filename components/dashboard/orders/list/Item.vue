@@ -10,7 +10,7 @@
             <TextBox :text="'21 September 2023, 18:25'" :loading="loading" />
         </div>
         <NameAndProfile
-            :item="item.customer"
+            :item="item.name"
             :index="index"
             :loading="loading"
             :show-avatar="false"

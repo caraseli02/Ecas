@@ -236,6 +236,7 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
         listItems.value = paginatedOrders.map((order) => ({
             id: order.shortId,
             type: order.type,
+            name: order.userName || '-',
             date: moment(order.createdAt).format('DD/MM/YYYY'),
             payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
             status: order.status,

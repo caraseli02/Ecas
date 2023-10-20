@@ -599,7 +599,7 @@ export default defineComponent({
                     title: this.nameAndProfileTitle || 'Name',
                     search: this.filters,
                     value: this.name,
-                    placeholder: 'Search name, email, country, discount',
+                    placeholder: 'Search name',
                     filterChange: this.handleNameFilterChange,
                     emit: 'nameFilterChange',
                 },

@@ -52,7 +52,10 @@
             dateOrder === 0 ? (dateOrder = 1) : (dateOrder = 0);
             handleSortChange(emits, 'createdAt', dateOrder);
         "
-        @nameOrderChange="customerOrder === 0 ? (customerOrder = 1) : (customerOrder = 0)"
+        @nameOrderChange="
+            customerOrder === 0 ? (customerOrder = 1) : (customerOrder = 0);
+            handleSortChange(emits, 'name', customerOrder);
+        "
         @paymentStatusOrderChange="
             paymentOrder === 0 ? (paymentOrder = 1) : (paymentOrder = 0);
             handleSortChange(emits, 'paymentStatus', paymentOrder);
@@ -65,7 +68,7 @@
             totalOrder === 0 ? (totalOrder = 1) : (totalOrder = 0);
             handleSortChange(emits, 'total', totalOrder);
         "
-        @nameFilterChange=""
+        @nameFilterChange="handleFilterChange(activeFilters, emits, 'name', $event)"
         @orderIdFilterChange="handleFilterChange(activeFilters, emits, 'shortId', $event)"
         @orderTypeFilterChange="(event: MouseEvent, item) => {
             type = item.label;
@@ -82,9 +85,9 @@
             status = item.label;
             handleFilterChange(activeFilters, emits, 'status', status, true);
         }"
-        @orderPaymentStatusFilterChange="(event: MouseEvent, item) => {
+        @paymentStatusFilterChange="(event: MouseEvent, item) => {
             paymentStatus = item.label;
-            handleFilterChange(activeFilters, emits, 'paymentStatus', status, true);
+            handleFilterChange(activeFilters, emits, 'paymentStatus', item.key, true);
         }"
         @orderTotalFilterChange="
             (buffer) => {
@@ -103,6 +106,7 @@ import CustomTable from '~/components/shared/tables/CustomTable.vue';
 import CustomItem from '~/components/shared/tables/CustomItem.vue';
 import { formattedDate, handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
 import paymentStatus from '~/components/shared/tables/micro/row-items/PaymentStatus.vue';
+import { FilterInterface } from '~/model/dashboard/table/filters';
 
 defineProps({
     items: {
@@ -122,6 +126,8 @@ defineProps({
 const tableFields = ['orderId', 'orderType', 'orderDate', 'nameAndProfile', 'paymentStatus', 'orderStatus', 'orderTotal'];
 
 const emits = defineEmits(['active-filters', 'active-sort']);
+
+const activeFilters: FilterInterface[] = [];
 
 const id = ref('');
 const idOrder = ref(0);
