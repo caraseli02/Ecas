@@ -14,7 +14,7 @@
                 :custom-class="section.customClass"
                 @showInformation="section.event"
             />
-            <TextBox v-if="section.text" :text="item[section.name]" :loading="loading" :custom-class="section.customClass" />
+            <TextBox v-if="section.text" :text="section.item[section.name]" :loading="loading" :custom-class="section.customClass" />
             <OrderId v-if="section.orderId" :item="item" :loading="loading" />
             <OrderType v-if="section.orderType" :item="item" :loading="loading" />
             <OrderStatus v-if="section.orderStatus" :status="item[section.statusKey]" :loading="loading" />
@@ -162,6 +162,7 @@ interface Section {
     customClass: string;
     profile: boolean;
     text: boolean;
+    item: { [key: string]: string };
     event: any;
     orderId: boolean;
     orderType: boolean;
@@ -225,10 +226,12 @@ export default defineComponent({
         'txTypeItemClass',
         'txDateItemClass',
         'txStatusItemClass',
-        'paymentStatusItemClass', // specific class overwrites
+        'paymentStatusItemClass',
+        'plainTextItemClass', // specific class overwrites
         'documentDisabled',
         'invoiceDisabled',
         'downloadDisabled',
+        'plainTextKey',
     ],
     data() {
         return {
@@ -258,27 +261,32 @@ export default defineComponent({
                 },
                 accountType: {
                     name: 'account',
+                    item: this.item,
                     text: true,
                     class: this.accountTypeItemClass || 'text-sm leading-[1.43] truncate pl-4 pr-1.5',
                 },
                 companyName: {
                     name: 'company',
                     text: true,
+                    item: this.item,
                     class: this.companyNameItemClass || 'text-sm leading-[1.43] truncate pl-4 pr-1.5',
                 },
                 registerDate: {
                     name: 'registered',
                     text: true,
+                    item: this.item,
                     class: this.registerDateItemClass || 'text-sm leading-[1.43] truncate pl-4 pr-1.5',
                 },
                 spentAmount: {
                     name: 'spent',
                     text: true,
+                    item: this.item,
                     class: this.spentAmountItemClass || 'text-sm leading-[1.43] font-medium truncate pl-4 pr-1.5',
                 },
                 ordersCount: {
                     name: 'ordersCount',
                     text: true,
+                    item: this.item,
                     class: this.ordersCountItemClass || 'flex justify-center pl-4 pr-1.5',
                     customClass: 'text-sm leading-[1.43] font-medium text-[#006D4D] bg-[#00D39540] px-3 py-1 rounded-md',
                 },
@@ -292,6 +300,7 @@ export default defineComponent({
                 },
                 orderDate: {
                     text: true,
+                    item: this.item,
                     class: this.orderDateItemClass || 'p-6 text-sm truncate',
                     name: 'date',
                 },
@@ -302,16 +311,19 @@ export default defineComponent({
                 },
                 orderTotal: {
                     text: true,
+                    item: this.item,
                     class: this.orderTotalItemClass || 'p-6 text-sm',
                     name: 'total',
                 },
                 invoiceId: {
                     text: true,
+                    item: this.item,
                     class: this.invoiceIdItemClass || 'px-2 py-4 text-sm font-medium leading-[1.71] text-blue',
                     name: 'invoiceId',
                 },
                 orderAmount: {
                     text: true,
+                    item: this.item,
                     class: this.orderAmountItemClass || 'px-2 py-4 text-sm font-medium leading-[1.71]',
                     name: 'amount',
                 },
@@ -321,6 +333,7 @@ export default defineComponent({
                 },
                 txDate: {
                     text: true,
+                    item: this.item,
                     class: this.txDateItemClass || 'px-2 py-4 text-sm leading-[1.71]',
                     name: 'date',
                 },
@@ -331,6 +344,12 @@ export default defineComponent({
                 paymentStatus: {
                     paymentStatus: true,
                     class: this.paymentStatusItemClass || 'py-5 px-6',
+                },
+                plainTextCol: {
+                    name: this.plainTextKey,
+                    item: this.item,
+                    text: true,
+                    class: this.plainTextItemClass || 'pl-4 pr-1.5 py-3',
                 },
             };
             return sections;

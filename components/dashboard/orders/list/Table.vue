@@ -11,29 +11,28 @@
         :order-id-order="idOrder"
         :order-type-order="typeOrder"
         :order-date-order="dateOrder"
-        :name-order="customerOrder"
+        :plain-text-col-order="customerOrder"
         :payment-status-order="paymentOrder"
         :order-status-order="statusOrder"
         :order-total-order="totalOrder"
         :order-id="id"
         :order-type="type"
         :order-date="date"
-        :name="customer"
+        :plain-text-col-content="customer"
         :payment-status="payment"
         :order-status="status"
         :order-total="total"
         :order-id-col-width="'158px'"
         :order-type-col-width="'149px'"
         :order-date-col-width="'228px'"
-        :name-and-profile-col-width="'275px'"
+        :plain-text-col-width="'275px'"
         :payment-status-col-width="'141px'"
         :order-status-col-width="'220px'"
         :order-total-col-width="'136px'"
-        :name-and-profile-class="'w-[calc(100%)]'"
         :order-total-inner-class="'justify-between w-full'"
         :order-status-title="'Order status'"
         :order-status-key="'status'"
-        :profile-key="'customer'"
+        :plain-text-key="'name'"
         :custom-general-header-class="'relative px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4'"
         :order-id-header-class="'pl-4'"
         :order-id-item-class="'flex items-center gap-4 text-sm leading-[1.43] ' + [loading ? 'px-4 py-[22px]' : 'p-6']"
@@ -52,7 +51,7 @@
             dateOrder === 0 ? (dateOrder = 1) : (dateOrder = 0);
             handleSortChange(emits, 'createdAt', dateOrder);
         "
-        @nameOrderChange="
+        @plainTextColOrderChange="
             customerOrder === 0 ? (customerOrder = 1) : (customerOrder = 0);
             handleSortChange(emits, 'name', customerOrder);
         "
@@ -68,7 +67,7 @@
             totalOrder === 0 ? (totalOrder = 1) : (totalOrder = 0);
             handleSortChange(emits, 'total', totalOrder);
         "
-        @nameFilterChange="handleFilterChange(activeFilters, emits, 'name', $event, false)"
+        @plainTextColFilterChange="handleFilterChange(activeFilters, emits, 'name', $event, false)"
         @orderIdFilterChange="handleFilterChange(activeFilters, emits, 'shortId', $event, false)"
         @orderTypeFilterChange="(event: MouseEvent, item) => {
             type = item.label;
@@ -123,7 +122,7 @@ defineProps({
     },
 });
 
-const tableFields = ['orderId', 'orderType', 'orderDate', 'nameAndProfile', 'paymentStatus', 'orderStatus', 'orderTotal'];
+const tableFields = ['orderId', 'orderType', 'orderDate', 'plainTextCol', 'paymentStatus', 'orderStatus', 'orderTotal'];
 
 const emits = defineEmits(['active-filters', 'active-sort']);
 
