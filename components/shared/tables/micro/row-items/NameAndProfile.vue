@@ -50,8 +50,10 @@
                         >
                             10%
                         </div>
-                        <template #content>
-                            <span>Customer Discount: <strong class="font-semibold">10%</strong></span>
+                        <template v-if="item.discount" #content>
+                            <span
+                                >Customer Discount: <strong class="font-semibold">{{ `${item.discount}%` }}</strong></span
+                            >
                         </template>
                     </Tooltip>
                     <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">

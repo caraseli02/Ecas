@@ -6,7 +6,11 @@
                 :key="index"
                 class="ordersFilter flex items-center gap-3 relative z-10 text-sm font-medium leading-[1.71] py-5 flex-shrink-0 transition-colors duration-300 md:py-8"
                 :class="[filter.value === activeOrderFilter ? 'text-blue' : 'hover:text-blue']"
-                @click="activeOrderFilter = filter.value"
+                @click="
+                    activeOrderFilter = filter.value;
+                    activeFilters = [];
+                    handleFilterChange(activeFilters, emits, filter.value, `${filter.key}`, true, true);
+                "
             >
                 <span>
                     {{ filter.label }}
@@ -65,10 +69,14 @@
                     </button>
                 </div>
             </div>
-            <div v-if="activeFilters.length > 0" class="mb-6 md:flex md:items-start">
+            <div v-if="activeFilters.filter((item) => !item.hidden).length > 0" class="mb-6 md:flex md:items-start">
                 <div class="leading-normal font-medium text-gray-300 mb-4 md:mr-4">Filters:</div>
                 <div class="flex flex-wrap gap-4">
-                    <div v-for="(filter, index) in activeFilters" :key="index" class="flex items-center p-1 bg-[#F2F2F2] rounded-md">
+                    <div
+                        v-for="(filter, index) in activeFilters.filter((item) => !item.hidden) as unknown as FilterInterface"
+                        :key="index"
+                        class="flex items-center p-1 bg-[#F2F2F2] rounded-md"
+                    >
                         <span class="text-sm leading-[1.43] text-gray-300 mr-2">
                             {{ `${OrdersFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                         </span>
@@ -128,12 +136,13 @@
 import PlusIcon from '@/assets/icons/dashboard/plus.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import { DashboardOrderItem, OrderInterface, PaymentStatusEnum } from '~~/types';
+import { DashboardOrderItem, OrderInterface, OrderStatus, PaymentStatusEnum } from '~~/types';
 import { OrdersFilterLabelsEnum } from '~/types/dashboard/filter';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import moment from 'moment/moment';
 import { useNuxtApp } from '#app';
+import { handleFilterChange } from '~/services/dashboard/filter.service';
 
 const { $api } = useNuxtApp();
 
@@ -141,37 +150,44 @@ const orderFilters = [
     {
         label: 'All orders',
         value: 'all-orders',
-        count: 130,
     },
     {
         label: 'Active',
         value: 'active',
-        count: 130,
+        key: [OrderStatus.Completed, OrderStatus.Canceled],
     },
     {
         label: 'Last 24h',
-        value: 'last-24h',
-        count: 130,
+        value: 'startDate',
+        key: moment.utc().subtract(24, 'hours').format('DD/MM/YYYY HH:mm:ss'),
     },
     {
         label: 'Awaiting Processing',
-        value: 'awaiting-processing',
-        count: 130,
+        value: 'awaitingProcessing',
+        key: [
+            OrderStatus.VerificationRequired,
+            OrderStatus.Processing,
+            OrderStatus.Pending,
+            OrderStatus.AwaitingFulfillment,
+            OrderStatus.AwaitingShipment,
+            OrderStatus.AwaitingPickup,
+            OrderStatus.AwaitingPayment,
+        ],
     },
     {
         label: 'Fulfilled',
         value: 'fulfilled',
-        count: 130,
+        key: [OrderStatus.Shipped, OrderStatus.PartiallyShipped],
     },
     {
         label: 'Completed',
-        value: 'completed',
-        count: 130,
+        value: 'status',
+        key: OrderStatus.Completed,
     },
     {
         label: 'Canceled',
-        value: 'canceled',
-        count: 130,
+        value: 'status',
+        key: OrderStatus.Canceled,
     },
 ];
 
@@ -236,13 +252,16 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
         listItems.value = paginatedOrders.map((order) => ({
             id: order.shortId,
             type: order.type,
-            name: order.userName || '-',
+            customer: {
+                name: order.userName || '-',
+            },
             date: moment(order.createdAt).format('DD/MM/YYYY'),
             payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
             status: order.status,
             total: order.total,
         })) as unknown as DashboardOrderItem[];
     }
+    console.log(listItems.value);
 };
 
 await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);

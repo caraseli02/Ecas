@@ -8,9 +8,9 @@
                 :loading="loading"
                 :index="index"
                 :show-avatar="section.showAvatar"
-                :show-flag="true"
-                :show-discount="true"
-                :show-lock="true"
+                :show-flag="section.showFlag"
+                :show-discount="section.showDiscount"
+                :show-lock="section.showLock"
                 :custom-class="section.customClass"
                 @showInformation="section.event"
             />
@@ -173,6 +173,9 @@ interface Section {
     statusKey: string;
     profileKey: string;
     showAvatar: boolean;
+    showFlag: boolean;
+    showLock: boolean;
+    showDiscount: boolean;
 }
 
 export default defineComponent({
@@ -202,6 +205,9 @@ export default defineComponent({
         'orderStatusKey',
         'profileKey',
         'showAvatar',
+        'showFlag',
+        'showLock',
+        'showDiscount',
         'checkBoxItemClass',
         'nameAndProfileItemClass',
         'accountTypeItemClass',
@@ -246,6 +252,9 @@ export default defineComponent({
                     customClass: this.nameAndProfileClass,
                     profileKey: this.profileKey,
                     showAvatar: this.showAvatar,
+                    showFlag: this.showFlag,
+                    showLock: this.showLock,
+                    showDiscount: this.showDiscount,
                 },
                 accountType: {
                     name: 'account',

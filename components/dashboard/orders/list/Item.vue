@@ -10,12 +10,13 @@
             <TextBox :text="'21 September 2023, 18:25'" :loading="loading" />
         </div>
         <NameAndProfile
-            :item="item.name"
+            :item="item?.customer?.name"
             :index="index"
             :loading="loading"
             :show-avatar="false"
-            :show-flag="true"
-            :show-lock="true"
+            :show-flag="false"
+            :show-lock="false"
+            :show-discount="false"
             class="py-3"
             :class="[loading ? 'px-[17px]' : 'px-4']"
             :custom-class="'w-full'"
@@ -90,6 +91,7 @@ const props = defineProps({
         default: false,
     },
 });
+console.log('test');
 
 const showOptions = ref(false);
 const showDeactivatingModal = ref(false);
