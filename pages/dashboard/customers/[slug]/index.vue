@@ -66,7 +66,7 @@
                 </div>
                 <DashboardCustomersDefaultShippingAddress :id="route.params.slug" class="xl:col-start-2 xl:row-start-2" />
             </div>
-            <DashboardCustomersOrders />
+            <DashboardCustomersOrders :id="route.params.slug" />
         </div>
     </div>
 </template>
