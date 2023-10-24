@@ -110,10 +110,12 @@
                 :tx-date-item-class="txDateItemClass"
                 :tx-status-item-class="txStatusItemClass"
                 :payment-status-item-class="paymentStatusItemClass"
+                :plain-text-item-class="plainTextItemClass"
+                :plain-text-key="plainTextKey"
+                :document-disabled="item.documentDisabled"
+                :invoice-disabled="item.invoiceDisabled"
+                :download-disabled="item.downloadDisabled"
                 @check="$emit('check', item.id)"
-                :documentDisabled="item.documentDisabled"
-                :invoiceDisabled="item.invoiceDisabled"
-                :downloadDisabled="item.downloadDisabled"
             />
         </div>
     </div>
@@ -247,7 +249,7 @@
             <CustomSelectDropdown
                 v-if="showPaymentStatusOptions"
                 v-click-outside="() => (showPaymentStatusOptions = false)"
-                :items="paymentStatusOptions"
+                :items="orderPaymentStatusOptionsList"
                 :dropdown-top="paymentStatusDropdownTop"
                 :dropdown-left="paymentStatusDropdownLeft"
                 :selected-item="paymentStatus"
@@ -274,7 +276,7 @@ import AgentIcon from '@/assets/icons/dashboard/agent.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import { DatePicker } from 'v-calendar';
-import { AccountType, getOrderById, OrderType } from '~~/types';
+import { AccountType, getOrderById, getPaymentStatusById, OrderType, PaymentStatusEnum, PaymentTypeEnum } from '~~/types';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { subDays } from 'date-fns';
 import CheckBoxAll from '~/components/shared/tables/micro/CheckBoxAll.vue';
@@ -353,7 +355,8 @@ export default defineComponent({
         'txTypeOrder',
         'txDateOrder',
         'txStatusOrder',
-        'paymentStatusOrder', // order props (add here new order props)
+        'paymentStatusOrder',
+        'plainTextColOrder', // order props (add here new order props)
         'checkAll',
         'name',
         'account',
@@ -366,7 +369,8 @@ export default defineComponent({
         'orderDateRange',
         'orderStatus',
         'orderTotal',
-        'paymentStatus', // filter props (add here new filter props)
+        'paymentStatus',
+        'plainTextColContent', // filter props (add here new filter props)
         'checkBoxColWidth',
         'nameAndProfileColWidth',
         'accountTypeColWidth',
@@ -384,7 +388,8 @@ export default defineComponent({
         'txTypeColWidth',
         'txDateColWidth',
         'txStatusColWidth',
-        'paymentStatusColWidth', // column width overwrite props (add here new column width props)
+        'paymentStatusColWidth',
+        'plainTextColWidth', // column width overwrite props (add here new column width props)
         'nameAndProfileTitle',
         'accountTypeTitle',
         'companyNameTitle',
@@ -401,7 +406,8 @@ export default defineComponent({
         'txTypeTitle',
         'txDateTitle',
         'txStatusTitle',
-        'paymentStatusTitle', // column title overwrite props (add here new column title props)
+        'paymentStatusTitle',
+        'plainTextColTitle', // column title overwrite props (add here new column title props)
         'nameAndProfileClass',
         'orderTotalInnerClass',
         'ordersCountInnerClass',
@@ -424,7 +430,8 @@ export default defineComponent({
         'txTypeHeaderClass',
         'txDateHeaderClass',
         'txStatusHeaderClass',
-        'paymentStatusHeaderClass', // specific header class overwrites
+        'paymentStatusHeaderClass',
+        'plainTextColHeaderClass', // specific header class overwrites
         'checkBoxItemClass',
         'nameAndProfileItemClass',
         'accountTypeItemClass',
@@ -442,11 +449,14 @@ export default defineComponent({
         'txTypeItemClass',
         'txDateItemClass',
         'txStatusItemClass',
-        'paymentStatusItemClass', // specific item class overwrites
+        'paymentStatusItemClass',
+        'plainTextItemClass', // specific item class overwrites
         'applyCustomClasses', // on/off switch for custom classes
         'orderStatusKey',
-        'profileKey', // keys of different objects within the components
+        'profileKey',
+        'plainTextKey', // keys of different objects within the components
         'showAvatar', // show avatar in name and profile column
+        'plainTextColPlaceholder', // searchBox placeholders
     ],
     data() {
         return {
@@ -473,6 +483,7 @@ export default defineComponent({
                 txDate: '191px',
                 txStatus: '191px',
                 paymentStatus: '141px',
+                plainTextCol: '359px',
                 actionsHeader: '104px',
             },
 
@@ -565,24 +576,7 @@ export default defineComponent({
                 'Payment Received',
                 'Payment Declined',
             ]),
-            paymentStatusOptions: ref([
-                {
-                    label: 'Paid',
-                    value: 'Paid',
-                },
-                {
-                    label: 'Pending',
-                    value: 'Pending',
-                },
-                {
-                    label: 'Canceled',
-                    value: 'Canceled',
-                },
-                {
-                    label: 'Declined',
-                    value: 'Declined',
-                },
-            ]),
+            paymentStatusOptions: ref(PaymentTypeEnum),
         };
     },
     computed: {
@@ -616,7 +610,7 @@ export default defineComponent({
                     title: this.nameAndProfileTitle || 'Name',
                     search: this.filters,
                     value: this.name,
-                    placeholder: 'Search name, email, country, discount',
+                    placeholder: 'Search name',
                     filterChange: this.handleNameFilterChange,
                     emit: 'nameFilterChange',
                 },
@@ -819,6 +813,20 @@ export default defineComponent({
                     selectedItem: this.paymentStatus,
                     optionsVisible: this.showPaymentStatusOptions,
                 },
+                plainTextCol: {
+                    class:
+                        this.customGeneralHeaderClass || this.applyCustomClasses
+                            ? this.customGeneralHeaderClass + ' ' + this.plainTextColHeaderClass
+                            : 'p-4 pr-1.5 bg-[#F2F2F2] flex flex-col gap-4',
+                    sortChange: this.handlePlainTextColOrderChange,
+                    order: this.plainTextColOrder,
+                    title: this.plainTextColTitle || 'Title',
+                    search: this.filters,
+                    value: this.plainTextColContent,
+                    placeholder: this.plainTextColPlaceholder,
+                    filterChange: this.handlePlainTextColFilterChange,
+                    emit: 'plainTextColFilterChange',
+                },
             };
             return sections;
         },
@@ -849,6 +857,16 @@ export default defineComponent({
                 .map((type) => {
                     return {
                         label: getOrderById(type),
+                        key: type,
+                    };
+                });
+        },
+        orderPaymentStatusOptionsList() {
+            return Object.values(PaymentStatusEnum)
+                .filter((v) => !isNaN(Number(v)))
+                .map((type) => {
+                    return {
+                        label: getPaymentStatusById(type),
                         key: type,
                     };
                 });
@@ -887,6 +905,7 @@ export default defineComponent({
             if (this.txDateColWidth) this.colsWidths.txDate = this.txDateColWidth;
             if (this.txStatusColWidth) this.colsWidths.txStatus = this.txStatusColWidth;
             if (this.paymentStatusColWidth) this.colsWidths.paymentStatus = this.paymentStatusColWidth;
+            if (this.plainTextColWidth) this.colsWidths.plainTextCol = this.plainTextColWidth;
             if (this.actionsHeaderColWidth) this.colsWidths.actionsHeader = this.actionsHeaderColWidth;
 
             switch (this.actionsMenuType) {
@@ -1043,6 +1062,9 @@ export default defineComponent({
         handlePaymentStatusOrderChange() {
             this.$emit('paymentStatusOrderChange', this.paymentStatusOrder);
         },
+        handlePlainTextColOrderChange() {
+            this.$emit('plainTextColOrderChange', this.plainTextColOrder);
+        },
 
         // filter methods
         handleNameFilterChange(event: InputEvent) {
@@ -1091,6 +1113,9 @@ export default defineComponent({
         handlePaymentStatusFilterChange(event: MouseEvent, item: any) {
             this.showPaymentStatusOptions = false;
             this.$emit('paymentStatusFilterChange', event, item);
+        },
+        handlePlainTextColFilterChange(event: InputEvent) {
+            this.$emit('plainTextColFilterChange', event);
         },
 
         // filter button text formatters

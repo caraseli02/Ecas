@@ -45,12 +45,12 @@
             ordersCountOrder === 0 ? (ordersCountOrder = 1) : (ordersCountOrder = 0);
             handleSortChange(emits, 'ordersCount', ordersCountOrder);
         "
-        @nameFilterChange="handleFilterChange(activeFilters, emits, 'combinedName', $event)"
+        @nameFilterChange="handleFilterChange(activeFilters, emits, 'combinedName', $event, false)"
         @accountFilterChange="(event: MouseEvent, item) => {
             account = item.label;
             handleFilterChange(activeFilters, emits, 'accountType', item.value, true);
         }"
-        @companyFilterChange="handleFilterChange(activeFilters, emits, 'companyName', $event)"
+        @companyFilterChange="handleFilterChange(activeFilters, emits, 'companyName', $event, false)"
         @dateFilterChange="
             (buffer) => {
                 registered = buffer;
