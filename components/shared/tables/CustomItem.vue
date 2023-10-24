@@ -2,8 +2,9 @@
     <div class="grid items-center" :class="columnWidths">
         <div v-for="section in activeSections" :class="section.class">
             <CustomCheckBox v-if="section.checkbox" :item="item" @check="$emit('check')" />
-            <NameAndProfile v-if="section.profile" :item="section.profileKey ? item[section.profileKey] : item" :loading="loading" :index="index" :showAvatar="section.showAvatar"
-                :showFlag="true" :showDiscount="true" :showLock="true" @showInformation="section.event" :customClass="section.customClass" />
+            <NameAndProfile v-if="section.profile" :item="section.profileKey ? item[section.profileKey] : item"
+                :loading="loading" :index="index" :showAvatar="section.showAvatar" :showFlag="true" :showDiscount="true"
+                :showLock="true" @showInformation="section.event" :customClass="section.customClass" />
             <TextBox v-if="section.text" :text="item[section.name]" :loading="loading" :customClass="section.customClass" />
             <OrderId v-if="section.orderId" :item="item" :loading="loading" />
             <OrderType v-if="section.orderType" :item="item" :loading="loading" />
@@ -14,40 +15,50 @@
         </div>
         <div v-if="actionsMenuType === 'customers-list'" class="flex items-center justify-end gap-4 pl-4 pr-1.5">
             <ActionsMenu :loading="loading" :index="index" :documentButton="true" :threeDotButton="true"
-                @showOptions="handleShowOptions" :txtDocument="'View Orders'" />
+                @showOptions="handleShowOptions" :txtDocument="'View Orders'" :documentDisabled="documentDisabled"
+                :invoiceDisabled="invoiceDisabled" :downloadDisabled="downloadDisabled" />
         </div>
         <div v-if="actionsMenuType === 'customer-orders'" class="flex items-center justify-end gap-4 pl-4 pr-1.5">
             <ActionsMenu :loading="loading" :index="index" :documentButton="true" :invoiceButton="true"
-                :threeDotButton="true" @showOptions="handleShowOptions" :txtDocument="'View Order'" :txtInvoice="'View Invoice'" />
+                :threeDotButton="true" @showOptions="handleShowOptions" :txtDocument="'View Order'"
+                :txtInvoice="'View Invoice'" :documentDisabled="documentDisabled" :invoiceDisabled="invoiceDisabled"
+                :downloadDisabled="downloadDisabled" />
         </div>
         <div v-if="actionsMenuType === 'tx-history'" class="flex items-center justify-end p-4 pr-[26px]">
-            <ActionsMenu :loading="loading" :index="index" :downloadButton="true" :txtDownload="'Download'" />
+            <ActionsMenu :loading="loading" :index="index" :downloadButton="true" :txtDownload="'Download'"
+                :documentDisabled="documentDisabled" :invoiceDisabled="invoiceDisabled"
+                :downloadDisabled="downloadDisabled" />
         </div>
-        <div v-if="actionsMenuType === 'orders-list'" class="flex items-center justify-end gap-6 pr-4" :class="[loading ? 'px-4' : '']">
-            <ActionsMenu :loading="loading" :index="index" :threeDotButton="true" @showOptions="handleShowOptions" />
+        <div v-if="actionsMenuType === 'orders-list'" class="flex items-center justify-end gap-6 pr-4"
+            :class="[loading ? 'px-4' : '']">
+            <ActionsMenu :loading="loading" :index="index" :threeDotButton="true" @showOptions="handleShowOptions"
+                :documentDisabled="documentDisabled" :invoiceDisabled="invoiceDisabled"
+                :downloadDisabled="downloadDisabled" />
         </div>
     </div>
     <Teleport to="body">
         <Transition :name="index > 5 ? 'fade-full-neg' : 'fade-bottom'">
-            <ThreeDotMenu v-if="showOptions && (actionsMenuType === 'customers-list')" v-click-outside="() => (showOptions = false)" :index="index"
-                :dropdownTop="optionsDropdownTop" :dropdownLeft="optionsDropdownLeft" :profileButton="true" :profile="item"
-                :profileText="'Profile'" :documentButton="true" :documentText="'Orders'" :settingsButton="true"
-                :settingsText="'Settings'" :deactivateButton="true" :deactivateText="'Deactivate Account'"
-                :trashButton="true" :trashText="'Delete Account'" @profileClicked="showOptions = false"
-                @documentClicked="showOptions = false" @settingsClicked="showOptions = false" @deactivateClicked="showDeactivatingModal = true;
+            <ThreeDotMenu v-if="showOptions && (actionsMenuType === 'customers-list')"
+                v-click-outside="() => (showOptions = false)" :index="index" :dropdownTop="optionsDropdownTop"
+                :dropdownLeft="optionsDropdownLeft" :profileButton="true" :profile="item" :profileText="'Profile'"
+                :documentButton="true" :documentText="'Orders'" :settingsButton="true" :settingsText="'Settings'"
+                :deactivateButton="true" :deactivateText="'Deactivate Account'" :trashButton="true"
+                :trashText="'Delete Account'" @profileClicked="showOptions = false" @documentClicked="showOptions = false"
+                @settingsClicked="showOptions = false" @deactivateClicked="showDeactivatingModal = true;
                 showOptions = false;" @trashClicked="showOptions = false" />
         </Transition>
         <Transition :name="index > 5 ? 'fade-full-neg' : 'fade-bottom'">
-            <ThreeDotMenu v-if="showOptions && (actionsMenuType === 'customer-orders')" v-click-outside="() => (showOptions = false)" :index="index"
-                :dropdownTop="optionsDropdownTop" :dropdownLeft="optionsDropdownLeft" :invoiceButton="true"
-                :invoiceText="'View Invoice'" :editButton="true" :editText="'Edit Order'" @invoiceClicked="showOptions = false"
-                @editClicked="showOptions = false" />
+            <ThreeDotMenu v-if="showOptions && (actionsMenuType === 'customer-orders')"
+                v-click-outside="() => (showOptions = false)" :index="index" :dropdownTop="optionsDropdownTop"
+                :dropdownLeft="optionsDropdownLeft" :invoiceButton="true" :invoiceText="'View Invoice'" :editButton="true"
+                :editText="'Edit Order'" @invoiceClicked="showOptions = false" @editClicked="showOptions = false" />
         </Transition>
         <Transition :name="index > 8 ? 'fade-full-neg' : 'fade-bottom'">
-            <ThreeDotMenu v-if="showOptions && (actionsMenuType === 'orders-list')" v-click-outside="() => (showOptions = false)" :index="index"
-                :dropdownTop="optionsDropdownTop" :dropdownLeft="optionsDropdownLeft" :documentButton="true"
-                :documentText="'View Order'" :invoiceButton="true" :invoiceText="'View Invoice'"
-                @documentClicked="showOptions = false" @invoiceClicked="showOptions = false" />
+            <ThreeDotMenu v-if="showOptions && (actionsMenuType === 'orders-list')"
+                v-click-outside="() => (showOptions = false)" :index="index" :dropdownTop="optionsDropdownTop"
+                :dropdownLeft="optionsDropdownLeft" :documentButton="true" :documentText="'View Order'"
+                :invoiceButton="true" :invoiceText="'View Invoice'" @documentClicked="showOptions = false"
+                @invoiceClicked="showOptions = false" />
         </Transition>
         <Transition name="fade">
             <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item"
@@ -99,6 +110,7 @@ export default defineComponent({
         'orderStatusKey', 'profileKey',
         'showAvatar',
         'checkBoxItemClass', 'nameAndProfileItemClass', 'accountTypeItemClass', 'companyNameItemClass', 'registerDateItemClass', 'spentAmountItemClass', 'ordersCountItemClass', 'orderIdItemClass', 'orderTypeItemClass', 'orderDateItemClass', 'orderStatusItemClass', 'orderTotalItemClass', 'invoiceIdItemClass', 'orderAmountItemClass', 'txTypeItemClass', 'txDateItemClass', 'txStatusItemClass', 'paymentStatusItemClass', // specific class overwrites
+        'documentDisabled', 'invoiceDisabled', 'downloadDisabled',
     ],
     components: {
         NameAndProfile,
