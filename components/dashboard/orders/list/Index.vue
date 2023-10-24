@@ -5,14 +5,10 @@
                 v-for="(filter, index) in orderFilters"
                 :key="index"
                 class="ordersFilter flex items-center gap-3 relative z-10 text-sm font-medium leading-[1.71] py-5 flex-shrink-0 transition-colors duration-300 md:py-8"
-                :class="[filter.value === activeOrderFilter ? 'text-blue' : 'hover:text-blue']"
+                :class="[filter.value === activeOrderFilter.value ? 'text-blue' : 'hover:text-blue']"
                 @click="
-                    activeOrderFilter = filter.value;
-                    // activeFilters = [];
+                    activeOrderFilter = filter;
                     setTableData(filter);
-                    // typeof filter.key !== 'undefined' &&
-                    //     handleFilterChange(activeFilters, emits, filter.value, `${filter.key}`, true, true);
-                    // handleTabFilters(filter);
                 "
             >
                 <span>
@@ -20,7 +16,7 @@
                 </span>
                 <span
                     class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium transition-colors duration-300"
-                    :class="filter.value === activeOrderFilter ? 'text-white bg-blue' : 'text-gray-300 bg-gray-200'"
+                    :class="filter.value === activeOrderFilter.value ? 'text-white bg-blue' : 'text-gray-300 bg-gray-200'"
                 >
                     {{ filter.total_items }}
                 </span>
@@ -208,54 +204,44 @@ const orderFilters = ref<TabFilter[]>([
     },
 ] as TabFilter[]);
 
-const activeOrderFilter = ref('all-orders');
+const activeOrderFilter = ref<TabFilter>(orderFilters.value[0]);
 const filterHighlightWidth = ref(0);
 const filterHightlightLeft = ref(0);
 
 const activeFilters = ref([] as FilterInterface[]);
 const activeSort = ref({} as SortInterface);
 
-// const emits = defineEmits(['active-filters', 'active-sort']);
-
-const handleTabFilters = (filter: any) => {
-    if (typeof filter.key === 'undefined') {
-        clearFilters();
-        return;
-    }
-};
-
 const loadTabFilters = async () => {
     for (const filter of orderFilters.value) {
-        activeFilters.value = [];
         const filterObj = {};
-        // typeof filter.key !== 'undefined' && handleFilterChange(activeFilters.value, emits, filter.value, `${filter.key}`, true, true);
-        // typeof filter.key !== 'undefined' &&
+
+        activeFilters.value = [];
         filterObj[filter.value] = `${filter.key}`;
 
-        const data = await fetchAndSetOrdersList(atPage.value, perPage.value, filterObj, activeSort.value);
+        const data = await fetchAndSetOrdersList(
+            atPage.value,
+            perPage.value,
+            filter.value === 'all-orders' ? {} : filterObj,
+            activeSort.value
+        );
 
         filter.total_items = data?.total_items;
-        filter.items = data?.items;
     }
 };
 
-const setTableData = (filter: TabFilter) => {
-    listItems.value = filter.items.map((order) => ({
-        id: order.shortId,
-        type: order.type,
-        name: order.userName || '-',
-        date: moment(order.createdAt).format('DD/MM/YYYY'),
-        payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
-        status: order.status,
-        total: order.total,
-    })) as unknown as DashboardOrderItem[];
+const setTableData = async (filter: TabFilter) => {
+    const filterObj = {};
 
-    totalItems.value = filter.total_items;
+    filterObj[filter.value] = `${filter.key}`;
+    atPage.value = 1;
+
+    await fetchAndSetOrdersList(atPage.value, perPage.value, filter.value === 'all-orders' ? {} : filterObj, activeSort.value);
 };
 
 const setActiveFilterHighlight = () => {
     const activeFilter = activeOrderFilter.value;
-    const index = orderFilters.value.findIndex((filter) => filter.value === activeFilter);
+    const index = orderFilters.value.findIndex((filter) => filter.value === activeFilter.value);
+
     if (index !== -1) {
         const filterElement = document.querySelectorAll('.ordersFilter')[index] as HTMLElement;
 
@@ -266,9 +252,13 @@ const setActiveFilterHighlight = () => {
     }
 };
 
-watch(activeOrderFilter, () => {
-    setActiveFilterHighlight();
-});
+watch(
+    activeOrderFilter,
+    () => {
+        setActiveFilterHighlight();
+    },
+    { deep: true }
+);
 
 const clearFilters = async () => {
     activeFilters.value = [];
@@ -302,7 +292,7 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
     totalItems.value = data.data.total_items;
 
     const paginatedOrders = data.data.items as OrderInterface[];
-    console.log(filters);
+
     if (paginatedOrders) {
         listItems.value = paginatedOrders.map((order) => ({
             id: order.shortId,
@@ -318,9 +308,8 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
     return data.data;
 };
 
-await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
-
 await loadTabFilters();
+await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 
 const visibleItemsFiltered = computed(() => {
     return [...listItems.value].filter((e) => {
@@ -333,10 +322,13 @@ watch(
     async ([newAtPage, newPerPage, newActiveFilters, newActiveSort]) => {
         const filterParams = {};
 
+        if (activeOrderFilter.value && activeOrderFilter.value.value !== 'all-orders') {
+            filterParams[activeOrderFilter.value.value] = `${activeOrderFilter.value.key}`;
+        }
         for (const filter of newActiveFilters) {
             filterParams[filter.filter] = filter.value;
         }
-        console.log(filterParams);
+
         await fetchAndSetOrdersList(newAtPage, newPerPage, filterParams, newActiveSort);
     },
     { deep: true }
