@@ -8,8 +8,11 @@
                 :class="[filter.value === activeOrderFilter ? 'text-blue' : 'hover:text-blue']"
                 @click="
                     activeOrderFilter = filter.value;
-                    activeFilters = [];
-                    handleFilterChange(activeFilters, emits, filter.value, `${filter.key}`, true, true);
+                    // activeFilters = [];
+                    setTableData(filter);
+                    // typeof filter.key !== 'undefined' &&
+                    //     handleFilterChange(activeFilters, emits, filter.value, `${filter.key}`, true, true);
+                    // handleTabFilters(filter);
                 "
             >
                 <span>
@@ -19,7 +22,7 @@
                     class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium transition-colors duration-300"
                     :class="filter.value === activeOrderFilter ? 'text-white bg-blue' : 'text-gray-300 bg-gray-200'"
                 >
-                    {{ filter.count }}
+                    {{ filter.total_items }}
                 </span>
             </button>
             <div
@@ -142,24 +145,34 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import moment from 'moment/moment';
 import { useNuxtApp } from '#app';
-import { handleFilterChange } from '~/services/dashboard/filter.service';
 
 const { $api } = useNuxtApp();
 
-const orderFilters = [
+interface TabFilter {
+    label: string;
+    value: string;
+    key?: any;
+    total_items: number;
+    items?: OrderInterface[];
+}
+
+const orderFilters = ref<TabFilter[]>([
     {
         label: 'All orders',
         value: 'all-orders',
+        total_items: 0,
     },
     {
         label: 'Active',
         value: 'active',
         key: [OrderStatus.Completed, OrderStatus.Canceled],
+        total_items: 0,
     },
     {
         label: 'Last 24h',
         value: 'startDate',
         key: moment.utc().subtract(24, 'hours').format('DD/MM/YYYY HH:mm:ss'),
+        total_items: 0,
     },
     {
         label: 'Awaiting Processing',
@@ -173,31 +186,76 @@ const orderFilters = [
             OrderStatus.AwaitingPickup,
             OrderStatus.AwaitingPayment,
         ],
+        total_items: 0,
     },
     {
         label: 'Fulfilled',
         value: 'fulfilled',
         key: [OrderStatus.Shipped, OrderStatus.PartiallyShipped],
+        total_items: 0,
     },
     {
         label: 'Completed',
         value: 'status',
         key: OrderStatus.Completed,
+        total_items: 0,
     },
     {
         label: 'Canceled',
         value: 'status',
         key: OrderStatus.Canceled,
+        total_items: 0,
     },
-];
+] as TabFilter[]);
 
 const activeOrderFilter = ref('all-orders');
 const filterHighlightWidth = ref(0);
 const filterHightlightLeft = ref(0);
 
+const activeFilters = ref([] as FilterInterface[]);
+const activeSort = ref({} as SortInterface);
+
+// const emits = defineEmits(['active-filters', 'active-sort']);
+
+const handleTabFilters = (filter: any) => {
+    if (typeof filter.key === 'undefined') {
+        clearFilters();
+        return;
+    }
+};
+
+const loadTabFilters = async () => {
+    for (const filter of orderFilters.value) {
+        activeFilters.value = [];
+        const filterObj = {};
+        // typeof filter.key !== 'undefined' && handleFilterChange(activeFilters.value, emits, filter.value, `${filter.key}`, true, true);
+        // typeof filter.key !== 'undefined' &&
+        filterObj[filter.value] = `${filter.key}`;
+
+        const data = await fetchAndSetOrdersList(atPage.value, perPage.value, filterObj, activeSort.value);
+
+        filter.total_items = data?.total_items;
+        filter.items = data?.items;
+    }
+};
+
+const setTableData = (filter: TabFilter) => {
+    listItems.value = filter.items.map((order) => ({
+        id: order.shortId,
+        type: order.type,
+        name: order.userName || '-',
+        date: moment(order.createdAt).format('DD/MM/YYYY'),
+        payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
+        status: order.status,
+        total: order.total,
+    })) as unknown as DashboardOrderItem[];
+
+    totalItems.value = filter.total_items;
+};
+
 const setActiveFilterHighlight = () => {
     const activeFilter = activeOrderFilter.value;
-    const index = orderFilters.findIndex((filter) => filter.value === activeFilter);
+    const index = orderFilters.value.findIndex((filter) => filter.value === activeFilter);
     if (index !== -1) {
         const filterElement = document.querySelectorAll('.ordersFilter')[index] as HTMLElement;
 
@@ -211,9 +269,6 @@ const setActiveFilterHighlight = () => {
 watch(activeOrderFilter, () => {
     setActiveFilterHighlight();
 });
-
-const activeFilters = ref([] as FilterInterface[]);
-const activeSort = ref({} as SortInterface);
 
 const clearFilters = async () => {
     activeFilters.value = [];
@@ -247,7 +302,7 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
     totalItems.value = data.data.total_items;
 
     const paginatedOrders = data.data.items as OrderInterface[];
-
+    console.log(filters);
     if (paginatedOrders) {
         listItems.value = paginatedOrders.map((order) => ({
             id: order.shortId,
@@ -259,10 +314,13 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
             total: order.total,
         })) as unknown as DashboardOrderItem[];
     }
-    console.log(listItems.value);
+
+    return data.data;
 };
 
 await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
+
+await loadTabFilters();
 
 const visibleItemsFiltered = computed(() => {
     return [...listItems.value].filter((e) => {
@@ -278,6 +336,7 @@ watch(
         for (const filter of newActiveFilters) {
             filterParams[filter.filter] = filter.value;
         }
+        console.log(filterParams);
         await fetchAndSetOrdersList(newAtPage, newPerPage, filterParams, newActiveSort);
     },
     { deep: true }

@@ -1,6 +1,6 @@
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 
-export const handleFilterChange = (activeFilters: FilterInterface[], emits, filter: string, event: any, raw, hidden = false) => {
+export const handleFilterChange = (activeFilters: FilterInterface[], emits, filter: string, event: any, raw: boolean, hidden = false) => {
     const value = raw ? event : event.target?.value;
 
     const existingFilterIndex = activeFilters.findIndex((item) => item.filter === filter);

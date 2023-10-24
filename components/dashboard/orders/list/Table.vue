@@ -87,7 +87,7 @@
             handleFilterChange(activeFilters, emits, 'status', status, true);
         }"
         @paymentStatusFilterChange="(event: MouseEvent, item) => {
-            paymentStatus = item.label;
+            payment = item.label;
             handleFilterChange(activeFilters, emits, 'paymentStatus', item.key, true);
         }"
         @orderTotalFilterChange="
@@ -106,7 +106,6 @@ import { DashboardOrderItem } from '~~/types';
 import CustomTable from '~/components/shared/tables/CustomTable.vue';
 import CustomItem from '~/components/shared/tables/CustomItem.vue';
 import { formattedDate, handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
-import paymentStatus from '~/components/shared/tables/micro/row-items/PaymentStatus.vue';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 
 defineProps({
