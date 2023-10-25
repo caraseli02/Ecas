@@ -32,7 +32,7 @@
             <div class="flex flex-wrap gap-4">
                 <div v-for="(filter, index) in activeFilters" :key="index" class="flex items-center p-1 bg-[#F2F2F2] rounded-md">
                     <span class="text-sm leading-[1.43] text-gray-300 mr-2">
-                        {{ `${FilterLabelsEnum[filter.filter]}: ${filter.value}` }}
+                        {{ `${OrdersFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                     </span>
                     <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="removeFilter(index)">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
@@ -63,7 +63,7 @@
             <DashboardCustomersListPagination
                 :at-page="atPage"
                 :per-page="perPage"
-                :items-count="listItems.length"
+                :items-count="totalItems"
                 position="top"
                 class="flex-col mb-6 md:mb-8"
                 @page-change="atPage = $event"
@@ -78,7 +78,7 @@
             <DashboardCustomersListPagination
                 :at-page="atPage"
                 :per-page="perPage"
-                :items-count="listItems.length"
+                :items-count="totalItems"
                 position="bottom"
                 class="flex-col-reverse"
                 @page-change="atPage = $event"
@@ -92,143 +92,88 @@
 import DownloadIcon from '@/assets/icons/dashboard/download.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import { DashboardCustomerOrderItem } from '~~/types';
-import { FilterLabelsEnum } from '~/types/dashboard/filter';
+import { DashboardOrderItem, OrderInterface, PaymentStatusEnum } from '~~/types';
+import { OrdersFilterLabelsEnum } from '~/types/dashboard/filter';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
+import { useNuxtApp } from '#app';
+import moment from 'moment';
 
-const activeFilters = ref([] as FilterInterface);
+const { $api } = useNuxtApp();
+
+const props = defineProps({
+    id: {
+        type: String,
+        required: true,
+    },
+});
+
+const activeFilters = ref([] as FilterInterface[]);
 const activeSort = ref({} as SortInterface);
+
+const listItems = ref<DashboardOrderItem[]>([]);
 
 const clearFilters = async () => {
     activeFilters.value = [];
 };
 
-const removeFilter = async (index) => {
+const removeFilter = async (index: number) => {
     activeFilters.value.splice(index, 1);
 };
 
 const atPage = ref(1);
 const perPage = ref(10);
-const loading = ref(false);
+const totalItems = ref(0);
+const loading = ref(true);
 const error = ref(false);
 const emptyData = ref(false);
 
-const listItems = ref<DashboardCustomerOrderItem[]>([
-    {
-        id: '1V9VGU48XV',
-        type: 'stock-order',
-        date: 0,
-        status: 'abandoned-checkout',
-        total: 138000.77,
+const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
+    loading.value = true;
+    error.value = false;
+
+    filters['userId'] = props.id;
+
+    const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
+
+    if (!data || data.status !== 'success') {
+        loading.value = false;
+        error.value = true;
+        return;
+    }
+
+    loading.value = false;
+    totalItems.value = data.data.total_items;
+
+    const paginatedOrders = data.data.items as OrderInterface[];
+
+    if (paginatedOrders) {
+        listItems.value = paginatedOrders.map((order) => ({
+            id: order.shortId,
+            type: order.type,
+            date: moment(order.createdAt).format('DD/MM/YYYY'),
+            payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
+            status: order.status,
+            total: order.total,
+        })) as unknown as DashboardOrderItem[];
+    }
+};
+
+await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
+
+watch(
+    [atPage, perPage, activeFilters, activeSort],
+    async ([newAtPage, newPerPage, newActiveFilters, newActiveSort]) => {
+        const filterParams = {};
+
+        for (const filter of newActiveFilters) {
+            filterParams[filter.filter] = filter.value;
+        }
+        await fetchAndSetOrdersList(newAtPage, newPerPage, filterParams, newActiveSort);
     },
-    {
-        id: '1V9VGU48XV',
-        type: 'backorder',
-        date: 0,
-        status: 'awaiting-payment',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'mixed-order',
-        date: 0,
-        status: 'partially-refunded',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'backorder',
-        date: 0,
-        status: 'completed',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'stock-order',
-        date: 0,
-        status: 'partially-shipped',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'backorder',
-        date: 0,
-        status: 'processing',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'mixed-order',
-        date: 0,
-        status: 'payment-received',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'backorder',
-        date: 0,
-        status: 'payment-declined',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'backorder',
-        date: 0,
-        status: 'awaiting-fulfillment',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'stock-order',
-        date: 0,
-        status: 'abandoned-checkout',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'backorder',
-        date: 0,
-        status: 'awaiting-payment',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'mixed-order',
-        date: 0,
-        status: 'partially-refunded',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'backorder',
-        date: 0,
-        status: 'completed',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'stock-order',
-        date: 0,
-        status: 'partially-shipped',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'backorder',
-        date: 0,
-        status: 'processing',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV',
-        type: 'mixed-order',
-        date: 0,
-        status: 'payment-received',
-        total: 138000.77,
-    },
-]);
+    { deep: true }
+);
 
 const visibleItemsFiltered = computed(() => {
     return [...listItems.value].filter((e) => {

@@ -5,17 +5,20 @@
                 v-for="(filter, index) in orderFilters"
                 :key="index"
                 class="ordersFilter flex items-center gap-3 relative z-10 text-sm font-medium leading-[1.71] py-5 flex-shrink-0 transition-colors duration-300 md:py-8"
-                :class="[filter.value === activeOrderFilter ? 'text-blue' : 'hover:text-blue']"
-                @click="activeOrderFilter = filter.value"
+                :class="[filter.value === activeOrderFilter.value ? 'text-blue' : 'hover:text-blue']"
+                @click="
+                    activeOrderFilter = filter;
+                    setTableData(filter);
+                "
             >
                 <span>
                     {{ filter.label }}
                 </span>
                 <span
                     class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium transition-colors duration-300"
-                    :class="filter.value === activeOrderFilter ? 'text-white bg-blue' : 'text-gray-300 bg-gray-200'"
+                    :class="filter.value === activeOrderFilter.value ? 'text-white bg-blue' : 'text-gray-300 bg-gray-200'"
                 >
-                    {{ filter.count }}
+                    {{ filter.total_items }}
                 </span>
             </button>
             <div
@@ -65,12 +68,16 @@
                     </button>
                 </div>
             </div>
-            <div v-if="activeFilters.length > 0" class="mb-6 md:flex md:items-start">
+            <div v-if="activeFilters.filter((item) => !item.hidden).length > 0" class="mb-6 md:flex md:items-start">
                 <div class="leading-normal font-medium text-gray-300 mb-4 md:mr-4">Filters:</div>
                 <div class="flex flex-wrap gap-4">
-                    <div v-for="(filter, index) in activeFilters" :key="index" class="flex items-center p-1 bg-[#F2F2F2] rounded-md">
+                    <div
+                        v-for="(filter, index) in activeFilters.filter((item) => !item.hidden) as unknown as FilterInterface"
+                        :key="index"
+                        class="flex items-center p-1 bg-[#F2F2F2] rounded-md"
+                    >
                         <span class="text-sm leading-[1.43] text-gray-300 mr-2">
-                            {{ `${FilterLabelsEnum[filter.filter]}: ${filter.value}` }}
+                            {{ `${OrdersFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                         </span>
                         <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="removeFilter(index)">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
@@ -97,7 +104,7 @@
                 <DashboardCustomersListPagination
                     :at-page="atPage"
                     :per-page="perPage"
-                    :items-count="listItems.length"
+                    :items-count="totalItems"
                     position="top"
                     class="flex-col mb-6 md:mb-8"
                     @page-change="atPage = $event"
@@ -113,7 +120,7 @@
                 <DashboardCustomersListPagination
                     :at-page="atPage"
                     :per-page="perPage"
-                    :items-count="listItems.length"
+                    :items-count="totalItems"
                     position="bottom"
                     class="flex-col-reverse"
                     @page-change="atPage = $event"
@@ -128,56 +135,113 @@
 import PlusIcon from '@/assets/icons/dashboard/plus.svg';
 import FilterIcon from '@/assets/icons/dashboard/filter-2.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import { DashboardOrderItem } from '~~/types';
-import { FilterLabelsEnum } from '~/types/dashboard/filter';
-import Flag from '@/assets/icons/flags/ron.svg';
+import { DashboardOrderItem, OrderInterface, OrderStatus, PaymentStatusEnum } from '~~/types';
+import { OrdersFilterLabelsEnum } from '~/types/dashboard/filter';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
+import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
+import moment from 'moment/moment';
+import { useNuxtApp } from '#app';
 
-const orderFilters = [
+const { $api } = useNuxtApp();
+
+interface TabFilter {
+    label: string;
+    value: string;
+    key?: any;
+    total_items: number;
+    items?: OrderInterface[];
+}
+
+const orderFilters = ref<TabFilter[]>([
     {
         label: 'All orders',
         value: 'all-orders',
-        count: 130,
+        total_items: 0,
     },
     {
         label: 'Active',
         value: 'active',
-        count: 130,
+        key: [OrderStatus.Completed, OrderStatus.Canceled],
+        total_items: 0,
     },
     {
         label: 'Last 24h',
-        value: 'last-24h',
-        count: 130,
+        value: 'startDate',
+        key: moment.utc().subtract(24, 'hours').format('DD/MM/YYYY HH:mm:ss'),
+        total_items: 0,
     },
     {
         label: 'Awaiting Processing',
-        value: 'awaiting-processing',
-        count: 130,
+        value: 'awaitingProcessing',
+        key: [
+            OrderStatus.VerificationRequired,
+            OrderStatus.Processing,
+            OrderStatus.Pending,
+            OrderStatus.AwaitingFulfillment,
+            OrderStatus.AwaitingShipment,
+            OrderStatus.AwaitingPickup,
+            OrderStatus.AwaitingPayment,
+        ],
+        total_items: 0,
     },
     {
         label: 'Fulfilled',
         value: 'fulfilled',
-        count: 130,
+        key: [OrderStatus.Shipped, OrderStatus.PartiallyShipped],
+        total_items: 0,
     },
     {
         label: 'Completed',
-        value: 'completed',
-        count: 130,
+        value: 'status',
+        key: OrderStatus.Completed,
+        total_items: 0,
     },
     {
         label: 'Canceled',
-        value: 'canceled',
-        count: 130,
+        value: 'status',
+        key: OrderStatus.Canceled,
+        total_items: 0,
     },
-];
+] as TabFilter[]);
 
-const activeOrderFilter = ref('all-orders');
+const activeOrderFilter = ref<TabFilter>(orderFilters.value[0]);
 const filterHighlightWidth = ref(0);
 const filterHightlightLeft = ref(0);
 
+const activeFilters = ref([] as FilterInterface[]);
+const activeSort = ref({} as SortInterface);
+
+const loadTabFilters = async () => {
+    for (const filter of orderFilters.value) {
+        const filterObj = {};
+
+        activeFilters.value = [];
+        filterObj[filter.value] = `${filter.key}`;
+
+        const data = await fetchAndSetOrdersList(
+            atPage.value,
+            perPage.value,
+            filter.value === 'all-orders' ? {} : filterObj,
+            activeSort.value
+        );
+
+        filter.total_items = data?.total_items;
+    }
+};
+
+const setTableData = async (filter: TabFilter) => {
+    const filterObj = {};
+
+    filterObj[filter.value] = `${filter.key}`;
+    atPage.value = 1;
+
+    await fetchAndSetOrdersList(atPage.value, perPage.value, filter.value === 'all-orders' ? {} : filterObj, activeSort.value);
+};
+
 const setActiveFilterHighlight = () => {
     const activeFilter = activeOrderFilter.value;
-    const index = orderFilters.findIndex((filter) => filter.value === activeFilter);
+    const index = orderFilters.value.findIndex((filter) => filter.value === activeFilter.value);
+
     if (index !== -1) {
         const filterElement = document.querySelectorAll('.ordersFilter')[index] as HTMLElement;
 
@@ -188,12 +252,13 @@ const setActiveFilterHighlight = () => {
     }
 };
 
-watch(activeOrderFilter, () => {
-    setActiveFilterHighlight();
-});
-
-const activeFilters = ref([]);
-const activeSort = ref({});
+watch(
+    activeOrderFilter,
+    () => {
+        setActiveFilterHighlight();
+    },
+    { deep: true }
+);
 
 const clearFilters = async () => {
     activeFilters.value = [];
@@ -203,233 +268,71 @@ const removeFilter = async (index: number) => {
     activeFilters.value.splice(index, 1);
 };
 
+const listItems = ref<DashboardOrderItem[]>([]);
+
 const atPage = ref(1);
 const perPage = ref(10);
 const loading = ref(true);
 const error = ref(false);
+const totalItems = ref(0);
 
-const listItems = ref<DashboardOrderItem[]>([
-    {
-        id: '100001',
-        type: 'stock-order',
-        date: 0,
-        note: 'This order has a note',
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-            locked: true,
-        },
-        payment: 'paid',
-        fulfillment: 'abandoned-checkout',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'back-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'canceled',
-        fulfillment: 'awaiting-payment',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'mixed-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'pending',
-        fulfillment: 'partially-refunded',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'back-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'completed',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        note: 'This order has a note',
-        type: 'stock-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'pending',
-        fulfillment: 'partially-shipped',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'back-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'declined',
-        fulfillment: 'processing',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'mixed-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'payment-received',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'back-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'payment-declined',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'back-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-            locked: true,
-        },
-        payment: 'paid',
-        fulfillment: 'awaiting-fulfillment',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'stock-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'abandoned-checkout',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'back-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'awaiting-payment',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'mixed-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'partially-refunded',
-        total: 138000.77,
-    },
-    {
-        id: '1V9VGU48XV ',
-        type: 'back-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'completed',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'stock-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'partially-shipped',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        type: 'back-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-        },
-        payment: 'paid',
-        fulfillment: 'processing',
-        total: 138000.77,
-    },
-    {
-        id: '100001',
-        note: 'This order has a note',
-        type: 'mixed-order',
-        date: 0,
-        customer: {
-            name: 'Madalina Popescu',
-            email: 'madalina.popescu@company.com',
-            flag: Flag,
-            locked: true,
-        },
-        payment: 'paid',
-        fulfillment: 'payment-received',
-        total: 138000.77,
-    },
-]);
+const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
+    loading.value = true;
+    error.value = false;
+
+    const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
+
+    if (!data || data.status !== 'success') {
+        loading.value = false;
+        error.value = true;
+        return;
+    }
+
+    loading.value = false;
+    totalItems.value = data.data.total_items;
+
+    const paginatedOrders = data.data.items as OrderInterface[];
+
+    if (paginatedOrders) {
+        listItems.value = paginatedOrders.map((order) => ({
+            id: order.shortId,
+            type: order.type,
+            name: order.userName || '-',
+            date: moment(order.createdAt).format('DD/MM/YYYY'),
+            payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
+            status: order.status,
+            total: order.total,
+        })) as unknown as DashboardOrderItem[];
+    }
+
+    return data.data;
+};
+
+await loadTabFilters();
+await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 
 const visibleItemsFiltered = computed(() => {
     return [...listItems.value].filter((e) => {
         return true;
     });
 });
+
+watch(
+    [atPage, perPage, activeFilters, activeSort],
+    async ([newAtPage, newPerPage, newActiveFilters, newActiveSort]) => {
+        const filterParams = {};
+
+        if (activeOrderFilter.value && activeOrderFilter.value.value !== 'all-orders') {
+            filterParams[activeOrderFilter.value.value] = `${activeOrderFilter.value.key}`;
+        }
+        for (const filter of newActiveFilters) {
+            filterParams[filter.filter] = filter.value;
+        }
+
+        await fetchAndSetOrdersList(newAtPage, newPerPage, filterParams, newActiveSort);
+    },
+    { deep: true }
+);
 
 onMounted(() => {
     setActiveFilterHighlight();

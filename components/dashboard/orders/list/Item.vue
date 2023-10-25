@@ -1,144 +1,54 @@
 <template>
     <div class="grid grid-cols-[158px,149px,228px,275px,141px,220px,136px,85px] items-center">
         <div class="flex items-center gap-4 text-sm leading-[1.43]" :class="[loading ? 'px-4 py-[22px]' : 'p-6']">
-            <SkeletonLoader v-if="loading" class="w-[94px] h-6" />
-            <template v-else>
-                <span class="uppercase"> #{{ item.id }} </span>
-                <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
-                    <MessageIcon v-if="item.note" class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
-                    <template #content>
-                        <span>This order has a note</span>
-                    </template>
-                </Tooltip>
-            </template>
+            <OrderId :item="item" :loading="loading" />
         </div>
         <div class="p-5" :class="[loading ? 'px-2' : '']">
-            <SkeletonLoader v-if="loading" class="w-[133px] h-6" />
-            <div
-                v-else
-                class="capitalize rounded-md px-3 py-1 text-sm font-medium max-w-max bg-opacity-[0.15]"
-                :class="[
-                    item.type === 'stock-order'
-                        ? 'text-[#006D4D] bg-[#00D395]'
-                        : item.type === 'back-order'
-                        ? 'text-[#FF8A00] bg-[#FF8A00]'
-                        : 'text-[#023F7E] bg-blue',
-                ]"
-            >
-                {{ item.type.replace(/-/g, ' ') }}
-            </div>
+            <OrderType :item="item" :loading="loading" />
         </div>
         <div class="text-sm leading-[1.43] truncate" :class="[loading ? 'px-3.5 py-[22px]' : 'px-5 py-6']">
-            <SkeletonLoader v-if="loading" class="w-[200px] h-6" />
-            <template v-else> 21 September 2023, 18:25 </template>
+            <TextBox :text="'21 September 2023, 18:25'" :loading="loading" />
         </div>
-        <div class="py-3" :class="[loading ? 'px-[17px]' : 'px-4']">
-            <template v-if="loading">
-                <SkeletonLoader class="w-[140px] h-5 mb-2" />
-                <SkeletonLoader class="w-[240px] h-4" />
-            </template>
-            <template v-else>
-                <div class="flex items-center gap-3 mb-2">
-                    <!-- <component :is="item.customer.flag"  /> -->
-                    <img src="@/assets/icons/dashboard/ro.svg?inline" alt="Flag" class="w-5 h-5" />
-                    <span class="text-sm font-semibold leading-[1.43]">
-                        {{ item.customer.name }}
-                    </span>
-                    <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
-                        <LockIcon
-                            v-if="item.customer.locked"
-                            class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue"
-                        />
-                        <template #content>
-                            <span class="capitalize">Account Locked</span>
-                        </template>
-                    </Tooltip>
-                </div>
-                <div class="text-xs text-gray-300 leading-[1.33]">
-                    {{ item.customer.email }}
-                </div>
-            </template>
-        </div>
+        <NameAndProfile
+            :item="item?.customer?.name"
+            :index="index"
+            :loading="loading"
+            :show-avatar="false"
+            :show-flag="false"
+            :show-lock="false"
+            :show-discount="false"
+            class="py-3"
+            :class="[loading ? 'px-[17px]' : 'px-4']"
+            :custom-class="'w-full'"
+        />
         <div class="py-5" :class="[loading ? 'px-4' : 'px-6']">
-            <SkeletonLoader v-if="loading" class="w-[109px] h-6" />
-            <div
-                v-else
-                class="capitalize rounded-md px-3 py-1 text-sm font-medium max-w-max bg-opacity-[0.15]"
-                :class="[
-                    item.payment === 'paid'
-                        ? 'text-[#00D395] bg-[#00D395]'
-                        : item.payment === 'pending'
-                        ? 'text-[#FF8A00] bg-[#FF8A00]'
-                        : item.payment === 'canceled' || item.payment === 'declined'
-                        ? 'text-[#FA4B4B] bg-[#FA4B4B]'
-                        : 'text-blue bg-blue',
-                ]"
-            >
-                {{ item.payment.replace(/-/g, ' ') }}
-            </div>
+            <PaymentStatus :status="item.payment" :loading="loading" />
         </div>
         <div class="p-5" :class="[loading ? 'px-3' : '']">
-            <SkeletonLoader v-if="loading" class="w-[196px] h-6" />
-            <div
-                v-else
-                class="capitalize rounded-md px-3 py-1 text-sm font-medium max-w-max bg-opacity-[0.15]"
-                :class="[
-                    item.fulfillment === 'abandoned-checkout'
-                        ? 'text-gray-300 bg-gray-300'
-                        : item.fulfillment === 'awaiting-payment' || item.fulfillment === 'awaiting-fulfillment'
-                        ? 'text-[#FF8A00] bg-[#FF8A00]'
-                        : item.fulfillment === 'completed' || item.fulfillment === 'payment-received'
-                        ? 'text-[#00D395] bg-[#00D395]'
-                        : item.fulfillment === 'partially-shipped'
-                        ? 'text-blue bg-blue'
-                        : item.fulfillment === 'partially-refunded' || item.fulfillment === 'processing'
-                        ? 'text-[#A460BC] bg-[#A460BC]'
-                        : 'text-[#FA4B4B] bg-[#FA4B4B]',
-                ]"
-            >
-                {{ item.fulfillment.replace(/-/g, ' ') }}
-            </div>
+            <OrderStatus :status="item.status" :loading="loading" />
         </div>
         <div class="text-sm font-medium" :class="[loading ? 'px-4 py-[22px]' : 'p-6 pr-4']">
-            <SkeletonLoader v-if="loading" class="w-[94px] h-6" />
-            <template v-else> $ 138,000.77 </template>
+            <TextBox :text="'$ 138,000.77'" :loading="loading" />
         </div>
         <div class="flex items-center justify-end gap-6 pr-4" :class="[loading ? 'px-4' : '']">
-            <SkeletonLoader v-if="loading" class="w-12 h-6" />
-            <div v-else class="relative">
-                <button class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue" @click="handleShowOptions">
-                    <MoreVerticalIcon class="w-6 h-6" />
-                </button>
-            </div>
+            <ActionsMenu :loading="loading" :index="index" :three-dot-button="true" @showOptions="handleShowOptions" />
         </div>
     </div>
     <Teleport to="body">
         <Transition :name="index > 8 ? 'fade-full-neg' : 'fade-bottom'">
-            <div
+            <ThreeDotMenu
                 v-if="showOptions"
                 v-click-outside="() => (showOptions = false)"
-                class="absolute z-10 grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[172px] shadow-m -translate-x-full"
-                :class="[index > 8 ? '-translate-y-[calc(100%+42px)]' : '']"
-                :style="{
-                    top: optionsDropdownTop + 'px',
-                    left: optionsDropdownLeft + 'px',
-                }"
-            >
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="showOptions = false"
-                >
-                    <DocumentIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71] font-medium">View Order</span>
-                </button>
-                <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    @click="showOptions = false"
-                >
-                    <InvoiceIcon class="w-6 h-6 mr-3 text-current" />
-                    <span class="text-sm leading-[1.71] font-medium">View Invoice</span>
-                </button>
-            </div>
+                :index="index"
+                :dropdown-top="optionsDropdownTop"
+                :dropdown-left="optionsDropdownLeft"
+                :document-button="true"
+                :document-text="'View Order'"
+                :invoice-button="true"
+                :invoice-text="'View Invoice'"
+                @documentClicked="showOptions = false"
+                @invoiceClicked="showOptions = false"
+            />
         </Transition>
         <Transition name="fade">
             <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item" @close="showDeactivatingModal = false" />
@@ -154,11 +64,14 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import { DashboardOrderItem } from '~/types';
-import MessageIcon from '@/assets/icons/dashboard/orders/message.svg';
-import DocumentIcon from '@/assets/icons/dashboard/document.svg';
-import InvoiceIcon from '@/assets/icons/dashboard/invoice.svg';
-import MoreVerticalIcon from '@/assets/icons/dashboard/more-vertical.svg';
-import LockIcon from '@/assets/icons/dashboard/orders/lock.svg';
+import NameAndProfile from '~/components/shared/tables/micro/row-items/NameAndProfile.vue';
+import OrderType from '~/components/shared/tables/micro/row-items/OrderType.vue';
+import OrderStatus from '~/components/shared/tables/micro/row-items/OrderStatus.vue';
+import PaymentStatus from '~/components/shared/tables/micro/row-items/PaymentStatus.vue';
+import OrderId from '~/components/shared/tables/micro/row-items/OrderId.vue';
+import ActionsMenu from '~/components/shared/tables/micro/row-items/ActionsMenu.vue';
+import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
+import TextBox from '~/components/shared/tables/micro/row-items/TextBox.vue';
 
 const props = defineProps({
     item: {
@@ -178,6 +91,7 @@ const props = defineProps({
         default: false,
     },
 });
+console.log('test');
 
 const showOptions = ref(false);
 const showDeactivatingModal = ref(false);
