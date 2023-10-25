@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col min-h-screen">
         <LayoutHeader :is-scrolled="isScrolled" />
-        <main class="flex flex-col pt-[84px] flex-1" :class="[isScrolled ? 'md:pt-[170px]' : 'md:pt-[172px]']">
+        <main class="flex flex-col pt-[96px] flex-1 lg:pt-[180px] xl:pt-[176px]" :class="[isScrolled ? 'md:pt-[170px]' : 'md:pt-[172px]']">
             <slot />
         </main>
         <LayoutFooter />
