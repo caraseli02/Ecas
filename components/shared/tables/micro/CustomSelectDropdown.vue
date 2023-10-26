@@ -1,19 +1,13 @@
 <template>
-    <div
-        class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 shadow-m"
-        :style="{
-            top: dropdownTop + 'px',
-            left: dropdownLeft + 'px',
-        }"
-        :class="customClasses"
-    >
+    <div class="absolute z-10 -translate-x-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 shadow-m" :style="{
+        top: dropdownTop + 'px',
+        left: dropdownLeft + 'px',
+    }" :class="customClasses">
         <div class="overflow-y-auto scrollbar-thin max-h-[304px]">
-            <button
-                v-for="item in items"
-                class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            <button v-for="item in items"
+                class="flex items-center w-[calc(100%-8px)] text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
                 :class="[selectedItem === item.label ? 'text-blue bg-[#F2F2F2]' : '']"
-                @click="handleSelection($event, item)"
-            >
+                @click="handleSelection($event, item)">
                 <component :is="item.iconType" v-if="item.iconType" class="w-6 h-6 mr-3 text-current" />
                 <span class="text-sm leading-[1.71]">{{ item.label }}</span>
             </button>

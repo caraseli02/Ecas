@@ -1,5 +1,6 @@
 export interface FilterInterface {
     filter: string;
+    hidden?: boolean;
     value: any;
 }
 

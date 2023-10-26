@@ -24,14 +24,20 @@
                         </button>
                         <button
                             class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                            @click="showOptions = false; deactivateAccountAsAdmin(customerInformation.firebaseId)"
+                            @click="
+                                showOptions = false;
+                                deactivateAccountAsAdmin(customerInformation.firebaseId);
+                            "
                         >
                             <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> Deactivate Account </span>
                         </button>
                         <button
                             class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
-                            @click="showOptions = false; deleteAccountAsAdmin(customerInformation.firebaseId)"
+                            @click="
+                                showOptions = false;
+                                deleteAccountAsAdmin(customerInformation.firebaseId);
+                            "
                         >
                             <TrashIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
@@ -204,6 +210,7 @@ const { $api } = useNuxtApp();
 const fetchInformation = async () => {
     error.value = false;
     isLoading.value = true;
+
     if (!props.id) {
         return;
     }

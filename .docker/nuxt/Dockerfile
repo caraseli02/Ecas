@@ -1,5 +1,5 @@
 # Stage 1 - base
-FROM node:alpine AS base
+FROM node:20-alpine AS base
 
 WORKDIR /code
 
