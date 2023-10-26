@@ -8,7 +8,8 @@
       >
         <XIcon class="w-6 h-6"/>
       </button>
-      <div class="text-sm leading-[2.29] text-center mb-9">Deactivate account:</div>
+      <div v-if="user.active" class="text-sm leading-[2.29] text-center mb-9">Lock account:</div>
+      <div v-else class="text-sm leading-[2.29] text-center mb-9">Unlock account:</div>
       <div class="flex items-center mb-[78px]">
         <div
             class="relative flex items-center justify-center rounded-full overflow-hidden w-11 h-11 flex-shrink-0 mr-4"
@@ -73,11 +74,20 @@
           Cancel
         </button>
         <button
-            class="flex px-5 py-2 rounded-lg bg-[#FA4B4B] text-sm leading-[1.71] text-white font-medium"
-            @click="$emit('close'),deactivateAccountAsAdmin(user.firebaseId)"
+            v-if="user.active"
+            class="flex px-5 py-2 rounded-lg bg-[#FA4B4B] text-sm leading-[1.71] justify-center text-white font-medium"
+            @click="deactivateAccountAsAdmin(user.firebaseId)"
 
         >
-          Deactivate Account
+          <span>Lock Account</span>
+        </button>
+        <button
+            v-else
+            class="flex px-5 py-2 rounded-lg bg-[#00D395] text-sm leading-[1.71] justify-center text-white font-medium"
+            @click="activateAccountAsAdmin(user.firebaseId)"
+
+        >
+          <span>Unlock Account</span>
         </button>
       </div>
     </div>
@@ -90,7 +100,7 @@ import XIcon from '@/assets/icons/dashboard/x.svg';
 import UserIcon from '@/assets/icons/dashboard/user.svg';
 import {useNuxtApp} from '#app';
 
-const {$api} = useNuxtApp();
+const { $api } = useNuxtApp();
 
 defineProps({
   user: {
@@ -100,12 +110,23 @@ defineProps({
 });
 
 const deactivateAccountAsAdmin = async (id: string) => {
+  emits('close');
+  emits('changeLockStatus');
   const response = await $api.userDashboard.deactivateUser(id)
   if (response.status !== 'success') {
     console.log(response.status);
     return;
   }
 }
+const activateAccountAsAdmin = async (id: string) => {
+  emits('close');
+  emits('changeLockStatus');
+  const response = await $api.userDashboard.activateUser(id)
+  if (response.status !== 'success') {
+    console.log(response.status);
+    return;
+  }
+}
 
-defineEmits(['close']);
+const emits = defineEmits(['close', 'changeLockStatus']);
 </script>

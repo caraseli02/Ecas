@@ -12,6 +12,7 @@
                 v-for="(person, index) in people.slice(0, type === 'default' ? 7 : 6)"
                 :key="index"
                 :item="person"
+                :index="index"
                 :type="type"
                 :loading="loading"
             />
@@ -116,6 +117,8 @@ const fetchAndSetNewCustomers = async (time = 7) => {
         return;
     }
 
+    console.log(data.data)
+
     loading.value = false;
 
     people.value = data.data?.map((user: UserDetails) => ({
@@ -127,6 +130,8 @@ const fetchAndSetNewCustomers = async (time = 7) => {
         registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
         spent: user.spent,
         ordersCount: user.ordersCount,
+        firebaseId: user.firebaseId,
+        active: user.active,
     }));
 };
 

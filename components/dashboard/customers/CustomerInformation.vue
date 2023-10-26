@@ -9,8 +9,8 @@
                 <button class="flex" @click="showOptions = !showOptions">
                     <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
                 </button>
-                <Transition name="fade-full">
-                    <div
+                <Transition name="fade-bottom">
+                    <!-- <div
                         v-if="showOptions"
                         v-click-outside="() => (showOptions = false)"
                         class="absolute z-10 -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m"
@@ -36,8 +36,25 @@
                             <TrashIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
                         </button>
-                    </div>
+                    </div> -->
+                    <ThreeDotMenu v-if="showOptions" v-click-outside="() => (showOptions = false)" :index="index"
+                        :dropdown-top="30" :dropdown-left="25" :settings-button="true" :settings-text="'Control Panel'"
+                        :deactivate-button="true"
+                        :deactivate-text="customerDetails.active ? 'Lock Account' : 'Unlock Account'" :trash-button="true"
+                        :trash-text="'Delete Account'" @settings-clicked="showOptions = false"
+                        @deactivate-clicked="showDeactivatingModal = true; showOptions = false"
+                        @trash-clicked="showOptions = false; deleteAccountAsAdmin(customerInformation.firebaseId)" />
                 </Transition>
+                <Teleport to="body">
+                    <Transition name="fade">
+                        <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="customerDetails"
+                            @close="showDeactivatingModal = false"
+                            @change-lock-status="customerDetails.active = !customerDetails.active" />
+                    </Transition>
+                    <div class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
+                        :class="[showDeactivatingModal ? 'backdrop-blur-[7.5px]' : 'backdrop-blur-0 opacity-0 pointer-events-none']"
+                        @click="showDeactivatingModal = false" />
+                </Teleport>
             </div>
         </div>
         <div v-if="emptyData || error" class="flex flex-col items-center justify-center flex-1 mb-[157px] md:mb-[149px]">
@@ -51,7 +68,8 @@
                 <div class="md:grid md:grid-cols-[repeat(2,auto)] md:justify-between md:flex-1">
                     <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
                     <div v-else class="font-semibold leading-tight mb-2 md:order-1">
-                        {{ customerInformation.contactDetails.firstName + ' ' + customerInformation.contactDetails.lastName }}
+                        {{ customerInformation.contactDetails.firstName + ' ' + customerInformation.contactDetails.lastName
+                        }}
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[160px] h-5 mb-2 md:w-[180px]" />
                     <div v-else class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
@@ -61,10 +79,8 @@
                         }}</span>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[180px] h-5 mb-2" />
-                    <div
-                        v-else="customerInformation.accountType === 2 || customerInformation.accountType === 3"
-                        class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0"
-                    >
+                    <div v-else="customerInformation.accountType === 2 || customerInformation.accountType === 3"
+                        class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0">
                         {{ customerInformation?.companyDetails?.name }}
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[180px] h-5" />
@@ -127,7 +143,8 @@
                             <div class="w-2 h-2 rounded-full bg-[#00D395] mr-2" />
                             <span class="text-sm font-medium leading-tight text-gray-300">Registered</span>
                         </div>
-                        <div class="text-sm font-medium leading-tight pl-4">{{ getCurrentDate(customerInformation.createdAt) }}</div>
+                        <div class="text-sm font-medium leading-tight pl-4">{{ getCurrentDate(customerInformation.createdAt)
+                        }}</div>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[120px] h-10 md:w-[160px] md:h-[18px]" />
                     <div v-else class="md:flex md:items-center">
@@ -138,8 +155,8 @@
                         <div class="text-sm font-medium leading-tight pl-4">
                             {{
                                 customerInformation.adminSettings?.marketingPreferences?.emailMarketing?.email
-                                    ? 'Subscribed'
-                                    : 'Not Subscribed'
+                                ? 'Subscribed'
+                                : 'Not Subscribed'
                             }}
                         </div>
                     </div>
@@ -163,8 +180,12 @@ import { UserDetails } from '~/types/auth/user-details';
 import { AccountType } from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
+import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
+import { getAccountTypeById } from '~/types';
+import { DashboardCustomerTableItem } from '~/types';
 
 const showOptions = ref(false);
+const showDeactivatingModal = ref(false);
 
 const error = ref(false);
 const emptyData = ref(false);
@@ -177,6 +198,7 @@ const props = defineProps({
     },
 });
 const customerInformation = ref<UserDetails>({} as UserDetails);
+const customerDetails = ref<DashboardCustomerTableItem>({} as DashboardCustomerTableItem);
 const { $api } = useNuxtApp();
 
 const fetchInformation = async () => {
@@ -203,20 +225,34 @@ const fetchInformation = async () => {
     Emitter.emit('customer-info', {
         name: customerInformation.value.contactDetails?.firstName + ' ' + customerInformation.value.contactDetails?.lastName,
     });
+
+    customerDetails.value = {
+        id: response.data._id,
+        avatar: Avatar,
+        name: `${response.data?.contactDetails?.firstName} ${response.data?.contactDetails?.lastName} `,
+        email: response.data.profileDetails.email,
+        account: getAccountTypeById(response.data.accountType as number) || '-',
+        company: response.data.companyDetails?.name || '-',
+        registered: new Date(response.data.createdAt).toLocaleDateString('en-GB'),
+        spent: response.data.spent,
+        ordersCount: response.data.ordersCount,
+        firebaseId: response.data.firebaseId,
+        active: response.data.active,
+    }
 };
 
 const deleteAccountAsAdmin = async (id: string) => {
-  const response = await $api.userDashboard.deleteUser(id)
-  if (response.status !== 'success') {
-    return;
-  }
+    const response = await $api.userDashboard.deleteUser(id)
+    if (response.status !== 'success') {
+        return;
+    }
 }
 
 const deactivateAccountAsAdmin = async (id: string) => {
-  const response = await $api.userDashboard.deactivateUser(id)
-  if (response.status !== 'success') {
-    return;
-  }
+    const response = await $api.userDashboard.deactivateUser(id)
+    if (response.status !== 'success') {
+        return;
+    }
 }
 
 const getCurrentDate = (date: string) => {
