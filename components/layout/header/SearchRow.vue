@@ -47,6 +47,21 @@
         <Transition name="slide-from-right">
             <LayoutAccountModal v-if="showAccountModal" @close="showAccountModal = false" />
         </Transition>
+        <div
+            v-if="showAccountModal || favoritesCartModal.show"
+            class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer md:block"
+            @click="
+                showAccountModal = false;
+                favoritesCartModal.show = false;
+            "
+        />
+        <Transition name="slide-from-right">
+            <LayoutFavoritesCartModal
+                v-if="favoritesCartModal.show"
+                :tab="favoritesCartModal.tab"
+                @close="favoritesCartModal.show = false"
+            />
+        </Transition>
     </Teleport>
 </template>
 
