@@ -38,7 +38,7 @@
             totalOrder === 0 ? (totalOrder = 1) : (totalOrder = 0);
             handleSortChange(emits, 'total', totalOrder);
         "
-        @orderIdFilterChange="handleFilterChange(activeFilters, emits, 'shortId', $event)"
+        @orderIdFilterChange="handleFilterChange(activeFilters, emits, 'shortId', $event, false)"
         @orderTypeFilterChange="(event: MouseEvent, item) => {
             type = item.label;
             handleFilterChange(activeFilters, emits, 'type', item.key, true);

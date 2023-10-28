@@ -102,6 +102,13 @@ import moment from 'moment';
 
 const { $api } = useNuxtApp();
 
+const props = defineProps({
+    id: {
+        type: String,
+        required: true,
+    },
+});
+
 const activeFilters = ref([] as FilterInterface[]);
 const activeSort = ref({} as SortInterface);
 
@@ -126,7 +133,9 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
     loading.value = true;
     error.value = false;
 
-    const data = await $api.orders.fetchCustomerOrders(page, perPage, filters, sort);
+    filters['userId'] = props.id;
+
+    const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
 
     if (!data || data.status !== 'success') {
         loading.value = false;

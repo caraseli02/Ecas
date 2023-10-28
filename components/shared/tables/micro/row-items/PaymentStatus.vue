@@ -13,12 +13,12 @@
                 : 'text-blue bg-blue',
         ]"
     >
-        {{ status }}
+        {{ getPaymentStatusById(status) }}
     </div>
 </template>
 <script lang="ts">
 import SkeletonLoader from '~/components/global/SkeletonLoader.vue';
-import { PaymentStatusEnum } from '~/types';
+import { getPaymentStatusById, PaymentStatusEnum } from '~/types';
 
 export default defineComponent({
     name: 'PaymentStatus',
@@ -31,5 +31,6 @@ export default defineComponent({
             return PaymentStatusEnum;
         },
     },
+    methods: { getPaymentStatusById },
 });
 </script>
