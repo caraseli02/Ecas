@@ -59,7 +59,7 @@
                 </div>
                 <div
                     v-if="actionsHeader && actionsMenuType === 'tx-history'"
-                    class="flex justify-center px-2 py-4 bg-[#F2F2F2] rounded-r-lg"
+                    class="flex justify-center px-2 py-4 bg-[#F2F2F2] rounded-r-lg h-full"
                 >
                     <span class="text-sm font-medium leading-[1.43]">Actions</span>
                 </div>
@@ -257,6 +257,27 @@
                 @handleSelection="handlePaymentStatusFilterChange"
             />
         </Transition>
+        <Transition name="fade-bottom">
+            <RangeFilter
+                v-if="showOrderAmountRange"
+                v-click-outside="() => (showOrderAmountRange = false)"
+                title="Total"
+                :range="orderAmount"
+                :dropdown-left="orderAmountDropdownLeft"
+                :dropdown-top="orderAmountDropdownTop"
+                @cancel="showOrderAmountRange = false"
+                @apply="handleOrderAmountFilterChange"
+            />
+        </Transition>
+        <Transition name="fade">
+            <RangeFilterMobile
+                v-if="showOrderAmountRange"
+                title="Total"
+                :range="orderAmount"
+                @cancel="showOrderAmountRange = false"
+                @apply="handleOrderAmountFilterChange"
+            />
+        </Transition>
     </Teleport>
 </template>
 <script lang="ts">
@@ -369,6 +390,11 @@ export default defineComponent({
         'orderDateRange',
         'orderStatus',
         'orderTotal',
+        'invoiceId',
+        'orderAmount',
+        'txType',
+        'txDateRange',
+        'txStatus',
         'paymentStatus',
         'plainTextColContent', // filter props (add here new filter props)
         'checkBoxColWidth',
@@ -411,7 +437,8 @@ export default defineComponent({
         'nameAndProfileClass',
         'orderTotalInnerClass',
         'ordersCountInnerClass',
-        'spentAmountInnerClass', // custom classes for individual components
+        'spentAmountInnerClass',
+        'orderAmountInnerClass', // custom classes for individual components
         'customGeneralHeaderClass', //custom class that applies to all header elements
         'checkBoxHeaderClass',
         'nameAndProfileHeaderClass',
@@ -498,6 +525,7 @@ export default defineComponent({
             showOrderTotalRange: ref(false),
             showPaymentStatusOptions: ref(false),
             showFulfillmentStatusOptions: ref(false),
+            showOrderAmountRange: ref(false),
 
             // floating windows position
             isScrolling: ref(false),
@@ -520,11 +548,14 @@ export default defineComponent({
             orderTotalDropdownTop: ref(0),
             paymentStatusDropdownLeft: ref(0),
             paymentStatusDropdownTop: ref(0),
+            orderAmountDropdownLeft: ref(0),
+            orderAmountDropdownTop: ref(0),
 
             registeredDateRange: ref([subDays(new Date(), 30), new Date()]),
             orderDateRange: ref([subDays(new Date(), 30), new Date()]),
             spentValue: 'Filter',
             orderTotalValue: 'Filter',
+            orderAmountValue: 'Filter',
 
             // filter options
             accountOptions: ref([
@@ -597,7 +628,7 @@ export default defineComponent({
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.checkBoxHeaderClass
-                            : 'flex justify-center items-center py-4 bg-[#F2F2F2]',
+                            : 'flex justify-center items-center py-4 bg-[#F2F2F2] h-full',
                     checkbox: true,
                 },
                 nameAndProfile: {
@@ -759,46 +790,71 @@ export default defineComponent({
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.invoiceIdHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
                     title: this.invoiceIdTitle || 'Invoice #ID',
                     order: this.invoiceIdOrder,
                     sortChange: this.handleInvoiceIdOrderChange,
+                    search: this.filters,
+                    value: this.invoiceId,
+                    placeholder: 'Search #ID',
+                    filterChange: this.handleInvoiceIdFilterChange,
+                    emit: 'invoiceIdFilterChange',
                 },
                 orderAmount: {
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.orderAmountHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
-                    title: this.orderAmountTitle || 'Amount',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: this.orderAmountTitle || 'Total',
                     order: this.orderAmountOrder,
                     sortChange: this.handleOrderAmountOrderChange,
+                    filterButton: this.filters,
+                    rangeValue: this.orderAmountValue,
+                    rangeVisible: this.showOrderAmountRange,
+                    textGrayCondition: this.orderAmountValue === 'Filter',
+                    trackingWidestCondition: this.orderAmountValue[0] !== 'Filter',
+                    handleShow: this.handleShowOrderAmountRange,
+                    customClasses: this.orderAmountInnerClass || 'justify-center gap-2 w-full',
+                    emit: 'orderAmountFilterChange',
                 },
                 txType: {
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.txTypeHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
                     title: this.txTypeTitle || 'Type',
                     order: this.txTypeOrder,
                     sortChange: this.handleTxTypeOrderChange,
+                    select: this.filters,
+                    handleShow: this.handleShowTxTypeOptions,
+                    selectedItem: this.txType,
+                    optionsVisible: this.showTxTypeOptions,
                 },
                 txDate: {
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.txDateHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
                     title: this.txDateTitle || 'Date',
                     order: this.txDateOrder,
                     sortChange: this.handleTxDateOrderChange,
+                    datePicker: this.filters,
+                    range: this.txDateRange,
+                    datePickerVisible: this.showTxDateRange,
+                    handleShow: this.handleShowTxDateRange,
                 },
                 txStatus: {
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.txStatusHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
                     title: this.txStatusTitle || 'Status',
                     order: this.txStatusOrder,
                     sortChange: this.handleTxStatusOrderChange,
+                    select: this.filters,
+                    handleShow: this.handleShowTxStatusOptions,
+                    selectedItem: this.txStatus,
+                    optionsVisible: this.showTxStatusOptions,
                 },
                 paymentStatus: {
                     class:
@@ -935,6 +991,8 @@ export default defineComponent({
             this.showOrderStatusOptions = false;
             this.showOrderTotalRange = false;
             this.showPaymentStatusOptions = false;
+            this.showFulfillmentStatusOptions = false;
+            this.showOrderAmountRange = false;
             this.isScrolling = true;
             clearTimeout(this.scrollTimeout);
             this.scrollTimeout = setTimeout(() => {
@@ -1003,6 +1061,13 @@ export default defineComponent({
             const rect = target.getBoundingClientRect();
             this.paymentStatusDropdownLeft = rect.right;
             this.paymentStatusDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowOrderAmountRange(event: MouseEvent) {
+            this.showOrderAmountRange = !this.showOrderAmountRange;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.orderAmountDropdownLeft = rect.right;
+            this.orderAmountDropdownTop = rect.bottom + window.scrollY + 8;
         },
 
         // datepicker methods
@@ -1117,6 +1182,14 @@ export default defineComponent({
         handlePlainTextColFilterChange(event: InputEvent) {
             this.$emit('plainTextColFilterChange', event);
         },
+        handleInvoiceIdFilterChange(event: InputEvent) {
+            this.$emit('invoiceIdFilterChange', event);
+        },
+        handleOrderAmountFilterChange(buffer: number[]) {
+            this.showOrderAmountRange = false;
+            this.$emit('orderAmountFilterChange', buffer);
+            this.calculateOrderAmountValue(buffer);
+        },
 
         // filter button text formatters
         calculateSpentValue(buffer: number[]) {
@@ -1142,6 +1215,18 @@ export default defineComponent({
                 .join(' - ');
             const result = buffer[0] || buffer[1] ? orderTotalValue : 'Filter';
             this.orderTotalValue = result;
+        },
+        calculateOrderAmountValue(buffer: number[]) {
+            const orderAmountValue: string = buffer
+                .map((value: number) => {
+                    if (value >= 1000) {
+                        return `${Math.round(value / 1000)}K`;
+                    }
+                    return Math.round(value);
+                })
+                .join(' - ');
+            const result = buffer[0] || buffer[1] ? orderAmountValue : 'Filter';
+            this.orderAmountValue = result;
         },
 
         // clear SearchBar input
