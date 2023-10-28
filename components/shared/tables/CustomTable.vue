@@ -278,6 +278,43 @@
                 @apply="handleOrderAmountFilterChange"
             />
         </Transition>
+        <Transition name="fade-bottom">
+            <CustomSelectDropdown
+                v-if="showTxTypeOptions"
+                v-click-outside="() => (showTxTypeOptions = false)"
+                :items="txTypeOptionsList"
+                :dropdown-top="txTypeDropdownTop"
+                :dropdown-left="txTypeDropdownLeft"
+                :selected-item="txType"
+                :custom-classes="'w-[180.4px]'"
+                @handleSelection="handleTxTypeFilterChange"
+            />
+        </Transition>
+        <Transition name="fade-bottom">
+            <div
+                v-if="showTxDateRange"
+                v-click-outside="() => (showTxDateRange = false)"
+                class="absolute z-10 -translate-x-full rounded-lg overflow-hidden shadow-m"
+                :style="{
+                    left: txDateDropdownLeft + 'px',
+                    top: txDateDropdownTop + 'px',
+                }"
+            >
+                <DatePicker v-model.range="txDateRange" borderless />
+            </div>
+        </Transition>
+        <Transition name="fade-bottom">
+            <CustomSelectDropdown
+                v-if="showTxStatusOptions"
+                v-click-outside="() => (showTxStatusOptions = false)"
+                :items="txStatusOptionsList"
+                :dropdown-top="txStatusDropdownTop"
+                :dropdown-left="txStatusDropdownLeft"
+                :selected-item="txStatus"
+                :custom-classes="'w-[180.4px]'"
+                @handleSelection="handleTxStatusFilterChange"
+            />
+        </Transition>
     </Teleport>
 </template>
 <script lang="ts">
@@ -297,7 +334,7 @@ import AgentIcon from '@/assets/icons/dashboard/agent.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import { DatePicker } from 'v-calendar';
-import { AccountType, getOrderById, getPaymentStatusById, OrderType, PaymentStatusEnum, PaymentTypeEnum } from '~~/types';
+import { AccountType, getOrderById, getPaymentStatusById, OrderType, PaymentStatusEnum, PaymentTypeEnum, PaymentDirectionEnum, getPaymentDirectionById } from '~~/types';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { subDays } from 'date-fns';
 import CheckBoxAll from '~/components/shared/tables/micro/CheckBoxAll.vue';
@@ -526,6 +563,9 @@ export default defineComponent({
             showPaymentStatusOptions: ref(false),
             showFulfillmentStatusOptions: ref(false),
             showOrderAmountRange: ref(false),
+            showTxTypeOptions: ref(false),
+            showTxDateRange: ref(false),
+            showTxStatusOptions: ref(false),
 
             // floating windows position
             isScrolling: ref(false),
@@ -550,9 +590,16 @@ export default defineComponent({
             paymentStatusDropdownTop: ref(0),
             orderAmountDropdownLeft: ref(0),
             orderAmountDropdownTop: ref(0),
+            txTypeDropdownLeft: ref(0),
+            txTypeDropdownTop: ref(0),
+            txDateDropdownLeft: ref(0),
+            txDateDropdownTop: ref(0),
+            txStatusDropdownLeft: ref(0),
+            txStatusDropdownTop: ref(0),
 
             registeredDateRange: ref([subDays(new Date(), 30), new Date()]),
             orderDateRange: ref([subDays(new Date(), 30), new Date()]),
+            txDateRange: ref([subDays(new Date(), 30), new Date()]),
             spentValue: 'Filter',
             orderTotalValue: 'Filter',
             orderAmountValue: 'Filter',
@@ -608,6 +655,8 @@ export default defineComponent({
                 'Payment Declined',
             ]),
             paymentStatusOptions: ref(PaymentTypeEnum),
+            txTypeOptions: ref(PaymentDirectionEnum),
+            txStatusOptions: ref(PaymentStatusEnum),
         };
     },
     computed: {
@@ -927,6 +976,26 @@ export default defineComponent({
                     };
                 });
         },
+        txTypeOptionsList() {
+            return Object.values(PaymentDirectionEnum)
+                .filter((v) => !isNaN(Number(v)))
+                .map((type) => {
+                    return {
+                        label: getPaymentDirectionById(type),
+                        key: type,
+                    };
+                });
+        },
+        txStatusOptionsList() {
+            return Object.values(PaymentStatusEnum)
+                .filter((v) => !isNaN(Number(v)))
+                .map((type) => {
+                    return {
+                        label: getPaymentStatusById(type),
+                        key: type,
+                    };
+                });
+        },
     },
     watch: {
         // watch for registered date range changes
@@ -935,6 +1004,9 @@ export default defineComponent({
         },
         orderDateRange() {
             this.handleOrderDateFilterChange();
+        },
+        txDateRange() {
+            this.handleTxDateFilterChange();
         },
     },
     created() {
@@ -993,6 +1065,8 @@ export default defineComponent({
             this.showPaymentStatusOptions = false;
             this.showFulfillmentStatusOptions = false;
             this.showOrderAmountRange = false;
+            this.showTxTypeOptions = false;
+            this.showTxDateRange = false;
             this.isScrolling = true;
             clearTimeout(this.scrollTimeout);
             this.scrollTimeout = setTimeout(() => {
@@ -1068,6 +1142,27 @@ export default defineComponent({
             const rect = target.getBoundingClientRect();
             this.orderAmountDropdownLeft = rect.right;
             this.orderAmountDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowTxTypeOptions(event: MouseEvent) {
+            this.showTxTypeOptions = !this.showTxTypeOptions;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.txTypeDropdownLeft = rect.right;
+            this.txTypeDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowTxDateRange(event: MouseEvent) {
+            this.showTxDateRange = !this.showTxDateRange;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.txDateDropdownLeft = rect.right;
+            this.txDateDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowTxStatusOptions(event: MouseEvent) {
+            this.showTxStatusOptions = !this.showTxStatusOptions;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.txStatusDropdownLeft = rect.right;
+            this.txStatusDropdownTop = rect.bottom + window.scrollY + 8;
         },
 
         // datepicker methods
@@ -1189,6 +1284,14 @@ export default defineComponent({
             this.showOrderAmountRange = false;
             this.$emit('orderAmountFilterChange', buffer);
             this.calculateOrderAmountValue(buffer);
+        },
+        handleTxTypeFilterChange(event: MouseEvent, item: any) {
+            this.showTxTypeOptions = false;
+            this.$emit('txTypeFilterChange', event, item);
+        },
+        handleTxStatusFilterChange(event: MouseEvent, item: any) {
+            this.showTxStatusOptions = false;
+            this.$emit('txStatusFilterChange', event, item);
         },
 
         // filter button text formatters

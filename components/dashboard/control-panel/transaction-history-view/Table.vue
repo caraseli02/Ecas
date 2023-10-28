@@ -28,7 +28,12 @@
         @orderAmountFilterChange="(buffer) => {
             orderAmount = buffer
         }"
-
+        @txTypeFilterChange="(event, item) => {
+            txType = item.label
+        }"
+        @txStatusFilterChange="(event, item) => {
+            txStatus = item.label
+        }"
     />
 </template>
 
