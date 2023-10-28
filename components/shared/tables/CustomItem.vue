@@ -122,6 +122,7 @@
                 v-if="showOptions && actionsMenuType === 'orders-list'"
                 v-click-outside="() => (showOptions = false)"
                 :index="index"
+                :profile="item"
                 :dropdown-top="optionsDropdownTop"
                 :dropdown-left="optionsDropdownLeft"
                 :document-button="true"

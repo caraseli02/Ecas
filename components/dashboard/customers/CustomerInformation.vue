@@ -10,7 +10,7 @@
                     <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
                 </button>
                 <Transition name="fade-bottom">
-                    <ThreeDotMenu v-if="showOptions" v-click-outside="() => (showOptions = false)" :index="index"
+                    <ThreeDotMenu v-if="showOptions" v-click-outside="() => (showOptions = false)" :index="index" :profile="customerDetails"
                         :dropdown-top="30" :dropdown-left="25" :settings-button="true" :settings-text="'Control Panel'"
                         :deactivate-button="true"
                         :deactivate-text="customerDetails.active ? 'Lock Account' : 'Unlock Account'" :trash-button="true"
