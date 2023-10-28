@@ -10,39 +10,6 @@
                     <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
                 </button>
                 <Transition name="fade-bottom">
-                    <!-- <div
-                        v-if="showOptions"
-                        v-click-outside="() => (showOptions = false)"
-                        class="absolute z-10 -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m"
-                    >
-                        <button
-                            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                            @click="(showOptions = false), $router.push($route.fullPath + '/control-panel')"
-                        >
-                            <SettingsIcon class="w-6 h-6 mr-3 text-current" />
-                            <span class="text-sm leading-[1.71] font-medium"> Control Panel </span>
-                        </button>
-                        <button
-                            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                            @click="
-                                showOptions = false;
-                                deactivateAccountAsAdmin(customerInformation.firebaseId);
-                            "
-                        >
-                            <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
-                            <span class="text-sm leading-[1.71] font-medium"> Deactivate Account </span>
-                        </button>
-                        <button
-                            class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
-                            @click="
-                                showOptions = false;
-                                deleteAccountAsAdmin(customerInformation.firebaseId);
-                            "
-                        >
-                            <TrashIcon class="w-6 h-6 mr-3 text-current" />
-                            <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
-                        </button>
-                    </div> -->
                     <ThreeDotMenu v-if="showOptions" v-click-outside="() => (showOptions = false)" :index="index"
                         :dropdown-top="30" :dropdown-left="25" :settings-button="true" :settings-text="'Control Panel'"
                         :deactivate-button="true"
@@ -176,9 +143,6 @@
 import Avatar from '@/assets/icons/dashboard/avatar.png';
 import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import USAFlag from '@/assets/icons/flags/usa.svg';
-import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
-import DeactivateIcon from '@/assets/icons/dashboard/deactivate.svg';
-import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
@@ -253,14 +217,7 @@ const deleteAccountAsAdmin = async (id: string) => {
     if (response.status !== 'success') {
         return;
     }
-}
-
-const deactivateAccountAsAdmin = async (id: string) => {
-    const response = await $api.userDashboard.deactivateUser(id)
-    if (response.status !== 'success') {
-        return;
-    }
-}
+};
 
 const getCurrentDate = (date: string) => {
     return moment(date).format('DD MMM YYYY, HH:mm');

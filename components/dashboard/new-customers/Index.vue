@@ -117,8 +117,6 @@ const fetchAndSetNewCustomers = async (time = 7) => {
         return;
     }
 
-    console.log(data.data)
-
     loading.value = false;
 
     people.value = data.data?.map((user: UserDetails) => ({
