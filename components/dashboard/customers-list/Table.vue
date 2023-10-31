@@ -21,6 +21,7 @@
         :orders-count-order="ordersCountOrder"
         :name-and-profile-class="'w-[calc(100%-60px)]'"
         :show-avatar="true"
+        :show-lock="true"
         @nameOrderChange="
             nameOrder === 0 ? (nameOrder = 1) : (nameOrder = 0);
             handleSortChange(emits, 'email', nameOrder);
