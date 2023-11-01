@@ -1,6 +1,9 @@
 <template>
     <div class="relative">
-        <label class="relative hidden border-[1.5px] border-blue rounded-lg items-center h-[44px] overflow-hidden md:flex">
+        <label
+            class="relative hidden border-[1.5px] border-blue rounded-lg items-center h-[44px] overflow-hidden md:flex"
+            :class="[isScrolled ? 'lg:border-border' : '']"
+        >
             <SearchIcon v-if="!isScrolled" class="hidden w-4 h-4 flex-shrink-0 text-gray-100 self-center ml-3 md:inline-block" />
             <form action="" class="w-full flex" @submit.prevent>
                 <input
@@ -9,7 +12,8 @@
                     type="search"
                     placeholder="Search products"
                     autocomplete="off"
-                    class="flex-1 text-sm leading-[1.29] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
+                    class="flex-1 text-sm leading-[1.29] text-gray-300 h-[44px] py-3 w-full placeholder:text-gray-100 focus:outline-none"
+                    :class="[isScrolled ? 'px-3' : 'px-2']"
                     @input="onInput"
                     @keypress.enter="handleEnterButton"
                     @blur="

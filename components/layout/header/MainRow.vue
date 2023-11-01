@@ -61,19 +61,27 @@
                             <HeartIcon class="w-6 h-6 text-white xl:mr-2" />
                             <span class="hidden leading-normal font-medium text-white xl:inline-block"> Favorites </span>
                         </button>
-                        <button
-                            class="items-center xl:mr-2"
-                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:flex' : 'md:flex') : 'xl:hidden']"
-                        >
-                            <div class="flex relative">
-                                <BellIcon class="w-6 h-6 text-white" />
-                                <span
-                                    class="absolute z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white px-1 py-0.5 rounded-[100px] text-[10px] font-semibold leading-[1.1] tracking-[-0.3px]"
-                                >
-                                    45
-                                </span>
-                            </div>
-                        </button>
+                        <div class="relative" :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:flex' : 'md:flex') : 'xl:hidden']">
+                            <button class="flex items-center xl:mr-2" @click="showNotifications = true">
+                                <div class="flex relative">
+                                    <BellIcon class="w-6 h-6 text-white" />
+                                    <span
+                                        class="absolute font-Inter z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white px-1 py-0.5 rounded-[100px] text-[10px] font-semibold leading-[1.1]"
+                                    >
+                                        {{ unreadNotifications }}
+                                    </span>
+                                </div>
+                            </button>
+                            <Transition name="slide-fast-from-bottom">
+                                <Notifications
+                                    v-if="showNotifications"
+                                    :notifications="notifications"
+                                    @delete="deleteNotification"
+                                    @mark-as-read="markNotificationAsRead"
+                                    @close="showNotifications = false"
+                                />
+                            </Transition>
+                        </div>
                         <button class="flex items-center md:hidden" @click="showAccountModal = true">
                             <UserIcon class="w-6 h-6 text-white" />
                         </button>
@@ -98,7 +106,7 @@
                             <div class="relative">
                                 <CartIcon class="w-6 h-6 text-white lg:mr-2" />
                                 <span
-                                    class="absolute z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white px-1 py-0.5 rounded-[100px] text-[10px] font-semibold leading-[1.1] tracking-[-0.3px]"
+                                    class="absolute font-Inter z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white px-1 py-0.5 rounded-[100px] text-[10px] font-semibold leading-[1.1]"
                                     :class="[showMobileSearch ? 'hidden md:flex' : '']"
                                 >
                                     47
@@ -113,15 +121,15 @@
                 </div>
                 <Transition name="fade">
                     <div v-if="showMobileSearch && isMobile" class="absolute z-50 top-1/2 -translate-y-1/2 left-0 w-full md:hidden">
-                        <div class="flex items-center border border-border bg-white rounded-lg px-3">
-                            <label class="relative z-10 flex-1 flex items-center justify-between">
+                        <div class="flex items-center border border-border bg-white h-10 rounded-lg px-3">
+                            <label class="relative z-10 flex-1 flex items-center justify-between h-10">
                                 <form action="" @submit.prevent="showMobileSearch = false">
                                     <input
                                         ref="searchDOM"
                                         v-model="searchVal"
                                         type="search"
                                         placeholder="Search products"
-                                        class="bg-transparent flex-1 w-full py-[7px] text-sm leading-[1.71] placeholder:text-gray-100 focus:outline-none"
+                                        class="bg-transparent flex-1 w-full py-2 h-10 text-sm leading-[1.71] placeholder:text-gray-100 focus:outline-none"
                                         @keypress.enter="
                                             $router.push('/search');
                                             searchVal = '';
@@ -183,8 +191,9 @@ import UserIcon from '@/assets/icons/user.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import BellIcon from '@/assets/icons/header/bell.svg';
 import XIcon from '@/assets/icons/x.svg';
+import Notifications from '@/components/global/Notifications.vue';
 import { showNavModal } from '~~/config/modal/nav';
-import { useAuthStore } from '~~/store/authStore';
+import { Notification } from '~/types';
 
 defineProps({
     isScrolled: {
@@ -228,6 +237,53 @@ const searchVal = ref('');
 const showMobileSearch = ref(false);
 const searchDOM = ref<HTMLInputElement>();
 
+const error = ref(false);
+const isLoading = ref(false);
+
+const notifications = ref<Notification[]>([] as Notification[]);
+
+const unreadNotifications = ref(0);
+const { $api } = useNuxtApp();
+const showNotifications = ref(false);
+const fetchNofications = async () => {
+    error.value = false;
+    isLoading.value = true;
+
+    const response = await $api.notifications.fetchGetNotifications();
+    if (response.status !== 'success') {
+        isLoading.value = false;
+        error.value = true;
+
+        return;
+    } else {
+        isLoading.value = false;
+    }
+    notifications.value = response.description;
+    Object.keys(notifications.value).forEach((notification) => {
+        if (notifications.value[notification].seen === false) {
+            unreadNotifications.value++;
+        }
+    });
+};
+
+const markNotificationAsRead = async (notification: Notification, index: number) => {
+    if (notifications.value[index].seen !== true) {
+        unreadNotifications.value--;
+    }
+    const response = await $api.notifications.fetchMarkNotificationAsRead(notification.id);
+    if (response.status !== 'success') {
+        return;
+    }
+    notifications.value[index].seen = true;
+};
+const deleteNotification = async (notification: Notification, index: number) => {
+    const response = await $api.notifications.deleteNotificationById(notification.id);
+    if (response.status !== 'success') {
+        return;
+    }
+    notifications.value.splice(index, 1);
+};
+
 const toggleNavModal = () => {
     if (window.innerWidth < 768 || route.name !== 'index') {
         showNavModal.value = !showNavModal.value;
@@ -260,4 +316,6 @@ onMounted(() => {
         showAccountModal.value = true;
     }
 });
+
+Promise.all([fetchNofications()]);
 </script>
