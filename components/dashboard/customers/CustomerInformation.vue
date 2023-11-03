@@ -40,9 +40,19 @@
                 <img v-else :src="Avatar" alt="Name" class="w-16 h-16 flex-shrink-0 rounded-full object-cover mr-4" />
                 <div class="md:grid md:grid-cols-[repeat(2,auto)] md:justify-between md:flex-1">
                     <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
-                    <div v-else class="font-semibold leading-tight mb-2 md:order-1">
-                        {{ customerInformation.contactDetails.firstName + ' ' + customerInformation.contactDetails.lastName
+                    <div v-else class="flex md:flex-row-reverse">
+                        <div class="font-semibold leading-tight mb-2 md:order-1">
+                            {{ customerInformation.contactDetails.firstName + ' ' +
+                                customerInformation.contactDetails.lastName
                         }}
+                        </div>
+                        <Tooltip theme="black" :position="'top'" class="self-start ml-3">
+                            <LockIcon v-if="!customerInformation.active"
+                                class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
+                            <template #content>
+                                <span class="capitalize">Account Locked</span>
+                            </template>
+                        </Tooltip>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[160px] h-5 mb-2 md:w-[180px]" />
                     <div v-else class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
@@ -67,7 +77,19 @@
                 <div class="pb-5 border-b border-gray-200 mb-5">
                     <SkeletonLoader v-if="isLoading" class="w-full h-[304px] md:h-[232px]" />
                     <template v-else>
-                        <div class="text-sm font-semibold mb-4">Account Details</div>
+                        <div class="flex flex-row gap-3">
+                            <div class="text-sm font-semibold mb-4">Account Details</div>
+                            <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black" v-if="customerInformation.adminSettings?.discount">
+                                <div
+                                    class="border-[#007FFF] border-[1px] px-2 rounded-[50px] text-xs leading-[20px] font-semibold text-[#007FFF]">
+                                    {{customerInformation.adminSettings?.discount?.value}} %
+                                </div>
+                                <template #content>
+                                    <span>Customer Discount: <strong class="font-semibold">{{ `${customerInformation.adminSettings?.discount?.value}%`
+                                    }}</strong></span>
+                                </template>
+                            </Tooltip>
+                        </div>
                         <div class="grid grid-cols-1 gap-2">
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">User Name</div>
@@ -153,6 +175,7 @@ import Emitter from 'tiny-emitter/instance.js';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 import { getAccountTypeById } from '~/types';
 import { DashboardCustomerTableItem } from '~/types';
+import LockIcon from '@/assets/icons/dashboard/orders/lock.svg';
 
 const showOptions = ref(false);
 const showDeactivatingModal = ref(false);
