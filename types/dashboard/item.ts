@@ -12,6 +12,11 @@ export interface DashboardCustomerTableItem {
     id: string;
     firebaseId: string;
     active: boolean;
+    adminSettings: {
+        discount: {
+            value: number;
+        },
+    },
 }
 
 export interface DashboardCustomerOrderItem {

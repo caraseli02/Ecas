@@ -165,6 +165,7 @@ const fetchAndSetUsersList = debounce(async (page: number, perPage: number, filt
             id: user._id,
             firebaseId: user.firebaseId,
             active: user.active,
+            adminSettings: user.adminSettings,
         }));
     }
 }, 500);
