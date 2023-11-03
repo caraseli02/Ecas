@@ -286,7 +286,7 @@
                 :dropdown-top="txTypeDropdownTop"
                 :dropdown-left="txTypeDropdownLeft"
                 :selected-item="txType"
-                :custom-classes="'w-[180.4px]'"
+                :custom-classes="'w-[175px]'"
                 @handleSelection="handleTxTypeFilterChange"
             />
         </Transition>
@@ -311,7 +311,7 @@
                 :dropdown-top="txStatusDropdownTop"
                 :dropdown-left="txStatusDropdownLeft"
                 :selected-item="txStatus"
-                :custom-classes="'w-[180.4px]'"
+                :custom-classes="'w-[175px]'"
                 @handleSelection="handleTxStatusFilterChange"
             />
         </Transition>
@@ -1067,6 +1067,7 @@ export default defineComponent({
             this.showOrderAmountRange = false;
             this.showTxTypeOptions = false;
             this.showTxDateRange = false;
+            this.showTxStatusOptions = false;
             this.isScrolling = true;
             clearTimeout(this.scrollTimeout);
             this.scrollTimeout = setTimeout(() => {
