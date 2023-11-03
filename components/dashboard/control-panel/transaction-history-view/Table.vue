@@ -3,7 +3,7 @@
         :items="items" :loading="loading" :customItem="CustomItem" :fields="tableFields" :filters="true" actionsMenuType="tx-history"
         :actionsHeader="true"
         :orderIdOrder="idOrder" :invoiceIdOrder="invoiceIdOrder" :orderAmountOrder="amountOrder" :txTypeOrder="typeOrder" :txDateOrder="dateOrder" :txStatusOrder="statusOrder"
-        :checkAll="checkAll" :tx-date-col-width="'228px'" :order-amount-inner-class="'justify-between w-full'"
+        :checkAll="checkAll" tx-date-col-width="228px" :order-amount-inner-class="'justify-between w-full'"
         :orderId="orderId" :invoiceId="invoiceId" :orderAmount="orderAmount" :txType="txType" :txDate="txDate" :txStatus="txStatus"
         @orderIdOrderChange="
             idOrder === 0 ? (idOrder = 1) : (idOrder = 0);
