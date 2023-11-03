@@ -162,6 +162,7 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {},
             id: user._id,
             firebaseId: user.firebaseId,
             active: user.active,
+            adminSettings: user.adminSettings,
         }));
     }
 };
