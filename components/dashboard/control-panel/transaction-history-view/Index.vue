@@ -94,7 +94,7 @@
         <DashboardControlPanelTransactionHistoryViewTable
             :items="visibleItemsFiltered"
             :loading="loading"
-            :checkAll="checkAll"
+            :check-all="checkAll"
             @check="handleCheck"
             @check-all="checkAll = !checkAll"
         />
@@ -114,13 +114,17 @@
 import FilterIcon from '@/assets/icons/dashboard/filter.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import DownloadIcon from '@/assets/icons/dashboard/download-2.svg';
-import { DashboardControlPanelTransactionHistoryItem } from '~~/types';
+import { TransactionInterface } from '~/types/dashboard/transaction';
+import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 
 const atPage = ref(1);
 const perPage = ref(10);
 const loading = ref(true);
+const error = ref(false);
+const totalItems = ref(0);
 
-const activeFilters = ref(['Filter 1', 'Filter 2']);
+const activeFilters = ref([] as FilterInterface[]);
+const activeSort = ref({} as SortInterface);
 
 const clearFilters = async () => {
     activeFilters.value = [];
@@ -132,188 +136,7 @@ const removeFilter = async (index: number) => {
 
 const searchVal = ref('');
 
-const listItems = ref<DashboardControlPanelTransactionHistoryItem[]>([
-    {
-        id: '1V9VGU48XV1',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV2',
-        invoiceId: 'ECS#00098',
-        amount: `€ 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'pending',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV3',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV4',
-        invoiceId: 'ECS#00098',
-        amount: `LEI 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'declined',
-        checked: true,
-    },
-    {
-        id: '1V9VGU48XV5',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV6',
-        invoiceId: 'ECS#00098',
-        amount: `€ 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'pending',
-        checked: true,
-    },
-    {
-        id: '1V9VGU48XV7',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV8',
-        invoiceId: 'ECS#00098',
-        amount: `LEI 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'declined',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV9',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV10',
-        invoiceId: 'ECS#00098',
-        amount: `€ 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'pending',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV11',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV12',
-        invoiceId: 'ECS#00098',
-        amount: `LEI 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'declined',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV13',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV14',
-        invoiceId: 'ECS#00098',
-        amount: `€ 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'pending',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV15',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV16',
-        invoiceId: 'ECS#00098',
-        amount: `LEI 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'declined',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV17',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV18',
-        invoiceId: 'ECS#00098',
-        amount: `€ 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'pending',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV19',
-        invoiceId: 'ECS#00098',
-        amount: `$ 138,000.77`,
-        type: 'debit',
-        date: 0,
-        status: 'success',
-        checked: false,
-    },
-    {
-        id: '1V9VGU48XV20',
-        invoiceId: 'ECS#00098',
-        amount: `LEI 138,000.77`,
-        type: 'credit',
-        date: 0,
-        status: 'declined',
-        checked: false,
-    },
-]);
+const listItems = ref<TransactionInterface[]>([]);
 
 const visibleItemsFiltered = computed(() => {
     return [...listItems.value].filter((e) => {
@@ -324,7 +147,7 @@ const visibleItemsFiltered = computed(() => {
 const checkAll = ref(false);
 
 const handleCheck = (id: string) => {
-    const item = listItems.value.find((e) => e.id === id);
+    const item = listItems.value.find((e) => e._id === id);
     if (item) {
         item.checked = !item.checked;
     }
