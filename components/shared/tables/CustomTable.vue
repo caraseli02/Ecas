@@ -93,6 +93,8 @@
                 :order-status-key="orderStatusKey"
                 :profile-key="profileKey"
                 :show-avatar="showAvatar"
+                :show-lock="showLock"
+                :show-discount="showDiscount"
                 :name-and-profile-item-class="nameAndProfileItemClass"
                 :account-type-item-class="accountTypeItemClass"
                 :company-name-item-class="companyNameItemClass"
@@ -520,6 +522,8 @@ export default defineComponent({
         'profileKey',
         'plainTextKey', // keys of different objects within the components
         'showAvatar', // show avatar in name and profile column
+        'showLock', // show lock icon in name and profile column
+        'showDiscount', // show discount in name and profile column
         'plainTextColPlaceholder', // searchBox placeholders
     ],
     data() {
