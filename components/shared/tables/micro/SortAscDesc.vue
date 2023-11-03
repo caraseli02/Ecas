@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="relative flex items-center h-5" @click="handleSortChange()">
+    <button class="relative flex items-center h-5 hover:text-[#007FFF] transition duration-150" @click="handleSortChange()">
       <span class="text-sm leading-[1.43] font-medium mr-1"> {{ title }} </span>
       <SortDownIcon v-if="order === 0" class="w-5 h-5 rounded-full" />
       <SortUpIcon v-else class="w-5 h-5 rounded-full" />

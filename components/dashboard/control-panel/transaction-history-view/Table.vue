@@ -1,9 +1,10 @@
 <template>
     <CustomTable 
-        :items="items" :loading="loading" :customItem="CustomItem" :fields="tableFields" :filters="false" actionsMenuType="tx-history"
+        :items="items" :loading="loading" :customItem="CustomItem" :fields="tableFields" :filters="true" actionsMenuType="tx-history"
         :actionsHeader="true"
         :orderIdOrder="idOrder" :invoiceIdOrder="invoiceIdOrder" :orderAmountOrder="amountOrder" :txTypeOrder="typeOrder" :txDateOrder="dateOrder" :txStatusOrder="statusOrder"
-        :checkAll="checkAll"
+        :checkAll="checkAll" tx-date-col-width="228px" :order-amount-inner-class="'justify-between w-full'"
+        :orderId="orderId" :invoiceId="invoiceId" :orderAmount="orderAmount" :txType="txType" :txDate="txDate" :txStatus="txStatus"
         @orderIdOrderChange="
             idOrder === 0 ? (idOrder = 1) : (idOrder = 0);
             handleSortChange(emits, 'id', idOrder);"
@@ -24,6 +25,15 @@
             handleSortChange(emits, 'status', statusOrder);"
         @checkAll="$emit('checkAll', checkAll);"
         @check="(itemId) => $emit('check', itemId)"
+        @orderAmountFilterChange="(buffer) => {
+            orderAmount = buffer
+        }"
+        @txTypeFilterChange="(event, item) => {
+            txType = item.label
+        }"
+        @txStatusFilterChange="(event, item) => {
+            txStatus = item.label
+        }"
     />
 </template>
 
@@ -60,6 +70,16 @@ const tableFields = [
     'txDate',
     'txStatus',
 ];
+
+const orderId = ref('');
+const invoiceId = ref('');
+const orderAmount = ref([0, 0]);
+const txType = ref('');
+const txDate = ref({
+    start: null,
+    end: null,
+});
+const txStatus = ref('');
 
 const idOrder = ref(0);
 const invoiceIdOrder = ref(0);
