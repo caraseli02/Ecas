@@ -61,8 +61,8 @@ module.exports = {
         'grid-cols-[359px,154px,254px,244px,129px,148px,104px]',
         'grid-cols-[154px,359px,254px,244px,129px,148px,104px]',
         'grid-cols-[212px,212px,256px,256px,232px,224px]',
-        'grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(196px,1fr)',
+        'grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(196px,1fr)]',
         'grid-cols-[158px,149px,228px,275px,141px,220px,136px,85px]',
-        'grid-cols-[50px,191px,191px,191px,191px,228px,191px,minmax(196px,1fr)',
-    ]
+        'grid-cols-[50px,191px,191px,191px,191px,228px,191px,minmax(196px,1fr)]',
+    ],
 };
