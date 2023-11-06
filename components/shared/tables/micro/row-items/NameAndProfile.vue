@@ -43,16 +43,15 @@
                             <span>United States</span>
                         </template>
                     </Tooltip>
-                    <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+                    <Tooltip v-if="item.adminSettings?.discount && showDiscount" :position="index === 0 ? 'bottom' : 'top'" theme="black">
                         <div
-                            v-if="showDiscount"
                             class="border-blue border-[1px] px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-[#007FFF]"
                         >
-                            10%
+                            {{item.adminSettings?.discount.value}} %
                         </div>
-                        <template v-if="item.discount" #content>
+                        <template #content>
                             <span
-                                >Customer Discount: <strong class="font-semibold">{{ `${item.discount}%` }}</strong></span
+                                >Customer Discount: <strong class="font-semibold">{{ `${item.adminSettings?.discount.value}%` }}</strong></span
                             >
                         </template>
                     </Tooltip>

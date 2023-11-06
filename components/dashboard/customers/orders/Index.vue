@@ -99,6 +99,7 @@ import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
 import moment from 'moment';
+import { debounce } from 'lodash';
 
 const { $api } = useNuxtApp();
 
@@ -129,7 +130,7 @@ const loading = ref(true);
 const error = ref(false);
 const emptyData = ref(false);
 
-const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
+const fetchAndSetOrdersList = debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
     loading.value = true;
     error.value = false;
 
@@ -158,7 +159,7 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
             total: order.total,
         })) as unknown as DashboardOrderItem[];
     }
-};
+}, 500);
 
 await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 
@@ -170,6 +171,12 @@ watch(
         for (const filter of newActiveFilters) {
             filterParams[filter.filter] = filter.value;
         }
+
+        if (Object.keys(filterParams).length) {
+            atPage.value = 1;
+            newAtPage = 1;
+        }
+
         await fetchAndSetOrdersList(newAtPage, newPerPage, filterParams, newActiveSort);
     },
     { deep: true }

@@ -59,7 +59,7 @@
                 </div>
                 <div
                     v-if="actionsHeader && actionsMenuType === 'tx-history'"
-                    class="flex justify-center px-2 py-4 bg-[#F2F2F2] rounded-r-lg"
+                    class="flex justify-center px-2 py-4 bg-[#F2F2F2] rounded-r-lg h-full"
                 >
                     <span class="text-sm font-medium leading-[1.43]">Actions</span>
                 </div>
@@ -93,6 +93,8 @@
                 :order-status-key="orderStatusKey"
                 :profile-key="profileKey"
                 :show-avatar="showAvatar"
+                :show-lock="showLock"
+                :show-discount="showDiscount"
                 :name-and-profile-item-class="nameAndProfileItemClass"
                 :account-type-item-class="accountTypeItemClass"
                 :company-name-item-class="companyNameItemClass"
@@ -257,6 +259,64 @@
                 @handleSelection="handlePaymentStatusFilterChange"
             />
         </Transition>
+        <Transition name="fade-bottom">
+            <RangeFilter
+                v-if="showOrderAmountRange"
+                v-click-outside="() => (showOrderAmountRange = false)"
+                title="Total"
+                :range="orderAmount"
+                :dropdown-left="orderAmountDropdownLeft"
+                :dropdown-top="orderAmountDropdownTop"
+                @cancel="showOrderAmountRange = false"
+                @apply="handleOrderAmountFilterChange"
+            />
+        </Transition>
+        <Transition name="fade">
+            <RangeFilterMobile
+                v-if="showOrderAmountRange"
+                title="Total"
+                :range="orderAmount"
+                @cancel="showOrderAmountRange = false"
+                @apply="handleOrderAmountFilterChange"
+            />
+        </Transition>
+        <Transition name="fade-bottom">
+            <CustomSelectDropdown
+                v-if="showTxTypeOptions"
+                v-click-outside="() => (showTxTypeOptions = false)"
+                :items="txTypeOptionsList"
+                :dropdown-top="txTypeDropdownTop"
+                :dropdown-left="txTypeDropdownLeft"
+                :selected-item="txType"
+                :custom-classes="'w-[175px]'"
+                @handleSelection="handleTxTypeFilterChange"
+            />
+        </Transition>
+        <Transition name="fade-bottom">
+            <div
+                v-if="showTxDateRange"
+                v-click-outside="() => (showTxDateRange = false)"
+                class="absolute z-10 -translate-x-full rounded-lg overflow-hidden shadow-m"
+                :style="{
+                    left: txDateDropdownLeft + 'px',
+                    top: txDateDropdownTop + 'px',
+                }"
+            >
+                <DatePicker v-model.range="txDateRange" borderless />
+            </div>
+        </Transition>
+        <Transition name="fade-bottom">
+            <CustomSelectDropdown
+                v-if="showTxStatusOptions"
+                v-click-outside="() => (showTxStatusOptions = false)"
+                :items="txStatusOptionsList"
+                :dropdown-top="txStatusDropdownTop"
+                :dropdown-left="txStatusDropdownLeft"
+                :selected-item="txStatus"
+                :custom-classes="'w-[175px]'"
+                @handleSelection="handleTxStatusFilterChange"
+            />
+        </Transition>
     </Teleport>
 </template>
 <script lang="ts">
@@ -276,7 +336,7 @@ import AgentIcon from '@/assets/icons/dashboard/agent.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import { DatePicker } from 'v-calendar';
-import { AccountType, getOrderById, getPaymentStatusById, OrderType, PaymentStatusEnum, PaymentTypeEnum } from '~~/types';
+import { AccountType, getOrderById, getPaymentStatusById, OrderType, PaymentStatusEnum, PaymentTypeEnum, PaymentDirectionEnum, getPaymentDirectionById } from '~~/types';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { subDays } from 'date-fns';
 import CheckBoxAll from '~/components/shared/tables/micro/CheckBoxAll.vue';
@@ -369,6 +429,11 @@ export default defineComponent({
         'orderDateRange',
         'orderStatus',
         'orderTotal',
+        'invoiceId',
+        'orderAmount',
+        'txType',
+        'txDateRange',
+        'txStatus',
         'paymentStatus',
         'plainTextColContent', // filter props (add here new filter props)
         'checkBoxColWidth',
@@ -411,7 +476,8 @@ export default defineComponent({
         'nameAndProfileClass',
         'orderTotalInnerClass',
         'ordersCountInnerClass',
-        'spentAmountInnerClass', // custom classes for individual components
+        'spentAmountInnerClass',
+        'orderAmountInnerClass', // custom classes for individual components
         'customGeneralHeaderClass', //custom class that applies to all header elements
         'checkBoxHeaderClass',
         'nameAndProfileHeaderClass',
@@ -456,6 +522,8 @@ export default defineComponent({
         'profileKey',
         'plainTextKey', // keys of different objects within the components
         'showAvatar', // show avatar in name and profile column
+        'showLock', // show lock icon in name and profile column
+        'showDiscount', // show discount in name and profile column
         'plainTextColPlaceholder', // searchBox placeholders
     ],
     data() {
@@ -498,6 +566,10 @@ export default defineComponent({
             showOrderTotalRange: ref(false),
             showPaymentStatusOptions: ref(false),
             showFulfillmentStatusOptions: ref(false),
+            showOrderAmountRange: ref(false),
+            showTxTypeOptions: ref(false),
+            showTxDateRange: ref(false),
+            showTxStatusOptions: ref(false),
 
             // floating windows position
             isScrolling: ref(false),
@@ -520,11 +592,21 @@ export default defineComponent({
             orderTotalDropdownTop: ref(0),
             paymentStatusDropdownLeft: ref(0),
             paymentStatusDropdownTop: ref(0),
+            orderAmountDropdownLeft: ref(0),
+            orderAmountDropdownTop: ref(0),
+            txTypeDropdownLeft: ref(0),
+            txTypeDropdownTop: ref(0),
+            txDateDropdownLeft: ref(0),
+            txDateDropdownTop: ref(0),
+            txStatusDropdownLeft: ref(0),
+            txStatusDropdownTop: ref(0),
 
             registeredDateRange: ref([subDays(new Date(), 30), new Date()]),
             orderDateRange: ref([subDays(new Date(), 30), new Date()]),
+            txDateRange: ref([subDays(new Date(), 30), new Date()]),
             spentValue: 'Filter',
             orderTotalValue: 'Filter',
+            orderAmountValue: 'Filter',
 
             // filter options
             accountOptions: ref([
@@ -577,6 +659,8 @@ export default defineComponent({
                 'Payment Declined',
             ]),
             paymentStatusOptions: ref(PaymentTypeEnum),
+            txTypeOptions: ref(PaymentDirectionEnum),
+            txStatusOptions: ref(PaymentStatusEnum),
         };
     },
     computed: {
@@ -597,7 +681,7 @@ export default defineComponent({
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.checkBoxHeaderClass
-                            : 'flex justify-center items-center py-4 bg-[#F2F2F2]',
+                            : 'flex justify-center items-center py-4 bg-[#F2F2F2] h-full',
                     checkbox: true,
                 },
                 nameAndProfile: {
@@ -759,46 +843,71 @@ export default defineComponent({
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.invoiceIdHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
                     title: this.invoiceIdTitle || 'Invoice #ID',
                     order: this.invoiceIdOrder,
                     sortChange: this.handleInvoiceIdOrderChange,
+                    search: this.filters,
+                    value: this.invoiceId,
+                    placeholder: 'Search #ID',
+                    filterChange: this.handleInvoiceIdFilterChange,
+                    emit: 'invoiceIdFilterChange',
                 },
                 orderAmount: {
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.orderAmountHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
-                    title: this.orderAmountTitle || 'Amount',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
+                    title: this.orderAmountTitle || 'Total',
                     order: this.orderAmountOrder,
                     sortChange: this.handleOrderAmountOrderChange,
+                    filterButton: this.filters,
+                    rangeValue: this.orderAmountValue,
+                    rangeVisible: this.showOrderAmountRange,
+                    textGrayCondition: this.orderAmountValue === 'Filter',
+                    trackingWidestCondition: this.orderAmountValue[0] !== 'Filter',
+                    handleShow: this.handleShowOrderAmountRange,
+                    customClasses: this.orderAmountInnerClass || 'justify-center gap-2 w-full',
+                    emit: 'orderAmountFilterChange',
                 },
                 txType: {
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.txTypeHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
                     title: this.txTypeTitle || 'Type',
                     order: this.txTypeOrder,
                     sortChange: this.handleTxTypeOrderChange,
+                    select: this.filters,
+                    handleShow: this.handleShowTxTypeOptions,
+                    selectedItem: this.txType,
+                    optionsVisible: this.showTxTypeOptions,
                 },
                 txDate: {
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.txDateHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
                     title: this.txDateTitle || 'Date',
                     order: this.txDateOrder,
                     sortChange: this.handleTxDateOrderChange,
+                    datePicker: this.filters,
+                    range: this.txDateRange,
+                    datePickerVisible: this.showTxDateRange,
+                    handleShow: this.handleShowTxDateRange,
                 },
                 txStatus: {
                     class:
                         this.customGeneralHeaderClass || this.applyCustomClasses
                             ? this.customGeneralHeaderClass + ' ' + this.txStatusHeaderClass
-                            : 'px-2 py-4 bg-[#F2F2F2]',
+                            : 'px-2 py-4 bg-[#F2F2F2] flex flex-col gap-4',
                     title: this.txStatusTitle || 'Status',
                     order: this.txStatusOrder,
                     sortChange: this.handleTxStatusOrderChange,
+                    select: this.filters,
+                    handleShow: this.handleShowTxStatusOptions,
+                    selectedItem: this.txStatus,
+                    optionsVisible: this.showTxStatusOptions,
                 },
                 paymentStatus: {
                     class:
@@ -871,6 +980,26 @@ export default defineComponent({
                     };
                 });
         },
+        txTypeOptionsList() {
+            return Object.values(PaymentDirectionEnum)
+                .filter((v) => !isNaN(Number(v)))
+                .map((type) => {
+                    return {
+                        label: getPaymentDirectionById(type),
+                        key: type,
+                    };
+                });
+        },
+        txStatusOptionsList() {
+            return Object.values(PaymentStatusEnum)
+                .filter((v) => !isNaN(Number(v)))
+                .map((type) => {
+                    return {
+                        label: getPaymentStatusById(type),
+                        key: type,
+                    };
+                });
+        },
     },
     watch: {
         // watch for registered date range changes
@@ -879,6 +1008,9 @@ export default defineComponent({
         },
         orderDateRange() {
             this.handleOrderDateFilterChange();
+        },
+        txDateRange() {
+            this.handleTxDateFilterChange();
         },
     },
     created() {
@@ -935,6 +1067,11 @@ export default defineComponent({
             this.showOrderStatusOptions = false;
             this.showOrderTotalRange = false;
             this.showPaymentStatusOptions = false;
+            this.showFulfillmentStatusOptions = false;
+            this.showOrderAmountRange = false;
+            this.showTxTypeOptions = false;
+            this.showTxDateRange = false;
+            this.showTxStatusOptions = false;
             this.isScrolling = true;
             clearTimeout(this.scrollTimeout);
             this.scrollTimeout = setTimeout(() => {
@@ -1003,6 +1140,34 @@ export default defineComponent({
             const rect = target.getBoundingClientRect();
             this.paymentStatusDropdownLeft = rect.right;
             this.paymentStatusDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowOrderAmountRange(event: MouseEvent) {
+            this.showOrderAmountRange = !this.showOrderAmountRange;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.orderAmountDropdownLeft = rect.right;
+            this.orderAmountDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowTxTypeOptions(event: MouseEvent) {
+            this.showTxTypeOptions = !this.showTxTypeOptions;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.txTypeDropdownLeft = rect.right;
+            this.txTypeDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowTxDateRange(event: MouseEvent) {
+            this.showTxDateRange = !this.showTxDateRange;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.txDateDropdownLeft = rect.right;
+            this.txDateDropdownTop = rect.bottom + window.scrollY + 8;
+        },
+        handleShowTxStatusOptions(event: MouseEvent) {
+            this.showTxStatusOptions = !this.showTxStatusOptions;
+            const target = event.currentTarget as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            this.txStatusDropdownLeft = rect.right;
+            this.txStatusDropdownTop = rect.bottom + window.scrollY + 8;
         },
 
         // datepicker methods
@@ -1117,6 +1282,22 @@ export default defineComponent({
         handlePlainTextColFilterChange(event: InputEvent) {
             this.$emit('plainTextColFilterChange', event);
         },
+        handleInvoiceIdFilterChange(event: InputEvent) {
+            this.$emit('invoiceIdFilterChange', event);
+        },
+        handleOrderAmountFilterChange(buffer: number[]) {
+            this.showOrderAmountRange = false;
+            this.$emit('orderAmountFilterChange', buffer);
+            this.calculateOrderAmountValue(buffer);
+        },
+        handleTxTypeFilterChange(event: MouseEvent, item: any) {
+            this.showTxTypeOptions = false;
+            this.$emit('txTypeFilterChange', event, item);
+        },
+        handleTxStatusFilterChange(event: MouseEvent, item: any) {
+            this.showTxStatusOptions = false;
+            this.$emit('txStatusFilterChange', event, item);
+        },
 
         // filter button text formatters
         calculateSpentValue(buffer: number[]) {
@@ -1142,6 +1323,18 @@ export default defineComponent({
                 .join(' - ');
             const result = buffer[0] || buffer[1] ? orderTotalValue : 'Filter';
             this.orderTotalValue = result;
+        },
+        calculateOrderAmountValue(buffer: number[]) {
+            const orderAmountValue: string = buffer
+                .map((value: number) => {
+                    if (value >= 1000) {
+                        return `${Math.round(value / 1000)}K`;
+                    }
+                    return Math.round(value);
+                })
+                .join(' - ');
+            const result = buffer[0] || buffer[1] ? orderAmountValue : 'Filter';
+            this.orderAmountValue = result;
         },
 
         // clear SearchBar input

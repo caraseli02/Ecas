@@ -101,6 +101,7 @@ import { useNuxtApp } from '#app';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import USAFlag from '@/assets/icons/flags/usa.svg';
+import { debounce } from 'lodash';
 
 const { $api } = useNuxtApp();
 
@@ -123,6 +124,8 @@ const totalItems = ref(0);
 const loading = ref(true);
 const error = ref(false);
 
+const executeWatch = ref(true);
+
 const listItems = ref<DashboardCustomerTableItem[]>([]);
 
 const visibleItemsFiltered = computed(() => {
@@ -131,7 +134,7 @@ const visibleItemsFiltered = computed(() => {
     });
 });
 
-const fetchAndSetUsersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
+const fetchAndSetUsersList = debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
     loading.value = true;
     error.value = false;
 
@@ -162,9 +165,10 @@ const fetchAndSetUsersList = async (page: number, perPage: number, filters = {},
             id: user._id,
             firebaseId: user.firebaseId,
             active: user.active,
+            adminSettings: user.adminSettings,
         }));
     }
-};
+}, 500);
 await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 
 watch(
@@ -175,6 +179,12 @@ watch(
         for (const filter of newActiveFilters) {
             filterParams[filter.filter] = filter.value;
         }
+
+        if (Object.keys(filterParams).length) {
+            atPage.value = 1;
+            newAtPage = 1;
+        }
+
         await fetchAndSetUsersList(newAtPage, newPerPage, filterParams, newActiveSort);
     },
     { deep: true }

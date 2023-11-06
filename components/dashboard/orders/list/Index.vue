@@ -141,6 +141,7 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import moment from 'moment/moment';
 import { useNuxtApp } from '#app';
+import { debounce } from 'lodash';
 
 const { $api } = useNuxtApp();
 
@@ -276,7 +277,7 @@ const loading = ref(true);
 const error = ref(false);
 const totalItems = ref(0);
 
-const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
+const fetchAndSetOrdersList = debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
     loading.value = true;
     error.value = false;
 
@@ -306,7 +307,7 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
     }
 
     return data.data;
-};
+}, 250);
 
 await loadTabFilters();
 await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
@@ -325,8 +326,14 @@ watch(
         if (activeOrderFilter.value && activeOrderFilter.value.value !== 'all-orders') {
             filterParams[activeOrderFilter.value.value] = `${activeOrderFilter.value.key}`;
         }
+
         for (const filter of newActiveFilters) {
             filterParams[filter.filter] = filter.value;
+        }
+
+        if (Object.keys(filterParams).length) {
+            atPage.value = 1;
+            newAtPage = 1;
         }
 
         await fetchAndSetOrdersList(newAtPage, newPerPage, filterParams, newActiveSort);
