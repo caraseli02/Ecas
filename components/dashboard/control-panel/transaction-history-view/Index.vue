@@ -116,6 +116,10 @@ import XIcon from '@/assets/icons/dashboard/x.svg';
 import DownloadIcon from '@/assets/icons/dashboard/download-2.svg';
 import { TransactionInterface } from '~/types/dashboard/transaction';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
+import { debounce } from 'lodash';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const atPage = ref(1);
 const perPage = ref(10);
@@ -145,6 +149,47 @@ const visibleItemsFiltered = computed(() => {
 });
 
 const checkAll = ref(false);
+
+const fetchAndSetTransactionList = debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
+    loading.value = true;
+    error.value = false;
+
+    const data = await $api.controlPanel.fetchTransactions(page, perPage, filters, sort);
+
+    if (!data || data.status !== 'success') {
+        loading.value = false;
+        error.value = true;
+        return;
+    }
+
+    loading.value = false;
+    totalItems.value = data.data.total_items;
+
+    listItems.value = data.data.items as TransactionInterface[];
+
+    return data.data;
+}, 250);
+
+await fetchAndSetTransactionList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
+
+watch(
+    [atPage, perPage, activeFilters, activeSort],
+    async ([newAtPage, newPerPage, newActiveFilters, newActiveSort]) => {
+        const filterParams = {};
+
+        for (const filter of newActiveFilters) {
+            filterParams[filter.filter] = filter.value;
+        }
+
+        if (Object.keys(filterParams).length) {
+            atPage.value = 1;
+            newAtPage = 1;
+        }
+
+        await fetchAndSetTransactionList(newAtPage, newPerPage, filterParams, newActiveSort);
+    },
+    { deep: true }
+);
 
 const handleCheck = (id: string) => {
     const item = listItems.value.find((e) => e._id === id);

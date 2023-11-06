@@ -24,7 +24,7 @@
         :tx-status="txStatus"
         @orderIdOrderChange="
             idOrder === 0 ? (idOrder = 1) : (idOrder = 0);
-            handleSortChange(emits, 'id', idOrder);
+            handleSortChange(emits, 'orderId', idOrder);
         "
         @invoiceIdOrderChange="
             invoiceIdOrder === 0 ? (invoiceIdOrder = 1) : (invoiceIdOrder = 0);
@@ -40,7 +40,7 @@
         "
         @txDateOrderChange="
             dateOrder === 0 ? (dateOrder = 1) : (dateOrder = 0);
-            handleSortChange(emits, 'date', dateOrder);
+            handleSortChange(emits, 'createdAt', dateOrder);
         "
         @txStatusOrderChange="
             statusOrder === 0 ? (statusOrder = 1) : (statusOrder = 0);
@@ -48,19 +48,32 @@
         "
         @checkAll="$emit('checkAll', checkAll)"
         @check="(itemId) => $emit('check', itemId)"
+        @txDateFilterChange="
+            (buffer) => {
+                txDate = buffer;
+                handleFilterChange(activeFilters, emits, 'startDate', formattedDate(buffer.start), true);
+                handleFilterChange(activeFilters, emits, 'endDate', formattedDate(buffer.end), true);
+            }
+        "
+        @orderIdFilterChange="handleFilterChange(activeFilters, emits, 'orderId', $event, false)"
+        @invoiceIdFilterChange="handleFilterChange(activeFilters, emits, 'invoiceId', $event, false)"
         @orderAmountFilterChange="
             (buffer) => {
                 orderAmount = buffer;
+                handleFilterChange(activeFilters, emits, 'amountFrom', buffer[0], true);
+                handleFilterChange(activeFilters, emits, 'amountTo', buffer[1], true);
             }
         "
         @txTypeFilterChange="
             (event, item) => {
                 txType = item.label;
+                handleFilterChange(activeFilters, emits, 'type', item.key, true);
             }
         "
         @txStatusFilterChange="
             (event, item) => {
                 txStatus = item.label;
+                handleFilterChange(activeFilters, emits, 'status', item.key, true);
             }
         "
     />
@@ -68,10 +81,11 @@
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import { handleSortChange } from '~/services/dashboard/filter.service';
+import { formattedDate, handleFilterChange, handleSortChange } from '~/services/dashboard/filter.service';
 import CustomTable from '~/components/shared/tables/CustomTable.vue';
 import CustomItem from '~/components/shared/tables/CustomItem.vue';
 import { TransactionInterface } from '~/types/dashboard/transaction';
+import { FilterInterface } from '~/model/dashboard/table/filters';
 
 defineProps({
     items: {
@@ -89,6 +103,8 @@ defineProps({
 });
 
 const emits = defineEmits(['active-filters', 'active-sort', 'check', 'checkAll']);
+
+const activeFilters: FilterInterface[] = [];
 
 const tableFields = ['checkBox', 'orderId', 'invoiceId', 'orderAmount', 'txType', 'txDate', 'txStatus'];
 
