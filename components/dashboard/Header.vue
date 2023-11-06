@@ -192,8 +192,8 @@
                             </div>
                             <div class="flex flex-col max-lg:hidden">
                                 <div class="leading-normal font-medium">
-                  {{ user.contactDetails.firstName + ' ' + user.contactDetails.lastName }}
-                </div>
+                                    {{ user.contactDetails.firstName + ' ' + user.contactDetails.lastName }}
+                                </div>
                                 <div class="text-xs leading-normal text-gray-300">{{ AccountType[user.role] }}</div>
                             </div>
                         </button>
@@ -219,7 +219,11 @@
                                 </button>
                                 <button
                                     class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                                    @click="showOptions = false; handleSignOut();$router.push('/')"
+                                    @click="
+                                        showOptions = false;
+                                        handleSignOut();
+                                        $router.push('/');
+                                    "
                                 >
                                     <SignOutIcon class="w-6 h-6 mr-3 text-current" />
                                     <span class="text-sm leading-[1.71] font-medium"> Sign out </span>
@@ -270,9 +274,9 @@ import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg'
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import { Notification, NotificationsType } from '~/types/dashboard/notification';
 import moment from 'moment';
-import {useAuthStore} from '~/store/authStore';
-import {UserDetails} from '~/types/auth/user-details';
-import {AccountType} from '../../types';
+import { useAuthStore } from '~/store/authStore';
+import { UserDetails } from '~/types/auth/user-details';
+import { AccountType } from '../../types';
 
 defineProps({
     isCollapsedOnDesktop: {
@@ -283,10 +287,9 @@ defineProps({
 const authStore = useAuthStore();
 
 const emit = defineEmits<{
-  (e: 'close'): void,
-  'show-side-nav': any
+    (e: 'close'): void;
+    'show-side-nav': any;
 }>();
-
 
 const showMobileSearch = ref(false);
 const searchValue = ref('');
@@ -298,7 +301,7 @@ const isLoading = ref(false);
 const showOptions = ref(false);
 const showNotifications = ref(false);
 const unreadNotifications = ref(0);
-const user = ref<UserDetails>({} as UserDetails)
+const user = ref<UserDetails>({} as UserDetails);
 const fetchNofications = async () => {
     error.value = false;
     isLoading.value = true;
@@ -321,22 +324,21 @@ const fetchNofications = async () => {
 };
 
 const fetchUserData = async () => {
-  const authStore = useAuthStore();
-  if (authStore.userDetails) {
-    user.value = authStore.userDetails
-  }
-}
-
-const handleSignOut = async () => {
-  authStore.signOut();
-  await authStore.firebaseSignOut();
-  setTimeout(() => {
-    emit('close');
-  }, 200);
+    const authStore = useAuthStore();
+    if (authStore.userDetails) {
+        user.value = authStore.userDetails;
+    }
 };
 
+const handleSignOut = async () => {
+    authStore.signOut();
+    await authStore.firebaseSignOut();
+    setTimeout(() => {
+        emit('close');
+    }, 200);
+};
 
-const route = useRoute()
+const route = useRoute();
 const getCurrentDate = (date: string) => {
     const currentDate = moment();
     const receivedDate = moment(date);
@@ -360,15 +362,14 @@ const markNotificationAsRead = async (notification: Notification, index: number)
     notifications.value[index].seen = true;
 };
 const deleteNotification = async (notification: Notification, index: number) => {
-  const response = (await $api.notifications.deleteNotificationById(notification.id));
-  if (response.status !== 'success') {
-    return;
-  }
-  notifications.value.splice(index, 1);
-}
+    const response = await $api.notifications.deleteNotificationById(notification.id);
+    if (response.status !== 'success') {
+        return;
+    }
+    notifications.value.splice(index, 1);
+};
 
 Promise.all([fetchUserData(), fetchNofications()]);
-
 </script>
 
 <style lang="scss">
