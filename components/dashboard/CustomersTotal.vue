@@ -26,7 +26,7 @@
           <SkeletonLoader v-if="loading" class="w-[60px] h-5 mr-1"/>
           <template v-else>
             <ArrowUpIcon class="w-4 h-4 mr-1"/>
-            <div class="text-sm leading-[1.43] font-medium text-[#00D395] mr-1">{{ delta + '%' }}</div>
+            <div class="text-sm leading-[1.43] font-medium mr-1" :class="'text-['+[color]+']'">{{ delta + '%' }}</div>
           </template>
           <button class="flex items-center" @click="showOptions = !showOptions">
                         <span class="text-sm left-[1.43] text-gray-300 font-medium mr-1">
@@ -52,7 +52,6 @@
     </div>
     <Transition name="fade-full">
       <div
-
           v-if="showOptions"
           v-click-outside="() => (showOptions = false)"
           class="absolute z-10 -bottom-0.5 left-0 translate-y-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[200px] shadow-m"
@@ -161,6 +160,8 @@ const total = ref(0);
 const delta = ref(0);
 const error = ref(false);
 const loading = ref(true);
+const color = ref('');
+
 
 const fetchAndSetTotalCustomers = async (time = 7) => {
   loading.value = true;
@@ -177,10 +178,15 @@ const fetchAndSetTotalCustomers = async (time = 7) => {
   loading.value = false;
 
   const widgetData = data as TotalCustomersInterface;
-
+  console.log(widgetData);
   series.value = widgetData.data.series;
   total.value = widgetData.data.total;
   delta.value = widgetData.data.delta;
+  delta.value = 3;
+  color.value = (delta.value >= 0) ? '#00D395' : '#FA4B4B'
+  if (chartOptions?.stroke?.colors instanceof Array) {
+    chartOptions.stroke.colors[0] = (delta.value >= 0 ? '#00D395' : '#FA4B4B');
+  }
 };
 
 await fetchAndSetTotalCustomers(selectedOption.time);
