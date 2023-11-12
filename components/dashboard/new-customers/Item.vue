@@ -1,6 +1,6 @@
 <template>
     <div class="flex items-center justify-between w-full">
-        <NuxtLink to="/" class="group/link flex items-center w-[calc(100%-40px)]">
+        <NuxtLink to="/" class="group/link flex items-center w-[calc(70%)] sm:w-[calc(80%)]">
             <div class="relative flex items-center justify-center rounded-full overflow-hidden w-10 h-10 flex-shrink-0 mr-3"
                 :class="[
                     !item.avatar ? 'bg-gray-200' : '',
@@ -24,15 +24,15 @@
                 <SkeletonLoader v-if="loading" class="w-full h-4" />
                 <div v-else class="text-xs leading-[1.67] text-gray-300 truncate">{{ item.email }}</div>
             </div>
-            <Tooltip v-if="!item.active" theme="black" :position="'top'" class="self-start ml-3">
+        </NuxtLink>
+        <div v-if="!loading" class="relative flex">
+            <Tooltip v-if="!item.active" theme="black" :position="'top'" class="self-start mx-3">
                 <LockIcon
                     class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
                 <template #content>
                     <span class="capitalize">Account Locked</span>
                 </template>
             </Tooltip>
-        </NuxtLink>
-        <div v-if="!loading" class="relative">
             <button class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue"
                 @click="showOptions = !showOptions">
                 <MoreVerticalIcon class="w-6 h-6" />
