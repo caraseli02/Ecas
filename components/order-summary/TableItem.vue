@@ -1,90 +1,100 @@
 <template>
-    <div class="rounded-md shadow-m p-[15px]">
-        <div class="flex items-start justify-between mb-10">
-            <div class="relative flex items-start">
-                <img :src="item.cover" :alt="item.title" class="w-[65px] h-[65px] mr-2.5" />
-                <div>
-                    <div class="mb-1.5 md:flex md:items-center md:mb-1">
-                        <div class="font-Inter font-semibold leading-tight mb-1.5 md:mb-0 md:mr-2.5">
-                            {{ item.title }}
-                        </div>
-                        <button
-                            class="flex border border-border rounded px-2 py-[3px] text-sm font-Inter font-semibold leading-tight text-gray-300"
-                        >
-                            CUSTOM1234
-                        </button>
+    <div :class="expanded ? 'shadow-xs rounded-t-lg' : 'rounded-lg'" class="border-[1px] border-[#EBEBEB]">
+        <div @click="handleExpand" class="flex flex-row justify-between p-4 bg-[#EBEBEB] w-full"
+            :class="expanded ? 'rounded-t-md' : 'rounded-md'">
+            <div class="flex flex-row truncate">
+                <label class="flex cursor-pointer mr-4">
+                    <input :value="checked" type="checkbox" class="sr-only" @change="handleCheck" />
+                    <div class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
+                        :class="[
+                            checked
+                                ? 'bg-blue border-blue group-hover:bg-white'
+                                : 'bg-white  border-border group-hover:border-gray-300',
+                        ]">
+                        <CheckIcon v-if="checked"
+                            class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
                     </div>
-                    <div class="text-xs leading-tight truncate mb-1">Diode: rectifying; SMD; 100V; 0.15...</div>
-                    <div class="md:flex md:items-center">
-                        <div class="text-xs leading-tight mb-1.5 md:mb-0 md:mr-2.5">Manufacturer: Microchip</div>
-                        <div class="flex items-center text-green">
-                            <CheckIcon class="w-4 h-4 mr-1" />
-                            <span class="text-xs leading-tight font-semibold font-Inter"> 16,000 in stock </span>
-                        </div>
-                    </div>
+                </label>
+                <div class="max-w-[220px] lg:max-w-[245px] flex">
+                    <span v-if="stockItem" class="truncate text-[#222] text-sm font-normal self-center justify-self-center"
+                        :class="expanded && shortStock ? 'hidden sm:block' : 'block'">{{ item.id }}</span>
+                    <span v-else class="block truncate text-[#FA4B4B] text-sm font-normal self-center justify-self-center">{{ item.id }}</span>
                 </div>
-                <div
-                    v-if="item.discount"
-                    class="hidden absolute right-0 top-[3px] translate-x-10 bg-red rounded-[25px] px-1.5 py-0.5 text-xs font-extrabold text-white md:flex"
-                >
-                    {{ item.discount }}%
+                <div v-if="shortStock"
+                    class="flex flex-row">
+                    <OrangeCheckCircle class="w-5 h-5 ml-2 sm:ml-4" :class="expanded ? 'ml-0' : ''" />
+                    <span class="text-[#FF8A00] text-sm font-medium leading-4 self-center pl-2"
+                        :class="expanded ? 'flex sm:hidden' : 'hidden'">{{ item.productEntity.stock }} in stock</span>
+                </div>
+                <GreenCheckCircle
+                    v-if="!shortStock && stockItem"
+                    class="w-5 h-5 ml-2 sm:ml-4" />
+                <div v-if="!stockItem" class="flex flex-row items-center ml-4">
+                    <WarningErrorHuge class="hidden lg:block" />
+                    <WarningError class="block lg:hidden" />
+                    <span class="hidden sm:flex text-sm font-medium leading-6 text-[#FA4B4B] ml-2">{{ item.stock - item.productEntity?.stock }} items will be on back order.</span>
+                </div>
+                <div v-if="stockItem" class="px-2 border-[1px] rounded-[25px] border-[#FA4B4B] bg-white ml-4 sm:flex items-center hidden">
+                    <span class="text-xs font-semibold leading-5 text-[#FA4B4B]">{{ item.discount.value }} %</span>
                 </div>
             </div>
-            <div class="flex flex-col gap-2.5 text-gray-300 md:flex-row md:gap-5">
-                <button class="flex transition-colors duration-300 hover:text-blue">
-                    <D3Icon class="w-6 h-6" />
-                </button>
-                <button class="flex transition-colors duration-300 hover:text-blue">
-                    <TruckIcon class="w-6 h-6" />
-                </button>
-                <button class="flex transition-colors duration-300 hover:text-blue">
-                    <TrashIcon class="w-6 h-6" />
-                </button>
+            <div class="">
+                <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 lg:hidden flex"
+                    :class="[expanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
             </div>
         </div>
-        <div class="flex items-end justify-between">
-            <div class="relative flex flex-col gap-[5px] md:flex-row md:items-center md:gap-[30px]">
-                <div class="flex items-center text-xs font-Inter">
-                    <span class="leading-tight text-gray-300 mr-2">VAT:</span>
-                    <span class="font-medium leading-snug md:text-sm">19%</span>
-                </div>
-                <div class="flex items-center text-xs font-Inter">
-                    <span class="leading-tight text-gray-300 mr-2">Unit Price:</span>
-                    <span class="flex items-end text-sm font-medium leading-snug md:text-base md:items-center">
-                        <span class="" :class="[item.discount ? 'text-green mr-[5px]' : '']"> $120,00 </span>
-                        <span v-if="item.discount" class="text-xs line-through text-gray-300 md:text-sm"> $150,00 </span>
-                    </span>
-                </div>
-                <div class="flex items-center text-xs font-Inter">
-                    <span class="leading-tight text-gray-300 mr-2">Line Total:</span>
-                    <span class="text-sm font-medium leading-snug md:text-base"> $30.000,00 </span>
-                </div>
-                <div
-                    v-if="item.discount"
-                    class="absolute left-0 -top-[15px] -translate-y-full bg-red rounded-[25px] px-1.5 py-0.5 text-xs font-extrabold text-white md:hidden"
-                >
-                    {{ item.discount }}%
-                </div>
-            </div>
-            <QuantityButtons v-model="quantity" />
-        </div>
+
     </div>
 </template>
+<script lang="ts">
+import CheckIcon from '@/assets/icons/check.svg';
+import OrangeCheckCircle from '@/assets/icons/orange-check-circle.svg';
+import GreenCheckCircle from '@/assets/icons/green-check-circle.svg';
+import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
+import WarningError from '@/assets/icons/warning-error.svg';
+import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
 
-<script setup lang="ts">
-import { PropType } from 'vue';
-import { OrderSummaryItem } from '~~/types';
-import D3Icon from '@/assets/icons/3d.svg';
-import TruckIcon from '@/assets/icons/truck.svg';
-import TrashIcon from '@/assets/icons/trash-can.svg';
-import CheckIcon from '@/assets/icons/check-circle.svg';
-
-defineProps({
-    item: {
-        type: Object as PropType<OrderSummaryItem>,
-        required: true,
+export default defineComponent({
+    name: 'TableItem',
+    props: ['item', 'stockItem'],
+    data() {
+        return {
+            checked: false,
+            expanded: false,
+            thresholdPrice: 10,
+        };
+    },
+    components: {
+        CheckIcon,
+        OrangeCheckCircle,
+        GreenCheckCircle,
+        ChevronDownIcon,
+        WarningError,
+        WarningErrorHuge,
+    },
+    methods: {
+        handleCheck() {
+            this.checked = !this.checked;
+            this.$emit('check', this.checked);
+        },
+        handleExpand() {
+            if (window.matchMedia("(max-width: 1024px)").matches) {
+                this.expanded = !this.expanded;
+            }
+        },
+    },
+    computed: {
+        shortStock() {
+            return this.item.productEntity?.stock <= this.thresholdPrice && this.item.productEntity?.stock > 0 && this.stockItem;
+        },
+    },
+    mounted() {
+        const mediaQuery = window.matchMedia("(min-width: 1024px)");
+        const handler = (e: MediaQueryListEvent) => {
+            this.expanded = e.matches;
+        };
+        mediaQuery.addEventListener('change', handler);
+        handler({ matches: mediaQuery.matches } as MediaQueryListEvent);
     },
 });
-
-const quantity = ref(0);
 </script>
