@@ -78,6 +78,14 @@ class UserDashboardService extends HttpFactory {
         });
     }
 
+    async activateUser(userID: string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken;
+        return await this.call<OrderInterface[]>('POST', `${this.RESOURCE}/activate/${userID}`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
     async deleteUser(userID: string) {
         const authStore = useAuthStore();
         const token = authStore.getToken;
