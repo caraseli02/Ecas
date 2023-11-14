@@ -1,24 +1,32 @@
 <template>
     <div class="relative">
-        <label class="relative hidden border-2 border-blue rounded-md items-center h-[44px] overflow-hidden md:flex">
-            <SearchIcon v-if="!isScrolled" class="hidden w-[18px] h-[18px] flex-shrink-0 text-gray-100 self-center ml-3 md:inline-block" />
+        <label
+            class="relative hidden border-[1.5px] border-blue rounded-lg items-center h-[44px] overflow-hidden md:flex"
+            :class="[isScrolled ? 'lg:border-border' : '']"
+        >
+            <SearchIcon v-if="!isScrolled" class="hidden w-4 h-4 flex-shrink-0 text-gray-100 self-center ml-3 md:inline-block" />
             <form action="" class="w-full flex" @submit.prevent>
                 <input
+                    ref="searchDOM"
                     v-model="searchVal"
                     type="search"
-                    placeholder="Search parts here"
+                    placeholder="Search products"
                     autocomplete="off"
-                    class="flex-1 text-sm leading-[1.14] text-gray-300 rounded-md px-2 py-2.5 h-[40px] w-full placeholder:text-gray-100 focus:outline-none"
+                    class="flex-1 text-sm leading-[1.29] text-gray-300 h-[44px] py-3 w-full placeholder:text-gray-100 focus:outline-none"
+                    :class="[isScrolled ? 'px-3' : 'px-2']"
                     @input="onInput"
                     @keypress.enter="handleEnterButton"
-                    @blur="showSearchResults = false"
+                    @blur="
+                        showSearchResults = false;
+                        $emit('blur');
+                    "
                 />
             </form>
             <div v-if="!isScrolled" class="flex items-center justify-center bg-blue cursor-pointer px-4 py-3">
                 <SearchIcon class="w-5 h-5 text-white" />
             </div>
             <div v-else class="absolute top-1/2 right-3 -translate-y-1/2">
-                <SearchIcon class="w-5 h-5 text-gray-300" />
+                <SearchIcon class="w-5 h-5 text-gray-100" />
             </div>
         </label>
         <Transition name="fade">
@@ -40,7 +48,7 @@ import Emitter from 'tiny-emitter/instance';
 import { useNuxtApp } from '#app';
 const { $api } = useNuxtApp();
 
-defineProps({
+const props = defineProps({
     isScrolled: {
         type: Boolean,
         required: false,
@@ -49,8 +57,15 @@ defineProps({
         type: Boolean,
         required: false,
     },
+    isVisible: {
+        type: Boolean,
+        required: false,
+    },
 });
 
+defineEmits(['blur']);
+
+const searchDOM = ref<HTMLElement>();
 const searchVal = ref('');
 const isLoading = ref<boolean>(false);
 const productList = ref<ProductSearchItems[]>([]);
@@ -86,11 +101,21 @@ function handleEnterButton() {
     router.push({ path: '/search', query: { keyword: searchVal.value } });
 }
 
+const focus = computed(() => props.isVisible);
+
 watch(searchVal, (val) => {
     if (val) {
         showSearchResults.value = true;
     } else {
         showSearchResults.value = false;
+    }
+});
+
+watch(focus, (newVal) => {
+    if (newVal && window.innerWidth >= 768 && window.innerWidth < 1024) {
+        nextTick(() => {
+            searchDOM.value?.focus();
+        });
     }
 });
 </script>

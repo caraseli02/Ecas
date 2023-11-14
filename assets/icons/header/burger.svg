@@ -1,11 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-  <g clip-path="url(#clip0_520_9901)">
-    <path fill="#fff"
-      d="M1.428 3.789c0-.515.411-.932.918-.932h15.306c.51 0 .919.417.919.932 0 .516-.41.931-.919.931H2.346a.924.924 0 0 1-.918-.931Zm0 6.21c0-.516.411-.93.918-.93h15.306c.51 0 .919.414.919.93 0 .517-.41.932-.919.932H2.346A.924.924 0 0 1 1.428 10Zm16.224 7.144H2.346a.924.924 0 0 1-.918-.932c0-.516.411-.932.918-.932h15.306c.51 0 .919.416.919.932s-.41.932-.919.932Z" />
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="vuesax/linear/menu">
+    <g id="menu">
+      <path id="Vector" d="M3 6H21" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+      <path id="Vector_2" d="M3 12H21" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+      <path id="Vector_3" d="M3 18H21" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+    </g>
   </g>
-  <defs>
-    <clipPath id="clip0_520_9901">
-      <path fill="#fff" d="M0 0h20v20H0z" />
-    </clipPath>
-  </defs>
 </svg>
