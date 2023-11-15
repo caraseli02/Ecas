@@ -129,11 +129,13 @@
               <div class="grid grid-cols-[140px,1fr] gap-3">
                 <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
                 <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
-                  <CountryFlag
-                      :country="countryID"
-                      :style="{ transform: 'scale(0.44)' , borderRadius : '0.34rem' }"
-                      size="small"/>
-                  <span class="ml-2">{{ countryName || 'N/A' }} </span>
+                  <img
+                      v-if="country.label"
+                      :src="country.icon"
+                      :alt="country.label"
+                      class="w-8 rounded mr-2"
+                  />
+                  <span>{{ country.label || 'N/A' }} </span>
                 </div>
               </div>
               <div class="grid grid-cols-[140px,1fr] gap-3">
@@ -197,15 +199,13 @@ import {AccountType} from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
 import LockIcon from '@/assets/icons/dashboard/orders/lock.svg';
-import CountryFlag from 'vue-country-flag-next'
 import {countries} from '~/data/countries';
 
 const showOptions = ref(false);
-const countryID = ref('');
 const error = ref(false);
 const emptyData = ref(false);
 const isLoading = ref(false);
-const countryName = ref('');
+const country = ref({} as any);
 const props = defineProps({
   id: {
     type: String,
@@ -238,12 +238,7 @@ const fetchInformation = async () => {
 
   customerInformation.value = response.data;
   if (customerInformation.value.personalDetails?.address.country) {
-    const country = countries.find((country) => country.value === customerInformation.value.personalDetails?.address.country);
-    countryName.value = country?.label || '';
-    countryID.value = customerInformation.value.personalDetails?.address.country.toLowerCase();
-  }
-  if (customerInformation.value.personalDetails && customerInformation.value.personalDetails?.address) {
-    countryID.value = customerInformation.value.personalDetails?.address?.country.toLowerCase();
+    country.value = countries.find((country) => country.value === customerInformation.value.personalDetails?.address.country);
   }
   Emitter.emit('customer-info', {
     name: customerInformation.value.contactDetails?.firstName + ' ' + customerInformation.value.contactDetails?.lastName,
