@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-6 mb-6">
-        <OrderSummaryTableHead />
+        <OrderSummaryTableHead @checkAll="checkAll" @addToFavs="addToFavs" />
         <div v-if="stockItems.length">
             <span class="text-[#222] text-base font-semibold leading-6">Stock Items: {{ stockItems.length }}</span>
         </div>
@@ -26,6 +26,14 @@ export default defineComponent({
         backOrderItems() {
             return this.items.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
         },
-    }
+    },
+    methods: {
+        checkAll(checked: boolean) {
+            this.$emit('checkAll', checked);
+        },
+        addToFavs(liked: boolean) {
+            this.$emit('addToFavs', liked);
+        },
+    },
 });
 </script>

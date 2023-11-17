@@ -44,9 +44,11 @@ export default defineComponent({
     methods: {
         checkAll() {
             this.checkAllBox = !this.checkAllBox;
+            this.$emit('checkAll', this.checkAllBox);
         },
         addToFavs() {
             this.liked = !this.liked;
+            this.$emit('addToFavs', this.liked);
         },
         deleteSelected() {
             this.$emit('deleteSelected');
