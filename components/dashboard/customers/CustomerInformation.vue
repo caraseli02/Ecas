@@ -9,35 +9,25 @@
                 <button class="flex" @click="showOptions = !showOptions">
                     <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
                 </button>
-                <Transition name="fade-full">
-                    <div v-if="showOptions" v-click-outside="() => (showOptions = false)"
-                        class="absolute z-10 -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[224px] shadow-m">
-                        <button
-                            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                            @click="(showOptions = false), $router.push($route.fullPath + '/control-panel')">
-                            <SettingsIcon class="w-6 h-6 mr-3 text-current" />
-                            <span class="text-sm leading-[1.71] font-medium"> Control Panel </span>
-                        </button>
-                        <button
-                            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                            @click="
-                                showOptions = false;
-                            deactivateAccountAsAdmin(customerInformation.firebaseId);
-                            ">
-                            <DeactivateIcon class="w-6 h-6 mr-3 text-current" />
-                            <span class="text-sm leading-[1.71] font-medium"> Deactivate Account </span>
-                        </button>
-                        <button
-                            class="flex items-center w-full text-left px-3 py-2 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
-                            @click="
-                                showOptions = false;
-                            deleteAccountAsAdmin(customerInformation.firebaseId);
-                            ">
-                            <TrashIcon class="w-6 h-6 mr-3 text-current" />
-                            <span class="text-sm leading-[1.71] font-medium"> Delete Account </span>
-                        </button>
-                    </div>
+                <Transition name="fade-bottom">
+                    <ThreeDotMenu v-if="showOptions" v-click-outside="() => (showOptions = false)" :index="index" :profile="customerDetails"
+                        :dropdown-top="30" :dropdown-left="25" :settings-button="true" :settings-text="'Control Panel'"
+                        :deactivate-button="true"
+                        :deactivate-text="customerDetails.active ? 'Lock Account' : 'Unlock Account'" :trash-button="true"
+                        :trash-text="'Delete Account'" @settings-clicked="showOptions = false"
+                        @deactivate-clicked="showDeactivatingModal = true; showOptions = false"
+                        @trash-clicked="showOptions = false; deleteAccountAsAdmin(customerInformation.firebaseId)" />
                 </Transition>
+                <Teleport to="body">
+                    <Transition name="fade">
+                        <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="customerDetails"
+                            @close="showDeactivatingModal = false"
+                            @change-lock-status="customerDetails.active = !customerDetails.active" />
+                    </Transition>
+                    <div class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
+                        :class="[showDeactivatingModal ? 'backdrop-blur-[7.5px]' : 'backdrop-blur-0 opacity-0 pointer-events-none']"
+                        @click="showDeactivatingModal = false" />
+                </Teleport>
             </div>
         </div>
         <div v-if="emptyData || error" class="flex flex-col items-center justify-center flex-1 mb-[157px] md:mb-[149px]">
@@ -53,7 +43,8 @@
                     <div v-else class="flex md:flex-row-reverse">
                         <div class="font-semibold leading-tight mb-2 md:order-1">
                             {{ customerInformation.contactDetails.firstName + ' ' +
-                                customerInformation.contactDetails.lastName }}
+                                customerInformation.contactDetails.lastName
+                        }}
                         </div>
                         <Tooltip theme="black" :position="'top'" class="self-start ml-3">
                             <LockIcon v-if="!customerInformation.active"
@@ -86,7 +77,7 @@
                 <div class="pb-5 border-b border-gray-200 mb-5">
                     <SkeletonLoader v-if="isLoading" class="w-full h-[304px] md:h-[232px]" />
                     <template v-else>
-                        <div class="flex flex-row gap-3">    
+                        <div class="flex flex-row gap-3">
                             <div class="text-sm font-semibold mb-4">Account Details</div>
                             <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black" v-if="customerInformation.adminSettings?.discount">
                                 <div
@@ -174,9 +165,6 @@
 import Avatar from '@/assets/icons/dashboard/avatar.png';
 import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import USAFlag from '@/assets/icons/flags/usa.svg';
-import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
-import DeactivateIcon from '@/assets/icons/dashboard/deactivate.svg';
-import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
@@ -184,9 +172,13 @@ import { UserDetails } from '~/types/auth/user-details';
 import { AccountType } from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
+import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
+import { getAccountTypeById } from '~/types';
+import { DashboardCustomerTableItem } from '~/types';
 import LockIcon from '@/assets/icons/dashboard/orders/lock.svg';
 
 const showOptions = ref(false);
+const showDeactivatingModal = ref(false);
 
 const error = ref(false);
 const emptyData = ref(false);
@@ -199,6 +191,7 @@ const props = defineProps({
     },
 });
 const customerInformation = ref<UserDetails>({} as UserDetails);
+const customerDetails = ref<DashboardCustomerTableItem>({} as DashboardCustomerTableItem);
 const { $api } = useNuxtApp();
 
 const fetchInformation = async () => {
@@ -226,17 +219,24 @@ const fetchInformation = async () => {
     Emitter.emit('customer-info', {
         name: customerInformation.value.contactDetails?.firstName + ' ' + customerInformation.value.contactDetails?.lastName,
     });
-};
 
-const deleteAccountAsAdmin = async (id: string) => {
-    const response = await $api.userDashboard.deleteUser(id);
-    if (response.status !== 'success') {
-        return;
+    customerDetails.value = {
+        id: response.data._id,
+        avatar: Avatar,
+        name: `${response.data?.contactDetails?.firstName} ${response.data?.contactDetails?.lastName} `,
+        email: response.data.profileDetails.email,
+        account: getAccountTypeById(response.data.accountType as number) || '-',
+        company: response.data.companyDetails?.name || '-',
+        registered: new Date(response.data.createdAt).toLocaleDateString('en-GB'),
+        spent: response.data.spent,
+        ordersCount: response.data.ordersCount,
+        firebaseId: response.data.firebaseId,
+        active: response.data.active,
     }
 };
 
-const deactivateAccountAsAdmin = async (id: string) => {
-    const response = await $api.userDashboard.deactivateUser(id);
+const deleteAccountAsAdmin = async (id: string) => {
+    const response = await $api.userDashboard.deleteUser(id)
     if (response.status !== 'success') {
         return;
     }
