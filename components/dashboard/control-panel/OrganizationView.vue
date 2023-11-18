@@ -237,12 +237,16 @@ const form = ref({
 });
 const regions = ref<FormSelectOption[]>([]);
 
-const getCountryRegion = async (country: any, region: any) => {
-    //
-    const CountryRegionObj = getRegionByCountry(country, region);
-    regions.value = CountryRegionObj.regions;
-    form.value.country.value = CountryRegionObj.country;
-    form.value.region.value = CountryRegionObj.region;
+const getCountryRegion = (country: any, region: any) => {
+    const countryRegionObj = getRegionByCountry(country, region);
+
+    if (!countryRegionObj) {
+        return null;
+    }
+
+    regions.value = countryRegionObj.regions;
+    form.value.country.value = countryRegionObj.country;
+    form.value.region.value = countryRegionObj.region;
 };
 
 const getAccountDetails = async () => {

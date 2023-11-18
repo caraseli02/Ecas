@@ -31,3 +31,16 @@ export enum OrdersFilterLabelsEnum {
     totalFrom = 'Total From',
     totalTo = 'Total To',
 }
+
+export enum TransactionsFilterLabelsEnum {
+    orderShortId = 'ID',
+    invoiceId = 'Invoice ID',
+    type = 'Payment type',
+    status = 'Order status',
+    paymentStatus = 'Payment status',
+    startDate = 'Start date',
+    endDate = 'End date',
+
+    amountFrom = 'Total From',
+    amountTo = 'Total To',
+}

@@ -1,4 +1,5 @@
 import { UserDetails } from '~/types/auth/user-details';
+import { TransactionInterface } from '~/types/dashboard/transaction';
 
 export interface PaginatedCustomersInterface {
     status: string;
@@ -7,6 +8,16 @@ export interface PaginatedCustomersInterface {
         page_count: number;
         page: number;
         items: UserDetails[];
+    };
+}
+
+export interface PaginatedTransactionsInterface {
+    status: string;
+    data: {
+        total_items: number;
+        page_count: number;
+        page: number;
+        items: TransactionInterface[];
     };
 }
 

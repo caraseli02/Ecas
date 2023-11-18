@@ -88,19 +88,10 @@ export enum PaymentTypeEnum {
     Card = 0,
     Credit = 1,
     Cash = 2,
+    Bank = 3,
 }
 
-export enum PaymentDirectionEnum {
-    Debit = 0,
-    Credit = 1,
-}
-
-export const getPaymentDirectionById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
-    const keys = Object.keys(PaymentDirectionEnum).filter((x) => PaymentDirectionEnum[x] === enumValue);
-    return keys.length > 0 ? keys[0] : null;
-};
-
-export const getPaymentSTypeById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
+export const getPaymentTypeById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
     const keys = Object.keys(PaymentTypeEnum).filter((x) => PaymentTypeEnum[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
