@@ -15,7 +15,8 @@ v-if="people.length > 0" class="grid grid-cols-1 gap-4"
           v-for="(person, index) in people.slice(0, type === 'default' ? 7 : 6)"
           :key="index"
           :item="person"
-          :type="type"
+          :index="index"
+                :type="type"
           :loading="loading"
       />
       <DashboardNewCustomersEmptyItem
@@ -120,17 +121,18 @@ const fetchAndSetNewCustomers = async (time = 7) => {
 
   loading.value = false;
 
-  people.value = data.data?.map((user: UserDetails) => ({
-    avatar: Avatar,
-    name: `${user?.contactDetails?.firstName} ${user?.contactDetails?.lastName}`,
-    email: user.profileDetails.email,
-    account: getAccountTypeById(user.accountType) || '-',
-    company: user.companyDetails?.name || '-',
-    registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
-    spent: user.spent,
-    ordersCount: user.ordersCount,
-    firebaseId: user.firebaseId
-  }));
+    people.value = data.data?.map((user: UserDetails) => ({
+        avatar: Avatar,
+        name: `${user?.contactDetails?.firstName} ${user?.contactDetails?.lastName}`,
+        email: user.profileDetails.email,
+        account: getAccountTypeById(user.accountType) || '-',
+        company: user.companyDetails?.name || '-',
+        registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
+        spent: user.spent,
+        ordersCount: user.ordersCount,
+        firebaseId: user.firebaseId,
+        active: user.active,
+    }));
 };
 
 await fetchAndSetNewCustomers();
