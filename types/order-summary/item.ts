@@ -88,6 +88,7 @@ export enum PaymentTypeEnum {
     Card = 0,
     Credit = 1,
     Cash = 2,
+    Bank = 3,
 }
 
 export const getPaymentTypeById = <T extends { [index: string]: number }>(enumValue: number): string | null => {

@@ -4,6 +4,7 @@ export interface TransactionInterface {
     _id: string;
     shortId: string;
     orderId: string;
+    orderShortId: string;
     userId?: string;
     businessId?: string;
     invoiceId?: string;

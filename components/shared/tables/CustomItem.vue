@@ -134,8 +134,12 @@
             />
         </Transition>
         <Transition name="fade">
-            <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item" @close="showDeactivatingModal = false" 
-            @change-lock-status="item.active = !item.active" />
+            <DashboardDeactivateUserModal
+                v-if="showDeactivatingModal"
+                :user="item"
+                @close="showDeactivatingModal = false"
+                @change-lock-status="item.active = !item.active"
+            />
         </Transition>
         <div
             class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
@@ -337,7 +341,7 @@ export default defineComponent({
                     text: true,
                     item: this.item,
                     class: this.txDateItemClass || 'px-2 py-4 text-sm leading-[1.71]',
-                    name: 'date',
+                    name: 'createdAt',
                 },
                 txStatus: {
                     txStatus: true,

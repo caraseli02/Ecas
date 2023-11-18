@@ -55,7 +55,7 @@
                 <div class="flex flex-wrap gap-4">
                     <div v-for="(filter, index) in activeFilters" :key="index" class="flex items-center p-1 bg-[#F2F2F2] rounded-md">
                         <span class="text-sm leading-[1.43] text-gray-300 mr-2">
-                            {{ filter }}
+                            {{ `${TransactionsFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                         </span>
                         <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="removeFilter(index)">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
@@ -97,6 +97,8 @@
             :check-all="checkAll"
             @check="handleCheck"
             @check-all="checkAll = !checkAll"
+            @active-filters="activeFilters = $event"
+            @active-sort="activeSort = $event"
         />
         <DashboardCustomersListPagination
             :at-page="atPage"
@@ -118,6 +120,8 @@ import { TransactionInterface } from '~/types/dashboard/transaction';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import { debounce } from 'lodash';
 import { useNuxtApp } from '#app';
+import moment from 'moment';
+import { TransactionsFilterLabelsEnum } from '~/types/dashboard/filter';
 
 const { $api } = useNuxtApp();
 
@@ -166,6 +170,12 @@ const fetchAndSetTransactionList = debounce(async (page: number, perPage: number
     totalItems.value = data.data.total_items;
 
     listItems.value = data.data.items as TransactionInterface[];
+
+    listItems.value.forEach((item: TransactionInterface) => {
+        item.createdAt = moment(item.createdAt).format('DD/MM/YYYY');
+        item.amount = Number(item.amount).toFixed(2);
+        item.invoiceId = item.invoiceId || '-';
+    });
 
     return data.data;
 }, 250);

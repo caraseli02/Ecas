@@ -24,7 +24,7 @@
         :tx-status="txStatus"
         @orderIdOrderChange="
             idOrder === 0 ? (idOrder = 1) : (idOrder = 0);
-            handleSortChange(emits, 'orderId', idOrder);
+            handleSortChange(emits, 'orderShortId', idOrder);
         "
         @invoiceIdOrderChange="
             invoiceIdOrder === 0 ? (invoiceIdOrder = 1) : (invoiceIdOrder = 0);
@@ -55,7 +55,7 @@
                 handleFilterChange(activeFilters, emits, 'endDate', formattedDate(buffer.end), true);
             }
         "
-        @orderIdFilterChange="handleFilterChange(activeFilters, emits, 'orderId', $event, false)"
+        @orderIdFilterChange="handleFilterChange(activeFilters, emits, 'orderShortId', $event, false)"
         @invoiceIdFilterChange="handleFilterChange(activeFilters, emits, 'invoiceId', $event, false)"
         @orderAmountFilterChange="
             (buffer) => {
