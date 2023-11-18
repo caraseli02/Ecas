@@ -10,23 +10,44 @@
                     <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
                 </button>
                 <Transition name="fade-bottom">
-                    <ThreeDotMenu v-if="showOptions" v-click-outside="() => (showOptions = false)" :index="index" :profile="customerDetails"
-                        :dropdown-top="30" :dropdown-left="25" :settings-button="true" :settings-text="'Control Panel'"
+                    <ThreeDotMenu
+                        v-if="showOptions"
+                        v-click-outside="() => (showOptions = false)"
+                        :index="index"
+                        :profile="customerDetails"
+                        :dropdown-top="30"
+                        :dropdown-left="25"
+                        :settings-button="true"
+                        :settings-text="'Control Panel'"
                         :deactivate-button="true"
-                        :deactivate-text="customerDetails.active ? 'Lock Account' : 'Unlock Account'" :trash-button="true"
-                        :trash-text="'Delete Account'" @settings-clicked="showOptions = false"
-                        @deactivate-clicked="showDeactivatingModal = true; showOptions = false"
-                        @trash-clicked="showOptions = false; deleteAccountAsAdmin(customerInformation.firebaseId)" />
+                        :deactivate-text="customerDetails.active ? 'Lock Account' : 'Unlock Account'"
+                        :trash-button="true"
+                        :trash-text="'Delete Account'"
+                        @settings-clicked="showOptions = false"
+                        @deactivate-clicked="
+                            showDeactivatingModal = true;
+                            showOptions = false;
+                        "
+                        @trash-clicked="
+                            showOptions = false;
+                            deleteAccountAsAdmin(customerInformation.firebaseId);
+                        "
+                    />
                 </Transition>
                 <Teleport to="body">
                     <Transition name="fade">
-                        <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="customerDetails"
+                        <DashboardDeactivateUserModal
+                            v-if="showDeactivatingModal"
+                            :user="customerDetails"
                             @close="showDeactivatingModal = false"
-                            @change-lock-status="customerDetails.active = !customerDetails.active" />
+                            @change-lock-status="customerDetails.active = !customerDetails.active"
+                        />
                     </Transition>
-                    <div class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
+                    <div
+                        class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
                         :class="[showDeactivatingModal ? 'backdrop-blur-[7.5px]' : 'backdrop-blur-0 opacity-0 pointer-events-none']"
-                        @click="showDeactivatingModal = false" />
+                        @click="showDeactivatingModal = false"
+                    />
                 </Teleport>
             </div>
         </div>
@@ -42,13 +63,13 @@
                     <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
                     <div v-else class="flex md:flex-row-reverse">
                         <div class="font-semibold leading-tight mb-2 md:order-1">
-                            {{ customerInformation.contactDetails.firstName + ' ' +
-                                customerInformation.contactDetails.lastName
-                        }}
+                            {{ customerInformation.contactDetails.firstName + ' ' + customerInformation.contactDetails.lastName }}
                         </div>
                         <Tooltip theme="black" :position="'top'" class="self-start ml-3">
-                            <LockIcon v-if="!customerInformation.active"
-                                class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue" />
+                            <LockIcon
+                                v-if="!customerInformation.active"
+                                class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue"
+                            />
                             <template #content>
                                 <span class="capitalize">Account Locked</span>
                             </template>
@@ -62,8 +83,10 @@
                         }}</span>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[180px] h-5 mb-2" />
-                    <div v-else="customerInformation.accountType === 2 || customerInformation.accountType === 3"
-                        class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0">
+                    <div
+                        v-else="customerInformation.accountType === 2 || customerInformation.accountType === 3"
+                        class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0"
+                    >
                         {{ customerInformation?.companyDetails?.name }}
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[180px] h-5" />
@@ -79,14 +102,23 @@
                     <template v-else>
                         <div class="flex flex-row gap-3">
                             <div class="text-sm font-semibold mb-4">Account Details</div>
-                            <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black" v-if="customerInformation.adminSettings?.discount">
+                            <Tooltip
+                                v-if="customerInformation.adminSettings?.discount"
+                                :position="index === 0 ? 'bottom' : 'top'"
+                                theme="black"
+                            >
                                 <div
-                                    class="border-[#007FFF] border-[1px] px-2 rounded-[50px] text-xs leading-[20px] font-semibold text-[#007FFF]">
-                                    {{customerInformation.adminSettings?.discount?.value}} %
+                                    class="border-[#007FFF] border-[1px] px-2 rounded-[50px] text-xs leading-[20px] font-semibold text-[#007FFF]"
+                                >
+                                    {{ customerInformation.adminSettings?.discount?.value }} %
                                 </div>
                                 <template #content>
-                                    <span>Customer Discount: <strong class="font-semibold">{{ `${customerInformation.adminSettings?.discount?.value}%`
-                                    }}</strong></span>
+                                    <span
+                                        >Customer Discount:
+                                        <strong class="font-semibold">{{
+                                            `${customerInformation.adminSettings?.discount?.value}%`
+                                        }}</strong></span
+                                    >
                                 </template>
                             </Tooltip>
                         </div>
@@ -112,7 +144,7 @@
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
                                 <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
-                                    <USAFlag v-if="customerInformation?.personalDetails?.country" class="w-6 h-6 mr-2" />
+                                    <USAFlag v-if="customerInformation?.personalDetails?.address.country" class="w-6 h-6 mr-2" />
                                     <span>{{ customerInformation?.personalDetails?.address.country || 'N/A' }} </span>
                                 </div>
                             </div>
@@ -138,8 +170,7 @@
                             <div class="w-2 h-2 rounded-full bg-[#00D395] mr-2" />
                             <span class="text-sm font-medium leading-tight text-gray-300">Registered</span>
                         </div>
-                        <div class="text-sm font-medium leading-tight pl-4">{{ getCurrentDate(customerInformation.createdAt)
-                        }}</div>
+                        <div class="text-sm font-medium leading-tight pl-4">{{ getCurrentDate(customerInformation.createdAt) }}</div>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[120px] h-10 md:w-[160px] md:h-[18px]" />
                     <div v-else class="md:flex md:items-center">
@@ -150,8 +181,8 @@
                         <div class="text-sm font-medium leading-tight pl-4">
                             {{
                                 customerInformation.adminSettings?.marketingPreferences?.emailMarketing?.email
-                                ? 'Subscribed'
-                                : 'Not Subscribed'
+                                    ? 'Subscribed'
+                                    : 'Not Subscribed'
                             }}
                         </div>
                     </div>
@@ -169,12 +200,10 @@ import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
 import { UserDetails } from '~/types/auth/user-details';
-import { AccountType } from '~/types';
+import { AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
-import { getAccountTypeById } from '~/types';
-import { DashboardCustomerTableItem } from '~/types';
 import LockIcon from '@/assets/icons/dashboard/orders/lock.svg';
 
 const showOptions = ref(false);
@@ -232,11 +261,12 @@ const fetchInformation = async () => {
         ordersCount: response.data.ordersCount,
         firebaseId: response.data.firebaseId,
         active: response.data.active,
-    }
+    };
+    console.log(customerDetails.value);
 };
 
 const deleteAccountAsAdmin = async (id: string) => {
-    const response = await $api.userDashboard.deleteUser(id)
+    const response = await $api.userDashboard.deleteUser(id);
     if (response.status !== 'success') {
         return;
     }

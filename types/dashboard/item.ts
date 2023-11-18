@@ -1,4 +1,5 @@
 import { OrderStatus, OrderType, PaymentStatusEnum } from '~/types';
+import { AccountAdminSettings } from '~/types/auth/account-settings';
 
 export interface DashboardCustomerTableItem {
     avatar?: any;
@@ -12,11 +13,7 @@ export interface DashboardCustomerTableItem {
     id: string;
     firebaseId: string;
     active: boolean;
-    adminSettings: {
-        discount: {
-            value: number;
-        },
-    },
+    adminSettings?: AccountAdminSettings;
 }
 
 export interface DashboardCustomerOrderItem {
