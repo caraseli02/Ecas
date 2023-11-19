@@ -95,6 +95,7 @@
                 :show-avatar="showAvatar"
                 :show-lock="showLock"
                 :show-discount="showDiscount"
+                :show-flag="showFlag"
                 :name-and-profile-item-class="nameAndProfileItemClass"
                 :account-type-item-class="accountTypeItemClass"
                 :company-name-item-class="companyNameItemClass"
@@ -532,6 +533,7 @@ export default defineComponent({
         'showAvatar', // show avatar in name and profile column
         'showLock', // show lock icon in name and profile column
         'showDiscount', // show discount in name and profile column
+        'showFlag', // show flag
         'plainTextColPlaceholder', // searchBox placeholders
     ],
     data() {

@@ -202,7 +202,7 @@ const avgOrderValue = ref('');
 const productsSold = ref('');
 
 const getTotalOrders = async () => {
-  const firstWidget = await $api.orders.fetchWidget('total-orders', -1) as { 'status': string, data: { total: any } }
+  const firstWidget = await $api.orders.fetchWidget('total-orders', thisWeekDifference) as { 'status': string, data: { total: any } }
   if (firstWidget.status !== 'success') {
     isLoading.value[0] = false;
     error.value[0] = true;
@@ -214,7 +214,7 @@ const getTotalOrders = async () => {
 
 }
 const getGrossRevenue = async () => {
-  const secondWidget = await $api.orders.fetchWidget('gross-revenue', -1) as { 'status': string, data: { total: any } }
+  const secondWidget = await $api.orders.fetchWidget('gross-revenue', thisWeekDifference) as { 'status': string, data: { total: any } }
   if (secondWidget.status !== 'success') {
     isLoading.value[1] = false;
     error.value[1] = true;
@@ -226,7 +226,10 @@ const getGrossRevenue = async () => {
 
 }
 const getAvgOrderValue = async () => {
-  const thirdWidget = await $api.orders.fetchWidget('average-order-value', thisWeekDifference) as { 'status': string, data: { total: any } }
+  const thirdWidget = await $api.orders.fetchWidget('average-order-value', thisWeekDifference) as {
+    'status': string,
+    data: { total: any }
+  }
   if (thirdWidget.status !== 'success') {
     isLoading.value[2] = false;
     error.value[2] = true;
@@ -238,7 +241,10 @@ const getAvgOrderValue = async () => {
 
 }
 const getProductsSold = async () => {
-  const fourthWidget = await $api.orders.fetchWidget('products-sold', thisWeekDifference) as { 'status': string, data: { total: any } }
+  const fourthWidget = await $api.orders.fetchWidget('products-sold', thisWeekDifference) as {
+    'status': string,
+    data: { total: any }
+  }
   if (fourthWidget.status !== 'success') {
     isLoading.value[3] = false;
     error.value[3] = true;
@@ -255,7 +261,7 @@ await Promise.all([getTotalOrders(), getGrossRevenue(), getAvgOrderValue(), getP
 const cards = ref([
   {
     range: {
-      selected: {label: 'All time', value: -1},
+      selected: {label: 'This Week', value: thisWeekDifference},
       showOptions: false,
     },
     menu: {
@@ -283,7 +289,7 @@ const cards = ref([
   },
   {
     range: {
-      selected: {label: 'All time', value: -1},
+      selected: {label: 'This Week', value: thisWeekDifference},
       showOptions: false,
     },
     menu: {
@@ -317,7 +323,7 @@ const cards = ref([
   },
   {
     range: {
-      selected: {label: 'This week', value: 1},
+      selected: {label: 'This week', value: thisWeekDifference},
       showOptions: false,
     },
     menu: {
@@ -346,7 +352,7 @@ const cards = ref([
   },
   {
     range: {
-      selected: {label: 'This week', value: 1},
+      selected: {label: 'This week', value: thisWeekDifference},
       showOptions: false,
     },
     menu: {
