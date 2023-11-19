@@ -83,7 +83,8 @@ const props = defineProps({
 });
 
 const userCountry = async () => {
-  if (props.user && props.user && props.user) {
+  console.log(props.user);
+  if (props.user) {
     country.value = countries.find((country) => country.value === props.user.address.country);
   }
 }
