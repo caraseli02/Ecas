@@ -168,7 +168,7 @@ const fetchAndSetUsersList = debounce(async (page: number, perPage: number, filt
                 account: getAccountTypeById(user.accountType) || '-',
                 company: user.companyDetails?.name || '-',
                 registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
-                spent: user.spent || 0,
+                spent: user.spent > 0 ? Number(user.spent).toFixed(2) : 0,
                 ordersCount: user.ordersCount || 0,
                 id: user._id,
                 firebaseId: user.firebaseId,

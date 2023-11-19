@@ -125,6 +125,13 @@ import { TransactionsFilterLabelsEnum } from '~/types/dashboard/filter';
 
 const { $api } = useNuxtApp();
 
+const props = defineProps({
+    id: {
+        type: String,
+        required: true,
+    },
+});
+
 const atPage = ref(1);
 const perPage = ref(10);
 const loading = ref(true);
@@ -157,6 +164,8 @@ const checkAll = ref(false);
 const fetchAndSetTransactionList = debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
     loading.value = true;
     error.value = false;
+
+    filters['userId'] = props.id;
 
     const data = await $api.controlPanel.fetchTransactions(page, perPage, filters, sort);
 
