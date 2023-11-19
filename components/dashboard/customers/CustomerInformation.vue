@@ -144,8 +144,13 @@
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
                                 <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
-                                    <USAFlag v-if="customerInformation?.personalDetails?.address.country" class="w-6 h-6 mr-2" />
-                                    <span>{{ customerInformation?.personalDetails?.address.country || 'N/A' }} </span>
+                                    <img
+                                        v-if="country && country.label"
+                                        :src="country.icon"
+                                        :alt="country.label"
+                                        class="w-8 rounded mr-2"
+                                    />
+                                    <span>{{ country.label ? country.label : 'N/A' }} </span>
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
@@ -195,7 +200,6 @@
 <script setup lang="ts">
 import Avatar from '@/assets/icons/dashboard/avatar.png';
 import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
-import USAFlag from '@/assets/icons/flags/usa.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
@@ -205,6 +209,7 @@ import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 import LockIcon from '@/assets/icons/dashboard/orders/lock.svg';
+import { countries } from '~/data/countries';
 
 const showOptions = ref(false);
 const showDeactivatingModal = ref(false);
@@ -212,7 +217,8 @@ const showDeactivatingModal = ref(false);
 const error = ref(false);
 const emptyData = ref(false);
 const isLoading = ref(false);
-
+const country = ref({} as any);
+const address = ref({} as any);
 const props = defineProps({
     id: {
         type: String,
@@ -245,6 +251,16 @@ const fetchInformation = async () => {
     }
 
     customerInformation.value = response.data;
+
+    address.value =
+        customerInformation.value.accountType === 0
+            ? customerInformation.value.personalDetails?.address
+            : customerInformation.value.companyDetails?.address;
+
+    if (address.value && address.value.country) {
+        country.value = countries.find((country) => country.value === address.value.country);
+    }
+
     Emitter.emit('customer-info', {
         name: customerInformation.value.contactDetails?.firstName + ' ' + customerInformation.value.contactDetails?.lastName,
     });
@@ -261,12 +277,20 @@ const fetchInformation = async () => {
         ordersCount: response.data.ordersCount,
         firebaseId: response.data.firebaseId,
         active: response.data.active,
+        address: address.value,
+        flag: country.value,
     };
-    console.log(customerDetails.value);
 };
 
 const deleteAccountAsAdmin = async (id: string) => {
     const response = await $api.userDashboard.deleteUser(id);
+    if (response.status !== 'success') {
+        return;
+    }
+};
+
+const deactivateAccountAsAdmin = async (id: string) => {
+    const response = await $api.userDashboard.deactivateUser(id);
     if (response.status !== 'success') {
         return;
     }

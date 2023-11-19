@@ -28,9 +28,9 @@
                 <div v-if="!showAvatar && showFlag" class="flex items-center gap-3 cursor-default">
                     <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
                         <component :is="item.flag" />
-                        <template #content>
-                            <span>United States</span>
-                        </template>
+                        <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
+                            <img v-if="item.flag && item.flag.icon" :src="item.flag.icon" :alt="item.flag.label" class="w-8 rounded mr-2" />
+                        </div>
                     </Tooltip>
                 </div>
                 <div class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue">
@@ -39,19 +39,18 @@
                 <div class="flex items-center gap-3 cursor-default">
                     <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
                         <component :is="item.flag" v-if="showFlag && showAvatar" />
-                        <template #content>
-                            <span>United States</span>
-                        </template>
+                        <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
+                            <img v-if="item.flag && item.flag.icon" :src="item.flag.icon" :alt="item.flag.label" class="w-8 rounded mr-2" />
+                        </div>
                     </Tooltip>
                     <Tooltip v-if="item.adminSettings?.discount && showDiscount" :position="index === 0 ? 'bottom' : 'top'" theme="black">
-                        <div
-                            class="border-blue border-[1px] px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-[#007FFF]"
-                        >
-                            {{item.adminSettings?.discount.value}} %
+                        <div class="border-blue border-[1px] px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-[#007FFF]">
+                            {{ item.adminSettings?.discount.value }} %
                         </div>
                         <template #content>
                             <span
-                                >Customer Discount: <strong class="font-semibold">{{ `${item.adminSettings?.discount.value}%` }}</strong></span
+                                >Customer Discount:
+                                <strong class="font-semibold">{{ `${item.adminSettings?.discount.value}%` }}</strong></span
                             >
                         </template>
                     </Tooltip>

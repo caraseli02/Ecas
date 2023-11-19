@@ -1,5 +1,6 @@
-import { OrderStatus, OrderType, PaymentStatusEnum } from '~/types';
-import { AccountAdminSettings } from '~/types/auth/account-settings';
+import {OrderStatus, OrderType, PaymentStatusEnum} from '~/types';
+import {AccountAdminSettings} from '~/types/auth/account-settings';
+import {AddressInterface} from '~/types/auth/user-details';
 
 export interface DashboardCustomerTableItem {
     avatar?: any;
@@ -14,6 +15,7 @@ export interface DashboardCustomerTableItem {
     firebaseId: string;
     active: boolean;
     adminSettings?: AccountAdminSettings;
+    address: AddressInterface;
 }
 
 export interface DashboardCustomerOrderItem {
