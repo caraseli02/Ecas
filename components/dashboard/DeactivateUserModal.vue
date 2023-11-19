@@ -26,38 +26,9 @@
               {{ user.name }}
             </div>
             <div class="flex items-center gap-3 cursor-default">
-              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                <rect y="2.85742" width="20" height="14.2857" rx="4" fill="white"/>
-                <mask
-                    id="mask0_801_26126"
-                    style="mask-type: luminance"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="2"
-                    width="20"
-                    height="16"
-                >
-                  <path
-                      d="M0 4.85742C0 3.75285 0.895431 2.85742 2 2.85742H18C19.1046 2.85742 20 3.75285 20 4.85742V15.1431C20 16.2477 19.1046 17.1431 18 17.1431H2C0.895431 17.1431 0 16.2477 0 15.1431V4.85742Z"
-                      fill="white"
-                  />
-                </mask>
-                <g mask="url(#mask0_801_26126)">
-                  <rect x="9.52344" y="2.85742" width="10.4762" height="14.2857" fill="#E5253D"/>
-                  <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M0 17.1431H6.66667V2.85742H0V17.1431Z"
-                      fill="#0A3D9C"
-                  />
-                  <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M6.66797 17.1431H13.3346V2.85742H6.66797V17.1431Z"
-                      fill="#FFD955"
-                  />
-                </g>
-              </svg>
+              <img
+                  v-if="country && country.label" :src="country.icon" :alt="country.label"
+                  class="w-8 rounded mr-2"/>
               <div class="bg-blue px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-white">10%</div>
             </div>
           </div>
@@ -99,15 +70,24 @@ import {DashboardCustomerTableItem} from '~/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import UserIcon from '@/assets/icons/dashboard/user.svg';
 import {useNuxtApp} from '#app';
+import {countries} from '~/data/countries';
 
-const { $api } = useNuxtApp();
+const {$api} = useNuxtApp();
+const country = ref({} as any);
 
-defineProps({
+const props = defineProps({
   user: {
     type: Object as PropType<DashboardCustomerTableItem>,
     required: true,
   },
 });
+
+const userCountry = async () => {
+  if (props.user && props.user && props.user) {
+    country.value = countries.find((country) => country.value === props.user.address.country);
+  }
+}
+await userCountry()
 
 const deactivateAccountAsAdmin = async (id: string) => {
   emits('close');

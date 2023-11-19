@@ -272,6 +272,7 @@ const fetchInformation = async () => {
     ordersCount: response.data.ordersCount,
     firebaseId: response.data.firebaseId,
     active: response.data.active,
+    address: address.value,
   };
   console.log(customerDetails.value);
 };
