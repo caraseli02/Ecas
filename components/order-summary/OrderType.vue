@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col p-6 rounded-xl bg-[#FFF] items-start shadow-xs gap-4 mb-6">
+    <div class="flex flex-col p-4 rounded-xl bg-[#FFF] items-start shadow-xs gap-4 mb-6">
         <div class="flex flex-col gap-6">
             <h2 class="text-[#222] text-base font-medium leading-6">Order Type</h2>
             <div class="flex flex-row gap-3">
@@ -17,24 +17,33 @@
         <div class="gap-2 flex flex-col w-full">
             <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
             <div class="flex flex-col">
-                <button @click="expandShippingAndBilling" class="flex flex-row justify-between py-2 group header-transition">
-                    <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]" :class="shippingAndBillingExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Shipping and Billing</span>
+                <button @click="expandShippingAndBilling"
+                    class="flex flex-row justify-between py-2 group header-transition">
+                    <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
+                        :class="shippingAndBillingExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Shipping and Billing</span>
                     <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
                         :class="[shippingAndBillingExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
                 </button>
                 <Transition name="expand">
-                    <OrderSummaryShippingAndBillingSection v-if="shippingAndBillingExpanded" class="item"/>
+                    <OrderSummaryShippingAndBillingSection v-if="shippingAndBillingExpanded" class="item" />
                 </Transition>
             </div>
             <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
-            <button @click="expandShippingPreferences" class="flex flex-row justify-between py-2 group">
-                <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]" :class="shippingPreferencesExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Shipping Preferences</span>
-                <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                    :class="[shippingPreferencesExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
-            </button>
+            <div class="flex flex-col">
+                <button @click="expandShippingPreferences" class="flex flex-row justify-between py-2 group">
+                    <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
+                        :class="shippingPreferencesExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Shipping Preferences</span>
+                    <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
+                        :class="[shippingPreferencesExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                </button>
+                <Transition name="expand">
+                    <OrderSummaryShippingPreferencesSection v-if="shippingPreferencesExpanded" class="item" />
+                </Transition>
+            </div>
             <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
             <button @click="expandPaymentMethod" class="flex flex-row justify-between py-2 group">
-                <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]" :class="paymentMethodExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Payment Method</span>
+                <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
+                    :class="paymentMethodExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Payment Method</span>
                 <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
                     :class="[paymentMethodExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
             </button>
