@@ -95,6 +95,7 @@
                 :show-avatar="showAvatar"
                 :show-lock="showLock"
                 :show-discount="showDiscount"
+                :show-flag="showFlag"
                 :name-and-profile-item-class="nameAndProfileItemClass"
                 :account-type-item-class="accountTypeItemClass"
                 :company-name-item-class="companyNameItemClass"
@@ -336,7 +337,15 @@ import AgentIcon from '@/assets/icons/dashboard/agent.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import { DatePicker } from 'v-calendar';
-import { AccountType, getOrderById, getPaymentStatusById, OrderType, PaymentStatusEnum, PaymentTypeEnum, PaymentDirectionEnum, getPaymentDirectionById } from '~~/types';
+import {
+    AccountType,
+    getOrderById,
+    getPaymentStatusById,
+    getPaymentTypeById,
+    OrderType,
+    PaymentStatusEnum,
+    PaymentTypeEnum,
+} from '~~/types';
 import { FilterInterface } from '~/model/dashboard/table/filters';
 import { subDays } from 'date-fns';
 import CheckBoxAll from '~/components/shared/tables/micro/CheckBoxAll.vue';
@@ -524,6 +533,7 @@ export default defineComponent({
         'showAvatar', // show avatar in name and profile column
         'showLock', // show lock icon in name and profile column
         'showDiscount', // show discount in name and profile column
+        'showFlag', // show flag
         'plainTextColPlaceholder', // searchBox placeholders
     ],
     data() {
@@ -659,7 +669,7 @@ export default defineComponent({
                 'Payment Declined',
             ]),
             paymentStatusOptions: ref(PaymentTypeEnum),
-            txTypeOptions: ref(PaymentDirectionEnum),
+            txTypeOptions: ref(PaymentTypeEnum),
             txStatusOptions: ref(PaymentStatusEnum),
         };
     },
@@ -981,11 +991,11 @@ export default defineComponent({
                 });
         },
         txTypeOptionsList() {
-            return Object.values(PaymentDirectionEnum)
+            return Object.values(PaymentTypeEnum)
                 .filter((v) => !isNaN(Number(v)))
                 .map((type) => {
                     return {
-                        label: getPaymentDirectionById(type),
+                        label: getPaymentTypeById(type),
                         key: type,
                     };
                 });

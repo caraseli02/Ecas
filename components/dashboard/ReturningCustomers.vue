@@ -25,8 +25,9 @@
                 <div class="flex items-center">
                     <SkeletonLoader v-if="loading" class="w-[60px] h-5 mr-1" />
                     <template v-else>
-                        <ArrowDownIcon class="w-4 h-4 mr-1" />
-                        <div class="text-sm leading-[1.43] font-medium text-[#FA4B4B] mr-1">{{ `${delta}%` }}</div>
+                        <ArrowUpIcon v-if="delta > 0" class="w-4 h-4 mr-1" />
+                        <ArrowDownIcon v-else-if="delta < 0" class="w-4 h-4 mr-1" />
+                        <div class="text-sm leading-[1.43] font-medium mr-1" :class="'text-[' + [color] + ']'">{{ `${delta}%` }}</div>
                     </template>
                     <button class="flex items-center" @click="showOptions = !showOptions">
                         <span class="text-sm left-[1.43] text-gray-300 font-medium mr-1">
@@ -76,6 +77,7 @@
 <script setup lang="ts">
 import PeopleIcon from '@/assets/icons/dashboard/people.svg';
 import ArrowDownIcon from '@/assets/icons/dashboard/arrow-down.svg';
+import ArrowUpIcon from '@/assets/icons/dashboard/arrow-up.svg';
 import ChevronIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import ArrowRightIcon from '@/assets/icons/dashboard/arrow-right.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
@@ -161,6 +163,7 @@ const loading = ref(true);
 const series = ref([]);
 const total = ref(0);
 const delta = ref(0);
+const color = ref('');
 
 const fetchAndSetReturningCustomers = async (time = 7) => {
     loading.value = true;
@@ -179,11 +182,17 @@ const fetchAndSetReturningCustomers = async (time = 7) => {
     const widgetData = data as ReturningCustomersInterface;
 
     series.value = widgetData.data.series;
+
     total.value = widgetData.data.total;
     delta.value = widgetData.data.delta;
+    color.value = delta.value !== 0 ? (delta.value > 0 ? '#00D395' : '#FA4B4B') : 'gray-300';
+
+    if (chartOptions?.stroke?.colors instanceof Array) {
+        chartOptions.stroke.colors[0] = delta.value >= 0 ? '#00D395' : '#FA4B4B';
+    }
 };
 
-await fetchAndSetReturningCustomers(selectedOption.time);
+await fetchAndSetReturningCustomers(selectedOption.value.time);
 
 watch([selectedOption], async ([newSelectedOption]) => {
     await fetchAndSetReturningCustomers(newSelectedOption.time);

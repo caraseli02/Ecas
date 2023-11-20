@@ -100,8 +100,8 @@ import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters'
 import { useNuxtApp } from '#app';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
-import USAFlag from '@/assets/icons/flags/usa.svg';
 import { debounce } from 'lodash';
+import { countries } from '~/data/countries';
 
 const { $api } = useNuxtApp();
 
@@ -151,22 +151,33 @@ const fetchAndSetUsersList = debounce(async (page: number, perPage: number, filt
     const paginatedUsers = data.data.items;
 
     totalItems.value = data.data.total_items;
+
     if (paginatedUsers) {
-        listItems.value = paginatedUsers.map((user) => ({
-            avatar: Avatar,
-            name: `${user.contactDetails?.firstName} ${user.contactDetails?.lastName}`,
-            email: user.profileDetails.email,
-            flag: USAFlag,
-            account: getAccountTypeById(user.accountType) || '-',
-            company: user.companyDetails?.name || '-',
-            registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
-            spent: user.spent || 0,
-            ordersCount: user.ordersCount || 0,
-            id: user._id,
-            firebaseId: user.firebaseId,
-            active: user.active,
-            adminSettings: user.adminSettings,
-        }));
+        listItems.value = paginatedUsers.map((user) => {
+            let country = countries[0];
+            const address = user.accountType === 0 ? user.personalDetails?.address : user.companyDetails?.address;
+
+            if (address && address.country) {
+                country = countries.find((country) => country.value === address.country);
+            }
+
+            return {
+                avatar: Avatar,
+                name: `${user.contactDetails?.firstName} ${user.contactDetails?.lastName}`,
+                email: user.profileDetails.email,
+                account: getAccountTypeById(user.accountType) || '-',
+                company: user.companyDetails?.name || '-',
+                registered: new Date(user.createdAt).toLocaleDateString('en-GB'),
+                spent: user.spent > 0 ? Number(user.spent).toFixed(2) : 0,
+                ordersCount: user.ordersCount || 0,
+                id: user._id,
+                firebaseId: user.firebaseId,
+                active: user.active,
+                adminSettings: user.adminSettings,
+                address: address,
+                flag: country,
+            };
+        });
     }
 }, 500);
 await fetchAndSetUsersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);

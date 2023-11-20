@@ -89,7 +89,7 @@
                 :settings-button="true"
                 :settings-text="'Settings'"
                 :deactivate-button="true"
-                :deactivate-text="'Deactivate Account'"
+                :deactivate-text="item.active ? 'Lock Account' : 'Unlock Account'"
                 :trash-button="true"
                 :trash-text="'Delete Account'"
                 @profileClicked="showOptions = false"
@@ -122,6 +122,7 @@
                 v-if="showOptions && actionsMenuType === 'orders-list'"
                 v-click-outside="() => (showOptions = false)"
                 :index="index"
+                :profile="item"
                 :dropdown-top="optionsDropdownTop"
                 :dropdown-left="optionsDropdownLeft"
                 :document-button="true"
@@ -133,7 +134,12 @@
             />
         </Transition>
         <Transition name="fade">
-            <DashboardDeactivateUserModal v-if="showDeactivatingModal" :user="item" @close="showDeactivatingModal = false" />
+            <DashboardDeactivateUserModal
+                v-if="showDeactivatingModal"
+                :user="item"
+                @close="showDeactivatingModal = false"
+                @change-lock-status="item.active = !item.active"
+            />
         </Transition>
         <div
             class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
@@ -335,7 +341,7 @@ export default defineComponent({
                     text: true,
                     item: this.item,
                     class: this.txDateItemClass || 'px-2 py-4 text-sm leading-[1.71]',
-                    name: 'date',
+                    name: 'createdAt',
                 },
                 txStatus: {
                     txStatus: true,

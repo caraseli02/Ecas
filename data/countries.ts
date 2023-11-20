@@ -1,5 +1,11 @@
 export const countries = [
     {
+        label: 'N/A',
+        value: 'N/A',
+        icon: '',
+        regions: [],
+    },
+    {
         label: 'Andorra',
         value: 'AD',
         icon: '/flags/AD.svg',
@@ -373,7 +379,7 @@ export const countries = [
                 shortCode: '05',
             },
             {
-                name: "Deadman's Cay",
+                name: 'Deadman\'s Cay',
                 shortCode: '06',
             },
             {
@@ -1790,7 +1796,7 @@ export const countries = [
                 shortCode: '08',
             },
             {
-                name: "Smith's Parish",
+                name: 'Smith\'s Parish',
                 shortCode: '09',
             },
             {
@@ -1798,7 +1804,7 @@ export const countries = [
                 shortCode: '10',
             },
             {
-                name: "St. George's Parish",
+                name: 'St. George\'s Parish',
                 shortCode: '07',
             },
             {
@@ -2061,7 +2067,7 @@ export const countries = [
                 shortCode: '06',
             },
             {
-                name: "Governor's Harbour",
+                name: 'Governor\'s Harbour',
                 shortCode: '07',
             },
             {
@@ -2552,7 +2558,7 @@ export const countries = [
                 shortCode: 'NM',
             },
             {
-                name: "Ombella-M'Poko",
+                name: 'Ombella-M\'Poko',
                 shortCode: 'MP',
             },
             {
@@ -2744,7 +2750,7 @@ export const countries = [
         ],
     },
     {
-        label: "Cote d'Ivoire",
+        label: 'Cote d\'Ivoire',
         value: 'CI',
         icon: '/flags/CI.svg',
         regions: [
@@ -2797,7 +2803,7 @@ export const countries = [
                 shortCode: '05',
             },
             {
-                name: "N'zi-Comoé",
+                name: 'N\'zi-Comoé',
                 shortCode: '11',
             },
             {
@@ -2847,7 +2853,7 @@ export const countries = [
                 name: 'Manihiki',
             },
             {
-                name: "Ma'uke",
+                name: 'Ma\'uke',
             },
             {
                 name: 'Mitiaro',
@@ -2903,7 +2909,7 @@ export const countries = [
                 shortCode: 'CO',
             },
             {
-                name: "Libertador General Bernardo O'Higgins",
+                name: 'Libertador General Bernardo O\'Higgins',
                 shortCode: 'LI',
             },
             {
@@ -4825,7 +4831,7 @@ export const countries = [
                 shortCode: 'PDL',
             },
             {
-                name: "Provence-Alpes-Cote d'Azur",
+                name: 'Provence-Alpes-Cote d\'Azur',
                 shortCode: 'PAC',
             },
             {
@@ -5845,7 +5851,7 @@ export const countries = [
                 shortCode: 'AB',
             },
             {
-                name: "Ajaria (Bat'umi)",
+                name: 'Ajaria (Bat\'umi)',
                 shortCode: 'AJ',
             },
             {
@@ -5857,7 +5863,7 @@ export const countries = [
                 shortCode: 'IM',
             },
             {
-                name: "K'akheti",
+                name: 'K\'akheti',
                 shortCode: 'KA',
             },
             {
@@ -5869,7 +5875,7 @@ export const countries = [
                 shortCode: 'MM',
             },
             {
-                name: "Rach'a-Lexhkumi-KvemoSvaneti",
+                name: 'Rach\'a-Lexhkumi-KvemoSvaneti',
                 shortCode: 'RL',
             },
             {
@@ -6633,7 +6639,7 @@ export const countries = [
                 shortCode: 'CE',
             },
             {
-                name: "Grand'Anse",
+                name: 'Grand\'Anse',
                 shortCode: 'GA',
             },
             {
@@ -7352,7 +7358,7 @@ export const countries = [
                 shortCode: 'DI',
             },
             {
-                name: "Karbalā'",
+                name: 'Karbalā\'',
                 shortCode: 'KA',
             },
             {
@@ -7625,7 +7631,7 @@ export const countries = [
                 shortCode: '55',
             },
             {
-                name: "Valle d'Aosta",
+                name: 'Valle d\'Aosta',
                 shortCode: '23',
             },
             {
@@ -7717,7 +7723,7 @@ export const countries = [
                 shortCode: 'AJ',
             },
             {
-                name: "Al 'Aqabah",
+                name: 'Al \'Aqabah',
                 shortCode: 'AQ',
             },
             {
@@ -8075,7 +8081,7 @@ export const countries = [
                 shortCode: '28',
             },
             {
-                name: "Murang'a",
+                name: 'Murang\'a',
                 shortCode: '29',
             },
             {
@@ -8457,15 +8463,15 @@ export const countries = [
                 shortCode: '13',
             },
             {
-                name: "P'yongan-bukto (North P'yongan Province)",
+                name: 'P\'yongan-bukto (North P\'yongan Province)',
                 shortCode: '03',
             },
             {
-                name: "P'yongan-namdo (South P'yongan Province)",
+                name: 'P\'yongan-namdo (South P\'yongan Province)',
                 shortCode: '02',
             },
             {
-                name: "P'yongyang-si (P'yongyang City)",
+                name: 'P\'yongyang-si (P\'yongyang City)',
                 shortCode: '01',
             },
             {
@@ -9037,7 +9043,7 @@ export const countries = [
                 shortCode: 'J',
             },
             {
-                name: "Qacha's Nek",
+                name: 'Qacha\'s Nek',
                 shortCode: 'H',
             },
             {
@@ -9740,7 +9746,7 @@ export const countries = [
                 shortCode: 'MA-01',
             },
             {
-                name: "L'Oriental",
+                name: 'L\'Oriental',
                 shortCode: 'MA-02',
             },
             {
@@ -10801,7 +10807,7 @@ export const countries = [
                 name: 'Saint Georges',
             },
             {
-                name: "Saint Peter's",
+                name: 'Saint Peter\'s',
             },
         ],
     },
@@ -12252,7 +12258,7 @@ export const countries = [
                 shortCode: 'GIS',
             },
             {
-                name: "Hawke's Bay",
+                name: 'Hawke\'s Bay',
                 shortCode: 'HKB',
             },
             {
@@ -14364,7 +14370,7 @@ export const countries = [
         icon: '/flags/SA.svg',
         regions: [
             {
-                name: "'Asir",
+                name: '\'Asir',
                 shortCode: '14',
             },
             {
@@ -14396,7 +14402,7 @@ export const countries = [
                 shortCode: '04',
             },
             {
-                name: "Ha'il",
+                name: 'Ha\'il',
                 shortCode: '06',
             },
             {
@@ -14518,11 +14524,11 @@ export const countries = [
                 shortCode: '12',
             },
             {
-                name: "Grand'Anse Mahe",
+                name: 'Grand\'Anse Mahe',
                 shortCode: '13',
             },
             {
-                name: "Grand'Anse Praslin",
+                name: 'Grand\'Anse Praslin',
                 shortCode: '14',
             },
             {
@@ -16069,11 +16075,11 @@ export const countries = [
                 shortCode: 'RA',
             },
             {
-                name: "As Suwayda'",
+                name: 'As Suwayda\'',
                 shortCode: 'SU',
             },
             {
-                name: "Dar'a",
+                name: 'Dar\'a',
                 shortCode: 'DR',
             },
             {
@@ -16810,11 +16816,11 @@ export const countries = [
         icon: '/flags/TO.svg',
         regions: [
             {
-                name: "'Eua",
+                name: '\'Eua',
                 shortCode: '01',
             },
             {
-                name: "Ha'apai",
+                name: 'Ha\'apai',
                 shortCode: '02',
             },
             {
@@ -16826,7 +16832,7 @@ export const countries = [
                 shortCode: '04',
             },
             {
-                name: "Vava'u",
+                name: 'Vava\'u',
                 shortCode: '05',
             },
         ],
@@ -18823,11 +18829,11 @@ export const countries = [
                 shortCode: '01',
             },
             {
-                name: "Aunu'u",
+                name: 'Aunu\'u',
                 shortCode: '02',
             },
             {
-                name: "Ta'ū",
+                name: 'Ta\'ū',
                 shortCode: '03',
             },
             {
@@ -18854,15 +18860,15 @@ export const countries = [
                 shortCode: 'AB',
             },
             {
-                name: "'Adan",
+                name: '\'Adan',
                 shortCode: 'AD',
             },
             {
-                name: "Aḑ Ḑāli'",
+                name: 'Aḑ Ḑāli\'',
                 shortCode: 'DA',
             },
             {
-                name: "Al Bayḑā'",
+                name: 'Al Bayḑā\'',
                 shortCode: 'BA',
             },
             {
@@ -18882,7 +18888,7 @@ export const countries = [
                 shortCode: 'MW',
             },
             {
-                name: "'Amrān",
+                name: '\'Amrān',
                 shortCode: 'AM',
             },
             {
@@ -18906,7 +18912,7 @@ export const countries = [
                 shortCode: 'LA',
             },
             {
-                name: "Ma'rib",
+                name: 'Ma\'rib',
                 shortCode: 'MA',
             },
             {
@@ -18918,7 +18924,7 @@ export const countries = [
                 shortCode: 'SD',
             },
             {
-                name: "Şan‘ā'",
+                name: 'Şan‘ā\'',
                 shortCode: 'SN',
             },
             {
@@ -18985,7 +18991,7 @@ export const countries = [
                 shortCode: '12',
             },
             {
-                name: "M'Tsangamouji",
+                name: 'M\'Tsangamouji',
                 shortCode: '13',
             },
             {
