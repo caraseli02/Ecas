@@ -16,9 +16,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="lg:grid lg:grid-cols-[1fr,310px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,340px]">
+                <div class="gap-6 lg:grid lg:grid-cols-[1fr,310px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,340px]">
                     <OrderSummaryTable :items="cartItems" :loading="loading" @checkAll="checkAll" @addToFavs="addToFavsAll" />
                     <div class="lg:grid lg:grid-cols-1">
+                        <OrderType :items="cartItems" />
                         <OrderSummary />
                         <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
                     </div>
@@ -40,24 +41,10 @@ import PrintIcon from '@/assets/icons/print.svg';
 import { CartProductsInterface } from '~/types';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
 import { DiscountInterface } from '~/types/auth/account-settings';
-import CheckBoxAll from '~/components/shared/tables/micro/CheckBoxAll.vue';
 
 useHead({
     title: 'Order Summary',
 });
-
-interface CartItemInterface {
-    id: string;
-    stock: number;
-    isFolder: boolean;
-    initialPrice: number;
-    discountPrice: number;
-    discount: DiscountInterface;
-    productEntity: ProductInterface;
-    liked: boolean;
-    selected: boolean;
-}
-
 
 const mockProducts = [
     {
@@ -183,7 +170,9 @@ const checkAll = (checked: boolean) => {
 
 const addToFavsAll = (liked: boolean) => {
     cartItems.value.forEach((item: any) => {
-        item.liked = liked;
+        if (item.selected) {
+            item.liked = liked;
+        }
     });
 };
 
