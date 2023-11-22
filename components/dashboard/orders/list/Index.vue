@@ -81,11 +81,11 @@
                             {{ `${OrdersFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                         </span>
             <button
-class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-                    @click="removeFilter(index)">
+                class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+                @click="removeFilter(index)">
               <svg
-width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
-                   class="w-4 h-4">
+                  width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4">
                 <path
                     d="M3.33594 3.33398L12.6686 12.6667"
                     stroke="currentColor"
@@ -146,7 +146,7 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import {FilterInterface, SortInterface} from '~/model/dashboard/table/filters';
 import moment from 'moment/moment';
 import {useNuxtApp} from '#app';
-import {debounce} from 'lodash';
+import _ from 'lodash';
 
 const {$api} = useNuxtApp();
 
@@ -282,7 +282,7 @@ const loading = ref(true);
 const error = ref(false);
 const totalItems = ref(0);
 
-const fetchAndSetOrdersList = debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
+const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
   loading.value = true;
   error.value = false;
 
