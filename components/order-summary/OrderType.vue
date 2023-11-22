@@ -21,11 +21,24 @@
                     class="flex flex-row justify-between py-2 group header-transition">
                     <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
                         :class="shippingAndBillingExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Shipping and Billing</span>
-                    <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                        :class="[shippingAndBillingExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                    <div class="flex flex-row gap-6">
+                        <div v-if="shippingAndBillingMissingInfoWarning" class="flex flex-row gap-2 items-center">
+                            <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
+                                <WarningErrorYellow />
+                                <template #content>
+                                    <span class="capitalize">Missing Info</span>
+                                </template>
+                            </Tooltip>
+                            <WarningErrorYellow class="hidden sm:flex lg:hidden" />
+                            <span class="text-[#5E6278] text-xs font-medium leading-4 hidden sm:flex lg:hidden">Missing
+                                Info</span>
+                        </div>
+                        <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
+                            :class="[shippingAndBillingExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                    </div>
                 </button>
                 <Transition name="expand">
-                    <OrderSummaryShippingAndBillingSection v-if="shippingAndBillingExpanded" class="item" />
+                    <OrderSummaryShippingAndBillingSection v-if="shippingAndBillingExpanded" :order="order" class="item" />
                 </Transition>
             </div>
             <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
@@ -33,32 +46,68 @@
                 <button @click="expandShippingPreferences" class="flex flex-row justify-between py-2 group">
                     <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
                         :class="shippingPreferencesExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Shipping Preferences</span>
-                    <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                        :class="[shippingPreferencesExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                    <div class="flex flex-row gap-6">
+                        <div v-if="!shippingPreferencesExpanded && order.backorderOption === 0 && mixedOrBackOrder"
+                            class="flex flex-row gap-2 items-center">
+                            <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
+                                <WarningErrorHuge />
+                                <template #content>
+                                    <span class="capitalize">Mandatory</span>
+                                </template>
+                            </Tooltip>
+                            <WarningErrorHuge class="hidden sm:flex lg:hidden" />
+                            <span
+                                class="text-[#5E6278] text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
+                        </div>
+                        <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
+                            :class="[shippingPreferencesExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                    </div>
                 </button>
                 <Transition name="expand">
-                    <OrderSummaryShippingPreferencesSection v-if="shippingPreferencesExpanded" class="item" />
+                    <OrderSummaryShippingPreferencesSection v-if="shippingPreferencesExpanded" :order="order"
+                        class="item" />
                 </Transition>
             </div>
             <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
             <button @click="expandPaymentMethod" class="flex flex-row justify-between py-2 group">
                 <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
                     :class="paymentMethodExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Payment Method</span>
-                <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                    :class="[paymentMethodExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                <div class="flex flex-row gap-6">
+                    <div v-if="paymentMethodWarning" class="flex flex-row gap-2 items-center">
+                        <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
+                            <WarningErrorHuge />
+                            <template #content>
+                                <span class="capitalize">Mandatory</span>
+                            </template>
+                        </Tooltip>
+                        <WarningErrorHuge class="hidden sm:flex lg:hidden" />
+                        <span class="text-[#5E6278] text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
+                    </div>
+                    <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
+                        :class="[paymentMethodExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                </div>
             </button>
+            <Transition name="expand">
+                <OrderSummaryPaymentMethodSection v-if="paymentMethodExpanded" :order="order" :account-credit="accountCredit" class="item" />
+            </Transition>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { CartProductsInterface } from '~/types';
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
+import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
+import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
+import Tooltip from '~/components/global/Tooltip.vue';
 
 export default defineComponent({
     name: 'OrderType',
-    props: ['items'],
+    props: ['items', 'accountCredit', 'order'],
     components: {
         ChevronDownIcon,
+        WarningErrorYellow,
+        Tooltip,
+        WarningErrorHuge,
     },
     data() {
         return {
@@ -76,6 +125,24 @@ export default defineComponent({
             const backOrderItems = this.items.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock === 0);
             return backOrderItems.length === this.items.length;
         },
+        orderType() {
+            if (this.stockOrder) {
+                return 'Stock';
+            } else if (this.backOrder) {
+                return 'Back';
+            } else {
+                return 'Mixed';
+            }
+        },
+        shippingAndBillingMissingInfoWarning() {
+            return !this.order.shippingDetails?.adress?.name1 || !this.order.shippingDetails?.adress?.city || !this.order.shippingDetails?.adress?.region || !this.order.shippingDetails?.adress?.postcode || !this.order.shippingDetails?.adress?.country || !this.order.shippingDetails?.billingAdress?.name1 || !this.order.shippingDetails?.billingAdress?.city || !this.order.shippingDetails?.billingAdress?.region || !this.order.shippingDetails?.billingAdress?.postcode || !this.order.shippingDetails?.billingAdress?.country;
+        },
+        mixedOrBackOrder() {
+            return this.order.type === ('Mixed' || 'Back')
+        },
+        paymentMethodWarning() {
+            return !this.order.paymentDetails.type;
+        },
     },
     methods: {
         expandShippingAndBilling() {
@@ -87,6 +154,14 @@ export default defineComponent({
         expandPaymentMethod() {
             this.paymentMethodExpanded = !this.paymentMethodExpanded;
         },
+    },
+    watch: {
+        orderType() {
+            this.order.type = this.orderType;
+        },
+    },
+    created() {
+        this.order.type = this.orderType;
     },
 });
 </script>
@@ -111,4 +186,5 @@ export default defineComponent({
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
     transition-delay: 300ms;
-}</style>
+}
+</style>

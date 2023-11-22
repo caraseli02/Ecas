@@ -16,10 +16,12 @@
                         </button>
                     </div>
                 </div>
-                <div class="gap-6 lg:grid lg:grid-cols-[1fr,310px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,340px]">
-                    <OrderSummaryTable :items="cartItems" :loading="loading" @checkAll="checkAll" @addToFavs="addToFavsAll" />
+                <div
+                    class="gap-6 lg:grid lg:grid-cols-[1fr,340px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,340px]">
+                    <OrderSummaryTable :items="cartItems" :loading="loading" @checkAll="checkAll"
+                        @addToFavs="addToFavsAll" />
                     <div class="lg:grid lg:grid-cols-1">
-                        <OrderType :items="cartItems" />
+                        <OrderType :items="cartItems" :account-credit="accountCredit" :order="order" />
                         <OrderSummary />
                         <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
                     </div>
@@ -38,9 +40,11 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import { CartProductsInterface } from '~/types';
+import { CartProductsInterface, OrderInterface } from '~/types';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
 import { DiscountInterface } from '~/types/auth/account-settings';
+import { useAuthStore} from '~/store/authStore';
+import { CustomerCreditInterface } from '~/types/auth/account-settings';
 
 useHead({
     title: 'Order Summary',
@@ -176,4 +180,76 @@ const addToFavsAll = (liked: boolean) => {
     });
 };
 
+const orderItems = computed(() => {
+    return cartItems.value.map((item: any) => {
+        const { selected, liked, ...rest } = item;
+        return rest;
+    });
+});
+
+const store = useAuthStore();
+const user = computed(() => store.getUserDetails);
+
+const userId = user.value?.firebaseId;
+const creditObject = ref({} as CustomerCreditInterface);
+
+const getCustomerCredit = async () => {
+    if (!userId) {
+        return;
+    }
+    const response = await $api.controlPanel.fetchCustomerCredit(userId);
+
+    if (response.status !== 'success') {
+        setTimeout(() => {
+            loading.value = false;
+        }, 100);
+        return;
+    } else {
+        setTimeout(() => {
+            loading.value = false;
+        }, 100);
+    }
+
+    creditObject.value = response.data;
+};
+
+await getCustomerCredit();
+
+const accountCredit = ref({
+    limit: creditObject.value?.limit,
+    spent: creditObject.value?.spent,
+    available: creditObject.value?.available,
+    dueDate: creditObject.value?.dueDate,
+    tillDue: creditObject.value?.tillDue,
+    term: creditObject.value?.term,
+});
+
+const order = ref({
+    total: 0,
+    subtotal: 0,
+    products: orderItems.value,
+    shippingDetails: {
+        adress: {
+            alias1: 'Home',
+            name1: '5073 Mark Brown Rd',
+            city: 'NE Dalton',
+            region: 'Georgia (GA)',
+            postcode: '30721',
+            country: 'United States',
+        },
+        billingAdress: {
+            alias1: 'Home',
+            name1: '5073 Mark Brown Rd',
+            city: 'NE Dalton',
+            region: 'Georgia (GA)',
+            postcode: '30721',
+            country: 'United States',
+        },
+    },
+    paymentDetails: {
+        type: '',
+    },
+    type: '',
+    backorderOption: 0,
+});
 </script>

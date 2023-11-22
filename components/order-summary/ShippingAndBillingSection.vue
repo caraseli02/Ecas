@@ -4,7 +4,13 @@
             <div class="flex flex-row justify-between">
                 <div class="flex flex-row items-center gap-3">
                     <span class="text-[#222] text-sm font-medium leading-6">Billing Information</span>
-                    <GreenCheckCircle />
+                    <Tooltip v-if="billingInfoMissing" theme="black" position="top">
+                        <WarningErrorYellow />
+                        <template #content>
+                            <span class="capitalize">Missing Info</span>
+                        </template>
+                    </Tooltip>
+                    <GreenCheckCircle v-else />
                 </div>
                 <div class="flex flex-row gap-4">
                     <Tooltip theme="black" position="top">
@@ -25,11 +31,14 @@
                     </Tooltip>
                 </div>
             </div>
-            <div>
+            <div class="flex flex-col gap-2">
                 <p class="text-[#5E6278] text-sm font-medium leading-5">
-                    5073 Mark Brown Rd <br/>
-                    NE Dalton, Georgia (GA) <br/>
-                    30721, United States <br/>
+                    {{ order.shippingDetails?.billingAdress?.name1 }} </p>
+                <p class="text-[#5E6278] text-sm font-medium leading-5">
+                    {{ order.shippingDetails?.billingAdress?.city }}, {{ order.shippingDetails?.billingAdress?.region }}</p>
+                <p class="text-[#5E6278] text-sm font-medium leading-5">
+                    {{ order.shippingDetails?.billingAdress?.postcode }}, {{ order.shippingDetails?.billingAdress?.country
+                    }}
                 </p>
             </div>
         </div>
@@ -37,7 +46,13 @@
             <div class="flex flex-row justify-between">
                 <div class="flex flex-row items-center gap-3">
                     <span class="text-[#222] text-sm font-medium leading-6">Shipping Information</span>
-                    <GreenCheckCircle />
+                    <Tooltip v-if="shippingInfoMissing" theme="black" position="top">
+                        <WarningErrorYellow />
+                        <template #content>
+                            <span class="capitalize">Missing Info</span>
+                        </template>
+                    </Tooltip>
+                    <GreenCheckCircle v-else />
                 </div>
                 <div class="flex flex-row gap-4">
                     <Tooltip theme="black" position="top">
@@ -60,17 +75,24 @@
             </div>
             <div class="flex flex-col gap-2">
                 <div class="flex flex-row justify-between">
-                    <span class="text-[#222] text-sm font-medium leading-6">Address Alias 1</span>
-                    <div class="px-2 py-1 rounded-[100px] border-[1px] border-[#00D395] flex items-center justify-center gap-1">
+                    <span class="text-[#222] text-sm font-medium leading-6">{{ order.shippingDetails?.adress?.alias1 }}</span>
+                    <div
+                        class="px-2 py-1 rounded-[100px] border-[1px] border-[#00D395] flex items-center justify-center gap-1">
                         <CheckCircleSmall />
                         <span class="text-[#00D395] text-xs font-medium leading-4">Default</span>
                     </div>
                 </div>
-                <p class="text-[#5E6278] text-sm font-medium leading-5">
-                    5073 Mark Brown Rd <br/>
-                    NE Dalton, Georgia (GA) <br/>
-                    30721, United States <br/>
-                </p>
+                <div class="flex flex-col gap-2">
+                    <p class="text-[#5E6278] text-sm font-medium leading-5">
+                        {{ order.shippingDetails?.adress?.name1 }} </p>
+                    <p class="text-[#5E6278] text-sm font-medium leading-5">
+                        {{ order.shippingDetails?.adress?.city }}, {{ order.shippingDetails?.adress?.region }}
+                    </p>
+                    <p class="text-[#5E6278] text-sm font-medium leading-5">
+                        {{ order.shippingDetails?.adress?.postcode }}, {{
+                            order.shippingDetails?.adress?.country }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -81,14 +103,26 @@ import GreenCheckCircle from '@/assets/icons/green-check-circle.svg';
 import EditSmall from '@/assets/icons/edit-small.svg';
 import SettingCog from '@/assets/icons/setting-cog.svg';
 import CheckCircleSmall from '@/assets/icons/check-circle-small.svg';
+import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 
 export default defineComponent({
     name: 'ShippingAndBillingSection',
+    props: ['order'],
     components: {
         GreenCheckCircle,
         EditSmall,
         SettingCog,
         CheckCircleSmall,
+        WarningErrorYellow,
+        Tooltip,
+    },
+    computed: {
+        billingInfoMissing() {
+            return !this.order.shippingDetails?.billingAdress?.name1 || !this.order.shippingDetails?.billingAdress?.city || !this.order.shippingDetails?.billingAdress?.region || !this.order.shippingDetails?.billingAdress?.postcode || !this.order.shippingDetails?.billingAdress?.country;
+        },
+        shippingInfoMissing() {
+            return !this.order.shippingDetails?.adress?.name1 || !this.order.shippingDetails?.adress?.city || !this.order.shippingDetails?.adress?.region || !this.order.shippingDetails?.adress?.postcode || !this.order.shippingDetails?.adress?.country;
+        },
     },
 });
 </script>

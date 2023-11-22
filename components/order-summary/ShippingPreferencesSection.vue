@@ -1,15 +1,15 @@
 <template>
     <div class="mt-6 flex flex-col gap-6">
-        <div v-if="backorderOption === 0" class="flex flex-row gap-3 items-center">
+        <div v-if="order.backorderOption === 0 && mixedOrBackOrder" class="flex flex-row gap-3 items-center">
             <WarningErrorHuge class="w-6 h-5" />
             <span class="text-[#FA4B4B] text-sm font-medium leading-6">Select backorder shipping preferences</span>
         </div>
-        <div class="flex flex-col gap-4">
+        <div v-if="mixedOrBackOrder" class="flex flex-col gap-4">
             <button @click="selectBackorderPreference(1)" class="flex flex-row gap-3 items-start group">
-                <RadioButtonChecked v-if="backorderOption === 1"
-                    class="w-12 sm:w-5 lg:w-12 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300" />
+                <RadioButtonChecked v-if="order.backorderOption === 1"
+                    class="w-10 sm:w-5 lg:w-10 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300" />
                 <RadioButton v-else
-                    class="w-12 sm:w-5 lg:w-12 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300" />
+                    class="w-10 sm:w-5 lg:w-10 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300" />
                 <div class="flex flex-col items-start">
                     <h2
                         class="text-[#222] text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300">
@@ -20,10 +20,10 @@
                 </div>
             </button>
             <button @click="selectBackorderPreference(2)" class="flex flex-row gap-3 items-start group">
-                <RadioButtonChecked v-if="backorderOption === 2"
-                    class="w-12 sm:w-5 lg:w-12 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300" />
+                <RadioButtonChecked v-if="order.backorderOption === 2"
+                    class="w-10 sm:w-5 lg:w-10 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300" />
                 <RadioButton v-else
-                    class="w-12 sm:w-5 lg:w-12 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300" />
+                    class="w-10 sm:w-5 lg:w-10 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300" />
                 <div class="flex flex-col items-start">
                     <h2
                         class="text-[#222] text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300">
@@ -92,6 +92,7 @@ import RadioButton from '@/assets/icons/radio-button.svg';
 import RadioButtonChecked from '@/assets/icons/radio-button-checked.svg';
 export default defineComponent({
     name: 'ShippingPreferencesSection',
+    props: ['order'],
     components: {
         WarningErrorHuge,
         RadioButton,
@@ -105,10 +106,15 @@ export default defineComponent({
     },
     methods: {
         selectBackorderPreference(option: number) {
-            this.backorderOption = option;
+            this.order.backorderOption = option;
         },
         selectDeliveryMethod(option: number) {
             this.deliveryOption = option;
+        },
+    },
+    computed: {
+        mixedOrBackOrder() {
+            return this.order.type === ('Mixed' || 'Back')
         },
     },
 });
