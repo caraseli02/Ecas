@@ -146,7 +146,6 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import {FilterInterface, SortInterface} from '~/model/dashboard/table/filters';
 import moment from 'moment/moment';
 import {useNuxtApp} from '#app';
-import _ from 'lodash';
 
 const {$api} = useNuxtApp();
 
@@ -282,7 +281,7 @@ const loading = ref(true);
 const error = ref(false);
 const totalItems = ref(0);
 
-const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
+const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
   loading.value = true;
   error.value = false;
 
@@ -312,7 +311,7 @@ const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, f
   }
 
   return data.data;
-}, 250);
+};
 
 await loadTabFilters();
 await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
