@@ -16,10 +16,10 @@
                     {{ filter.label }}
                 </span>
         <span
-            class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium transition-colors duration-300"
+            class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium min-w-[32px] transition-colors duration-300"
             :class="filter.value === activeOrderFilter.value ? 'text-white bg-blue' : 'text-gray-300 bg-gray-200'"
         >
-                    {{ filter.total_items }}
+                    {{ filter.total_items || '0' }}
                 </span>
       </button>
       <div
@@ -197,13 +197,13 @@ const orderFilters = ref<TabFilter[]>([
   },
   {
     label: 'Completed',
-    value: 'status',
+    value: 'completed',
     key: OrderStatus.Completed,
     total_items: 0,
   },
   {
     label: 'Canceled',
-    value: 'status',
+    value: 'canceled',
     key: OrderStatus.Canceled,
     total_items: 0,
   },

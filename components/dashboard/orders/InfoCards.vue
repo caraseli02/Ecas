@@ -118,7 +118,7 @@
             <div
                 v-if="card.range.showOptions"
                 v-click-outside="() => (card.range.showOptions = false)"
-                class="absolute z-10 -bottom-0.5 left-0 translate-y-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[200px]"
+                class="absolute z-10 -bottom-2 left-0 translate-y-full grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[200px]"
                 :style="{
                                 boxShadow: '0px 0px 6px rgba(51, 51, 51, 0.2)',
                             }"

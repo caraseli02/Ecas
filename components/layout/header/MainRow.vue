@@ -144,6 +144,7 @@
                                         type="search"
                                         placeholder="Search products"
                                         class="bg-transparent flex-1 w-full py-2 h-10 text-sm leading-[1.71] placeholder:text-gray-100 focus:outline-none"
+                                        @input="onInput"
                                         @keypress.enter="
                                             $router.push('/search');
                                             searchVal = '';
@@ -157,7 +158,13 @@
                     </div>
                 </Transition>
                 <Transition name="fade">
-                    <LayoutHeaderSearchResults v-if="searchVal" :is-scrolled="isScrolled" />
+                    <LayoutHeaderSearchResults
+                        v-if="searchVal"
+                        :products="productList"
+                        :keyword="searchVal"
+                        :is-scrolled="isScrolled"
+                        :is-loading="isLoading"
+                    />
                 </Transition>
                 <Transition name="fade">
                     <LayoutHeaderMainMenuLarge
@@ -206,8 +213,12 @@ import CartIcon from '@/assets/icons/cart.svg';
 import BellIcon from '@/assets/icons/header/bell.svg';
 import XIcon from '@/assets/icons/x.svg';
 import Notifications from '@/components/global/Notifications.vue';
+import _ from 'lodash';
+import Emitter from 'tiny-emitter/instance';
 import { showNavModal } from '~~/config/modal/nav';
 import { Notification } from '~/types';
+import { ProductSearchItems, SearchData } from '~/model/products/response/ProductSearchResponse';
+const { $api } = useNuxtApp();
 
 defineProps({
     isScrolled: {
@@ -253,13 +264,39 @@ const searchVal = ref('');
 const showMobileSearch = ref(false);
 const searchDOM = ref<HTMLInputElement>();
 
-const error = ref(false);
+const productList = ref<ProductSearchItems[]>([]);
 const isLoading = ref(false);
+
+const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
+    isLoading.value = true;
+
+    const { data: products } = (await $api.product.fetchSearchProduct(keyword, page, perPage)) as SearchData;
+
+    if (!products) {
+        return;
+    }
+
+    const data = products as SearchData;
+
+    if (!data) {
+        return;
+    }
+
+    Emitter.emit('product-keyword-change', { keyword: keyword, products: data });
+
+    return data.items.items;
+};
+
+const onInput = _.debounce(async () => {
+    productList.value = await searchProduct(searchVal.value);
+    isLoading.value = false;
+}, 200);
+
+const error = ref(false);
 
 const notifications = ref<Notification[]>([] as Notification[]);
 
 const unreadNotifications = ref(0);
-const { $api } = useNuxtApp();
 const showNotifications = ref(false);
 const fetchNofications = async () => {
     error.value = false;
