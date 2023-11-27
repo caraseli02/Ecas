@@ -192,7 +192,7 @@
                             </div>
                             <div class="flex flex-col max-lg:hidden">
                                 <div class="leading-normal font-medium">
-                                    {{ user.contactDetails.firstName + ' ' + user.contactDetails.lastName }}
+                                    {{ user.contactDetails?.firstName + ' ' + user.contactDetails?.lastName }}
                                 </div>
                                 <div class="text-xs leading-normal text-gray-300">{{ AccountType[user.role] }}</div>
                             </div>

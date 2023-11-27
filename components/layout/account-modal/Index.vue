@@ -5,7 +5,7 @@
                 <div class="relative flex items-center text-gray-300">
                     <UserIcon class="w-7 h-7 mr-2" />
                     <span class="text-lg font-semibold">
-                        {{ getUserDetails ? getUserDetails.contactDetails.firstName : 'My Account' }}
+                        {{ getUserDetails ? getUserDetails.contactDetails?.firstName : 'My Account' }}
                     </span>
                 </div>
                 <button
