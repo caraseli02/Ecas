@@ -78,11 +78,11 @@
                         </div>
                         <div v-if="item.discount.value" class="flex flex-col text-center h-[36px] justify-center">
                             <span class="line-through text-[#222] text-sm font-normal leading-5">RON {{
-                                item.productEntity?.priceRon }}</span>
+                                item.initialPrice }}</span>
                             <span class="text-[#FA4B4B] text-sm font-normal leading-5">RON {{ discountedPrice }}</span>
                         </div>
                         <div v-else class="flex flex-col text-center h-[36px] justify-center">
-                            <span class="text-[#222] text-sm font-normal leading-5">RON {{ item.productEntity?.priceRon
+                            <span class="text-[#222] text-sm font-normal leading-5">RON {{ item.discountPrice
                             }}</span>
                         </div>
                     </div>
@@ -173,7 +173,24 @@ import TrashOutlineBig from '@/assets/icons/trash-outline-big.svg';
 
 export default defineComponent({
     name: 'TableItemDropdown',
-    props: ['item', 'shortStock', 'stockItem', 'liked'],
+    props: {
+        item: {
+            type: Object,
+            required: true,
+        },
+        shortStock: {
+            type: Boolean,
+            required: true,
+        },
+        stockItem: {
+            type: Boolean,
+            required: true,
+        },
+        liked: {
+            type: Boolean,
+            required: true,
+        },
+    },
     components: {
         OrangeCheckCircleSmall,
         GreenCheckCircleSmall,
@@ -194,19 +211,19 @@ export default defineComponent({
     },
     computed: {
         discountedPrice() {
-            return this.item.productEntity?.priceRon - (this.item.productEntity?.priceRon * this.item.discount.value) / 100;
+            return this.item.discountPrice;
         },
         taxPrice() {
-            if (this.item.discount.value) {
+            if (this.item.discount) {
                 return parseFloat((this.discountedPrice * this.item.stock * 0.19).toFixed(2)) as number;
             }
-            return parseFloat((this.item.productEntity?.priceRon * this.item.stock * 0.19).toFixed(2)) as number;
+            return parseFloat((this.item.initialPrice * this.item.stock * 0.19).toFixed(2)) as number;
         },
         subtotal() {
-            if (this.item.discount.value) {
+            if (this.item.discount) {
                 return (this.discountedPrice * this.item.stock + this.taxPrice).toFixed(2);
             }
-            return (this.item.productEntity?.priceRon * this.item.stock + this.taxPrice).toFixed(2);
+            return (this.item.initialPrice * this.item.stock + this.taxPrice).toFixed(2);
         },
     },
     methods: {

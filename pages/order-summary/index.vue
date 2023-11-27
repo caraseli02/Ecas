@@ -19,10 +19,11 @@
                 <div
                     class="gap-6 lg:grid lg:grid-cols-[1fr,340px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,340px]">
                     <OrderSummaryTable :items="cartItems" :loading="loading" @checkAll="checkAll"
-                        @addToFavs="addToFavsAll" />
+                        @addToFavs="addToFavsAll" @update-subtotal="calculateSubtotal" />
                     <div class="lg:grid lg:grid-cols-1">
                         <OrderType :items="cartItems" :account-credit="accountCredit" :order="order" />
-                        <OrderSummary />
+                        <OrderSummaryNoteSection />
+                        <OrderSummary :order="order" />
                         <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
                     </div>
                 </div>
@@ -43,7 +44,7 @@ import PrintIcon from '@/assets/icons/print.svg';
 import { CartProductsInterface, OrderInterface } from '~/types';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
 import { DiscountInterface } from '~/types/auth/account-settings';
-import { useAuthStore} from '~/store/authStore';
+import { useAuthStore } from '~/store/authStore';
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
 
 useHead({
@@ -53,10 +54,10 @@ useHead({
 const mockProducts = [
     {
         id: 'RSCSK3143R3D02008TSCSK38TDASDKAKSDKK342NK4N234234N23K4K24NK2N4N2K42K34N2K4234L2BH3VV243K23N4JK3V23CV42N34J4UBJ547B5',
-        stock: 95000,
+        stock: 1,
         isFolder: true,
-        initialPrice: 104,
-        discountPrice: 98,
+        initialPrice: 5,
+        discountPrice: 2,
         discount: {
             value: 6,
             startDate: '2021-09-01T00:00:00.000Z',
@@ -80,8 +81,8 @@ const mockProducts = [
         id: 'CSMSK3143R3D02008TSCSK38FGN13KKLKLKL45N6KN34L5KL23NLK2N3K4NKLN34LK1NK5LN45LK765KV7GCG7C45VHKJN3K4N5K2N342V46G5C47G4C7',
         stock: 1,
         isFolder: true,
-        initialPrice: 124,
-        discountPrice: 92,
+        initialPrice: 10,
+        discountPrice: 7.5,
         discount: {
             value: 0,
             startDate: '2021-09-01T00:00:00.000Z',
@@ -103,10 +104,10 @@ const mockProducts = [
     },
     {
         id: 'RSCSK3143R3D02008TSCSK38TD',
-        stock: 56,
+        stock: 1,
         isFolder: false,
-        initialPrice: 160,
-        discountPrice: 101,
+        initialPrice: 10,
+        discountPrice: 7.5,
         discount: {
             value: 36,
             startDate: '2021-09-01T00:00:00.000Z',
@@ -226,19 +227,22 @@ const accountCredit = ref({
 
 const order = ref({
     total: 0,
-    subtotal: 0,
+    subtotal: 1000,
     products: orderItems.value,
+    discount: {
+        value: 0.25,
+    },
     shippingDetails: {
-        adress: {
-            alias1: 'Home',
+        address: {
+            alias: 'Home',
             name1: '5073 Mark Brown Rd',
             city: 'NE Dalton',
             region: 'Georgia (GA)',
             postcode: '30721',
             country: 'United States',
         },
-        billingAdress: {
-            alias1: 'Home',
+        billingAddress: {
+            alias: 'Home',
             name1: '5073 Mark Brown Rd',
             city: 'NE Dalton',
             region: 'Georgia (GA)',
@@ -247,9 +251,21 @@ const order = ref({
         },
     },
     paymentDetails: {
-        type: '',
+        type: null,
     },
     type: '',
     backorderOption: 0,
+    deliveryMethod: 0,
 });
+
+const calculateSubtotal = () => {
+    let subtotal = 0;
+    orderItems.value.forEach((item) => {
+        subtotal += item.discountPrice * item.stock;
+    });
+    order.value.subtotal = subtotal;
+};
+
+calculateSubtotal();
+
 </script>

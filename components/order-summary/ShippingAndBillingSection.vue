@@ -33,11 +33,11 @@
             </div>
             <div class="flex flex-col gap-2">
                 <p class="text-[#5E6278] text-sm font-medium leading-5">
-                    {{ order.shippingDetails?.billingAdress?.name1 }} </p>
+                    {{ order.shippingDetails?.billingAddress?.name1 }} </p>
                 <p class="text-[#5E6278] text-sm font-medium leading-5">
-                    {{ order.shippingDetails?.billingAdress?.city }}, {{ order.shippingDetails?.billingAdress?.region }}</p>
+                    {{ order.shippingDetails?.billingAddress?.city }}, {{ order.shippingDetails?.billingAddress?.region }}</p>
                 <p class="text-[#5E6278] text-sm font-medium leading-5">
-                    {{ order.shippingDetails?.billingAdress?.postcode }}, {{ order.shippingDetails?.billingAdress?.country
+                    {{ order.shippingDetails?.billingAddress?.postcode }}, {{ order.shippingDetails?.billingAddress?.country
                     }}
                 </p>
             </div>
@@ -75,7 +75,7 @@
             </div>
             <div class="flex flex-col gap-2">
                 <div class="flex flex-row justify-between">
-                    <span class="text-[#222] text-sm font-medium leading-6">{{ order.shippingDetails?.adress?.alias1 }}</span>
+                    <span class="text-[#222] text-sm font-medium leading-6">{{ order.shippingDetails?.address?.alias }}</span>
                     <div
                         class="px-2 py-1 rounded-[100px] border-[1px] border-[#00D395] flex items-center justify-center gap-1">
                         <CheckCircleSmall />
@@ -84,13 +84,13 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <p class="text-[#5E6278] text-sm font-medium leading-5">
-                        {{ order.shippingDetails?.adress?.name1 }} </p>
+                        {{ order.shippingDetails?.address?.name1 }} </p>
                     <p class="text-[#5E6278] text-sm font-medium leading-5">
-                        {{ order.shippingDetails?.adress?.city }}, {{ order.shippingDetails?.adress?.region }}
+                        {{ order.shippingDetails?.address?.city }}, {{ order.shippingDetails?.address?.region }}
                     </p>
                     <p class="text-[#5E6278] text-sm font-medium leading-5">
-                        {{ order.shippingDetails?.adress?.postcode }}, {{
-                            order.shippingDetails?.adress?.country }}
+                        {{ order.shippingDetails?.address?.postcode }}, {{
+                            order.shippingDetails?.address?.country }}
                     </p>
                 </div>
             </div>
@@ -104,10 +104,16 @@ import EditSmall from '@/assets/icons/edit-small.svg';
 import SettingCog from '@/assets/icons/setting-cog.svg';
 import CheckCircleSmall from '@/assets/icons/check-circle-small.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
+import { OrderInterface } from '~/types';
 
 export default defineComponent({
     name: 'ShippingAndBillingSection',
-    props: ['order'],
+    props: {
+        order: {
+            type: Object as PropType<OrderInterface>,
+            required: true,
+        },
+    },
     components: {
         GreenCheckCircle,
         EditSmall,
@@ -118,10 +124,10 @@ export default defineComponent({
     },
     computed: {
         billingInfoMissing() {
-            return !this.order.shippingDetails?.billingAdress?.name1 || !this.order.shippingDetails?.billingAdress?.city || !this.order.shippingDetails?.billingAdress?.region || !this.order.shippingDetails?.billingAdress?.postcode || !this.order.shippingDetails?.billingAdress?.country;
+            return !this.order.shippingDetails?.billingAddress?.name1 || !this.order.shippingDetails?.billingAddress?.city || !this.order.shippingDetails?.billingAddress?.region || !this.order.shippingDetails?.billingAddress?.postcode || !this.order.shippingDetails?.billingAddress?.country;
         },
         shippingInfoMissing() {
-            return !this.order.shippingDetails?.adress?.name1 || !this.order.shippingDetails?.adress?.city || !this.order.shippingDetails?.adress?.region || !this.order.shippingDetails?.adress?.postcode || !this.order.shippingDetails?.adress?.country;
+            return !this.order.shippingDetails?.address?.name1 || !this.order.shippingDetails?.address?.city || !this.order.shippingDetails?.address?.region || !this.order.shippingDetails?.address?.postcode || !this.order.shippingDetails?.address?.country;
         },
     },
 });

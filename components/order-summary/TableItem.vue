@@ -84,7 +84,16 @@ import Tooltip from '~/components/global/Tooltip.vue';
 
 export default defineComponent({
     name: 'TableItem',
-    props: ['item', 'stockItem'],
+    props: {
+        item: {
+            type: Object,
+            required: true,
+        },
+        stockItem: {
+            type: Boolean as PropType<boolean>,
+            required: true,
+        },
+    },
     data() {
         return {
             checked: false,
@@ -126,7 +135,16 @@ export default defineComponent({
         shortStock() {
             return this.item.productEntity?.stock <= this.thresholdStock && this.item.productEntity?.stock > 0 && this.stockItem;
         },
-
+        itemQuantity() {
+            return this.item.stock;
+        },
+    },
+    watch: {
+        itemQuantity() {
+            if (this.item.stock) {
+                this.$emit('updateQuantity');
+            }
+        },
     },
     mounted() {
         const mediaQuery = window.matchMedia("(min-width: 1280px)");

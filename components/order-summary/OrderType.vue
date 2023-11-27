@@ -99,10 +99,25 @@ import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
 import Tooltip from '~/components/global/Tooltip.vue';
+import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import { OrderInterface } from '~/types';
 
 export default defineComponent({
     name: 'OrderType',
-    props: ['items', 'accountCredit', 'order'],
+    props: {
+        items: {
+            type: Array as PropType<CartProductsInterface[]>,
+            required: true,
+        },
+        accountCredit: {
+            type: Object as PropType<CustomerCreditInterface>,
+            required: true,
+        },
+        order: {
+            type: Object as PropType<OrderInterface>,
+            required: true,
+        },
+    },
     components: {
         ChevronDownIcon,
         WarningErrorYellow,
@@ -127,21 +142,23 @@ export default defineComponent({
         },
         orderType() {
             if (this.stockOrder) {
-                return 'Stock';
+                return 0;
             } else if (this.backOrder) {
-                return 'Back';
+                return 1;
             } else {
-                return 'Mixed';
+                return 2;
             }
         },
         shippingAndBillingMissingInfoWarning() {
-            return !this.order.shippingDetails?.adress?.name1 || !this.order.shippingDetails?.adress?.city || !this.order.shippingDetails?.adress?.region || !this.order.shippingDetails?.adress?.postcode || !this.order.shippingDetails?.adress?.country || !this.order.shippingDetails?.billingAdress?.name1 || !this.order.shippingDetails?.billingAdress?.city || !this.order.shippingDetails?.billingAdress?.region || !this.order.shippingDetails?.billingAdress?.postcode || !this.order.shippingDetails?.billingAdress?.country;
+            if (this.order.shippingDetails.address && this.order.shippingDetails.billingAddress) {
+                return !this.order.shippingDetails?.address?.name1 || !this.order.shippingDetails?.address?.city || !this.order.shippingDetails?.address?.region || !this.order.shippingDetails?.address?.postcode || !this.order.shippingDetails?.address?.country || !this.order.shippingDetails?.billingAddress?.name1 || !this.order.shippingDetails?.billingAddress?.city || !this.order.shippingDetails?.billingAddress?.region || !this.order.shippingDetails?.billingAddress?.postcode || !this.order.shippingDetails?.billingAddress?.country;
+            }
         },
         mixedOrBackOrder() {
-            return this.order.type === ('Mixed' || 'Back')
+            return this.order.type === 1 || this.order.type === 2;
         },
         paymentMethodWarning() {
-            return !this.order.paymentDetails.type;
+            return this.order.paymentDetails?.type === null;
         },
     },
     methods: {

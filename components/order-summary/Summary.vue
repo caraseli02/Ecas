@@ -1,46 +1,152 @@
 <template>
-    <div class="border border-border shadow-m pt-[25px] px-2.5 pb-[30px] rounded-md mb-[30px] md:mb-5">
-        <div class="flex items-center justify-between mb-[18px]">
-            <div class="font-semibold">
-                All Items Total
-                <span class="text-xs font-normal text-gray-300">(excl VAT)</span>
+    <div class="p-4 flex flex-col gap-4 bg-[#FFF] rounded-xl shadow-xs mb-9">
+        <div class="flex flex-row w-full">
+            <span class="text-[#222] text-base font-medium leading-6">Payment Summary</span>
+        </div>
+        <div class="flex flex-col gap-2 relative">
+            <div class="flex flex-row justify-between w-full">
+                <span class="text-[#5E6278] text-sm font-normal leading-6">Subtotal</span>
+                <span class="text-[#222] text-sm font-medium leading-6">$ {{ order.subtotal }}</span>
             </div>
-            <div class="text-right font-Inter font-semibold">$ 27.874,69</div>
-        </div>
-        <div class="flex items-center justify-between mb-0.2">
-            <div>Number of items</div>
-            <div class="text-right font-Inter">6</div>
-        </div>
-        <div class="flex items-center justify-between mb-0.2">
-            <div>Delivery</div>
-            <div class="text-right font-Inter">$ 0.00</div>
-        </div>
-        <div class="flex items-center justify-between mb-2.5">
-            <div class="flex items-center">
-                <div class="mr-2">Handling Charge</div>
-                <QuestionIcon class="w-4 h-4 text-gray-300" />
+            <div class="flex flex-row justify-between w-full">
+                <div class="flex flex-row gap-6">
+                    <span class="text-[#5E6278] text-sm font-normal leading-6">Discount</span>
+                    <span class="text-[#222] text-sm font-normal leading-6">({{ discountPercentage }}%)</span>
+                </div>
+                <span class="text-[#222] text-sm font-medium leading-6">- $ {{ calculatedDiscount }}</span>
             </div>
-            <div class="text-right font-Inter">$ 0.00</div>
-        </div>
-        <div class="flex items-center justify-between pb-1.5 border-b border-border mb-2.5">
-            <div class="font-semibold">
-                VAT
-                <span class="text-xs font-normal text-gray-300">(19%)</span>
+            <div v-if="smallOrder" class="flex flex-row justify-between w-full">
+                <div class="flex flex-col gap-1">
+                    <div class="flex flex-row gap-2 items-center">
+                        <span class="text-[#5E6278] text-sm font-normal leading-6">Handling Charge</span>
+                        <button @click="showSmallOrderModal = true" class="group">
+                            <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
+                        </button>
+                    </div>
+                    <span class="text-[#222] italic text-sm font-normal leading-6">Small order charge</span>
+                </div>
+                <div class="flex flex-col justify-end">
+                    <span class="text-[#222] text-sm font-medium leading-6">$ {{ smallOrder }}</span>
+                </div>
             </div>
-            <div class="text-right font-Inter font-semibold">$ 5296,19</div>
+            <Transition name="fade-bottom">
+                <div v-if="showSmallOrderModal" v-click-outside="() => (showSmallOrderModal = false)" class="absolute bottom-[200px] left-0">
+                    <OrderSummarySmallOrderModal />
+                </div>
+            </Transition>
+            <div class="flex flex-row justify-between w-full">
+                <div class="flex flex-col gap-1">
+                    <div class="flex flex-row gap-2 items-center">
+                        <span class="text-[#5E6278] text-sm font-normal leading-6">Shipping</span>
+                        <button class="group">
+                            <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
+                        </button>
+                    </div>
+                    <span v-if="order.deliveryMethod === 0" class="text-[#222] italic text-sm font-normal leading-6">Free Delivery (3-7 Days)</span>
+                    <span v-if="order.deliveryMethod === 1" class="text-[#222] italic text-sm font-normal leading-6">Standard Delivery (3-5 Days)</span>
+                    <span v-if="order.deliveryMethod === 2" class="text-[#222] italic text-sm font-normal leading-6">Express Delivery (1-3 Days)</span>
+                </div>
+                <div class="flex flex-col justify-end">
+                    <span v-if="order.deliveryMethod === 0" class="text-[#222] text-sm font-medium leading-6">$ 0.00</span>
+                    <span v-if="order.deliveryMethod === 1" class="text-[#222] text-sm font-medium leading-6">$ 5.49</span>
+                    <span v-if="order.deliveryMethod === 2" class="text-[#222] text-sm font-medium leading-6">$ 7.49</span>
+                </div>
+            </div>
+            <div class="flex flex-row justify-between w-full">
+                <div class="flex flex-row">
+                    <span class="text-[#5E6278] text-sm font-normal leading-6">Tax:</span>
+                    <button class="group ml-2">
+                            <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
+                        </button>
+                    <span class="text-[#222] text-sm font-normal leading-6 ml-6">(VAT 19%)</span>
+                </div>
+                <span class="text-[#222] text-sm font-medium leading-6">$ {{ calculatedVAT }}</span>
+            </div>
+            <div class="w-full h-[1px] bg-[#EBEBEB] rounded-lg"></div>
+            <div class="flex flex-row justify-between w-full">
+                <span class="text-[#222] text-xl font-normal leading-9">Total</span>
+                <span class="text-[#222] text-2xl font-semibold leading-9">$ {{ calculatedTotal }}</span>
+            </div>
         </div>
-        <div class="flex items-center justify-between font-semibold text-lg mb-[30px] lg:mb-[70px]">
-            <div class="">Total</div>
-            <div class="text-right font-Inter">$ 33.170,88</div>
-        </div>
-        <button class="flex items-center justify-center bg-blue text-white rounded px-[15px] py-[9px] text-sm font-medium w-full">
-            <LockIcon class="w-6 h-6 mr-2" />
-            <span>Pay $33.170,88</span>
-        </button>
     </div>
 </template>
+<script lang="ts">
+import InformationIcon from '~/assets/icons/information.svg';
+import { OrderInterface } from '~/types';
 
-<script setup lang="ts">
-import QuestionIcon from '@/assets/icons/question.svg';
-import LockIcon from '@/assets/icons/lock.svg';
+export default defineComponent({
+    name: 'Summary',
+    components: {
+        InformationIcon,
+    },
+    props: {
+        order: {
+            type: Object as PropType<OrderInterface>,
+            required: true,
+        },
+    },
+    data() {
+        return {
+            showSmallOrderModal: false,
+        };
+    },
+    computed: {
+        smallOrder(): number {
+            if (this.totalWithoutVAT >= 40) {
+                return 0;
+            }
+            if (this.totalWithoutVAT < 40 && this.totalWithoutVAT >= 20 ) {
+                return 5.49;
+            }
+            if (this.totalWithoutVAT < 20) {
+                return 7.49;
+            }
+            return 0;
+        },
+        totalWithoutVAT(): number {
+            if (this.order.subtotal) {
+                return parseFloat((this.order.subtotal - this.calculatedDiscount).toFixed(2));
+            }
+            return 0;
+        },
+        calculatedDiscount(): number {
+            if (this.order.discount && this.order.subtotal) {
+                return this.order.subtotal * this.order.discount.value;
+            }
+            return 0;
+        },
+        discountPercentage(): number {
+            if (this.order.discount) {
+                return this.order.discount.value*100;
+            }
+            return 0;
+        },
+        calculatedVAT(): number {
+            if (this.order.subtotal) {
+                return parseFloat(((this.order.subtotal - this.calculatedDiscount) * 0.19).toFixed(2));
+            }
+            return 0;
+        },
+        calculatedTotal(): number {
+            if (this.order.subtotal && !this.smallOrder) {
+                return parseFloat((this.order.subtotal - this.calculatedDiscount + this.calculatedVAT + this.shippingFee).toFixed(2));
+            } else if (this.order.subtotal && this.smallOrder) {
+                return parseFloat((this.order.subtotal - this.calculatedDiscount + this.calculatedVAT + this.shippingFee + this.smallOrder).toFixed(2));
+            }
+            return 0;
+        },
+        shippingFee(): number {
+            if (this.order.deliveryMethod === 0) {
+                return 0;
+            }
+            if (this.order.deliveryMethod === 1) {
+                return 5.49;
+            }
+            if (this.order.deliveryMethod === 2) {
+                return 7.49;
+            }
+            return 0;
+        },
+    }
+});
 </script>
