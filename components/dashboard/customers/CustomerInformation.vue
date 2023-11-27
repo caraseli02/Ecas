@@ -126,19 +126,19 @@
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">User Name</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails.email }}
+                                    {{ customerInformation.contactDetails?.email }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Name</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails.firstName }}
+                                    {{ customerInformation.contactDetails?.firstName }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Surname</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails.lastName }}
+                                    {{ customerInformation.contactDetails?.lastName }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
