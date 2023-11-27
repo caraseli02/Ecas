@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <label
-            class="relative hidden border-[1.5px] border-blue rounded-lg items-center h-[44px] overflow-hidden md:flex"
+            class="relative hidden border-[1.5px] border-blue rounded-lg items-center h-11 overflow-hidden md:flex"
             :class="[isScrolled ? 'lg:border-border' : '']"
         >
             <SearchIcon v-if="!isScrolled" class="hidden w-4 h-4 flex-shrink-0 text-gray-100 self-center ml-3 md:inline-block" />
@@ -12,7 +12,7 @@
                     type="search"
                     placeholder="Search products"
                     autocomplete="off"
-                    class="flex-1 text-sm leading-[1.29] text-gray-300 h-[44px] py-3 w-full placeholder:text-gray-100 focus:outline-none"
+                    class="flex-1 text-sm leading-[1.29] text-gray-300 h-11 py-3 w-full placeholder:text-gray-100 focus:outline-none"
                     :class="[isScrolled ? 'px-3' : 'px-2']"
                     @input="onInput"
                     @keypress.enter="handleEnterButton"
@@ -112,7 +112,7 @@ watch(searchVal, (val) => {
 });
 
 watch(focus, (newVal) => {
-    if (newVal && window.innerWidth >= 768 && window.innerWidth < 1024) {
+    if (newVal && window.innerWidth >= 768 && window.innerWidth <= 1024) {
         nextTick(() => {
             searchDOM.value?.focus();
         });

@@ -63,7 +63,7 @@
                     <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
                     <div v-else class="flex md:flex-row-reverse">
                         <div class="font-semibold leading-tight mb-2 md:order-1">
-                            {{ customerInformation.contactDetails.firstName + ' ' + customerInformation.contactDetails.lastName }}
+                            {{ customerInformation.contactDetails?.firstName + ' ' + customerInformation.contactDetails?.lastName }}
                         </div>
                         <Tooltip theme="black" :position="'top'" class="self-start ml-3">
                             <LockIcon
@@ -126,19 +126,19 @@
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">User Name</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails.email }}
+                                    {{ customerInformation.contactDetails?.email }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Name</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails.firstName }}
+                                    {{ customerInformation.contactDetails?.firstName }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-gray-300 leading-[1.75]">Surname</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails.lastName }}
+                                    {{ customerInformation.contactDetails?.lastName }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
