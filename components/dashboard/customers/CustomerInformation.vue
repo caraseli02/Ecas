@@ -63,7 +63,7 @@
                     <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
                     <div v-else class="flex md:flex-row-reverse">
                         <div class="font-semibold leading-tight mb-2 md:order-1">
-                            {{ customerInformation.contactDetails.firstName + ' ' + customerInformation.contactDetails.lastName }}
+                            {{ customerInformation.contactDetails?.firstName + ' ' + customerInformation.contactDetails?.lastName }}
                         </div>
                         <Tooltip theme="black" :position="'top'" class="self-start ml-3">
                             <LockIcon
