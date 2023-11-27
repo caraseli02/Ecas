@@ -24,6 +24,7 @@
                         <OrderType :items="cartItems" :account-credit="accountCredit" :order="order" />
                         <OrderSummaryNoteSection />
                         <OrderSummary :order="order" />
+                        <OrderSummaryCheckoutButtons />
                         <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
                     </div>
                 </div>

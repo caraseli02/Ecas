@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4 flex flex-col gap-4 border border-[#D4D4D4] rounded-xl bg-[#FFF] shadow-l">
+    <div class="max-w-[258px] p-4 flex flex-col gap-4 border border-[#D4D4D4] rounded-xl bg-[#FFF] shadow-l">
         <div>
             <span class="text-[#222] text-sm font-semibold leading-6">Small Order Handling Charge</span>
         </div>
