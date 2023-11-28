@@ -5,29 +5,8 @@
                 <NuxtLink to="/" class="flex flex-shrink-0">
                     <Logo class="w-[142px] xl:w-[141px]" />
                 </NuxtLink>
-                <LayoutHeaderSearch :show-results="!isScrolled" class="flex-1 xl:translate-x-14 xl:max-w-[680px]" />
+                <LayoutHeaderSearch :show-results="!isScrolled" class="flex-1 xl:max-w-[680px]" />
                 <div class="flex items-center xl:gap-[46px]">
-                    <div class="relative max-xl:hidden">
-                        <button class="flex items-center" @click="showNotifications = true">
-                            <div class="flex relative">
-                                <BellIcon class="w-6 h-6 text-gray-300" />
-                                <span
-                                    class="absolute font-Inter z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white px-1 py-0.5 rounded-[100px] text-[10px] font-semibold leading-[1.1]"
-                                >
-                                    {{ unreadNotifications }}
-                                </span>
-                            </div>
-                        </button>
-                        <Transition name="slide-fast-from-bottom">
-                            <Notifications
-                                v-if="showNotifications"
-                                :notifications="notifications"
-                                @delete="deleteNotification"
-                                @mark-as-read="markNotificationAsRead"
-                                @close="showNotifications = false"
-                            />
-                        </Transition>
-                    </div>
                     <button
                         class="flex items-center text-left max-md:hidden"
                         @click="
@@ -37,12 +16,13 @@
                             }
                         "
                     >
-                        <div class="relative mr-6">
+                        <div class="flex items-center mr-0.5">
                             <CartIcon class="w-6 h-6 text-gray-300 lg:mr-0" />
                             <span
-                                class="absolute font-Inter z-10 -top-1 -right-2.5 bg-[#FA4B4B] text-white px-1 py-0.5 rounded-[100px] text-[10px] font-semibold leading-[1.1]"
+                                class="flex -translate-y-2 -translate-x-2.5 items-center justify-center h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white rounded-[100px] text-xs font-semibold leading-[1.5]"
+                                :class="[cartItems < 10 ? 'w-[18px]' : cartItems < 100 ? 'w-6' : 'w-[31px]']"
                             >
-                                47
+                                <span> {{ cartItems }} </span>
                             </span>
                         </div>
                         <div class="flex-col text-gray-300 flex-shrink-0">
@@ -79,63 +59,12 @@
 <script setup lang="ts">
 import Logo from '@/assets/media/logo.svg';
 import CartIcon from '@/assets/icons/cart.svg';
-import BellIcon from '@/assets/icons/header/bell.svg';
-import Notifications from '@/components/global/Notifications.vue';
-import { Notification } from '~/types';
-
 defineProps({
     isScrolled: {
         type: Boolean,
         required: true,
     },
 });
-
-const error = ref(false);
-const isLoading = ref(false);
-
-const notifications = ref<Notification[]>([] as Notification[]);
-
-const unreadNotifications = ref(0);
-const { $api } = useNuxtApp();
-const showNotifications = ref(false);
-const fetchNofications = async () => {
-    error.value = false;
-    isLoading.value = true;
-
-    const response = await $api.notifications.fetchGetNotifications();
-    if (response.status !== 'success') {
-        isLoading.value = false;
-        error.value = true;
-
-        return;
-    } else {
-        isLoading.value = false;
-    }
-    notifications.value = response.description;
-    Object.keys(notifications.value).forEach((notification) => {
-        if (notifications.value[notification].seen === false) {
-            unreadNotifications.value++;
-        }
-    });
-};
-
-const markNotificationAsRead = async (notification: Notification, index: number) => {
-    if (notifications.value[index].seen !== true) {
-        unreadNotifications.value--;
-    }
-    const response = await $api.notifications.fetchMarkNotificationAsRead(notification.id);
-    if (response.status !== 'success') {
-        return;
-    }
-    notifications.value[index].seen = true;
-};
-const deleteNotification = async (notification: Notification, index: number) => {
-    const response = await $api.notifications.deleteNotificationById(notification.id);
-    if (response.status !== 'success') {
-        return;
-    }
-    notifications.value.splice(index, 1);
-};
 
 const showAccountModal = ref(false);
 
@@ -144,5 +73,5 @@ const favoritesCartModal = ref({
     tab: 'favorites' as 'favorites' | 'shopping-cart',
 });
 
-Promise.all([fetchNofications()]);
+const cartItems = ref(47);
 </script>
