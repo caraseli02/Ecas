@@ -18,23 +18,33 @@
                 </div>
                 <div
                     class="gap-6 lg:grid lg:grid-cols-[1fr,340px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,340px]">
-                    <OrderSummaryTable :items="cartItems" :loading="loading" @checkAll="checkAll"
-                        @addToFavs="addToFavsAll" @update-subtotal="calculateSubtotal" />
+                    <div class="flex flex-col gap-9">
+                        <OrderSummaryTable :items="cartItems" :loading="loading" @checkAll="checkAll"
+                            @addToFavs="addToFavsAll" @update-subtotal="calculateSubtotal" />
+                        <div class="hidden lg:flex">
+                            <OrderSummarySimilarProducts />
+                        </div>
+                    </div>
                     <div class="lg:grid lg:grid-cols-1">
                         <OrderType :items="cartItems" :account-credit="accountCredit" :order="order" />
                         <OrderSummaryNoteSection />
                         <OrderSummary :order="order" />
                         <OrderSummaryCheckoutButtons />
-                        <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
+                        <!-- <OrderSummaryEcxlusiveOffer class="max-lg:hidden" /> -->
+                        <div class="flex flex-col">
+                            <div class="flex lg:hidden">
+                                <OrderSummarySimilarProducts />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <Banner />
+            <!-- <Banner />
             <NewProducts title="Hot Deals" />
             <div class="container mb-10 lg:hidden">
                 <OrderSummaryEcxlusiveOffer />
             </div>
-            <News />
+            <News /> -->
         </div>
     </div>
 </template>
