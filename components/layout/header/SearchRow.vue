@@ -39,8 +39,10 @@
             <LayoutAccountModal v-if="showAccountModal" @close="showAccountModal = false" />
         </Transition>
         <div
-            v-if="showAccountModal || favoritesCartModal.show"
-            class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[#333333]/70 backdrop-blur-[2px] cursor-pointer md:block"
+            class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[rgba(47, 50, 65, 0.10)] cursor-pointer transition-all duration-300 md:block"
+            :class="[
+                showAccountModal || favoritesCartModal.show ? 'backdrop-blur-[7.5px]' : 'backdrop-blur-none opacity-0 pointer-events-none',
+            ]"
             @click="
                 showAccountModal = false;
                 favoritesCartModal.show = false;
