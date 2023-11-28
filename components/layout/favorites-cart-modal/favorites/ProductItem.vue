@@ -18,11 +18,12 @@
                 v-if="product.image"
                 :src="product.image"
                 :alt="product.title"
-                :class="[inModal ? 'w-9 h-9 mr-2' : 'w-[70px] h-[70px] mr-2.5']"
+                class="mr-2"
+                :class="[inModal ? 'w-9 h-9' : 'w-[72px] h-[72px] border border-border rounded-lg overflow-hidden object-cover']"
             />
             <div :class="[inModal ? 'truncate' : '']">
-                <div class="flex items-center" :class="[inModal ? '' : 'mb-2.5']">
-                    <div class="leading-tight font-semibold font-Inter mr-2" :class="[inModal ? 'text-xs' : '']">
+                <div class="flex items-center" :class="[inModal ? '' : 'mb-0.5']">
+                    <div class="font-semibold mr-2" :class="[inModal ? 'text-xs leading-tight' : 'text-sm leading-[1.43]']">
                         {{ product.title }}
                     </div>
                     <button
@@ -33,28 +34,32 @@
                         <CopyIcon class="w-[18px] h-[18px]" />
                     </button>
                     <button v-if="!inModal" class="flex text-gray-300 transition-colors duration-300 mr-2 hover:text-blue">
-                        <InfoIcon class="w-[18px] h-[18px]" />
+                        <InfoIcon class="w-4 h-4" />
                     </button>
                 </div>
-                <div v-if="product.description" class="text-gray-300 truncate" :class="[inModal ? 'text-xs' : 'text-sm mb-2.5 w-[205px]']">
+                <div
+                    v-if="product.description"
+                    class="text-gray-300 font-Inter truncate"
+                    :class="[inModal ? 'text-xs' : 'text-sm leading-[1.43] mb-0.5 w-[205px]']"
+                >
                     {{ product.description }}
                 </div>
-                <div v-if="!inModal">
-                    <div class="text-xs leading-tight font-Inter line-through">$ 0,15 (100+)</div>
-                    <div class="text-sm leading-tight font-bold font-Inter text-red">
-                        $ 0,095 <span class="text-xs font-normal">(100+)</span>
+                <div v-if="!inModal" class="flex items-center gap-2 md:flex-col md:items-start md:gap-0">
+                    <div class="text-xs leading-[1.33] line-through">$ 0,15 (100+)</div>
+                    <div class="text-sm leading-tight font-semibold font-Inter text-[#FA4B4B]">
+                        $ 0,095 <span class="text-xs font-normal font-Poppins">(100+)</span>
                     </div>
                 </div>
             </div>
             <button
                 v-if="!inModal"
-                class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full ml-auto text-gray-300 transition-colors duration-300 hover:text-blue"
+                class="flex items-center justify-center ml-auto text-gray-300 transition-colors duration-300 hover:text-blue"
                 @click="deleteItem = true"
             >
-                <TrashIcon class="w-5 h-5" />
+                <XIcon class="w-5 h-5" />
             </button>
         </div>
-        <div v-if="!inModal" class="flex items-end justify-between mt-2">
+        <div v-if="!inModal" class="flex items-end justify-between mt-1">
             <div v-if="!inCart" class="flex items-center">
                 <label class="flex cursor-pointer mr-[15px]">
                     <input :value="product.selected" type="checkbox" class="sr-only" @change="$emit('select')" />
@@ -74,7 +79,7 @@
                     <span class="text-[11px] leading-tight font-semibold font-Inter"> 16,000 in stock </span>
                 </div>
             </div>
-            <div v-else class="font-Inter font-bold leading-tight">$ 175.413,75</div>
+            <div v-else class="font-Inter font-semibold leading-[1.13]">$ 17,830.95</div>
             <QuantityButtons v-if="typeof product.quantity === 'number'" v-model="product.quantity" />
         </div>
     </div>
@@ -104,10 +109,10 @@ import { FavoriteItem } from '~~/types';
 import CheckIcon from '@/assets/icons/check.svg';
 import CheckCircleIcon from '@/assets/icons/check-circle.svg';
 import CopyIcon from '@/assets/icons/copy.svg';
-import TrashIcon from '@/assets/icons/trash-can.svg';
 import InfoIcon from '@/assets/icons/info-circle.svg';
+import XIcon from '@/assets/icons/x.svg';
 
-const props = defineProps({
+defineProps({
     product: {
         type: Object as PropType<FavoriteItem>,
         required: true,

@@ -1,12 +1,12 @@
 <template>
-    <div class="flex bg-[#F5F5F5] rounded max-w-max overflow-hidden">
+    <div class="flex bg-[#F5F5F5] bg-opacity-95 rounded-lg max-w-max overflow-hidden">
         <button
             :disabled="modelValue === 0"
             class="flex items-center justify-center bg-gray-200 text-gray-300 px-2.5 transition-colors duration-300 disabled:text-border"
-            :class="[size === 'sm' ? 'w-8 h-8' : 'w-[42px] h-[42px]']"
+            :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
             @click="inputHandler(modelValue - 1)"
         >
-            <MinusIcon class="w-4 h-4" />
+            <MinusIcon class="w-6 h-6 flex-shrink-0" />
         </button>
         <label class="flex">
             <input
@@ -14,17 +14,17 @@
                 type="number"
                 :min="0"
                 placeholder="Quantity"
-                class="bg-transparent w-[58px] px-0.5 text-sm leading-normal text-gray-300 text-center font-Inter placeholder:text-[12px] focus:outline-none"
-                :class="[size === 'sm' ? 'h-8' : 'h-[42px]']"
+                class="bg-transparent w-[56px] px-1 text-sm leading-normal text-dark text-center placeholder:text-[12px] focus:outline-none"
+                :class="[size === 'sm' ? 'h-9' : 'h-[42px]']"
                 @input="($event) => inputHandlerModified($event)"
             />
         </label>
         <button
             class="flex items-center justify-center bg-gray-200 px-2.5"
-            :class="[size === 'sm' ? 'w-8 h-8' : 'w-[42px] h-[42px]']"
+            :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
             @click="inputHandler(modelValue + 1)"
         >
-            <PlusIcon class="w-3.5 h-3.5 text-gray-300" />
+            <PlusIcon class="w-6 h-6 flex-shrink-0 text-gray-300" />
         </button>
     </div>
 </template>
