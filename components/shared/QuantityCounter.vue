@@ -4,7 +4,7 @@
             <MinusGrey class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-150" />
         </button>
         <div class="min-w-[48px] h-[36px] items-center flex justify-center bg-[#F5F5F5F2]">
-            <span class="text-center px-1">{{ value }}</span>
+            <input type="number" v-model="inputValue" @change="updateValue" class="text-center px-1 bg-transparent outline-none w-[48px]"/>
         </div>
         <button @click="increaseValue()" class="p-1 bg-[#EBEBEB] rounded-r-lg group">
             <PlusGrey class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-150" />
@@ -22,6 +22,11 @@ export default defineComponent({
         MinusGrey,
         PlusGrey,
     },
+    data() {
+        return {
+            inputValue: this.value,
+        };
+    },
     methods: {
         increaseValue() {
             this.$emit('update:value', this.value + 1);
@@ -30,6 +35,14 @@ export default defineComponent({
             if (this.value > 1) {
                 this.$emit('update:value', this.value - 1);
             }
+        },
+        updateValue() {
+            this.$emit('update:value', this.inputValue);
+        },
+    },
+    watch: {
+        value() {
+            this.inputValue = this.value;
         },
     },
 })

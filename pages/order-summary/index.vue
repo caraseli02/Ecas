@@ -21,8 +21,9 @@
                     <div class="flex flex-col gap-9">
                         <OrderSummaryTable :items="cartItems" :loading="loading" @checkAll="checkAll"
                             @addToFavs="addToFavsAll" @update-subtotal="calculateSubtotal" />
-                        <div class="hidden lg:flex">
+                        <div class="hidden lg:flex flex-col">
                             <OrderSummarySimilarProducts />
+                            <OrderSummaryBannerImageCard class="hidden xl:flex" />
                         </div>
                     </div>
                     <div class="lg:grid lg:grid-cols-1">
@@ -30,6 +31,7 @@
                         <OrderSummaryNoteSection />
                         <OrderSummary :order="order" />
                         <OrderSummaryCheckoutButtons />
+                        <OrderSummaryBannerCard />
                         <!-- <OrderSummaryEcxlusiveOffer class="max-lg:hidden" /> -->
                         <div class="flex flex-col">
                             <div class="flex lg:hidden">

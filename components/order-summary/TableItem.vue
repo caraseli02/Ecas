@@ -66,7 +66,8 @@
             </div>
         </div>
         <Transition name="expand">
-            <OrderSummaryTableItemDropdown v-if="expanded" :item="item" :short-stock="shortStock" :stock-item="stockItem" :liked="liked" class="item" />
+            <OrderSummaryTableItemDropdown ref="tab" v-if="expanded" :item="item" :short-stock="shortStock" :stock-item="stockItem" :liked="liked"
+                class="item" />
         </Transition>
     </div>
 </template>
@@ -159,13 +160,20 @@ export default defineComponent({
 <style scoped>
 .expand-enter-from,
 .expand-leave-to {
-    /* opacity: 0; */
-    transform: scaleY(0) translateY(-10%);
+    opacity: 0.5;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.expand-enter-to,
+.expand-leave-from {
+    opacity: 1;
+    max-height: 1000px; /* Adjust this value as needed */
 }
 
 .expand-enter-active,
 .expand-leave-active {
-    transition: all 0.5s ease;
+    transition: max-height 0.5s cubic-bezier(0, 0.3, 0.6, 1), opacity 0.5s ease;
 }
 
 .item {
@@ -173,8 +181,8 @@ export default defineComponent({
 }
 
 .header-transition {
-    transition-property: box-shadow, border-radius;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: box-shadow, border-radius, opacity;
+    transition-timing-function: cubic-bezier(0, 0.3, 0.6, 1);
     transition-duration: 150ms;
-    transition-delay: 300ms;
-}</style>
+}
+</style>
