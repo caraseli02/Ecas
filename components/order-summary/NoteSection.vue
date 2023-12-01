@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4 flex flex-col gap-6 bg-[#FFF] rounded-xl shadow-xs mb-6">
+    <div class="p-4 xl:p-6 flex flex-col gap-6 bg-[#FFF] rounded-xl shadow-xs mb-6">
         <div class="flex flex-row justify-between w-full">
             <span class="text-[#222] text-base font-medium leading-6">Add a note for this order</span>
             <button @click="textBoxOpen = !textBoxOpen" class="group">

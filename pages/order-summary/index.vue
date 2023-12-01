@@ -17,8 +17,9 @@
                     </div>
                 </div>
                 <div
-                    class="gap-6 lg:grid lg:grid-cols-[1fr,340px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,340px]">
+                    class="gap-6 lg:grid lg:grid-cols-[1fr,320px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,392px]">
                     <div class="flex flex-col gap-9">
+                        <OrderSummaryBackOrderWarning v-if="showWarning" />
                         <OrderSummaryTable :items="cartItems" :loading="loading" @checkAll="checkAll"
                             @addToFavs="addToFavsAll" @update-subtotal="calculateSubtotal" />
                         <div class="hidden lg:flex flex-col">
@@ -62,6 +63,10 @@ import { CustomerCreditInterface } from '~/types/auth/account-settings';
 
 useHead({
     title: 'Order Summary',
+});
+
+const showWarning = ref(() => {
+    return cartItems.value.some((item: any) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
 });
 
 const mockProducts = [
@@ -143,7 +148,7 @@ const mockProducts = [
 ];
 
 const { $api } = useNuxtApp();
-const loading = ref(false);
+const loading = ref(true);
 
 const cartItems = ref([] as CartProductsInterface[]);
 const fetchCartItems = async () => {

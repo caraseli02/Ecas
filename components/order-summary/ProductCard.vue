@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-2 rounded-xl bg-[#FFF] shadow-xs w-[310px]">
+    <div class="flex flex-col gap-2 rounded-xl bg-[#FFF] shadow-xs w-[304px] h-[282px]">
         <div class="flex flex-row items-start">
             <div class="px-2 py-1 flex flex-row gap-2 rounded-br-lg rounded-tl-xl"
                 :class="shortStock ? 'bg-[#FF8A00]' : 'bg-[#0FAC7E]'">
@@ -10,7 +10,7 @@
         <div class="flex flex-col gap-2">
             <div class="pl-9 pr-4 flex flex-row">
                 <div class="w-[233px] flex items-center justify-center">
-                    <img :src="item.details.ProductImage.ProductImageLarge" class="w-[120px]"/>
+                    <img :src="item.details.ProductImage.ProductImageLarge" class="w-[120px] h-[120px]"/>
                 </div>
                 <div class="flex flex-col items-start gap-3">
                     <button class="relative flex group" @click="addToFavs">

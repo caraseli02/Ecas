@@ -12,7 +12,7 @@
     clickable: true,
 }" class="orderSummaryExclusiveOffer--swiper">
                 <SwiperSlide v-for="(item, index) in slides" :key="index">
-                    <div class="mb-10 flex items-center justify-center">
+                    <div class="mb-10 mt-1 flex items-center justify-center">
                         <OrderSummaryProductCard :item="item" />
                     </div>
                 </SwiperSlide>
@@ -31,7 +31,7 @@ const slides = ref([
         stock: 10,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/e56e/9346/144e461edd7834604628f2e3ae156b7b?Expires=1701043200&Signature=qxY85cJbNFF~kBxuztQ85C4qJheuDZEg4x7I1HM8LtrM6xopbKw-VukCJBxVEx4M5uPtjGDiOOsMwoMjzubh11HmNEOYgIqLzn1hbuGMXwMgkt3M0F3VtRhSGQd2faa0DjGg9xA2XTv6j8LLC-S5GSS6YTBVYPD6sG54OAkO2L5yFy-5POv5JT~Vf-52Me2D7e8lUMho8NN7zZhkU9tob9otzUV2HBeSBpo4bYvpDGV5bUC27qmD7zL1iFVZ~b3eSgpft-2hkJvAaDL1iNqead7sHbHcHzq72iu7OHbJQYryebRXWBVgDniCChFnRx9NvzlmmXDRKLRzdPvAZxxEfw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',
@@ -50,7 +50,7 @@ const slides = ref([
         stock: 85,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/e56e/9346/144e461edd7834604628f2e3ae156b7b?Expires=1701043200&Signature=qxY85cJbNFF~kBxuztQ85C4qJheuDZEg4x7I1HM8LtrM6xopbKw-VukCJBxVEx4M5uPtjGDiOOsMwoMjzubh11HmNEOYgIqLzn1hbuGMXwMgkt3M0F3VtRhSGQd2faa0DjGg9xA2XTv6j8LLC-S5GSS6YTBVYPD6sG54OAkO2L5yFy-5POv5JT~Vf-52Me2D7e8lUMho8NN7zZhkU9tob9otzUV2HBeSBpo4bYvpDGV5bUC27qmD7zL1iFVZ~b3eSgpft-2hkJvAaDL1iNqead7sHbHcHzq72iu7OHbJQYryebRXWBVgDniCChFnRx9NvzlmmXDRKLRzdPvAZxxEfw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',
@@ -69,7 +69,7 @@ const slides = ref([
         stock: 100,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/e56e/9346/144e461edd7834604628f2e3ae156b7b?Expires=1701043200&Signature=qxY85cJbNFF~kBxuztQ85C4qJheuDZEg4x7I1HM8LtrM6xopbKw-VukCJBxVEx4M5uPtjGDiOOsMwoMjzubh11HmNEOYgIqLzn1hbuGMXwMgkt3M0F3VtRhSGQd2faa0DjGg9xA2XTv6j8LLC-S5GSS6YTBVYPD6sG54OAkO2L5yFy-5POv5JT~Vf-52Me2D7e8lUMho8NN7zZhkU9tob9otzUV2HBeSBpo4bYvpDGV5bUC27qmD7zL1iFVZ~b3eSgpft-2hkJvAaDL1iNqead7sHbHcHzq72iu7OHbJQYryebRXWBVgDniCChFnRx9NvzlmmXDRKLRzdPvAZxxEfw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',
@@ -88,7 +88,7 @@ const slides = ref([
         stock: 5,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/e56e/9346/144e461edd7834604628f2e3ae156b7b?Expires=1701043200&Signature=qxY85cJbNFF~kBxuztQ85C4qJheuDZEg4x7I1HM8LtrM6xopbKw-VukCJBxVEx4M5uPtjGDiOOsMwoMjzubh11HmNEOYgIqLzn1hbuGMXwMgkt3M0F3VtRhSGQd2faa0DjGg9xA2XTv6j8LLC-S5GSS6YTBVYPD6sG54OAkO2L5yFy-5POv5JT~Vf-52Me2D7e8lUMho8NN7zZhkU9tob9otzUV2HBeSBpo4bYvpDGV5bUC27qmD7zL1iFVZ~b3eSgpft-2hkJvAaDL1iNqead7sHbHcHzq72iu7OHbJQYryebRXWBVgDniCChFnRx9NvzlmmXDRKLRzdPvAZxxEfw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',
@@ -107,7 +107,7 @@ const slides = ref([
         stock: 2346,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/e56e/9346/144e461edd7834604628f2e3ae156b7b?Expires=1701043200&Signature=qxY85cJbNFF~kBxuztQ85C4qJheuDZEg4x7I1HM8LtrM6xopbKw-VukCJBxVEx4M5uPtjGDiOOsMwoMjzubh11HmNEOYgIqLzn1hbuGMXwMgkt3M0F3VtRhSGQd2faa0DjGg9xA2XTv6j8LLC-S5GSS6YTBVYPD6sG54OAkO2L5yFy-5POv5JT~Vf-52Me2D7e8lUMho8NN7zZhkU9tob9otzUV2HBeSBpo4bYvpDGV5bUC27qmD7zL1iFVZ~b3eSgpft-2hkJvAaDL1iNqead7sHbHcHzq72iu7OHbJQYryebRXWBVgDniCChFnRx9NvzlmmXDRKLRzdPvAZxxEfw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',

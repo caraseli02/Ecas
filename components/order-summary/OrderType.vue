@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col p-4 rounded-xl bg-[#FFF] items-start shadow-xs gap-4 mb-6">
+    <div class="flex flex-col p-4 xl:p-6 rounded-xl bg-[#FFF] items-start shadow-xs gap-4 mb-6">
         <div class="flex flex-col gap-6">
             <h2 class="text-[#222] text-base font-medium leading-6">Order Type</h2>
             <div class="flex flex-row gap-3">

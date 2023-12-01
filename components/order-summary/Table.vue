@@ -33,7 +33,8 @@ export default defineComponent({
             return this.items.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock >= item.stock);
         },
         backOrderItems() {
-            return this.items.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
+            const backOrderItems = this.items.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
+            return backOrderItems; 
         },
     },
     methods: {

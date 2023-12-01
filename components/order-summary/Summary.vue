@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4 flex flex-col gap-4 bg-[#FFF] rounded-xl shadow-xs mb-9">
+    <div class="p-4 xl:p-6 flex flex-col gap-4 bg-[#FFF] rounded-xl shadow-xs mb-9">
         <div class="flex flex-row w-full">
             <span class="text-[#222] text-base font-medium leading-6">Payment Summary</span>
         </div>
