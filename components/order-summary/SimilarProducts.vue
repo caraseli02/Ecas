@@ -4,7 +4,7 @@
             <span class="text-[#222] text-xl font-semibold leading-7">Similar Products</span>
         </div>
         <div
-            class="max-h-[350px] w-[380px] sm:w-[608px] md:w-[720px] lg:w-screen-sm xl:w-[860px] 2xl:w-[1024px]">
+            class="max-h-[350px] max-w-[976px] w-[358px] sm:w-[608px] md:w-[736px] lg:w-[976px] 2xl:w-[1024px]">
             <Swiper :modules="[A11y, Pagination, Autoplay]" :autoplay="{
                 delay: 5000,
             }" :slides-per-view="viewsPerSlide" :space-between="24" :grab-cursor="true" :pagination="{
@@ -167,11 +167,11 @@ const viewsPerSlide = computed(() => {
     } else if (screenWidth.value < 640) {
         return 1;
     } else if (screenWidth.value < 768) {
-        return 1;
+        return 2;
     } else if (screenWidth.value < 1024) {
         return 2;
     } else if (screenWidth.value < 1280) {
-        return 2;
+        return 3;
     } else if (screenWidth.value < 1440) {
         return 2;
     } else {
@@ -193,4 +193,8 @@ const viewsPerSlide = computed(() => {
 .orderSummaryExclusiveOffer--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
     @apply w-[25px] bg-[#D4D4D4] #{!important};
 }
+
+// .orderSummaryExclusiveOffer--swiper .swiper-slide {
+//     @apply max-w-[309px];
+// }
 </style>

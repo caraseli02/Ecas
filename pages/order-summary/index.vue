@@ -18,7 +18,7 @@
                 </div>
                 <div
                     class="gap-6 lg:grid lg:grid-cols-[1fr,320px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,392px]">
-                    <div class="flex flex-col gap-9">
+                    <div class="flex flex-col gap-9 max-w-[976px]">
                         <OrderSummaryBackOrderWarning v-if="showWarning" />
                         <OrderSummaryTable :items="cartItems" :loading="loading" @checkAll="checkAll"
                             @addToFavs="addToFavsAll" @update-subtotal="calculateSubtotal" />
