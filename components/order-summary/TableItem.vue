@@ -1,7 +1,7 @@
 <template>
-    <div class="relative rounded-lg" :class="expanded ? 'custom-shadow' : ''">
+    <div class="rounded-lg" :class="expanded ? 'custom-shadow' : ''">
         <div @click="handleExpand"
-            class="relative z-10 cursor-pointer xl:cursor-default flex flex-row justify-between p-4 bg-[#EBEBEB] w-full border-[1px] border-[#EBEBEB] header-transition"
+            class="relative cursor-pointer xl:cursor-default flex flex-row justify-between p-4 bg-[#EBEBEB] w-full border-[1px] border-[#EBEBEB] header-transition"
             :class="expanded ? 'rounded-t-lg' : 'rounded-lg'">
             <div class="flex flex-row truncate">
                 <label class="flex cursor-pointer mr-4" @click.stop>
@@ -67,7 +67,7 @@
         </div>
         <Transition name="expand">
             <OrderSummaryTableItemDropdown ref="tab" v-if="expanded" :item="item" :short-stock="shortStock" :stock-item="stockItem" :liked="liked"
-                class="item z-0 relative" />
+                class="item" />
         </Transition>
     </div>
 </template>
