@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-[#FFF] rounded-b-lg custom-shadow flex flex-col gap-4 py-4">
+    <div class="bg-[#FFF] rounded-b-lg flex flex-col gap-4 py-4">
         <div class="gap-2 flex flex-col xl:flex-row xl:justify-between">
             <div class="flex flex-row px-4 gap-3">
                 <div class="border-2 rounded-lg min-w-[60px] w-[60px] h-[60px] overflow-hidden">

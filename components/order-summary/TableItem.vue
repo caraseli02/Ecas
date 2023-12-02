@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="relative rounded-lg" :class="expanded ? 'custom-shadow' : ''">
         <div @click="handleExpand"
-            class="cursor-pointer xl:cursor-default flex flex-row justify-between p-4 bg-[#EBEBEB] w-full border-[1px] border-[#EBEBEB] header-transition"
-            :class="expanded ? 'rounded-t-lg shadow-xs' : 'rounded-lg'">
+            class="relative z-10 cursor-pointer xl:cursor-default flex flex-row justify-between p-4 bg-[#EBEBEB] w-full border-[1px] border-[#EBEBEB] header-transition"
+            :class="expanded ? 'rounded-t-lg' : 'rounded-lg'">
             <div class="flex flex-row truncate">
                 <label class="flex cursor-pointer mr-4" @click.stop>
                     <input :value="item.selected" type="checkbox" class="sr-only" @change="handleCheck" />
@@ -17,10 +17,10 @@
                     </div>
                 </label>
                 <div class="max-w-[220px] lg:max-w-[245px] flex">
-                    <span v-if="stockItem" class="truncate text-[#222] text-sm font-normal self-center justify-self-center"
+                    <span v-if="stockItem" class="truncate text-[#222] text-sm leading-6 font-normal self-center justify-self-center"
                         :class="expanded && shortStock ? 'hidden sm:block' : 'block'">{{ item.id }}</span>
                     <span v-else
-                        class="block truncate text-[#FA4B4B] text-sm font-normal self-center justify-self-center">{{ item.id
+                        class="block truncate text-[#FA4B4B] text-sm font-normal leading-6 self-center justify-self-center">{{ item.id
                         }}</span>
                 </div>
                 <div v-if="shortStock" class="flex flex-row">
@@ -67,7 +67,7 @@
         </div>
         <Transition name="expand">
             <OrderSummaryTableItemDropdown ref="tab" v-if="expanded" :item="item" :short-stock="shortStock" :stock-item="stockItem" :liked="liked"
-                class="item" />
+                class="item z-0 relative" />
         </Transition>
     </div>
 </template>
@@ -184,5 +184,9 @@ export default defineComponent({
     transition-property: box-shadow, border-radius, opacity;
     transition-timing-function: cubic-bezier(0, 0.3, 0.6, 1);
     transition-duration: 150ms;
+}
+
+.custom-shadow {
+    box-shadow: 0px 3px 8px 0px rgba(133, 133, 133, 0.25);
 }
 </style>
