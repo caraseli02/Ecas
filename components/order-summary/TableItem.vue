@@ -24,11 +24,11 @@
                         }}</span>
                 </div>
                 <div v-if="shortStock" class="flex flex-row">
-                    <OrangeCheckCircle class="w-5 h-5 ml-2 sm:ml-4" :class="expanded ? 'ml-0' : ''" />
-                    <span class="text-[#FF8A00] text-sm font-medium leading-4 self-center pl-2"
+                    <OrangeCheckCircle class="w-5 ml-2 sm:ml-4" :class="expanded ? 'ml-0' : ''" />
+                    <span class="text-[#FF8A00] text-sm font-medium leading-6 self-center pl-2"
                         :class="expanded ? 'flex sm:hidden' : 'hidden'">{{ item.productEntity.stock }} in stock</span>
                 </div>
-                <GreenCheckCircle v-if="!shortStock && stockItem" class="w-5 h-5 ml-2 sm:ml-4" />
+                <GreenCheckCircle v-if="!shortStock && stockItem" class="w-5 ml-2 sm:ml-4" />
                 <div v-if="!stockItem" class="flex flex-row items-center ml-4">
                     <WarningErrorHuge class="hidden lg:block" />
                     <WarningError class="block lg:hidden" />
