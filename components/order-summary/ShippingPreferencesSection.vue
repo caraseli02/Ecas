@@ -21,9 +21,9 @@
             </button>
             <button @click="selectBackorderPreference('Full')" class="flex flex-row gap-3 items-start group">
                 <RadioButtonChecked v-if="order.backorderOption === 2"
-                    class="w-10 sm:w-5 lg:w-10 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300" />
+                    class="w-10 sm:w-5 lg:w-11 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300" />
                 <RadioButton v-else
-                    class="w-10 sm:w-5 lg:w-10 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300" />
+                    class="w-10 sm:w-5 lg:w-11 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300" />
                 <div class="flex flex-col items-start">
                     <h2
                         class="text-[#222] text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300">
