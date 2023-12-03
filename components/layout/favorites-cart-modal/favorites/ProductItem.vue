@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col pb-4" :class="[inModal ? '' : 'border-b border-gray-200 mx-2.5']">
+    <div class="flex flex-col pb-4" :class="[inModal ? '' : 'border-b border-gray-200 mx-2 last:border-b-0']">
         <div class="flex" :class="[inModal ? 'items-center' : 'items-start']">
             <label v-if="inModal" class="flex cursor-pointer mr-2.5">
                 <input :value="product.selected" type="checkbox" class="sr-only" @change="$emit('select')" />
@@ -18,12 +18,15 @@
                 v-if="product.image"
                 :src="product.image"
                 :alt="product.title"
-                class="mr-2"
-                :class="[inModal ? 'w-9 h-9' : 'w-[72px] h-[72px] border border-border rounded-lg overflow-hidden object-cover']"
+                :class="[
+                    inModal
+                        ? 'w-9 h-9 mr-2'
+                        : 'w-12 h-12 border border-border rounded-lg overflow-hidden object-cover mr-3 md:w-14 md:h-14',
+                ]"
             />
             <div :class="[inModal ? 'truncate' : '']">
-                <div class="flex items-center" :class="[inModal ? '' : 'mb-0.5']">
-                    <div class="font-semibold mr-2" :class="[inModal ? 'text-xs leading-tight' : 'text-sm leading-[1.43]']">
+                <div class="flex items-center" :class="[inModal ? '' : 'mb-1']">
+                    <div class="font-semibold mr-2" :class="[inModal ? 'text-xs leading-tight' : 'text-sm leading-[1.71]']">
                         {{ product.title }}
                     </div>
                     <button
@@ -37,29 +40,29 @@
                         <InfoIcon class="w-4 h-4" />
                     </button>
                 </div>
-                <div
+                <!-- <div
                     v-if="product.description"
                     class="text-gray-300 font-Inter truncate"
                     :class="[inModal ? 'text-xs' : 'text-sm leading-[1.43] mb-0.5 w-[205px]']"
                 >
                     {{ product.description }}
-                </div>
+                </div> -->
                 <div v-if="!inModal" class="flex items-center gap-2 md:flex-col md:items-start md:gap-0">
                     <div class="text-xs leading-[1.33] line-through">$ 0,15 (100+)</div>
-                    <div class="text-sm leading-tight font-semibold font-Inter text-[#FA4B4B]">
+                    <div class="text-sm leading-[1.43] font-semibold font-Inter text-[#FA4B4B]">
                         $ 0,095 <span class="text-xs font-normal font-Poppins">(100+)</span>
                     </div>
                 </div>
             </div>
             <button
                 v-if="!inModal"
-                class="flex items-center justify-center ml-auto text-gray-300 transition-colors duration-300 hover:text-blue"
+                class="flex items-center justify-center ml-auto text-gray-300 transition-colors duration-300 hover:text-[#FA4B4B]"
                 @click="deleteItem = true"
             >
-                <XIcon class="w-5 h-5" />
+                <TrashIcon class="w-5 h-5" />
             </button>
         </div>
-        <div v-if="!inModal" class="flex items-end justify-between mt-1">
+        <div v-if="!inModal" class="flex items-end justify-between">
             <div v-if="!inCart" class="flex items-center">
                 <label class="flex cursor-pointer mr-[15px]">
                     <input :value="product.selected" type="checkbox" class="sr-only" @change="$emit('select')" />
@@ -79,8 +82,8 @@
                     <span class="text-[11px] leading-tight font-semibold font-Inter"> 16,000 in stock </span>
                 </div>
             </div>
-            <div v-else class="font-Inter font-semibold leading-[1.13]">$ 17,830.95</div>
-            <QuantityButtons v-if="typeof product.quantity === 'number'" v-model="product.quantity" />
+            <div v-else class="font-Inter font-semibold leading-[1.25]">$ 17,830.95</div>
+            <QuantityButtons v-if="typeof product.quantity === 'number'" v-model="product.quantity" class="mr-10" />
         </div>
     </div>
     <Teleport to="body">
@@ -110,7 +113,7 @@ import CheckIcon from '@/assets/icons/check.svg';
 import CheckCircleIcon from '@/assets/icons/check-circle.svg';
 import CopyIcon from '@/assets/icons/copy.svg';
 import InfoIcon from '@/assets/icons/info-circle.svg';
-import XIcon from '@/assets/icons/x.svg';
+import TrashIcon from '@/assets/icons/trash-can.svg';
 
 defineProps({
     product: {

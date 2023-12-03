@@ -182,7 +182,7 @@
         <Transition name="fade">
             <div
                 v-if="showAccountModal || favoritesCartModal.show"
-                class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[rgba(47, 50, 65, 0.10)] transition-opacity duration-300 cursor-pointer md:block"
+                class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[rgba(47,50,65,0.10)] transition-opacity duration-300 cursor-pointer md:block"
                 :class="[
                     showAccountModal || favoritesCartModal.show
                         ? 'backdrop-blur-[7.5px]'

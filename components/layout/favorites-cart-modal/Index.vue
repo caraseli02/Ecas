@@ -13,7 +13,7 @@
                 >
                     <XIcon class="w-6 h-6" />
                 </button>
-                <div class="relative z-10 flex items-center gap-5 px-5 bg-white">
+                <div class="relative z-10 flex items-center gap-6 px-4 bg-white md:px-6">
                     <button
                         v-for="(item, index) in navItems"
                         :key="index"
