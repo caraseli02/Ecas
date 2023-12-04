@@ -29,7 +29,6 @@
 import { FavoriteItem } from '@/types';
 import ProductCover from '@/assets/media/home/product-2.jpg';
 import CartIcon from '@/assets/icons/cart.svg';
-import InfoIcon from '@/assets/icons/info-circle.svg';
 
 const items = ref<FavoriteItem[]>([
     {

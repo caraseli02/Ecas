@@ -39,7 +39,7 @@
             <LayoutAccountModal v-if="showAccountModal" @close="showAccountModal = false" />
         </Transition>
         <div
-            class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[rgba(47, 50, 65, 0.10)] cursor-pointer transition-all duration-300 md:block"
+            class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[rgba(47,50,65,0.10)] cursor-pointer transition-all duration-300 md:block"
             :class="[
                 showAccountModal || favoritesCartModal.show ? 'backdrop-blur-[7.5px]' : 'backdrop-blur-none opacity-0 pointer-events-none',
             ]"
@@ -49,11 +49,7 @@
             "
         />
         <Transition name="slide-from-right">
-            <LayoutFavoritesCartModal
-                v-if="favoritesCartModal.show"
-                :tab="favoritesCartModal.tab"
-                @close="favoritesCartModal.show = false"
-            />
+            <CartModal v-if="favoritesCartModal.show" :tab="favoritesCartModal.tab" @close="favoritesCartModal.show = false" />
         </Transition>
     </Teleport>
 </template>
@@ -61,6 +57,8 @@
 <script setup lang="ts">
 import Logo from '@/assets/media/logo.svg';
 import CartIcon from '@/assets/icons/cart.svg';
+import CartModal from '@/components/layout/favorites-cart-modal/Index.vue';
+
 defineProps({
     isScrolled: {
         type: Boolean,

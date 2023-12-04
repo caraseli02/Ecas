@@ -198,11 +198,7 @@
             <LayoutAccountModal v-if="showAccountModal" @close="showAccountModal = false" />
         </Transition>
         <Transition name="slide-from-right">
-            <LayoutFavoritesCartModal
-                v-if="favoritesCartModal.show"
-                :tab="favoritesCartModal.tab"
-                @close="favoritesCartModal.show = false"
-            />
+            <CartModal v-if="favoritesCartModal.show" :tab="favoritesCartModal.tab" @close="favoritesCartModal.show = false" />
         </Transition>
     </Teleport>
 </template>
@@ -218,6 +214,7 @@ import CartIcon from '@/assets/icons/cart.svg';
 import BellIcon from '@/assets/icons/header/bell.svg';
 import XIcon from '@/assets/icons/x.svg';
 import Notifications from '@/components/global/Notifications.vue';
+import CartModal from '@/components/layout/favorites-cart-modal/Index.vue';
 import _ from 'lodash';
 import Emitter from 'tiny-emitter/instance';
 import { showNavModal } from '~~/config/modal/nav';

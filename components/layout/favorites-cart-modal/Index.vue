@@ -37,8 +37,8 @@
                 </div>
             </div>
             <div class="flex-1 h-[calc(100%-102px)]">
-                <LayoutFavoritesCartModalFavorites v-if="activeNavItem === 'favorites'" />
-                <LayoutFavoritesCartModalCart v-else />
+                <Favorites v-if="activeNavItem === 'favorites'" />
+                <Cart v-else-if="activeNavItem === 'shopping-cart'" />
             </div>
         </div>
     </div>
@@ -49,6 +49,8 @@ import { PropType } from 'vue';
 import XIcon from '@/assets/icons/x.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
+import Favorites from './favorites/Index.vue';
+import Cart from './cart/Index.vue';
 
 const props = defineProps({
     tab: {
@@ -73,7 +75,7 @@ const navItems = ref([
     },
 ]);
 
-const activeNavItem = ref<'favorites' | 'shopping-cart'>('favorites');
+const activeNavItem = ref<'favorites' | 'shopping-cart'>(props.tab);
 const navLineLeftPosition = ref(0);
 const navLineWidth = ref(0);
 
@@ -95,7 +97,6 @@ const setActiveNav = (item: string) => {
 };
 
 onMounted(() => {
-    activeNavItem.value = props.tab;
     setNavLine();
     documentUtil.toggleBodyScroll();
 });

@@ -40,18 +40,9 @@
                         <InfoIcon class="w-4 h-4" />
                     </button>
                 </div>
-                <!-- <div
-                    v-if="product.description"
-                    class="text-gray-300 font-Inter truncate"
-                    :class="[inModal ? 'text-xs' : 'text-sm leading-[1.43] mb-0.5 w-[205px]']"
-                >
-                    {{ product.description }}
-                </div> -->
-                <div v-if="!inModal" class="flex items-center gap-2 md:flex-col md:items-start md:gap-0">
-                    <div class="text-xs leading-[1.33] line-through">$ 0,15 (100+)</div>
-                    <div class="text-sm leading-[1.43] font-semibold font-Inter text-[#FA4B4B]">
-                        $ 0,095 <span class="text-xs font-normal font-Poppins">(100+)</span>
-                    </div>
+                <!-- Handle discounted price color: red -->
+                <div v-if="!inModal" class="text-sm leading-[1.43] font-semibold font-Inter">
+                    $ 0,095 <span class="text-xs font-normal font-Poppins">(100+)</span>
                 </div>
             </div>
             <button
