@@ -51,6 +51,7 @@ export interface DashboardOrderItem {
     type: OrderType;
     date: string;
     name?: string;
+    firebaseId: string,
     customer?: {
         avatar?: any;
         name: string;
