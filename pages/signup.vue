@@ -28,17 +28,17 @@
 <script setup lang="ts">
 import { useAuthStore } from '~~/store/authStore';
 import {
+    AccountType,
+    FirebaseBusinessAccount as SignupBusinessPayload,
+    FirebasePersonalAccount as SignupPersonalPayload,
+    InputObject,
+    SignupAccountType,
     SignupBusinessDetails as SignupBusinessDetailsType,
     SignupContactDetails as SignupContactDetailsType,
     SignupPersonalDetails as SignupPersonalDetailsType,
     SignupProfileDetails as SignupProfileDetailsType,
-    FirebasePersonalAccount as SignupPersonalPayload,
-    FirebaseBusinessAccount as SignupBusinessPayload,
-    UserInfoJWT,
-    AccountType,
-    SignupAccountType,
-    InputObject,
 } from '~~/types';
+
 const { $api } = useNuxtApp();
 
 const { checkForInputErrors, checkContactConfirmationEmail, checkProfileConfirmationEmail } = useError();
@@ -311,18 +311,15 @@ const registerClassicSignup = async (payload: SignupPersonalPayload | SignupBusi
     payload.isAlreadyRegisteredWithFirebase = false;
     payload.account.profileDetails.password = profileDetails.value.password.value;
 
-    const fetch = await $api.auth.registerClassic(payload);
-
-    return fetch;
+    return await $api.auth.registerClassic(payload);
 };
 
 const registerFirebaseSignup = async (payload: SignupPersonalPayload | SignupBusinessPayload): Promise<any> => {
     delete payload.account.profileDetails.password;
     payload.account.firebaseId = UserInfo?.user_id;
     payload.isAlreadyRegisteredWithFirebase = true;
-    const fetch = await $api.auth.registerFirebase(payload);
 
-    return fetch;
+    return await $api.auth.registerFirebase(payload);
 };
 
 const handleSubmit = async () => {
@@ -348,6 +345,7 @@ const handleSubmit = async () => {
 
     if (!hasError) {
         let payload: SignupBusinessPayload | SignupPersonalPayload | null = null;
+
         if (selectedType.value === 'personal') {
             const personalPayload: SignupPersonalPayload = {
                 account: {
@@ -366,17 +364,31 @@ const handleSubmit = async () => {
                     personalDetails: {
                         firstName: personalDetails.value.firstName.value,
                         lastName: personalDetails.value.lastName.value,
-                        country: personalDetails.value.country.value.value,
-                        region: personalDetails.value.region.value.value,
-                        city: personalDetails.value.city.value,
-                        postcode: personalDetails.value.postcode.value,
-                        address: [
+                        address: {
+                            name1: personalDetails.value.addressLine1.value,
+                            name2: personalDetails.value.addressLine2.value,
+                            country: personalDetails.value.country.value.value,
+                            region: personalDetails.value.region.value.value,
+                            city: personalDetails.value.city.value,
+                            postcode: personalDetails.value.postcode.value,
+                        },
+
+                        shippingAddress: [
                             {
                                 name1: personalDetails.value.addressLine1.value,
                                 name2: personalDetails.value.addressLine2.value,
-                                default: true,
+                                country: personalDetails.value.country.value.value,
+                                region: personalDetails.value.region.value.value,
+                                city: personalDetails.value.city.value,
+                                postcode: personalDetails.value.postcode.value,
                             },
                         ],
+                    },
+                    adminSettings: {
+                        marketingPreferences: {
+                            newsletter: { email: profileDetails.value.subscribeToNewsletter },
+                            cookiesPolicy: { email: profileDetails.value.agreeToTerms },
+                        },
                     },
                 },
             };
@@ -395,17 +407,36 @@ const handleSubmit = async () => {
                         name: businessDetails.value.fullCompanyName.value,
                         registrationNumber: businessDetails.value.companyRegistrationNumber.value,
                         vat: businessDetails.value.vatNumber.value,
-                        country: businessDetails.value.country.value.value.value,
-                        region: businessDetails.value.region.value.value.value,
-                        city: businessDetails.value.city.value,
-                        postcode: businessDetails.value.postcode.value,
-                        address1: businessDetails.value.addressLine1.value,
+                        address: {
+                            name1: businessDetails.value.addressLine1.value,
+                            name2: businessDetails.value.addressLine2.value,
+                            country: businessDetails.value.country.value.value.value,
+                            region: businessDetails.value.region.value.value.value,
+                            city: businessDetails.value.city.value,
+                            postcode: businessDetails.value.postcode.value,
+                        },
+                        shippingAddress: [
+                            {
+                                name1: businessDetails.value.addressLine1.value,
+                                name2: businessDetails.value.addressLine2.value,
+                                country: businessDetails.value.country.value.value.value,
+                                region: businessDetails.value.region.value.value.value,
+                                city: businessDetails.value.city.value,
+                                postcode: businessDetails.value.postcode.value,
+                            },
+                        ],
                     },
                     contactDetails: {
                         firstName: contactDetails.value.firstName.value,
                         lastName: contactDetails.value.lastName.value,
                         phone: contactDetails.value.phone.value,
                         email: contactDetails.value.companyEmail.value,
+                    },
+                    adminSettings: {
+                        marketingPreferences: {
+                            newsletter: { email: profileDetails.value.subscribeToNewsletter },
+                            cookiesPolicy: { email: profileDetails.value.agreeToTerms },
+                        },
                     },
                 },
             };
@@ -414,10 +445,6 @@ const handleSubmit = async () => {
 
         try {
             const request = firebaseToken ? await registerFirebaseSignup(payload) : await registerClassicSignup(payload);
-
-            console.log(request);
-
-            console.log(true);
 
             await logout();
             // TODO: Notification banner

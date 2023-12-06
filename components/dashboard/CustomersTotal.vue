@@ -26,7 +26,7 @@
                     <SkeletonLoader v-if="loading" class="w-[60px] h-5 mr-1" />
                     <template v-else>
                         <ArrowUpIcon class="w-4 h-4 mr-1" />
-                        <div class="text-sm leading-[1.43] font-medium text-[#00D395] mr-1">{{ delta + '%' }}</div>
+                        <div class="text-sm leading-[1.43] font-medium mr-1" :class="'text-[' + [color] + ']'">{{ delta + '%' }}</div>
                     </template>
                     <button class="flex items-center" @click="showOptions = !showOptions">
                         <span class="text-sm left-[1.43] text-gray-300 font-medium mr-1">
@@ -160,6 +160,7 @@ const total = ref(0);
 const delta = ref(0);
 const error = ref(false);
 const loading = ref(true);
+const color = ref('');
 
 const fetchAndSetTotalCustomers = async (time = 7) => {
     loading.value = true;
@@ -180,9 +181,14 @@ const fetchAndSetTotalCustomers = async (time = 7) => {
     series.value = widgetData.data.series;
     total.value = widgetData.data.total;
     delta.value = widgetData.data.delta;
+    color.value = delta.value >= 0 ? '#00D395' : '#FA4B4B';
+
+    if (chartOptions?.stroke?.colors instanceof Array) {
+        chartOptions.stroke.colors[0] = delta.value >= 0 ? '#00D395' : '#FA4B4B';
+    }
 };
 
-await fetchAndSetTotalCustomers(selectedOption.time);
+await fetchAndSetTotalCustomers(selectedOption.value.time);
 
 watch([selectedOption], async ([newSelectedOption]) => {
     await fetchAndSetTotalCustomers(newSelectedOption.time);

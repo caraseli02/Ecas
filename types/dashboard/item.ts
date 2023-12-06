@@ -1,3 +1,7 @@
+import {OrderStatus, OrderType, PaymentStatusEnum} from '~/types';
+import {AccountAdminSettings} from '~/types/auth/account-settings';
+import {AddressInterface} from '~/types/auth/user-details';
+
 export interface DashboardCustomerTableItem {
     avatar?: any;
     name: string;
@@ -7,6 +11,11 @@ export interface DashboardCustomerTableItem {
     registered: string;
     spent: number;
     ordersCount: number;
+    id: string;
+    firebaseId: string;
+    active: boolean;
+    adminSettings?: AccountAdminSettings;
+    address: AddressInterface;
 }
 
 export interface DashboardCustomerOrderItem {
@@ -23,5 +32,35 @@ export interface DashboardCustomerOrderItem {
         | 'payment-received'
         | 'payment-declined'
         | 'awaiting-fulfillment';
+    total: number;
+}
+
+export interface DashboardControlPanelTransactionHistoryItem {
+    id: string;
+    invoiceId: string;
+    amount: string;
+    type: 'debit' | 'credit';
+    date: number;
+    status: 'success' | 'pending' | 'declined';
+    checked: boolean;
+}
+
+export interface DashboardOrderItem {
+    id: string;
+    note?: string;
+    type: OrderType;
+    date: string;
+    name?: string;
+    firebaseId: string,
+    customer?: {
+        avatar?: any;
+        name: string;
+        discount?: number;
+        email: string;
+        flag: any;
+        active: boolean;
+    };
+    payment: PaymentStatusEnum;
+    status: OrderStatus;
     total: number;
 }

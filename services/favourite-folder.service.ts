@@ -11,7 +11,7 @@ class FavouriteFolderService extends HttpFactory {
         const user = this.authStore.getCurrentUser;
         const token = this.authStore.getToken;
 
-        return await this.call<FavouriteFolderResponse>('GET', `${this.RESOURCE}/${user.user_id}/favourite`, null, {
+        return await this.call<FavouriteFolderResponse>('GET', `${this.RESOURCE}/${user?.user_id}/favourite`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -20,7 +20,7 @@ class FavouriteFolderService extends HttpFactory {
         const user = this.authStore.getCurrentUser;
         const token = this.authStore.getToken;
 
-        return await this.call<FavouriteFolderRequestInterface>('POST', `${this.RESOURCE}/${user.user_id}/favourite`, payload, {
+        return await this.call<FavouriteFolderRequestInterface>('POST', `${this.RESOURCE}/${user?.user_id}/favourite`, payload, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -29,7 +29,7 @@ class FavouriteFolderService extends HttpFactory {
         const user = this.authStore.getCurrentUser;
         const token = this.authStore.getToken;
 
-        return await this.call<FavouriteFolderRequestInterface>('DELETE', `${this.RESOURCE}/${user.user_id}/favourite/${entityId}`, null, {
+        return await this.call<FavouriteFolderRequestInterface>('DELETE', `${this.RESOURCE}/${user?.user_id}/favourite/${entityId}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -38,7 +38,7 @@ class FavouriteFolderService extends HttpFactory {
         const user = this.authStore.getCurrentUser;
         const token = this.authStore.getToken;
 
-        return await this.call<FavouriteFolderMoveInterface>('POST', `${this.RESOURCE}/${user.user_id}/favourite/copy`, payload, {
+        return await this.call<FavouriteFolderMoveInterface>('POST', `${this.RESOURCE}/${user?.user_id}/favourite/copy`, payload, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -47,7 +47,7 @@ class FavouriteFolderService extends HttpFactory {
         const user = this.authStore.getCurrentUser;
         const token = this.authStore.getToken;
 
-        return await this.call<FavouriteFolderMoveInterface>('POST', `${this.RESOURCE}/${user.user_id}/favourite/move`, payload, {
+        return await this.call<FavouriteFolderMoveInterface>('POST', `${this.RESOURCE}/${user?.user_id}/favourite/move`, payload, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }

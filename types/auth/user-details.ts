@@ -1,5 +1,5 @@
-import { AddressInterface, PersonalDetails } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { AccountRole } from '~/types';
+import { AccountAdminSettings } from '~/types/auth/account-settings';
 
 export interface UserDetails {
     _id: string;
@@ -16,47 +16,74 @@ export interface UserDetails {
     createdAt: string;
     updatedAt: string;
     currentStatus?: 'online' | 'offline';
+    adminSettings?: AccountAdminSettings;
+    marketingPreferences?: MarketingPreferences;
     __v: number;
+    lastActivityDate: string;
 }
 
 export interface PersonalDetails {
     firstName: string;
     lastName: string;
-    country: string;
-    region: string;
-    city: string;
-    postcode: string;
-    address: AddressInterface[];
+    address: AddressInterface;
+    shippingAddress: ShippingAddressInterface[];
 }
 
-interface ContactDetails {
+export interface ContactDetails {
     firstName: string;
     lastName: string;
-    phone: number;
+    phone: string;
     mobile?: number;
     email: string;
     _id: string;
 }
 
-interface ProfileDetails {
+export interface ProfileDetails {
     email: string;
     _id: string;
 }
 
-interface CompanyDetails {
+export interface CompanyDetails {
     name: string;
     registrationNumber: string;
     vat?: string;
-    region: string;
-    country: string;
-    city: string;
-    postcode: string;
-    address: AddressInterface[];
+    taxId: string;
+    address: AddressInterface;
+    shippingAddress: ShippingAddressInterface[];
     _id: string;
 }
 
 export interface AddressInterface {
+    alias: string;
+    name1: string;
+    name2?: string;
+    country: string;
+    region: string;
+    city: string;
+    postcode: string;
+}
+
+export interface ShippingAddressInterface {
+    alias?: string;
     name1: string;
     name2?: string;
     default: boolean;
+    country: string;
+    region: string;
+    city: string;
+    postcode: string;
+    phone?: string;
+}
+
+export interface MarketingPreferences {
+    cookiesPolicy?: object;
+    newsletter?: object;
+    emailMarketing?: EmailMarketing;
+    _id?: string;
+}
+
+export interface EmailMarketing {
+    app?: boolean;
+    email: string;
+    _id?: string;
 }

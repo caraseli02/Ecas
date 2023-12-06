@@ -25,9 +25,10 @@
                                 <BellIcon class="w-6 h-6 text-gray-300" />
                             </button>
                             <div
+                                v-if="unreadNotifications > 0"
                                 class="flex absolute -top-1 right-0 translate-x-1/2 bg-[#FA4B4B] rounded-[100px] px-1 py-0.5 text-[10px] font-semibold tracking-[-0.03em] leading-[1.1] text-white font-Inter"
                             >
-                                45
+                                {{ unreadNotifications }}
                             </div>
                         </div>
                         <Transition name="slide-fast-from-bottom">
@@ -79,44 +80,47 @@
                                 </div>
                                 <div class="flex-1 overflow-y-auto notifications-scroll">
                                     <NuxtLink
-                                        v-for="(notificaton, index) in notifications"
+                                        v-for="(notification, index) in notifications"
                                         :key="index"
-                                        to="/"
+                                        :to="`${route.path}`"
+                                        event=""
                                         class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
+                                        @click.prevent="markNotificationAsRead(notification, index)"
                                     >
                                         <div class="flex items-center justify-between w-full mb-2">
                                             <div class="flex items-center">
                                                 <NotificationIcon
                                                     class="w-5 h-5 mr-2"
                                                     :class="[
-                                                        notificaton.type === 'others'
+                                                        notification.title === 'Others'
                                                             ? 'text-gray-300'
-                                                            : notificaton.type === 'new'
+                                                            : notification.title === 'Password change' ||
+                                                              notification.title === 'Reset password'
                                                             ? 'text-blue'
-                                                            : notificaton.type === 'removed'
+                                                            : notification.title === 'Removed'
                                                             ? 'text-[#FA4B4B]'
-                                                            : notificaton.type === 'completed'
+                                                            : notification.title === 'Completed'
                                                             ? 'text-[#00D395]'
-                                                            : notificaton.type === 'pending'
+                                                            : notification.title === 'Pending'
                                                             ? 'text-[#FFB100]'
                                                             : 'text-[#A460BC]',
                                                     ]"
                                                 />
                                                 <span
-                                                    v-if="!notificaton.read"
+                                                    v-if="!notification.seen"
                                                     class="flex w-2 h-2 flex-shrink-0 bg-blue rounded-full mr-2"
                                                 />
                                                 <span class="capitalize text-sm leading-[1.43] font-medium">
-                                                    {{ notificaton.type }}
+                                                    {{ notification.title }}
                                                 </span>
                                             </div>
                                             <div class="flex items-center">
                                                 <span class="text-xs leading-[1.67] text-gray-300 mr-4">
-                                                    {{ notificaton.date }}
+                                                    {{ getCurrentDate(notification.date) }}
                                                 </span>
                                                 <button
                                                     class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-                                                    @click.prevent="removeNotification(index)"
+                                                    @click.stop.prevent="deleteNotification(notification, index)"
                                                 >
                                                     <XIcon class="w-4 h-4" />
                                                 </button>
@@ -124,7 +128,7 @@
                                         </div>
                                         <div class="flex items-center justify-between">
                                             <div class="text-sm leading-[1.43] text-gray-300 mr-1">
-                                                {{ notificaton.message }}
+                                                {{ notification.description }}
                                             </div>
                                             <svg
                                                 width="18"
@@ -186,17 +190,18 @@
                                     class="absolute -bottom-1 -right-1 box-content w-2.5 h-2.5 rounded-full bg-[#00D395] border-4 border-white"
                                 />
                             </div>
-                            <div class="flex flex-col mr-4 max-lg:hidden">
-                                <div class="leading-normal font-medium">Madalina Popescu</div>
-                                <div class="text-xs leading-normal text-gray-300">Super Admin</div>
+                            <div class="flex flex-col max-lg:hidden">
+                                <div class="leading-normal font-medium">
+                                    {{ user.contactDetails?.firstName + ' ' + user.contactDetails?.lastName }}
+                                </div>
+                                <div class="text-xs leading-normal text-gray-300">{{ AccountType[user.role] }}</div>
                             </div>
-                            <ChevronDownIcon class="w-6 h-6 text-gray-300 max-lg:hidden" />
                         </button>
                         <Transition name="fade-full">
                             <div
                                 v-if="showOptions"
                                 v-click-outside="() => (showOptions = false)"
-                                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[174px] shadow-m md:-bottom-[18px] md:w-[210px] lg:w-[250px]"
+                                class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[174px] shadow-m md:-bottom-[18px] md:w-[210px] lg:w-[210px]"
                             >
                                 <button
                                     class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
@@ -214,7 +219,11 @@
                                 </button>
                                 <button
                                     class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                                    @click="showOptions = false"
+                                    @click="
+                                        showOptions = false;
+                                        handleSignOut();
+                                        $router.push('/');
+                                    "
                                 >
                                     <SignOutIcon class="w-6 h-6 mr-3 text-current" />
                                     <span class="text-sm leading-[1.71] font-medium"> Sign out </span>
@@ -262,8 +271,12 @@ import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
 import SignOutIcon from '@/assets/icons/dashboard/sign-out.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
-import { DashboardNotification } from '@/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
+import { Notification, NotificationsType } from '~/types/dashboard/notification';
+import moment from 'moment';
+import { useAuthStore } from '~/store/authStore';
+import { UserDetails } from '~/types/auth/user-details';
+import { AccountType } from '../../types';
 
 defineProps({
     isCollapsedOnDesktop: {
@@ -271,92 +284,106 @@ defineProps({
         required: true,
     },
 });
+const authStore = useAuthStore();
 
-defineEmits(['show-side-nav']);
+const emit = defineEmits<{
+    (e: 'close'): void;
+    'show-side-nav': any;
+}>();
 
 const showMobileSearch = ref(false);
 const searchValue = ref('');
-
-const notifications = ref<DashboardNotification[]>([
-    {
-        type: 'others',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: true,
-    },
-    {
-        type: 'new',
-        message: 'Notification content goes here. More content goes here.',
-        date: '15 m',
-        read: false,
-    },
-    {
-        type: 'removed',
-        message: 'Notification content goes here. More content goes here.',
-        date: '2 d',
-        read: true,
-    },
-    {
-        type: 'completed',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-    {
-        type: 'pending',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: true,
-    },
-    {
-        type: 'processing',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-    {
-        type: 'removed',
-        message: 'Notification content goes here. More content goes here.',
-        date: '2 d',
-        read: false,
-    },
-    {
-        type: 'completed',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-    {
-        type: 'pending',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-    {
-        type: 'processing',
-        message: 'Notification content goes here. More content goes here.',
-        date: '16 h',
-        read: false,
-    },
-]);
-
+const notifications = ref<Notification[]>([] as Notification[]);
+const { $api } = useNuxtApp();
+const error = ref(false);
+const emptyData = ref(false);
+const isLoading = ref(false);
 const showOptions = ref(false);
 const showNotifications = ref(false);
+const unreadNotifications = ref(0);
+const user = ref<UserDetails>({} as UserDetails);
+const fetchNofications = async () => {
+    error.value = false;
+    isLoading.value = true;
 
-const removeNotification = (index: number) => {
+    const response = await $api.notifications.fetchGetNotifications();
+    if (response.status !== 'success') {
+        isLoading.value = false;
+        error.value = true;
+
+        return;
+    } else {
+        isLoading.value = false;
+    }
+    notifications.value = response.description;
+    Object.keys(notifications.value).forEach((notification) => {
+        if (notifications.value[notification].seen === false) {
+            unreadNotifications.value++;
+        }
+    });
+};
+
+const fetchUserData = async () => {
+    const authStore = useAuthStore();
+    if (authStore.userDetails) {
+        user.value = authStore.userDetails;
+    }
+};
+
+const handleSignOut = async () => {
+    authStore.signOut();
+    await authStore.firebaseSignOut();
+    setTimeout(() => {
+        emit('close');
+    }, 200);
+};
+
+const route = useRoute();
+const getCurrentDate = (date: string) => {
+    const currentDate = moment();
+    const receivedDate = moment(date);
+    return currentDate.diff(receivedDate, 'hours') < 24
+        ? currentDate.diff(receivedDate, 'hours') + 'h'
+        : currentDate.diff(receivedDate, 'days') + 'd';
+};
+const getNotificationType = (type: string) => {
+    const notification = NotificationsType[type as unknown as keyof typeof NotificationsType];
+    return notification;
+};
+
+const markNotificationAsRead = async (notification: Notification, index: number) => {
+    if (notifications.value[index].seen !== true) {
+        unreadNotifications.value--;
+    }
+    const response = await $api.notifications.fetchMarkNotificationAsRead(notification.id);
+    if (response.status !== 'success') {
+        return;
+    }
+    notifications.value[index].seen = true;
+};
+const deleteNotification = async (notification: Notification, index: number) => {
+    const response = await $api.notifications.deleteNotificationById(notification.id);
+    if (response.status !== 'success') {
+        return;
+    }
     notifications.value.splice(index, 1);
 };
+
+Promise.all([fetchUserData(), fetchNofications()]);
 </script>
 
 <style lang="scss">
 .notifications-scroll {
     scrollbar-width: thin;
+
     &::-webkit-scrollbar {
         @apply w-1;
     }
+
     &::-webkit-scrollbar-track {
         @apply bg-[#f5f5f5];
     }
+
     &::-webkit-scrollbar-thumb {
         background: #d4d4d4;
         @apply rounded-[100px] border-[#f5f5f5];

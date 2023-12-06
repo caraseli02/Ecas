@@ -4,18 +4,30 @@
             <div v-if="label" class="text-sm text-gray-300 mb-1">
                 {{ label }}
             </div>
-            <input
-                :value="modelValue"
-                :type="type"
-                :placeholder="placeholder"
-                class="bg-transparent border rounded px-3 py-2 text-sm placeholder:text-gray-100 w-full transition-colors duration-300 focus:outline-none"
-                :class="[
-                    error ? 'border-red' : 'border-border focus:border-blue',
-                    disabled ? 'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none' : '',
-                ]"
-                :disabled="disabled"
-                @input="handleInput"
-            />
+            <div class="relative">
+                <div
+                    v-if="icon"
+                    class="absolute top-1/2 -translate-y-1/2 left-px w-11 h-[40px] bg-[#F5F5F5] flex items-center justify-center rounded-l-lg border-r border-border"
+                >
+                    <component :is="icon" class="w-5 h-5 text-gray-300" />
+                </div>
+                <input
+                    :value="modelValue"
+                    :type="type"
+                    :placeholder="placeholder"
+                    class="bg-transparent border pr-3 text-sm placeholder:text-gray-100 w-full transition-colors duration-300 focus:outline-none"
+                    :class="[
+                        error ? 'border-red' : 'border-border focus:border-blue',
+                        disabled && showDisabledStyles
+                            ? 'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
+                            : '',
+                        icon ? 'pl-[52px]' : 'pl-3',
+                        size === 'lg' ? 'py-2.5 rounded-lg' : 'py-2 rounded',
+                    ]"
+                    :disabled="disabled"
+                    @input="handleInput"
+                />
+            </div>
         </label>
         <Transition name="fade">
             <div v-if="error" class="absolute -bottom-1 left-0 translate-y-full pointer-events-none text-xs leading-normal text-red">
@@ -38,12 +50,25 @@ defineProps({
         required: false,
         default: 'text',
     },
+    size: {
+        type: String as PropType<'default' | 'lg'>,
+        required: false,
+        default: 'default',
+    },
     label: String,
     placeholder: String,
     error: String,
+    icon: {
+        required: false,
+    },
     disabled: {
         type: Boolean,
         default: false,
+    },
+    showDisabledStyles: {
+        type: Boolean,
+        required: false,
+        default: true,
     },
 });
 

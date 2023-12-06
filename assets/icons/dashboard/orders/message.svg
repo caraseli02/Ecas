@@ -1,0 +1,14 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="vuesax/linear/message-text">
+    <g id="message-text">
+      <path id="Vector"
+        d="M5.66927 12.6673H5.33594C2.66927 12.6673 1.33594 12.0007 1.33594 8.66732V5.33398C1.33594 2.66732 2.66927 1.33398 5.33594 1.33398H10.6693C13.3359 1.33398 14.6693 2.66732 14.6693 5.33398V8.66732C14.6693 11.334 13.3359 12.6673 10.6693 12.6673H10.3359C10.1293 12.6673 9.92927 12.7673 9.8026 12.934L8.8026 14.2673C8.3626 14.854 7.6426 14.854 7.2026 14.2673L6.2026 12.934C6.09594 12.7873 5.84927 12.6673 5.66927 12.6673Z"
+        stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+        stroke-linejoin="round" />
+      <path id="Vector_2" d="M4.66406 5.33398H11.3307" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+      <path id="Vector_3" d="M4.66406 8.66602H8.66406" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </g>
+  </g>
+</svg>

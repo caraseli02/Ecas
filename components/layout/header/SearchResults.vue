@@ -1,6 +1,6 @@
 <template>
     <div
-        class="absolute z-50 -bottom-3 translate-y-full left-0 w-full bg-white border border-[#F2F2F2] rounded-md py-2 pl-2 pr-0.5 shadow-m md:-bottom-1"
+        class="absolute z-50 -bottom-2.5 translate-y-full left-0 w-full bg-white border border-[#F2F2F2] rounded-lg py-2 pl-2 pr-0.5 shadow-m md:rounded-xl md:-bottom-0.5"
         :style="{
             boxShadow: '0px 4px 12px rgba(51, 51, 51, 0.1)',
         }"
@@ -14,9 +14,11 @@
                 v-if="props?.products?.length > 0"
                 :key="index"
                 :to="`/product/${product._id}`"
-                class="p-2 rounded text-gray-300 transition-colors duration-300 hover:bg-gray-200"
+                class="p-2 rounded-lg text-gray-300 transition-colors duration-300 hover:bg-[#F2F2F2]"
             >
-                <div class="flex items-center justify-between gap-1 text-xs leading-tight font-semibold mb-1 md:text-sm md:leading-[1.29]">
+                <div
+                    class="flex items-center justify-between gap-1 text-xs leading-[1.67] font-medium text-dark mb-1 lg:text-sm lg:leading-[1.43]"
+                >
                     <div class="flex items-center w-[calc(100%-50px)] hover:text-blue">
                         <div class="truncate">{{ productTitle(product) }}</div>
                         <CaretIcon class="w-4 h-4 flex-shrink-0" />

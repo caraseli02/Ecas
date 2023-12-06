@@ -38,7 +38,7 @@ export default defineNuxtConfig({
             ],
         },
     },
-    modules: ['nuxt-svgo', 'nuxt-swiper', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', 'nuxt-lodash'],
+    modules: ['nuxt-svgo', 'nuxt-swiper', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', 'nuxt-lodash', 'nuxt3-leaflet'],
     svgo: {
         svgoConfig: {
             plugins: [

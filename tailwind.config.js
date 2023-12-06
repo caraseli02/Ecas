@@ -7,6 +7,7 @@ module.exports = {
         './plugins/**/*.{js,ts}',
         './nuxt.config.{js,ts}',
         './app.vue',
+        './utils/**/*.{js,ts,html}',
     ],
     theme: {
         extend: {
@@ -23,6 +24,9 @@ module.exports = {
                 orange: '#F68500',
                 border: '#D4D4D4',
                 yellow: '#FFC900',
+            },
+            animation: {
+                'ping-once': 'ping 1s cubic-bezier(0, 0, 0.2, 1) 1',
             },
             fontFamily: {
                 Inter: ['Inter', 'sans-serif'],
@@ -53,4 +57,12 @@ module.exports = {
         },
     },
     plugins: [],
+    safelist: [
+        'grid-cols-[359px,154px,254px,244px,129px,148px,104px]',
+        'grid-cols-[154px,359px,254px,244px,129px,148px,104px]',
+        'grid-cols-[212px,212px,256px,256px,232px,224px]',
+        'grid-cols-[50px,191px,191px,191px,191px,191px,191px,minmax(196px,1fr)]',
+        'grid-cols-[158px,149px,228px,275px,141px,220px,136px,85px]',
+        'grid-cols-[50px,191px,191px,191px,191px,228px,191px,minmax(196px,1fr)]',
+    ],
 };

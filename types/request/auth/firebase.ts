@@ -1,3 +1,6 @@
+import { AccountAdminSettings } from '~/types/auth/account-settings';
+import { CompanyDetails, ContactDetails, PersonalDetails, ProfileDetails } from '~/types/auth/user-details';
+
 export interface FirebasePersonalAccount {
     account: PersonalAccount;
     isAlreadyRegisteredWithFirebase?: boolean;
@@ -15,6 +18,7 @@ interface BusinessAccount {
     profileDetails: ProfileDetails;
     contactDetails: ContactDetails;
     companyDetails: CompanyDetails;
+    adminSettings?: AccountAdminSettings;
 }
 
 interface PersonalAccount {
@@ -24,41 +28,5 @@ interface PersonalAccount {
     profileDetails: ProfileDetails;
     contactDetails: ContactDetails;
     personalDetails: PersonalDetails;
-}
-
-interface PersonalDetails {
-    firstName: string;
-    lastName: string;
-    country: string;
-    region: string;
-    city: string;
-    postcode: number;
-    address: {
-        name1: string;
-        name2: string;
-        default: true;
-    }[];
-}
-
-interface CompanyDetails {
-    name: string;
-    registrationNumber: number;
-    vat: string;
-    country: string;
-    region: string;
-    city: string;
-    postcode: number;
-    address1: string;
-}
-
-interface ProfileDetails {
-    email: string;
-    password?: string;
-}
-
-interface ContactDetails {
-    firstName: string;
-    lastName: string;
-    phone: number;
-    email: string;
+    adminSettings?: AccountAdminSettings;
 }

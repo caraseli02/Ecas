@@ -1,13 +1,11 @@
 <template>
     <div
         v-click-outside="() => $emit('close')"
-        class="flex flex-col fixed z-50 top-0 left-0 w-full h-full bg-white shadow-m md:absolute md:w-[316px] md:h-[508px] md:max-h-[80vh] md:left-[unset] md:right-0 md:top-[62px] md:rounded-xl md:overflow-hidden"
-        :class="[isMobile ? 'md:hidden' : 'max-md:hidden']"
+        class="flex flex-col fixed z-50 top-0 left-0 w-full h-full bg-white shadow-m md:absolute md:w-[316px] md:h-[508px] md:max-h-[80vh] md:left-[unset] md:right-0 md:top-[unset] md:-bottom-2.5 md:translate-y-full md:rounded-xl md:overflow-hidden"
     >
         <div class="relative flex items-center justify-between py-4 px-3 shadow-s">
             <button
                 class="flex items-center text-gray-300 transition-colors duration-300 hover:text-blue md:hidden"
-                :class="[isMobile ? 'md:hidden' : 'hidden']"
                 @click="$emit('close')"
             >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2">
@@ -41,41 +39,43 @@
         </div>
         <div class="flex-1 overflow-y-auto notifications-scroll">
             <NuxtLink
-                v-for="(notificaton, index) in notifications"
+                v-for="(notification, index) in notifications"
                 :key="index"
-                to="/"
+                :to="`${route.path}`"
+                event=""
                 class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
+                @click.prevent="markNotificationAsRead(notification, index)"
             >
                 <div class="flex items-center justify-between w-full mb-2">
                     <div class="flex items-center">
                         <NotificationIcon
                             class="w-5 h-5 mr-2"
                             :class="[
-                                notificaton.type === 'others'
+                                notification.title === 'Others'
                                     ? 'text-gray-300'
-                                    : notificaton.type === 'new'
+                                    : notification.title === 'Password change' || notification.title === 'Reset password'
                                     ? 'text-blue'
-                                    : notificaton.type === 'removed'
+                                    : notification.title === 'Removed'
                                     ? 'text-[#FA4B4B]'
-                                    : notificaton.type === 'completed'
+                                    : notification.title === 'Completed'
                                     ? 'text-[#00D395]'
-                                    : notificaton.type === 'pending'
+                                    : notification.title === 'Pending'
                                     ? 'text-[#FFB100]'
                                     : 'text-[#A460BC]',
                             ]"
                         />
-                        <span v-if="!notificaton.read" class="flex w-2 h-2 flex-shrink-0 bg-blue rounded-full mr-2" />
+                        <span v-if="!notification.seen" class="flex w-2 h-2 flex-shrink-0 bg-blue rounded-full mr-2" />
                         <span class="capitalize text-sm leading-[1.43] font-medium">
-                            {{ notificaton.type }}
+                            {{ notification.title }}
                         </span>
                     </div>
                     <div class="flex items-center">
                         <span class="text-xs leading-[1.67] text-gray-300 mr-4">
-                            {{ notificaton.date }}
+                            {{ getCurrentDate(notification.date) }}
                         </span>
                         <button
                             class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
-                            @click.prevent="$emit('remove', index)"
+                            @click.stop.prevent="deleteNotification(notification, index)"
                         >
                             <XIcon class="w-4 h-4" />
                         </button>
@@ -83,7 +83,7 @@
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="text-sm leading-[1.43] text-gray-300 mr-1">
-                        {{ notificaton.message }}
+                        {{ notification.description }}
                     </div>
                     <svg
                         width="18"
@@ -131,38 +131,36 @@
 </template>
 
 <script setup lang="ts">
-import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
-import { DashboardNotification } from '@/types';
+import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
+import { Notification } from '~/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
+import moment from 'moment';
+import { PropType } from 'vue';
+
+const route = useRoute();
+
+const emits = defineEmits(['close', 'markAsRead', 'delete']);
 
 defineProps({
     notifications: {
-        type: Array as PropType<DashboardNotification[]>,
+        type: Array as PropType<Notification[]>,
         required: true,
-    },
-    isMobile: {
-        type: Boolean,
-        required: false,
-        default: false,
     },
 });
 
-defineEmits(['close', 'remove']);
-</script>
+const getCurrentDate = (date: string) => {
+    const currentDate = moment();
+    const receivedDate = moment(date);
+    return currentDate.diff(receivedDate, 'hours') < 24
+        ? currentDate.diff(receivedDate, 'hours') + 'h'
+        : currentDate.diff(receivedDate, 'days') + 'd';
+};
 
-<style lang="scss">
-.notifications-scroll {
-    scrollbar-width: thin;
-    &::-webkit-scrollbar {
-        @apply w-1;
-    }
-    &::-webkit-scrollbar-track {
-        @apply bg-[#f5f5f5];
-    }
-    &::-webkit-scrollbar-thumb {
-        background: #d4d4d4;
-        @apply rounded-[100px] border-[#f5f5f5];
-    }
-}
-</style>
+const markNotificationAsRead = async (notification: Notification, index: number) => {
+    emits('markAsRead', notification, index);
+};
+const deleteNotification = async (notification: Notification, index: number) => {
+    emits('delete', notification, index);
+};
+</script>
