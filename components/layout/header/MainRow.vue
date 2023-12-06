@@ -182,7 +182,7 @@
         <Transition name="fade">
             <div
                 v-if="showAccountModal || favoritesCartModal.show"
-                class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[rgba(47, 50, 65, 0.10)] transition-opacity duration-300 cursor-pointer md:block"
+                class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[rgba(47,50,65,0.10)] transition-opacity duration-300 cursor-pointer md:block"
                 :class="[
                     showAccountModal || favoritesCartModal.show
                         ? 'backdrop-blur-[7.5px]'
@@ -198,11 +198,7 @@
             <LayoutAccountModal v-if="showAccountModal" @close="showAccountModal = false" />
         </Transition>
         <Transition name="slide-from-right">
-            <LayoutFavoritesCartModal
-                v-if="favoritesCartModal.show"
-                :tab="favoritesCartModal.tab"
-                @close="favoritesCartModal.show = false"
-            />
+            <CartModal v-if="favoritesCartModal.show" :tab="favoritesCartModal.tab" @close="favoritesCartModal.show = false" />
         </Transition>
     </Teleport>
 </template>
@@ -218,6 +214,7 @@ import CartIcon from '@/assets/icons/cart.svg';
 import BellIcon from '@/assets/icons/header/bell.svg';
 import XIcon from '@/assets/icons/x.svg';
 import Notifications from '@/components/global/Notifications.vue';
+import CartModal from '@/components/layout/favorites-cart-modal/Index.vue';
 import _ from 'lodash';
 import Emitter from 'tiny-emitter/instance';
 import { showNavModal } from '~~/config/modal/nav';
