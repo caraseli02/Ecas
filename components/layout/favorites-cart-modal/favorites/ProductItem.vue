@@ -110,7 +110,7 @@ import CopyIcon from '@/assets/icons/copy.svg';
 import InfoIcon from '@/assets/icons/info-circle.svg';
 import TrashIcon from '@/assets/icons/trash-can.svg';
 
-defineProps({
+const props = defineProps({
     product: {
         type: Object as PropType<FavoriteItem>,
         required: true,
@@ -126,7 +126,6 @@ defineProps({
 });
 
 const productItem = ref<FavoriteItem>(props.product);
-console.log(productItem.value);
 defineEmits(['select']);
 
 const deleteItem = ref(false);

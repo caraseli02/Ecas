@@ -1,6 +1,5 @@
-import { getAdditionalUserInfo, getIdToken, GoogleAuthProvider, signInWithPopup, User, signOut } from 'firebase/auth';
+import { getAdditionalUserInfo, getIdToken, GoogleAuthProvider, signInWithPopup, signOut, User } from 'firebase/auth';
 import { UserInfoJWT } from '~~/types';
-import { useAuthStore } from '~/store/authStore';
 
 interface FirebaseResults {
     token: string | undefined;
@@ -14,7 +13,6 @@ export default function () {
     const user = useState<User | null>('google.com', () => null);
 
     const registerUser = async (): Promise<FirebaseResults | { error: ErrorConstructor }> => {
-        console.log('test');
         try {
             const provider = new GoogleAuthProvider();
             const signIn = await signInWithPopup($auth, provider).then((result) => {

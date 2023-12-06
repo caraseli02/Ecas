@@ -35,7 +35,7 @@
                             <span>
                                 Account Type:
                                 <strong class="font-semibold">
-                                    {{ mapType(getUserDetails.accountType) }}
+                                    {{ getAccountTypeById(getUserDetails.accountType) }}
                                 </strong>
                             </span>
                         </template>
@@ -89,12 +89,13 @@ import OrderHistoryIcon from '@/assets/icons/history.svg';
 import SignOutIcon from '@/assets/icons/sign-out.svg';
 import { useAuthStore } from '~~/store/authStore';
 import { storeToRefs } from 'pinia';
+import { getAccountTypeById } from '~/types';
 
 const emit = defineEmits<{
     (e: 'close'): void;
 }>();
 const authStore = useAuthStore();
-const { getUserDetails } = storeToRefs(authStore);
+const { getUserDetails, getToken, getCurrentUser } = storeToRefs(authStore);
 
 const navItems = ref([
     {
@@ -139,22 +140,10 @@ const navItems = ref([
     },
 ]);
 
-const mapType = (type: number) => {
-    switch (type) {
-        case 0:
-            return 'Personal';
-        case 1:
-            return 'Sole Trader';
-        case 2:
-            return 'Executive';
-        default:
-            return 'Agent';
-    }
-};
-
 const handleSignOut = async () => {
     authStore.signOut();
     await authStore.firebaseSignOut();
+
     setTimeout(() => {
         emit('close');
     }, 200);

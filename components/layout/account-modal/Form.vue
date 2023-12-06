@@ -139,9 +139,11 @@ const handleSignIn = async () => {
             const response = (await $api.auth.login(payload)) as SigninResponse;
 
             const parsedTokenResponse = useParser().parseJwt(response.token);
+
             isLoading.value = false;
             authStore.addUser(parsedTokenResponse);
             authStore.addToken(response.token);
+
             await fetchUserDetails(parsedTokenResponse, response.token);
         } catch (error) {
             errorResponse.code = 404;

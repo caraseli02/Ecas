@@ -21,6 +21,7 @@ export const useAuthStore = defineStore({
         },
         addUserDetail(user: UserDetails) {
             this.userDetails = user;
+            localStorage.setItem('userDetails', JSON.stringify(user));
         },
         addFirebaseToken(token: string) {
             this.firebaseTempToken = token;
@@ -29,6 +30,8 @@ export const useAuthStore = defineStore({
             this.loggedInUser = null;
             this.userDetails = null;
             this.token = null;
+
+            localStorage.clear();
         },
         async firebaseSignOut() {
             const firebaseAuth = useFirebaseAuth();
@@ -38,7 +41,13 @@ export const useAuthStore = defineStore({
     getters: {
         getToken: (state) => state.token,
         getCurrentUser: (state) => state.loggedInUser,
-        getUserDetails: (state) => state.userDetails,
+        getUserDetails: (state) => {
+            if (state.userDetails) {
+                return state.userDetails;
+            }
+
+            return JSON.parse(localStorage.getItem('userDetails'));
+        },
     },
     persist: true,
 });

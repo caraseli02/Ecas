@@ -265,7 +265,6 @@
 import BurgerIcon from '@/assets/icons/dashboard/burger.svg';
 import SearchIcon from '@/assets/icons/dashboard/search.svg';
 import BellIcon from '@/assets/icons/dashboard/bell.svg';
-import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import PlusIcon from '@/assets/icons/dashboard/plus.svg';
 import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
@@ -275,8 +274,9 @@ import XIcon from '@/assets/icons/dashboard/x.svg';
 import { Notification, NotificationsType } from '~/types/dashboard/notification';
 import moment from 'moment';
 import { useAuthStore } from '~/store/authStore';
-import { UserDetails } from '~/types/auth/user-details';
 import { AccountType } from '../../types';
+import { UserDetails } from '~/types/auth/user-details';
+import { storeToRefs } from 'pinia';
 
 defineProps({
     isCollapsedOnDesktop: {
@@ -285,6 +285,7 @@ defineProps({
     },
 });
 const authStore = useAuthStore();
+const { getUserDetails } = storeToRefs(authStore);
 
 const emit = defineEmits<{
     (e: 'close'): void;
@@ -301,7 +302,13 @@ const isLoading = ref(false);
 const showOptions = ref(false);
 const showNotifications = ref(false);
 const unreadNotifications = ref(0);
-const user = ref<UserDetails>({} as UserDetails);
+
+const user = ref({} as UserDetails);
+
+onMounted(() => {
+    user.value = getUserDetails.value;
+});
+
 const fetchNofications = async () => {
     error.value = false;
     isLoading.value = true;
@@ -321,13 +328,6 @@ const fetchNofications = async () => {
             unreadNotifications.value++;
         }
     });
-};
-
-const fetchUserData = async () => {
-    const authStore = useAuthStore();
-    if (authStore.userDetails) {
-        user.value = authStore.userDetails;
-    }
 };
 
 const handleSignOut = async () => {
@@ -369,7 +369,7 @@ const deleteNotification = async (notification: Notification, index: number) => 
     notifications.value.splice(index, 1);
 };
 
-Promise.all([fetchUserData(), fetchNofications()]);
+Promise.all([fetchNofications()]);
 </script>
 
 <style lang="scss">
