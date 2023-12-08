@@ -1,6 +1,7 @@
 import { DiscountInterface } from '~/types/auth/account-settings';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
 import { AddressInterface } from '~/types/auth/user-details';
+import { e } from 'ohmyfetch/dist/error-65d5de49';
 
 export interface OrderSummaryItem {
     title: string;
@@ -44,6 +45,8 @@ export interface OrderInterface {
     discount?: DiscountInterface;
     createdAt?: string;
     updatedAt?: string;
+    backorderOption: BackorderOptionEnum;
+    deliveryMethod: DeliveryMethodEnum;
 
     /**
      * If the order has a parent, it means that the order is
@@ -52,6 +55,18 @@ export interface OrderInterface {
      * The order cannot have a parent if the type is Mixed.
      */
     parent?: string;
+}
+
+export enum DeliveryMethodEnum {
+    Free = 0,
+    Standard = 1,
+    Express = 2,
+}
+
+export enum BackorderOptionEnum {
+    None = 0,
+    Partial = 1,
+    Full = 2,
 }
 
 export interface OrderShippingDetailsInterface {
