@@ -9,7 +9,7 @@ import CustomerProfileService from '~/services/dashboard/customer-profile.servic
 import NotificationsService from '~/services/notifications.service';
 import ControlPanelService from '~/services/dashboard/control-panel.service';
 import OrdersService from '~/services/dashboard/orders.service';
-import CartService from '~/services/cart.service';
+import CartService from '~/services/order-summary/cart.service';
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -44,7 +44,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         customerProfile: new CustomerProfileService(apiFetcher),
         notifications: new NotificationsService(apiFetcher),
         controlPanel: new ControlPanelService(apiFetcher),
-        orders: new OrdersService(apiFetcher)
+        orders: new OrdersService(apiFetcher),
+        cart: new CartService(apiFetcher),
 
     };
 

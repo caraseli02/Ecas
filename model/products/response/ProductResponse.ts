@@ -38,6 +38,8 @@ export interface ProductSummaryDataInterface {
     TaxonomyPath: string;
     TaxonomyPathIDs: string;
     SmallImageURL: string;
+    PartDescription: string;
+    Manufacturer: string;
 }
 
 export interface ProductParametricDataInterface {
