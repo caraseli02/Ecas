@@ -1,37 +1,44 @@
 <template>
     <div ref="elDOM" class="fixed z-[60] top-0 left-0 w-full h-screen pointer-events-none">
-        <div class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh overflow-hidden pointer-events-auto md:w-[450px]">
-            <button
-                class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 flex-shrink-0 transition-colors duration-300 mt-5 ml-auto mr-5 mb-2.5 hover:text-gray-300"
-                @click="$emit('close')"
+        <div class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-vh overflow-hidden pointer-events-auto md:w-[440px]">
+            <div
+                class="flex flex-col"
+                :style="{
+                    boxShadow: '0px 0px 8px 0px rgba(133, 133, 133, 0.25)',
+                }"
             >
-                <XIcon class="w-[15px] h-[15px]" />
-            </button>
-            <div class="relative z-10 flex items-center gap-5 px-5 border-b border-gray-200 bg-white">
                 <button
-                    v-for="(item, index) in navItems"
-                    :key="index"
-                    :data-tab="textUtil.slugify(item.label)"
-                    class="relative flex items-center pb-[15px] transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
-                    :class="[activeNavItem === textUtil.slugify(item.label) ? 'text-blue' : 'text-gray-300 after:opacity-0']"
-                    @click="setActiveNav(item.label)"
+                    class="rounded-lg w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-300 flex-shrink-0 transition-colors duration-300 mt-4 ml-auto mr-4 mb-4 hover:text-blue"
+                    @click="$emit('close')"
                 >
-                    <component :is="item.icon" class="w-6 h-6 mr-2" />
-                    <span class="text-sm font-semibold">
-                        {{ item.label }}
-                    </span>
+                    <XIcon class="w-6 h-6" />
                 </button>
-                <div
-                    class="absolute bottom-0 h-[5px] bg-blue rounded-t-[5px] transition-all duration-300"
-                    :style="{
-                        left: navLineLeftPosition + 'px',
-                        width: navLineWidth + 'px',
-                    }"
-                />
+                <div class="relative z-10 flex items-center gap-6 px-4 bg-white md:px-6">
+                    <button
+                        v-for="(item, index) in navItems"
+                        :key="index"
+                        :data-tab="textUtil.slugify(item.label)"
+                        class="relative flex items-center pb-3 transition-colors duration-300 hover:text-blue md:text-base"
+                        :class="[activeNavItem === textUtil.slugify(item.label) ? 'text-blue' : 'text-dark after:opacity-0']"
+                        @click="setActiveNav(item.label)"
+                    >
+                        <component :is="item.icon" class="w-5 h-5 mr-2" />
+                        <span class="text-sm font-medium">
+                            {{ item.label }}
+                        </span>
+                    </button>
+                    <div
+                        class="absolute bottom-0 h-1 bg-blue rounded-t-md transition-all duration-300"
+                        :style="{
+                            left: navLineLeftPosition + 'px',
+                            width: navLineWidth + 'px',
+                        }"
+                    />
+                </div>
             </div>
             <div class="flex-1 h-[calc(100%-102px)]">
-                <LayoutFavoritesCartModalFavorites v-if="activeNavItem === 'favorites'" />
-                <LayoutFavoritesCartModalCart v-else />
+                <Favorites v-if="activeNavItem === 'favorites'" />
+                <Cart v-else-if="activeNavItem === 'shopping-cart'" />
             </div>
         </div>
     </div>
@@ -42,6 +49,8 @@ import { PropType } from 'vue';
 import XIcon from '@/assets/icons/x.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
+import Favorites from './favorites/Index.vue';
+import Cart from './cart/Index.vue';
 
 const props = defineProps({
     tab: {
@@ -66,7 +75,7 @@ const navItems = ref([
     },
 ]);
 
-const activeNavItem = ref<'favorites' | 'shopping-cart'>('favorites');
+const activeNavItem = ref<'favorites' | 'shopping-cart'>(props.tab);
 const navLineLeftPosition = ref(0);
 const navLineWidth = ref(0);
 
@@ -88,7 +97,6 @@ const setActiveNav = (item: string) => {
 };
 
 onMounted(() => {
-    activeNavItem.value = props.tab;
     setNavLine();
     documentUtil.toggleBodyScroll();
 });
