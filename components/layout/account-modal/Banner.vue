@@ -1,0 +1,54 @@
+<template>
+  <Swiper 
+  :modules="[A11y, Pagination]" 
+  :slides-per-view="1" 
+  :space-between="15" 
+  :grab-cursor="true" 
+  :pagination="{
+    bulletElement: 'button',
+    clickable: true,
+  }" :breakpoints="{
+  768: {
+    spaceBetween: 20,
+  },
+  1280: {
+    slidesPerView: 4,
+  },
+}"
+class="homeNews--swiper"
+>
+    <SwiperSlide :key="1">
+      <div
+        class="max-w-[396px] items-stretch self-stretch shadow-sm flex flex-col justify-center px-4 py-3 rounded-xl bg-gradient-to-r from-[#42239A] via-[#454DBB] to-[#007FFF]">
+        <div class="items-stretch flex justify-between gap-4">
+          <div class="items-stretch flex grow basis-[0%] flex-col gap-4">
+            <div class="flex flex-col gap-1">
+              <h4 class="text-white text-sm font-bold leading-5 whitespace-nowrap">
+                October Hot Sale
+              </h4>
+              <p class="text-white text-xs leading-4 font-normal">
+                Contrary to popular belief, Lorem Ipsum is not simply random text.
+              </p>
+            </div>
+            <div
+              class="w-fit text-sky-500 text-sm font-medium leading-6 whitespace-nowrap justify-center bg-zinc-100  py-1 px-4 rounded-md items-start">
+              View More
+            </div>
+          </div>
+          <img
+loading="lazy" :src="BannerItem"
+            class="aspect-[1.16] object-contain object-center w-[100px] overflow-hidden self-center shrink-0 max-w-full my-auto" />
+        </div>
+      </div>
+    </SwiperSlide>
+  </Swiper>
+</template>
+
+<script setup lang="ts">
+import BannerItem from '@/assets/media/home/banner-item.png';
+import { A11y, Pagination } from 'swiper';
+
+</script>
+
+<style scoped>
+</style>
