@@ -43,9 +43,10 @@
 <script setup lang="ts">
 import SearchIcon from '@/assets/icons/search.svg';
 import _ from 'lodash';
-import { ProductSearchItems, ProductSearchResponse, SearchData } from '~~/model/products/response/ProductSearchResponse';
+import { ProductSearchItems, SearchData } from '~~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance';
 import { useNuxtApp } from '#app';
+
 const { $api } = useNuxtApp();
 
 const props = defineProps({
@@ -72,23 +73,23 @@ const productList = ref<ProductSearchItems[]>([]);
 const showSearchResults = ref(true);
 
 const onInput = _.debounce(async () => {
-    productList.value = await searchProduct(searchVal.value);
+    productList.value = (await searchProduct(searchVal.value)) || [];
     isLoading.value = false;
 }, 200);
 
-const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
+const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[] | null> => {
     isLoading.value = true;
 
     const { data: products } = (await $api.product.fetchSearchProduct(keyword, page, perPage)) as SearchData;
-
+    console.log(products);
     if (!products) {
-        return;
+        return null;
     }
 
     const data = products as SearchData;
 
-    if (!data) {
-        return;
+    if (!data || !data.items || !data.items.items.length) {
+        return null;
     }
 
     Emitter.emit('product-keyword-change', { keyword: keyword, products: data });
