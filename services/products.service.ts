@@ -74,6 +74,7 @@ class ProductService extends HttpFactory {
                 operator: '$or',
                 partDescription: keyword,
                 alias: keyword,
+                manufacturerCode: keyword,
             };
         }
 
