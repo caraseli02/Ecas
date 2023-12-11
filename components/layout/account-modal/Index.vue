@@ -1,6 +1,6 @@
 <template>
     <div class="fixed z-[60] top-0 left-0 w-screen max-h-screen overflow-hidden pointer-events-none">
-        <div class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-[100vh] pointer-events-auto md:w-[450px] p-6">
+        <div class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-[100vh] pointer-events-auto md:w-[450px] p-6 overflow-y-scroll scrollbar-thin">
             <div class="flex flex-col items-center justify-start pb-6 gap-6 border-b border-gray-200">
                 <button
                     class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end"
@@ -10,17 +10,17 @@
                 </button>
                 <LayoutAccountModalDetails v-if="getUserDetails" />
             </div>
-            <div v-if="!getUserDetails" class="flex-1 pt-[60px] overflow-y-auto scrollbar-thin">
+            <div v-if="!getUserDetails" class="flex-1 pt-[60px]">
                 <KeyholeIcon class="w-[100px] h-[100px] text-gray-200 mx-auto mb-[25px]" />
                 <div class="text-gray-300 text-center font-medium mb-[50px]">Sign in to your account</div>
                 <LayoutAccountModalForm />
             </div>
-            <div v-else class="flex-1 pt-6 flex flex-col gap-6 ">
+            <div v-else class="flex-1 pt-6 flex flex-col gap-6">
                 <LayoutAccountModalMessage />
                 <LayoutAccountModalBanner />
                 <LayoutAccountModalCredits />
                 <LayoutAccountModalLinks />
-                <div class=" bg-white w-full sticky bottom-0 pt-4">
+                <div class=" bg-white w-full pt-4">
                     <button
                     class="flex items-center justify-center w-full border border-blue py-2 max-w-[320px] rounded text-blue mx-auto mb-5"
                     @click="handleSignOut"
