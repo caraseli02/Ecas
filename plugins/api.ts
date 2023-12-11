@@ -1,5 +1,5 @@
-import { $fetch, FetchOptions } from 'ohmyfetch';
-import { defineNuxtPlugin } from '#app';
+import {$fetch, FetchOptions} from 'ohmyfetch';
+import {defineNuxtPlugin} from '#app';
 import ProductService from '~/services/products.service';
 import AuthService from '~/services/auth.service';
 import UserService from '~/services/user.service';
@@ -9,7 +9,7 @@ import CustomerProfileService from '~/services/dashboard/customer-profile.servic
 import NotificationsService from '~/services/notifications.service';
 import ControlPanelService from '~/services/dashboard/control-panel.service';
 import OrdersService from '~/services/dashboard/orders.service';
-import CartService from '~/services/order-summary/cart.service';
+import CartService from '~/services/cart.service';
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -18,11 +18,11 @@ interface IApiInstance {
     user: UserService;
     userDashboard: UserDashboardService;
     favouriteFolder: FavouriteFolderService;
+    cart: CartService;
     customerProfile: CustomerProfileService;
     notifications: NotificationsService;
     controlPanel: ControlPanelService;
     orders: OrdersService;
-    cart: CartService;
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -45,7 +45,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         notifications: new NotificationsService(apiFetcher),
         controlPanel: new ControlPanelService(apiFetcher),
         orders: new OrdersService(apiFetcher),
-        cart: new CartService(apiFetcher),
 
     };
 
