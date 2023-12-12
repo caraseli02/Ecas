@@ -1,22 +1,23 @@
 <template>
   <div class="flex bg-[#F5F5F5] bg-opacity-95 rounded-lg max-w-max overflow-hidden">
     <button
-        :disabled="modelValue === 0"
+        :disabled="modelValue === 1"
         class="flex items-center justify-center bg-gray-200 text-gray-300 px-2.5 transition-colors duration-300 disabled:text-border"
         :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
         @click="inputHandler(modelValue - 1)"
+
     >
       <MinusIcon class="w-6 h-6 flex-shrink-0"/>
     </button>
     <label class="flex">
       <input
-          :value="modelValue"
+          :value="modelValue < 1 ? Number(1) : modelValue"
           type="number"
-          :min="0"
+          :min="1"
           placeholder="Quantity"
           class="bg-transparent w-[56px] px-1 text-sm leading-normal text-dark text-center placeholder:text-[12px] focus:outline-none"
           :class="[size === 'sm' ? 'h-9' : 'h-[42px]']"
-          @input="($event) => inputHandlerModified($event)"
+          @focusout="($event) => inputHandlerModified($event)"
       />
     </label>
     <button
@@ -76,11 +77,13 @@ const inputHandler = async (quantity: number) => {
 };
 
 const inputHandlerModified = (event: Event) => {
+
   const target = event.target as HTMLInputElement;
   inputHandler(Number(target.value.replace(/\D+/g, '')));
-
-  if (parseInt(target.value) < 0 || !target.value) {
-    inputHandler(0);
+  if (parseInt(target.value) < 1 || !target.value) {
+    inputHandler(1);
   }
 };
+
+
 </script>

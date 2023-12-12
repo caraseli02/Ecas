@@ -72,7 +72,7 @@
       </div>
     </div>
     <div class="flex gap-2.5">
-      <QuantityButtons v-model="quantity" size="lg"/>
+      <QuantityButtons v-model="quantity" size="lg" :object="{action : 'add', id: product._id} as ProductActionObject"/>
       <button
           :disabled="quantity===0"
           class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
@@ -90,6 +90,7 @@ import CartIcon from '@/assets/icons/cart.svg';
 import {ProductDetail} from '~~/model/products/response/ProductDetailResponse';
 import {AddToCartRequestInterface} from '~/model/cart/request/cart.interface';
 import {useNuxtApp} from '#app';
+import {ProductActionObject} from '~/model/cart/response/cart.interface';
 
 const {$api} = useNuxtApp();
 
