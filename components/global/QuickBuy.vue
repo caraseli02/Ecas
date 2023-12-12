@@ -19,7 +19,9 @@
               class="bg-transparent w-full px-2.5 py-2.5 text-sm leading-normal text-gray-300 placeholder:text-gray-300 focus:outline-none"
           />
         </label>
-        <QuantityButtons v-model="product.quantity" size="lg" :object="{action : 'add', id: ''}"/>
+        <QuantityButtons
+            v-model="product.quantity" size="lg"
+            :object="{action : 'add', id: product.code} as ProductActionObject"/>
       </div>
     </div>
     <div class="flex gap-2.5 px-[15px] md:px-2.5">
@@ -28,7 +30,7 @@
           @click="
                     products.push({
                         code: '',
-                        quantity: 0,
+                        quantity: 1,
                     })
                 "
       >
@@ -46,10 +48,12 @@
           </defs>
         </svg>
       </button>
-      <div class="flex items-center justify-center flex-1 bg-blue rounded text-white py-2" @click="addToCart()">
-        <CartIcon class="w-6 h-6 mr-[5px]"/>
+      <button
+          class="flex items-center justify-center flex-1 bg-blue rounded text-white py-2"
+          @click="addToCart()">
+        <CartIcon class="w-6 h-6 mr-2"/>
         <span class="text-sm font-medium">Add to cart</span>
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -59,18 +63,18 @@ import QuickBuyIcon from '@/assets/icons/quick-buy-2.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import {AddToCartRequestInterface} from '~/model/cart/request/cart.interface';
 import {useNuxtApp} from '#app';
-import {CartProductsInterface} from '~/model/cart/response/cart.interface';
+import ProductActionObject, {CartProductsInterface} from '~/model/cart/response/cart.interface';
 
 const {$api} = useNuxtApp();
 
 const products = ref([
   {
     code: '',
-    quantity: 0,
+    quantity: 1,
   },
   {
     code: '',
-    quantity: 0,
+    quantity: 1,
   },
 ]);
 
@@ -78,7 +82,9 @@ const addToCart = async () => {
   const productsPayload: CartProductsInterface[] = [];
 
   for (const product of products.value) {
-    productsPayload.push({id: product.code, stock: product.quantity, isFolder: false});
+    if (product.code) {
+      productsPayload.push({id: product.code, stock: product.quantity, isFolder: false});
+    }
   }
 
   const payload: AddToCartRequestInterface = {
