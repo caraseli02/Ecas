@@ -37,12 +37,23 @@ import Emitter from 'tiny-emitter/instance.js';
 const {$api} = useNuxtApp();
 
 const items = ref<CartInterface>({} as CartInterface);
+const cart = ref<CartProductsInterface[]>([] as CartProductsInterface[])
 
 const fetchList = async () => {
   const {data} = await $api.cart.fetchCartList();
-  console.log(data);
   const cartData = data as CartInterface;
-  items.value = cartData.products.map((item: CartProductsInterface) => ({
+  cart.value = cartData.products
+  await mapCartItems(cart.value)
+};
+
+Emitter.on('delete-product-item', async (object: { id: string }) => {
+  cart.value = cart.value.filter(product => product.id !== object.id);
+  await mapCartItems(cart.value)
+})
+
+
+const mapCartItems = async (cart: CartProductsInterface[]) => {
+  items.value = cart.map((item: CartProductsInterface) => ({
     id: item.id,
     type: item.isFolder ? 'folder' : 'product',
     quantity: Number(item.stock),
@@ -50,21 +61,8 @@ const fetchList = async () => {
     description: item.productEntity?.description,
     image: item.productEntity?.details.ProductImage.ProductImageSmall,
   }));
+}
 
-
-  Emitter.on('delete-product-item', async (object: { id: string }) => {
-    console.log(object);
-    cartData.products = cartData.products.filter(product => product.id !== object.id);
-    items.value = cartData.products.map((item: CartProductsInterface) => ({
-      id: item.id,
-      type: item.isFolder ? 'folder' : 'product',
-      quantity: Number(item.stock),
-      title: item.productEntity?.alias,
-      description: item.productEntity?.description,
-      image: item.productEntity?.details.ProductImage.ProductImageSmall,
-    }));
-  })
-};
 
 await fetchList();
 </script>

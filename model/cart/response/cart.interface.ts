@@ -1,4 +1,14 @@
-import { ProductInterface } from '~/model/products/response/ProductResponse';
+import {ProductInterface} from '~/model/products/response/ProductResponse';
+
+export enum ProductAction {
+    update = 'update',
+    add = 'add'
+}
+
+export interface ProductActionObject {
+    action: string,
+    id: string,
+}
 
 export interface CartResponse {
     status: string;

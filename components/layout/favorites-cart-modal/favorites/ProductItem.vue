@@ -80,7 +80,9 @@
         </div>
       </div>
       <div v-else class="font-Inter font-semibold leading-[1.25]">$ 17,830.95</div>
-      <QuantityButtons v-if="typeof productItem.quantity === 'number'" v-model="productItem.quantity" class="mr-10"/>
+      <QuantityButtons
+          v-if="typeof productItem.quantity === 'number'" v-model="productItem.quantity"
+          :object="{action : 'update', id: productItem.id} as ProductActionObject" class="mr-10"/>
     </div>
   </div>
   <Teleport to="body">
@@ -115,6 +117,7 @@ import CheckCircleIcon from '@/assets/icons/check-circle.svg';
 import CopyIcon from '@/assets/icons/copy.svg';
 import InfoIcon from '@/assets/icons/info-circle.svg';
 import TrashIcon from '@/assets/icons/trash-can.svg';
+import {ProductActionObject} from '~/model/cart/response/cart.interface';
 
 const props = defineProps({
   product: {
@@ -132,6 +135,7 @@ const props = defineProps({
 });
 const productItem = ref<FavoriteItem>(props.product);
 defineEmits(['select']);
+
 const deleteItem = ref(false);
 
 const copyItems = ref(false);
