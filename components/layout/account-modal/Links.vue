@@ -7,7 +7,7 @@
       </div>
       <div
         v-if="menuItem.text === 'Notifications'"
-        class="text-white text-center text-xs font-semibold leading-5 whitespace-nowrap justify-start items-stretch bg-red aspect-[1.3333333333333333] my-auto px-1 rounded-[100px]"
+        class="text-white text-center text-xs font-semibold leading-5 whitespace-nowrap justify-start items-stretch bg-[#FA4B4B] aspect-[1.3333333333333333] my-auto px-1 rounded-[100px]"
       >
       48
     </div>

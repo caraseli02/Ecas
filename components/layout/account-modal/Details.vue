@@ -8,7 +8,8 @@ loading="lazy" src="https://picsum.photos/56/56"
         <div class="text-neutral-800 text-sm font-medium leading-5 whitespace-nowrap">
           {{ userDetails?.contactDetails.firstName }} {{ userDetails?.contactDetails.lastName }}
         </div>
-        <BuildingIcon
+        <component
+          :is="IconTypes[3]"
           class="aspect-square object-contain object-center w-5 justify-center items-center overflow-hidden shrink-0 max-w-full" />
       </div>
       <div class="text-gray-500 text-xs leading-4 whitespace-nowrap mt-1">
@@ -30,12 +31,21 @@ loading="lazy" src="https://picsum.photos/56/56"
 
 <script setup lang="ts">
 import BuildingIcon from '@/assets/icons/menu/busines-buildings.svg';
+import UserIcon from '@/assets/icons/menu/user.svg';
+import PersonalCardIcon from '@/assets/icons/menu/personalcard.svg';
+import briefcaseIcon from '@/assets/icons/menu/briefcase.svg';
 import CopyIcon from '@/assets/icons/copy.svg';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore();
 const { userDetails } = storeToRefs(authStore);
+
+const IconTypes = [PersonalCardIcon,
+  UserIcon,
+  BuildingIcon,
+ briefcaseIcon,
+]
 
 </script>
 
