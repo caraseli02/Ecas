@@ -105,13 +105,14 @@
       </div>
     </div>
     <div class="flex gap-2.5 md:col-span-2 xl:col-span-1 xl:items-end">
-      <QuantityButtons v-model="quantity" size="lg"/>
-      <NuxtLink
-          to="/order-summary"
-          class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]">
+      <QuantityButtons v-model="quantity" size="lg" :object="{action : 'add', id: item._id} as ProductActionObject"/>
+      <button
+          :disabled="quantity===0"
+          class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
+          @click="addToCart(item)">
         <CartIcon class="w-6 h-6 mr-2"/>
         <span class="text-sm font-medium">Add to cart</span>
-      </NuxtLink>
+      </button>
     </div>
     <div class="absolute top-0 right-0 flex flex-col gap-2.5">
       <button class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue">
@@ -149,7 +150,13 @@ import CheckIcon from '@/assets/icons/check-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
 import ShareIcon from '@/assets/icons/share.svg';
-import {SearchItem} from '~~/types/search';
+import {ProductActionObject} from '~/model/cart/response/cart.interface';
+import {AddToCartRequestInterface} from '~/model/cart/request/cart.interface';
+import {useNuxtApp} from '#app';
+import {SearchItem} from '~/types';
+
+const {$api} = useNuxtApp();
+const quantity = ref(1);
 
 defineProps({
   item: {
@@ -158,7 +165,16 @@ defineProps({
   },
 });
 
-const quantity = ref(1);
+const addToCart = async (product: SearchItem) => {
+  if (product && product.slug) {
+    const payload: AddToCartRequestInterface = {
+      userId: '',
+      products: [{id: product.slug, stock: quantity.value, isFolder: false}],
+    };
+    await $api.cart.addEntityToCart(payload);
+  }
+};
+
 
 const showCustomProductPartNumberModal = ref(false);
 </script>
