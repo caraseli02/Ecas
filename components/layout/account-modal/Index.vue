@@ -20,18 +20,27 @@
                 <LayoutAccountModalBanner />
                 <LayoutAccountModalCredits />
                 <LayoutAccountModalLinks />
-                <div class=" bg-white w-full pt-4">
-                    <button
+                <!-- <button
                     class="flex items-center justify-center w-full border border-blue py-2 max-w-[320px] rounded text-blue mx-auto mb-5"
                     @click="handleSignOut"
                 >
-                    <SignOutIcon class="w-6 h-6 mr-2" />
                     <span class="text-sm font-medium">Sign out</span>
+                </button> -->
+                <button
+                    class="w-full justify-center items-center self-stretch flex flex-col px-16 py-2 rounded-lg border-[1.5px] border-solid border-sky-500"
+                >
+                    <div class="flex items-center gap-2">
+                    <SignOutIcon class="w-6 h-6 mr-2" />
+                    <div
+                        class="text-sky-500 text-base font-medium leading-7 self-stretch grow whitespace-nowrap"
+                    >
+                        Sign Out
+                    </div>
+                    </div>
                 </button>
-                </div>
                 
             </div>
-            <div class="text-xs text-gray-300 text-center mt-auto pb-2.5">
+            <div class="text-xs text-gray-300 text-center mt-auto pb-2.5 pt-6">
                 For assistance please contact
                 <a href="mailto:support@ecas.ro" class="text-blue hover:underline"> support@ecas.ro </a>
             </div>
@@ -41,7 +50,6 @@
 
 <script setup lang="ts">
 import XIcon from '@/assets/icons/x.svg';
-import SettingIcon from '@/assets/icons/menu/Setting.svg';
 import KeyholeIcon from '@/assets/icons/keyhole.svg';
 import DashboardIcon from '@/assets/icons/dashboard.svg';
 import NotificationsIcon from '@/assets/icons/notifications.svg';
@@ -51,10 +59,9 @@ import BOMUploadIcon from '@/assets/icons/bom-upload.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
 import OrderTrackingIcon from '@/assets/icons/order-tracking.svg';
 import OrderHistoryIcon from '@/assets/icons/history.svg';
-import SignOutIcon from '@/assets/icons/sign-out.svg';
-import {useAuthStore} from '~~/store/authStore';
-import {storeToRefs} from 'pinia';
-import {getAccountTypeById} from '~/types';
+import SignOutIcon from '@/assets/icons/menu/sign-out.svg';
+import { useAuthStore } from '~~/store/authStore';
+import { storeToRefs } from 'pinia';
 
 const emit = defineEmits<{
   (e: 'close'): void;

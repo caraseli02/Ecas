@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-for="(menuItem, index) in menuItems" :key="index" class=" hover:bg-zinc-100 hover:text-sky-500 items-stretch flex justify-between gap-3 pl-3 pr-20 py-3 rounded-lg">
+    <div v-for="(menuItem, index) in menuItems" :key="index" class=" hover:bg-zinc-100 text-neutral-800 hover:text-sky-500 items-stretch flex justify-between gap-3 pl-3 pr-20 py-3 rounded-lg">
       <component :is="menuItem.icon" class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full" />
-      <div class="text-neutral-800 hover:text-sky-500 transition-all text-sm font-medium leading-6 grow whitespace-nowrap">
+      <div class="transition-all text-sm font-medium leading-6 grow whitespace-nowrap">
         {{ menuItem.text }}
       </div>
       <!-- Additional elements for the menu item can be added here -->
