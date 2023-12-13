@@ -97,7 +97,7 @@ const {$api} = useNuxtApp();
 const props = defineProps<{
   product: ProductDetail;
 }>();
-const quantity = ref(0);
+const quantity = ref(1);
 const bulkQuantities = new Map<number, number>();
 
 for (let i = 1; i < 26; i += 5) {

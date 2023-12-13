@@ -98,7 +98,7 @@ onMounted(() => {
   if (window.innerWidth < 768) {
     products.value.push({
       code: '',
-      quantity: 0,
+      quantity: 1,
     });
   }
 });
