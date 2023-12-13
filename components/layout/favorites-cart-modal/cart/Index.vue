@@ -33,16 +33,21 @@ import CartIcon from '@/assets/icons/cart.svg';
 import {useNuxtApp} from '#app';
 import {CartInterface, CartProductsInterface} from '~/model/cart/response/cart.interface';
 import Emitter from 'tiny-emitter/instance.js';
+import {PropType} from 'vue';
 
 const {$api} = useNuxtApp();
 
 const items = ref<CartInterface>({} as CartInterface);
 const cart = ref<CartProductsInterface[]>([] as CartProductsInterface[])
 
+const props = defineProps({
+  data: {
+    type: Object as PropType<CartInterface>,
+    required: true,
+  }
+});
 const fetchList = async () => {
-  const {data} = await $api.cart.fetchCartList();
-  const cartData = data as CartInterface;
-  cart.value = cartData.products
+  cart.value = props.data.products
   await mapCartItems(cart.value)
 };
 

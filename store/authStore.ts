@@ -1,6 +1,7 @@
-import { defineStore } from 'pinia';
-import { UserInfoJWT } from '~~/types';
-import { UserDetails } from '~~/types/auth/user-details';
+import {defineStore} from 'pinia';
+import {UserInfoJWT} from '~~/types';
+import {UserDetails} from '~~/types/auth/user-details';
+import Emitter from 'tiny-emitter/instance.js';
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
@@ -30,12 +31,13 @@ export const useAuthStore = defineStore({
             this.loggedInUser = null;
             this.userDetails = null;
             this.token = null;
-
+            Emitter.emit('remove-cart-and-notifications', true)
             localStorage.clear();
         },
         async firebaseSignOut() {
             const firebaseAuth = useFirebaseAuth();
             await firebaseAuth.logout();
+
         },
     },
     getters: {
