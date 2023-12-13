@@ -41,6 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import SettingIcon from '@/assets/icons/menu/Setting.svg';
+import SettingIcon from '@/assets/icons/menu/setting-blue.svg';
 import { A11y, Pagination } from 'swiper';
 </script>
