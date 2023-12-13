@@ -117,7 +117,11 @@ const deleteItem = async (items: FavoriteItem[] = []) => {
       Emitter.emit('delete-product-item', {
         id: items[0].id,
       });
+      const {data} = await $api.cart.fetchCartList();
+      Emitter.emit('cart-and-notifications', data)
     }
+
+
   }
 };
 

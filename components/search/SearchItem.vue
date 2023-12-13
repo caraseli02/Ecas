@@ -155,6 +155,7 @@ import {AddToCartRequestInterface} from '~/model/cart/request/cart.interface';
 import {useNuxtApp} from '#app';
 import {SearchItem} from '~/types';
 
+
 const {$api} = useNuxtApp();
 const quantity = ref(1);
 

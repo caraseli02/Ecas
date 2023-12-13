@@ -73,17 +73,10 @@ defineProps({
   },
 });
 
-
-const fetchList = async () => {
-  const {data} = await $api.cart.fetchCartList();
-  items.value = data
-  console.log(items.value);
-  cartItems.value = data.products.length;
-};
-
-Emitter.on('cart-and-notifications', async (login: boolean) => {
-  if (login) {
-    await fetchList()
+Emitter.on('cart-and-notifications', async (data: CartInterface) => {
+  if (data) {
+    items.value = data;
+    cartItems.value = items.value.products.length
   }
 })
 
@@ -100,6 +93,13 @@ const favoritesCartModal = ref({
   show: false,
   tab: 'favorites' as 'favorites' | 'shopping-cart',
 });
+
+const fetchList = async () => {
+  const {data} = await $api.cart.fetchCartList();
+  items.value = data
+  console.log(items.value);
+  cartItems.value = data.products.length;
+};
 
 Promise.all([fetchList()])
 </script>

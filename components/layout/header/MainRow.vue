@@ -208,7 +208,9 @@
       <LayoutAccountModal v-if="showAccountModal" @close="showAccountModal = false"/>
     </Transition>
     <Transition name="slide-from-right">
-      <CartModal v-if="favoritesCartModal.show" :tab="favoritesCartModal.tab" @close="favoritesCartModal.show = false"/>
+      <CartModal
+          v-if="favoritesCartModal.show" :tab="favoritesCartModal.tab" :data="items"
+          @close="favoritesCartModal.show = false"/>
     </Transition>
   </Teleport>
 </template>
@@ -230,6 +232,7 @@ import Emitter from 'tiny-emitter/instance';
 import {showNavModal} from '~~/config/modal/nav';
 import {Notification} from '~/types';
 import {ProductSearchItems, SearchData} from '~/model/products/response/ProductSearchResponse';
+import {CartInterface} from '~/model/cart/response/cart.interface';
 
 const {$api} = useNuxtApp();
 
@@ -276,7 +279,7 @@ const navItems = [
 const searchVal = ref('');
 const showMobileSearch = ref(false);
 const searchDOM = ref<HTMLInputElement>();
-
+const items = ref<CartInterface>({} as CartInterface)
 const productList = ref<ProductSearchItems[]>([]);
 const isLoading = ref(false);
 
@@ -286,11 +289,19 @@ Emitter.on('remove-cart-and-notifications', async (signout: boolean) => {
   }
 })
 
-Emitter.on('cart-and-notifications', async (login: boolean) => {
-  if (login) {
-    await fetchNofications()
+Emitter.on('cart-and-notifications', async (data: CartInterface) => {
+  if (data) {
+    items.value = data;
+    cartItems.value = items.value.products.length
   }
 })
+
+const fetchList = async () => {
+  const {data} = await $api.cart.fetchCartList();
+  items.value = data
+  console.log(items.value);
+  cartItems.value = data.products.length;
+};
 
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
   isLoading.value = true;
@@ -395,5 +406,5 @@ onMounted(() => {
   }
 });
 
-Promise.all([fetchNofications()]);
+Promise.all([fetchNofications(), fetchList()]);
 </script>

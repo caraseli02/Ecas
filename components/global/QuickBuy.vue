@@ -64,6 +64,7 @@ import CartIcon from '@/assets/icons/cart.svg';
 import {AddToCartRequestInterface} from '~/model/cart/request/cart.interface';
 import {useNuxtApp} from '#app';
 import ProductActionObject, {CartProductsInterface} from '~/model/cart/response/cart.interface';
+import Emitter from 'tiny-emitter/instance.js';
 
 const {$api} = useNuxtApp();
 
@@ -91,7 +92,13 @@ const addToCart = async () => {
     userId: '',
     products: productsPayload,
   };
-  await $api.cart.addEntityToCart(payload);
+
+  const object = await $api.cart.addEntityToCart(payload);
+
+  if (object.status === 'success') {
+    const {data} = await $api.cart.fetchCartList();
+    Emitter.emit('cart-and-notifications', data)
+  }
 };
 
 onMounted(() => {
