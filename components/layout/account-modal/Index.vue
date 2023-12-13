@@ -1,6 +1,6 @@
 <template>
     <div class="fixed z-[60] top-0 left-0 w-screen max-h-screen overflow-hidden pointer-events-none">
-        <div class="relative z-10 flex flex-col ml-auto w-full h-full bg-white max-h-[100vh] pointer-events-auto md:w-[450px] p-6 overflow-y-scroll scrollbar-thin">
+        <div class="relative z-10 flex flex-col ml-auto w-full bg-white h-[100vh] max-h-[100vh] pointer-events-auto md:w-[450px] p-6 overflow-y-scroll scrollbar-thin">
             <div class="flex flex-col items-center justify-start pb-6 gap-6 border-b border-gray-200">
                 <button
                     class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end"
@@ -26,8 +26,12 @@
                 >
                     <span class="text-sm font-medium">Sign out</span>
                 </button> -->
+                
+                
+            </div>
+            <div class="text-xs text-gray-300 text-center mt-auto pb-2.5 pt-6 flex flex-col gap-6">
                 <button
-                    class="w-full justify-center items-center self-stretch flex flex-col px-16 py-2 rounded-lg border-[1.5px] border-solid border-sky-500"
+                    class="sticky bottom-0 w-full justify-center items-center self-stretch flex flex-col px-16 py-2 rounded-lg border-[1.5px] border-solid border-sky-500"
                 >
                     <div class="flex items-center gap-2">
                     <SignOutIcon class="w-6 h-6 mr-2" />
@@ -38,12 +42,12 @@
                     </div>
                     </div>
                 </button>
-                
-            </div>
-            <div class="text-xs text-gray-300 text-center mt-auto pb-2.5 pt-6">
-                For assistance please contact
+                <p class="flex justify-center items-center gap-2">
+                    <SvgoMenuHelp />
+                    For assistance please contact
                 <a href="mailto:support@ecas.ro" class="text-blue hover:underline"> support@ecas.ro </a>
-            </div>
+                </p>
+                </div>
         </div>
     </div>
 </template>
@@ -60,6 +64,7 @@ import HeartIcon from '@/assets/icons/heart.svg';
 import OrderTrackingIcon from '@/assets/icons/order-tracking.svg';
 import OrderHistoryIcon from '@/assets/icons/history.svg';
 import SignOutIcon from '@/assets/icons/menu/sign-out.svg';
+import SvgoMenuHelp from '@/assets/icons/menu/help.svg';
 import { useAuthStore } from '~~/store/authStore';
 import { storeToRefs } from 'pinia';
 
