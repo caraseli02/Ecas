@@ -24,7 +24,7 @@ import SvgoMenuTag from '@/assets/icons/menu/tag.svg';
 import SvgoMenuFileUpload from '@/assets/icons/menu/file-upload.svg';
 import SvgoMenuHeart from '@/assets/icons/menu/heart.svg';
 import SvgoMenuPackagingLocation from '@/assets/icons/menu/packaging-location.svg';
-import SvgoMenuClock from '@/assets/icons/menu/clock.svg';
+import SvgoMenuClock from '@/assets/icons/menu/Clock.svg';
 import SvgoMenuSetting from '@/assets/icons/menu/Setting.svg';
 
 export default {
