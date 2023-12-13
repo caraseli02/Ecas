@@ -18,7 +18,7 @@
 
 <script>
 import SvgoMenuApps from '@/assets/icons/menu/apps.svg';
-import SvgoMenuNotification from '@/assets/icons/menu/notification.svg';
+import SvgoMenuNotification from '@/assets/icons/menu/Notification.svg';
 import SvgoMenuCartAdd from '@/assets/icons/menu/cart-add.svg';
 import SvgoMenuTag from '@/assets/icons/menu/tag.svg';
 import SvgoMenuFileUpload from '@/assets/icons/menu/file-upload.svg';
