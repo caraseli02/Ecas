@@ -1,17 +1,16 @@
 <template>
   <div>
-    <div v-for="(menuItem, index) in menuItems" :key="index" class=" hover:bg-zinc-100 text-neutral-800 hover:text-sky-500 items-stretch flex justify-start gap-3 pl-3 pr-20 py-3 rounded-lg">
-      <component :is="menuItem.icon" class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full" />
+    <div v-for="(menuItem, index) in menuItems" :key="index"
+      class=" hover:bg-zinc-100 text-neutral-800 hover:text-sky-500 items-stretch flex justify-start gap-3 pl-3 pr-20 py-3 rounded-lg">
+      <component :is="menuItem.icon"
+        class="aspect-square object-contain object-center w-6 h-6 overflow-hidden shrink-0 max-w-full" />
       <div class="transition-all text-sm font-medium leading-6 whitespace-nowrap">
         {{ menuItem.text }}
       </div>
-      <div
-        v-if="menuItem.text === 'Notifications'"
-        class="text-white text-center text-xs font-semibold leading-5 whitespace-nowrap justify-start items-stretch bg-[#FA4B4B] aspect-[1.3333333333333333] my-auto px-1 rounded-[100px]"
-      >
-      48
-    </div>
-      <!-- Additional elements for the menu item can be added here -->
+      <div v-if="menuItem.text === 'Notifications'"
+        class="text-white text-center text-xs font-semibold leading-5 whitespace-nowrap justify-start items-stretch bg-[#FA4B4B] aspect-[1.3333333333333333] my-auto px-1 rounded-[100px]">
+        48
+      </div>
     </div>
   </div>
 </template>

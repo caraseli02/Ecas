@@ -1,7 +1,7 @@
 <template>
     <div class="fixed z-[60] top-0 left-0 w-screen max-h-screen overflow-hidden pointer-events-none">
-        <div class="relative z-10 flex flex-col ml-auto w-full bg-white h-[100vh] max-h-[100vh] pointer-events-auto md:w-[450px] p-6 overflow-y-scroll scrollbar-thin">
-            <div class="flex flex-col items-center justify-start pb-6 gap-6 border-b border-gray-200">
+        <div class="relative z-10 flex flex-col ml-auto w-full bg-white h-[100vh] max-h-[100vh] pointer-events-auto md:w-[450px] p-4 md:p-6 overflow-y-scroll scrollbar-thin">
+            <div class="flex flex-col items-center justify-start pb-6 gap-6">
                 <button
                     class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end"
                     @click="$emit('close')"
@@ -34,7 +34,7 @@
                     class="sticky bottom-0 w-full justify-center items-center self-stretch flex flex-col px-16 py-2 rounded-lg border-[1.5px] border-solid border-sky-500"
                 >
                     <div class="flex items-center gap-2">
-                    <SignOutIcon class="w-6 h-6 mr-2" />
+                    <SignOutIcon class="w-6 h-6" />
                     <div
                         class="text-sky-500 text-base font-medium leading-7 self-stretch grow whitespace-nowrap"
                     >
