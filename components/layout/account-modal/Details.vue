@@ -1,16 +1,14 @@
 <template>
   <div class="flex gap-3 w-full">
-    <img
-loading="lazy" src="https://picsum.photos/56/56"
+    <img loading="lazy" src="https://picsum.photos/56/56"
       class="aspect-square object-contain object-center w-14 overflow-hidden shrink-0 max-w-full my-auto rounded-[50%]" />
     <div class="justify-center items-stretch self-stretch flex grow basis-[0%] flex-col">
       <div class="items-stretch flex justify-start gap-3 pr-5">
         <div class="text-neutral-800 text-sm font-medium leading-5 whitespace-nowrap">
           {{ userDetails?.contactDetails.firstName }} {{ userDetails?.contactDetails.lastName }}
         </div>
-        <component
-          :is="IconTypes[3]"
-          class="aspect-square object-contain object-center w-5 justify-center items-center overflow-hidden shrink-0 max-w-full" />
+        <component :is="IconTypes[3]"
+          class="aspect-square object-contain object-center w-5 h-5 justify-center items-center overflow-hidden shrink-0 max-w-full" />
       </div>
       <div class="text-gray-500 text-xs leading-4 whitespace-nowrap mt-1">
         {{ userDetails?.contactDetails.email }}
@@ -23,7 +21,7 @@ loading="lazy" src="https://picsum.photos/56/56"
           {{ userDetails?.contactDetails._id }}
         </div>
         <CopyIcon
-          class="aspect-square object-contain object-center w-4 overflow-hidden shrink-0 max-w-full my-auto text-[#9A9A9A]" />
+          class="aspect-square object-contain object-center w-4 h-4 overflow-hidden shrink-0 max-w-full my-auto text-[#9A9A9A]" />
       </div>
     </div>
   </div>
@@ -44,7 +42,7 @@ const { userDetails } = storeToRefs(authStore);
 const IconTypes = [PersonalCardIcon,
   UserIcon,
   BuildingIcon,
- briefcaseIcon,
+  briefcaseIcon,
 ]
 
 </script>

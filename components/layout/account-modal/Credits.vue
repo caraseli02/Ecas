@@ -25,7 +25,7 @@
           View more
         </div>
         <ArrowRightIcon
-          class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden self-center shrink-0 max-w-full my-auto" />
+          class="aspect-square object-contain object-center w-4 h-4 justify-center items-center overflow-hidden self-center shrink-0 max-w-full my-auto" />
       </div>
     </div>
   </div>
