@@ -2,8 +2,7 @@
   <div>
     <div v-for="(menuItem, index) in menuItems" :key="index"
       class=" hover:bg-zinc-100 text-neutral-800 hover:text-sky-500 items-stretch flex justify-start gap-3 pl-3 pr-20 py-3 rounded-lg">
-      <component :is="menuItem.icon"
-        class="w-6 h-6" />
+      <component :is="menuItem.icon" class="w-6 h-6" />
       <div class="transition-all text-sm font-medium leading-6 whitespace-nowrap">
         {{ menuItem.text }}
       </div>
@@ -15,7 +14,7 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import SvgoMenuApps from '@/assets/icons/menu/apps.svg';
 import SvgoMenuNotification from '@/assets/icons/menu/Notification.svg';
 import SvgoMenuCartAdd from '@/assets/icons/menu/cart-add.svg';
@@ -26,49 +25,44 @@ import SvgoMenuPackagingLocation from '@/assets/icons/menu/packaging-location.sv
 import SvgoMenuClock from '@/assets/icons/menu/Clock.svg';
 import SvgoMenuSetting from '@/assets/icons/menu/Setting.svg';
 
-export default {
-  data() {
-    return {
-      menuItems: [
-        {
-          icon: SvgoMenuApps,
-          text: 'Dashboard',
-        },
-        {
-          icon: SvgoMenuNotification,
-          text: 'Notifications',
-        },
-        {
-          icon: SvgoMenuCartAdd,
-          text: 'Quick Buy',
-        },
-        {
-          icon: SvgoMenuTag,
-          text: 'Price Offer',
-        },
-        {
-          icon: SvgoMenuFileUpload,
-          text: 'BOM Upload',
-        },
-        {
-          icon: SvgoMenuHeart,
-          text: 'Favorites',
-        },
-        {
-          icon: SvgoMenuPackagingLocation,
-          text: 'Order Tracking',
-        },
-        {
-          icon: SvgoMenuClock,
-          text: 'Order History',
-        },
-        {
-          icon: SvgoMenuSetting,
-          text: 'Settings',
-        },
-        // Add more menu items as needed
-      ],
-    };
+
+const menuItems = [
+  {
+    icon: SvgoMenuApps,
+    text: 'Dashboard',
   },
-};
+  {
+    icon: SvgoMenuNotification,
+    text: 'Notifications',
+  },
+  {
+    icon: SvgoMenuCartAdd,
+    text: 'Quick Buy',
+  },
+  {
+    icon: SvgoMenuTag,
+    text: 'Price Offer',
+  },
+  {
+    icon: SvgoMenuFileUpload,
+    text: 'BOM Upload',
+  },
+  {
+    icon: SvgoMenuHeart,
+    text: 'Favorites',
+  },
+  {
+    icon: SvgoMenuPackagingLocation,
+    text: 'Order Tracking',
+  },
+  {
+    icon: SvgoMenuClock,
+    text: 'Order History',
+  },
+  {
+    icon: SvgoMenuSetting,
+    text: 'Settings',
+  },
+  // Add more menu items as needed
+]
 </script>
