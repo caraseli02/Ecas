@@ -20,7 +20,7 @@
               Account warning message
             </div>
             <XIcon
-              class="aspect-square object-contain object-center w-[18px] h-[18px] justify-center items-center overflow-hidden shrink-0 max-w-full" />
+              class="w-[18px] h-[18px]" />
           </div>
           <div class="self-stretch text-neutral-800 text-xs leading-4 mt-2">
             Contrary to popular belief, Lorem Ipsum is not simply random text.
@@ -29,7 +29,7 @@
           </div>
           <div class="items-center flex gap-2 mt-2">
             <SettingIcon
-              class="aspect-square object-contain object-center w-4 h-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto" />
+              class="w-4 h-4" />
             <div class="text-sky-500 text-sm font-medium leading-5 self-stretch grow whitespace-nowrap">
               Settings
             </div>
