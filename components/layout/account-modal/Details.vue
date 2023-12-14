@@ -9,7 +9,7 @@
         </div>
         <Tooltip theme="black" position="top" class="self-start ml-3">
           <component :is="IconTypes[3]"
-            class="aspect-square object-contain object-center w-5 h-5 justify-center items-center overflow-hidden shrink-0 max-w-full" />
+            class="w-5 h-5" />
           <template #content>
             <span class="text-sm">Business</span>
           </template>

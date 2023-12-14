@@ -17,7 +17,7 @@
             </div>
             <div v-else class="flex-1 pt-6 flex flex-col gap-6">
                 <LayoutAccountModalMessage />
-                <LayoutAccountModalBanner />
+                <!-- <LayoutAccountModalBanner /> -->
                 <LayoutAccountModalCredits />
                 <LayoutAccountModalLinks />
                 <!-- <button

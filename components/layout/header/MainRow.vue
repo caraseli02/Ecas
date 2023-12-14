@@ -248,19 +248,19 @@ const isMobile = ref(false);
 const signinQuery = computed(() => route.query.signin);
 
 const showAccountModal = ref(false);
-watch(showAccountModal, () => {    
-    // remove scroll if showAccountModal is true
-    if (showAccountModal.value) {
-        // Disable scroll
-        window.scrollTo(0,1)
-        document.body.style.overflow = 'hidden';
-        document.body.style.maxHeight = '100vh';
-    } else {
-        // Enable scroll
-        document.body.style.overflow = 'auto';
-        document.body.style.maxHeight = '100%';
-    }
-});
+// watch(showAccountModal, () => {    
+//     // remove scroll if showAccountModal is true
+//     if (showAccountModal.value) {
+//         // Disable scroll
+//         window.scrollTo(0,1)
+//         document.body.style.overflow = 'hidden';
+//         document.body.style.maxHeight = '100vh';
+//     } else {
+//         // Enable scroll
+//         document.body.style.overflow = 'auto';
+//         document.body.style.maxHeight = '100%';
+//     }
+// });
 
 const favoritesCartModal = ref({
   show: false,
