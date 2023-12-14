@@ -154,7 +154,7 @@ import {ProductActionObject} from '~/model/cart/response/cart.interface';
 import {AddToCartRequestInterface} from '~/model/cart/request/cart.interface';
 import {useNuxtApp} from '#app';
 import {SearchItem} from '~/types';
-
+import Emitter from 'tiny-emitter/instance.js';
 
 const {$api} = useNuxtApp();
 const quantity = ref(1);
@@ -172,7 +172,11 @@ const addToCart = async (product: SearchItem) => {
       userId: '',
       products: [{id: product.slug, stock: quantity.value, isFolder: false}],
     };
-    await $api.cart.addEntityToCart(payload);
+    const object = await $api.cart.addEntityToCart(payload);
+    if (object.status === 'success') {
+      const {data} = await $api.cart.fetchCartList();
+      Emitter.emit('update-cart', data)
+    }
   }
 };
 
