@@ -76,7 +76,7 @@ const inputHandler = async (quantity: number) => {
 
       if (object.status === 'success') {
         const {data} = await $api.cart.fetchCartList();
-        Emitter.emit('cart-and-notifications', data)
+        Emitter.emit('update-cart', data)
       }
     }
   }

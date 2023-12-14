@@ -113,7 +113,7 @@ const addToCart = async (product: ProductDetail) => {
   const object = await $api.cart.addEntityToCart(payload);
   if (object.status === 'success') {
     const {data} = await $api.cart.fetchCartList();
-    Emitter.emit('cart-and-notifications', data)
+    Emitter.emit('update-cart', data)
   }
 };
 </script>

@@ -66,6 +66,7 @@ import Emitter from 'tiny-emitter/instance.js';
 const {$api} = useNuxtApp();
 const cartItems = ref(0);
 const items = ref<CartInterface>({} as CartInterface)
+
 defineProps({
   isScrolled: {
     type: Boolean,
@@ -73,10 +74,16 @@ defineProps({
   },
 });
 
-Emitter.on('cart-and-notifications', async (data: CartInterface) => {
+Emitter.on('update-cart', async (data: CartInterface) => {
   if (data) {
     items.value = data;
     cartItems.value = items.value.products.length
+  }
+})
+
+Emitter.on('notifications', async (notifications: boolean) => {
+  if (notifications) {
+
   }
 })
 
@@ -97,7 +104,6 @@ const favoritesCartModal = ref({
 const fetchList = async () => {
   const {data} = await $api.cart.fetchCartList();
   items.value = data
-  console.log(items.value);
   cartItems.value = data.products.length;
 };
 

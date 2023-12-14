@@ -112,13 +112,14 @@ const deleteItem = async (items: FavoriteItem[] = []) => {
     const payload = {
       products: [items[0].id]
     }
+    console.log(items[0]);
     const removed = await $api.cart.removeEntityFromCart(payload);
     if (removed.status === 'success') {
       Emitter.emit('delete-product-item', {
         id: items[0].id,
       });
       const {data} = await $api.cart.fetchCartList();
-      Emitter.emit('cart-and-notifications', data)
+      Emitter.emit('update-cart', data)
     }
 
 

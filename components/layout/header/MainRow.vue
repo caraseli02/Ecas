@@ -289,17 +289,23 @@ Emitter.on('remove-cart-and-notifications', async (signout: boolean) => {
   }
 })
 
-Emitter.on('cart-and-notifications', async (data: CartInterface) => {
+Emitter.on('update-cart', async (data: CartInterface) => {
   if (data) {
     items.value = data;
     cartItems.value = items.value.products.length
   }
 })
 
+Emitter.on('notifications', async (notifications: boolean) => {
+  if (notifications) {
+    await fetchNofications()
+  }
+
+})
+
 const fetchList = async () => {
   const {data} = await $api.cart.fetchCartList();
   items.value = data
-  console.log(items.value);
   cartItems.value = data.products.length;
 };
 

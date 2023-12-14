@@ -3,7 +3,7 @@
     <div class="py-4 px-4 flex-1 h-full overflow-y-auto overscroll-contain scrollbar-thin max-h-vh md:py-6">
       <div class="grid grid-cols-1 gap-4">
         <LayoutFavoritesCartModalFavoritesProductItem
-            v-for="(item, index) in items" :key="index" :product="item"
+            v-for="(item, index) in items" :key="item.id" :product="item"
             in-cart/>
       </div>
     </div>
@@ -37,7 +37,7 @@ import {PropType} from 'vue';
 
 const {$api} = useNuxtApp();
 
-const items = ref<CartInterface>({} as CartInterface);
+const items = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
 const cart = ref<CartProductsInterface[]>([] as CartProductsInterface[])
 
 const props = defineProps({
@@ -49,15 +49,19 @@ const props = defineProps({
 const fetchList = async () => {
   cart.value = props.data.products
   await mapCartItems(cart.value)
+  console.log(items.value);
 };
 
-Emitter.on('delete-product-item', async (object: { id: string }) => {
+Emitter.on('delete-product-item', async (object: {
+  id: string
+}) => {
   cart.value = cart.value.filter(product => product.id !== object.id);
   await mapCartItems(cart.value)
+  console.log(items.value);
 })
 
 
-const mapCartItems = async (cart: CartProductsInterface[]) => {
+const mapCartItems = (cart: CartProductsInterface[]) => {
   items.value = cart.map((item: CartProductsInterface) => ({
     id: item.id,
     type: item.isFolder ? 'folder' : 'product',

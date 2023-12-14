@@ -193,7 +193,12 @@ const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
 
   const userDetails = data.value?.data;
   authStore.addUserDetail(userDetails as UserDetails);
-  Emitter.emit('cart-and-notifications', true)
+  const cart = await $api.cart.fetchCartList();
+  if (cart.status === 'success') {
+    Emitter.emit('update-cart', cart.data)
+  }
+  Emitter.emit('notifications', true)
+
 
 };
 
@@ -210,4 +215,6 @@ const loginWithGoogle = async () => {
     await fetchUserDetails(parsedToken, token);
   }
 };
+
+
 </script>

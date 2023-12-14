@@ -312,7 +312,7 @@ const user = ref({} as UserDetails);
 onMounted(() => {
   user.value = getUserDetails.value;
 });
-Emitter.on('cart-and-notifications', async (login: boolean) => {
+Emitter.on('update-cart', async (login: boolean) => {
   if (login) {
     await fetchNofications()
   }
