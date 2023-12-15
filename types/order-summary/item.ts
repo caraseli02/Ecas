@@ -27,6 +27,14 @@ export interface OrderSummaryItem {
     price: number;
 }
 
+export interface OrderNotesInterface {
+    _id?: string;
+    sender: string;
+    message: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
 export interface OrderInterface {
     _id: string;
     shortId: string;
@@ -43,6 +51,7 @@ export interface OrderInterface {
     status: OrderStatus;
     type: OrderType;
     discount?: DiscountInterface;
+    notes: OrderNotesInterface[];
     createdAt?: string;
     updatedAt?: string;
     backorderOption: BackorderOptionEnum;
@@ -55,6 +64,21 @@ export interface OrderInterface {
      * The order cannot have a parent if the type is Mixed.
      */
     parent?: string;
+}
+
+export interface OrderRequestInterface {
+    userId?: string;
+    userName?: string;
+    businessId?: string;
+    cartId?: string;
+    products?: CartProductsInterface[];
+    shippingDetails: OrderShippingDetailsInterface;
+    paymentDetails: PaymentDetails;
+    currency: string;
+    type: OrderType;
+    discount?: DiscountInterface;
+    isDraft: boolean;
+    note: OrderNotesInterface;
 }
 
 export enum DeliveryMethodEnum {
