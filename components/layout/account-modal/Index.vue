@@ -1,7 +1,7 @@
 <template>
     <div class="fixed z-[60] inset-0 w-screen h-screen pointer-events-none">
         <div
-            class="relative z-10 flex flex-col ml-auto w-full bg-white h-full pointer-events-auto md:w-[450px] p-4 md:p-6 scrollbar-thin">
+            class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] p-4 md:p-6 overflow-y-scroll">
             <div class="flex flex-col items-center justify-start pb-6 gap-6">
                 <button
                     class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end"
@@ -125,3 +125,10 @@ onBeforeUnmount(() => {
   documentUtil.toggleBodyScroll();
 });
 </script>
+
+<style scoped>
+.min-height {
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+</style>

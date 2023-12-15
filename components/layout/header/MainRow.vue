@@ -251,8 +251,6 @@ const showAccountModal = ref(false);
 watch(showAccountModal, () => {    
     // remove scroll if showAccountModal is true
     if (showAccountModal.value) {
-        // Disable scroll
-        window.scrollTo(0,1)
         document.body.style.overflow = 'hidden';
         document.body.style.maxHeight = '100vh';
     } else {
