@@ -1,7 +1,6 @@
-import { DiscountInterface } from '~/types/auth/account-settings';
-import { ProductInterface } from '~/model/products/response/ProductResponse';
-import { AddressInterface } from '~/types/auth/user-details';
-import { e } from 'ohmyfetch/dist/error-65d5de49';
+import {DiscountInterface} from '~/types/auth/account-settings';
+import {ProductInterface} from '~/model/products/response/ProductResponse';
+import {AddressInterface} from '~/types/auth/user-details';
 
 export interface OrderSummaryItem {
     title: string;
@@ -167,6 +166,15 @@ export interface CartProductsInterface {
     /** The entire product retrieved from database */
     productEntity?: ProductInterface;
 }
+
+
+export interface PriceHistory {
+    active: boolean,
+    createdAt: string,
+    price: number,
+    updatedAt: string,
+}
+
 
 export enum OrderStatus {
     Completed = 'Completed',

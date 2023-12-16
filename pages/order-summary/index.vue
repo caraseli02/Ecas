@@ -60,9 +60,23 @@ import {CartProductsInterface} from '~/types';
 import {CustomerCreditInterface} from '~/types/auth/account-settings';
 import {useAuthStore} from '~/store/authStore';
 
+const {$api} = useNuxtApp();
 useHead({
   title: 'Order Summary',
 });
+const cartItems = ref([] as any);
+
+const fetchList = async () => {
+  const response = await $api.cart.fetchCartList();
+  if (response.status === 'success') {
+    let products: CartProductsInterface[] = [];
+    products = response.data.products;
+    console.log(products);
+    await mapCartItems(products)
+  } else {
+    console.log('error');
+  }
+};
 
 const showWarning = ref(() => {
   return cartItems.value.some((item: any) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
@@ -146,46 +160,30 @@ const showWarning = ref(() => {
 //     },
 // ];
 
-const {$api} = useNuxtApp();
 const loading = ref(true);
 
-const cartItems = ref([] as CartProductsInterface[]);
-const fetchCartItems = async () => {
-  try {
-    loading.value = true;
-    const response = await $api.cart.fetchCartList();
-    console.log(response);
-    if (response.status === 'success') {
-      let products: CartProductsInterface[] = [];
-      products = response.data;
-      cartItems.value = products.map((product: CartProductsInterface) => {
-        return {
-          id: product.id,
-          stock: product.stock,
-          isFolder: product.isFolder,
-          initialPrice: product.initialPrice,
-          discountPrice: product.discountPrice,
-          discount: product.discount,
-          productEntity: product.productEntity,
-          liked: false,
-          selected: false,
-        };
-      });
-    } else {
-      console.log('error');
-    }
-  } catch {
-    console.log('error');
-  }
-};
-
-await fetchCartItems().then(() => loading.value = false);
 
 const checkAll = (checked: boolean) => {
   cartItems.value.forEach((item: any) => {
     item.selected = checked;
   });
 };
+
+const mapCartItems = (cart: CartProductsInterface[]) => {
+  cartItems.value = cart.map((product: CartProductsInterface) => ({
+    id: product.id,
+    stock: product.stock,
+    isFolder: false,
+    initialPrice: Number((product.productEntity?.priceHistory
+        .filter(priceObj => priceObj.active).map(key => key.price) as Array<any>)[0].toFixed(2)),
+    discountPrice: product.discountPrice || 0,
+    discount: product.discount || {},
+    productEntity: product.productEntity,
+    liked: false,
+    selected: false,
+  }));
+  console.log(cartItems.value);
+}
 
 const addToFavsAll = (liked: boolean) => {
   cartItems.value.forEach((item: any) => {
@@ -279,6 +277,7 @@ const calculateSubtotal = () => {
   });
   order.value.subtotal = subtotal;
 };
+await fetchList()
 
 calculateSubtotal();
 

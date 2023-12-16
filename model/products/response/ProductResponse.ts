@@ -1,3 +1,5 @@
+import {PriceHistory} from '~/types';
+
 export interface ProductResponse {
     data: [ProductInterface];
     status: string;
@@ -14,6 +16,7 @@ export interface ProductInterface {
     stock: number;
     priceRon: number;
     priceEur: number;
+    priceHistory: PriceHistory[]
     measure: string;
     details: ProductDetailsInterface;
     sold: number;
