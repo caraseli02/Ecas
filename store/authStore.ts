@@ -22,7 +22,9 @@ export const useAuthStore = defineStore({
         },
         addUserDetail(user: UserDetails) {
             this.userDetails = user;
-            localStorage.setItem('userDetails', JSON.stringify(user));
+            if (process.client) {
+                localStorage.setItem('userDetails', JSON.stringify(user));
+            }
         },
         addFirebaseToken(token: string) {
             this.firebaseTempToken = token;
@@ -32,7 +34,9 @@ export const useAuthStore = defineStore({
             this.userDetails = null;
             this.token = null;
             Emitter.emit('remove-cart-and-notifications', true)
-            localStorage.clear();
+            if (process.client) {
+                localStorage.clear();
+            }
         },
         async firebaseSignOut() {
             const firebaseAuth = useFirebaseAuth();
@@ -47,8 +51,10 @@ export const useAuthStore = defineStore({
             if (state.userDetails) {
                 return state.userDetails;
             }
+            if (process.client) {
+                return JSON.parse(localStorage.getItem('userDetails'));
+            }
 
-            return JSON.parse(localStorage.getItem('userDetails'));
         },
     },
     persist: true,
