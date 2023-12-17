@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-3 w-full">
+  <div class="flex gap-3 w-full px-2">
     <img loading="lazy" src="https://picsum.photos/56/56"
       class="aspect-square object-contain object-center w-14 overflow-hidden shrink-0 max-w-full my-auto rounded-[50%]" />
     <div class="justify-center items-stretch self-stretch flex grow basis-[0%] flex-col">
