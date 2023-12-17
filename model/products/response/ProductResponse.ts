@@ -16,13 +16,26 @@ export interface ProductInterface {
     stock: number;
     priceRon: number;
     priceEur: number;
-    priceHistory: PriceHistory[]
+    priceHistory: PriceHistory[];
+    priceConfiguration?: PriceConfigurationInterface;
     measure: string;
     details: ProductDetailsInterface;
     sold: number;
     adminSettings?: AdminSettings;
     additionalInfo?: AdditionalInfoInterface;
     favourite?: boolean;
+}
+
+export interface PriceConfigurationSettingsInterface {
+    price: number;
+    quantity: number;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface PriceConfigurationInterface {
+    smartLinkId: string;
+    configuration: PriceConfigurationSettingsInterface[];
 }
 
 export interface ProductDetailsInterface {

@@ -155,11 +155,12 @@ import BlackFridayItem from '@/assets/media/home/black-friday-item.png';
 import { A11y, Pagination, Grid } from 'swiper';
 import { PaginatedUserRequest } from '~/model/user/request/PaginatedUserRequest';
 import { ProductCard as ProductCardType } from '~~/types';
+import { ProductInterface } from '~/model/products/response/ProductResponse';
 const { $api } = useNuxtApp();
 
 const elDOM = ref<HTMLElement | null>(null);
 
-const productList = ref<ProductCardType[]>([]);
+const productList = ref<ProductInterface[]>([]);
 
 const productsMD = computed(() => {
     const chunkedArray = [];
@@ -193,17 +194,18 @@ const filterLineWidth = ref(0);
 watch(activeFilter, async (value) => {
     const { data } = await $api.product.fetchProductTab(value);
 
-    if (data) {
-        productList.value = data?.map((item) => ({
-            slug: item._id,
-            title: item.alias,
-            category: 'Not supported',
-            price: new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 3,
-            }).format(item.priceEur),
-            cover: item.details.ProductImage.ProductImageLarge,
-            stock: item.stock,
-        }));
+    if (data && data.length) {
+        productList.value = data as unknown as ProductInterface[];
+        // productList.value = data?.map((item) => ({
+        //     slug: item._id,
+        //     title: item.alias,
+        //     category: 'Not supported',
+        //     price: new Intl.NumberFormat('en-US', {
+        //         minimumFractionDigits: 3,
+        //     }).format(item.priceEur),
+        //     cover: item.details.ProductImage.ProductImageLarge,
+        //     stock: item.stock,
+        // }));
     }
 });
 
@@ -226,31 +228,23 @@ const setActiveFilter = (filter: string) => {
 
 onMounted(async () => {
     setFilterLine();
-
-    // fetchUser()
 });
-
-async function fetchUser() {
-    const payload: PaginatedUserRequest = {
-        page: 1,
-        perPage: 10,
-    };
-    const user = await $api.user.fetchPaginatedUser(payload);
-}
 
 async function getProductTab() {
     const { data } = await $api.product.fetchProductTab('featured');
-    if (data) {
-        productList.value = data?.map((item) => ({
-            slug: item._id,
-            title: item.alias,
-            category: 'Not supported',
-            price: new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 3,
-            }).format(item.priceEur),
-            cover: item.details.ProductImage.ProductImageLarge,
-            stock: item.stock,
-        }));
+
+    if (data && data.length) {
+        productList.value = data as unknown as ProductInterface[];
+        // productList.value = data?.map((item) => ({
+        //     slug: item._id,
+        //     title: item.alias,
+        //     category: 'Not supported',
+        //     price: new Intl.NumberFormat('en-US', {
+        //         minimumFractionDigits: 3,
+        //     }).format(item.priceEur),
+        //     cover: item.details.ProductImage.ProductImageLarge,
+        //     stock: item.stock,
+        // }));
     }
 }
 
