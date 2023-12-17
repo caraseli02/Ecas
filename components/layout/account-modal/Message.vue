@@ -6,7 +6,7 @@
       clickable: true,
     }" :breakpoints="{
   768: {
-    spaceBetween: 20,
+    spaceBetween: 0,
   },
   1280: {
     slidesPerView: 1,
@@ -14,7 +14,7 @@
 }" class="homeNews--swiper">
       <SwiperSlide v-for="item in 9" :key="item">
         <div
-          class="self-stretch bg-white flex flex-col p-4 rounded-xl items-end w-full max-w-[396px] shadow-s ml-0.5">
+          class="self-stretch bg-white flex flex-col m-2 p-4 rounded-xl items-end w-fit shadow-s z-10">
           <div class="justify-between items-stretch self-stretch flex gap-5">
             <div class="text-neutral-800 text-sm font-medium leading-5 grow whitespace-nowrap">
               Account warning message
@@ -45,3 +45,9 @@ import SettingIcon from '@/assets/icons/menu/setting-blue.svg';
 import XIcon from '@/assets/icons/x.svg';
 import { A11y, Pagination } from 'swiper';
 </script>
+
+<style scoped lang="scss">
+.homeNews--swiper {
+    @apply px-0 pt-0 pb-[30px] #{!important};
+}
+</style>

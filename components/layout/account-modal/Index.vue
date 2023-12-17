@@ -1,7 +1,7 @@
 <template>
     <div class="fixed z-[60] inset-0 w-screen h-screen pointer-events-none">
         <div
-            class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] p-4 md:p-6 overflow-y-scroll">
+            class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] p-2 md:p-4 overflow-y-scroll">
             <div class="flex flex-col items-center justify-start pb-6 gap-6">
                 <button
                     class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end"
@@ -18,10 +18,10 @@
             <section v-else>
                 <div class="flex-1 pt-6 flex flex-col gap-6">
                     <LayoutAccountModalMessage />
-                    <LayoutAccountModalCredits />
-                    <LayoutAccountModalLinks />
+                    <LayoutAccountModalCredits class="mx-2" />
+                    <LayoutAccountModalLinks class="mx-2" />
                 </div>
-                <div class="text-xs text-gray-300 text-center mt-auto pb-2.5 pt-6 flex flex-col gap-6">
+                <div  class="mx-2 text-xs text-gray-300 text-center mt-auto pb-2.5 pt-6 flex flex-col gap-6">
                     <button
                         class="sticky bottom-0 w-full justify-center items-center self-stretch flex flex-col px-16 py-2 rounded-lg border-[1.5px] border-solid border-sky-500"
                         @click="handleSignOut">
