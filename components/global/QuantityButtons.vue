@@ -1,16 +1,16 @@
 <template>
   <div class="flex bg-[#F5F5F5] bg-opacity-95 rounded-lg max-w-max overflow-hidden">
     <button
-        :disabled="modelValue === object.min"
+        :disabled="Number(modelValue) === object.min"
         class="flex items-center justify-center bg-gray-200 text-gray-300 px-2.5 transition-colors duration-300 disabled:text-border"
         :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
-        @click="inputHandler(modelValue - 1);minShow()"
+        @click="inputHandler(Number(modelValue) - 1);minShow()"
     >
       <MinusIcon class="w-6 h-6 flex-shrink-0"/>
     </button>
     <label class="flex">
       <input
-          :value="modelValue < object.min ? Number(object.min) : modelValue"
+          :value="Number(modelValue) < object.min ? Number(object.min) : Number(modelValue)"
           type="number"
           :min="1"
           placeholder="Quantity"
@@ -22,7 +22,7 @@
     <button
         class="flex items-center justify-center bg-gray-200 px-2.5"
         :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
-        @click="inputHandler(modelValue + 1)"
+        @click="inputHandler(Number(modelValue) + 1)"
     >
       <PlusIcon class="w-6 h-6 flex-shrink-0 text-gray-300"/>
     </button>
@@ -62,7 +62,7 @@ const inputHandler = async (quantity: number) => {
   emits('update:modelValue', quantity);
 
   if (props.object) {
-    if (props.object.action === ProductAction.Update) {
+    if (props.object.action === ProductAction.Update || props.object.action === ProductAction.Add) {
       const payload = {} as UpdateProductCartRequestInterface;
       payload.products = [];
 
