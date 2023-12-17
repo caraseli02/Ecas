@@ -78,7 +78,12 @@
             </div>
         </div>
         <div class="flex gap-2.5">
-            <QuantityButtons v-model="quantity" size="lg" :object="{action : 'add', id: product._id} as ProductActionObject" />
+            <QuantityButtons
+                v-model="quantity"
+                size="lg"
+                :object="{action : ProductAction.Add, id: product._id} as ProductActionObject"
+                :model-value="priceConfiguration?.quantity || 1"
+            />
             <button
                 :disabled="quantity === 0"
                 class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
@@ -96,7 +101,7 @@ import CheckIcon from '@/assets/icons/check-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
-import { ProductActionObject } from '~/model/cart/response/cart.interface';
+import { ProductAction, ProductActionObject } from '~/model/cart/response/cart.interface';
 import Emitter from 'tiny-emitter/instance.js';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 import { useAuthStore } from '~/store/authStore';
