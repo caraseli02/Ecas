@@ -36,7 +36,7 @@
             </div>
             <div class="text-[13px] leading-tight md:text-base" :class="[productDiscount ? 'text-red' : '']">
                 <strong>
-                    {{ productDiscount ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
+                    {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
                 </strong>
                 {{ priceConfiguration ? `(${priceConfiguration.quantity}+)` : '-' }}
             </div>
@@ -117,9 +117,9 @@ const parseProductPriceConfiguration = () => {
     productDiscount.value = props.product.adminSettings?.discount?.value || 0;
 
     if (priceConfiguration.value) {
-        discountPrice.value = userDiscount
-            ? priceConfiguration.value?.price * (1 - userDiscount.value / 100)
-            : priceConfiguration.value?.price * (1 - productDiscount.value / 100);
+        discountPrice.value = productDiscount
+            ? priceConfiguration.value?.price * (1 - productDiscount.value / 100)
+            : priceConfiguration.value?.price * (1 - userDiscount.value / 100);
     }
 };
 

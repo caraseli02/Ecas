@@ -58,24 +58,22 @@
                 </div>
                 <div class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end">
                     <div class="lg:mr-[15px]">
-                        <!--                        <div class="text-sm leading-tight line-through">-->
-                        <!--                            $ {{ (product.priceEur * 100).toFixed(3) }}-->
-                        <!--                            (100+)-->
-                        <!--                        </div>-->
-                        <!--                        <div class="text-lg leading-tight text-red">-->
-                        <!--                            <strong>$ {{ ((product.priceEur * 100 * 20) / 100).toFixed(3) }}</strong> (100+)-->
-                        <!--                        </div>-->
                         <div v-if="productDiscount" class="text-sm leading-tight line-through">
                             {{ priceConfiguration ? `$ ${priceConfiguration.price.toFixed(2)} (${priceConfiguration.quantity}+)` : '-' }}
                         </div>
                         <div class="text-lg leading-tight" :class="[productDiscount ? 'text-red' : '']">
                             <strong>
-                                {{ productDiscount ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
+                                {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
                             </strong>
                             {{ priceConfiguration ? `(${priceConfiguration.quantity}+)` : '-' }}
                         </div>
                     </div>
-                    <div class="bg-red rounded-[25px] px-2.5 py-1 font-Inter text-sm leading-tight font-semibold text-white">20%</div>
+                    <div
+                        v-if="productDiscount"
+                        class="bg-red rounded-[25px] px-2.5 py-1 font-Inter text-sm leading-tight font-semibold text-white"
+                    >
+                        {{ productDiscount }}%
+                    </div>
                 </div>
             </div>
         </div>
@@ -129,9 +127,9 @@ const parseProductPriceConfiguration = () => {
     productDiscount.value = props.product.adminSettings?.discount?.value || 0;
 
     if (priceConfiguration.value) {
-        discountPrice.value = userDiscount
-            ? priceConfiguration.value?.price * (1 - userDiscount.value / 100)
-            : priceConfiguration.value?.price * (1 - productDiscount.value / 100);
+        discountPrice.value = productDiscount
+            ? priceConfiguration.value?.price * (1 - productDiscount.value / 100)
+            : priceConfiguration.value?.price * (1 - userDiscount.value / 100);
     }
 };
 
