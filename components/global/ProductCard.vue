@@ -94,17 +94,16 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '~/store/authStore';
 import { UserDetails } from '~/types/auth/user-details';
 
-const authStore = useAuthStore();
-
 const { $api } = useNuxtApp();
-const { getUserDetails } = storeToRefs(authStore);
-
 const props = defineProps({
     product: {
         type: Object as PropType<ProductInterface>,
         required: true,
     },
 });
+
+const authStore = useAuthStore();
+const { getUserDetails } = storeToRefs(authStore);
 
 const priceConfiguration = ref<PriceConfigurationSettingsInterface | null>(null);
 const discountPrice = ref(0);
