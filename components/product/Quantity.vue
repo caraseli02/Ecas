@@ -79,10 +79,10 @@
         </div>
         <div class="flex gap-2.5">
             <QuantityButtons
-                v-model="quantity"
+                v-if="priceConfiguration"
+                v-model="priceConfiguration.quantity"
                 size="lg"
                 :object="{action : ProductAction.Add, id: product._id} as ProductActionObject"
-                :model-value="priceConfiguration?.quantity || 1"
             />
             <button
                 :disabled="quantity === 0"
