@@ -23,47 +23,45 @@
                     class="hidden leading-normal font-medium text-white ml-2 md:inline-block lg:ml-4">
                                     Products
                                 </span>
-              </button>
-              <NuxtLink to="/" class="flex" :class="[isScrolled ? 'md:ml-4 lg:ml-6' : 'md:hidden']">
-                <LogoSM class="w-[22px] h-5" :class="[isScrolled ? 'md:hidden' : '']"/>
-                <Logo
-                    class="hidden w-[82px] grayscale brightness-0 invert lg:w-[102px]"
-                    :class="[isScrolled ? 'md:flex' : '']"
-                />
-              </NuxtLink>
-            </div>
-            <ul v-if="!isScrolled" class="hidden items-center gap-4 md:flex md:gap-6">
-              <li v-for="(navItem, index) in navItems" :key="index" class="">
-                <NuxtLink :to="navItem.to" class="flex leading-normal font-medium text-white">
-                  {{ navItem.label }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
-          <LayoutHeaderSearch
-              v-if="isScrolled"
-              :show-results="true"
-              :is-visible="showMobileSearch"
-              :is-scrolled="isScrolled"
-              class="flex-1 max-md:hidden xl:block"
-              :class="[showMobileSearch ? 'lg:block' : 'md:hidden']"
-              @blur="showMobileSearch = false"
-          />
-          <div
-              class="flex items-center gap-7 md:gap-9 lg:ml-0 lg:gap-9 xl:gap-9"
-              :class="[isScrolled ? 'md:ml-4' : 'md:gap-6']">
-            <button
-                class="items-center xl:hidden"
-                :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex lg:flex') : 'md:hidden']"
-                @click="showMobileSearch = true"
-            >
-              <SearchIcon class="w-6 h-6 text-white xl:mr-2"/>
-              <span class="hidden leading-normal font-medium text-white xl:inline-block"> Search </span>
-            </button>
-            <button
-                class="flex flex-col items-center"
-                :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden xl:flex' : 'lg:flex xl:flex') : '']"
-                @click="
+                            </button>
+                            <NuxtLink to="/" class="flex" :class="[isScrolled ? 'md:ml-4 lg:ml-6' : 'md:hidden']">
+                                <LogoSM class="w-[22px] h-5" :class="[isScrolled ? 'md:hidden' : '']" />
+                                <Logo
+                                    class="hidden w-[82px] grayscale brightness-0 invert lg:w-[102px]"
+                                    :class="[isScrolled ? 'md:flex' : '']"
+                                />
+                            </NuxtLink>
+                        </div>
+                        <ul v-if="!isScrolled" class="hidden items-center gap-4 md:flex md:gap-6">
+                            <li v-for="(navItem, index) in navItems" :key="index" class="">
+                                <NuxtLink :to="navItem.to" class="flex leading-normal font-medium text-white">
+                                    {{ navItem.label }}
+                                </NuxtLink>
+                            </li>
+                        </ul>
+                    </div>
+                    <LayoutHeaderSearch
+                        v-if="isScrolled"
+                        :show-results="true"
+                        :is-visible="showMobileSearch"
+                        :is-scrolled="isScrolled"
+                        class="flex-1 max-md:hidden xl:block"
+                        :class="[showMobileSearch ? 'lg:block' : 'md:hidden']"
+                        @blur="showMobileSearch = false"
+                    />
+                    <div class="flex items-center gap-7 md:gap-9 lg:ml-0 lg:gap-9 xl:gap-9" :class="[isScrolled ? 'md:ml-4' : 'md:gap-6']">
+                        <button
+                            class="items-center xl:hidden"
+                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex lg:flex') : 'md:hidden']"
+                            @click="showMobileSearch = true"
+                        >
+                            <SearchIcon class="w-6 h-6 text-white xl:mr-2" />
+                            <span class="hidden leading-normal font-medium text-white xl:inline-block"> Search </span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center"
+                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden xl:flex' : 'lg:flex xl:flex') : '']"
+                            @click="
                                 favoritesCartModal = {
                                     show: true,
                                     tab: 'favorites',
@@ -250,6 +248,18 @@ const isMobile = ref(false);
 const signinQuery = computed(() => route.query.signin);
 
 const showAccountModal = ref(false);
+watch(showAccountModal, () => {    
+    // remove scroll if showAccountModal is true
+    if (showAccountModal.value) {
+        document.body.style.overflow = 'hidden';
+        document.body.style.maxHeight = '100vh';
+    } else {
+        // Enable scroll
+        document.body.style.overflow = 'auto';
+        document.body.style.maxHeight = '100%';
+    }
+});
+
 const favoritesCartModal = ref({
   show: false,
   tab: 'favorites' as 'favorites' | 'shopping-cart',
