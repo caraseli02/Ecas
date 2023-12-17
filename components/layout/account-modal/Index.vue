@@ -1,10 +1,10 @@
 <template>
     <div class="fixed z-[60] inset-0 w-screen h-screen pointer-events-none">
         <div
-            class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] p-2 md:p-4 overflow-y-scroll">
+            class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] px-2 py-4 md:px-4  md:py-6 overflow-y-scroll">
             <div class="flex flex-col items-center justify-start pb-6 gap-6">
                 <button
-                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end"
+                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end mr-2"
                     @click="$emit('close')">
                     <XIcon class="w-[24px] h-[24px] text-[#5E6278]" />
                 </button>
@@ -16,7 +16,7 @@
                 <LayoutAccountModalForm />
             </div>
             <section v-else>
-                <div class="flex-1 pt-6 flex flex-col gap-6">
+                <div class="flex-1 flex flex-col gap-6">
                     <LayoutAccountModalMessage />
                     <LayoutAccountModalCredits class="mx-2" />
                     <LayoutAccountModalLinks class="mx-2" />
