@@ -36,7 +36,7 @@
             </div>
             <div class="text-[13px] leading-tight md:text-base" :class="[productDiscount ? 'text-red' : '']">
                 <strong>
-                    {{ productDiscount ? `$ ${productDiscount.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
+                    {{ productDiscount ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
                 </strong>
                 {{ priceConfiguration ? `(${priceConfiguration.quantity}+)` : '-' }}
             </div>
@@ -66,7 +66,7 @@
         <div
             v-if="product.stock"
             class="absolute bottom-0 right-0 bg-blue px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]"
-            @click.prevent="addToCart(product)"
+            @click.prevent="addToCart(product, priceConfiguration ? priceConfiguration.quantity : 1)"
         >
             <CartIcon class="w-6 h-6 text-white" />
         </div>
@@ -134,10 +134,10 @@ const addToFavourite = async (product: ProductInterface) => {
     await $api.favouriteFolder.addEntityToFavouriteList(payload);
 };
 
-const addToCart = async (product: ProductInterface) => {
+const addToCart = async (product: ProductInterface, stockToAdd = 1) => {
     const payload: AddToCartRequestInterface = {
         userId: '',
-        products: [{ id: product._id, stock: 1, isFolder: false }],
+        products: [{ id: product._id, stock: stockToAdd, isFolder: false }],
     };
 
     const object = await $api.cart.addEntityToCart(payload);

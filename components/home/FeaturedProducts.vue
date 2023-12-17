@@ -152,10 +152,9 @@
 
 <script setup lang="ts">
 import BlackFridayItem from '@/assets/media/home/black-friday-item.png';
-import { A11y, Pagination, Grid } from 'swiper';
-import { PaginatedUserRequest } from '~/model/user/request/PaginatedUserRequest';
-import { ProductCard as ProductCardType } from '~~/types';
+import { A11y, Grid, Pagination } from 'swiper';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
+
 const { $api } = useNuxtApp();
 
 const elDOM = ref<HTMLElement | null>(null);
@@ -194,7 +193,7 @@ const filterLineWidth = ref(0);
 watch(activeFilter, async (value) => {
     const { data } = await $api.product.fetchProductTab(value);
 
-    if (data && data.length) {
+    if (data) {
         productList.value = data as unknown as ProductInterface[];
         // productList.value = data?.map((item) => ({
         //     slug: item._id,
@@ -233,7 +232,7 @@ onMounted(async () => {
 async function getProductTab() {
     const { data } = await $api.product.fetchProductTab('featured');
 
-    if (data && data.length) {
+    if (data) {
         productList.value = data as unknown as ProductInterface[];
         // productList.value = data?.map((item) => ({
         //     slug: item._id,
