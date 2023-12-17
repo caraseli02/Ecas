@@ -10,7 +10,7 @@
     </button>
     <label class="flex">
       <input
-          :value="modelValue < 1 ? Number(1) : modelValue"
+          :value="modelValue < object.min ? Number(object.min) : modelValue"
           type="number"
           :min="1"
           placeholder="Quantity"
@@ -89,8 +89,8 @@ const inputHandlerModified = (event: Event) => {
 
   inputHandler(Number(target.value.replace(/\D+/g, '')));
 
-  if (parseInt(target.value) < 1 || !target.value) {
-    inputHandler(1);
+  if (parseInt(target.value) < props.object.min || !target.value) {
+    inputHandler(props.object.min);
   }
 };
 
