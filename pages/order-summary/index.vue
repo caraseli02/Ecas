@@ -45,12 +45,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <Banner />
-            <NewProducts title="Hot Deals" />
-            <div class="container mb-10 lg:hidden">
-                <OrderSummaryEcxlusiveOffer />
-            </div>
-            <News /> -->
         </div>
     </div>
 </template>
@@ -108,7 +102,14 @@ const checkAll = (checked: boolean) => {
     });
 };
 
-const calculateOrderPricesSummary = () => {};
+watch(
+    [cartItems],
+    ([_items]) => {
+        calculateSubtotal(_items);
+        calculateDiscount(_items);
+    },
+    { deep: true }
+);
 
 const mapCartItems = (cart: CartProductsInterface[]) => {
     cartItems.value = cart.map((product: CartProductsInterface) => ({
@@ -200,6 +201,7 @@ const order = ref({
     products: orderItems.value,
     discount: {
         value: 0,
+        total: 0,
     },
     shippingDetails: {
         address: getShipping(),
@@ -213,22 +215,32 @@ const order = ref({
     deliveryMethod: 0,
 });
 
-const calculateSubtotal = () => {
+const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
+    if (!orderItems) {
+        return;
+    }
+
     let subtotal = 0;
 
-    orderItems.value.forEach((item: CartProductsInterface) => {
-        subtotal += Number(item.subtotal);
+    orderItems.forEach((item: CartProductsInterface) => {
+        subtotal += Number(item.unitPriceAfterDiscounts) * item.stock;
     });
+
     order.value.subtotal = subtotal.toFixed(2) as unknown as number;
 };
 
-const calculateDiscount = () => {
+const calculateDiscount = (orderItems: CartProductsInterface[]) => {
+    if (!orderItems) {
+        return;
+    }
+
     let discount = 0;
 
-    orderItems.value.forEach((item: CartProductsInterface) => {
-        discount += Number(item.subtotal);
+    orderItems.forEach((item: CartProductsInterface) => {
+        discount += Number(item.initialUnitPrice) * item.stock - Number(item.unitPriceAfterDiscounts) * item.stock;
     });
-    order.value.discount.value = 8;
+
+    order.value.discount.total = discount;
 };
 
 Emitter.on('order-type', async (type: number) => {
@@ -274,6 +286,6 @@ Emitter.on('checkout', async () => {
 
 await fetchList();
 
-calculateSubtotal();
-calculateDiscount();
+calculateSubtotal(cartItems.value);
+calculateDiscount(cartItems.value);
 </script>

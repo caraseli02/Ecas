@@ -36,6 +36,7 @@ export interface AlertsAndNotificationsTypes {
 
 export interface DiscountInterface {
     value: number;
+    total?: number;
     startDate: string;
     endDate: string;
 }

@@ -11,7 +11,7 @@
             <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-6">
                     <span class="text-[#5E6278] text-sm font-normal leading-6">Discount</span>
-                    <span class="text-[#222] text-sm font-normal leading-6">({{ discountPercentage }}%)</span>
+                    <!--                    <span class="text-[#222] text-sm font-normal leading-6">({{ discountPercentage }}%)</span>-->
                 </div>
                 <span class="text-[#222] text-sm font-medium leading-6">- $ {{ calculatedDiscount.toFixed(2) }}</span>
             </div>
@@ -121,10 +121,7 @@ export default defineComponent({
             return 0;
         },
         calculatedDiscount(): number {
-            if (this.order.discount && this.order.subtotal) {
-                return (this.order.subtotal * this.order.discount.value) / 100;
-            }
-            return 0;
+            return this.order.discount?.total || 0;
         },
         discountPercentage(): number {
             if (this.order.discount) {
