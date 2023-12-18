@@ -15,19 +15,19 @@
                 <div>Total</div>
                 <div class="text-right">$ {{ totalCartPrice.toFixed(3) }}</div>
             </div>
-            <button
+            <NuxtLink
                 class="flex items-center justify-center gap-2 bg-blue text-white rounded-lg px-[15px] py-2 leading-[1.75] font-medium w-full"
+                :to="'/order-summary'"
             >
                 <CartIcon class="w-6 h-6" />
                 <span> Go to Checkout </span>
-            </button>
+            </NuxtLink>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import CartIcon from '@/assets/icons/cart.svg';
-import { useNuxtApp } from '#app';
 import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
 import Emitter from 'tiny-emitter/instance.js';
 import { PropType } from 'vue';
@@ -35,8 +35,6 @@ import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { FavoriteItem } from '~/types';
-
-const { $api } = useNuxtApp();
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);

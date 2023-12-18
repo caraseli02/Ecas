@@ -142,7 +142,7 @@ const props = defineProps({
     },
 });
 const productItem = ref<FavoriteItem>(props.product);
-const emits = defineEmits(['select', 'total-price']);
+const emits = defineEmits(['select']);
 
 const deleteItem = ref(false);
 const copyItems = ref(false);
@@ -156,12 +156,4 @@ const priceConfiguration = ref<PriceConfigurationSettingsInterface | null>(disco
 const discountPrice = ref(discountsHelper.discountPrice);
 const userDiscount = ref(discountsHelper.userDiscount);
 const productDiscount = ref(discountsHelper.productDiscount);
-
-emits('total-price', props.product ? (discountPrice.value * props.product.quantity).toFixed(3) : 0);
-
-// const parseProductPriceConfiguration = () => {
-//     priceConfiguration.value = props.product?.productEntity.priceConfiguration?.configuration[0] || null;
-//     quantity.value = priceConfiguration?.value?.quantity || 0;
-// };
-// parseProductPriceConfiguration();
 </script>

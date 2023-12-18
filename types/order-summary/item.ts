@@ -1,6 +1,6 @@
-import {DiscountInterface} from '~/types/auth/account-settings';
-import {ProductInterface} from '~/model/products/response/ProductResponse';
-import {AddressInterface} from '~/types/auth/user-details';
+import { DiscountInterface } from '~/types/auth/account-settings';
+import { ProductInterface } from '~/model/products/response/ProductResponse';
+import { AddressInterface } from '~/types/auth/user-details';
 
 export interface OrderSummaryItem {
     title: string;
@@ -41,7 +41,7 @@ export interface OrderInterface {
     userName: string;
     businessId?: string;
     products?: (CartProductsInterface & {
-        discount?: DiscountInterface
+        discount?: DiscountInterface;
     })[];
     shippingDetails: OrderShippingDetailsInterface;
     paymentDetails?: PaymentDetails;
@@ -119,9 +119,13 @@ export enum PaymentStatusEnum {
     Declined = 3,
 }
 
-export const getPaymentStatusById = <T extends {
-    [index: string]: number
-}>(enumValue: number): string | null => {
+export const getPaymentStatusById = <
+    T extends {
+        [index: string]: number;
+    }
+>(
+    enumValue: number
+): string | null => {
     const keys = Object.keys(PaymentStatusEnum).filter((x) => PaymentStatusEnum[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
@@ -133,9 +137,13 @@ export enum PaymentTypeEnum {
     Bank = 3,
 }
 
-export const getPaymentTypeById = <T extends {
-    [index: string]: number
-}>(enumValue: number): string | null => {
+export const getPaymentTypeById = <
+    T extends {
+        [index: string]: number;
+    }
+>(
+    enumValue: number
+): string | null => {
     const keys = Object.keys(PaymentTypeEnum).filter((x) => PaymentTypeEnum[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
@@ -155,32 +163,40 @@ export interface CartProductsInterface {
     isFolder: boolean;
 
     /**
-     * Price before any discount
+     * Price before any discount per unit
      */
-    initialPrice?: number;
+    initialUnitPrice: number;
+
+    /**
+     * Price after any discount per unit
+     */
+    unitPriceAfterDiscounts: number;
+
+    /**
+     * Price after applying shipping and other taxes
+     */
+    total: number;
 
     /**
      * Price after applying discounts
      */
-    discountPrice?: number;
+    subtotal: number;
 
     /**
      * Value of the applied discount
      */
-    discount?: DiscountInterface;
+    discount: DiscountInterface;
 
     /** The entire product retrieved from database */
     productEntity?: ProductInterface;
 }
 
-
 export interface PriceHistory {
-    active: boolean,
-    createdAt: string,
-    price: number,
-    updatedAt: string,
+    active: boolean;
+    createdAt: string;
+    price: number;
+    updatedAt: string;
 }
-
 
 export enum OrderStatus {
     Completed = 'Completed',
@@ -211,9 +227,13 @@ export enum OrderType {
     Mixed = 2,
 }
 
-export const getOrderById = <T extends {
-    [index: string]: number
-}>(enumValue: number): string | null => {
+export const getOrderById = <
+    T extends {
+        [index: string]: number;
+    }
+>(
+    enumValue: number
+): string | null => {
     const keys = Object.keys(OrderType).filter((x) => OrderType[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
