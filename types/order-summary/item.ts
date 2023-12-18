@@ -40,7 +40,9 @@ export interface OrderInterface {
     userId?: string;
     userName: string;
     businessId?: string;
-    products?: (CartProductsInterface & { discount?: DiscountInterface })[];
+    products?: (CartProductsInterface & {
+        discount?: DiscountInterface
+    })[];
     shippingDetails: OrderShippingDetailsInterface;
     paymentDetails?: PaymentDetails;
     total: number;
@@ -117,7 +119,9 @@ export enum PaymentStatusEnum {
     Declined = 3,
 }
 
-export const getPaymentStatusById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
+export const getPaymentStatusById = <T extends {
+    [index: string]: number
+}>(enumValue: number): string | null => {
     const keys = Object.keys(PaymentStatusEnum).filter((x) => PaymentStatusEnum[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
@@ -129,7 +133,9 @@ export enum PaymentTypeEnum {
     Bank = 3,
 }
 
-export const getPaymentTypeById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
+export const getPaymentTypeById = <T extends {
+    [index: string]: number
+}>(enumValue: number): string | null => {
     const keys = Object.keys(PaymentTypeEnum).filter((x) => PaymentTypeEnum[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
@@ -205,7 +211,9 @@ export enum OrderType {
     Mixed = 2,
 }
 
-export const getOrderById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
+export const getOrderById = <T extends {
+    [index: string]: number
+}>(enumValue: number): string | null => {
     const keys = Object.keys(OrderType).filter((x) => OrderType[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
