@@ -64,10 +64,15 @@ import Emitter from 'tiny-emitter/instance.js';
 
 const store = useAuthStore();
 const user = computed(() => store.getUserDetails);
-
+const OrderRequestObject = ref<OrderRequestInterface>({} as OrderRequestInterface);
 const userId = user.value?.firebaseId;
 const creditObject = ref({} as CustomerCreditInterface);
 const orderType = ref(0);
+const note = ref('')
+const paymentType = ref({
+  type: 0 as number,
+  selected: false
+})
 
 const {$api} = useNuxtApp();
 useHead({
@@ -75,13 +80,13 @@ useHead({
 });
 const cartItems = ref([] as any);
 const cartId = ref('' as string);
+
 const fetchList = async () => {
   const response = await $api.cart.fetchCartList();
   if (response.status === 'success') {
     let products: CartProductsInterface[] = [];
     products = response.data.products;
     cartId.value = response.data._id;
-    console.log(cartId.value);
     mapCartItems(products)
   } else {
     console.log('error');
@@ -290,23 +295,40 @@ Emitter.on('order-type', async (type: number) => {
   orderType.value = type
 })
 
+Emitter.on('payment-type', async (object: { type: number, selected: boolean }) => {
+  paymentType.value.type = object.type
+  paymentType.value.selected = object.selected
+})
+
+Emitter.on('note', async (noteText: string) => {
+  note.value = noteText;
+})
+
 Emitter.on('checkout', async () => {
   if (user.value.role === AccountRole.Client) {
-    const OrderRequestObject = {} as OrderRequestInterface;
-    OrderRequestObject.cartId = cartId.value
-    OrderRequestObject.currency = 'used'
-    OrderRequestObject.type = orderType.value
-    OrderRequestObject.shippingDetails = {
-      firstName: user.value.firstName,
-      lastName: user.value.lastName,
-      phone: user.value.phone,
-      city: user.value.city,
-      country: user.value.country,
+    OrderRequestObject.value.cartId = cartId.value
+    OrderRequestObject.value.currency = 'usd'
+    OrderRequestObject.value.type = orderType.value
+    OrderRequestObject.value.shippingDetails = {
+      firstName: user.value.personalDetails.firstName,
+      lastName: user.value.personalDetails.lastName,
+      phone: user.value.personalDetails.phone,
+      city: user.value.personalDetails.address.city,
+      country: user.value.personalDetails.address.country,
       address: shipping(),
       billingAddress: billing(),
     }
-    OrderRequestObject.note = {} as OrderNotesInterface
-
+    OrderRequestObject.value.note = {} as OrderNotesInterface
+    OrderRequestObject.value.paymentDetails = {
+      type: paymentType.value.type
+    }
+    OrderRequestObject.value.note = {
+      sender: user.value.firebaseId,
+      message: note.value
+    }
+  }
+  if (paymentType.value.selected) {
+    console.log(OrderRequestObject.value)
   }
 })
 
