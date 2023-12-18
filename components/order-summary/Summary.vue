@@ -13,7 +13,7 @@
                     <span class="text-[#5E6278] text-sm font-normal leading-6">Discount</span>
                     <span class="text-[#222] text-sm font-normal leading-6">({{ discountPercentage }}%)</span>
                 </div>
-                <span class="text-[#222] text-sm font-medium leading-6">- $ {{ calculatedDiscount }}</span>
+                <span class="text-[#222] text-sm font-medium leading-6">- $ {{ calculatedDiscount.toFixed(2) }}</span>
             </div>
             <div v-if="smallOrder" class="flex flex-row justify-between w-full">
                 <div class="flex flex-col gap-1">
