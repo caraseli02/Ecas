@@ -83,7 +83,7 @@
                                     %</span>
               </div>
             </div>
-            <div v-if="item.discount.value" class="flex flex-col text-center h-[36px] justify-center">
+            <div v-if="item.discount?.value" class="flex flex-col text-center h-[36px] justify-center">
                             <span class="line-through text-[#222] text-sm font-normal leading-5">RON {{
                                 item.initialPrice
                               }}</span>
@@ -258,11 +258,6 @@ export default defineComponent({
     },
   },
   methods: {
-    updateQuantityValue(value: number) {
-      // this.$emit('update:quantity', value);
-      // write request to update item.stock here
-      this.item.stock = value;
-    },
     deleteItem() {
       // write request to delete item here
       this.$emit('delete:item', this.item.id);
