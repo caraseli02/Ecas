@@ -85,6 +85,7 @@ const cartId = ref('' as string);
 
 const fetchList = async () => {
     const response = await $api.cart.fetchCartList();
+
     if (response.status === 'success') {
         let products: CartProductsInterface[] = [];
         products = response.data.products;
@@ -106,6 +107,8 @@ const checkAll = (checked: boolean) => {
         item.selected = checked;
     });
 };
+
+const calculateOrderPricesSummary = () => {};
 
 const mapCartItems = (cart: CartProductsInterface[]) => {
     cartItems.value = cart.map((product: CartProductsInterface) => ({
@@ -135,10 +138,10 @@ const addToFavsAll = (liked: boolean) => {
     });
 };
 
-const orderItems = computed(() => {
+const orderItems = computed((): CartProductsInterface[] => {
     return cartItems.value.map((item: any) => {
         const { selected, liked, ...rest } = item;
-        return rest;
+        return rest as CartProductsInterface;
     });
 });
 
@@ -193,10 +196,10 @@ const getBilling = () => {
 
 const order = ref({
     total: 0,
-    subtotal: 1000,
+    subtotal: 0,
     products: orderItems.value,
     discount: {
-        value: 0.25,
+        value: 0,
     },
     shippingDetails: {
         address: getShipping(),
@@ -212,10 +215,20 @@ const order = ref({
 
 const calculateSubtotal = () => {
     let subtotal = 0;
-    orderItems.value.forEach((item) => {
-        subtotal += item.discountPrice * item.stock;
+
+    orderItems.value.forEach((item: CartProductsInterface) => {
+        subtotal += Number(item.subtotal);
     });
-    order.value.subtotal = subtotal;
+    order.value.subtotal = subtotal.toFixed(2) as unknown as number;
+};
+
+const calculateDiscount = () => {
+    let discount = 0;
+
+    orderItems.value.forEach((item: CartProductsInterface) => {
+        discount += Number(item.subtotal);
+    });
+    order.value.discount.value = 8;
 };
 
 Emitter.on('order-type', async (type: number) => {
@@ -262,4 +275,5 @@ Emitter.on('checkout', async () => {
 await fetchList();
 
 calculateSubtotal();
+calculateDiscount();
 </script>
