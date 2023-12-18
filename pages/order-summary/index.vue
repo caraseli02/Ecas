@@ -59,6 +59,13 @@ import PrintIcon from '@/assets/icons/print.svg';
 import {CartProductsInterface} from '~/types';
 import {CustomerCreditInterface} from '~/types/auth/account-settings';
 import {useAuthStore} from '~/store/authStore';
+import {ShippingAddressInterface} from '~/types/auth/user-details';
+
+const store = useAuthStore();
+const user = computed(() => store.getUserDetails);
+
+const userId = user.value?.firebaseId;
+const creditObject = ref({} as CustomerCreditInterface);
 
 const {$api} = useNuxtApp();
 useHead({
@@ -71,8 +78,7 @@ const fetchList = async () => {
   if (response.status === 'success') {
     let products: CartProductsInterface[] = [];
     products = response.data.products;
-    console.log(products);
-    await mapCartItems(products)
+    mapCartItems(products)
   } else {
     console.log('error');
   }
@@ -176,8 +182,12 @@ const mapCartItems = (cart: CartProductsInterface[]) => {
     isFolder: false,
     initialPrice: Number((product.productEntity?.priceHistory
         .filter(priceObj => priceObj.active).map(key => key.price) as Array<any>)[0].toFixed(2)),
-    discountPrice: product.discountPrice || 0,
-    discount: product.discount || {},
+    discountPrice: product.discountPrice || 0.07,
+    discount: product.discount || {
+      value: 0.07,
+      startDate: '',
+      endDate: '',
+    },
     productEntity: product.productEntity,
     liked: false,
     selected: false,
@@ -200,11 +210,6 @@ const orderItems = computed(() => {
   });
 });
 
-const store = useAuthStore();
-const user = computed(() => store.getUserDetails);
-
-const userId = user.value?.firebaseId;
-const creditObject = ref({} as CustomerCreditInterface);
 
 const getCustomerCredit = async () => {
   if (!userId) {
@@ -236,6 +241,20 @@ const accountCredit = ref({
   tillDue: creditObject.value?.tillDue,
   term: creditObject.value?.term,
 });
+const shipping = () => {
+  if (user.value) {
+    const address = (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[]).find((address) => address.default) || user.value?.personalDetails?.shippingAddress[0]
+    address.alias = address.alias || 'Address'
+    return address;
+  }
+};
+const billing = () => {
+  if (user.value) {
+    const address = user.value?.personalDetails?.shippingAddress[0]
+    address.alias = address.alias || 'Address'
+    return address;
+  }
+};
 
 const order = ref({
   total: 0,
@@ -245,22 +264,8 @@ const order = ref({
     value: 0.25,
   },
   shippingDetails: {
-    address: {
-      alias: 'Home',
-      name1: '5073 Mark Brown Rd',
-      city: 'NE Dalton',
-      region: 'Georgia (GA)',
-      postcode: '30721',
-      country: 'United States',
-    },
-    billingAddress: {
-      alias: 'Home',
-      name1: '5073 Mark Brown Rd',
-      city: 'NE Dalton',
-      region: 'Georgia (GA)',
-      postcode: '30721',
-      country: 'United States',
-    },
+    address: shipping(),
+    billingAddress: billing(),
   },
   paymentDetails: {
     type: null,
@@ -277,6 +282,8 @@ const calculateSubtotal = () => {
   });
   order.value.subtotal = subtotal;
 };
+
+
 await fetchList()
 
 calculateSubtotal();
