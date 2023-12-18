@@ -66,15 +66,15 @@ import Emitter from 'tiny-emitter/instance.js';
 
 const store = useAuthStore();
 const user = computed(() => store.getUserDetails);
-const OrderRequestObject = ref<OrderRequestInterface>({} as OrderRequestInterface);
+const orderRequestObject = ref<OrderRequestInterface>({} as OrderRequestInterface);
 const userId = user.value?.firebaseId;
 const creditObject = ref({} as CustomerCreditInterface);
 const orderType = ref(0);
-const note = ref('')
+const note = ref('');
 const paymentType = ref({
-  type: 0 as number,
-  selected: false
-})
+    type: 0 as number,
+    selected: false,
+});
 
 const { $api } = useNuxtApp();
 useHead({
@@ -84,12 +84,12 @@ const cartItems = ref([] as any);
 const cartId = ref('' as string);
 
 const fetchList = async () => {
-  const response = await $api.cart.fetchCartList();
-  if (response.status === 'success') {
-    let products: CartProductsInterface[] = [];
-    products = response.data.products;
-    cartId.value = response.data._id;
-    mapCartItems(products);
+    const response = await $api.cart.fetchCartList();
+    if (response.status === 'success') {
+        let products: CartProductsInterface[] = [];
+        products = response.data.products;
+        cartId.value = response.data._id;
+        mapCartItems(products);
     } else {
         console.log('error');
     }
@@ -172,7 +172,8 @@ const accountCredit = ref({
     tillDue: creditObject.value?.tillDue,
     term: creditObject.value?.term,
 });
-const shipping = () => {
+
+const getShipping = () => {
     if (user.value) {
         const address =
             (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[]).find((address) => address.default) ||
@@ -181,7 +182,8 @@ const shipping = () => {
         return address;
     }
 };
-const billing = () => {
+
+const getBilling = () => {
     if (user.value) {
         const address = user.value?.personalDetails?.shippingAddress[0];
         address.alias = address.alias || 'Address';
@@ -197,8 +199,8 @@ const order = ref({
         value: 0.25,
     },
     shippingDetails: {
-        address: shipping(),
-        billingAddress: billing(),
+        address: getShipping(),
+        billingAddress: getBilling(),
     },
     paymentDetails: {
         type: null,
@@ -220,40 +222,40 @@ Emitter.on('order-type', async (type: number) => {
     orderType.value = type;
 });
 
-Emitter.on('payment-type', async (object: { type: number, selected: boolean }) => {
-  paymentType.value.type = object.type
-  paymentType.value.selected = object.selected
-})
+Emitter.on('payment-type', async (object: { type: number; selected: boolean }) => {
+    paymentType.value.type = object.type;
+    paymentType.value.selected = object.selected;
+});
 
 Emitter.on('note', async (noteText: string) => {
-  note.value = noteText;
-})
+    note.value = noteText;
+});
 
 Emitter.on('checkout', async () => {
     if (user.value.role === AccountRole.Client) {
-        OrderRequestObject.value.cartId = cartId.value;
-        OrderRequestObject.value.currency = 'usd';
-        OrderRequestObject.value.type = orderType.value;
-        OrderRequestObject.value.shippingDetails = {
-            firstName: user.value.personalDetails.firstName,
-            lastName: user.value.personalDetails.lastName,
-            phone: user.value.personalDetails.phone,
-            city: user.value.personalDetails.address.city,
-            country: user.value.personalDetails.address.country,
-            address: shipping(),
-            billingAddress: billing(),
+        orderRequestObject.value = {
+            isDraft: false,
+            cartId: cartId.value,
+            currency: 'usd',
+            type: orderType.value,
+            shippingDetails: {
+                firstName: user.value.personalDetails.firstName,
+                lastName: user.value.personalDetails.lastName,
+                phone: user.value.personalDetails.phone,
+                city: user.value.personalDetails.address.city,
+                country: user.value.personalDetails.address.country,
+                address: getShipping(),
+                billingAddress: getBilling(),
+            },
+            note: {} as OrderNotesInterface,
+            paymentDetails: {
+                type: paymentType.value.type,
+            },
+            note: {
+                sender: user.value.firebaseId,
+                message: note.value,
+            },
         };
-        OrderRequestObject.value.note = {} as OrderNotesInterface
-        OrderRequestObject.value.paymentDetails = {
-            type: paymentType.value.type
-        }
-        OrderRequestObject.value.note = {
-            sender: user.value.firebaseId,
-            message: note.value
-        }
-    }
-    if (paymentType.value.selected) {
-        console.log(OrderRequestObject.value)
     }
 });
 
