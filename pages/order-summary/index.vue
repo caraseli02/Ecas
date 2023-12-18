@@ -56,28 +56,32 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import {CartProductsInterface} from '~/types';
+import {AccountRole, CartProductsInterface, OrderNotesInterface, OrderRequestInterface} from '~/types';
 import {CustomerCreditInterface} from '~/types/auth/account-settings';
 import {useAuthStore} from '~/store/authStore';
 import {ShippingAddressInterface} from '~/types/auth/user-details';
+import Emitter from 'tiny-emitter/instance.js';
 
 const store = useAuthStore();
 const user = computed(() => store.getUserDetails);
 
 const userId = user.value?.firebaseId;
 const creditObject = ref({} as CustomerCreditInterface);
+const orderType = ref(0);
 
 const {$api} = useNuxtApp();
 useHead({
   title: 'Order Summary',
 });
 const cartItems = ref([] as any);
-
+const cartId = ref('' as string);
 const fetchList = async () => {
   const response = await $api.cart.fetchCartList();
   if (response.status === 'success') {
     let products: CartProductsInterface[] = [];
     products = response.data.products;
+    cartId.value = response.data._id;
+    console.log(cartId.value);
     mapCartItems(products)
   } else {
     console.log('error');
@@ -192,7 +196,6 @@ const mapCartItems = (cart: CartProductsInterface[]) => {
     liked: false,
     selected: false,
   }));
-  console.log(cartItems.value);
 }
 
 const addToFavsAll = (liked: boolean) => {
@@ -283,6 +286,29 @@ const calculateSubtotal = () => {
   order.value.subtotal = subtotal;
 };
 
+Emitter.on('order-type', async (type: number) => {
+  orderType.value = type
+})
+
+Emitter.on('checkout', async () => {
+  if (user.value.role === AccountRole.Client) {
+    const OrderRequestObject = {} as OrderRequestInterface;
+    OrderRequestObject.cartId = cartId.value
+    OrderRequestObject.currency = 'used'
+    OrderRequestObject.type = orderType.value
+    OrderRequestObject.shippingDetails = {
+      firstName: user.value.firstName,
+      lastName: user.value.lastName,
+      phone: user.value.phone,
+      city: user.value.city,
+      country: user.value.country,
+      address: shipping(),
+      billingAddress: billing(),
+    }
+    OrderRequestObject.note = {} as OrderNotesInterface
+
+  }
+})
 
 await fetchList()
 
