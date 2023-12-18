@@ -90,9 +90,12 @@ import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/reques
 import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import Emitter from 'tiny-emitter/instance.js';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
-import { storeToRefs } from 'pinia';
+import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
-import { UserDetails } from '~/types/auth/user-details';
+import { storeToRefs } from 'pinia';
+
+const authStore = useAuthStore();
+const { getUserDetails } = storeToRefs(authStore);
 
 const { $api } = useNuxtApp();
 const props = defineProps({
@@ -102,26 +105,12 @@ const props = defineProps({
     },
 });
 
-const authStore = useAuthStore();
-const { getUserDetails } = storeToRefs(authStore);
+const discountsHelper = parseProductPriceConfiguration(props.product, getUserDetails.value);
 
-const priceConfiguration = ref<PriceConfigurationSettingsInterface | null>(null);
-const discountPrice = ref(0);
-const userDiscount = ref(0);
-const productDiscount = ref(0);
-
-const parseProductPriceConfiguration = () => {
-    priceConfiguration.value = props.product?.priceConfiguration?.configuration[0] || null;
-
-    userDiscount.value = (getUserDetails.value as unknown as UserDetails)?.adminSettings?.discount?.value || 0;
-    productDiscount.value = props.product.adminSettings?.discount?.value || 0;
-
-    if (priceConfiguration.value) {
-        discountPrice.value = productDiscount
-            ? priceConfiguration.value?.price * (1 - productDiscount.value / 100)
-            : priceConfiguration.value?.price * (1 - userDiscount.value / 100);
-    }
-};
+const priceConfiguration = ref<PriceConfigurationSettingsInterface | null>(discountsHelper.priceConfiguration);
+const discountPrice = ref(discountsHelper.discountPrice);
+const userDiscount = ref(discountsHelper.userDiscount);
+const productDiscount = ref(discountsHelper.productDiscount);
 
 const addToFavourite = async (product: ProductInterface) => {
     const payload: FavouriteFolderRequestInterface = {
@@ -146,6 +135,4 @@ const addToCart = async (product: ProductInterface, stockToAdd = 1) => {
         Emitter.emit('update-cart', data);
     }
 };
-
-parseProductPriceConfiguration();
 </script>

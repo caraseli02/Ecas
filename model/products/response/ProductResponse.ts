@@ -1,4 +1,4 @@
-import {PriceHistory} from '~/types';
+import { PriceHistory } from '~/types';
 
 export interface ProductResponse {
     data: [ProductInterface];
@@ -88,4 +88,11 @@ export interface AdditionalInfoInterface {
 export interface AdminSettings {
     discount?: DiscountInterface;
     featured?: boolean;
+}
+
+export interface ProductDiscountsHelperInterface {
+    userDiscount: number;
+    productDiscount: number;
+    discountPrice: number;
+    priceConfiguration: PriceConfigurationSettingsInterface;
 }
