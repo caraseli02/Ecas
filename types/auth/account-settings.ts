@@ -27,6 +27,8 @@ export interface CustomerCreditInterface {
     dueDate: string;
     tillDue: string;
     term: number;
+    freeze: boolean;
+    active: boolean;
 }
 
 export interface AlertsAndNotificationsTypes {
