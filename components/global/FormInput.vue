@@ -17,7 +17,7 @@
                     :placeholder="placeholder"
                     class="bg-transparent border pr-3 text-sm placeholder:text-gray-500 w-full transition-colors duration-300 focus:outline-none"
                     :class="[
-                        error ? 'border-red' : 'border-border focus:border-blue',
+                        error ? 'border-red' : 'border-border focus:border-blue-500',
                         disabled && showDisabledStyles
                             ? 'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
                             : '',

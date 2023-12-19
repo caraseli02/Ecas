@@ -17,7 +17,7 @@
             </button>
           </div>
           <button
-              class="flex items-center text-slate-500 px-3 py-[5px] max-w-max border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue-500 hover:border-blue md:mb-0"
+              class="flex items-center text-slate-500 px-3 py-[5px] max-w-max border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue-500 hover:border-blue-500 md:mb-0"
               @click="showCustomProductPartNumberModal = true"
           >
                         <span class="text-[15px] leading-tight font-medium mr-2">

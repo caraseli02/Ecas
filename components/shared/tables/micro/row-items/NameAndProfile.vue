@@ -13,7 +13,7 @@
                 !item.avatar ? 'bg-gray-100' : '',
                 loading
                     ? ''
-                    : 'after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100',
+                    : 'after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue-500 after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100',
             ]"
         >
             <SkeletonLoader v-if="loading" class="w-full h-full" />
@@ -44,7 +44,7 @@
                         </div>
                     </Tooltip>
                     <Tooltip v-if="item.adminSettings?.discount && showDiscount" :position="index === 0 ? 'bottom' : 'top'" theme="black">
-                        <div class="border-blue border-[1px] px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-[#007FFF]">
+                        <div class="border-blue-500 border-[1px] px-2 rounded-[25px] text-xs leading-[1.67] font-semibold text-[#007FFF]">
                             {{ item.adminSettings?.discount.value }} %
                         </div>
                         <template #content>

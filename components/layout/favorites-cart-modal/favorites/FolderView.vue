@@ -106,7 +106,7 @@
                     ref="newNameInputDOM"
                     v-model="newName"
                     type="text"
-                    class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-neutral-700 transition-colors duration-300 placeholder:text-slate-500 focus:outline-none focus:border-blue"
+                    class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-neutral-700 transition-colors duration-300 placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
                 />
             </label>
             <button class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-blue-500" @click="editing = false">

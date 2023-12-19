@@ -2,7 +2,7 @@
   <div>
     <button
       class="flex items-center relative border rounded-lg px-4 py-[7px] bg-white transition-colors duration-300"
-      :class="[textGrayCondition ? 'text-gray-500' : '',rangeVisible ? 'border-blue' : 'border-border', customClasses]"
+      :class="[textGrayCondition ? 'text-gray-500' : '',rangeVisible ? 'border-blue-500' : 'border-border', customClasses]"
       @click="handleShow">
       <span class="text-sm truncate flex-shrink-0 mr-1" :class="[trackingWidestCondition ? '-tracking-widest' : '']">
         {{ rangeValue || 'Filter' }}

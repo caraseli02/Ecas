@@ -4,7 +4,7 @@
       class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
       :class="[
         !range?.start && !range?.end ? 'text-gray-500' : '',
-        datePickerVisible ? 'border-blue' : 'border-border',
+        datePickerVisible ? 'border-blue-500' : 'border-border',
       ]" @click="handleShow">
       <span class="text-sm tracking-[-0.02em] flex-shrink-0 mr-1">
         {{

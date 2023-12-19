@@ -10,13 +10,13 @@
                     <div class="relative min-w-[215px]">
                         <button
                             class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                            :class="[showShowOptions ? 'border-blue' : 'border-border']"
+                            :class="[showShowOptions ? 'border-blue-500' : 'border-border']"
                             @click="showShowOptions = !showShowOptions"
                         >
                             <div class="flex items-center">
                                 <span class="text-sm mr-2.5">{{ show }}</span>
                                 <div
-                                    class="flex items-center justify-center w-[18px] h-[18px] rounded border bg-blue-500 border-blue transition-colors duration-300 mr-[13px]"
+                                    class="flex items-center justify-center w-[18px] h-[18px] rounded border bg-blue-500 border-blue-500 transition-colors duration-300 mr-[13px]"
                                 >
                                     <CheckIcon class="w-4 text-white" />
                                 </div>
@@ -52,7 +52,7 @@
                                         class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                                         :class="[
                                             option === show
-                                                ? 'bg-blue-500 border-blue group-hover:bg-white'
+                                                ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                                 : 'bg-white  border-border group-hover:border-gray-300',
                                         ]"
                                     >
@@ -71,7 +71,7 @@
                     <div class="relative min-w-[215px] mr-2.5">
                         <button
                             class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                            :class="[showSortByOptions ? 'border-blue' : 'border-border']"
+                            :class="[showSortByOptions ? 'border-blue-500' : 'border-border']"
                             @click="showSortByOptions = !showSortByOptions"
                         >
                             <span class="text-sm text-left mr-2.5">{{ sortBy.label }}</span>
@@ -128,7 +128,7 @@
                     <div class="relative">
                         <button
                             class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                            :class="[showPerPageOptions ? 'border-blue' : 'border-border']"
+                            :class="[showPerPageOptions ? 'border-blue-500' : 'border-border']"
                             @click="showPerPageOptions = !showPerPageOptions"
                         >
                             <span class="text-sm mr-2">{{ perPage }}</span>
@@ -212,7 +212,7 @@
                     <div class="relative">
                         <button
                             class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                            :class="[showPerPageOptions ? 'border-blue' : 'border-border']"
+                            :class="[showPerPageOptions ? 'border-blue-500' : 'border-border']"
                             @click="showPerPageOptions = !showPerPageOptions"
                         >
                             <span class="text-sm mr-2">{{ perPage }}</span>

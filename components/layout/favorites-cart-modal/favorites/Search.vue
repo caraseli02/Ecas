@@ -1,7 +1,7 @@
 <template>
     <form
         action=""
-        class="border border-border rounded px-2.5 w-full transition-colors duration-300 focus-within:border-blue"
+        class="border border-border rounded px-2.5 w-full transition-colors duration-300 focus-within:border-blue-500"
         @submit.prevent=""
     >
         <label class="flex items-center">

@@ -9,7 +9,7 @@
         <input v-model="rememberMe" type="checkbox" class="sr-only"/>
         <div
             class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2"
-            :class="[rememberMe ? 'bg-blue-500 border-blue' : 'border-[#CBCDD7]']"
+            :class="[rememberMe ? 'bg-blue-500 border-blue-500' : 'border-[#CBCDD7]']"
         >
           <CheckIcon v-if="rememberMe" class="w-4 text-white"/>
         </div>
@@ -55,7 +55,7 @@
       <div class="h-px flex-1 bg-gray-100"/>
     </div>
     <button
-        class="group flex items-center justify-center w-full border border-border py-2 rounded mb-5 transition-colors duration-300 hover:border-blue"
+        class="group flex items-center justify-center w-full border border-border py-2 rounded mb-5 transition-colors duration-300 hover:border-blue-500"
         @click="loginWithGoogle"
     >
       <svg

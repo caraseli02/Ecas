@@ -76,7 +76,7 @@
             >
                 <SwiperSlide v-for="(item, index) in slides" :key="index">
                     <div
-                        class="flex flex-col items-center justify-center text-center bg-blue-500/50 border border-blue/50 shadow-m py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
+                        class="flex flex-col items-center justify-center text-center bg-blue-500/50 border border-blue-500/50 shadow-m py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
                     >
                         <component
                             :is="item.icon"
@@ -108,7 +108,7 @@
             />
             <button
                 v-if="isStatic"
-                class="hidden absolute z-20 top-[15px] right-0 justify-center items-center px-[3px] py-[5px] bg-blue-500/70 rounded-l overflow-hidden border border-blue/50 transition-all duration-300 hover:px-2 md:flex"
+                class="hidden absolute z-20 top-[15px] right-0 justify-center items-center px-[3px] py-[5px] bg-blue-500/70 rounded-l overflow-hidden border border-blue-500/50 transition-all duration-300 hover:px-2 md:flex"
                 :class="{ 'sideNav--toggler_active': isBannerExpanded }"
                 :style="{
                     boxShadow: '0px 0px 5px rgba(34, 34, 34, 0.15)',

@@ -56,7 +56,7 @@
                     <span class="text-sm leading-[1.71] font-medium min-w-max"> Close Credit </span>
                 </button>
                 <button
-                    class="flex items-center justify-center border-[1.5px] border-blue rounded-md px-4 py-1 text-blue-500 h-8"
+                    class="flex items-center justify-center border-[1.5px] border-blue-500 rounded-md px-4 py-1 text-blue-500 h-8"
                     @click="switchFreeze()"
                 >
                     <FreezeIcon class="w-4 h-4 mr-2" />
@@ -68,7 +68,7 @@
                     <div class="text-sm text-slate-500 mb-1">Credit Term</div>
                     <button
                         class="flex items-center justify-between px-3 text-sm w-full border py-[9px] rounded-lg h-11 transition-colors duration-300 focus:outline-none"
-                        :class="[showCreditTermOptions ? 'border-blue' : 'border-border']"
+                        :class="[showCreditTermOptions ? 'border-blue-500' : 'border-border']"
                         @click="showCreditTermOptions = !showCreditTermOptions"
                     >
                         <span
@@ -120,7 +120,7 @@
                                 </span>
                                 <div
                                     class="flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 transition-colors duration-300"
-                                    :class="[option.value === creditTerm?.value ? 'border-blue' : 'border-border group-hover:border-dark']"
+                                    :class="[option.value === creditTerm?.value ? 'border-blue-500' : 'border-border group-hover:border-dark']"
                                 >
                                     <div v-if="option.value === creditTerm?.value" class="w-2.5 h-2.5 bg-blue-500 rounded-full" />
                                 </div>

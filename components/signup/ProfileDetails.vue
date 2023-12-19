@@ -14,7 +14,7 @@
                                 class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2.5"
                                 :class="[
                                     details.useContactEmail
-                                        ? 'bg-blue-500 border-blue group-hover:bg-white'
+                                        ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                         : 'bg-white  border-border group-hover:border-gray-300',
                                 ]"
                             >
@@ -83,7 +83,7 @@
                                 class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2.5"
                                 :class="[
                                     details.agreeToTerms
-                                        ? 'bg-blue-500 border-blue group-hover:bg-white'
+                                        ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                         : 'bg-white  border-border group-hover:border-gray-300',
                                 ]"
                             >

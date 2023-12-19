@@ -6,7 +6,7 @@
             </div>
             <div
                 class="relative border w-full transition-colors duration-300"
-                :class="[error ? 'border-red' : 'border-border focus-within:border-blue', size === 'lg' ? 'rounded-lg' : 'rounded']"
+                :class="[error ? 'border-red' : 'border-border focus-within:border-blue-500', size === 'lg' ? 'rounded-lg' : 'rounded']"
             >
                 <input
                     :value="modelValue"

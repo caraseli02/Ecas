@@ -7,7 +7,7 @@
                     !item.avatar ? 'bg-gray-100' : '',
                     loading
                         ? ''
-                        : 'after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100',
+                        : 'after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-full after:border-2 after:border-blue-500 after:opacity-0 after:transition-opacity after:duration-300 group-hover/link:after:opacity-100',
                 ]"
             >
                 <SkeletonLoader v-if="loading" type="circle" class="w-full h-full" />

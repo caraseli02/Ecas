@@ -21,7 +21,7 @@
                 <div v-if="showOptions" class="flex-1 flex flex-col">
                     <div class="pl-2.5 pr-[15px] mb-2.5">
                         <label
-                            class="flex relative border border-border rounded overflow-hidden transition-colors duration-300 focus-within:border-blue"
+                            class="flex relative border border-border rounded overflow-hidden transition-colors duration-300 focus-within:border-blue-500"
                         >
                             <input
                                 v-model="searchValue"
@@ -47,7 +47,7 @@
                                     class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                                     :class="[
                                         option.checked
-                                            ? 'bg-blue-500 border-blue group-hover:bg-white'
+                                            ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                             : 'bg-white  border-border group-hover:border-gray-300',
                                     ]"
                                 >

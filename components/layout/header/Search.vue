@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <label
-        class="relative hidden border-[1.5px] border-blue rounded-lg items-center h-11 overflow-hidden md:flex"
+        class="relative hidden border-[1.5px] border-blue-500 rounded-lg items-center h-11 overflow-hidden md:flex"
         :class="[isScrolled ? 'lg:border-border' : '']"
     >
       <SearchIcon

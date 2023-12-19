@@ -20,7 +20,7 @@
                     v-model="searchValue"
                     type="search"
                     placeholder="Type here"
-                    class="w-full border border-border bg-white rounded px-2.5 pt-[5px] pb-1.5 pr-10 text-xs placeholder:text-gray-500 transition-colors duration-300 focus:outline-none focus:border-blue"
+                    class="w-full border border-border bg-white rounded px-2.5 pt-[5px] pb-1.5 pr-10 text-xs placeholder:text-gray-500 transition-colors duration-300 focus:outline-none focus:border-blue-500"
                 />
                 <FiltersIcon class="absolute top-1/2 -translate-y-1/2 right-2.5 w-5 h-5 text-gray-500" />
             </label>
@@ -40,7 +40,7 @@
                         class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                         :class="[
                             option.checked
-                                ? 'bg-blue-500 border-blue group-hover:bg-white'
+                                ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                 : 'bg-white  border-border group-hover:border-gray-300',
                         ]"
                     >
@@ -55,7 +55,7 @@
             </span>
             <div
                 class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300"
-                :class="[selectedAll ? 'bg-blue-500 border-blue group-hover:bg-white' : 'bg-white  border-border group-hover:border-gray-300']"
+                :class="[selectedAll ? 'bg-blue-500 border-blue-500 group-hover:bg-white' : 'bg-white  border-border group-hover:border-gray-300']"
             >
                 <CheckIcon v-if="selectedAll" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
             </div>

@@ -88,7 +88,7 @@
                       class="flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 transition-colors duration-300"
                       :class="[
                                             option.label === card.menu.selected.label
-                                                ? 'border-blue'
+                                                ? 'border-blue-500'
                                                 : 'border-border group-hover/option:border-dark',
                                         ]"
                   >

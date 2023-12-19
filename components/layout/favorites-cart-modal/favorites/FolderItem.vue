@@ -10,7 +10,7 @@
                     class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                     :class="[
                         folder.selected
-                            ? 'bg-blue-500 border-blue group-hover:bg-white'
+                            ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                             : 'bg-white  border-border group-hover:border-gray-300',
                     ]"
                 >
@@ -28,7 +28,7 @@
                     ref="newNameInputDOM"
                     v-model="newName"
                     type="text"
-                    class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-neutral-700 transition-colors duration-300 placeholder:text-slate-500 focus:outline-none focus:border-blue"
+                    class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-neutral-700 transition-colors duration-300 placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
                 />
             </label>
             <button v-else class="text-left" @click="$emit('open')">

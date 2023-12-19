@@ -7,7 +7,7 @@
             <div class="relative">
                 <button
                     class="flex items-center justify-between w-full border bg-white rounded-md px-3 py-1 transition-colors duration-300"
-                    :class="[showPerPageOptions ? 'border-blue' : 'border-border']"
+                    :class="[showPerPageOptions ? 'border-blue-500' : 'border-border']"
                     @click="showPerPageOptions = !showPerPageOptions"
                 >
                     <span class="text-sm leading-[1.71] font-medium mr-2">
@@ -48,7 +48,7 @@
         >
             <button
                 :disabled="atPage === 1"
-                class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-500 mr-1 border border-border transition-colors duration-300 hover:bg-blue-500 hover:text-white focus-visible:bg-blue-500 focus-visible:text-white hover:border-blue focus-visible:border-blue"
+                class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-500 mr-1 border border-border transition-colors duration-300 hover:bg-blue-500 hover:text-white focus-visible:bg-blue-500 focus-visible:text-white hover:border-blue-500 focus-visible:border-blue-500"
                 @click="$emit('page-change', atPage - 1)"
             >
                 <ChevronLeftIcon class="w-4 h-4" />
@@ -76,7 +76,7 @@
             </Pagination>
             <button
                 :disabled="totalPages === atPage"
-                class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-500 ml-1 border border-border transition-colors duration-300 hover:bg-blue-500 hover:text-white focus-visible:bg-blue-500 focus-visible:text-white hover:border-blue focus-visible:border-blue"
+                class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-500 ml-1 border border-border transition-colors duration-300 hover:bg-blue-500 hover:text-white focus-visible:bg-blue-500 focus-visible:text-white hover:border-blue-500 focus-visible:border-blue-500"
                 @click="$emit('page-change', atPage + 1)"
             >
                 <ChevronRightIcon class="w-4 h-4" />

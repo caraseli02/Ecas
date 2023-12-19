@@ -200,7 +200,7 @@ watch(
 }
 
 .vc-highlight-content-outline.vc-blue {
-    @apply border border-blue;
+    @apply border border-blue-500;
 }
 
 .vc-highlight-content-light.vc-blue {

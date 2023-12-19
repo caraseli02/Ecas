@@ -2,7 +2,7 @@
   <div>
     <button
       class="flex items-center justify-between relative w-full border rounded-lg px-3 py-[7px] bg-white transition-colors duration-300"
-      :class="[!selectedItem ? 'text-gray-500' : '', optionsVisible ? 'border-blue' : 'border-border']"
+      :class="[!selectedItem ? 'text-gray-500' : '', optionsVisible ? 'border-blue-500' : 'border-border']"
       @click="handleShow">
       <span class="text-sm flex-shrink-0 mr-1">
         {{ selectedItem || 'Select' }}

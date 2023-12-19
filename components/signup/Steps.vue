@@ -21,7 +21,7 @@
             <div v-for="(step, index) in steps" :key="index" class="relative z-10 flex flex-col items-center md:flex-row">
                 <div
                     class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-white border-2 mb-2.5 md:w-[42px] md:h-[42px] md:mb-0 md:mr-3"
-                    :class="[currentStep === index ? 'border-blue' : 'border-border md:border-blue']"
+                    :class="[currentStep === index ? 'border-blue-500' : 'border-border md:border-blue-500']"
                 >
                     <div
                         class="flex items-center justify-center rounded-full w-[22px] h-[22px] transition-colors duration-300 md:w-[25px] md:h-[25px]"

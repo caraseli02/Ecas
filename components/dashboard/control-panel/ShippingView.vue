@@ -66,7 +66,7 @@
                 </div>
             </div>
             <button
-                class="flex items-center justify-center p-3 border border-dashed border-blue rounded-xl md:p-4"
+                class="flex items-center justify-center p-3 border border-dashed border-blue-500 rounded-xl md:p-4"
                 @click="addAddressModal = true"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 40 40" class="w-8 h-8 text-blue-500 md:w-10 md:h-10">

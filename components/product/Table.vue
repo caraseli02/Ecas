@@ -141,7 +141,7 @@ onMounted(() => {
                     <td class="flex justify-end pr-[15px] py-1 lg:pr-5">
                         <div
                             class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300"
-                            :class="[item.checked ? 'bg-blue-500 border-blue' : 'border-border group-hover:border-gray-300']"
+                            :class="[item.checked ? 'bg-blue-500 border-blue-500' : 'border-border group-hover:border-gray-300']"
                         >
                             <CheckIcon v-if="item.checked" class="w-4 text-white" />
                         </div>

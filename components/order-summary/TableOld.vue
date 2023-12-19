@@ -46,7 +46,7 @@
                 <div class="relative">
                     <button
                         class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                        :class="[showPerPageOptions ? 'border-blue' : 'border-border']"
+                        :class="[showPerPageOptions ? 'border-blue-500' : 'border-border']"
                         @click="showPerPageOptions = !showPerPageOptions"
                     >
                         <span class="text-sm mr-2">{{ perPage }}</span>

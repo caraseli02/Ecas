@@ -6,7 +6,7 @@
         <button
             class="flex items-center justify-between px-3 text-sm w-full border transition-colors duration-300 focus:outline-none"
             :class="[
-                error ? 'border-red' : showOptions ? 'border-blue' : 'border-border',
+                error ? 'border-red' : showOptions ? 'border-blue-500' : 'border-border',
                 disabled && showDisabledStyles
                     ? 'disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
                     : '',
@@ -91,7 +91,7 @@
                             class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300 mr-2.5"
                             :class="[
                                 option.value === modelValue?.value
-                                    ? 'bg-blue-500 border-blue '
+                                    ? 'bg-blue-500 border-blue-500 '
                                     : 'bg-white  border-border group-hover:border-gray-300',
                             ]"
                         >
