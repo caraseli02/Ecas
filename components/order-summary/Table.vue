@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-6 mb-6">
-    <OrderSummaryTableHead @checkAll="checkAll" @addToFavs="addToFavs"/>
+    <OrderSummaryTableHead @checkAll="checkAll" @addToFavs="addToFavs" @deleteSelected="deleteSelected"/>
     <div v-if="stockItems.length">
       <span class="text-[#222] text-base font-semibold leading-6">Stock Items: {{ stockItems.length }}</span>
     </div>
@@ -52,6 +52,9 @@ export default defineComponent({
     updateSubtotal() {
       this.$emit('updateSubtotal');
     },
+    deleteSelected() {
+      this.$emit('deleteSelected', true)
+    }
   }
 });
 
