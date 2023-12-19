@@ -44,14 +44,14 @@
 
 <script setup lang="ts">
 import CaretIcon from '@/assets/icons/caret-right.svg';
-import { ProductSearchItems } from '~~/model/products/response/ProductSearchResponse';
+import { ProductInterface } from '~/model/products/response/ProductResponse';
 
 const props = defineProps<{
-    products: ProductSearchItems[];
+    products: ProductInterface[];
     isLoading: boolean;
 }>();
 
-const productTitle = (product: ProductSearchItems) => {
+const productTitle = (product: ProductInterface) => {
     const titleArray = product.details.SummaryData.TaxonomyPath.split('>');
     return titleArray[titleArray.length - 1];
 };

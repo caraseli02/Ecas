@@ -60,6 +60,8 @@ class ProductService extends HttpFactory {
         const token = this.authStore.getToken;
         let filters = {};
 
+        const headers = this.authStore.getToken ? { Authorization: `Bearer ${this.authStore.getToken}` } : {};
+
         if (!keyword || keyword === '') {
             filters = { page: page, perPage: perPage, ...sort };
         } else {
@@ -72,6 +74,7 @@ class ProductService extends HttpFactory {
                 operator: '$or',
                 partDescription: keyword,
                 alias: keyword,
+                manufacturerCode: keyword,
             };
         }
 
@@ -81,7 +84,7 @@ class ProductService extends HttpFactory {
             {
                 filters: featuresFilters,
             },
-            { params: filters, headers: { Authorization: `Bearer ${token}` } }
+            { params: filters, headers }
         );
     }
 
