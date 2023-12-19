@@ -32,7 +32,7 @@
                             >
                                 {{ item.title }}
                             </h3>
-                            <div class="text-[10px] leading-tight text-gray-300 md:text-xs">
+                            <div class="text-[10px] leading-tight text-slate-500 md:text-xs">
                                 {{ item.date }}
                             </div>
                         </div>
@@ -137,6 +137,6 @@ const news = ref([
     margin-right: 0 !important;
 }
 .homeNews--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
-    @apply w-[25px] bg-gray-100 #{!important};
+    @apply w-[25px] bg-gray-500 #{!important};
 }
 </style>

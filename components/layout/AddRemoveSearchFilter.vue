@@ -5,11 +5,11 @@
         >
             <div class="flex items-center justify-between px-4 mb-10 md:px-6">
                 <div class="flex items-center">
-                    <FiltersIcon class="w-6 h-6 text-gray-300 mr-2" />
-                    <span class="text-lg font-medium text-gray-300"> Add/Remove Filters </span>
+                    <FiltersIcon class="w-6 h-6 text-slate-500 mr-2" />
+                    <span class="text-lg font-medium text-slate-500"> Add/Remove Filters </span>
                 </div>
                 <button
-                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
+                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-500 transition-colors duration-300 hover:text-slate-500"
                     @click="$emit('close')"
                 >
                     <XIcon class="w-[15px] h-[15px]" />
@@ -17,15 +17,15 @@
             </div>
             <div class="px-4 mb-4 md:px-6">
                 <label class="relative flex items-center border border-border rounded px-3">
-                    <SearchIcon class="w-[18px] h-[18px] text-gray-100" />
+                    <SearchIcon class="w-[18px] h-[18px] text-gray-500" />
                     <input
                         v-model="searchValue"
                         type="search"
                         placeholder="Search parameters"
-                        class="bg-transparent flex-1 pl-2 pr-8 py-[9px] w-full text-sm placeholder:text-gray-100 focus:outline-none"
+                        class="bg-transparent flex-1 pl-2 pr-8 py-[9px] w-full text-sm placeholder:text-gray-500 focus:outline-none"
                     />
                     <Transition name="fade">
-                        <XIcon v-if="searchValue" class="w-[18px] h-[18px] text-gray-100 cursor-pointer" @click="searchValue = ''" />
+                        <XIcon v-if="searchValue" class="w-[18px] h-[18px] text-gray-500 cursor-pointer" @click="searchValue = ''" />
                     </Transition>
                 </label>
             </div>
@@ -34,14 +34,14 @@
                     <button class="flex items-center" @click="parametersOrder ? (parametersOrder = 0) : (parametersOrder = 1)">
                         <span class="text-sm font-medium tracking-[0.6px] mr-2"> Parameters </span>
                         <CaretIcon
-                            class="w-5 h-5 text-gray-300 transition-transform duration-300"
+                            class="w-5 h-5 text-slate-500 transition-transform duration-300"
                             :class="[parametersOrder ? 'rotate-90' : '-rotate-90']"
                         />
                     </button>
                     <button class="flex items-center" @click="productsOrder ? (productsOrder = 0) : (productsOrder = 1)">
                         <span class="text-sm font-medium tracking-[0.6px] mr-2"> Products </span>
                         <CaretIcon
-                            class="w-5 h-5 text-gray-300 transition-transform duration-300"
+                            class="w-5 h-5 text-slate-500 transition-transform duration-300"
                             :class="[productsOrder ? 'rotate-90' : '-rotate-90']"
                         />
                     </button>
@@ -52,7 +52,7 @@
                         <div
                             v-for="item in filteredItems"
                             :key="item.parameter"
-                            class="group grid grid-cols-[repeat(2,1fr),auto] gap-2 rounded-[3px] odd:bg-[#F2F2F2] px-2 pt-[5px] pb-1.5 cursor-pointer transition-colors duration-300 hover:text-blue"
+                            class="group grid grid-cols-[repeat(2,1fr),auto] gap-2 rounded-[3px] odd:bg-[#F2F2F2] px-2 pt-[5px] pb-1.5 cursor-pointer transition-colors duration-300 hover:text-blue-500"
                             @click="toggleItem(item)"
                         >
                             <div class="text-xs font-medium font-Inter leading-tight">
@@ -65,13 +65,13 @@
                                 class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                                 :class="[
                                     item.checked
-                                        ? 'bg-blue border-blue group-hover:bg-white'
+                                        ? 'bg-blue-500 border-blue group-hover:bg-white'
                                         : 'bg-white  border-border group-hover:border-gray-300',
                                 ]"
                             >
                                 <CheckIcon
                                     v-if="item.checked"
-                                    class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                                    class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
                                 />
                             </div>
                         </div>
@@ -79,10 +79,10 @@
                 </div>
             </div>
             <div class="flex justify-center gap-2.5 px-4 md:px-6">
-                <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
+                <button class="flex bg-gray-100 rounded px-[26px] py-[11px] text-sm font-medium text-slate-500" @click="$emit('close')">
                     Cancel
                 </button>
-                <button class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="saveFilters()">Save</button>
+                <button class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="saveFilters()">Save</button>
             </div>
         </div>
     </div>

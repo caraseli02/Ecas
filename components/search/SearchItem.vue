@@ -13,11 +13,11 @@
               {{ item.title }}
             </NuxtLink>
             <button class="flex">
-              <CopyIcon class="w-[22px] h-[22px] text-gray-300 transition-colors duration-300 hover:text-blue"/>
+              <CopyIcon class="w-[22px] h-[22px] text-slate-500 transition-colors duration-300 hover:text-blue-500"/>
             </button>
           </div>
           <button
-              class="flex items-center text-gray-300 px-3 py-[5px] max-w-max border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue hover:border-blue md:mb-0"
+              class="flex items-center text-slate-500 px-3 py-[5px] max-w-max border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue-500 hover:border-blue md:mb-0"
               @click="showCustomProductPartNumberModal = true"
           >
                         <span class="text-[15px] leading-tight font-medium mr-2">
@@ -33,11 +33,11 @@
           <div>Manufacturer: {{ item.manufacturer }}</div>
           <div>Manufacturer part number: {{ item.manufacturerCode }}</div>
           <div class="flex items-center">
-            <button class="flex items-center transition-colors duration-300 mr-[9px] hover:text-blue">
+            <button class="flex items-center transition-colors duration-300 mr-[9px] hover:text-blue-500">
               <PDFIcon class="w-[22px] h-[22px] mr-[5px]"/>
               <span class="text-xs leading-tight font-medium">Datasheet</span>
             </button>
-            <button class="flex items-center transition-colors duration-300 hover:text-blue">
+            <button class="flex items-center transition-colors duration-300 hover:text-blue-500">
               <LeafIcon class="w-[22px] h-[22px] mr-[5px]"/>
               <span class="text-xs leading-tight font-medium">RoHS</span>
             </button>
@@ -64,10 +64,10 @@
                                 </span>
             </div>
           </th>
-          <th class="text-gray-300 text-left pb-2.5">
+          <th class="text-slate-500 text-left pb-2.5">
             <span class="text-xs leading-tight font-normal"> Quantity (pcs) </span>
           </th>
-          <th class="text-gray-300 text-right pb-2.5">
+          <th class="text-slate-500 text-right pb-2.5">
             <span class="text-xs leading-tight font-normal"> Price (Ex VAT) </span>
           </th>
         </tr>
@@ -101,24 +101,24 @@
         </tbody>
       </table>
       <div class="grid grid-cols-2 pt-2.5 mb-[15px] md:grid-cols-[70%,30%] md:mb-5 lg:grid-cols-[40%,60%] lg:mb-0">
-        <div class="text-sm font-medium font-Poppins text-blue text-center">View More</div>
+        <div class="text-sm font-medium font-Poppins text-blue-500 text-center">View More</div>
       </div>
     </div>
     <div class="flex gap-2.5 md:col-span-2 xl:col-span-1 xl:items-end">
       <QuantityButtons v-model="quantity" size="lg" :object="{action : 'add', id: item._id} as ProductActionObject"/>
       <button
           :disabled="quantity===0"
-          class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
+          class="flex items-center flex-1 justify-center bg-blue-500 rounded text-white px-5 py-[9px]"
           @click="addToCart(item)">
         <CartIcon class="w-6 h-6 mr-2"/>
         <span class="text-sm font-medium">Add to cart</span>
       </button>
     </div>
     <div class="absolute top-0 right-0 flex flex-col gap-2.5">
-      <button class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue">
+      <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
         <HeartIcon class="w-6 h-6"/>
       </button>
-      <button class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue">
+      <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
         <ShareIcon class="w-6 h-6"/>
       </button>
     </div>

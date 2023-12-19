@@ -30,7 +30,7 @@
             </Swiper>
             <NuxtLink
                 to="/"
-                class="relative flex ml-auto max-w-max text-xs text-gray-300 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-dark after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
+                class="relative flex ml-auto max-w-max text-xs text-slate-500 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-dark after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
             >
                 View all manufacturers
             </NuxtLink>

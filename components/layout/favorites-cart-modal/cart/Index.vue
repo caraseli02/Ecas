@@ -19,7 +19,7 @@
         <div class="text-right">$ 457.92</div>
       </div>
       <button
-          class="flex items-center justify-center gap-2 bg-blue text-white rounded-lg px-[15px] py-2 leading-[1.75] font-medium w-full"
+          class="flex items-center justify-center gap-2 bg-blue-500 text-white rounded-lg px-[15px] py-2 leading-[1.75] font-medium w-full"
       >
         <CartIcon class="w-6 h-6"/>
         <span> Go to Checkout </span>

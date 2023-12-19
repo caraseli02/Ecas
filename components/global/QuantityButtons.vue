@@ -2,7 +2,7 @@
   <div class="flex bg-[#F5F5F5] bg-opacity-95 rounded-lg max-w-max overflow-hidden">
     <button
         :disabled="modelValue === 1"
-        class="flex items-center justify-center bg-gray-200 text-gray-300 px-2.5 transition-colors duration-300 disabled:text-border"
+        class="flex items-center justify-center bg-gray-100 text-slate-500 px-2.5 transition-colors duration-300 disabled:text-border"
         :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
         @click="inputHandler(modelValue - 1)"
 
@@ -21,11 +21,11 @@
       />
     </label>
     <button
-        class="flex items-center justify-center bg-gray-200 px-2.5"
+        class="flex items-center justify-center bg-gray-100 px-2.5"
         :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
         @click="inputHandler(modelValue + 1)"
     >
-      <PlusIcon class="w-6 h-6 flex-shrink-0 text-gray-300"/>
+      <PlusIcon class="w-6 h-6 flex-shrink-0 text-slate-500"/>
     </button>
   </div>
 </template>

@@ -6,7 +6,7 @@
             <div class="flex items-start justify-between">
                 <h2 class="text-xl leading-[1.4] font-semibold">Customer Credit</h2>
                 <button
-                    class="flex items-center justify-center rounded-lg w-8 h-8 bg-gray-200 text-gray-300 transition-colors duration-300 hover:text-blue"
+                    class="flex items-center justify-center rounded-lg w-8 h-8 bg-gray-100 text-slate-500 transition-colors duration-300 hover:text-blue-500"
                     @click="$emit('toggle-editing')"
                 >
                     <XIcon class="w-6 h-6" />
@@ -17,31 +17,31 @@
         <div class="flex flex-col flex-1">
             <div class="grid grid-cols-1 gap-2 mb-8">
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
-                    <span class="text-gray-300"> Credit Limit </span>
+                    <span class="text-slate-500"> Credit Limit </span>
                     <span class="font-medium">
                         {{ (creditObjectToEdit?.limit ? getAmountFormat(creditObjectToEdit.limit) : '0') + '$' }}
                     </span>
                 </div>
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
-                    <span class="text-gray-300"> Credit Term </span>
+                    <span class="text-slate-500"> Credit Term </span>
                     <span class="font-medium"> {{ creditObjectToEdit?.term ? creditObjectToEdit.term + ' days' : '-' }} </span>
                 </div>
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
-                    <span class="text-gray-300"> Due Date </span>
+                    <span class="text-slate-500"> Due Date </span>
                     <span class="font-medium"> {{ creditObjectToEdit?.dueDate ? getCurrentDate(creditObjectToEdit?.dueDate) : '-' }} </span>
                 </div>
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
-                    <span class="text-gray-300"> Till Due </span>
+                    <span class="text-slate-500"> Till Due </span>
                     <span class="font-medium"> {{ creditObjectToEdit?.tillDue ? creditObjectToEdit.tillDue + ' days' : '-' }} </span>
                 </div>
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
-                    <span class="text-gray-300"> Total Spent </span>
+                    <span class="text-slate-500"> Total Spent </span>
                     <span class="font-medium">
                         {{ (creditObjectToEdit?.spent ? getAmountFormat(creditObjectToEdit.spent) : '0') + '$' }}
                     </span>
                 </div>
                 <div class="flex items-center justify-between text-sm leading-[1.42]">
-                    <span class="text-gray-300"> Available Credit </span>
+                    <span class="text-slate-500"> Available Credit </span>
                     <span class="font-medium text-[#EE514E]">
                         {{ (creditObjectToEdit?.available ? getAmountFormat(creditObjectToEdit.available) : '0') + '$' }}
                     </span>
@@ -56,7 +56,7 @@
                     <span class="text-sm leading-[1.71] font-medium min-w-max"> Close Credit </span>
                 </button>
                 <button
-                    class="flex items-center justify-center border-[1.5px] border-blue rounded-md px-4 py-1 text-blue h-8"
+                    class="flex items-center justify-center border-[1.5px] border-blue rounded-md px-4 py-1 text-blue-500 h-8"
                     @click="switchFreeze()"
                 >
                     <FreezeIcon class="w-4 h-4 mr-2" />
@@ -65,7 +65,7 @@
             </div>
             <div class="mb-6">
                 <div class="relative z-10">
-                    <div class="text-sm text-gray-300 mb-1">Credit Term</div>
+                    <div class="text-sm text-slate-500 mb-1">Credit Term</div>
                     <button
                         class="flex items-center justify-between px-3 text-sm w-full border py-[9px] rounded-lg h-11 transition-colors duration-300 focus:outline-none"
                         :class="[showCreditTermOptions ? 'border-blue' : 'border-border']"
@@ -74,10 +74,10 @@
                         <span
                             class="flex items-center text-left truncate"
                             :class="{
-                                'text-gray-300': !creditTerm,
+                                'text-slate-500': !creditTerm,
                             }"
                         >
-                            <CalendarIcon class="w-6 h-6 text-gray-300 mr-2" />
+                            <CalendarIcon class="w-6 h-6 text-slate-500 mr-2" />
                             <span>
                                 {{ creditTerm?.label || 'Select Credit Term' }}
                             </span>
@@ -87,7 +87,7 @@
                             width="20"
                             height="20"
                             fill="none"
-                            class="w-5 h-5 text-gray-300 transition-all duration-300"
+                            class="w-5 h-5 text-slate-500 transition-all duration-300"
                             :class="[showCreditTermOptions ? 'rotate-180' : '']"
                         >
                             <path
@@ -108,7 +108,7 @@
                             <button
                                 v-for="option in creditTermOptions"
                                 :key="option.value"
-                                class="group flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                                class="group flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
                                 :class="[option.value === creditTerm?.value ? '' : 'text-dark']"
                                 @click="
                                     creditTerm = option;
@@ -122,7 +122,7 @@
                                     class="flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 transition-colors duration-300"
                                     :class="[option.value === creditTerm?.value ? 'border-blue' : 'border-border group-hover:border-dark']"
                                 >
-                                    <div v-if="option.value === creditTerm?.value" class="w-2.5 h-2.5 bg-blue rounded-full" />
+                                    <div v-if="option.value === creditTerm?.value" class="w-2.5 h-2.5 bg-blue-500 rounded-full" />
                                 </div>
                             </button>
                         </div>
@@ -130,7 +130,7 @@
                 </div>
             </div>
             <div class="mb-10">
-                <div class="text-sm text-gray-300 mb-1">Credit Amount</div>
+                <div class="text-sm text-slate-500 mb-1">Credit Amount</div>
                 <div class="flex border border-border rounded-lg h-11 overflow-hidden">
                     <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">€</div>
                     <input
@@ -142,11 +142,11 @@
                 </div>
             </div>
             <div class="grid grid-cols-[auto,1fr] gap-4 mt-auto">
-                <button class="flex px-8 py-2 rounded-lg bg-gray-200 leading-[1.75] text-gray-300 font-medium" @click="$emit('cancel')">
+                <button class="flex px-8 py-2 rounded-lg bg-gray-100 leading-[1.75] text-slate-500 font-medium" @click="$emit('cancel')">
                     Cancel
                 </button>
                 <button
-                    class="flex items-center justify-center px-5 py-2 rounded-lg bg-blue leading-[1.75] text-white font-medium"
+                    class="flex items-center justify-center px-5 py-2 rounded-lg bg-blue-500 leading-[1.75] text-white font-medium"
                     @click="
                         $emit('close');
                         updateCreditTerm(creditTerm?.value, creditAmount);

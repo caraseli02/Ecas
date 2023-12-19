@@ -6,7 +6,7 @@
         <div class="px-2 py-4 text-sm font-medium leading-[1.71]">
             <OrderId :item="item" :loading="loading"/>
         </div>
-        <div class="px-2 py-4 text-sm font-medium leading-[1.71] text-blue">
+        <div class="px-2 py-4 text-sm font-medium leading-[1.71] text-blue-500">
             <TextBox :text="item.invoiceId" :loading="loading" />
         </div>
         <div class="px-2 py-4 text-sm font-medium leading-[1.71]">

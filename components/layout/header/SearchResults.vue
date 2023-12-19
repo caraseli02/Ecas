@@ -6,7 +6,7 @@
         }"
     >
         <div v-if="isLoading">
-            <p class="p-2 rounded text-gray-300 transition-colors duration-300">Loading...</p>
+            <p class="p-2 rounded text-slate-500 transition-colors duration-300">Loading...</p>
         </div>
         <div v-else class="grid grid-cols-1 max-h-[340px] overflow-auto scrollbar-thin pr-1.5">
             <NuxtLink
@@ -14,29 +14,29 @@
                 v-if="props?.products?.length > 0"
                 :key="index"
                 :to="`/product/${product._id}`"
-                class="p-2 rounded-lg text-gray-300 transition-colors duration-300 hover:bg-[#F2F2F2]"
+                class="p-2 rounded-lg text-slate-500 transition-colors duration-300 hover:bg-[#F2F2F2]"
             >
                 <div
                     class="flex items-center justify-between gap-1 text-xs leading-[1.67] font-medium text-dark mb-1 lg:text-sm lg:leading-[1.43]"
                 >
-                    <div class="flex items-center w-[calc(100%-50px)] hover:text-blue">
+                    <div class="flex items-center w-[calc(100%-50px)] hover:text-blue-500">
                         <div class="truncate">{{ productTitle(product) }}</div>
                         <CaretIcon class="w-4 h-4 flex-shrink-0" />
                         <div class="font-Inter">{{ product.alias }}</div>
                     </div>
                     <div
-                        class="rounded-3xl bg-blue px-1 text-xs leading-[1.33] font-semibold text-white flex-shrink-0 lg:translate-y-2.5"
+                        class="rounded-3xl bg-blue-500 px-1 text-xs leading-[1.33] font-semibold text-white flex-shrink-0 lg:translate-y-2.5"
                         :class="[product.adminSettings.featured === true ? 'invisible' : '']"
                     >
                         New
                     </div>
                 </div>
-                <div class="text-xs leading-[1.33] truncate text-gray-300 lg:w-[calc(100%-50px)] hover:text-blue">
+                <div class="text-xs leading-[1.33] truncate text-slate-500 lg:w-[calc(100%-50px)] hover:text-blue-500">
                     {{ product.description }}
                 </div>
             </NuxtLink>
             <div v-else>
-                <p class="p-2 rounded text-gray-300 transition-colors duration-300 hover:bg-gray-200 hover:text-blue">No data found</p>
+                <p class="p-2 rounded text-slate-500 transition-colors duration-300 hover:bg-gray-100 hover:text-blue-500">No data found</p>
             </div>
         </div>
     </div>

@@ -34,7 +34,7 @@
                                 Info</span>
                         </div>
                         <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                            :class="[shippingAndBillingExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                            :class="[shippingAndBillingExpanded ? 'rotate-180 text-[#007FFF]' : 'text-slate-500']" />
                     </div>
                 </button>
                 <Transition name="expand">
@@ -60,7 +60,7 @@
                                 class="text-[#5E6278] text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
                         </div>
                         <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                            :class="[shippingPreferencesExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                            :class="[shippingPreferencesExpanded ? 'rotate-180 text-[#007FFF]' : 'text-slate-500']" />
                     </div>
                 </button>
                 <Transition name="expand">
@@ -84,7 +84,7 @@
                         <span class="text-[#5E6278] text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
                     </div>
                     <ChevronDownIcon class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                        :class="[paymentMethodExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']" />
+                        :class="[paymentMethodExpanded ? 'rotate-180 text-[#007FFF]' : 'text-slate-500']" />
                 </div>
             </button>
             <Transition name="expand">

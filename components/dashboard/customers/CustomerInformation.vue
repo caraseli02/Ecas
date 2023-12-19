@@ -7,7 +7,7 @@
             <WarningIcon v-if="error" class="w-6 h-6" />
             <div v-else class="relative">
                 <button class="flex" @click="showOptions = !showOptions">
-                    <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
+                    <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue-500" />
                 </button>
                 <Transition name="fade-bottom">
                     <ThreeDotMenu
@@ -53,7 +53,7 @@
         </div>
         <div v-if="emptyData || error" class="flex flex-col items-center justify-center flex-1 mb-[157px] md:mb-[149px]">
             <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
-            <div class="text-sm font-medium text-gray-100">No data available</div>
+            <div class="text-sm font-medium text-gray-500">No data available</div>
         </div>
         <template v-else>
             <div class="flex items-start md:items-center" :class="[isLoading ? 'mb-3' : 'mb-5']">
@@ -68,7 +68,7 @@
                         <Tooltip theme="black" :position="'top'" class="self-start ml-3">
                             <LockIcon
                                 v-if="!customerInformation.active"
-                                class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue"
+                                class="w-4 h-4 text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             />
                             <template #content>
                                 <span class="capitalize">Account Locked</span>
@@ -77,7 +77,7 @@
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[160px] h-5 mb-2 md:w-[180px]" />
                     <div v-else class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
-                        <span class="text-gray-300 mr-2">Account Type:</span>
+                        <span class="text-slate-500 mr-2">Account Type:</span>
                         <span class="font-medium">{{
                             AccountType[customerInformation.accountType as unknown as keyof typeof AccountType]
                         }}</span>
@@ -85,13 +85,13 @@
                     <SkeletonLoader v-if="isLoading" class="w-[180px] h-5 mb-2" />
                     <div
                         v-else="customerInformation.accountType === 2 || customerInformation.accountType === 3"
-                        class="text-sm font-medium text-blue mb-2 md:order-4 md:mb-0"
+                        class="text-sm font-medium text-blue-500 mb-2 md:order-4 md:mb-0"
                     >
                         {{ customerInformation?.companyDetails?.name }}
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[180px] h-5" />
                     <div v-else class="flex items-center text-sm md:order-2 md:mb-2">
-                        <span class="text-gray-300 mr-2">Last Active:</span>
+                        <span class="text-slate-500 mr-2">Last Active:</span>
                         <span class="font-medium">{{ customerInformation.lastActivityDate || '-' }}</span>
                     </div>
                 </div>
@@ -124,25 +124,25 @@
                         </div>
                         <div class="grid grid-cols-1 gap-2">
                             <div class="grid grid-cols-[140px,1fr] gap-3">
-                                <div class="text-sm text-gray-300 leading-[1.75]">User Name</div>
+                                <div class="text-sm text-slate-500 leading-[1.75]">User Name</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
                                     {{ customerInformation.contactDetails?.email }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
-                                <div class="text-sm text-gray-300 leading-[1.75]">Name</div>
+                                <div class="text-sm text-slate-500 leading-[1.75]">Name</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
                                     {{ customerInformation.contactDetails?.firstName }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
-                                <div class="text-sm text-gray-300 leading-[1.75]">Surname</div>
+                                <div class="text-sm text-slate-500 leading-[1.75]">Surname</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
                                     {{ customerInformation.contactDetails?.lastName }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
-                                <div class="text-sm text-gray-300 leading-[1.75]">Country</div>
+                                <div class="text-sm text-slate-500 leading-[1.75]">Country</div>
                                 <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
                                     <img
                                         v-if="country && country.label"
@@ -154,13 +154,13 @@
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
-                                <div class="text-sm text-gray-300 leading-[1.75]">Mobile Number</div>
+                                <div class="text-sm text-slate-500 leading-[1.75]">Mobile Number</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
                                     {{ customerInformation.contactDetails.phone }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
-                                <div class="text-sm text-gray-300 leading-[1.75]">Address</div>
+                                <div class="text-sm text-slate-500 leading-[1.75]">Address</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
                                     {{ customerInformation?.personalDetails?.address.name1 || 'N/A' }}
                                 </div>
@@ -173,15 +173,15 @@
                     <div v-else class="md:flex md:items-center">
                         <div class="flex items-center mb-1 md:mb-0">
                             <div class="w-2 h-2 rounded-full bg-[#00D395] mr-2" />
-                            <span class="text-sm font-medium leading-tight text-gray-300">Registered</span>
+                            <span class="text-sm font-medium leading-tight text-slate-500">Registered</span>
                         </div>
                         <div class="text-sm font-medium leading-tight pl-4">{{ getCurrentDate(customerInformation.createdAt) }}</div>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[120px] h-10 md:w-[160px] md:h-[18px]" />
                     <div v-else class="md:flex md:items-center">
                         <div class="flex items-center mb-1 md:mb-0">
-                            <div class="w-2 h-2 rounded-full bg-blue mr-2" />
-                            <span class="text-sm font-medium leading-tight text-gray-300">Email Marketing</span>
+                            <div class="w-2 h-2 rounded-full bg-blue-500 mr-2" />
+                            <span class="text-sm font-medium leading-tight text-slate-500">Email Marketing</span>
                         </div>
                         <div class="text-sm font-medium leading-tight pl-4">
                             {{

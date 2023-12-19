@@ -4,7 +4,7 @@
             <div class="flex flex-wrap gap-y-2 items-center mb-3">
                 <NuxtLink
                     to="/dashboard"
-                    class="flex items-center flex-shrink-0 font-medium text-gray-300 transition-colors duration-300 hover:text-blue"
+                    class="flex items-center flex-shrink-0 font-medium text-slate-500 transition-colors duration-300 hover:text-blue-500"
                 >
                     <HomeIcon class="w-[18px] h-[18px] mr-2" />
                     <span class="text-xs leading-[1.33]">Home</span>
@@ -12,8 +12,8 @@
                 <span class="text-xs leading-[1.33] flex-shrink-0 mx-1">/</span>
                 <NuxtLink
                     to="/dashboard/customers"
-                    class="text-xs leading-[1.33] flex-shrink-0 font-medium transition-colors duration-300 hover:text-blue"
-                    :class="[customer ? 'text-gray-300' : 'text-blue']"
+                    class="text-xs leading-[1.33] flex-shrink-0 font-medium transition-colors duration-300 hover:text-blue-500"
+                    :class="[customer ? 'text-slate-500' : 'text-blue-500']"
                 >
                     Customers
                 </NuxtLink>
@@ -21,8 +21,8 @@
                     <span class="text-xs leading-[1.33] flex-shrink-0 mx-1">/</span>
                     <NuxtLink
                         :to="`/dashboard/customers/${customer.replace(/ /g, '-')}`"
-                        class="text-xs leading-[1.33] font-medium flex-shrink-0 text-blue transition-colors duration-300 hover:text-blue"
-                        :class="[panelView ? 'text-gray-300' : 'text-blue']"
+                        class="text-xs leading-[1.33] font-medium flex-shrink-0 text-blue-500 transition-colors duration-300 hover:text-blue-500"
+                        :class="[panelView ? 'text-slate-500' : 'text-blue-500']"
                     >
                         {{ customerName }}
                     </NuxtLink>
@@ -31,12 +31,12 @@
                     <span class="text-xs leading-[1.33] flex-shrink-0 mx-1">/</span>
                     <NuxtLink
                         :to="`/dashboard/customers/${customer}/control-panel/${accountType == 0 ? 'account' : 'organization'}`"
-                        class="text-xs leading-[1.33] font-medium text-gray-300 flex-shrink-0 transition-colors duration-300 hover:text-blue"
+                        class="text-xs leading-[1.33] font-medium text-slate-500 flex-shrink-0 transition-colors duration-300 hover:text-blue-500"
                     >
                         Control Panel
                     </NuxtLink>
                     <span class="text-xs leading-[1.33] flex-shrink-0 mx-1">/</span>
-                    <div class="text-xs leading-[1.33] font-medium flex-shrink-0 text-blue capitalize">
+                    <div class="text-xs leading-[1.33] font-medium flex-shrink-0 text-blue-500 capitalize">
                         {{ panelView.replace(/-/g, ' ') }}
                     </div>
                 </template>

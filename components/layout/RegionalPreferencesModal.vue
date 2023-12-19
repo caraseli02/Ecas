@@ -4,17 +4,17 @@
             <div class="flex items-center justify-between p-5 border-b border-gray-200 mb-5">
                 <div class="flex items-center">
                     <GlobeIcon class="w-7 h-7 mr-2" />
-                    <span class="text-lg font-semibold text-gray-300">Regional Preferences</span>
+                    <span class="text-lg font-semibold text-slate-500">Regional Preferences</span>
                 </div>
                 <button
-                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
+                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-500 transition-colors duration-300 hover:text-slate-500"
                     @click="$emit('close')"
                 >
                     <XIcon class="w-[15px] h-[15px]" />
                 </button>
             </div>
             <div class="px-5 mb-10">
-                <div class="text-sm text-gray-300 mb-5">
+                <div class="text-sm text-slate-500 mb-5">
                     Select a language, shipping region and currency to update your experience on ecas.ro
                 </div>
                 <FormSelect
@@ -39,10 +39,10 @@
                 />
             </div>
             <div class="flex items-center justify-center gap-2.5 mt-auto pb-[50px]">
-                <button class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="$emit('close')">
+                <button class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="$emit('close')">
                     Save
                 </button>
-                <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
+                <button class="flex bg-gray-100 rounded px-[26px] py-[11px] text-sm font-medium text-slate-500" @click="$emit('close')">
                     Cancel
                 </button>
             </div>

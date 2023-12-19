@@ -15,7 +15,7 @@
             >
                 <LayoutFavoritesCartModalFavoritesSearch v-if="!showMenu" v-model="searchVal" class="mr-5" />
                 <button
-                    class="flex flex-shrink-0 text-gray-300 transition-colors duration-300 hover:text-blue"
+                    class="flex flex-shrink-0 text-slate-500 transition-colors duration-300 hover:text-blue-500"
                     @click="showMenu = !showMenu"
                 >
                     <DotsVerticalIcon class="w-6 h-6" />
@@ -26,11 +26,11 @@
                         class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                         :class="[
                             allItemsSelected
-                                ? 'bg-blue border-blue group-hover:bg-white'
+                                ? 'bg-blue-500 border-blue group-hover:bg-white'
                                 : 'bg-white  border-border group-hover:border-gray-300',
                         ]"
                     >
-                        <CheckIcon v-if="allItemsSelected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
+                        <CheckIcon v-if="allItemsSelected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
                     </div>
                 </label>
                 <Swiper
@@ -44,14 +44,14 @@
                 >
                     <SwiperSlide v-if="hasSelectedItem">
                         <button
-                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                         >
                             <CartIcon class="w-5 h-5" />
                         </button>
                     </SwiperSlide>
                     <SwiperSlide v-if="hasSelectedItem">
                         <button
-                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             @click="moveItems = true"
                         >
                             <FolderArrowIcon class="w-5 h-5" />
@@ -59,7 +59,7 @@
                     </SwiperSlide>
                     <SwiperSlide v-if="hasSelectedItem">
                         <button
-                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             @click="copyItems = true"
                         >
                             <CopyIcon class="w-5 h-5" />
@@ -67,7 +67,7 @@
                     </SwiperSlide>
                     <SwiperSlide v-if="onlyFoldersSelected">
                         <button
-                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             @click="mergeFolders = true"
                         >
                             <MergeIcon class="w-5 h-5" />
@@ -75,14 +75,14 @@
                     </SwiperSlide>
                     <SwiperSlide>
                         <button
-                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                         >
                             <CogIcon class="w-5 h-5" />
                         </button>
                     </SwiperSlide>
                     <SwiperSlide v-if="!hasSelectedItem">
                         <button
-                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             @click="newFolder = true"
                         >
                             <FolderPlusIcon class="w-5 h-5" />
@@ -90,7 +90,7 @@
                     </SwiperSlide>
                     <SwiperSlide v-if="hasSelectedItem">
                         <button
-                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                            class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             @click="deleteItems = true"
                         >
                             <TrashIcon class="w-5 h-5" />
@@ -98,11 +98,11 @@
                     </SwiperSlide>
                 </Swiper>
                 <div
-                    class="absolute top-1/2 -translate-y-1/2 left-0 rounded-r-lg w-[5px] h-[50px] bg-blue transition-transform duration-300"
+                    class="absolute top-1/2 -translate-y-1/2 left-0 rounded-r-lg w-[5px] h-[50px] bg-blue-500 transition-transform duration-300"
                     :class="[showMenu ? '' : '-translate-x-2']"
                 />
                 <div
-                    class="absolute top-1/2 -translate-y-1/2 right-0 rounded-l-lg w-[5px] h-[50px] bg-blue transition-transform duration-300"
+                    class="absolute top-1/2 -translate-y-1/2 right-0 rounded-l-lg w-[5px] h-[50px] bg-blue-500 transition-transform duration-300"
                     :class="[showMenu ? 'translate-x-2' : '']"
                 />
             </div>

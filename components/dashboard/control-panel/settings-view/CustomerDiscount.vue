@@ -5,7 +5,7 @@
                 <h2 class="text-xl leading-[1.4] font-semibold">Customer Discount</h2>
                 <SkeletonLoader v-if="loading" class="w-[60px] h-7" />
                 <WarningIcon v-else-if="error" class="w-6 h-6" />
-                <div v-else class="flex text-white bg-blue text-xs leading-[1.66] font-semibold rounded-full px-2">
+                <div v-else class="flex text-white bg-blue-500 text-xs leading-[1.66] font-semibold rounded-full px-2">
                     {{ customerDiscount + '%' }}
                 </div>
             </div>
@@ -14,7 +14,7 @@
         <div class="mb-9">
             <SkeletonLoader v-if="loading" class="w-full h-[68px]" />
             <template v-else>
-                <div class="text-sm text-gray-300 mb-1">Customer Discount</div>
+                <div class="text-sm text-slate-500 mb-1">Customer Discount</div>
                 <div class="flex border border-border rounded-lg h-11 overflow-hidden">
                     <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">%</div>
                     <input
@@ -43,7 +43,7 @@
                 <span class="leading-[1.71] font-medium"> Cancel Discount </span>
             </button>
             <button
-                class="flex items-center justify-center w-full bg-blue rounded-lg px-5 py-2 text-white h-11"
+                class="flex items-center justify-center w-full bg-blue-500 rounded-lg px-5 py-2 text-white h-11"
                 @click="
                     customerDiscount = customerDiscountBuffer;
                     updateDiscount(customerDiscountBuffer);

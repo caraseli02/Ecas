@@ -9,18 +9,18 @@
         <input v-model="rememberMe" type="checkbox" class="sr-only"/>
         <div
             class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2"
-            :class="[rememberMe ? 'bg-blue border-blue' : 'border-[#CBCDD7]']"
+            :class="[rememberMe ? 'bg-blue-500 border-blue' : 'border-[#CBCDD7]']"
         >
           <CheckIcon v-if="rememberMe" class="w-4 text-white"/>
         </div>
-        <span class="text-xs text-gray-300 select-none"> Remember me </span>
+        <span class="text-xs text-slate-500 select-none"> Remember me </span>
       </label>
-      <NuxtLink to="/actions?mode=forgotPassword" class="flex text-xs font-medium text-gray-100 hover:underline">
+      <NuxtLink to="/actions?mode=forgotPassword" class="flex text-xs font-medium text-gray-500 hover:underline">
         Forgot password?
       </NuxtLink>
     </div>
     <button
-        class="flex items-center justify-center w-full bg-blue rounded py-[9px] text-white mb-5"
+        class="flex items-center justify-center w-full bg-blue-500 rounded py-[9px] text-white mb-5"
         @click="handleSignIn">
       <div v-if="isLoading" aria-label="Loading..." role="status" class="mr-3">
         <svg class="h-6 w-6 animate-spin" viewBox="3 3 18 18">
@@ -40,19 +40,19 @@
     <div v-if="errorResponse.show" class="bg-rose-600 p-2 my-3 rounded">
       <p class="text-white">{{ errorResponse.description }}</p>
     </div>
-    <div class="flex items-center justify-center mx-auto text-sm font-medium text-gray-100 mb-[25px]">
+    <div class="flex items-center justify-center mx-auto text-sm font-medium text-gray-500 mb-[25px]">
       <span class="mr-2"> Don’t have an account yet ? </span>
       <NuxtLink
           to="/signup"
-          class="relative text-blue after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
+          class="relative text-blue-500 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
       >
         Sign up now
       </NuxtLink>
     </div>
     <div class="flex items-center mb-5">
-      <div class="h-px flex-1 bg-gray-200"/>
-      <span class="text-xs text-gray-100 flex-shrink-0 mx-[18px]"> Or continue with </span>
-      <div class="h-px flex-1 bg-gray-200"/>
+      <div class="h-px flex-1 bg-gray-100"/>
+      <span class="text-xs text-gray-500 flex-shrink-0 mx-[18px]"> Or continue with </span>
+      <div class="h-px flex-1 bg-gray-100"/>
     </div>
     <button
         class="group flex items-center justify-center w-full border border-border py-2 rounded mb-5 transition-colors duration-300 hover:border-blue"
@@ -88,7 +88,7 @@
           </clipPath>
         </defs>
       </svg>
-      <span class="text-sm font-medium text-gray-300">Google</span>
+      <span class="text-sm font-medium text-slate-500">Google</span>
     </button>
   </div>
 </template>

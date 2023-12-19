@@ -1,7 +1,7 @@
 <template>
     <div class="relative" :class="[error ? 'mb-4' : '']">
         <label class="flex flex-col relative">
-            <div v-if="label" class="text-sm text-gray-300 mb-1">
+            <div v-if="label" class="text-sm text-slate-500 mb-1">
                 {{ label }}
             </div>
             <div
@@ -12,13 +12,13 @@
                     :value="modelValue"
                     :type="showPassword ? 'text' : 'password'"
                     :placeholder="placeholder"
-                    class="bg-transparent pl-3 pr-10 text-sm placeholder:text-gray-100 w-full focus:outline-none"
+                    class="bg-transparent pl-3 pr-10 text-sm placeholder:text-gray-500 w-full focus:outline-none"
                     :class="[size === 'lg' ? 'py-2.5' : 'py-2']"
                     @input="handleInput"
                 />
                 <div class="flex cursor-pointer" @click="showPassword = !showPassword">
-                    <EyeIcon v-if="!showPassword" class="absolute top-1/2 -translate-y-1/2 right-2.5 w-6 h-6 text-gray-100" />
-                    <EyeClosedIcon v-else class="absolute top-1/2 -translate-y-1/2 right-2.5 w-6 h-6 text-gray-100" />
+                    <EyeIcon v-if="!showPassword" class="absolute top-1/2 -translate-y-1/2 right-2.5 w-6 h-6 text-gray-500" />
+                    <EyeClosedIcon v-else class="absolute top-1/2 -translate-y-1/2 right-2.5 w-6 h-6 text-gray-500" />
                 </div>
                 <div v-if="handleStrength" class="flex flex-col mt-[15px]">
                     <div class="grid grid-cols-5 gap-2.5 mb-[5px]">
@@ -29,7 +29,7 @@
                             :class="[passwordStrength >= num ? 'bg-green' : 'bg-[#E7E7EB]']"
                         />
                     </div>
-                    <div class="text-xs text-gray-300">Use 8 or more characters with a mix of letters, numbers & symbols.</div>
+                    <div class="text-xs text-slate-500">Use 8 or more characters with a mix of letters, numbers & symbols.</div>
                 </div>
             </div>
         </label>

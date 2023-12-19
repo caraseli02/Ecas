@@ -4,7 +4,7 @@
       <QuickBuyIcon class="w-[30px] h-[30px] mr-2"/>
       <h2 class="text-xl font-semibold">Quick Buy</h2>
     </div>
-    <p class="text-xs text-gray-300 px-[15px] mb-6 md:px-2.5 md:mb-[15px] lg:mb-6 xl:text-sm xl:mb-[30px]">
+    <p class="text-xs text-slate-500 px-[15px] mb-6 md:px-2.5 md:mb-[15px] lg:mb-6 xl:text-sm xl:mb-[30px]">
       Are you in a hurry? Use the Quick Buy feature!
     </p>
     <div
@@ -16,7 +16,7 @@
               v-model="product.code"
               type="text"
               placeholder="Product code"
-              class="bg-transparent w-full px-2.5 py-2.5 text-sm leading-normal text-gray-300 placeholder:text-gray-300 focus:outline-none"
+              class="bg-transparent w-full px-2.5 py-2.5 text-sm leading-normal text-slate-500 placeholder:text-slate-500 focus:outline-none"
           />
         </label>
         <QuantityButtons
@@ -34,7 +34,7 @@
                     })
                 "
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" class="w-5 h-5 text-gray-300">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" class="w-5 h-5 text-slate-500">
           <g clip-path="url(#clip0_209_83)">
             <path
                 fill="#5E6278"
@@ -49,7 +49,7 @@
         </svg>
       </button>
       <button
-          class="flex items-center justify-center flex-1 bg-blue rounded text-white py-2"
+          class="flex items-center justify-center flex-1 bg-blue-500 rounded text-white py-2"
           @click="addToCart()">
         <CartIcon class="w-6 h-6 mr-2"/>
         <span class="text-sm font-medium">Add to cart</span>

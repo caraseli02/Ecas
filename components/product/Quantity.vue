@@ -10,14 +10,14 @@
       For larger quantities ask
       <NuxtLink
           to="/"
-          class="relative text-blue font-medium ml-1 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
+          class="relative text-blue-500 font-medium ml-1 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
       >
         here.
       </NuxtLink>
     </div>
     <div class="lg:grid lg:grid-cols-2">
       <div class="lg:order-2">
-        <div class="flex items-center justify-between gap-3 text-xs leading-tight text-gray-300 pl-[5px] mb-[5px]">
+        <div class="flex items-center justify-between gap-3 text-xs leading-tight text-slate-500 pl-[5px] mb-[5px]">
           <div class="flex-shrink-0">Quantity</div>
           <div>Price ( Ex VAT )</div>
         </div>
@@ -31,11 +31,11 @@
             <div>${{ quantity[1].toFixed(3) }}</div>
           </div>
         </div>
-        <div class="hidden justify-end text-gray-300 text-xs mb-[9px] lg:flex">
+        <div class="hidden justify-end text-slate-500 text-xs mb-[9px] lg:flex">
           For larger quantities ask
           <NuxtLink
               to="/"
-              class="relative text-blue font-medium ml-1 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
+              class="relative text-blue-500 font-medium ml-1 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
           >
             here.
           </NuxtLink>
@@ -46,16 +46,16 @@
             class="flex items-center justify-between bg-[#F2F2F2] rounded px-[13px] py-1 text-xs leading-snug mb-[22px] lg:flex-col lg:items-start lg:justify-start lg:bg-transparent lg:gap-[5px] lg:p-0"
         >
           <div class="flex items-center">
-            <span class="text-gray-300 mr-[5px]">Price for:</span>
-            <span class="lg:text-gray-300">Each</span>
+            <span class="text-slate-500 mr-[5px]">Price for:</span>
+            <span class="lg:text-slate-500">Each</span>
           </div>
           <div class="flex items-center">
-            <span class="text-gray-300 mr-[5px]">Multiple:</span>
-            <span class="font-Inter lg:text-gray-300">1</span>
+            <span class="text-slate-500 mr-[5px]">Multiple:</span>
+            <span class="font-Inter lg:text-slate-500">1</span>
           </div>
           <div class="flex items-center">
-            <span class="text-gray-300 mr-[5px]">Minimum Order:</span>
-            <span class="font-Inter lg:text-gray-300">1</span>
+            <span class="text-slate-500 mr-[5px]">Minimum Order:</span>
+            <span class="font-Inter lg:text-slate-500">1</span>
           </div>
         </div>
         <div class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end">
@@ -75,7 +75,7 @@
       <QuantityButtons v-model="quantity" size="lg" :object="{action : 'add', id: product._id} as ProductActionObject"/>
       <button
           :disabled="quantity===0"
-          class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
+          class="flex items-center flex-1 justify-center bg-blue-500 rounded text-white px-5 py-[9px]"
           @click="addToCart(props.product)">
         <CartIcon class="w-6 h-6 mr-2"/>
         <span class="text-sm font-medium">Add to cart</span>

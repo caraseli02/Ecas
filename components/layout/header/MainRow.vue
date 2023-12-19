@@ -1,6 +1,6 @@
 <template>
   <div
-      class="bg-blue py-[18px] shadow-m"
+      class="bg-blue-500 py-[18px] shadow-m"
       :class="[
             isScrolled
                 ? showMobileSearch
@@ -151,7 +151,7 @@
                       v-model="searchVal"
                       type="search"
                       placeholder="Search products"
-                      class="bg-transparent flex-1 w-full py-2 h-10 text-sm leading-[1.71] placeholder:text-gray-100 focus:outline-none"
+                      class="bg-transparent flex-1 w-full py-2 h-10 text-sm leading-[1.71] placeholder:text-gray-500 focus:outline-none"
                       @input="onInput"
                       @keypress.enter="
                                             $router.push('/search');
@@ -160,7 +160,7 @@
                       @blur="showMobileSearch = false"
                   />
                 </form>
-                <XIcon class="flex-shrink-0 w-5 h-5 text-gray-300" @click="showMobileSearch = false"/>
+                <XIcon class="flex-shrink-0 w-5 h-5 text-slate-500" @click="showMobileSearch = false"/>
               </label>
             </div>
           </div>

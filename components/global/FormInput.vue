@@ -1,7 +1,7 @@
 <template>
     <div class="relative" :class="[error ? 'mb-4' : '']">
         <label class="flex flex-col relative">
-            <div v-if="label" class="text-sm text-gray-300 mb-1">
+            <div v-if="label" class="text-sm text-slate-500 mb-1">
                 {{ label }}
             </div>
             <div class="relative">
@@ -9,13 +9,13 @@
                     v-if="icon"
                     class="absolute top-1/2 -translate-y-1/2 left-px w-11 h-[40px] bg-[#F5F5F5] flex items-center justify-center rounded-l-lg border-r border-border"
                 >
-                    <component :is="icon" class="w-5 h-5 text-gray-300" />
+                    <component :is="icon" class="w-5 h-5 text-slate-500" />
                 </div>
                 <input
                     :value="modelValue"
                     :type="type"
                     :placeholder="placeholder"
-                    class="bg-transparent border pr-3 text-sm placeholder:text-gray-100 w-full transition-colors duration-300 focus:outline-none"
+                    class="bg-transparent border pr-3 text-sm placeholder:text-gray-500 w-full transition-colors duration-300 focus:outline-none"
                     :class="[
                         error ? 'border-red' : 'border-border focus:border-blue',
                         disabled && showDisabledStyles

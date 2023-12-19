@@ -126,6 +126,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
+
 <style scoped>
 .min-height {
     min-height: 100vh;

@@ -6,7 +6,7 @@
         }"
     >
         <template v-if="!editing">
-            <button class="flex text-gray-300 mr-[15px] transition-colors duration-300 hover:text-blue" @click="$emit('back')">
+            <button class="flex text-slate-500 mr-[15px] transition-colors duration-300 hover:text-blue-500" @click="$emit('back')">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6">
                     <path
                         fill="currentColor"
@@ -15,13 +15,13 @@
                 </svg>
             </button>
             <div v-if="!showMenu" class="flex items-center">
-                <FolderOpenIcon class="w-7 h-7 text-gray-300 mr-[15px]" />
+                <FolderOpenIcon class="w-7 h-7 text-slate-500 mr-[15px]" />
                 <span class="text-sm leading-tight font-semibold font-Inter truncate">
                     {{ folder.title }}
                 </span>
             </div>
             <button
-                class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+                class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500"
                 :class="[showMenu ? 'mr-[15px]' : 'ml-auto']"
                 @click="showMenu = !showMenu"
             >
@@ -38,14 +38,14 @@
             >
                 <SwiperSlide>
                     <button
-                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                     >
                         <CartIcon class="w-5 h-5" />
                     </button>
                 </SwiperSlide>
                 <SwiperSlide v-if="hasSelectedItem">
                     <button
-                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                         @click="moveItems = true"
                     >
                         <FolderArrowIcon class="w-5 h-5" />
@@ -53,7 +53,7 @@
                 </SwiperSlide>
                 <SwiperSlide v-else>
                     <button
-                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                         @click="newFolder = true"
                     >
                         <FolderPlusIcon class="w-5 h-5" />
@@ -61,7 +61,7 @@
                 </SwiperSlide>
                 <SwiperSlide v-if="hasSelectedItem">
                     <button
-                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                         @click="copyItems = true"
                     >
                         <CopyIcon class="w-5 h-5" />
@@ -69,7 +69,7 @@
                 </SwiperSlide>
                 <SwiperSlide v-else>
                     <button
-                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                         @click="editing = true"
                     >
                         <PenIcon class="w-5 h-5" />
@@ -77,14 +77,14 @@
                 </SwiperSlide>
                 <SwiperSlide>
                     <button
-                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                     >
                         <CogIcon class="w-5 h-5" />
                     </button>
                 </SwiperSlide>
                 <SwiperSlide>
                     <button
-                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-gray-300 transition-colors duration-300 hover:text-blue"
+                        class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-slate-500 transition-colors duration-300 hover:text-blue-500"
                         @click="deleteItem = true"
                     >
                         <TrashIcon class="w-5 h-5" />
@@ -92,11 +92,11 @@
                 </SwiperSlide>
             </Swiper>
             <div
-                class="absolute top-1/2 -translate-y-1/2 left-0 rounded-r-lg w-[5px] h-[50px] bg-blue transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 left-0 rounded-r-lg w-[5px] h-[50px] bg-blue-500 transition-transform duration-300"
                 :class="[showMenu ? '' : '-translate-x-2']"
             />
             <div
-                class="absolute top-1/2 -translate-y-1/2 right-0 rounded-l-lg w-[5px] h-[50px] bg-blue transition-transform duration-300"
+                class="absolute top-1/2 -translate-y-1/2 right-0 rounded-l-lg w-[5px] h-[50px] bg-blue-500 transition-transform duration-300"
                 :class="[showMenu ? 'translate-x-2' : '']"
             />
         </template>
@@ -106,10 +106,10 @@
                     ref="newNameInputDOM"
                     v-model="newName"
                     type="text"
-                    class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-dark transition-colors duration-300 placeholder:text-gray-300 focus:outline-none focus:border-blue"
+                    class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-dark transition-colors duration-300 placeholder:text-slate-500 focus:outline-none focus:border-blue"
                 />
             </label>
-            <button class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-blue" @click="editing = false">
+            <button class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-blue-500" @click="editing = false">
                 <CheckIcon class="w-6 h-6" />
             </button>
             <button class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-red" @click="editing = false">

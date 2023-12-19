@@ -3,7 +3,7 @@
         class="relative rounded-lg overflow-hidden bg-white max-w-full w-[360px] shadow-m py-2 before:absolute before:left-0 before:top-0 before:w-1.5 before:h-full md:w-[480px] md:h-14 lg:w-[680px] lg:h-16 lg:before:w-2"
         :class="[
             type === 'info'
-                ? 'before:bg-blue'
+                ? 'before:bg-blue-500'
                 : type === 'warning'
                 ? 'before:bg-yellow'
                 : type === 'success'
@@ -14,7 +14,7 @@
         <div class="flex items-center space-x-3 pl-[18px] pr-4 md:space-x-4 lg:pl-6">
             <div
                 class="flex items-center justify-center w-10 h-10 rounded-full text-white lg:w-12 lg:h-12"
-                :class="[type === 'info' ? 'bg-blue' : type === 'warning' ? 'bg-yellow' : type === 'success' ? 'bg-green' : 'bg-red']"
+                :class="[type === 'info' ? 'bg-blue-500' : type === 'warning' ? 'bg-yellow' : type === 'success' ? 'bg-green' : 'bg-red']"
             >
                 <svg
                     v-if="type === 'info'"
@@ -94,7 +94,7 @@
                 </div>
             </div>
             <button
-                class="rounded-md w-6 h-6 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 lg:w-8 lg:h-8 lg:rounded-lg"
+                class="rounded-md w-6 h-6 bg-[#F2F2F2] flex items-center justify-center text-gray-500 transition-colors duration-300 hover:text-slate-500 lg:w-8 lg:h-8 lg:rounded-lg"
                 @click="$emit('close')"
             >
                 <XIcon class="w-4 h-4 lg:w-6 lg:h-6" />

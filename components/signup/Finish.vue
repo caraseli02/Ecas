@@ -29,7 +29,7 @@
                 </div>
                 <div class="mt-auto mb-[90px]">
                     <div class="flex items-center justify-center gap-2.5">
-                        <NuxtLink to="/" class="flex items-center justify-center rounded w-[170px] px-5 py-2 text-blue border border-blue">
+                        <NuxtLink to="/" class="flex items-center justify-center rounded w-[170px] px-5 py-2 text-blue-500 border border-blue">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mr-2">
                                 <path
                                     fill="#007FFF"
@@ -45,7 +45,7 @@
                                     signin: 'true',
                                 },
                             }"
-                            class="flex items-center justify-center rounded w-[170px] px-5 py-2 text-white border border-blue bg-blue"
+                            class="flex items-center justify-center rounded w-[170px] px-5 py-2 text-white border border-blue bg-blue-500"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mr-2">
                                 <path
@@ -57,9 +57,9 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="text-xs text-center text-gray-300">
+                <div class="text-xs text-center text-slate-500">
                     For assistance please contact
-                    <a href="mailto:support@ecas.ro" class="text-blue">support@ecas.ro</a>
+                    <a href="mailto:support@ecas.ro" class="text-blue-500">support@ecas.ro</a>
                 </div>
             </div>
         </div>

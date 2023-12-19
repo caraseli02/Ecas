@@ -9,7 +9,7 @@
                             {{ item.title }}
                         </div>
                         <button
-                            class="flex border border-border rounded px-2 py-[3px] text-sm font-Inter font-semibold leading-tight text-gray-300"
+                            class="flex border border-border rounded px-2 py-[3px] text-sm font-Inter font-semibold leading-tight text-slate-500"
                         >
                             CUSTOM1234
                         </button>
@@ -30,14 +30,14 @@
                     {{ item.discount }}%
                 </div>
             </div>
-            <div class="flex flex-col gap-2.5 text-gray-300 md:flex-row md:gap-5">
-                <button class="flex transition-colors duration-300 hover:text-blue">
+            <div class="flex flex-col gap-2.5 text-slate-500 md:flex-row md:gap-5">
+                <button class="flex transition-colors duration-300 hover:text-blue-500">
                     <D3Icon class="w-6 h-6" />
                 </button>
-                <button class="flex transition-colors duration-300 hover:text-blue">
+                <button class="flex transition-colors duration-300 hover:text-blue-500">
                     <TruckIcon class="w-6 h-6" />
                 </button>
-                <button class="flex transition-colors duration-300 hover:text-blue">
+                <button class="flex transition-colors duration-300 hover:text-blue-500">
                     <TrashIcon class="w-6 h-6" />
                 </button>
             </div>
@@ -45,18 +45,18 @@
         <div class="flex items-end justify-between">
             <div class="relative flex flex-col gap-[5px] md:flex-row md:items-center md:gap-[30px]">
                 <div class="flex items-center text-xs font-Inter">
-                    <span class="leading-tight text-gray-300 mr-2">VAT:</span>
+                    <span class="leading-tight text-slate-500 mr-2">VAT:</span>
                     <span class="font-medium leading-snug md:text-sm">19%</span>
                 </div>
                 <div class="flex items-center text-xs font-Inter">
-                    <span class="leading-tight text-gray-300 mr-2">Unit Price:</span>
+                    <span class="leading-tight text-slate-500 mr-2">Unit Price:</span>
                     <span class="flex items-end text-sm font-medium leading-snug md:text-base md:items-center">
                         <span class="" :class="[item.discount ? 'text-green mr-[5px]' : '']"> $120,00 </span>
-                        <span v-if="item.discount" class="text-xs line-through text-gray-300 md:text-sm"> $150,00 </span>
+                        <span v-if="item.discount" class="text-xs line-through text-slate-500 md:text-sm"> $150,00 </span>
                     </span>
                 </div>
                 <div class="flex items-center text-xs font-Inter">
-                    <span class="leading-tight text-gray-300 mr-2">Line Total:</span>
+                    <span class="leading-tight text-slate-500 mr-2">Line Total:</span>
                     <span class="text-sm font-medium leading-snug md:text-base"> $30.000,00 </span>
                 </div>
                 <div
