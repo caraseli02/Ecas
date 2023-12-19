@@ -99,8 +99,8 @@
                         </div>
                         <component :is="option.icon" v-if="option.icon" class="w-6 h-6 text-slate-500 mr-2" />
                         <span
-                            class="text-sm font-Inter text-slate-500 font-semibold truncate transition-colors duration-300 group-hover:text-dark"
-                            :class="[option.value === modelValue?.value ? 'text-dark' : '']"
+                            class="text-sm font-Inter text-slate-500 font-semibold truncate transition-colors duration-300 group-hover:text-neutral-700"
+                            :class="[option.value === modelValue?.value ? 'text-neutral-700' : '']"
                         >
                             {{ option.label }}
                         </span>
@@ -110,7 +110,7 @@
                     <button
                         v-for="option in filteredOptions"
                         :key="option.value"
-                        class="flex w-full px-2.5 py-[9px] text-left rounded-[5px] text-slate-500 transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-dark"
+                        class="flex w-full px-2.5 py-[9px] text-left rounded-[5px] text-slate-500 transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-neutral-700"
                         :class="[option.value === modelValue?.value ? 'text-blue-500' : '']"
                         @click="inputHandler(option)"
                     >
@@ -129,7 +129,7 @@
             </div>
         </Transition>
         <Transition name="fade">
-            <div v-if="error" class="absolute -bottom-1 left-0 translate-y-full pointer-events-none text-xs leading-normal text-red">
+            <div v-if="error" class="absolute -bottom-1 left-0 translate-y-full pointer-events-none text-xs leading-normal text-rose-500">
                 {{ error }}
             </div>
         </Transition>

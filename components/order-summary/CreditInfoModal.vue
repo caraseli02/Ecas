@@ -1,7 +1,7 @@
 <template>
     <div class="p-3 flex flex-col gap-4 border border-[#D4D4D4] rounded-xl bg-[#FFF] shadow-l">
         <div class="flex flex-row justify-between w-full">
-            <span class="text-[#222] text-sm font-medium leading-6">Credit Info</span>
+            <span class="text-neutral-700 text-sm font-medium leading-6">Credit Info</span>
             <button class="group">
                 <SettingCog class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
             </button>
@@ -10,36 +10,36 @@
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
                     <span class="text-[#5E6278] text-xs font-normal leading-5">Credit Limit</span>
-                    <!-- <span class="text-[#222] text-xs font-medium leading-5">€ {{ accountCredit.limit }}</span> -->
-                    <span class="text-[#222] text-xs font-medium leading-5">€ 10,000.00</span> <!-- placeholder (uncomment the above line) -->
+                    <!-- <span class="text-neutral-700 text-xs font-medium leading-5">€ {{ accountCredit.limit }}</span> -->
+                    <span class="text-neutral-700 text-xs font-medium leading-5">€ 10,000.00</span> <!-- placeholder (uncomment the above line) -->
                 </div>
                 <div class="flex flex-col gap-1">
                     <span class="text-[#5E6278] text-xs font-normal leading-5">Till Due</span>
-                    <!-- <span class="text-[#222] text-xs font-medium leading-5">{{ accountCredit.tillDue }} Days</span>  -->
-                    <span class="text-[#222] text-xs font-medium leading-5">42 Days</span> <!-- placeholder (uncomment the above line) -->
+                    <!-- <span class="text-neutral-700 text-xs font-medium leading-5">{{ accountCredit.tillDue }} Days</span>  -->
+                    <span class="text-neutral-700 text-xs font-medium leading-5">42 Days</span> <!-- placeholder (uncomment the above line) -->
                 </div>
             </div>
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
                     <span class="text-[#5E6278] text-xs font-normal leading-5">Credit Term</span>
-                    <!-- <span class="text-[#222] text-xs font-medium leading-5">{{ accountCredit.term }} Days</span> -->
-                    <span class="text-[#222] text-xs font-medium leading-5">60 Days</span> <!-- placeholder (uncomment the above line) -->
+                    <!-- <span class="text-neutral-700 text-xs font-medium leading-5">{{ accountCredit.term }} Days</span> -->
+                    <span class="text-neutral-700 text-xs font-medium leading-5">60 Days</span> <!-- placeholder (uncomment the above line) -->
                 </div>
                 <div class="flex flex-col gap-1">
                     <span class="text-[#5E6278] text-xs font-normal leading-5">Total Spent</span>
-                    <!-- <span class="text-[#222] text-xs font-medium leading-5">€ {{ accountCredit.spent }}</span> -->
-                    <span class="text-[#222] text-xs font-medium leading-5">€ 7,561.23</span> <!-- placeholder (uncomment the above line) -->
+                    <!-- <span class="text-neutral-700 text-xs font-medium leading-5">€ {{ accountCredit.spent }}</span> -->
+                    <span class="text-neutral-700 text-xs font-medium leading-5">€ 7,561.23</span> <!-- placeholder (uncomment the above line) -->
                 </div>
             </div>
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
                     <span class="text-[#5E6278] text-xs font-normal leading-5">Due Date</span>
-                    <!-- <span class="text-[#222] text-xs font-medium leading-5">{{ accountCredit.dueDate }}</span> -->
-                    <span class="text-[#222] text-xs font-medium leading-5">26 Sep 2023</span>  <!-- placeholder (uncomment the above line) -->
+                    <!-- <span class="text-neutral-700 text-xs font-medium leading-5">{{ accountCredit.dueDate }}</span> -->
+                    <span class="text-neutral-700 text-xs font-medium leading-5">26 Sep 2023</span>  <!-- placeholder (uncomment the above line) -->
                 </div>
                 <div class="flex flex-col gap-1">
                     <span class="text-[#5E6278] text-xs font-normal leading-5">Available</span>
-                    <!-- <span class="text-[#222] text-xs font-medium leading-5">€ {{ accountCredit.available }}</span> -->
+                    <!-- <span class="text-neutral-700 text-xs font-medium leading-5">€ {{ accountCredit.available }}</span> -->
                     <span class="text-[#EE514E] text-xs font-medium leading-5">€ 2,438.77</span> <!-- placeholder (uncomment the above line) -->
                 </div>
             </div>

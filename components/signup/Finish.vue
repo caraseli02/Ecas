@@ -19,8 +19,8 @@
                         </defs>
                     </svg>
                     <div class="text-xl font-medium mb-[30px]">Welcome to Ecas</div>
-                    <div class="flex items-center border border-orange bg-orange/20 px-5 py-[15px] rounded-md">
-                        <TriangleIcon class="w-[42px] h-[42px] text-orange flex-shrink-0 mr-5" />
+                    <div class="flex items-center border border-orange bg-orange-500/20 px-5 py-[15px] rounded-md">
+                        <TriangleIcon class="w-[42px] h-[42px] text-orange-500 flex-shrink-0 mr-5" />
                         <div class="text-sm text-center">
                             To activate your account, please verify your email address by clicking on the confirmation link we've sent to
                             your email.

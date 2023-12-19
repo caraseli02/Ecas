@@ -74,7 +74,7 @@
             />
           </div>
         </label>
-        <div class="flex items-center text-green">
+        <div class="flex items-center bg-green-500">
           <CheckCircleIcon class="w-4 h-4 mr-1"/>
           <span class="text-[11px] leading-tight font-semibold font-Inter"> 16,000 in stock </span>
         </div>

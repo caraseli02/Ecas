@@ -5,16 +5,16 @@
             type === 'info'
                 ? 'before:bg-blue-500'
                 : type === 'warning'
-                ? 'before:bg-yellow'
+                ? 'before:bg-yellow-500'
                 : type === 'success'
-                ? 'before:bg-green'
-                : 'before:bg-red',
+                ? 'before:bg-green-500'
+                : 'before:bg-rose-500',
         ]"
     >
         <div class="flex items-center space-x-3 pl-[18px] pr-4 md:space-x-4 lg:pl-6">
             <div
                 class="flex items-center justify-center w-10 h-10 rounded-full text-white lg:w-12 lg:h-12"
-                :class="[type === 'info' ? 'bg-blue-500' : type === 'warning' ? 'bg-yellow' : type === 'success' ? 'bg-green' : 'bg-red']"
+                :class="[type === 'info' ? 'bg-blue-500' : type === 'warning' ? 'bg-yellow-500' : type === 'success' ? 'bg-green-500' : 'bg-rose-500']"
             >
                 <svg
                     v-if="type === 'info'"

@@ -21,7 +21,7 @@ v-if="item.selected"
                 </label>
                 <div class="max-w-[220px] lg:max-w-[245px] flex">
                     <span
-v-if="stockItem" class="truncate text-[#222] text-sm leading-6 font-normal self-center justify-self-center"
+v-if="stockItem" class="truncate text-neutral-700 text-sm leading-6 font-normal self-center justify-self-center"
                         :class="expanded && shortStock ? 'hidden sm:block' : 'block'">{{ item.id }}</span>
                     <span
 v-else

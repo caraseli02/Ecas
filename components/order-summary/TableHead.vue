@@ -6,7 +6,7 @@
                 <span class="text-sm font-normal text-[#5E6278]">Select All</span>
             </div>
             <div class="ml-9 flex gap-2 items-center">
-                <span class="text-[#222] text-sm font-medium">1</span>
+                <span class="text-neutral-700 text-sm font-medium">1</span>
                 <span class="text-sm font-normal text-[#5E6278]">Items selected</span>
             </div>
         </div>

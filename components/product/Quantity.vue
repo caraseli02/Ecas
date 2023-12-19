@@ -1,6 +1,6 @@
 <template>
   <div class="relative bg-white rounded-md px-2.5 pt-2 pb-5 shadow-m md:px-[15px] lg:pt-[15px] lg:self-start">
-    <div class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green">
+    <div class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green-500">
       <CheckIcon class="w-4 h-4 mr-1 text-white"/>
       <span class="text-[11px] font-Inter leading-tight font-semibold text-white"> {{
           props.product.stock
@@ -62,11 +62,11 @@
           <div class="lg:mr-[15px]">
             <div class="text-sm leading-tight line-through">$ {{ (props.product.priceEur * 100).toFixed(3) }} (100+)
             </div>
-            <div class="text-lg leading-tight text-red">
+            <div class="text-lg leading-tight text-rose-500">
               <strong>$ {{ ((props.product.priceEur * 100 * 20) / 100).toFixed(3) }}</strong> (100+)
             </div>
           </div>
-          <div class="bg-red rounded-[25px] px-2.5 py-1 font-Inter text-sm leading-tight font-semibold text-white">20%
+          <div class="bg-rose-500 rounded-[25px] px-2.5 py-1 font-Inter text-sm leading-tight font-semibold text-white">20%
           </div>
         </div>
       </div>

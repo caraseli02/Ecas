@@ -26,7 +26,7 @@
                             v-for="num in 5"
                             :key="num"
                             class="rounded-lg h-[5px] transition-colors duration-300"
-                            :class="[passwordStrength >= num ? 'bg-green' : 'bg-[#E7E7EB]']"
+                            :class="[passwordStrength >= num ? 'bg-green-500' : 'bg-[#E7E7EB]']"
                         />
                     </div>
                     <div class="text-xs text-slate-500">Use 8 or more characters with a mix of letters, numbers & symbols.</div>
@@ -34,7 +34,7 @@
             </div>
         </label>
         <Transition name="fade">
-            <div v-if="error" class="absolute -bottom-1 left-0 translate-y-full pointer-events-none text-xs leading-normal text-red">
+            <div v-if="error" class="absolute -bottom-1 left-0 translate-y-full pointer-events-none text-xs leading-normal text-rose-500">
                 {{ error }}
             </div>
         </Transition>

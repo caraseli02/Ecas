@@ -30,7 +30,7 @@
             </div>
         </label>
         <Transition name="fade">
-            <div v-if="error" class="absolute -bottom-1 left-0 translate-y-full pointer-events-none text-xs leading-normal text-red">
+            <div v-if="error" class="absolute -bottom-1 left-0 translate-y-full pointer-events-none text-xs leading-normal text-rose-500">
                 {{ error }}
             </div>
         </Transition>

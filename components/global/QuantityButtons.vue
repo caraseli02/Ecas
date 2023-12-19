@@ -15,7 +15,7 @@
           type="number"
           :min="1"
           placeholder="Quantity"
-          class="bg-transparent w-[56px] px-1 text-sm leading-normal text-dark text-center placeholder:text-[12px] focus:outline-none"
+          class="bg-transparent w-[56px] px-1 text-sm leading-normal text-neutral-700 text-center placeholder:text-[12px] focus:outline-none"
           :class="[size === 'sm' ? 'h-9' : 'h-[42px]']"
           @focusout="($event) => inputHandlerModified($event)"
       />

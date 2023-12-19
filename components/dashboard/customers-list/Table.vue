@@ -180,7 +180,7 @@ watch(
 }
 
 .vc-header .vc-title {
-    @apply text-dark;
+    @apply text-neutral-700;
 }
 
 .vc-weekday {

@@ -17,7 +17,7 @@
                 class="p-2 rounded-lg text-slate-500 transition-colors duration-300 hover:bg-[#F2F2F2]"
             >
                 <div
-                    class="flex items-center justify-between gap-1 text-xs leading-[1.67] font-medium text-dark mb-1 lg:text-sm lg:leading-[1.43]"
+                    class="flex items-center justify-between gap-1 text-xs leading-[1.67] font-medium text-neutral-700 mb-1 lg:text-sm lg:leading-[1.43]"
                 >
                     <div class="flex items-center w-[calc(100%-50px)] hover:text-blue-500">
                         <div class="truncate">{{ productTitle(product) }}</div>

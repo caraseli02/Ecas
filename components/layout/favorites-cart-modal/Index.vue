@@ -20,7 +20,7 @@
               :key="index"
               :data-tab="textUtil.slugify(item.label)"
               class="relative flex items-center pb-3 transition-colors duration-300 hover:text-blue-500 md:text-base"
-              :class="[activeNavItem === textUtil.slugify(item.label) ? 'text-blue-500' : 'text-dark after:opacity-0']"
+              :class="[activeNavItem === textUtil.slugify(item.label) ? 'text-blue-500' : 'text-neutral-700 after:opacity-0']"
               @click="setActiveNav(item.label)"
           >
             <component :is="item.icon" class="w-5 h-5 mr-2"/>

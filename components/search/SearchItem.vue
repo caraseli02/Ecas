@@ -49,17 +49,17 @@
       <table class="w-full">
         <thead>
         <tr>
-          <th class="w-[50%] text-green pb-2.5 md:w-[70%] lg:w-[40%]">
+          <th class="w-[50%] bg-green-500 pb-2.5 md:w-[70%] lg:w-[40%]">
             <div class="flex items-center">
               <CheckIcon class="w-4 h-4 mr-1"/>
               <span class="text-xs leading-tight font-semibold md:mr-[15px] lg:mr-0"> {{ item.stock }} in stock </span>
-              <span class="hidden text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline lg:hidden">
+              <span class="hidden text-[13px] leading-tight text-neutral-700 font-normal mr-[15px] md:inline lg:hidden">
                                     Price for: Each
                                 </span>
-              <span class="hidden text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline lg:hidden">
+              <span class="hidden text-[13px] leading-tight text-neutral-700 font-normal mr-[15px] md:inline lg:hidden">
                                     Multiple: 1
                                 </span>
-              <span class="hidden text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline lg:hidden">
+              <span class="hidden text-[13px] leading-tight text-neutral-700 font-normal mr-[15px] md:inline lg:hidden">
                                     Minimum Order: 1
                                 </span>
             </div>
@@ -124,7 +124,7 @@
     </div>
     <!--        <div-->
     <!--            v-if="item.discount"-->
-    <!--            class="absolute left-0 top-[120px] flex bg-red rounded-[25px] px-1.5 py-[3px] text-xs font-extrabold leading-tight text-white md:left-[unset] md:right-0 md:top-[88px] xl:right-11 xl:top-0"-->
+    <!--            class="absolute left-0 top-[120px] flex bg-rose-500 rounded-[25px] px-1.5 py-[3px] text-xs font-extrabold leading-tight text-white md:left-[unset] md:right-0 md:top-[88px] xl:right-11 xl:top-0"-->
     <!--        >-->
     <!--            {{ item.discount }}%-->
     <!--        </div>-->

@@ -74,7 +74,7 @@
                     v-for="option in card.menu.options"
                     :key="option.label"
                     class="group/option flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
-                    :class="[option.label === card.menu.selected.label ? '' : 'text-dark']"
+                    :class="[option.label === card.menu.selected.label ? '' : 'text-neutral-700']"
                     @click="
                                         card.menu.selected = option;
                                         card.menu.showOptions = false;

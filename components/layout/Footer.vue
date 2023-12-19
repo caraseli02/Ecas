@@ -17,7 +17,7 @@
                             <input
                                 v-model="email"
                                 type="email"
-                                class="bg-white w-full px-4 text-dark text-sm py-[11px] font-medium rounded-l-md rounded-r-none md:w-[250px] lg:w-[280px] 2xl:w-[350px]"
+                                class="bg-white w-full px-4 text-neutral-700 text-sm py-[11px] font-medium rounded-l-md rounded-r-none md:w-[250px] lg:w-[280px] 2xl:w-[350px]"
                             />
                         </label>
                         <button class="flex items-center flex-shrink-0 bg-blue-500 px-[14px] py-[11px] text-sm font-medium rounded-r-md">
@@ -93,14 +93,14 @@
                                     <NuxtLink
                                         v-if="navItem.to.startsWith('/')"
                                         :to="navItem.to"
-                                        class="relative text-xs after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-dark after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 md:text-sm"
+                                        class="relative text-xs after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-neutral-700 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 md:text-sm"
                                     >
                                         {{ navItem.label }}
                                     </NuxtLink>
                                     <a
                                         v-else
                                         :href="navItem.to"
-                                        class="relative text-xs after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-dark after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 md:text-sm"
+                                        class="relative text-xs after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-neutral-700 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 md:text-sm"
                                     >
                                         {{ navItem.label }}
                                     </a>

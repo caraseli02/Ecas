@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col p-4 xl:p-6 rounded-xl bg-[#FFF] items-start shadow-xs gap-4 mb-6">
         <div class="flex flex-col gap-6">
-            <h2 class="text-[#222] text-base font-medium leading-6">Order Type</h2>
+            <h2 class="text-neutral-700 text-base font-medium leading-6">Order Type</h2>
             <div class="flex flex-row gap-3">
                 <div v-if="stockOrder" class="px-3 py-[3px] justify-center flex rounded bg-[#00D39526]">
                     <span class="text-[#006D4D] text-sm font-medium leading-5">Stock Order</span>
@@ -20,7 +20,7 @@
                 <button @click="expandShippingAndBilling"
                     class="flex flex-row justify-between py-2 group header-transition">
                     <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
-                        :class="shippingAndBillingExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Shipping and Billing</span>
+                        :class="shippingAndBillingExpanded ? 'text-[#007FFF]' : 'text-neutral-700'">Shipping and Billing</span>
                     <div class="flex flex-row gap-6">
                         <div v-if="shippingAndBillingMissingInfoWarning" class="flex flex-row gap-2 items-center">
                             <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
@@ -45,7 +45,7 @@
             <div class="flex flex-col">
                 <button @click="expandShippingPreferences" class="flex flex-row justify-between py-2 group">
                     <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
-                        :class="shippingPreferencesExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Shipping Preferences</span>
+                        :class="shippingPreferencesExpanded ? 'text-[#007FFF]' : 'text-neutral-700'">Shipping Preferences</span>
                     <div class="flex flex-row gap-6">
                         <div v-if="!shippingPreferencesExpanded && order.backorderOption === 0 && mixedOrBackOrder"
                             class="flex flex-row gap-2 items-center">
@@ -71,7 +71,7 @@
             <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
             <button @click="expandPaymentMethod" class="flex flex-row justify-between py-2 group">
                 <span class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
-                    :class="paymentMethodExpanded ? 'text-[#007FFF]' : 'text-[#222]'">Payment Method</span>
+                    :class="paymentMethodExpanded ? 'text-[#007FFF]' : 'text-neutral-700'">Payment Method</span>
                 <div class="flex flex-row gap-6">
                     <div v-if="paymentMethodWarning" class="flex flex-row gap-2 items-center">
                         <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">

@@ -26,7 +26,7 @@
                         :value="partNumber"
                         readonly
                         type="text"
-                        class="bg-transparent w-full px-2.5 py-[5px] border border-border rounded h-[42px] text-xl font-semibold leading-tight text-dark focus:outline-none"
+                        class="bg-transparent w-full px-2.5 py-[5px] border border-border rounded h-[42px] text-xl font-semibold leading-tight text-neutral-700 focus:outline-none"
                     />
                 </label>
                 <ArrowDownIcon class="w-6 h-6 my-[15px]" />
@@ -49,7 +49,7 @@
             </div>
             <Transition name="fade">
                 <div v-if="submitSuccess" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                    <CheckIcon class="w-[140px] h-[140px] text-green mb-5" />
+                    <CheckIcon class="w-[140px] h-[140px] bg-green-500 mb-5" />
                     <div class="text-2xl text-slate-500">Saved</div>
                 </div>
             </Transition>

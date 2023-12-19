@@ -5,7 +5,7 @@
   >
     <div
         class="absolute top-0 left-0 px-2.5 py-1 flex items-center rounded-tl-md rounded-br-md"
-        :class="[product.stock ? 'bg-green' : 'bg-orange']"
+        :class="[product.stock ? 'bg-green-500' : 'bg-orange-500']"
     >
       <CheckIcon v-if="product.stock" class="w-4 h-4 mr-1 text-white"/>
       <InfoIcon v-else class="w-4 h-4 mr-1 text-white"/>
@@ -34,7 +34,7 @@
     </div>
     <div class="mt-auto">
       <div v-if="product.discount" class="text-[11px] leading-tight line-through mb-px md:text-xs">$ 1879,75 (5+)</div>
-      <div class="text-[13px] leading-tight md:text-base" :class="[product.discount ? 'text-red' : '']">
+      <div class="text-[13px] leading-tight md:text-base" :class="[product.discount ? 'text-rose-500' : '']">
         <strong>$ {{ product.price }}</strong> (25+)
       </div>
     </div>
@@ -55,7 +55,7 @@
       </div>
       <div
           v-if="product.discount"
-          class="bg-red rounded-l-[25px] p-[5px] text-[11px] font-semibold text-white md:px-2.5 md:text-sm xl:translate-y-12"
+          class="bg-rose-500 rounded-l-[25px] p-[5px] text-[11px] font-semibold text-white md:px-2.5 md:text-sm xl:translate-y-12"
       >
         {{ product.discount }}%
       </div>

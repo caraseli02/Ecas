@@ -21,7 +21,7 @@
                 <div class="text-xs leading-tight truncate mb-1">Diode: rectifying; SMD; 100V; 0.15...</div>
                 <div class="flex flex-col 2xl:flex-row 2xl:items-center">
                     <div class="text-xs leading-tight mb-[5px] mr-2.5 2xl:mb-0">Manufacturer: Microchip</div>
-                    <div class="flex items-center text-green">
+                    <div class="flex items-center bg-green-500">
                         <CheckIcon class="w-4 h-4 mr-1" />
                         <span class="text-xs leading-tight font-semibold"> 16,000 in stock </span>
                     </div>
@@ -29,10 +29,10 @@
             </div>
             <div class="flex flex-col font-semibold">
                 <span v-if="item.discount" class="text-sm text-slate-500 mb-0.5"> $150,00 </span>
-                <span :class="[item.discount ? 'text-green mb-2.5' : '']"> $120,00 </span>
+                <span :class="[item.discount ? 'bg-green-500 mb-2.5' : '']"> $120,00 </span>
                 <div
                     v-if="item.discount"
-                    class="flex bg-red rounded-[25px] px-1.5 py-0.5 text-xs font-extrabold text-white self-start ml-4"
+                    class="flex bg-rose-500 rounded-[25px] px-1.5 py-0.5 text-xs font-extrabold text-white self-start ml-4"
                 >
                     {{ item.discount }}%
                 </div>

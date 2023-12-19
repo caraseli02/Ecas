@@ -109,7 +109,7 @@
                                 v-for="option in creditTermOptions"
                                 :key="option.value"
                                 class="group flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
-                                :class="[option.value === creditTerm?.value ? '' : 'text-dark']"
+                                :class="[option.value === creditTerm?.value ? '' : 'text-neutral-700']"
                                 @click="
                                     creditTerm = option;
                                     showCreditTermOptions = false;
