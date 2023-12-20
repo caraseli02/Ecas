@@ -130,7 +130,8 @@ const buildBulkQuantities = () => {
     }
 
     props.product.priceConfiguration.configuration.forEach((configuration: PriceConfigurationSettingsInterface) => {
-        bulkQuantities.set(configuration.quantity, configuration.price);
+        const discount = productDiscount.value || userDiscount.value || 0;
+        bulkQuantities.set(configuration.quantity, (configuration.price * (100 - Number(discount))) / 100);
     });
 };
 
