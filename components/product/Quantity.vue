@@ -26,7 +26,7 @@
                         class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight bg-[#F2F2F2] rounded"
                     >
                         <div>{{ quantity[0] }}+</div>
-                        <div>${{ quantity[1].toFixed(2) }}</div>
+                        <div :class="[productDiscount ? 'text-red' : '']">${{ quantity[1].toFixed(2) }}</div>
                     </div>
                 </div>
                 <div class="hidden justify-end text-gray-300 text-xs mb-[9px] lg:flex">

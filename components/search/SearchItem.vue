@@ -200,13 +200,15 @@ const quantityInfo = [
 ];
 
 const bulkQuantities = new Map<number, number>();
+
 const buildBulkQuantities = () => {
     if (!props.item.priceConfiguration) {
         return;
     }
 
     props.item.priceConfiguration.configuration.forEach((configuration: PriceConfigurationSettingsInterface) => {
-        bulkQuantities.set(configuration.quantity, configuration.price);
+        const discount = productDiscount.value || userDiscount.value || 0;
+        bulkQuantities.set(configuration.quantity, (configuration.price * (100 - Number(discount))) / 100);
     });
 };
 
