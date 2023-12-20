@@ -40,12 +40,9 @@
                         <InfoIcon class="w-4 h-4" />
                     </button>
                 </div>
-                <div v-if="productDiscount" class="text-sm leading-[1.43] font-semibold font-Inter line-through">
-                    {{ priceConfiguration ? `$ ${priceConfiguration.price.toFixed(3)} (${priceConfiguration.quantity}+)` : '-' }}
-                </div>
                 <div class="text-sm leading-[1.43] font-semibold font-Inter" :class="[productDiscount ? 'text-red' : '']">
                     <strong>
-                        {{ discountPrice ? `$ ${discountPrice.toFixed(3)}` : priceConfiguration?.price.toFixed(3) || '-' }}
+                        {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
                     </strong>
                     {{ priceConfiguration ? `(${priceConfiguration.quantity}+)` : '-' }}
                 </div>
