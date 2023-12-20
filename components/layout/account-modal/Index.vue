@@ -1,7 +1,9 @@
 <template>
   <div class="fixed z-[60] inset-0 w-screen h-screen pointer-events-none">
       <div
-          class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] px-2 py-4 md:px-4 md:py-6 overflow-y-scroll">
+          class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] px-2 py-4 overflow-y-scroll"
+          :class="!getUserDetails ? 'px-4 py-6 md:p-6' : 'md:px-4 md:py-6'"
+          >
           <div class="flex flex-col justify-between items-center pb-6 gap-6">
               <button
                   class="rounded-lg w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end mr-2"
@@ -10,12 +12,13 @@
               </button>
               <LayoutAccountModalDetails v-if="getUserDetails" />
           </div>
-          <div v-if="!getUserDetails" class="flex-1 mx-2 mt-[80px] flex flex-col justify-between">
+          <div class="max-h-[80px] flex flex-grow m-h-fit w-full"></div>
+          <div v-if="!getUserDetails" class="flex-1 flex flex-col justify-between px-4">
             <section>
-              <div class="text-neutral-70 font-semibold mb-[50px]">Sign in to your account</div>
+              <div class="text-neutral-70 font-semibold mb-[36px]">Sign in to your account</div>
               <LayoutAccountModalForm />
             </section>
-              <p class="flex justify-center items-center gap-2 text-slate-500 text-sm sticky bottom-0">
+              <p class="flex flex-wrap justify-center items-center gap-2 text-slate-500 text-xs md:text-sm sticky bottom-0">
                       <SvgoMenuHelp class="text-slate-500 w-4 h-4" />
                       For assistance please contact
                       <a href="mailto:support@ecas.ro" class="text-blue-500 hover:text-blue-400 hover:underline"> support@ecas.ro </a>

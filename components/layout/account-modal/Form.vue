@@ -4,7 +4,7 @@
       <FormInput size="lg" label="E-mail" v-model="email.value" :error="email.error" type="email" placeholder="you@company.com"/>
       <FormPassword size="lg" label="Password" v-model="password.value" :error="password.error" placeholder="Your Password"/>
     </div>
-    <div class="flex items-center justify-between mb-[30px]">
+    <div class="flex items-center justify-between mb-[36px]">
       <label class="flex items-center cursor-pointer">
         <input v-model="rememberMe" type="checkbox" class="sr-only"/>
         <div
@@ -20,7 +20,7 @@
       </NuxtLink>
     </div>
     <button
-        class="flex items-center justify-center w-full bg-blue-500 hover:bg-blue-400 rounded-lg py-[9px] text-white mb-5"
+        class="flex items-center justify-center w-full bg-blue-500 hover:bg-blue-400 rounded-lg py-[10px] text-white mb-4"
         @click="handleSignIn">
       <div v-if="isLoading" aria-label="Loading..." role="status" class="mr-3">
         <svg class="h-6 w-6 animate-spin" viewBox="3 3 18 18">
@@ -40,8 +40,8 @@
     <div v-if="errorResponse.show" class="bg-rose-600 p-2 my-3 rounded">
       <p class="text-white">{{ errorResponse.description }}</p>
     </div>
-    <div class="flex items-center justify-center mx-auto text-sm font-medium text-gray-500 mb-[25px]">
-      <span class="mr-2"> Don’t have an account yet ? </span>
+    <div class="flex items-center justify-between mx-auto text-sm font-medium text-gray-500 mb-[25px]">
+      <span class="mr-2 text-slate-500 font-normal text-sm"> Don’t have an account ? </span>
       <NuxtLink
           to="/signup"
           class="relative text-blue-500 hover:text-blue-400 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
@@ -49,7 +49,7 @@
         Sign up now
       </NuxtLink>
     </div>
-    <div class="flex items-center mb-5">
+    <div class="flex items-center mt-12 mb-6">
       <div class="h-px flex-1 bg-gray-100"/>
       <span class="text-xs text-gray-400 flex-shrink-0 mx-[18px]"> Or continue with </span>
       <div class="h-px flex-1 bg-gray-100"/>
