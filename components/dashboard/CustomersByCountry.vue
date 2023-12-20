@@ -61,7 +61,6 @@
                             Market Share: <span class="text-dark font-medium">83%</span>
                         </div>
                     </div>
-                    <div class="text-xs leading-[1.67] text-slate-500 mb-4 md:mb-6">Country with the most customers</div>
                 </template>
             </div>
             <div class="rounded-xl">
@@ -70,33 +69,13 @@
                     <DashboardWorld :countries="countries" />
                 </ClientOnly>
             </div>
-            <div
-                class="grid grid-cols-[repeat(2,auto)] gap-4 md:gap-x-8 md:gap-y-3 md:col-start-2 md:row-start-1 md:mb-6 xl:gap-x-6 xl:self-start"
-                :class="[loading ? 'md:w-[calc(100vw-460px)] xl:w-full' : 'max-md:px-4 md:pl-6 md:border-l md:border-gray-200']"
-            >
-                <SkeletonLoader v-if="loading" class="w-full h-[52px] col-span-2" />
-                <template v-else>
-                    <div v-for="(country, index) in countries" :key="index" class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full flex-shrink-0" :style="{ backgroundColor: country.theme }" />
-                        <div
-                            class="text-xs leading-normal text-slate-500"
-                            :class="[countryWithMostCustomers?.label === country.label ? 'font-semibold' : '']"
-                        >
-                            {{ country.label }}
-                        </div>
-                        <div class="text-xs leading-normal text-slate-500 font-semibold">
-                            {{ country.count }}
-                        </div>
-                    </div>
-                </template>
-            </div>
         </div>
         <div
             v-else
             class="flex flex-col items-center justify-center flex-1 mt-[132px] mb-[148px] md:mt-[128px] xl:mt-[110px] xl:mb-[150px]"
         >
             <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
-            <div class="text-sm font-medium leading-normal text-gray-500">No data available</div>
+            <div class="text-sm font-medium leading-normal text-gray-100">No data available</div>
         </div>
     </div>
 </template>
