@@ -133,10 +133,10 @@ const news = ref([
     @apply bottom-0  space-x-1.5 md:space-x-2 #{!important};
 }
 .homeNews--swiper .swiper-pagination-bullet {
-    @apply w-1.5 h-1.5 bg-[#D9D9D9] rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
+    @apply w-1.5 h-1.5 bg-gray-200  rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
     margin-right: 0 !important;
 }
 .homeNews--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
-    @apply w-[25px] bg-gray-500 #{!important};
+    @apply w-[25px] bg-gray-300 #{!important};
 }
 </style>
