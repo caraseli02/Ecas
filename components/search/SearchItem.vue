@@ -3,14 +3,18 @@
         class="relative font-Inter lg:grid lg:grid-cols-[60%,40%] lg:gap-[25px] xl:grid-cols-[45%,30%,25%] xl:pb-[15px] xl:gap-0 xl:border-b xl:border-gray-200"
     >
         <div class="flex items-start">
-            <NuxtLink :to="`/product/${item.slug}`" class="flex flex-shrink-0 mr-2.5 md:mr-[15px]">
-                <img :src="item.cover" :alt="item.title" class="w-[100px] h-[100px] md:w-[120px] md:h-[120px]" />
+            <NuxtLink :to="`/product/${item._id}`" class="flex flex-shrink-0 mr-2.5 md:mr-[15px]">
+                <img
+                    :src="item.details.ProductImage.ProductImageLarge"
+                    :alt="item.alias"
+                    class="w-[100px] h-[100px] md:w-[120px] md:h-[120px]"
+                />
             </NuxtLink>
             <div>
                 <div class="md:flex md:items-center md:mb-[14px]">
                     <div class="flex items-center mb-2.5 md:mb-0 md:mr-5">
-                        <NuxtLink :to="`/product/${item.slug}`" class="text-xl leading-tight font-semibold mr-1.5">
-                            {{ item.title }}
+                        <NuxtLink :to="`/product/${item._id}`" class="text-xl leading-tight font-semibold mr-1.5">
+                            {{ item.alias }}
                         </NuxtLink>
                         <button class="flex">
                             <CopyIcon class="w-[22px] h-[22px] text-gray-300 transition-colors duration-300 hover:text-blue" />
@@ -60,7 +64,7 @@
                                     Multiple: 1
                                 </span>
                                 <span class="hidden text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline lg:hidden">
-                                    Minimum Order: 1
+                                    Minimum Order: {{ priceConfiguration ? priceConfiguration.quantity : 0 }}
                                 </span>
                             </div>
                         </th>
@@ -154,26 +158,67 @@ import ShareIcon from '@/assets/icons/share.svg';
 import { ProductAction, ProductActionObject } from '~/model/cart/response/cart.interface';
 import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
-import { SearchItem } from '~/types';
 import Emitter from 'tiny-emitter/instance.js';
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
+import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
+import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 
 const { $api } = useNuxtApp();
 const quantity = ref(1);
 
-defineProps({
+const props = defineProps({
     item: {
-        type: Object as PropType<SearchItem>,
+        type: Object as PropType<ProductInterface>,
         required: true,
     },
 });
 
-const addToCart = async (product: SearchItem) => {
-    if (product && product.slug) {
+const authStore = useAuthStore();
+const { getUserDetails } = storeToRefs(authStore);
+
+const discountsHelper = parseProductPriceConfiguration(props.item, getUserDetails.value);
+
+const priceConfiguration = ref<PriceConfigurationSettingsInterface | null>(discountsHelper.priceConfiguration);
+const discountPrice = ref(discountsHelper.discountPrice);
+const userDiscount = ref(discountsHelper.userDiscount);
+const productDiscount = ref(discountsHelper.productDiscount);
+
+const quantityInfo = [
+    {
+        title: 'Price for',
+        value: 'Each',
+    },
+    {
+        title: 'Multiple',
+        value: 1,
+    },
+    {
+        title: 'Minimum order',
+        value: priceConfiguration.value ? priceConfiguration.value.quantity : 1,
+    },
+];
+
+const bulkQuantities = new Map<number, number>();
+const buildBulkQuantities = () => {
+    if (!props.item.priceConfiguration) {
+        return;
+    }
+
+    props.item.priceConfiguration.configuration.forEach((configuration: PriceConfigurationSettingsInterface) => {
+        bulkQuantities.set(configuration.quantity, configuration.price);
+    });
+};
+
+const addToCart = async (product: ProductInterface) => {
+    if (product && product._id) {
         const payload: AddToCartRequestInterface = {
             userId: '',
-            products: [{ id: product.slug, stock: quantity.value, isFolder: false }],
+            products: [{ id: product._id, stock: quantity.value, isFolder: false }],
         };
+
         const object = await $api.cart.addEntityToCart(payload);
+
         if (object.status === 'success') {
             const { data } = await $api.cart.fetchCartList();
             Emitter.emit('update-cart', data);
@@ -182,4 +227,6 @@ const addToCart = async (product: SearchItem) => {
 };
 
 const showCustomProductPartNumberModal = ref(false);
+
+buildBulkQuantities();
 </script>
