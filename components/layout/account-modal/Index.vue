@@ -125,12 +125,28 @@ setTimeout(() => {
 }, 200);
 };
 
+// watch(showAccountModal, () => {    
+//     // remove scroll if showAccountModal is true
+//     if (showAccountModal.value) {
+//         document.body.style.overflow = 'hidden';
+//         document.body.style.maxHeight = '100vh';
+//     } else {
+//         // Enable scroll
+//         document.body.style.overflow = 'auto';
+//         document.body.style.maxHeight = '100%';
+//     }
+// });
+
 onMounted(() => {
+  document.body.style.overflow = 'hidden';
+  document.body.style.maxHeight = '100vh';
 documentUtil.toggleBodyScroll();
 });
 
 onBeforeUnmount(() => {
 documentUtil.toggleBodyScroll();
+document.body.style.overflow = 'auto';
+document.body.style.maxHeight = '100%';
 });
 </script>
 
