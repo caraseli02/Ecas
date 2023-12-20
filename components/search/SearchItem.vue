@@ -1,11 +1,14 @@
 <template>
     <div
-        class="relative font-Inter lg:grid lg:grid-cols-[60%,40%] lg:gap-[25px] xl:grid-cols-[45%,30%,25%] xl:pb-[15px] xl:gap-0 xl:border-b xl:border-gray-200">
+        class="relative font-Inter lg:grid lg:grid-cols-[60%,40%] lg:gap-[25px] xl:grid-cols-[45%,30%,25%] xl:pb-[15px] xl:gap-0 xl:border-b xl:border-gray-200"
+    >
         <div class="flex items-start">
             <NuxtLink :to="`/product/${item._id}`" class="flex flex-shrink-0 mr-2.5 md:mr-[15px]">
                 <img
-:src="item.details.ProductImage.ProductImageLarge" :alt="item.alias"
-                    class="w-[100px] h-[100px] md:w-[120px] md:h-[120px]" />
+                    :src="item.details.ProductImage.ProductImageLarge"
+                    :alt="item.alias"
+                    class="w-[100px] h-[100px] md:w-[120px] md:h-[120px]"
+                />
             </NuxtLink>
             <div>
                 <div class="md:flex md:items-center md:mb-[14px]">
@@ -14,13 +17,13 @@
                             {{ item.alias }}
                         </NuxtLink>
                         <button class="flex">
-                            <CopyIcon
-                                class="w-[22px] h-[22px] text-gray-300 transition-colors duration-300 hover:text-blue" />
+                            <CopyIcon class="w-[22px] h-[22px] text-gray-300 transition-colors duration-300 hover:text-blue" />
                         </button>
                     </div>
                     <button
                         class="flex items-center text-gray-300 px-3 py-[5px] max-w-max border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue hover:border-blue md:mb-0"
-                        @click="showCustomProductPartNumberModal = true">
+                        @click="showCustomProductPartNumberModal = true"
+                    >
                         <span class="text-[15px] leading-tight font-medium mr-2">
                             {{ item.manufacturerCode }}
                         </span>
@@ -48,48 +51,30 @@
         </div>
         <div class="lg:pr-[75px]">
             <div class="flex">
-                <div class="flex flex-col items-start  min-w-fit gap-2 xl:gap-1.5">
+                <div class="flex flex-col items-start min-w-fit gap-2 xl:gap-1.5">
                     <span class="text-xs text-green leading-tight font-semibold md:mr-[15px] lg:mr-0 flex mb-2">
                         <CheckIcon class="w-[15px] h-[15px] mr-1" />
                         {{ item.stock }} in stock
                     </span>
-                    <span class="text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline">
-                        Price for: Each
-                    </span>
-                    <span class="text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline">
-                        Multiple: 1
-                    </span>
+                    <span class="text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline"> Price for: Each </span>
+                    <span class="text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline"> Multiple: 1 </span>
                     <span class="text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline">
                         Minimum Order: {{ priceConfiguration ? priceConfiguration.quantity : 0 }}
                     </span>
                 </div>
                 <section class="flex gap-2 min-w-fit">
                     <div class="flex flex-col items-start gap-1.5">
-                        <span class="text-xs leading-tight font-normal mb-2">
-                            Quantity (pcs)
-                        </span>
-                        <span class="text-[13px] leading-tight">
-                            1+
-                        </span>
-                        <span class="text-[13px] leading-tight">
-                            5+
-                        </span>
-                        <span class="text-[13px] leading-tight">
-                            10+
-                        </span>
+                        <span class="text-xs leading-tight font-normal mb-2"> Quantity (pcs) </span>
+                        <span v-for="(item, _) in bulkQuantities" class="text-[13px] leading-tight"> {{ item[0] }}+ </span>
                     </div>
                     <div class="flex flex-col items-start gap-1.5">
-                        <span class="text-xs leading-tight font-normal mb-2">
-                            Quantity (pcs)
-                        </span>
-                        <span class="text-[13px] leading-tight">
-                            $150,00
-                        </span>
-                        <span class="text-[13px] leading-tight">
-                            $150,00
-                        </span>
-                        <span class="text-[13px] leading-tight">
-                            $150,00
+                        <span class="text-xs leading-tight font-normal mb-2"> Price (Ex VAT)</span>
+                        <span
+                            v-for="(item, _) in bulkQuantities"
+                            class="text-[13px] leading-tight"
+                            :class="[productDiscount ? 'text-red' : '']"
+                        >
+                            $ {{ item[1].toFixed(2) }}
                         </span>
                     </div>
                 </section>
@@ -153,13 +138,12 @@
             </div>
         </div>
         <div class="flex gap-2.5 md:col-span-2 xl:col-span-1 xl:items-end">
-            <QuantityButtons
-v-model="quantity" size="lg"
-                :object="{ action: ProductAction.Add, id: item._id } as ProductActionObject" />
+            <QuantityButtons v-model="quantity" size="lg" :object="{ action: ProductAction.Add, id: item._id } as ProductActionObject" />
             <button
-:disabled="quantity === 0"
+                :disabled="quantity === 0"
                 class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
-                @click="addToCart(item)">
+                @click="addToCart(item)"
+            >
                 <CartIcon class="w-6 h-6 mr-2" />
                 <span class="text-sm font-medium">Add to cart</span>
             </button>
@@ -182,8 +166,10 @@ v-model="quantity" size="lg"
     <Teleport to="body">
         <Transition name="fade">
             <LayoutCustomProductPartNumberModal
-v-if="showCustomProductPartNumberModal"
-                :manufacturer-code="item.manufacturerCode" @close="showCustomProductPartNumberModal = false" />
+                v-if="showCustomProductPartNumberModal"
+                :manufacturer-code="item.manufacturerCode"
+                @close="showCustomProductPartNumberModal = false"
+            />
         </Transition>
     </Teleport>
 </template>
