@@ -1,13 +1,14 @@
 <template>
   <div class="fixed z-[60] inset-0 w-screen h-screen pointer-events-none">
       <div
-          class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] px-2 py-4 overflow-y-scroll"
+          class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[440px] px-2 py-4 overflow-y-scroll"
           :class="!getUserDetails ? 'px-4 py-6 md:p-6' : 'md:px-4 md:py-6'"
           >
           <div class="flex flex-col justify-between items-center pb-6 gap-6">
               <button
                   class="rounded-lg w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end mr-2"
-                  @click="$emit('close')">
+                  @click="$emit('close')"
+              >
                   <XIcon class="w-[24px] h-[24px] text-gray-500 hover:text-blue-500" />
               </button>
               <LayoutAccountModalDetails v-if="getUserDetails" />
