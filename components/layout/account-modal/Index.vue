@@ -19,8 +19,8 @@
               <div class="text-neutral-70 font-semibold mb-[36px]">Sign in to your account</div>
               <LayoutAccountModalForm />
             </section>
-              <p class="flex flex-wrap justify-center items-center gap-2 text-slate-500 text-xs md:text-sm sticky bottom-0">
-                      <SvgoMenuHelp class="text-slate-500 w-4 h-4" />
+              <p class="flex flex-wrap md:flex-nowrap justify-center items-center gap-2 text-slate-500 text-xs sticky bottom-0">
+                      <SvgoMenuHelp class="text-slate-500 w-4 h-4 !text-xs" />
                       For assistance please contact
                       <a href="mailto:support@ecas.ro" class="text-blue-500 hover:text-blue-400 hover:underline"> support@ecas.ro </a>
                   </p>
@@ -43,7 +43,7 @@
                       </div>
                   </button>
                   <p class="flex justify-center items-center gap-2 text-slate-500">
-                      <SvgoMenuHelp class="text-slate-500 w-4 h-4" />
+                      <SvgoMenuHelp class="text-slate-500 w-4 h-4 text-xs" />
                       For assistance please contact
                       <a href="mailto:support@ecas.ro" class="text-blue-500 hover:text-blue-400 hover:underline"> support@ecas.ro </a>
                   </p>

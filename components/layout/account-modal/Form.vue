@@ -55,7 +55,7 @@
       <div class="h-px flex-1 bg-gray-100"/>
     </div>
     <button
-        class="group flex items-center justify-center w-full border border-border py-2 rounded mb-5 transition-colors duration-300 hover:border-blue-500"
+        class="group flex items-center justify-center w-full border border-border py-2 rounded-lg mb-5 transition-colors duration-300 hover:border-blue-500"
         @click="loginWithGoogle"
     >
       <svg
