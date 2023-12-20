@@ -1,5 +1,5 @@
 <template>
-  <div class="items-stretch self-stretch bg-neutral-100 flex flex-col p-3 rounded-xl">
+  <div class="items-stretch self-stretch bg-gray-100 flex flex-col p-3 rounded-xl">
     <div class="justify-between items-stretch flex gap-5 px-0.5">
       <div class="text-neutral-800 text-xs font-medium leading-4 whitespace-nowrap">
         Available Credit
@@ -20,13 +20,13 @@
           € 0.00
         </div>
       </div>
-      <div class="items-stretch flex justify-between gap-2">
-        <div class="text-sky-500 text-sm font-medium leading-5 grow whitespace-nowrap">
+      <NuxtLink to="#" class="items-center flex justify-between gap-2">
+        <div class="text-blue-500 hover:text-blue-400 text-sm font-medium leading-5 grow whitespace-nowrap">
           View more
         </div>
         <ArrowRightIcon
           class="w-4 h-4" />
-      </div>
+      </NuxtLink>
     </div>
   </div>
 </template>

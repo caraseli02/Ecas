@@ -1,12 +1,12 @@
 <template>
     <div class="fixed z-[60] inset-0 w-screen h-screen pointer-events-none">
         <div
-            class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] px-2 py-4 md:px-4  md:py-6 overflow-y-scroll">
-            <div class="flex flex-col items-center justify-start pb-6 gap-6">
+            class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[450px] px-2 py-4 md:px-4 md:py-6 overflow-y-scroll">
+            <div class="flex flex-col justify-between items-center justify-start pb-6 gap-6">
                 <button
-                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end mr-2"
+                    class="rounded-lg w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end mr-2"
                     @click="$emit('close')">
-                    <XIcon class="w-[24px] h-[24px] text-[#5E6278]" />
+                    <XIcon class="w-[24px] h-[24px] text-gray-500 hover:text-blue-500" />
                 </button>
                 <LayoutAccountModalDetails v-if="getUserDetails" />
             </div>
@@ -15,7 +15,7 @@
                 <div class="text-gray-300 text-center font-medium mb-[50px]">Sign in to your account</div>
                 <LayoutAccountModalForm />
             </div>
-            <section v-else>
+            <section class="flex flex-col justify-between h-full" v-else>
                 <div class="flex-1 flex flex-col gap-6">
                     <LayoutAccountModalMessage />
                     <LayoutAccountModalCredits class="mx-2" />
@@ -32,10 +32,10 @@
                             </div>
                         </div>
                     </button>
-                    <p class="flex justify-center items-center gap-2">
-                        <SvgoMenuHelp />
+                    <p class="flex justify-center items-center gap-2 text-slate-500">
+                        <SvgoMenuHelp class="text-slate-500 w-4 h-4" />
                         For assistance please contact
-                        <a href="mailto:support@ecas.ro" class="text-blue hover:underline"> support@ecas.ro </a>
+                        <a href="mailto:support@ecas.ro" class="text-blue-500 hover:text-blue-400 hover:underline"> support@ecas.ro </a>
                     </p>
                 </div>
             </section>
