@@ -80,16 +80,18 @@
         <div class="flex gap-2.5">
             <QuantityButtons
                 v-if="priceConfiguration"
-                v-model="priceConfiguration.quantity"
+                v-model="quantity"
                 size="lg"
-                :object="{action : ProductAction.Add, id: product._id, min: priceConfiguration.quantity} as ProductActionObject"
+                :object="{ id: product._id, min: priceConfiguration.quantity} as ProductActionObject"
             />
             <button
                 class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
                 @click="addToCart(props.product)"
             >
                 <CartIcon class="w-6 h-6 mr-2" />
-                <span class="text-sm font-medium">Add to cart</span>
+                <span v-if="priceConfiguration && quantity" class="text-sm font-medium"
+                    >{{ quantity > priceConfiguration.quantity ? 'Update' : 'Add to' }} cart</span
+                >
             </button>
         </div>
     </div>
@@ -100,12 +102,13 @@ import CheckIcon from '@/assets/icons/check-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
-import { ProductAction, ProductActionObject } from '~/model/cart/response/cart.interface';
+import { ProductActionObject } from '~/model/cart/response/cart.interface';
 import Emitter from 'tiny-emitter/instance.js';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
+import { CartProductsInterface } from '~/types';
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
@@ -123,6 +126,8 @@ const userDiscount = ref(discountsHelper.userDiscount);
 const productDiscount = ref(discountsHelper.productDiscount);
 
 const bulkQuantities = new Map<number, number>();
+const quantity = ref(priceConfiguration.value?.quantity);
+const initialRequestedQuantity = ref(0);
 
 const buildBulkQuantities = () => {
     if (!props.product.priceConfiguration) {
@@ -141,7 +146,7 @@ const addToCart = async (product: ProductInterface) => {
         products: [
             {
                 id: product._id,
-                stock: priceConfiguration.value ? priceConfiguration.value.quantity : 1,
+                stock: quantity.value - initialRequestedQuantity.value,
                 isFolder: false,
             },
         ],
@@ -150,10 +155,20 @@ const addToCart = async (product: ProductInterface) => {
     const object = await $api.cart.addEntityToCart(payload);
 
     if (object.status === 'success') {
-        const { data } = await $api.cart.fetchCartList();
-        Emitter.emit('update-cart', data);
+        await fetchCart();
     }
 };
 
+const fetchCart = async () => {
+    const { data } = await $api.cart.fetchCartList();
+    Emitter.emit('update-cart', data);
+
+    const cartProduct = data.products.find((item: CartProductsInterface) => item.id === props.product?._id);
+
+    quantity.value = cartProduct?.stock || 0;
+    initialRequestedQuantity.value = cartProduct.stock;
+};
+
+await fetchCart();
 buildBulkQuantities();
 </script>

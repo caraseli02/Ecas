@@ -65,87 +65,39 @@
                 <section class="flex gap-2 min-w-fit">
                     <div class="flex flex-col items-start gap-1.5">
                         <span class="text-xs leading-tight font-normal mb-2"> Quantity (pcs) </span>
-                        <span v-for="(item, _) in bulkQuantities" class="text-[13px] leading-tight"> {{ item[0] }}+ </span>
+                        <span v-for="(quantity, _) in bulkQuantities" class="text-[13px] leading-tight"> {{ quantity[0] }}+ </span>
                     </div>
                     <div class="flex flex-col items-start gap-1.5">
                         <span class="text-xs leading-tight font-normal mb-2"> Price (Ex VAT)</span>
                         <span
-                            v-for="(item, _) in bulkQuantities"
+                            v-for="(quantity, _) in bulkQuantities"
                             class="text-[13px] leading-tight"
                             :class="[productDiscount ? 'text-red' : '']"
                         >
-                            $ {{ item[1].toFixed(2) }}
+                            $ {{ quantity[1].toFixed(2) }}
                         </span>
                     </div>
                 </section>
             </div>
-            <!-- <table class="w-full">
-                <thead>
-                    <tr>
-                        <th class="w-[50%] text-green pb-2.5 md:w-[70%] lg:w-[40%]">
-                            <div class="flex items-center">
-                                <CheckIcon class="w-4 h-4 mr-1" />
-                                <span class="text-xs leading-tight font-semibold md:mr-[15px] lg:mr-0"> {{ item.stock }} in stock </span>
-                                <span class="hidden text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline lg:hidden">
-                                    Price for: Each
-                                </span>
-                                <span class="hidden text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline lg:hidden">
-                                    Multiple: 1
-                                </span>
-                                <span class="hidden text-[13px] leading-tight text-dark font-normal mr-[15px] md:inline lg:hidden">
-                                    Minimum Order: {{ priceConfiguration ? priceConfiguration.quantity : 0 }}
-                                </span>
-                            </div>
-                        </th>
-                        <th class="text-gray-300 text-left pb-2.5">
-                            <span class="text-xs leading-tight font-normal"> Quantity (pcs) </span>
-                        </th>
-                        <th class="text-gray-300 text-right pb-2.5">
-                            <span class="text-xs leading-tight font-normal"> Price (Ex VAT) </span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td
-                            class="text-[13px] leading-tight pb-[5px] md:opacity-0 md:pointer-events-none lg:opacity-100 lg:pointer-events-auto"
-                        >
-                            Price for: Each
-                        </td>
-                        <td class="text-[13px] leading-tight pb-[5px] md:pb-2">1+</td>
-                        <td class="text-[13px] leading-tight text-right pb-[5px] md:pb-2">$150,00</td>
-                    </tr>
-                    <tr>
-                        <td
-                            class="text-[13px] leading-tight pb-[5px] md:opacity-0 md:pointer-events-none lg:opacity-100 lg:pointer-events-auto"
-                        >
-                            Multiple: 1
-                        </td>
-                        <td class="text-[13px] leading-tight pb-[5px] md:pb-2">5+</td>
-                        <td class="text-[13px] leading-tight text-right pb-[5px] md:pb-2">$150,00</td>
-                    </tr>
-                    <tr>
-                        <td class="text-[13px] leading-tight md:opacity-0 md:pointer-events-none lg:opacity-100 lg:pointer-events-auto">
-                            Minimum Order: 1
-                        </td>
-                        <td class="text-[13px] leading-tight">10+</td>
-                        <td class="text-[13px] leading-tight text-right">$150,00</td>
-                    </tr>
-                </tbody>
-            </table>  -->
             <div class="grid grid-cols-2 pt-2.5 mb-[15px] md:grid-cols-[70%,30%] md:mb-5 lg:grid-cols-[40%,60%] lg:mb-0">
                 <div class="text-sm font-medium font-Poppins text-blue">View More</div>
             </div>
         </div>
         <div class="flex gap-2.5 md:col-span-2 xl:col-span-1 xl:items-end">
-            <QuantityButtons v-model="quantity" size="lg" :object="{ action: ProductAction.Add, id: item._id } as ProductActionObject" />
+            <QuantityButtons
+                v-model="quantity"
+                size="lg"
+                :object="{id: item._id ,min : priceConfiguration?.quantity} as ProductActionObject"
+            />
             <button
                 :disabled="quantity === 0"
                 class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
                 @click="addToCart(item)"
             >
                 <CartIcon class="w-6 h-6 mr-2" />
-                <span class="text-sm font-medium">Add to cart</span>
+                <span v-if="quantity && priceConfiguration" class="text-sm font-medium"
+                    >{{ quantity > priceConfiguration.quantity ? 'Update' : 'Add to' }} cart</span
+                >
             </button>
         </div>
         <div class="absolute top-0 right-0 flex flex-col gap-2.5">
@@ -156,12 +108,6 @@
                 <ShareIcon class="w-6 h-6" />
             </button>
         </div>
-        <!--        <div-->
-        <!--            v-if="item.discount"-->
-        <!--            class="absolute left-0 top-[120px] flex bg-red rounded-[25px] px-1.5 py-[3px] text-xs font-extrabold leading-tight text-white md:left-[unset] md:right-0 md:top-[88px] xl:right-11 xl:top-0"-->
-        <!--        >-->
-        <!--            {{ item.discount }}%-->
-        <!--        </div>-->
     </div>
     <Teleport to="body">
         <Transition name="fade">
@@ -184,7 +130,7 @@ import CheckIcon from '@/assets/icons/check-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
 import ShareIcon from '@/assets/icons/share.svg';
-import { ProductAction, ProductActionObject } from '~/model/cart/response/cart.interface';
+import { ProductActionObject } from '~/model/cart/response/cart.interface';
 import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
 import Emitter from 'tiny-emitter/instance.js';
@@ -192,9 +138,11 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
+import { CartProductsInterface } from '~/types';
 
 const { $api } = useNuxtApp();
 const quantity = ref(1);
+const initialRequestedQuantity = ref(0);
 
 const props = defineProps({
     item: {
@@ -245,19 +193,33 @@ const addToCart = async (product: ProductInterface) => {
     if (product && product._id) {
         const payload: AddToCartRequestInterface = {
             userId: '',
-            products: [{ id: product._id, stock: quantity.value, isFolder: false }],
+            products: [{ id: product._id, stock: quantity.value - initialRequestedQuantity.value, isFolder: false }],
         };
 
         const object = await $api.cart.addEntityToCart(payload);
 
-        if (object.status === 'success') {
-            const { data } = await $api.cart.fetchCartList();
-            Emitter.emit('update-cart', data);
+        if (object.response === 'success') {
+            await fetchCart();
         }
     }
 };
 
+const fetchCart = async () => {
+    const { data } = await $api.cart.fetchCartList();
+    Emitter.emit('update-cart', data);
+
+    const cartProduct = data.products.find((item: CartProductsInterface) => item.id === props.item?._id);
+
+    if (!cartProduct) {
+        return;
+    }
+
+    quantity.value = cartProduct?.stock || 0;
+    initialRequestedQuantity.value = cartProduct.stock;
+};
+
 const showCustomProductPartNumberModal = ref(false);
 
+await fetchCart();
 buildBulkQuantities();
 </script>

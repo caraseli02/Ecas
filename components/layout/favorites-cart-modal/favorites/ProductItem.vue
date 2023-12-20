@@ -80,7 +80,7 @@
             </div>
             <div v-else class="font-Inter font-semibold leading-[1.25]">
                 $
-                {{ product ? (discountPrice * product.quantity).toFixed(3) : 0 }}
+                {{ product ? (discountPrice * (product.quantity || 1)).toFixed(2) : 0 }}
             </div>
             <QuantityButtons
                 v-if="typeof productItem.quantity === 'number'"
