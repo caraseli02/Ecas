@@ -1,6 +1,7 @@
-import { useAuthStore } from '~/store/authStore';
+import {useAuthStore} from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
+import {PaginatedCustomersInterface} from '~/model/dashboard/response/CustomerInterfaceResponse';
+import {OrderRequestInterface} from '~/types';
 
 class OrdersService extends HttpFactory {
     private ORDERS_DASHBOARD_RESOURCE = '/dashboard/orders';
@@ -11,7 +12,7 @@ class OrdersService extends HttpFactory {
     async fetchWidget(type: 'string', time: number) {
         const token = this.authStore.getToken;
         return await this.call<any>('GET', `${this.ORDERS_DASHBOARD_RESOURCE}/${type}?time=${time}`, null, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
 
@@ -26,9 +27,17 @@ class OrdersService extends HttpFactory {
                 ...filters,
                 ...sort,
             },
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`},
         });
     }
+
+    async sendOrder(order: OrderRequestInterface) {
+        const token = this.authStore.getToken;
+        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/new`, {order: order}, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
 }
 
 export default OrdersService;
