@@ -322,6 +322,8 @@ Emitter.on('checkout', async () => {
       const {data} = await $api.cart.fetchCartList();
       console.log(data);
       Emitter.emit('update-cart', data);
+      const router = useRouter();
+      router.push({path: '/'});
     }
   }
 });
