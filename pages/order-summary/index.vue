@@ -239,7 +239,6 @@ const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
 
   orderItems.forEach((item: CartProductsInterface) => {
     subtotal += Number(item.unitPriceAfterDiscounts) * item.stock;
-    console.log(Number(item.unitPriceAfterDiscounts) * item.stock);
   });
 
   order.value.subtotal = subtotal.toFixed(2) as unknown as number;
@@ -292,7 +291,7 @@ Emitter.on('checkout', async () => {
       shippingDetails: {
         firstName: user.value.personalDetails.firstName,
         lastName: user.value.personalDetails.lastName,
-        phone: user.value.personalDetails.phone,
+        phone: user.value.contactDetails.phone,
         city: user.value.personalDetails.address.city,
         country: user.value.personalDetails.address.country,
         address: getShipping(),
@@ -301,27 +300,29 @@ Emitter.on('checkout', async () => {
       paymentDetails: {
         type: paymentType.value.type,
       },
-      note: {
-        sender: user.value.firebaseId,
-        message: note.value,
-      },
     };
+    if (note.value !== '') {
+      orderRequestObject.value.note = {
+        sender: user.value.firebaseId,
+        message: note.value
+      }
+    }
   }
   if (paymentType.value.selected) {
+    console.log(orderRequestObject.value);
     const response = await $api.orders.sendOrder(orderRequestObject.value)
-    console.log(response);
-    // if (response.status === 'success') {
-    //   console.log(response);
-    // }
-    if (response && paymentType.value.type === 0) {
-      const redirectLink = 'https://www.youtube.com/watch?v=o2ukaHtNn80&t=8239s'
-      window.open(
-          redirectLink,
-          '_blank' // <- This is what makes it open in a new window.
-      );
+    if (response.status === 'success') {
+      if (paymentType.value.type === 0) {
+        const paymentLink = response.data
+        window.open(
+            paymentLink,
+            '_blank' // <- This is what makes it open in a new window.
+        );
+      }
+      const {data} = await $api.cart.fetchCartList();
+      console.log(data);
+      Emitter.emit('update-cart', data);
     }
-    const {data} = await $api.cart.fetchCartList();
-    Emitter.emit('update-cart', data);
   }
 });
 

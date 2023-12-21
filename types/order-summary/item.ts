@@ -1,6 +1,6 @@
-import { DiscountInterface } from '~/types/auth/account-settings';
-import { ProductInterface } from '~/model/products/response/ProductResponse';
-import { AddressInterface } from '~/types/auth/user-details';
+import {DiscountInterface} from '~/types/auth/account-settings';
+import {ProductInterface} from '~/model/products/response/ProductResponse';
+import {AddressInterface} from '~/types/auth/user-details';
 
 export interface OrderSummaryItem {
     title: string;
@@ -79,7 +79,7 @@ export interface OrderRequestInterface {
     type: OrderType;
     discount?: DiscountInterface;
     isDraft: boolean;
-    note: OrderNotesInterface;
+    note?: OrderNotesInterface;
 }
 
 export enum DeliveryMethodEnum {

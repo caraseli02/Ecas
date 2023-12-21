@@ -84,7 +84,7 @@
           v-if="priceConfiguration"
           v-model="quantity"
           size="lg"
-          :object="{ id: product._id, min: priceConfiguration.quantity} as ProductActionObject"
+          :object="{ id: product._id, min: priceConfiguration.quantity , action : 'add'} as ProductActionObject"
       />
       <button
           class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
@@ -110,7 +110,6 @@ import {PriceConfigurationSettingsInterface, ProductInterface} from '~/model/pro
 import {parseProductPriceConfiguration} from '~/helpers/prices.helper';
 import {useAuthStore} from '~/store/authStore';
 import {storeToRefs} from 'pinia';
-import {CartProductsInterface} from '~/types';
 
 const authStore = useAuthStore();
 const {getUserDetails} = storeToRefs(authStore);
@@ -148,7 +147,7 @@ const addToCart = async (product: ProductInterface) => {
     products: [
       {
         id: product._id,
-        stock: quantity.value - initialRequestedQuantity.value,
+        stock: quantity.value,
         isFolder: false,
       },
     ],
@@ -164,11 +163,10 @@ const addToCart = async (product: ProductInterface) => {
 const fetchCart = async () => {
   const {data} = await $api.cart.fetchCartList();
   Emitter.emit('update-cart', data);
-
-  const cartProduct = data.products.find((item: CartProductsInterface) => item.id === props.product?._id);
-
-  quantity.value = cartProduct?.stock || 0;
-  initialRequestedQuantity.value = cartProduct?.stock;
+  // const cartProduct = data.products.find((item: CartProductsInterface) => item.id === props.product?._id);
+  //
+  // quantity.value = cartProduct?.stock || 0;
+  // initialRequestedQuantity.value = cartProduct?.stock;
 };
 
 await fetchCart();
