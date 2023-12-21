@@ -1,9 +1,8 @@
-import { UserDetails } from '~/types/auth/user-details';
-import { ProductDiscountsHelperInterface, ProductInterface } from '~/model/products/response/ProductResponse';
+import {UserDetails} from '~/types/auth/user-details';
+import {ProductDiscountsHelperInterface, ProductInterface} from '~/model/products/response/ProductResponse';
 
 export const parseProductPriceConfiguration = (product: ProductInterface, userDetails: UserDetails) => {
     const priceConfiguration = product?.priceConfiguration?.configuration[0] || null;
-
     const userDiscount = userDetails?.adminSettings?.discount?.value || 0;
     const productDiscount = product.adminSettings?.discount?.value || 0;
     let discountPrice = 0;
