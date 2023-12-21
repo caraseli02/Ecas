@@ -76,7 +76,7 @@
                             >
                         </div>
                         <div v-else class="flex flex-col text-center h-[36px] justify-center">
-                            <span class="text-[#222] text-sm font-normal leading-5">$ {{ item.subtotal.toFixed(2) }}</span>
+                            <span class="text-[#222] text-sm font-normal leading-5">$ {{ subtotal.toFixed(2) }}</span>
                         </div>
                     </div>
                     <div class="flex flex-row justify-between items-center xl:flex-col xl:gap-4">
@@ -190,7 +190,6 @@ import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import TrashIcon from 'assets/icons/trash-can.svg';
 
-const quantity = ref(0);
 export default defineComponent({
     name: 'TableItemDropdown',
     components: {
@@ -239,10 +238,10 @@ export default defineComponent({
             return this.item.unitPriceAfterDiscounts;
         },
         taxPrice() {
-            return (this.item.total - this.item.subtotal).toFixed(2);
+            return (this.subtotal * 0.19).toFixed(2);
         },
         subtotal() {
-            return this.item.subtotal || 0;
+            return this.item.stock * this.item.unitPriceAfterDiscounts || 0;
         },
         discounts() {
             if (!this.item.productEntity) {

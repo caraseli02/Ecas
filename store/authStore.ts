@@ -1,13 +1,15 @@
-import {defineStore} from 'pinia';
-import {UserInfoJWT} from '~~/types';
-import {UserDetails} from '~~/types/auth/user-details';
+import { defineStore } from 'pinia';
+import { UserInfoJWT } from '~~/types';
+import { UserDetails } from '~~/types/auth/user-details';
 import Emitter from 'tiny-emitter/instance.js';
+import useFirebaseAuth from '~/composables/useFirebaseAuth';
+import moment from 'moment';
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
     state: () => {
         return {
-            token: '' as string | null,
+            token: {} as { value: string; createdAt: any },
             loggedInUser: null as UserInfoJWT | null,
             userDetails: null as UserDetails | null,
             firebaseTempToken: null as string | null,
@@ -15,7 +17,8 @@ export const useAuthStore = defineStore({
     },
     actions: {
         addToken(token: string) {
-            this.token = token;
+            this.token.value = token;
+            this.token.createdAt = moment();
         },
         addUser(user: UserInfoJWT) {
             this.loggedInUser = user;
@@ -32,8 +35,8 @@ export const useAuthStore = defineStore({
         signOut() {
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = null;
-            Emitter.emit('remove-cart-and-notifications', true)
+            this.token = { createdAt: '', value: '' };
+            Emitter.emit('remove-cart-and-notifications', true);
             if (process.client) {
                 localStorage.clear();
             }
@@ -41,20 +44,25 @@ export const useAuthStore = defineStore({
         async firebaseSignOut() {
             const firebaseAuth = useFirebaseAuth();
             await firebaseAuth.logout();
+        },
+        getToken() {
+            console.log(`${moment().diff(this.token.createdAt, 'minutes')} minutes left`);
+            if (moment().diff(this.token.createdAt, 'minutes') > 59) {
+                this.signOut();
+            }
 
+            return this.token.value;
         },
     },
     getters: {
-        getToken: (state) => state.token,
         getCurrentUser: (state) => state.loggedInUser,
         getUserDetails: (state) => {
             if (state.userDetails) {
                 return state.userDetails;
             }
             if (process.client) {
-                return JSON.parse(localStorage.getItem('userDetails'));
+                return JSON.parse(<string>localStorage.getItem('userDetails'));
             }
-
         },
     },
     persist: true,

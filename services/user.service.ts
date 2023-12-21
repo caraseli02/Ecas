@@ -8,7 +8,7 @@ import { AccountAdminSettings } from '~/types/auth/account-settings';
 class UserService extends HttpFactory {
     private RESOURCE = '/user';
     private authStore = useAuthStore();
-    private token = this.authStore.getToken ?? null;
+    private token = this.authStore.getToken() ?? null;
 
     async fetchPaginatedUser(params: PaginatedUserRequest) {
         const baseURL = useRuntimeConfig().public.BASE_URL_API;
@@ -52,7 +52,7 @@ class UserService extends HttpFactory {
     }
 
     async fetchCustomerCredit(id: string) {
-        const token = this.authStore.getToken;
+        const token = this.authStore.getToken();
 
         return await this.call<AccountAdminSettings>('GET', `${this.RESOURCE}/credit`, null, {
             headers: { Authorization: `Bearer ${token}` },

@@ -12,7 +12,7 @@ class ProductService extends HttpFactory {
     private authStore = useAuthStore();
 
     async fetchSingleProduct(id: string): Promise<ProductDetailResponse> {
-        const token = this.authStore.getToken;
+        const token = this.authStore.getToken();
 
         return await this.call<ProductDetailResponse>(
             'GET',
@@ -27,7 +27,7 @@ class ProductService extends HttpFactory {
     }
 
     async fetchProductTab(path: string): Promise<ProductResponse> {
-        const token = this.authStore.getToken;
+        const token = this.authStore.getToken();
 
         return await this.call<ProductResponse>(
             'GET',
@@ -42,7 +42,7 @@ class ProductService extends HttpFactory {
     }
 
     async fetchNewProducts(): Promise<NewProductResponse> {
-        const token = this.authStore.getToken;
+        const token = this.authStore.getToken();
 
         return await this.call<NewProductResponse>(
             'GET',
@@ -57,10 +57,10 @@ class ProductService extends HttpFactory {
     }
 
     async fetchSearchProduct(keyword: string, page = 1, perPage = 10, sort = {}, featuresFilters = []): Promise<ProductSearchResponse> {
-        const token = this.authStore.getToken;
+        const token = this.authStore.getToken();
         let filters = {};
 
-        const headers = this.authStore.getToken ? { Authorization: `Bearer ${this.authStore.getToken}` } : {};
+        const headers = this.authStore.getToken() ? { Authorization: `Bearer ${this.authStore.getToken()}` } : {};
 
         if (!keyword || keyword === '') {
             filters = { page: page, perPage: perPage, ...sort };
@@ -89,7 +89,7 @@ class ProductService extends HttpFactory {
     }
 
     async fetchProductByCriteria(payload: SearchSimilarProductRequest): Promise<SearchSimilarProductResponse> {
-        const token = this.authStore.getToken;
+        const token = this.authStore.getToken();
 
         return await this.call<SearchSimilarProductResponse>(
             'POST',

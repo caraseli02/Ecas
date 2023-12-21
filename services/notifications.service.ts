@@ -8,7 +8,7 @@ class NotificationsService extends HttpFactory {
 
     async fetchGetNotifications() {
         const authStore = useAuthStore();
-        const token = authStore.getToken;
+        const token = authStore.getToken();
         return await this.call<Notification[]>('GET', `${this.MAIN_RESOURCE}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
@@ -16,7 +16,7 @@ class NotificationsService extends HttpFactory {
 
     async fetchMarkNotificationAsRead(id: string) {
         const authStore = useAuthStore();
-        const token = authStore.getToken;
+        const token = authStore.getToken();
         return await this.call<any>('PUT', `${this.MAIN_RESOURCE}/${id}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
@@ -24,7 +24,7 @@ class NotificationsService extends HttpFactory {
 
     async deleteNotificationById(id: string) {
         const authStore = useAuthStore();
-        const token = authStore.getToken;
+        const token = authStore.getToken();
         return await this.call<any>('DELETE', `${this.MAIN_RESOURCE}/${id}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
