@@ -293,7 +293,7 @@ const {getUserDetails} = storeToRefs(authStore);
 
 const emit = defineEmits<{
   (e: 'close'): void;
-  'show-side-nav': any;
+  (e: 'show-side-nav'): any;
 }>();
 
 const showMobileSearch = ref(false);
