@@ -16,7 +16,7 @@
         "autoprefixer": "^10.4.13",
         "nuxt": "^3.7.4",
         "nuxt-lodash": "^2.4.1",
-        "nuxt-svgo": "^1.1.0",
+        "nuxt-svgo": "^3.7.0",
         "nuxt-viewport": "^2.0.6",
         "nuxt3-leaflet": "^1.0.12",
         "postcss": "^8.4.21",
