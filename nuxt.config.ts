@@ -50,18 +50,12 @@ export default defineNuxtConfig({
         },
     },
     svgo: {
+        svgo: true,
+        defaultImport: 'component',
         svgoConfig: {
-            plugins: [
-                {
-                    name: 'preset-default',
-                    params: {
-                        overrides: {},
-                    },
-                    cleanupIDs: { prefix: svgPrefix },
-                },
-            ],
+          multipass: true,
         },
-    },
+      },
     css: [
         '~/assets/css/main.css',
         '~/assets/css/resets.css',

@@ -19,7 +19,7 @@
             <div class="text-neutral-800 text-sm font-medium leading-5 grow whitespace-nowrap">
               Account warning message
             </div>
-            <XIcon
+            <svgo-x
               class="w-[18px] h-[18px]" />
           </div>
           <div class="self-stretch text-neutral-800 text-xs leading-4 mt-2">
@@ -28,7 +28,7 @@
             Contrary to popular belief, Lorem Ipsum is not simply random text.
           </div>
           <div class="items-center flex gap-2 mt-2">
-            <SettingIcon
+            <svgo-menu-icon-setting-blue
               class="w-4 h-4" />
             <div class="text-sky-500 text-sm font-medium leading-5 self-stretch grow whitespace-nowrap">
               Settings
@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import SettingIcon from '@/assets/icons/menu/setting-blue.svg';
-import XIcon from '@/assets/icons/x.svg';
 import { A11y, Pagination } from 'swiper';
 </script>
 
