@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="lg:grid lg:grid-cols-1">
-                        <OrderType :items="cartItems" :account-credit="accountCredit" :order="order" />
+                        <OrderStockType :items="cartItems" :account-credit="accountCredit" :order="order" />
                         <OrderSummaryNoteSection />
                         <OrderSummary :order="order" />
                         <OrderSummaryCheckoutButtons />
@@ -58,6 +58,7 @@ import { CustomerCreditInterface } from '~/types/auth/account-settings';
 import { useAuthStore } from '~/store/authStore';
 import { ShippingAddressInterface } from '~/types/auth/user-details';
 import Emitter from 'tiny-emitter/instance.js';
+import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 
 const store = useAuthStore();
 const user = computed(() => store.getUserDetails);

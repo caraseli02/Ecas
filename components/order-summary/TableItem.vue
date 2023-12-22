@@ -27,7 +27,7 @@
                         >{{ item.productEntity?.alias }}</span
                     >
                     <span v-else class="block truncate text-[#FA4B4B] text-sm font-normal leading-6 self-center justify-self-center">{{
-                        item.id
+                        item.productEntity.alias
                     }}</span>
                 </div>
                 <div v-if="shortStock" class="flex flex-row">
@@ -111,6 +111,8 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import TrashIcon from 'assets/icons/trash-can.svg';
+import { PropType } from 'vue';
+import { CartProductsInterface } from '~/types';
 
 export default defineComponent({
     name: 'TableItem',
@@ -129,7 +131,7 @@ export default defineComponent({
     },
     props: {
         item: {
-            type: Object,
+            type: Object as PropType<CartProductsInterface>,
             required: true,
         },
         stockItem: {
