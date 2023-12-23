@@ -79,81 +79,39 @@
                     </div>
                 </section>
             </div>
-          </th>
-          <th class="text-gray-300 text-left pb-2.5">
-            <span class="text-xs leading-tight font-normal"> Quantity (pcs) </span>
-          </th>
-          <th class="text-gray-300 text-right pb-2.5">
-            <span class="text-xs leading-tight font-normal"> Price (Ex VAT) </span>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td
-              class="text-[13px] leading-tight pb-[5px] md:opacity-0 md:pointer-events-none lg:opacity-100 lg:pointer-events-auto"
-          >
-            Price for: Each
-          </td>
-          <td class="text-[13px] leading-tight pb-[5px] md:pb-2">1+</td>
-          <td class="text-[13px] leading-tight text-right pb-[5px] md:pb-2">$150,00</td>
-        </tr>
-        <tr>
-          <td
-              class="text-[13px] leading-tight pb-[5px] md:opacity-0 md:pointer-events-none lg:opacity-100 lg:pointer-events-auto"
-          >
-            Multiple: 1
-          </td>
-          <td class="text-[13px] leading-tight pb-[5px] md:pb-2">5+</td>
-          <td class="text-[13px] leading-tight text-right pb-[5px] md:pb-2">$150,00</td>
-        </tr>
-        <tr>
-          <td class="text-[13px] leading-tight md:opacity-0 md:pointer-events-none lg:opacity-100 lg:pointer-events-auto">
-            Minimum Order: 1
-          </td>
-          <td class="text-[13px] leading-tight">10+</td>
-          <td class="text-[13px] leading-tight text-right">$150,00</td>
-        </tr>
-        </tbody>
-      </table>
-      <div class="grid grid-cols-2 pt-2.5 mb-[15px] md:grid-cols-[70%,30%] md:mb-5 lg:grid-cols-[40%,60%] lg:mb-0">
-        <div class="text-sm font-medium font-Poppins text-blue text-blue-500">View More</div>
-      </div>
+            <div class="grid grid-cols-2 pt-2.5 mb-[15px] md:grid-cols-[70%,30%] md:mb-5 lg:grid-cols-[40%,60%] lg:mb-0">
+                <div class="text-sm font-medium font-Poppins text-blue text-blue-500">View More</div>
+            </div>
+        </div>
+        <div class="flex gap-2.5 md:col-span-2 xl:col-span-1 xl:items-end">
+            <QuantityButtons v-model="quantity" size="lg" :object="{action : 'add', id: item._id} as ProductActionObject" />
+            <button
+                :disabled="quantity === 0"
+                class="flex items-center flex-1 justify-center bg-blue-500 rounded text-white px-5 py-[9px]"
+                @click="addToCart(item)"
+            >
+                <CartIcon class="w-6 h-6 mr-2" />
+                <span class="text-sm font-medium">Add to cart</span>
+            </button>
+        </div>
+        <div class="absolute top-0 right-0 flex flex-col gap-2.5">
+            <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue">
+                <HeartIcon class="w-6 h-6" />
+            </button>
+            <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue">
+                <ShareIcon class="w-6 h-6" />
+            </button>
+        </div>
     </div>
-    <div class="flex gap-2.5 md:col-span-2 xl:col-span-1 xl:items-end">
-      <QuantityButtons v-model="quantity" size="lg" :object="{action : 'add', id: item._id} as ProductActionObject"/>
-      <button
-          :disabled="quantity===0"
-          class="flex items-center flex-1 justify-center bg-blue-500 rounded text-white px-5 py-[9px]"
-          @click="addToCart(item)">
-        <CartIcon class="w-6 h-6 mr-2"/>
-        <span class="text-sm font-medium">Add to cart</span>
-      </button>
-    </div>
-    <div class="absolute top-0 right-0 flex flex-col gap-2.5">
-      <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue">
-        <HeartIcon class="w-6 h-6"/>
-      </button>
-      <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue">
-        <ShareIcon class="w-6 h-6"/>
-      </button>
-    </div>
-    <!--        <div-->
-    <!--            v-if="item.discount"-->
-    <!--            class="absolute left-0 top-[120px] flex bg-red rounded-[25px] px-1.5 py-[3px] text-xs font-extrabold leading-tight text-white md:left-[unset] md:right-0 md:top-[88px] xl:right-11 xl:top-0"-->
-    <!--        >-->
-    <!--            {{ item.discount }}%-->
-    <!--        </div>-->
-  </div>
-  <Teleport to="body">
-    <Transition name="fade">
-      <LayoutCustomProductPartNumberModal
-          v-if="showCustomProductPartNumberModal"
-          :manufacturer-code="item.manufacturerCode"
-          @close="showCustomProductPartNumberModal = false"
-      />
-    </Transition>
-  </Teleport>
+    <Teleport to="body">
+        <Transition name="fade">
+            <LayoutCustomProductPartNumberModal
+                v-if="showCustomProductPartNumberModal"
+                :manufacturer-code="item.manufacturerCode"
+                @close="showCustomProductPartNumberModal = false"
+            />
+        </Transition>
+    </Teleport>
 </template>
 
 <script setup lang="ts">
