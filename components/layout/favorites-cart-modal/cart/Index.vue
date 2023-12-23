@@ -67,8 +67,8 @@ const calculateTotalCartPrice = (items: CartProductsInterface[]) => {
             return;
         }
 
-        const discountsHelper = parseProductPriceConfiguration(cartProduct.productEntity, getUserDetails.value);
-        const discountPrice = discountsHelper.discountPrice;
+        const discountsHelper = parseProductPriceConfiguration(cartProduct.productEntity, getUserDetails.value, cartProduct.stock);
+        const discountPrice = discountsHelper?.discountPrice || 0;
 
         totalCartPrice.value += Number(discountPrice) * Number((cartProduct as unknown as FavoriteItem).quantity);
     });

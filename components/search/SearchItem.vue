@@ -154,12 +154,12 @@ const props = defineProps({
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
-const discountsHelper = parseProductPriceConfiguration(props.item, getUserDetails.value);
+const discountsHelper = parseProductPriceConfiguration(props.item, getUserDetails.value, quantity);
 
-const priceConfiguration = ref<PriceConfigurationSettingsInterface | null>(discountsHelper.priceConfiguration);
-const discountPrice = ref(discountsHelper.discountPrice);
-const userDiscount = ref(discountsHelper.userDiscount);
-const productDiscount = ref(discountsHelper.productDiscount);
+const priceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(discountsHelper?.priceConfiguration);
+const discountPrice = ref(discountsHelper?.discountPrice || 0);
+const userDiscount = ref(discountsHelper?.userDiscount || 0);
+const productDiscount = ref(discountsHelper?.productDiscount || 0);
 
 const quantityInfo = [
     {

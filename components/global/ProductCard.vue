@@ -105,12 +105,12 @@ const props = defineProps({
     },
 });
 
-const discountsHelper = parseProductPriceConfiguration(props.product, getUserDetails.value);
+const discountsHelper = parseProductPriceConfiguration(props.product, getUserDetails.value, props.product?.stock);
 
-const priceConfiguration = ref<PriceConfigurationSettingsInterface | null>(discountsHelper.priceConfiguration);
-const discountPrice = ref(discountsHelper.discountPrice);
-const userDiscount = ref(discountsHelper.userDiscount);
-const productDiscount = ref(discountsHelper.productDiscount);
+const priceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(discountsHelper?.minimumOrderQuantityConfiguration);
+const discountPrice = ref(discountsHelper?.discountPrice || 0);
+const userDiscount = ref(discountsHelper?.userDiscount || 0);
+const productDiscount = ref(discountsHelper?.productDiscount || 0);
 
 const addToFavourite = async (product: ProductInterface) => {
     const payload: FavouriteFolderRequestInterface = {

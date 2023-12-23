@@ -53,19 +53,23 @@
                     </div>
                     <div class="flex items-center">
                         <span class="text-gray-300 mr-[5px]">Minimum Order:</span>
-                        <span class="font-Inter lg:text-gray-300">{{ priceConfiguration ? priceConfiguration.quantity : 1 }}</span>
+                        <span class="font-Inter lg:text-gray-300">{{ minPriceConfiguration ? minPriceConfiguration.quantity : 1 }}</span>
                     </div>
                 </div>
                 <div class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end">
                     <div class="lg:mr-[15px]">
                         <div v-if="productDiscount" class="text-sm leading-tight line-through">
-                            {{ priceConfiguration ? `$ ${priceConfiguration.price.toFixed(2)} (${priceConfiguration.quantity}+)` : '-' }}
+                            {{
+                                minPriceConfiguration
+                                    ? `$ ${minPriceConfiguration.price.toFixed(2)} (${minPriceConfiguration.quantity}+)`
+                                    : '-'
+                            }}
                         </div>
                         <div class="text-lg leading-tight" :class="[productDiscount ? 'text-red' : '']">
                             <strong>
-                                {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
+                                {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : minPriceConfiguration?.price.toFixed(2) || '-' }}
                             </strong>
-                            {{ priceConfiguration ? `(${priceConfiguration.quantity}+)` : '-' }}
+                            {{ currentPriceConfiguration ? `(${currentPriceConfiguration.quantity}+)` : '-' }}
                         </div>
                     </div>
                     <div
@@ -79,18 +83,18 @@
         </div>
         <div class="flex gap-2.5">
             <QuantityButtons
-                v-if="priceConfiguration"
+                v-if="minPriceConfiguration"
                 v-model="quantity"
                 size="lg"
-                :object="{ id: product._id, min: priceConfiguration.quantity , action : 'add'} as ProductActionObject"
+                :object="{ id: product._id, min: minPriceConfiguration.quantity , action : 'add'} as ProductActionObject"
             />
             <button
                 class="flex items-center flex-1 justify-center bg-blue rounded text-white px-5 py-[9px]"
                 @click="addToCart(props.product)"
             >
                 <CartIcon class="w-6 h-6 mr-2" />
-                <span v-if="priceConfiguration && quantity" class="text-sm font-medium"
-                    >{{ quantity > priceConfiguration.quantity ? 'Update' : 'Add to' }} cart</span
+                <span v-if="minPriceConfiguration && quantity" class="text-sm font-medium"
+                    >{{ quantity > minPriceConfiguration.quantity ? 'Update' : 'Add to' }} cart</span
                 >
             </button>
         </div>
@@ -118,16 +122,40 @@ const props = defineProps<{
     product: ProductInterface;
 }>();
 
-const discountsHelper = parseProductPriceConfiguration(props.product, getUserDetails.value);
+const quantity = ref(0);
+const initialRequestedQuantity = ref(0);
 
-const priceConfiguration = ref<PriceConfigurationSettingsInterface | null>(discountsHelper.priceConfiguration);
-const discountPrice = ref(discountsHelper.discountPrice);
-const userDiscount = ref(discountsHelper.userDiscount);
-const productDiscount = ref(discountsHelper.productDiscount);
+const fetchCart = async () => {
+    const { data } = await $api.cart.fetchCartList();
+    Emitter.emit('update-cart', data);
+
+    const cartProduct = data.products.find((item: CartProductsInterface) => item.id === props.product?._id);
+
+    quantity.value = cartProduct?.stock || 0;
+    initialRequestedQuantity.value = cartProduct?.stock;
+};
+
+await fetchCart();
+
+const minPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
+const currentPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
+const discountPrice = ref(0);
+const userDiscount = ref(0);
+const productDiscount = ref(0);
+
+const getPricesConfiguration = () => {
+    const discountsHelper = parseProductPriceConfiguration(props.product, getUserDetails.value, quantity.value);
+    console.log(discountsHelper);
+    minPriceConfiguration.value = discountsHelper?.minimumOrderQuantityConfiguration;
+    currentPriceConfiguration.value = discountsHelper?.priceConfiguration;
+    discountPrice.value = discountsHelper?.discountPrice || 0;
+    userDiscount.value = discountsHelper?.userDiscount || 0;
+    productDiscount.value = discountsHelper?.productDiscount || 0;
+};
+
+getPricesConfiguration();
 
 const bulkQuantities = new Map<number, number>();
-const quantity = ref(priceConfiguration.value?.quantity);
-const initialRequestedQuantity = ref(0);
 
 const buildBulkQuantities = () => {
     if (!props.product.priceConfiguration) {
@@ -156,19 +184,9 @@ const addToCart = async (product: ProductInterface) => {
 
     if (object.status === 'success') {
         await fetchCart();
+        getPricesConfiguration();
     }
 };
 
-const fetchCart = async () => {
-    const { data } = await $api.cart.fetchCartList();
-    Emitter.emit('update-cart', data);
-
-    const cartProduct = data.products.find((item: CartProductsInterface) => item.id === props.product?._id);
-
-    quantity.value = cartProduct?.stock || 0;
-    initialRequestedQuantity.value = cartProduct?.stock;
-};
-
-await fetchCart();
 buildBulkQuantities();
 </script>

@@ -42,9 +42,9 @@
                 </div>
                 <div class="text-sm leading-[1.43] font-semibold font-Inter" :class="[productDiscount ? 'text-red' : '']">
                     <strong>
-                        {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
+                        {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : minPriceConfiguration?.price.toFixed(2) || '-' }}
                     </strong>
-                    {{ priceConfiguration ? `(${priceConfiguration.quantity}+)` : '-' }}
+                    {{ currentPriceConfiguration ? `(${currentPriceConfiguration.quantity}+)` : '-' }}
                 </div>
             </div>
             <button
@@ -85,7 +85,7 @@
             <QuantityButtons
                 v-if="typeof productItem.quantity === 'number'"
                 v-model="productItem.quantity"
-                :object="{action : ProductAction.Update, id: productItem.id, min : priceConfiguration?.quantity} as ProductActionObject"
+                :object="{action : ProductAction.Update, id: productItem.id, min : minPriceConfiguration?.quantity} as ProductActionObject"
                 class="mr-10"
             />
         </div>
@@ -147,10 +147,25 @@ const copyItems = ref(false);
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
-const discountsHelper = parseProductPriceConfiguration(props.product?.productEntity, getUserDetails.value);
+const minPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
+const currentPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
+const discountPrice = ref(0);
+const userDiscount = ref(0);
+const productDiscount = ref(0);
 
-const priceConfiguration = ref<PriceConfigurationSettingsInterface | null>(discountsHelper.priceConfiguration);
-const discountPrice = ref(discountsHelper.discountPrice);
-const userDiscount = ref(discountsHelper.userDiscount);
-const productDiscount = ref(discountsHelper.productDiscount);
+const getPricesConfiguration = () => {
+    const discountsHelper = parseProductPriceConfiguration(props.product?.productEntity, getUserDetails.value, productItem.value.quantity);
+
+    minPriceConfiguration.value = discountsHelper?.minimumOrderQuantityConfiguration;
+    currentPriceConfiguration.value = discountsHelper?.priceConfiguration;
+    discountPrice.value = discountsHelper?.discountPrice || 0;
+    userDiscount.value = discountsHelper?.userDiscount || 0;
+    productDiscount.value = discountsHelper?.productDiscount || 0;
+};
+
+getPricesConfiguration();
+
+watch(productItem.value.quantity, (value) => {
+    console.log(value);
+});
 </script>

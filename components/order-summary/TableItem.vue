@@ -163,11 +163,11 @@ export default defineComponent({
             const authStore = useAuthStore();
             const { getUserDetails } = storeToRefs(authStore);
 
-            const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value);
+            const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value, this.itemQuantity);
 
             return {
-                userDiscount: discountsHelper.userDiscount,
-                productDiscount: discountsHelper.productDiscount,
+                userDiscount: discountsHelper?.userDiscount || 0,
+                productDiscount: discountsHelper?.productDiscount || 0,
             };
         },
     },
