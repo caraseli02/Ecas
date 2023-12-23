@@ -7,11 +7,11 @@
                     class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                     :class="[
                         productItem.selected
-                            ? 'bg-blue border-blue group-hover:bg-white'
+                            ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                             : 'bg-white  border-border group-hover:border-gray-300',
                     ]"
                 >
-                    <CheckIcon v-if="productItem.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
+                    <CheckIcon v-if="productItem.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
                 </div>
             </label>
             <img
@@ -31,12 +31,12 @@
                     </div>
                     <button
                         v-if="!inModal && !inCart"
-                        class="flex text-gray-300 transition-colors duration-300 mr-2 hover:text-blue"
+                        class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500"
                         @click="copyItems = true"
                     >
                         <CopyIcon class="w-[18px] h-[18px]" />
                     </button>
-                    <button v-if="!inModal" class="flex text-gray-300 transition-colors duration-300 mr-2 hover:text-blue">
+                    <button v-if="!inModal" class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500">
                         <InfoIcon class="w-4 h-4" />
                     </button>
                 </div>
@@ -49,7 +49,7 @@
             </div>
             <button
                 v-if="!inModal"
-                class="flex items-center justify-center ml-auto text-gray-300 transition-colors duration-300 hover:text-[#FA4B4B]"
+                class="flex items-center justify-center ml-auto text-slate-500 transition-colors duration-300 hover:text-[#FA4B4B]"
                 @click="deleteItem = true"
             >
                 <TrashIcon class="w-5 h-5" />
@@ -63,17 +63,17 @@
                         class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                         :class="[
                             productItem.selected
-                                ? 'bg-blue border-blue group-hover:bg-white'
+                                ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                 : 'bg-white  border-border group-hover:border-gray-300',
                         ]"
                     >
                         <CheckIcon
                             v-if="productItem.selected"
-                            class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                            class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
                         />
                     </div>
                 </label>
-                <div class="flex items-center text-green">
+                <div class="flex items-center bg-green-500">
                     <CheckCircleIcon class="w-4 h-4 mr-1" />
                     <span class="text-[11px] leading-tight font-semibold font-Inter"> 16,000 in stock </span>
                 </div>

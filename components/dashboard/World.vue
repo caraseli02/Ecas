@@ -2,8 +2,8 @@
     <ClientOnly>
         <div class="rounded-xl w-full h-[244px] lg:h-[259px] xl:h-[316px]">
             <LMap
-                ref="map"
                 id="mapid"
+                ref="map"
                 :zoom="zoom"
                 :min-zoom="1"
                 :max-zoom="5"
@@ -118,12 +118,12 @@ const onEachFeature = (_: any, layer: any) => {
     .leaflet-control {
         @apply mt-3.5 mr-3.5 flex flex-col gap-2 border-hidden;
         a {
-            @apply flex items-center justify-center w-[26px] h-[26px] border-none bg-white rounded-md text-gray-300 transition-colors duration-300 font-medium hover:text-blue #{!important};
+            @apply flex items-center justify-center w-[26px] h-[26px] border-none bg-[#F2F2F2] rounded text-slate-500 transition-colors duration-300 font-medium hover:text-blue-500;
             @media (pointer: coarse) {
                 display: block !important;
             }
             &.leaflet-disabled {
-                @apply text-gray-100;
+                @apply text-gray-500;
             }
             span {
                 @apply leading-[0];

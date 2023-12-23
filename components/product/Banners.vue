@@ -22,7 +22,7 @@
                             background: 'linear-gradient(85.26deg, #001238 17.24%, #007FFF 106.53%)',
                         }"
                     />
-                    <div class="absolute z-10 top-0 left-0 w-full h-full bg-blue/30 backdrop-blur-[3px] rounded-md" />
+                    <div class="absolute z-10 top-0 left-0 w-full h-full bg-blue-500/30 backdrop-blur-[3px] rounded-md" />
                     <img :src="Banner2Bg" alt="Background" class="absolute top-0 left-0 w-full h-full object-cover rounded-md" />
                 </div>
             </div>

@@ -10,14 +10,14 @@
                         v-for="(filter, index) in filters"
                         :key="index"
                         :data-tab="textUtil.slugify(filter)"
-                        class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
-                        :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue' : 'text-gray-300 after:opacity-0']"
+                        class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue-500 md:text-base md:pb-4"
+                        :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue-500' : 'text-slate-500 after:opacity-0']"
                         @click="setActiveFilter(filter)"
                     >
                         {{ filter }}
                     </button>
                     <div
-                        class="absolute bottom-0 h-[5px] bg-blue rounded-t-[5px] transition-all duration-300"
+                        class="absolute bottom-0 h-[5px] bg-blue-500 rounded-t-[5px] transition-all duration-300"
                         :style="{
                             left: filterLineLeftPosition + 'px',
                             width: filterLineWidth + 'px',
@@ -174,6 +174,6 @@ const fetchNewProducts = async () => {
 }
 
 .homeProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
-    @apply w-[25px] bg-gray-100 #{!important};
+    @apply w-[25px] bg-gray-500 #{!important};
 }
 </style>

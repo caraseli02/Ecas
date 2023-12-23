@@ -1,19 +1,19 @@
 <template>
     <div class="p-4 xl:p-6 flex flex-col gap-4 bg-[#FFF] rounded-xl shadow-xs mb-9">
         <div class="flex flex-row w-full">
-            <span class="text-[#222] text-base font-medium leading-6">Payment Summary</span>
+            <span class="text-neutral-700 text-base font-medium leading-6">Payment Summary</span>
         </div>
         <div class="flex flex-col gap-2 relative">
             <div class="flex flex-row justify-between w-full">
                 <span class="text-[#5E6278] text-sm font-normal leading-6">Subtotal</span>
-                <span class="text-[#222] text-sm font-medium leading-6">$ {{ order.subtotal }}</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ order.subtotal }}</span>
             </div>
             <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-6">
                     <span class="text-[#5E6278] text-sm font-normal leading-6">Discount</span>
-                    <!--                    <span class="text-[#222] text-sm font-normal leading-6">({{ discountPercentage }}%)</span>-->
+                    <!--                    <span class="text-neutral-700 text-sm font-normal leading-6">({{ discountPercentage }}%)</span>-->
                 </div>
-                <span class="text-[#222] text-sm font-medium leading-6">$ {{ calculatedDiscount.toFixed(2) }}</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ calculatedDiscount.toFixed(2) }}</span>
             </div>
             <div v-if="smallOrder" class="flex flex-row justify-between w-full">
                 <div class="flex flex-col gap-1">
@@ -23,10 +23,10 @@
                             <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
                         </button>
                     </div>
-                    <span class="text-[#222] italic text-sm font-normal leading-6">Small order charge</span>
+                    <span class="text-neutral-700 italic text-sm font-normal leading-6">Small order charge</span>
                 </div>
                 <div class="flex flex-col justify-end">
-                    <span class="text-[#222] text-sm font-medium leading-6">$ {{ smallOrder }}</span>
+                    <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ smallOrder }}</span>
                 </div>
             </div>
             <Transition name="fade-bottom">
@@ -46,20 +46,20 @@
                             <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
                         </button>
                     </div>
-                    <span v-if="order.deliveryMethod === 0" class="text-[#222] italic text-sm font-normal leading-6"
+                    <span v-if="order.deliveryMethod === 0" class="text-neutral-700 italic text-sm font-normal leading-6"
                         >Free Delivery (3-7 Days)</span
                     >
-                    <span v-if="order.deliveryMethod === 1" class="text-[#222] italic text-sm font-normal leading-6"
+                    <span v-if="order.deliveryMethod === 1" class="text-neutral-700 italic text-sm font-normal leading-6"
                         >Standard Delivery (3-5 Days)</span
                     >
-                    <span v-if="order.deliveryMethod === 2" class="text-[#222] italic text-sm font-normal leading-6"
+                    <span v-if="order.deliveryMethod === 2" class="text-neutral-700 italic text-sm font-normal leading-6"
                         >Express Delivery (1-3 Days)</span
                     >
                 </div>
                 <div class="flex flex-col justify-end">
-                    <span v-if="order.deliveryMethod === 0" class="text-[#222] text-sm font-medium leading-6">$ 0.00</span>
-                    <span v-if="order.deliveryMethod === 1" class="text-[#222] text-sm font-medium leading-6">$ 5.49</span>
-                    <span v-if="order.deliveryMethod === 2" class="text-[#222] text-sm font-medium leading-6">$ 7.49</span>
+                    <span v-if="order.deliveryMethod === 0" class="text-neutral-700 text-sm font-medium leading-6">$ 0.00</span>
+                    <span v-if="order.deliveryMethod === 1" class="text-neutral-700 text-sm font-medium leading-6">$ 5.49</span>
+                    <span v-if="order.deliveryMethod === 2" class="text-neutral-700 text-sm font-medium leading-6">$ 7.49</span>
                 </div>
             </div>
             <div class="flex flex-row justify-between w-full">
@@ -68,14 +68,14 @@
                     <button class="group ml-2">
                         <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
                     </button>
-                    <span class="text-[#222] text-sm font-normal leading-6 ml-6">(VAT 19%)</span>
+                    <span class="text-neutral-700 text-sm font-normal leading-6 ml-6">(VAT 19%)</span>
                 </div>
-                <span class="text-[#222] text-sm font-medium leading-6">$ {{ calculatedVAT }}</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ calculatedVAT }}</span>
             </div>
             <div class="w-full h-[1px] bg-[#EBEBEB] rounded-lg"></div>
             <div class="flex flex-row justify-between w-full">
-                <span class="text-[#222] text-xl font-normal leading-9">Total</span>
-                <span class="text-[#222] text-2xl font-semibold leading-9">$ {{ calculatedTotal }}</span>
+                <span class="text-neutral-700 text-xl font-normal leading-9">Total</span>
+                <span class="text-neutral-700 text-2xl font-semibold leading-9">$ {{ calculatedTotal }}</span>
             </div>
         </div>
     </div>

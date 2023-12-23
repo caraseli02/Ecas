@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col p-4 xl:p-6 rounded-xl bg-[#FFF] items-start shadow-xs gap-4 mb-6">
         <div class="flex flex-col gap-6">
-            <h2 class="text-[#222] text-base font-medium leading-6">Order Type</h2>
+            <h2 class="text-neutral-700 text-base font-medium leading-6">Order Type</h2>
             <div class="flex flex-row gap-3">
                 <div v-if="stockOrder" class="px-3 py-[3px] justify-center flex rounded bg-[#00D39526]">
                     <span class="text-[#006D4D] text-sm font-medium leading-5">Stock Order</span>
@@ -20,7 +20,7 @@
                 <button class="flex flex-row justify-between py-2 group header-transition" @click="expandShippingAndBilling">
                     <span
                         class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
-                        :class="shippingAndBillingExpanded ? 'text-[#007FFF]' : 'text-[#222]'"
+                        :class="shippingAndBillingExpanded ? 'text-[#007FFF]' : 'text-neutral-700'"
                         >Shipping and Billing</span
                     >
                     <div class="flex flex-row gap-6">
@@ -36,7 +36,7 @@
                         </div>
                         <ChevronDownIcon
                             class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                            :class="[shippingAndBillingExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']"
+                            :class="[shippingAndBillingExpanded ? 'rotate-180 text-[#007FFF]' : 'text-slate-500']"
                         />
                     </div>
                 </button>
@@ -49,7 +49,7 @@
                 <button class="flex flex-row justify-between py-2 group" @click="expandShippingPreferences">
                     <span
                         class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
-                        :class="shippingPreferencesExpanded ? 'text-[#007FFF]' : 'text-[#222]'"
+                        :class="shippingPreferencesExpanded ? 'text-[#007FFF]' : 'text-neutral-700'"
                         >Shipping Preferences</span
                     >
                     <div class="flex flex-row gap-6">
@@ -68,7 +68,7 @@
                         </div>
                         <ChevronDownIcon
                             class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                            :class="[shippingPreferencesExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']"
+                            :class="[shippingPreferencesExpanded ? 'rotate-180 text-[#007FFF]' : 'text-slate-500']"
                         />
                     </div>
                 </button>
@@ -80,7 +80,7 @@
             <button class="flex flex-row justify-between py-2 group" @click="expandPaymentMethod">
                 <span
                     class="text-base font-medium leading-6 transition duration-300 group-hover:text-[#007FFF]"
-                    :class="paymentMethodExpanded ? 'text-[#007FFF]' : 'text-[#222]'"
+                    :class="paymentMethodExpanded ? 'text-[#007FFF]' : 'text-neutral-700'"
                     >Payment Method</span
                 >
                 <div class="flex flex-row gap-6">
@@ -96,7 +96,7 @@
                     </div>
                     <ChevronDownIcon
                         class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                        :class="[paymentMethodExpanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']"
+                        :class="[paymentMethodExpanded ? 'rotate-180 text-[#007FFF]' : 'text-slate-500']"
                     />
                 </div>
             </button>

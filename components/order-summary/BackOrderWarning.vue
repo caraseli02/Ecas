@@ -3,9 +3,9 @@
         <RedWarning class="w-[55px]" />
         <div class="flex flex-col">
             <div class="">
-                <h2 class="text-[#222] text-sm font-semibold leading-5">There are Back Order items in your cart. <span class="text-[#007FFF]">View items</span></h2>
+                <h2 class="text-neutral-700 text-sm font-semibold leading-5">There are Back Order items in your cart. <span class="text-[#007FFF]">View items</span></h2>
             </div>
-            <p class="text-[#222] text-xs font-normal leading-[18px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p class="text-neutral-700 text-xs font-normal leading-[18px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
     </div>
 </template>

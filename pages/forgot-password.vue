@@ -14,7 +14,7 @@
                     placeholder="Enter Your Email Address"
                 />
                 <button
-                    class="flex items-center justify-center p-2 rounded-lg bg-blue leading-[1.67] h-12 text-white font-medium"
+                    class="flex items-center justify-center p-2 rounded-lg bg-blue-500 leading-[1.67] h-12 text-white font-medium"
                     @click="resetPassword(form.email.value)"
                 >
                     Reset Password

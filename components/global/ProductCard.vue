@@ -5,7 +5,7 @@
     >
         <div
             class="absolute top-0 left-0 px-2.5 py-1 flex items-center rounded-tl-md rounded-br-md"
-            :class="[product.stock ? 'bg-green' : 'bg-orange']"
+            :class="[product.stock ? 'bg-green-500' : 'bg-orange-500']"
         >
             <CheckIcon v-if="product.stock" class="w-4 h-4 mr-1 text-white" />
             <InfoIcon v-else class="w-4 h-4 mr-1 text-white" />
@@ -26,15 +26,15 @@
                 <InfoIcon class="w-[14px] h-[14px] text-white md:w-4 md:h-4 xl:w-[18px] xl:h-[18px]" />
             </button>
         </div>
-        <div class="text-xs leading-tight font-semibold text-gray-300 mb-[9px] md:mb-[5px]">
+        <div class="text-xs leading-tight font-semibold text-slate-500 mb-[9px] md:mb-[5px]">
             {{ 'TBD' }}
         </div>
-        <div class="hidden text-xs text-gray-300 truncate mb-4 md:block">{{ product.description }}</div>
+        <div class="hidden text-xs text-slate-500 truncate mb-4 md:block">{{ product.description }}</div>
         <div class="mt-auto">
             <div v-if="productDiscount" class="text-[11px] leading-tight line-through mb-px md:text-xs">
                 {{ priceConfiguration ? `$ ${priceConfiguration.price.toFixed(2)} (${priceConfiguration.quantity}+)` : '-' }}
             </div>
-            <div class="text-[13px] leading-tight md:text-base" :class="[productDiscount ? 'text-red' : '']">
+            <div class="text-[13px] leading-tight md:text-base" :class="[productDiscount ? 'text-rose-500' : '']">
                 <strong>
                     {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
                 </strong>
@@ -44,33 +44,33 @@
         <div class="absolute top-3 right-0 flex flex-col gap-2.5 md:top-[15px]">
             <div class="pr-3 flex flex-col gap-2.5 md:pr-[15px]">
                 <button
-                    class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue"
+                    class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500"
                     @click="addToFavourite(product)"
                 >
                     <HeartIcon class="w-6 h-6" />
                 </button>
-                <button class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue">
+                <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
                     <ShareIcon class="w-6 h-6" />
                 </button>
-                <button class="hidden justify-end text-gray-100 transition-colors duration-300 hover:text-blue md:flex">
+                <button class="hidden justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500 md:flex">
                     <D3Icon class="w-6 h-6" />
                 </button>
             </div>
             <div
                 v-if="productDiscount"
-                class="bg-red rounded-l-[25px] p-[5px] text-[11px] font-semibold text-white md:px-2.5 md:text-sm xl:translate-y-12"
+                class="bg-rose-500 rounded-l-[25px] p-[5px] text-[11px] font-semibold text-white md:px-2.5 md:text-sm xl:translate-y-12"
             >
                 {{ productDiscount }}%
             </div>
         </div>
         <div
             v-if="product.stock"
-            class="absolute bottom-0 right-0 bg-blue px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]"
+            class="absolute bottom-0 right-0 bg-blue-500 px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]"
             @click.prevent="addToCart(product, priceConfiguration ? priceConfiguration.quantity : 1)"
         >
             <CartIcon class="w-6 h-6 text-white" />
         </div>
-        <button v-else class="absolute bottom-0 right-0 bg-blue px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]">
+        <button v-else class="absolute bottom-0 right-0 bg-blue-500 px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]">
             <ArrowsIcon class="w-6 h-6" />
         </button>
     </NuxtLink>

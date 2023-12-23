@@ -6,7 +6,7 @@
         </div>
         <div v-if="emptyData || error" class="flex flex-col items-center justify-center flex-1 mb-[69px] md:mb-[61px]">
             <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
-            <div class="text-sm font-medium text-gray-100">No data available</div>
+            <div class="text-sm font-medium text-gray-500">No data available</div>
         </div>
         <template v-else>
             <div class="mb-5">
@@ -58,7 +58,7 @@
             </div>
             <div class="flex items-center justify-center">
                 <button class="flex items-center">
-                    <span class="text-sm font-medium left-[1.43] text-gray-300 mr-2">
+                    <span class="text-sm font-medium left-[1.43] text-slate-500 mr-2">
                         <span class="md:hidden lg:inline-block"> View </span> more
                     </span>
                     <ArrowRightIcon class="w-4 h-4" />

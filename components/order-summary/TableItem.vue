@@ -12,17 +12,18 @@
                         class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                         :class="[
                             item.selected
-                                ? 'bg-blue border-blue group-hover:bg-white'
+                                ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                 : 'bg-white  border-border group-hover:border-gray-300',
                         ]"
                     >
-                        <CheckIcon v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
+                        <CheckIcon
+v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
                     </div>
                 </label>
                 <div class="max-w-[220px] lg:max-w-[245px] flex">
                     <span
                         v-if="stockItem"
-                        class="truncate text-[#222] text-sm leading-6 font-normal self-center justify-self-center"
+                        class="truncate text-neutral-700 text-sm leading-6 font-normal self-center justify-self-center"
                         :class="expanded && shortStock ? 'hidden sm:block' : 'block'"
                         >{{ item.productEntity?.alias }}</span
                     >
@@ -74,7 +75,7 @@
                 </div>
                 <ChevronDownIcon
                     class="w-5 h-5 flex-shrink-0 roun ded-full transition duration-300 xl:hidden flex"
-                    :class="[expanded ? 'rotate-180 text-[#007FFF]' : 'text-gray-300']"
+                    :class="[expanded ? 'rotate-180 text-[#007FFF]' : 'text-slate-500']"
                 />
             </div>
         </div>
@@ -126,7 +127,6 @@ export default defineComponent({
         WarningErrorHuge,
         HeartOutline,
         HeartSolid,
-        TrashOutline,
         Tooltip,
     },
     props: {

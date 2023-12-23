@@ -2,7 +2,7 @@
     <header class="fixed z-50 top-0 left-0 w-full bg-white transition-transform duration-300">
         <div class="relative z-10 bg-[#F5F5F5] py-2">
             <div class="container">
-                <div class="flex items-center text-gray-300 md:justify-between">
+                <div class="flex items-center text-slate-500 md:justify-between">
                     <div class="flex items-center gap-2 mr-4 md:mr-0">
                         <HeadphonesIcon class="w-5 h-5" />
                         <div class="hidden text-xs leading-[1.67] md:flex lg:text-sm lg:leading-tight">
@@ -14,12 +14,12 @@
                     </div>
                     <button class="flex items-center" @click="showRegionalPreferencesModal = true">
                         <RonFlag class="w-6 h-5 mr-2.5" />
-                        <span class="text-sm text-gray-300 leading-[1.43]">| RON</span>
+                        <span class="text-sm text-slate-500 leading-[1.43]">| RON</span>
                     </button>
                 </div>
             </div>
         </div>
-        <LayoutHeaderSearchRow :isScrolled="isScrolled" />
+        <LayoutHeaderSearchRow :is-scrolled="isScrolled" />
         <LayoutHeaderMainRow :is-scrolled="isScrolled" />
     </header>
     <Teleport to="body">

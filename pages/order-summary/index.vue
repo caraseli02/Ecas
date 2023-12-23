@@ -5,11 +5,11 @@
         <div class="flex items-end justify-between mb-[15px]">
           <h1 class="text-xl font-semibold">Order Summary</h1>
           <div class="flex items-center">
-            <button class="flex items-center text-gray-100 transition-colors duration-300 hover:text-blue mr-[15px]">
+            <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500 mr-[15px]">
               <TriangleIcon class="w-[22px] h-[22px]"/>
               <span class="text-xs leading-tight ml-[5px] max-md:hidden"> Report an error </span>
             </button>
-            <button class="flex items-center text-gray-100 transition-colors duration-300 hover:text-blue">
+            <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
               <PrintIcon class="w-[22px] h-[22px]"/>
               <span class="text-xs leading-tight ml-[5px] max-md:hidden"> Print this page </span>
             </button>

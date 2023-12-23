@@ -11,14 +11,14 @@
                         v-for="(filter, index) in filters"
                         :key="index"
                         :data-tab="textUtil.slugify(filter)"
-                        class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
-                        :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue' : 'text-gray-300 after:opacity-0']"
+                        class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue-500 md:text-base md:pb-4"
+                        :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue-500' : 'text-slate-500 after:opacity-0']"
                         @click="setActiveFilter(filter)"
                     >
                         {{ filter }}
                     </button>
                     <div
-                        class="absolute bottom-0 h-[5px] bg-blue rounded-t-[5px] transition-all duration-300"
+                        class="absolute bottom-0 h-[5px] bg-blue-500 rounded-t-[5px] transition-all duration-300"
                         :style="{
                             left: filterLineLeftPosition + 'px',
                             width: filterLineWidth + 'px',
@@ -41,12 +41,12 @@
                                 Exclusive Black Friday
                             </div>
                             <p
-                                class="text-[11px] text-gray-300 mb-[15px] md:text-[13px] md:mb-[50px] lg:mb-[45px] xl:text-base xl:px-[7px] xl:mb-12"
+                                class="text-[11px] text-slate-500 mb-[15px] md:text-[13px] md:mb-[50px] lg:mb-[45px] xl:text-base xl:px-[7px] xl:mb-12"
                             >
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin accumsan nisi a porttitor.
                             </p>
                             <button
-                                class="flex bg-blue text-[13px] font-medium px-3 py-1.5 rounded text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto"
+                                class="flex bg-blue-500 text-[13px] font-medium px-3 py-1.5 rounded text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto"
                             >
                                 View More
                             </button>
@@ -271,6 +271,6 @@ onMounted(() => {
 }
 
 .homeFeaturedProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
-    @apply w-[25px] bg-gray-100 #{!important};
+    @apply w-[25px] bg-gray-500 #{!important};
 }
 </style>

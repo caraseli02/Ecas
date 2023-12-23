@@ -15,9 +15,9 @@
             :class="[isSideNavCollapsedOnDesktop ? '' : '2xl:ml-[280px] 2xl:max-w-[calc(100vw-280px)]']"
         >
             <slot />
-            <div class="flex justify-center text-center text-xs leading-normal text-gray-300 mt-2 mb-6 md:mt-0">
+            <div class="flex justify-center text-center text-xs leading-normal text-slate-500 mt-2 mb-6 md:mt-0">
                 Made with <HeartIcon class="w-[18px] h-[18px] mx-1 mt-px" /> by
-                <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 transition-colors duration-300 hover:text-blue">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 transition-colors duration-300 hover:text-blue-500">
                     Nezo Digital
                 </a>
             </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-6">
     <div class="flex flex-row justify-between items-center">
-      <span class="text-[#222] text-sm font-medium leading-6">Select Payment</span>
+      <span class="text-neutral-700 text-sm font-medium leading-6">Select Payment</span>
       <button class="group">
         <SettingCog class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300"/>
       </button>
@@ -23,7 +23,7 @@
           <MasterCard/>
         </div>
         <div>
-          <span class="text-[#222] text-sm font-normal leading-6">Pay by card</span>
+          <span class="text-neutral-700 text-sm font-normal leading-6">Pay by card</span>
         </div>
       </button>
       <button
@@ -42,7 +42,7 @@
           <BankIcon/>
         </div>
         <div>
-          <span class="text-[#222] text-sm font-normal leading-6">Bank Transfer</span>
+          <span class="text-neutral-700 text-sm font-normal leading-6">Bank Transfer</span>
         </div>
       </button>
       <button
@@ -62,9 +62,9 @@
           <PieChart/>
         </div>
         <div class="flex flex-row justify-between w-full">
-          <span class="text-[#222] text-sm font-normal leading-6">Pay from credit</span>
+          <span class="text-neutral-700 text-sm font-normal leading-6">Pay from credit</span>
           <div class="flex flex-row gap-2">
-            <span class="text-[#222] text-sm font-normal leading-6">Available:</span>
+            <span class="text-neutral-700 text-sm font-normal leading-6">Available:</span>
             <button @click="showCreditInfoModal = true">
               <!-- <span class="text-[#007FFF] text-sm font-semibold leading-6">$ {{ accountCredit.available }}</span> -->
               <span class="text-[#007FFF] text-sm font-semibold leading-6">{{
@@ -100,7 +100,7 @@
           <MoneyIcon/>
         </div>
         <div>
-          <span class="text-[#222] text-sm font-normal leading-6">Cash on delivery</span>
+          <span class="text-neutral-700 text-sm font-normal leading-6">Cash on delivery</span>
         </div>
       </button>
     </div>

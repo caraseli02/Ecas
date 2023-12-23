@@ -16,7 +16,7 @@
                 <div class="text-right">$ {{ totalCartPrice.toFixed(3) }}</div>
             </div>
             <NuxtLink
-                class="flex items-center justify-center gap-2 bg-blue text-white rounded-lg px-[15px] py-2 leading-[1.75] font-medium w-full"
+                class="flex items-center justify-center gap-2 bg-blue-500 text-white rounded-lg px-[15px] py-2 leading-[1.75] font-medium w-full"
                 :to="'/order-summary'"
             >
                 <CartIcon class="w-6 h-6" />

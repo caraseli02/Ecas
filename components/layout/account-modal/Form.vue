@@ -1,26 +1,26 @@
 <template>
-  <div class="max-w-[340px] mx-auto">
-    <div class="grid grid-cols-1 gap-[15px] mb-[15px]">
-      <FormInput v-model="email.value" :error="email.error" type="email" placeholder="you@company.com"/>
-      <FormPassword v-model="password.value" :error="password.error" placeholder="Your Password"/>
+  <div class="mx-auto">
+    <div class="grid grid-cols-1 gap-4 mb-[15px]">
+      <FormInput size="lg" label="E-mail" v-model="email.value" :error="email.error" type="email" placeholder="you@company.com"/>
+      <FormPassword size="lg" label="Password" v-model="password.value" :error="password.error" placeholder="Your Password"/>
     </div>
-    <div class="flex items-center justify-between mb-[30px]">
+    <div class="flex items-center justify-between mb-[36px]">
       <label class="flex items-center cursor-pointer">
         <input v-model="rememberMe" type="checkbox" class="sr-only"/>
         <div
             class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2"
-            :class="[rememberMe ? 'bg-blue border-blue' : 'border-[#CBCDD7]']"
+            :class="[rememberMe ? 'bg-blue-500 border-blue-500' : 'border-[#CBCDD7]']"
         >
           <CheckIcon v-if="rememberMe" class="w-4 text-white"/>
         </div>
-        <span class="text-xs text-gray-300 select-none"> Remember me </span>
+        <span class="text-xs text-slate-500 select-none"> Remember me </span>
       </label>
-      <NuxtLink to="/actions?mode=forgotPassword" class="flex text-xs font-medium text-gray-100 hover:underline">
+      <NuxtLink to="/actions?mode=forgotPassword" class="flex text-xs font-medium text-gray-500 hover:text-blue-500">
         Forgot password?
       </NuxtLink>
     </div>
     <button
-        class="flex items-center justify-center w-full bg-blue rounded py-[9px] text-white mb-5"
+        class="flex items-center justify-center w-full bg-blue-500 hover:bg-blue-400 rounded-lg py-[10px] text-white mb-4"
         @click="handleSignIn">
       <div v-if="isLoading" aria-label="Loading..." role="status" class="mr-3">
         <svg class="h-6 w-6 animate-spin" viewBox="3 3 18 18">
@@ -34,35 +34,35 @@
           ></path>
         </svg>
       </div>
-      <KeyholeIcon v-else class="w-6 h-6 mr-2"/>
+      <SignINIcon v-else class="w-6 h-6 mr-2"/>
       <span class="text-sm font-medium"> Sign In </span>
     </button>
     <div v-if="errorResponse.show" class="bg-rose-600 p-2 my-3 rounded">
       <p class="text-white">{{ errorResponse.description }}</p>
     </div>
-    <div class="flex items-center justify-center mx-auto text-sm font-medium text-gray-100 mb-[25px]">
-      <span class="mr-2"> Don’t have an account yet ? </span>
+    <div class="flex items-center justify-between mx-auto text-sm font-medium text-gray-500 mb-[25px]">
+      <span class="mr-2 text-slate-500 font-normal text-sm"> Don’t have an account ? </span>
       <NuxtLink
           to="/signup"
-          class="relative text-blue after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
+          class="relative text-blue-500 hover:text-blue-400 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
       >
         Sign up now
       </NuxtLink>
     </div>
-    <div class="flex items-center mb-5">
-      <div class="h-px flex-1 bg-gray-200"/>
-      <span class="text-xs text-gray-100 flex-shrink-0 mx-[18px]"> Or continue with </span>
-      <div class="h-px flex-1 bg-gray-200"/>
+    <div class="flex items-center mt-12 mb-6">
+      <div class="h-px flex-1 bg-gray-100"/>
+      <span class="text-xs text-gray-400 flex-shrink-0 mx-[18px]"> Or continue with </span>
+      <div class="h-px flex-1 bg-gray-100"/>
     </div>
     <button
-        class="group flex items-center justify-center w-full border border-border py-2 rounded mb-5 transition-colors duration-300 hover:border-blue"
+        class="group flex items-center justify-center w-full border border-border py-2 rounded-lg mb-5 transition-colors duration-300 hover:border-blue-500"
         @click="loginWithGoogle"
     >
       <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          class="w-6 h-6 mr-2 transition-all duration-300 grayscale group-hover:grayscale-0"
+          class="w-6 h-6 mr-2 transition-all duration-300"
       >
         <g clip-path="url(#clip0_154_2471)">
           <path
@@ -88,13 +88,13 @@
           </clipPath>
         </defs>
       </svg>
-      <span class="text-sm font-medium text-gray-300">Google</span>
+      <span class="text-sm font-medium text-slate-500">Google</span>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import KeyholeIcon from '@/assets/icons/keyhole.svg';
+import SignINIcon from '@/assets/icons/menu/in.svg';
 import CheckIcon from '@/assets/icons/check.svg';
 import {SigninResponse, UserDetailsResponse, UserInfoJWT} from '~~/types';
 import {useAuthStore} from '~~/store/authStore';

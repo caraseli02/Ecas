@@ -1,12 +1,12 @@
 <template>
     <div class="fixed z-[60] top-0 left-0 w-screen h-screen flex flex-col bg-white md:hidden">
         <div class="flex items-center justify-between px-5 pt-[15px] pb-[15px] border-b border-gray-200 mb-[15px] md:hidden">
-            <div v-if="!selectedCategory" class="text-lg font-semibold text-gray-300">Products</div>
+            <div v-if="!selectedCategory" class="text-lg font-semibold text-slate-500">Products</div>
             <template v-else>
                 <button class="flex" @click="selectedSubCategory ? (selectedSubCategory = null) : (selectedCategory = null)">
                     <CaretLeft class="w-6 h-6" />
                 </button>
-                <div class="flex items-center text-blue">
+                <div class="flex items-center text-blue-500">
                     <component :is="selectedCategory.icon" v-if="!selectedSubCategory" class="w-[22px] h-[22px] mr-1.5" />
                     <div class="text-sm font-semibold">
                         {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory.label }}
@@ -14,7 +14,7 @@
                 </div>
             </template>
             <button
-                class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
+                class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-500 transition-colors duration-300 hover:text-slate-500"
                 @click="showNavModal = false"
             >
                 <XIcon class="w-[15px] h-[15px]" />
@@ -27,17 +27,17 @@
                 <button
                     v-for="(category, index) in categories"
                     :key="index"
-                    class="group flex items-center px-2.5 py-[5px] rounded-[5px] w-full text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
+                    class="group flex items-center px-2.5 py-[5px] rounded-[5px] w-full text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
                     @click="selectedCategory = category"
                 >
-                    <div class="flex items-center justify-center w-[34px] h-[34px] rounded bg-gray-200 mr-2">
+                    <div class="flex items-center justify-center w-[34px] h-[34px] rounded bg-gray-100 mr-2">
                         <component :is="category.icon" class="w-7 h-7" />
                     </div>
                     <div>
                         <div class="text-[15px] font-semibold mb-px">
                             {{ category.label }}
                         </div>
-                        <div class="text-xs font-semibold text-gray-100 transition-colors duration-300 group-hover:text-gray-300">
+                        <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
                             {{ category.products }} Products
                         </div>
                     </div>
@@ -47,14 +47,14 @@
                 <button
                     v-for="(subCategory, index) in selectedCategory.subCategories"
                     :key="index"
-                    class="group flex items-center px-2.5 py-[5px] rounded-[5px] w-full text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
+                    class="group flex items-center px-2.5 py-[5px] rounded-[5px] w-full text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
                     @click="selectedSubCategory = subCategory"
                 >
                     <div>
                         <div class="text-[15px] font-semibold mb-px">
                             {{ subCategory.label }}
                         </div>
-                        <div class="text-xs font-semibold text-gray-100 transition-colors duration-300 group-hover:text-gray-300">
+                        <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
                             {{ subCategory.products }} Products
                         </div>
                     </div>
@@ -65,17 +65,17 @@
                     v-for="(subCategory, index) in selectedCategory.subCategories"
                     :key="index"
                     to="/"
-                    class="group flex items-center justify-between px-2.5 py-[5px] rounded-[5px] w-full text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
+                    class="group flex items-center justify-between px-2.5 py-[5px] rounded-[5px] w-full text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
                 >
                     <div>
                         <div class="text-[15px] font-semibold mb-px">Semiconductors</div>
-                        <div class="text-xs font-semibold text-gray-100 transition-colors duration-300 group-hover:text-gray-300">
+                        <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
                             {{ subCategory.products }} Products
                         </div>
                     </div>
                     <div
                         v-if="index === 3 || index === 5"
-                        class="bg-blue text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
+                        class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
                     >
                         New
                     </div>
@@ -88,12 +88,12 @@
                     v-for="(item, index) in navItems"
                     :key="index"
                     :to="item.to"
-                    class="font-semibold text-gray-300 transition-colors duration-300 hover:text-blue"
+                    class="font-semibold text-slate-500 transition-colors duration-300 hover:text-blue-500"
                 >
                     {{ item.label }}
                 </NuxtLink>
             </div>
-            <div class="bg-blue px-5 pt-[17px] pb-[21px] text-xs font-semibold text-white text-center">
+            <div class="bg-blue-500 px-5 pt-[17px] pb-[21px] text-xs font-semibold text-white text-center">
                 Sales: +40724 360 250 (Mon-Fri 8:00AM - 4:00PM EST)
             </div>
         </div>

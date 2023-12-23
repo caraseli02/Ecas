@@ -16,12 +16,12 @@
       </div>
     </div>
     <div class="grid grid-cols-[auto,1fr] gap-4">
-      <button class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
+      <button class="flex px-8 py-2 rounded-lg text-sm bg-gray-100 leading-[1.67] h-10 text-slate-500 font-medium"
         @click="cancel">
         Cancel
       </button>
       <button
-        class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
+        class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue-500 leading-[1.67] h-10 text-white font-medium"
         @click="apply">
         Apply Filter
       </button>
@@ -57,11 +57,11 @@ export default defineComponent({
     @apply h-2 mb-3 px-2;
 
     .slider-base {
-        @apply bg-gray-200;
+        @apply bg-gray-100;
     }
 
     .slider-connect {
-        @apply bg-blue h-[9px] -top-px;
+        @apply bg-blue-500 h-[9px] -top-px;
     }
 
     .slider-handle {
