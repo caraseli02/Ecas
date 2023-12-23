@@ -99,14 +99,14 @@ onMounted(() => {
                         v-for="(filter, index) in filters"
                         :key="index"
                         :data-tab="textUtil.slugify(filter)"
-                        class="relative font-medium pb-5 transition-colors duration-300 hover:text-blue md:text-base md:pb-4"
-                        :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue' : 'text-gray-300 after:opacity-0']"
+                        class="relative font-medium pb-5 transition-colors duration-300 hover:text-blue-500 md:text-base md:pb-4"
+                        :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue-500' : 'text-slate-500 after:opacity-0']"
                         @click="setActiveFilter(filter)"
                     >
                         {{ filter }}
                     </button>
                     <div
-                        class="absolute bottom-0 h-[5px] bg-blue rounded-t-[5px] transition-all duration-300"
+                        class="absolute bottom-0 h-[5px] bg-blue-500 rounded-t-[5px] transition-all duration-300"
                         :style="{
                             left: filterLineLeftPosition + 'px',
                             width: filterLineWidth + 'px',
@@ -116,7 +116,7 @@ onMounted(() => {
             </div>
             <button
                 :disabled="isLoading"
-                class="flex bg-gray-300 px-[22px] py-[11px] rounded text-sm font-medium text-white flex-shrink-0 md:mb-[15px]"
+                class="flex bg-slate-500 px-[22px] py-[11px] rounded text-sm font-medium text-white flex-shrink-0 md:mb-[15px]"
                 :class="{ 'bg-gray-400': isLoading }"
                 @click="searchSimilarProducts"
             >
@@ -129,7 +129,7 @@ onMounted(() => {
                 <tr
                     v-for="(item, index) in features.filter((feature) => feature.FeatureValue !== '')"
                     :key="index"
-                    class="group w-full text-xs leading-tight font-medium font-Inter text-left cursor-pointer transition-colors duration-300 odd:bg-[#F2F2F2] hover:text-blue"
+                    class="group w-full text-xs leading-tight font-medium font-Inter text-left cursor-pointer transition-colors duration-300 odd:bg-[#F2F2F2] hover:text-blue-500"
                     @click="item.checked = !item.checked"
                 >
                     <td class="pl-[15px] py-1 lg:pl-5">
@@ -141,7 +141,7 @@ onMounted(() => {
                     <td class="flex justify-end pr-[15px] py-1 lg:pr-5">
                         <div
                             class="flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors duration-300"
-                            :class="[item.checked ? 'bg-blue border-blue' : 'border-border group-hover:border-gray-300']"
+                            :class="[item.checked ? 'bg-blue-500 border-blue-500' : 'border-border group-hover:border-gray-300']"
                         >
                             <CheckIcon v-if="item.checked" class="w-4 text-white" />
                         </div>
@@ -152,7 +152,7 @@ onMounted(() => {
         <div class="flex justify-center px-[15px] md:justify-end lg:px-5">
             <button
                 :disabled="isLoading"
-                class="flex bg-gray-300 px-[22px] py-[11px] rounded text-sm font-medium text-white"
+                class="flex bg-slate-500 px-[22px] py-[11px] rounded text-sm font-medium text-white"
                 :class="{ 'bg-gray-400': isLoading }"
                 @click="searchSimilarProducts"
             >

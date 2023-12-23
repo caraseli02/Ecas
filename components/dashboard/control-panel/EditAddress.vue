@@ -6,7 +6,7 @@
             <div class="flex items-start justify-between px-4 mb-9 md:px-6">
                 <div class="font-semibold leading-[1.5]">Edit Shipping Details</div>
                 <button
-                    class="w-8 h-8 bg-gray-200 flex items-center justify-center text-gray-300 rounded-lg ml-auto mb-4 transition-colors duration-300 hover:text-blue"
+                    class="w-8 h-8 bg-gray-100 flex items-center justify-center text-slate-500 rounded-lg ml-auto mb-4 transition-colors duration-300 hover:text-blue-500"
                     @click="$emit('close')"
                 >
                     <XIcon class="w-6 h-6" />
@@ -81,14 +81,14 @@
                         <span class="font-medium leading-[1.75]"> Delete </span>
                     </button>
                     <button
-                        class="flex px-[41px] py-2 rounded-lg bg-gray-200 leading-[1.75] text-gray-300 font-medium"
+                        class="flex px-[41px] py-2 rounded-lg bg-gray-100 leading-[1.75] text-slate-500 font-medium"
                         @click="$emit('close')"
                     >
                         Cancel
                     </button>
                     <button
                         :disabled="!data.region.value && !data.country.value"
-                        class="flex justify-center px-5 py-2 rounded-lg bg-blue leading-[1.75] text-white font-medium"
+                        class="flex justify-center px-5 py-2 rounded-lg bg-blue-500 leading-[1.75] text-white font-medium"
                         @click="
                             $emit('close');
                             Emitter.emit('edit', { address: data, index: props.index });

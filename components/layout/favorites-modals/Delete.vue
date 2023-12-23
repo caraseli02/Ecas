@@ -5,7 +5,7 @@
         class="relative z-10 pointer-events-auto w-[450px] max-w-[calc(100vw-32px)] min-h-[360px] p-[15px] pb-[35px] bg-white rounded-md shadow-xs flex flex-col justify-between"
     >
       <div class="flex items-center justify-between">
-        <div class="flex items-center text-gray-300">
+        <div class="flex items-center text-slate-500">
           <TrashIcon class="w-6 h-6 mr-2"/>
           <span class="font-medium">
                         Delete
@@ -13,7 +13,7 @@
                     </span>
         </div>
         <button
-            class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
+            class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-500 transition-colors duration-300 hover:text-slate-500"
             @click="$emit('close')"
         >
           <XIcon class="w-5 h-5"/>
@@ -23,14 +23,14 @@
         <div class="text-sm text-center">
           Delete
           <template v-if="isFolder && products.length === 1">
-            folder <span class="text-blue">{{ products[0].title }}</span>
+            folder <span class="text-blue-500">{{ products[0].title }}</span>
           </template>
           <template v-else> selected item{{ products.length > 1 ? 's' : '' }}</template>
           ?
         </div>
         <div class="flex items-center justify-center gap-2.5">
           <button
-              class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white"
+              class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white"
               @click="
                             deleteItem(products);
                             success = true;
@@ -39,7 +39,7 @@
             Delete
           </button>
           <button
-              class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300"
+              class="flex bg-gray-100 rounded px-[26px] py-[11px] text-sm font-medium text-slate-500"
               @click="$emit('close')">
             Cancel
           </button>

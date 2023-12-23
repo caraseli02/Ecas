@@ -7,10 +7,10 @@
             >
                 <div class="flex items-center">
                     <BarCodeIcon class="w-7 h-7 mr-2" />
-                    <span class="text-lg font-medium text-gray-300">Add custom part number</span>
+                    <span class="text-lg font-medium text-slate-500">Add custom part number</span>
                 </div>
                 <button
-                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
+                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-500 transition-colors duration-300 hover:text-slate-500"
                     @click="$emit('close')"
                 >
                     <XIcon class="w-[15px] h-[15px]" />
@@ -26,7 +26,7 @@
                         :value="partNumber"
                         readonly
                         type="text"
-                        class="bg-transparent w-full px-2.5 py-[5px] border border-border rounded h-[42px] text-xl font-semibold leading-tight text-dark focus:outline-none"
+                        class="bg-transparent w-full px-2.5 py-[5px] border border-border rounded h-[42px] text-xl font-semibold leading-tight text-neutral-700 focus:outline-none"
                     />
                 </label>
                 <ArrowDownIcon class="w-6 h-6 my-[15px]" />
@@ -39,18 +39,18 @@
                     />
                 </label>
                 <div class="flex gap-2.5">
-                    <button class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="submitSuccess = true">
+                    <button class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="submitSuccess = true">
                         Save
                     </button>
-                    <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
+                    <button class="flex bg-gray-100 rounded px-[26px] py-[11px] text-sm font-medium text-slate-500" @click="$emit('close')">
                         Cancel
                     </button>
                 </div>
             </div>
             <Transition name="fade">
                 <div v-if="submitSuccess" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                    <CheckIcon class="w-[140px] h-[140px] text-green mb-5" />
-                    <div class="text-2xl text-gray-300">Saved</div>
+                    <CheckIcon class="w-[140px] h-[140px] bg-green-500 mb-5" />
+                    <div class="text-2xl text-slate-500">Saved</div>
                 </div>
             </Transition>
         </div>

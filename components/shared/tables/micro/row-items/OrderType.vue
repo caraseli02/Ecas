@@ -8,7 +8,7 @@
                 ? 'text-[#006D4D] bg-[#00D395]'
                 : item.type === OrderType.Back
                 ? 'text-[#FF8A00] bg-[#FF8A00]'
-                : 'text-[#023F7E] bg-blue',
+                : 'text-[#023F7E] bg-blue-500',
         ]"
     >
         {{ getOrderById(item.type) + ' order' }}

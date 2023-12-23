@@ -5,7 +5,7 @@
     >
         <div class="relative flex items-center justify-between py-4 px-3 shadow-s">
             <button
-                class="flex items-center text-gray-300 transition-colors duration-300 hover:text-blue md:hidden"
+                class="flex items-center text-slate-500 transition-colors duration-300 hover:text-blue-500 md:hidden"
                 @click="$emit('close')"
             >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2">
@@ -33,7 +33,7 @@
             >
                 Notifications
             </div>
-            <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
+            <button class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500">
                 <SettingsIcon class="w-6 h-6" />
             </button>
         </div>
@@ -52,9 +52,9 @@
                             class="w-5 h-5 mr-2"
                             :class="[
                                 notification.title === 'Others'
-                                    ? 'text-gray-300'
+                                    ? 'text-slate-500'
                                     : notification.title === 'Password change' || notification.title === 'Reset password'
-                                    ? 'text-blue'
+                                    ? 'text-blue-500'
                                     : notification.title === 'Removed'
                                     ? 'text-[#FA4B4B]'
                                     : notification.title === 'Completed'
@@ -64,17 +64,17 @@
                                     : 'text-[#A460BC]',
                             ]"
                         />
-                        <span v-if="!notification.seen" class="flex w-2 h-2 flex-shrink-0 bg-blue rounded-full mr-2" />
+                        <span v-if="!notification.seen" class="flex w-2 h-2 flex-shrink-0 bg-blue-500 rounded-full mr-2" />
                         <span class="capitalize text-sm leading-[1.43] font-medium">
                             {{ notification.title }}
                         </span>
                     </div>
                     <div class="flex items-center">
-                        <span class="text-xs leading-[1.67] text-gray-300 mr-4">
+                        <span class="text-xs leading-[1.67] text-slate-500 mr-4">
                             {{ getCurrentDate(notification.date) }}
                         </span>
                         <button
-                            class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+                            class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             @click.stop.prevent="deleteNotification(notification, index)"
                         >
                             <XIcon class="w-4 h-4" />
@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
-                    <div class="text-sm leading-[1.43] text-gray-300 mr-1">
+                    <div class="text-sm leading-[1.43] text-slate-500 mr-1">
                         {{ notification.description }}
                     </div>
                     <svg
@@ -105,7 +105,7 @@
             </NuxtLink>
         </div>
         <div class="flex justify-center py-4 shadow-s relative z-10">
-            <NuxtLink to="/" class="flex items-center text-blue">
+            <NuxtLink to="/" class="flex items-center text-blue-500">
                 <span class="text-sm leading-[1.43] font-medium mr-2"> View all </span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 rotate-180">
                     <path

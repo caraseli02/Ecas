@@ -4,9 +4,9 @@
             <div class="max-lg:hidden max-w-max">
                 <div class="grid grid-cols-[repeat(2,auto)] gap-5 text-right">
                     <div class="flex flex-col">
-                        <div class="text-sm leading-relaxed font-medium text-gray-300 mb-3">Credit Limit</div>
+                        <div class="text-sm leading-relaxed font-medium text-slate-500 mb-3">Credit Limit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight">
-                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
                             <div v-else>€ 100,000.00</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
@@ -14,9 +14,9 @@
                     <div
                         class="relative pl-5 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:w-px before:h-[85%] before:bg-border before:rounded-[50px]"
                     >
-                        <div class="text-sm leading-relaxed font-medium text-gray-300 mb-3">Available Credit</div>
-                        <div v-if="!isLoading" class="font-semibold leading-tight text-blue">
-                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                        <div class="text-sm leading-relaxed font-medium text-slate-500 mb-3">Available Credit</div>
+                        <div v-if="!isLoading" class="font-semibold leading-tight text-blue-500">
+                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
                             <div v-else>€ 45,328.63</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
@@ -30,29 +30,29 @@
                     <SkeletonLoader v-if="isLoading" class="w-full h-[45px] md:h-5" />
                     <template v-else>
                         <div
-                            class="flex items-center justify-between text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2"
+                            class="flex items-center justify-between text-xs leading-relaxed font-medium text-slate-500 mb-2 md:m-0 md:text-sm md:mr-2"
                         >
                             <div>Credit Limit</div>
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
-                        <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-100">No data available</div>
+                        <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
                         <div v-else class="text-sm font-semibold leading-tight">€ 100,000.00</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
                 <div
-                    class="relative pl-4 before:absolute before:top-0 before:left-0 before:w-px before:h-full before:bg-gray-200 before:rounded-[50px] md:flex md:items-center"
+                    class="relative pl-4 before:absolute before:top-0 before:left-0 before:w-px before:h-full before:bg-gray-100 before:rounded-[50px] md:flex md:items-center"
                 >
                     <SkeletonLoader v-if="isLoading" class="w-full h-[45px] md:h-5" />
                     <template v-else>
                         <div
-                            class="flex items-center justify-between text-xs leading-relaxed font-medium text-gray-300 mb-2 md:m-0 md:text-sm md:mr-2"
+                            class="flex items-center justify-between text-xs leading-relaxed font-medium text-slate-500 mb-2 md:m-0 md:text-sm md:mr-2"
                         >
                             <div>Available Credit</div>
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
-                        <div v-if="emptyData || error" v class="text-sm font-medium leading-tight text-gray-100">No data available</div>
-                        <div v-else class="text-sm font-semibold leading-tight text-blue">€ 45,328.63</div>
+                        <div v-if="emptyData || error" v class="text-sm font-medium leading-tight text-gray-500">No data available</div>
+                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">€ 45,328.63</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>

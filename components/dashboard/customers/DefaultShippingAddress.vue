@@ -4,7 +4,7 @@
             <div class="text-sm font-semibold">Default Shipping Address</div>
             <div v-if="!error" class="relative">
                 <button class="flex" @click="showOptions = !showOptions">
-                    <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue" />
+                    <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue-500" />
                 </button>
                 <Transition name="fade-full">
                     <div
@@ -13,14 +13,14 @@
                         class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[154px] shadow-m"
                     >
                         <button
-                            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
                             @click="showOptions = false"
                         >
                             <EyeIcon class="w-6 h-6 mr-3 text-current" />
                             <span class="text-sm leading-[1.71] font-medium"> View All </span>
                         </button>
                         <button
-                            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                            class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
                             @click="showOptions = false"
                         >
                             <EditIcon class="w-6 h-6 mr-3 text-current" />
@@ -33,7 +33,7 @@
         </div>
         <div v-if="emptyData || error" class="flex items-center md:justify-center">
             <EmojiSadIcon class="w-[52px] h-[52px] mr-4" />
-            <div class="text-sm font-medium text-gray-100">No data available</div>
+            <div class="text-sm font-medium text-gray-500">No data available</div>
         </div>
         <div v-else class="flex items-start">
             <BusinessIcon class="w-11 h-11 text-[#00D395] flex-shrink-0 mr-4" />

@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <div class="bg-gray-300 py-[15px]">
+        <div class="bg-slate-500 py-[15px]">
             <div class="container">
                 <div class="text-white md:flex md:items-center md:justify-between">
                     <div class="mb-[9px] md:mb-0 xl:flex xl:items-center">
@@ -17,10 +17,10 @@
                             <input
                                 v-model="email"
                                 type="email"
-                                class="bg-white w-full px-4 text-dark text-sm py-[11px] font-medium rounded-l-md rounded-r-none md:w-[250px] lg:w-[280px] 2xl:w-[350px]"
+                                class="bg-white w-full px-4 text-neutral-700 text-sm py-[11px] font-medium rounded-l-md rounded-r-none md:w-[250px] lg:w-[280px] 2xl:w-[350px]"
                             />
                         </label>
-                        <button class="flex items-center flex-shrink-0 bg-blue px-[14px] py-[11px] text-sm font-medium rounded-r-md">
+                        <button class="flex items-center flex-shrink-0 bg-blue-500 px-[14px] py-[11px] text-sm font-medium rounded-r-md">
                             Subscribe
                         </button>
                     </form>
@@ -41,41 +41,41 @@
                                     href="#"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
+                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-slate-500/10"
                                 >
-                                    <TwitterIcon class="w-5 text-gray-300" />
+                                    <TwitterIcon class="w-5 text-slate-500" />
                                 </a>
                                 <a
                                     href="#"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
+                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-slate-500/10"
                                 >
-                                    <LinkedInIcon class="w-5 text-gray-300" />
+                                    <LinkedInIcon class="w-5 text-slate-500" />
                                 </a>
                                 <a
                                     href="#"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
+                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-slate-500/10"
                                 >
-                                    <InstagramIcon class="w-5 text-gray-300" />
+                                    <InstagramIcon class="w-5 text-slate-500" />
                                 </a>
                                 <a
                                     href="#"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
+                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-slate-500/10"
                                 >
-                                    <DiscordIcon class="w-5 text-gray-300" />
+                                    <DiscordIcon class="w-5 text-slate-500" />
                                 </a>
                                 <a
                                     href="#"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gray-300/10"
+                                    class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-slate-500/10"
                                 >
-                                    <TelegramIcon class="w-5 text-gray-300" />
+                                    <TelegramIcon class="w-5 text-slate-500" />
                                 </a>
                             </div>
                         </div>
@@ -86,21 +86,21 @@
                                 <div class="text-sm font-semibold mb-0.5 md:text-base md:mb-1.5">
                                     {{ label }}
                                 </div>
-                                <div class="w-[38px] h-0.5 bg-blue rounded-full md:h-1" />
+                                <div class="w-[38px] h-0.5 bg-blue-500 rounded-full md:h-1" />
                             </div>
                             <ul class="grid grid-cols-1 gap-[3px] md:gap-1.5">
                                 <li v-for="(navItem, navItemIndex) in items" :key="navItemIndex">
                                     <NuxtLink
                                         v-if="navItem.to.startsWith('/')"
                                         :to="navItem.to"
-                                        class="relative text-xs after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-dark after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 md:text-sm"
+                                        class="relative text-xs after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-neutral-700 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 md:text-sm"
                                     >
                                         {{ navItem.label }}
                                     </NuxtLink>
                                     <a
                                         v-else
                                         :href="navItem.to"
-                                        class="relative text-xs after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-dark after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 md:text-sm"
+                                        class="relative text-xs after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-neutral-700 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 md:text-sm"
                                     >
                                         {{ navItem.label }}
                                     </a>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 <div>
-                    <p class="text-[15px] text-center text-gray-300">&copy; {{ new Date().getFullYear() }} ECAS.RO</p>
+                    <p class="text-[15px] text-center text-slate-500">&copy; {{ new Date().getFullYear() }} ECAS.RO</p>
                 </div>
             </div>
         </div>
