@@ -1,14 +1,14 @@
 <template>
     <div class="p-4 xl:p-6 flex flex-col gap-6 bg-[#FFF] rounded-xl shadow-xs mb-6">
         <div class="flex flex-row justify-between w-full">
-            <span class="text-[#222] text-base font-medium leading-6">Add a note for this order</span>
+            <span class="text-neutral-700 text-base font-medium leading-6">Add a note for this order</span>
             <button @click="textBoxOpen = !textBoxOpen" class="group">
                 <EditBig class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
             </button>
         </div>
         <div v-if="textBoxOpen">
             <textarea :rows="rows" maxlength="170" v-model="note" @input="adjustHeight"
-                class="no-focus thin-scrollbar w-full p-3 text-[#222] text-sm font-normal leading-6 bg-[#F9F9F9] rounded-lg border border-[#D4D4D4] resize-none"
+                class="no-focus thin-scrollbar w-full p-3 text-neutral-700 text-sm font-normal leading-6 bg-[#F9F9F9] rounded-lg border border-[#D4D4D4] resize-none"
                 placeholder="Type your note here..."></textarea>
         </div>
     </div>

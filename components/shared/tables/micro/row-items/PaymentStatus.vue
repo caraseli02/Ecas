@@ -10,7 +10,7 @@
                 ? 'text-[#FF8A00] bg-[#FF8A00]'
                 : status === PaymentStatusEnum.Canceled || status === PaymentStatusEnum.Declined
                 ? 'text-[#FA4B4B] bg-[#FA4B4B]'
-                : 'text-blue bg-blue',
+                : 'text-blue-500 bg-blue-500',
         ]"
     >
         {{ getPaymentStatusById(status) }}

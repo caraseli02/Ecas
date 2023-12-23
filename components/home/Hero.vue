@@ -6,13 +6,13 @@
                 <div
                     v-for="(feature, index) in features"
                     :key="index"
-                    class="relative flex flex-col items-center px-1 after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-full after:w-0.5 after:bg-gray-200 after:rounded-full last:after:hidden lg:flex-row lg:px-2 lg:after:h-[30px] xl:px-2.5 xl:after:h-10"
+                    class="relative flex flex-col items-center px-1 after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-full after:w-0.5 after:bg-gray-100 after:rounded-full last:after:hidden lg:flex-row lg:px-2 lg:after:h-[30px] xl:px-2.5 xl:after:h-10"
                 >
                     <component
                         :is="feature.icon"
                         class="w-8 h-8 mb-[5px] md:w-10 md:h-10 md:mb-2.5 lg:mb-0 lg:mr-2 xl:w-[50px] xl:h-[50px] xl:mr-2.5"
                     />
-                    <div class="flex flex-col items-center text-center font-Inter text-gray-300 leading-[1.2] lg:text-left lg:items-start">
+                    <div class="flex flex-col items-center text-center font-Inter text-slate-500 leading-[1.2] lg:text-left lg:items-start">
                         <div
                             class="text-xs font-semibold mb-[5px] mt-auto md:mb-1 lg:text-[13px] lg:mb-[5px] xl:text-xl"
                             v-html="feature.title"

@@ -9,7 +9,7 @@
             >
                 <button
                     class="flex items-center justify-between w-full px-2.5 py-[9px] text-left transition-colors duration-300"
-                    :class="[isSwiped ? 'text-gray-100' : '']"
+                    :class="[isSwiped ? 'text-gray-500' : '']"
                     @click="isSwiped ? null : (showOptions = !showOptions)"
                 >
                     <div class="text-sm font-medium font-Inter leading-tight truncate">
@@ -21,15 +21,15 @@
                 <div v-if="showOptions" class="flex-1 flex flex-col">
                     <div class="pl-2.5 pr-[15px] mb-2.5">
                         <label
-                            class="flex relative border border-border rounded overflow-hidden transition-colors duration-300 focus-within:border-blue"
+                            class="flex relative border border-border rounded overflow-hidden transition-colors duration-300 focus-within:border-blue-500"
                         >
                             <input
                                 v-model="searchValue"
                                 type="search"
                                 placeholder="Type here"
-                                class="w-full px-2.5 pt-[5px] pb-1.5 pr-10 h-8 text-xs placeholder:text-gray-100 focus:outline-none"
+                                class="w-full px-2.5 pt-[5px] pb-1.5 pr-10 h-8 text-xs placeholder:text-gray-500 focus:outline-none"
                             />
-                            <FiltersIcon class="absolute top-1/2 -translate-y-1/2 right-2.5 w-5 h-5 text-gray-100" />
+                            <FiltersIcon class="absolute top-1/2 -translate-y-1/2 right-2.5 w-5 h-5 text-gray-500" />
                         </label>
                     </div>
                     <div class="flex-1 pr-[5px]">
@@ -40,20 +40,20 @@
                                 class="group flex items-center justify-between cursor-pointer px-2.5"
                             >
                                 <input v-model="option.checked" type="checkbox" class="sr-only" />
-                                <span class="text-xs font-Inter transition-colors duration-300 group-hover:text-blue">
+                                <span class="text-xs font-Inter transition-colors duration-300 group-hover:text-blue-500">
                                     {{ option.label }} ({{ option.quantity }})
                                 </span>
                                 <div
                                     class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                                     :class="[
                                         option.checked
-                                            ? 'bg-blue border-blue group-hover:bg-white'
+                                            ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                             : 'bg-white  border-border group-hover:border-gray-300',
                                     ]"
                                 >
                                     <CheckIcon
                                         v-if="option.checked"
-                                        class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                                        class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
                                     />
                                 </div>
                             </label>
@@ -63,7 +63,7 @@
             </div>
             <div class="max-w-max flex-shrink-0">
                 <button class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full ml-5 mr-[11px]">
-                    <TrashIcon class="w-5 h-5 text-gray-300" />
+                    <TrashIcon class="w-5 h-5 text-slate-500" />
                 </button>
             </div>
         </div>

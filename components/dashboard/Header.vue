@@ -6,24 +6,24 @@
     <div
         class="max-w-full mx-auto flex items-center justify-between px-4 py-3 transition-all duration-300 md:py-4 2xl:px-6">
       <button class="flex md:opacity-0 md:pointer-events-none md:hidden" @click="$emit('show-side-nav')">
-        <BurgerIcon class="w-6 h-6 text-gray-300"/>
+        <BurgerIcon class="w-6 h-6 text-slate-500"/>
       </button>
       <DashboardSearch v-model="searchValue" placeholder="Search" class="w-[400px] max-md:hidden"/>
       <div class="flex items-center">
         <button class="flex mr-4 md:mr-8 md:hidden" @click="showMobileSearch = !showMobileSearch">
-          <SearchIcon class="w-6 h-6 text-gray-300"/>
+          <SearchIcon class="w-6 h-6 text-slate-500"/>
         </button>
-        <button class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 mr-8 max-md:hidden">
-          <PlusIcon class="w-6 h-6 text-gray-300"/>
+        <button class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 mr-8 max-md:hidden">
+          <PlusIcon class="w-6 h-6 text-slate-500"/>
         </button>
         <button v-if="$route.name === 'dashboard-customers-slug'" class="flex mr-4 md:mr-8">
-          <SettingsIcon class="w-6 h-6 text-gray-300"/>
+          <SettingsIcon class="w-6 h-6 text-slate-500"/>
         </button>
         <div class="relative flex items-center">
           <div class="mr-6 max-md:relative md:mr-10">
             <div class="relative">
               <button class="flex" @click="showNotifications = true">
-                <BellIcon class="w-6 h-6 text-gray-300"/>
+                <BellIcon class="w-6 h-6 text-slate-500"/>
               </button>
               <div
                   v-if="unreadNotifications > 0"
@@ -40,7 +40,7 @@
               >
                 <div class="relative flex items-center justify-between py-4 px-3 shadow-s">
                   <button
-                      class="flex items-center text-gray-300 transition-colors duration-300 hover:text-blue md:hidden"
+                      class="flex items-center text-slate-500 transition-colors duration-300 hover:text-blue-500 md:hidden"
                       @click="showNotifications = false"
                   >
                     <svg
@@ -75,7 +75,7 @@
                   >
                     Notifications
                   </div>
-                  <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue">
+                  <button class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500">
                     <SettingsIcon class="w-6 h-6"/>
                   </button>
                 </div>
@@ -94,10 +94,10 @@
                             class="w-5 h-5 mr-2"
                             :class="[
                                                         notification.title === 'Others'
-                                                            ? 'text-gray-300'
+                                                            ? 'text-slate-500'
                                                             : notification.title === 'Password change' ||
                                                               notification.title === 'Reset password'
-                                                            ? 'text-blue'
+                                                            ? 'text-blue-500'
                                                             : notification.title === 'Removed'
                                                             ? 'text-[#FA4B4B]'
                                                             : notification.title === 'Completed'
@@ -109,18 +109,18 @@
                         />
                         <span
                             v-if="!notification.seen"
-                            class="flex w-2 h-2 flex-shrink-0 bg-blue rounded-full mr-2"
+                            class="flex w-2 h-2 flex-shrink-0 bg-blue-500 rounded-full mr-2"
                         />
                         <span class="capitalize text-sm leading-[1.43] font-medium">
                                                     {{ notification.title }}
                                                 </span>
                       </div>
                       <div class="flex items-center">
-                                                <span class="text-xs leading-[1.67] text-gray-300 mr-4">
+                                                <span class="text-xs leading-[1.67] text-slate-500 mr-4">
                                                     {{ getCurrentDate(notification.date) }}
                                                 </span>
                         <button
-                            class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+                            class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             @click.stop.prevent="deleteNotification(notification, index)"
                         >
                           <XIcon class="w-4 h-4"/>
@@ -128,7 +128,7 @@
                       </div>
                     </div>
                     <div class="flex items-center justify-between">
-                      <div class="text-sm leading-[1.43] text-gray-300 mr-1">
+                      <div class="text-sm leading-[1.43] text-slate-500 mr-1">
                         {{ notification.description }}
                       </div>
                       <svg
@@ -151,7 +151,7 @@
                   </NuxtLink>
                 </div>
                 <div class="flex justify-center py-4 shadow-s relative z-10">
-                  <NuxtLink to="/" class="flex items-center text-blue">
+                  <NuxtLink to="/" class="flex items-center text-blue-500">
                     <span class="text-sm leading-[1.43] font-medium mr-2"> View all </span>
                     <svg
                         width="16"
@@ -197,7 +197,7 @@
                 <div class="leading-normal font-medium">
                   {{ user.contactDetails?.firstName + ' ' + user.contactDetails?.lastName }}
                 </div>
-                <div class="text-xs leading-normal text-gray-300">{{ AccountType[user.role] }}</div>
+                <div class="text-xs leading-normal text-slate-500">{{ AccountType[user.role] }}</div>
               </div>
             </button>
             <Transition name="fade-full">
@@ -207,21 +207,21 @@
                   class="absolute -bottom-3.5 right-0 translate-y-full grid grid-cols-1 gap-1 w-full rounded-lg bg-white p-3 min-w-[174px] shadow-m md:-bottom-[18px] md:w-[210px] lg:w-[210px]"
               >
                 <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
                     @click="showOptions = false"
                 >
                   <ProfileIcon class="w-6 h-6 mr-3 text-current"/>
                   <span class="text-sm leading-[1.71] font-medium"> Profile </span>
                 </button>
                 <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
                     @click="showOptions = false"
                 >
                   <SettingsIcon class="w-6 h-6 mr-3 text-current"/>
                   <span class="text-sm leading-[1.71] font-medium">Settings</span>
                 </button>
                 <button
-                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+                    class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
                     @click="
                                         showOptions = false;
                                         handleSignOut();
@@ -248,13 +248,13 @@
                       v-model="searchValue"
                       type="search"
                       placeholder="Search"
-                      class="bg-transparent flex-1 w-full px-3 py-2.5 text-sm leading-[1.43] placeholder:text-gray-100 focus:outline-none"
+                      class="bg-transparent flex-1 w-full px-3 py-2.5 text-sm leading-[1.43] placeholder:text-gray-500 focus:outline-none"
                   />
                 </form>
               </label>
-              <SearchIcon v-if="!searchValue" class="flex-shrink-0 w-5 h-5 text-gray-100"/>
+              <SearchIcon v-if="!searchValue" class="flex-shrink-0 w-5 h-5 text-gray-500"/>
               <button v-else class="flex" @click.stop="searchValue = ''">
-                <XIcon class="flex-shrink-0 w-5 h-5 text-gray-100"/>
+                <XIcon class="flex-shrink-0 w-5 h-5 text-gray-500"/>
               </button>
             </div>
           </div>

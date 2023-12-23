@@ -28,7 +28,7 @@
             <div class="flex flex-col gap-3">
                 <div class="flex flex-col gap-1 ml-4">
                     <div class="flex flex-row gap-2 items-center max-w-[188px] sm:max-w-[150px] md:max-w-[188px] xl:max-w-[310px]">
-                        <span class="text-[#222] text-base font-semibold leading-6 truncate">{{ item.alias }}</span>
+                        <span class="text-neutral-700 text-base font-semibold leading-6 truncate">{{ item.alias }}</span>
                         <button class="group">
                             <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-150" />
                         </button>
@@ -40,14 +40,14 @@
                 </div>
                 <div class="ml-4 flex flex-row justify-between items-center">
                     <div class="flex flex-col py-3 gap-[2px]" :class="itemDiscount ? 'pt-0 pb-3' : 'py-3'">
-                        <span v-if="itemDiscount" class="text-[#222] text-xs font-normal leading-[14px] line-through">$ {{ item.priceRon }} (100+)</span>
+                        <span v-if="itemDiscount" class="text-neutral-700 text-xs font-normal leading-[14px] line-through">$ {{ item.priceRon }} (100+)</span>
                         <div v-if="itemDiscount" class="flex flex-row">
                             <span class="text-[#FA4B4B] text-base font-bold leading-5">$ {{ item.priceRon }}</span>
                             <span class="text-[#FA4B4B] text-xs font-normal leading-5 self-center pl-2">(100+)</span>
                         </div>
                         <div v-else class="flex flex-row">
-                            <span class="text-[#222] text-base font-bold leading-6">$ {{ item.priceRon }}</span>
-                            <span class="text-[#222] text-xs font-normal leading-5 self-center pl-2">(100+)</span>
+                            <span class="text-neutral-700 text-base font-bold leading-6">$ {{ item.priceRon }}</span>
+                            <span class="text-neutral-700 text-xs font-normal leading-5 self-center pl-2">(100+)</span>
                         </div>
                     </div>
                     <div>

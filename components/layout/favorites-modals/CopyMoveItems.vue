@@ -4,7 +4,7 @@
             class="relative z-10 pointer-events-auto w-[450px] max-w-[calc(100vw-32px)] max-h-[80vh] overflow-y-auto scrollbar-thin py-[15px] pb-[35px] bg-white rounded-md shadow-xs flex flex-col justify-between md:px-[5px]"
         >
             <div class="flex items-center justify-between px-[15px] mb-[34px] md:px-2.5">
-                <div class="flex items-center text-gray-300">
+                <div class="flex items-center text-slate-500">
                     <CopyIcon v-if="action === 'copy'" class="w-6 h-6 mr-2" />
                     <FolderArrowIcon v-else class="w-6 h-6 mr-2" />
                     <span class="font-medium">
@@ -12,7 +12,7 @@
                     </span>
                 </div>
                 <button
-                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
+                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-500 transition-colors duration-300 hover:text-slate-500"
                     @click="$emit('close')"
                 >
                     <XIcon class="w-5 h-5" />
@@ -50,7 +50,7 @@
                 </div>
                 <div class="flex items-center justify-center gap-2.5 px-[15px] md:px-2.5">
                     <button
-                        class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white"
+                        class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white"
                         @click="
                             action === 'copy' ? copyItems() : moveItems();
                             success = true;
@@ -58,7 +58,7 @@
                     >
                         {{ action === 'copy' ? 'Copy items' : 'Move items' }}
                     </button>
-                    <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
+                    <button class="flex bg-gray-100 rounded px-[26px] py-[11px] text-sm font-medium text-slate-500" @click="$emit('close')">
                         Cancel
                     </button>
                 </div>

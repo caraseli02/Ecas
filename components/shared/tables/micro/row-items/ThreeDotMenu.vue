@@ -9,7 +9,7 @@
     >
         <button
             v-if="profileButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="profileClicked"
         >
             <ProfileIcon class="w-6 h-6 text-current" />
@@ -17,7 +17,7 @@
         </button>
         <button
             v-if="documentButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="documentClicked"
         >
             <OrdersIcon class="w-6 h-6 text-current" />
@@ -25,7 +25,7 @@
         </button>
         <button
             v-if="settingsButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="settingsClicked"
         >
             <SettingsIcon class="w-6 h-6 text-current" />
@@ -33,7 +33,7 @@
         </button>
         <button
             v-if="deactivateButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="deactivateClicked"
         >
             <DeactivateIcon v-if="profile.active" class="w-6 h-6 text-current" />
@@ -42,7 +42,7 @@
         </button>
         <button
             v-if="invoiceButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="invoiceClicked"
         >
             <InvoiceIcon class="w-6 h-6 text-current" />
@@ -50,7 +50,7 @@
         </button>
         <button
             v-if="editButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
+            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="editClicked"
         >
             <EditIcon class="w-6 h-6 text-current" />

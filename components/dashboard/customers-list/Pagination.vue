@@ -3,18 +3,18 @@
         class="flex flex-col gap-6 md:grid md:grid-cols-2 md:items-center md:gap-8 lg:relative lg:flex lg:flex-row lg:items-center lg:justify-between"
     >
         <label class="flex items-center justify-center md:order-2 md:justify-end lg:order-3">
-            <span class="text-sm leading-normal text-gray-300 tracking-[-0.03em] mr-4"> Entries on page </span>
+            <span class="text-sm leading-normal text-slate-500 tracking-[-0.03em] mr-4"> Entries on page </span>
             <div class="relative">
                 <button
                     class="flex items-center justify-between w-full border bg-white rounded-md px-3 py-1 transition-colors duration-300"
-                    :class="[showPerPageOptions ? 'border-blue' : 'border-border']"
+                    :class="[showPerPageOptions ? 'border-blue-500' : 'border-border']"
                     @click="showPerPageOptions = !showPerPageOptions"
                 >
                     <span class="text-sm leading-[1.71] font-medium mr-2">
                         {{ perPage }}
                     </span>
                     <ChevronDownIcon
-                        class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                        class="w-6 h-6 text-slate-500 transition-transform duration-300"
                         :class="[showPerPageOptions ? 'rotate-180' : '']"
                     />
                 </button>
@@ -28,7 +28,7 @@
                         <button
                             v-for="option in [5, 10, 20, 50, 100].filter((e) => e !== perPage)"
                             :key="option"
-                            class="flex justify-center w-full text-left text-sm leading-[1.71] py-1 font-medium rounded-md text-gray-300 transition-colors duration-300 hover:text-blue hover:bg-[#F2F2F2]"
+                            class="flex justify-center w-full text-left text-sm leading-[1.71] py-1 font-medium rounded-md text-slate-500 transition-colors duration-300 hover:text-blue-500 hover:bg-[#F2F2F2]"
                             @click="
                                 $emit('per-page-change', option);
                                 showPerPageOptions = false;
@@ -40,7 +40,7 @@
                 </transition>
             </div>
         </label>
-        <div class="text-sm leading-normal tracking-[-0.03em] text-gray-300 text-center md:order-1 md:text-left">
+        <div class="text-sm leading-normal tracking-[-0.03em] text-slate-500 text-center md:order-1 md:text-left">
             {{ paginationLabel }}
         </div>
         <div
@@ -48,7 +48,7 @@
         >
             <button
                 :disabled="atPage === 1"
-                class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-100 mr-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue"
+                class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-500 mr-1 border border-border transition-colors duration-300 hover:bg-blue-500 hover:text-white focus-visible:bg-blue-500 focus-visible:text-white hover:border-blue-500 focus-visible:border-blue-500"
                 @click="$emit('page-change', atPage - 1)"
             >
                 <ChevronLeftIcon class="w-4 h-4" />
@@ -76,7 +76,7 @@
             </Pagination>
             <button
                 :disabled="totalPages === atPage"
-                class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-100 ml-1 border border-border transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white hover:border-blue focus-visible:border-blue"
+                class="cursor-pointer flex items-center justify-center flex-shrink-0 w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md text-gray-500 ml-1 border border-border transition-colors duration-300 hover:bg-blue-500 hover:text-white focus-visible:bg-blue-500 focus-visible:text-white hover:border-blue-500 focus-visible:border-blue-500"
                 @click="$emit('page-change', atPage + 1)"
             >
                 <ChevronRightIcon class="w-4 h-4" />
@@ -132,10 +132,10 @@ const handlePageChange = (e: number) => {
 
 <style lang="scss">
 .dashboardList--pagination-item {
-    @apply cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md  text-gray-300 transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white #{!important};
+    @apply cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md  text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white focus-visible:bg-blue-500 focus-visible:text-white #{!important};
 }
 .dashboardList--pagination-item-active .dashboardList--pagination-item {
-    @apply bg-blue text-white #{!important};
+    @apply bg-blue-500 text-white #{!important};
 }
 .dashboardList--pagination-item_prev,
 .dashboardList--pagination-item_next {

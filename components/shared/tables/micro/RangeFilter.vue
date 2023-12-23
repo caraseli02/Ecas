@@ -7,7 +7,7 @@
     <div class="mb-16">
       <div class="flex items-end gap-3 mb-6">
         <label>
-          <div class="text-sm leading-[1.43] text-gray-300 mb-4">From</div>
+          <div class="text-sm leading-[1.43] text-slate-500 mb-4">From</div>
           <div class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
             <span class="font-medium mr-1">$</span>
             <input v-model.number="buffer[0]" type="number" class="bg-transparent py-2 w-full focus:outline-none" />
@@ -15,7 +15,7 @@
         </label>
         <div class="text-sm leading-[1.43] mb-3">-</div>
         <label>
-          <div class="text-sm leading-[1.43] text-gray-300 mb-4">To</div>
+          <div class="text-sm leading-[1.43] text-slate-500 mb-4">To</div>
           <div class="flex items-center border border-border rounded-lg pl-3 text-sm leading-[1.71]">
             <span class="font-medium mr-1">$</span>
             <input v-model.number="buffer[1]" type="number" class="bg-transparent py-2 w-full focus:outline-none" />
@@ -30,12 +30,12 @@
         @slide="buffer = $event" />
     </div>
     <div class="grid grid-cols-[auto,1fr] gap-4">
-      <button class="flex px-8 py-2 rounded-lg text-sm bg-gray-200 leading-[1.67] h-10 text-gray-300 font-medium"
+      <button class="flex px-8 py-2 rounded-lg text-sm bg-gray-100 leading-[1.67] h-10 text-slate-500 font-medium"
         @click="cancel">
         Cancel
       </button>
       <button
-        class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue leading-[1.67] h-10 text-white font-medium"
+        class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue-500 leading-[1.67] h-10 text-white font-medium"
         @click="apply">
         Apply Filter
       </button>
