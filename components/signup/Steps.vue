@@ -21,11 +21,11 @@
             <div v-for="(step, index) in steps" :key="index" class="relative z-10 flex flex-col items-center md:flex-row">
                 <div
                     class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-white border-2 mb-2.5 md:w-[42px] md:h-[42px] md:mb-0 md:mr-3"
-                    :class="[currentStep === index ? 'border-blue' : 'border-border md:border-blue']"
+                    :class="[currentStep === index ? 'border-blue-500' : 'border-border md:border-blue-500']"
                 >
                     <div
                         class="flex items-center justify-center rounded-full w-[22px] h-[22px] transition-colors duration-300 md:w-[25px] md:h-[25px]"
-                        :class="[currentStep === index ? 'bg-blue text-white' : 'text-gray-300']"
+                        :class="[currentStep === index ? 'bg-blue-500 text-white' : 'text-slate-500']"
                     >
                         <span class="leading-tight font-medium font-Inter">
                             {{ index + 1 }}
@@ -50,7 +50,7 @@
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-white/10 text-white transition-colors duration-300 hover:text-blue"
+                class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-white/10 text-white transition-colors duration-300 hover:text-blue-500"
             >
                 <TwitterIcon class="w-5" />
             </a>
@@ -58,7 +58,7 @@
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-white/10 text-white transition-colors duration-300 hover:text-blue"
+                class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-white/10 text-white transition-colors duration-300 hover:text-blue-500"
             >
                 <LinkedInIcon class="w-5" />
             </a>
@@ -66,15 +66,15 @@
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-white/10 text-white transition-colors duration-300 hover:text-blue"
+                class="flex items-center justify-center w-[38px] h-[38px] rounded-full bg-white/10 text-white transition-colors duration-300 hover:text-blue-500"
             >
                 <InstagramIcon class="w-5 h-5" />
             </a>
         </div>
         <div class="flex items-center justify-center gap-5 max-md:hidden">
-            <NuxtLink to="/" class="text-sm text-white transition-colors duration-300 hover:text-blue"> Terms </NuxtLink>
-            <NuxtLink to="/" class="text-sm text-white transition-colors duration-300 hover:text-blue"> Help </NuxtLink>
-            <NuxtLink to="/" class="text-sm text-white transition-colors duration-300 hover:text-blue"> Contact </NuxtLink>
+            <NuxtLink to="/" class="text-sm text-white transition-colors duration-300 hover:text-blue-500"> Terms </NuxtLink>
+            <NuxtLink to="/" class="text-sm text-white transition-colors duration-300 hover:text-blue-500"> Help </NuxtLink>
+            <NuxtLink to="/" class="text-sm text-white transition-colors duration-300 hover:text-blue-500"> Contact </NuxtLink>
         </div>
     </aside>
 </template>

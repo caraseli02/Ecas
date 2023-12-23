@@ -27,12 +27,12 @@
                 <div class="grid grid-cols-[140px,1fr] gap-4 mt-4">
                     <NuxtLink
                         to="/"
-                        class="flex items-center justify-center px-8 py-2 rounded-lg bg-gray-200 leading-[1.67] h-12 text-gray-300 font-medium"
+                        class="flex items-center justify-center px-8 py-2 rounded-lg bg-gray-100 leading-[1.67] h-12 text-slate-500 font-medium"
                     >
                         Cancel
                     </NuxtLink>
                     <button
-                        class="flex items-center justify-center p-2 rounded-lg bg-blue leading-[1.67] h-12 text-white font-medium"
+                        class="flex items-center justify-center p-2 rounded-lg bg-blue-500 leading-[1.67] h-12 text-white font-medium"
                         @click="resetPassword(form.email.value, form.newPassword.value, form.repeatPassword.value, $route.query.oobCode)"
                     >
                         Save Password

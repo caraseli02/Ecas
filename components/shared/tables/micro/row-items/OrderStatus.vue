@@ -5,13 +5,13 @@
         class="capitalize rounded-md px-3 py-1 text-sm font-medium max-w-max bg-opacity-[0.15]"
         :class="[
             status === OrderStatus.AbandonedCheckout
-                ? 'text-gray-300 bg-gray-300'
+                ? 'text-slate-500 bg-slate-500'
                 : status === OrderStatus.AwaitingPayment || status === OrderStatus.AwaitingFulfillment
                 ? 'text-[#FF8A00] bg-[#FF8A00]'
                 : status === OrderStatus.Completed || status === OrderStatus.PaymentReceived
                 ? 'text-[#00D395] bg-[#00D395]'
                 : status === OrderStatus.PartiallyShipped
-                ? 'text-blue bg-blue'
+                ? 'text-blue-500 bg-blue-500'
                 : status === OrderStatus.PartiallyRefunded || status === OrderStatus.Processing
                 ? 'text-[#A460BC] bg-[#A460BC]'
                 : 'text-[#FA4B4B] bg-[#FA4B4B]',

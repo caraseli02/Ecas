@@ -59,7 +59,7 @@
           />
         </svg>
         <button class="flex items-center justify-center p-1 bg-[#2F3241] rounded-lg md:hidden" @click="$emit('close')">
-          <XIcon class="w-6 h-6 text-gray-200"/>
+          <XIcon class="w-6 h-6 text-gray-100"/>
         </button>
         <button class="flex max-md:hidden" @click="$emit('close')">
           <CollapseIcon class="w-6 h-6"/>
@@ -76,7 +76,7 @@
           <NuxtLink
               v-if="item.to"
               :to="item.to"
-              class="group flex items-center justify-between text-gray-200 p-3 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
+              class="group flex items-center justify-between text-gray-100 p-3 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
               :class="[isCollapsedOnDesktop ? 'justify-center w-12 h-12 mx-auto' : '']"
               @mouseenter="handleNavItemMouseEnter($event, item)"
               @mouseleave="hoveredNavItem = undefined"
@@ -89,14 +89,14 @@
             </div>
             <div
                 v-if="item.count && !isCollapsedOnDesktop"
-                class="px-2 rounded-md font-Inter text-xs font-medium leading-[2] text-gray-200 bg-[#2F3241] transition-colors duration-300 group-hover:bg-[#1B1B28]"
+                class="px-2 rounded-md font-Inter text-xs font-medium leading-[2] text-gray-100 bg-[#2F3241] transition-colors duration-300 group-hover:bg-[#1B1B28]"
             >
               {{ item.count }}
             </div>
           </NuxtLink>
           <button
               v-else
-              class="group flex items-center text-gray-200 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
+              class="group flex items-center text-gray-100 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
               :class="[
                             item.dropdown?.show ? 'bg-[#2F3241]' : '',
                             isCollapsedOnDesktop ? 'justify-center w-12 h-12 mx-auto' : 'justify-between p-3 w-full',
@@ -114,13 +114,13 @@
             <div v-if="!isCollapsedOnDesktop" class="flex items-center">
               <div
                   v-if="item.count"
-                  class="px-2 rounded-md font-Inter text-xs font-medium leading-[2] text-gray-200 mr-4 transition-colors duration-300 group-hover:bg-[#1B1B28]"
+                  class="px-2 rounded-md font-Inter text-xs font-medium leading-[2] text-gray-100 mr-4 transition-colors duration-300 group-hover:bg-[#1B1B28]"
                   :class="[item.dropdown?.show ? 'bg-[#1B1B28]' : 'bg-[#2F3241]']"
               >
                 {{ item.count }}
               </div>
               <ChevronDownIcon
-                  class="w-5 h-5 text-gray-200 transition-transform duration-300"
+                  class="w-5 h-5 text-gray-100 transition-transform duration-300"
                   :class="[item.dropdown?.show ? 'rotate-180' : '']"
               />
             </div>
@@ -131,7 +131,7 @@
                   v-for="(dropdownItem, dropdownIndex) in item.dropdown.items"
                   :key="dropdownIndex"
                   :to="dropdownItem.to"
-                  class="group flex items-center justify-between text-gray-200 px-3 py-2 transition-colors duration-300 hover:text-[#009FFF]"
+                  class="group flex items-center justify-between text-gray-100 px-3 py-2 transition-colors duration-300 hover:text-[#009FFF]"
               >
                 <div class="flex items-center">
                   <component :is="dropdownItem.icon" class="w-6 h-6 mr-3"/>
@@ -141,14 +141,14 @@
                 </div>
                 <div
                     v-if="dropdownItem.count"
-                    class="px-2 bg-[#1B1B28] rounded-md font-Inter text-xs font-medium leading-[2] text-gray-200 transition-colors duration-300 group-hover:text-[#009FFF]"
+                    class="px-2 bg-[#1B1B28] rounded-md font-Inter text-xs font-medium leading-[2] text-gray-100 transition-colors duration-300 group-hover:text-[#009FFF]"
                 >
                   {{ dropdownItem.count }}
                 </div>
               </NuxtLink>
               <button
                   v-if="item.label === 'Products'"
-                  class="flex items-center justify-center px-3 py-2 text-gray-200 w-full transition-colors duration-300 hover:text-[#009FFF]"
+                  class="flex items-center justify-center px-3 py-2 text-gray-100 w-full transition-colors duration-300 hover:text-[#009FFF]"
               >
                 <PlusCircleIcon class="w-5 h-5 mr-3"/>
                 <span class="text-sm leading-[1.43]"> Add products </span>
@@ -162,7 +162,7 @@
         v-if="isCollapsedOnDesktop"
         class="group flex justify-center items-center w-12 h-12 mx-auto bg-[#2F3241] rounded-lg flex-shrink-0 my-auto max-md:hidden"
     >
-      <PlusIcon class="w-8 h-8 text-gray-200 transition-colors duration-300 group-hover:text-[#009FFF]"/>
+      <PlusIcon class="w-8 h-8 text-gray-100 transition-colors duration-300 group-hover:text-[#009FFF]"/>
     </button>
     <button v-if="isCollapsedOnDesktop" class="mt-5 max-md:hidden" @click="$emit('close')">
       <Collapse2Icon class="w-6 h-6"/>
@@ -173,7 +173,7 @@
           @click="themeMode === 'dark' ? (themeMode = 'light') : (themeMode = 'dark')"
       >
         <MoonIcon
-            class="w-4 h-4 text-gray-200 transition-opacity duration-300"
+            class="w-4 h-4 text-gray-100 transition-opacity duration-300"
             :class="[themeMode === 'light' ? '' : 'opacity-0']"
         />
         <div
@@ -181,7 +181,7 @@
             :class="[themeMode === 'dark' ? 'right-6' : 'right-1']"
         />
         <SunIcon
-class="w-4 h-4 text-gray-200 transition-opacity duration-300"
+class="w-4 h-4 text-gray-100 transition-opacity duration-300"
                  :class="[themeMode === 'dark' ? '' : 'opacity-0']"/>
       </button>
     </div>
@@ -191,7 +191,7 @@ class="w-full pt-5 px-4 pb-4 text-center"
       <div v-if="!isCollapsedOnDesktop" class="text-xs text-[#C2C5CD] leading-normal mb-1">
         © {{ new Date().getFullYear() }} ECASMAG.RO
       </div>
-      <div class="text-xs leading-normal text-gray-300">V 1.0.0</div>
+      <div class="text-xs leading-normal text-slate-500">V 1.0.0</div>
     </div>
     <Transition name="fade">
       <div

@@ -1,7 +1,7 @@
 <template>
     <form
         action=""
-        class="border border-border rounded px-2.5 w-full transition-colors duration-300 focus-within:border-blue"
+        class="border border-border rounded px-2.5 w-full transition-colors duration-300 focus-within:border-blue-500"
         @submit.prevent=""
     >
         <label class="flex items-center">
@@ -10,7 +10,7 @@
                 :value="modelValue"
                 type="search"
                 placeholder="Search favorites"
-                class="bg-transparent flex-1 px-2 py-2.5 w-full text-sm placeholder:text-gray-100 focus:outline-none"
+                class="bg-transparent flex-1 px-2 py-2.5 w-full text-sm placeholder:text-gray-500 focus:outline-none"
                 @input="handleInput"
             />
             <FiltersIcon class="w-5 h-5 text-border flex-shrink-0" />

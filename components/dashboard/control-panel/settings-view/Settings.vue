@@ -30,13 +30,13 @@
                                     class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                                     :class="[
                                         item.email
-                                            ? 'bg-blue border-blue group-hover:bg-white'
+                                            ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                             : 'bg-white  border-border group-hover:border-gray-300',
                                     ]"
                                 >
                                     <CheckIcon
                                         v-if="item.email"
-                                        class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                                        class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
                                     />
                                 </div>
                             </label>
@@ -56,13 +56,13 @@
                                     class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                                     :class="[
                                         item.app
-                                            ? 'bg-blue border-blue group-hover:bg-white'
+                                            ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                             : 'bg-white  border-border group-hover:border-gray-300',
                                     ]"
                                 >
                                     <CheckIcon
                                         v-if="item.app"
-                                        class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                                        class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
                                     />
                                 </div>
                             </label>
@@ -82,7 +82,7 @@
                         class="max-md:mb-4"
                     />
                     <button
-                        class="flex items-center justify-center w-full bg-blue rounded-lg px-6 py-2.5 text-white"
+                        class="flex items-center justify-center w-full bg-blue-500 rounded-lg px-6 py-2.5 text-white"
                         @:click="resetPassword(securityEmail)"
                     >
                         <SecurityUserIcon class="w-6 h-6 mr-2" />
@@ -109,11 +109,11 @@
                                 class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                                 :class="[
                                     item.email
-                                        ? 'bg-blue border-blue group-hover:bg-white'
+                                        ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                         : 'bg-white  border-border group-hover:border-gray-300',
                                 ]"
                             >
-                                <CheckIcon v-if="item.email" class="w-4 text-white transition-colors duration-300 group-hover:text-blue" />
+                                <CheckIcon v-if="item.email" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
                             </div>
                         </label>
                     </div>

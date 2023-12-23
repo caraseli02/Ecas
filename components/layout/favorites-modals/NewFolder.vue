@@ -4,12 +4,12 @@
             class="relative z-10 pointer-events-auto w-[450px] max-w-[calc(100vw-32px)] min-h-[360px] p-[15px] pb-[35px] bg-white rounded-md shadow-xs flex flex-col justify-between"
         >
             <div class="flex items-center justify-between">
-                <div class="flex items-center text-gray-300">
+                <div class="flex items-center text-slate-500">
                     <FolderPlusIcon class="w-6 h-6 mr-2" />
                     <span class="font-medium"> Create New Folder </span>
                 </div>
                 <button
-                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300"
+                    class="rounded w-8 h-8 bg-[#F2F2F2] flex items-center justify-center text-gray-500 transition-colors duration-300 hover:text-slate-500"
                     @click="$emit('close')"
                 >
                     <XIcon class="w-5 h-5" />
@@ -22,12 +22,12 @@
                         v-model="name"
                         type="text"
                         placeholder="Enter Folder Name"
-                        class="bg-transparent w-full px-2.5 py-[5px] border border-border rounded h-[42px] text-sm leading-tight text-dark focus:outline-none"
+                        class="bg-transparent w-full px-2.5 py-[5px] border border-border rounded h-[42px] text-sm leading-tight text-neutral-700 focus:outline-none"
                     />
                 </label>
                 <div class="flex items-center justify-center gap-2.5">
                     <button
-                        class="flex bg-blue rounded px-[34px] py-[11px] text-sm font-medium text-white"
+                        class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white"
                         @click="
                             success = true;
                             createFolder();
@@ -35,7 +35,7 @@
                     >
                         Create Folder
                     </button>
-                    <button class="flex bg-gray-200 rounded px-[26px] py-[11px] text-sm font-medium text-gray-300" @click="$emit('close')">
+                    <button class="flex bg-gray-100 rounded px-[26px] py-[11px] text-sm font-medium text-slate-500" @click="$emit('close')">
                         Cancel
                     </button>
                 </div>

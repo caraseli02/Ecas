@@ -17,7 +17,7 @@
                         "
           >
             <div class="flex items-center mr-0.5">
-              <CartIcon class="w-6 h-6 text-gray-300 lg:mr-0"/>
+              <CartIcon class="w-6 h-6 text-slate-500 lg:mr-0"/>
               <span
                   class="flex -translate-y-2 -translate-x-2.5 items-center justify-center h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white rounded-[100px] text-xs font-semibold leading-[1.5]"
                   :class="[cartItems < 10 ? 'w-[18px]' : cartItems < 100 ? 'w-6' : 'w-[31px]']"
@@ -25,7 +25,7 @@
                                 <span> {{ cartItems }} </span>
                             </span>
             </div>
-            <div class="flex-col text-gray-300 flex-shrink-0">
+            <div class="flex-col text-slate-500 flex-shrink-0">
               <div class="leading-[1.25] font-medium mb-0.5">37.000,00 RON</div>
               <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
             </div>

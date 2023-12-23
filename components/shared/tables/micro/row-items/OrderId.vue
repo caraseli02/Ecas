@@ -1,9 +1,9 @@
 <template>
   <SkeletonLoader v-if="loading" class="w-[94px] h-6"/>
   <template v-else>
-    <button class="uppercase hover:text-blue transition duration-300">#{{ item.id }}</button>
+    <button class="uppercase hover:text-blue-500 transition duration-300">#{{ item.id }}</button>
     <Tooltip theme="black" :position="index === 0 ? 'bottom' : 'top'">
-      <MessageIcon v-if="item.note" class="w-4 h-4 text-gray-300 transition-colors duration-300 hover:text-blue"/>
+      <MessageIcon v-if="item.note" class="w-4 h-4 text-slate-500 transition-colors duration-300 hover:text-blue-500"/>
       <template #content>
         <span>This order has a note</span>
       </template>

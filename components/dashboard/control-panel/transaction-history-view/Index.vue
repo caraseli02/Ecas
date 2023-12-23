@@ -9,19 +9,19 @@
 v-model="searchVal" placeholder="Search #ID" size="md"
                              class="mr-2 max-xl:hidden 2xl:w-[400px]"/>
             <button
-                class="flex items-center justify-center bg-[#F2F2F2] rounded-lg px-6 py-2 text-gray-300 max-xl:hidden">
+                class="flex items-center justify-center bg-[#F2F2F2] rounded-lg px-6 py-2 text-slate-500 max-xl:hidden">
               <FilterIcon class="w-6 h-6 mr-2"/>
               <span class="text-sm leading-[1.71] font-medium"> Filter </span>
             </button>
             <button
                 v-if="activeFilters.length > 0"
-                class="group flex items-center justify-center bg-[#F2F2F2] rounded-lg px-4 py-2 text-gray-300 transition-colors duration-300 max-xl:hidden"
+                class="group flex items-center justify-center bg-[#F2F2F2] rounded-lg px-4 py-2 text-slate-500 transition-colors duration-300 max-xl:hidden"
                 @click="clearFilters"
             >
               <span class="text-sm leading-[1.71] font-medium mr-2"> Clear Filters </span>
-              <XIcon class="w-6 h-6 group-hover:text-blue"/>
+              <XIcon class="w-6 h-6 group-hover:text-blue-500"/>
             </button>
-            <button class="flex items-center justify-center bg-blue rounded-lg px-5 py-2 text-white max-md:hidden">
+            <button class="flex items-center justify-center bg-blue-500 rounded-lg px-5 py-2 text-white max-md:hidden">
               <DownloadIcon class="w-6 h-6 mr-2"/>
               <span class="text-sm leading-[1.71] font-medium"> Download All </span>
             </button>
@@ -29,7 +29,7 @@ v-model="searchVal" placeholder="Search #ID" size="md"
         </div>
         <div class="mb-6">
           <button
-              class="flex items-center justify-center w-full bg-blue rounded-lg px-5 py-2 text-white mb-4 md:hidden">
+              class="flex items-center justify-center w-full bg-blue-500 rounded-lg px-5 py-2 text-white mb-4 md:hidden">
             <DownloadIcon class="w-6 h-6 mr-2"/>
             <span class="text-sm leading-[1.71] font-medium"> Download All </span>
           </button>
@@ -38,33 +38,33 @@ v-model="searchVal" placeholder="Search #ID" size="md"
               :class="[activeFilters.length > 0 ? 'grid-cols-2 gap-4' : 'grid-cols-1']"
           >
             <button
-                class="flex items-center justify-center w-full bg-[#F2F2F2] rounded-lg px-6 py-2 text-gray-300 md:max-w-max"
+                class="flex items-center justify-center w-full bg-[#F2F2F2] rounded-lg px-6 py-2 text-slate-500 md:max-w-max"
             >
               <FilterIcon class="w-6 h-6 mr-2"/>
               <span class="text-sm leading-[1.71] font-medium"> Filter </span>
             </button>
             <button
                 v-if="activeFilters.length > 0"
-                class="group flex items-center justify-center w-full bg-[#F2F2F2] rounded-lg px-4 py-2 text-gray-300 transition-colors duration-300 md:max-w-max"
+                class="group flex items-center justify-center w-full bg-[#F2F2F2] rounded-lg px-4 py-2 text-slate-500 transition-colors duration-300 md:max-w-max"
                 @click="clearFilters"
             >
               <span class="text-sm leading-[1.71] font-medium mr-2"> Clear Filters </span>
-              <XIcon class="w-6 h-6 group-hover:text-blue"/>
+              <XIcon class="w-6 h-6 group-hover:text-blue-500"/>
             </button>
           </div>
         </div>
       </div>
       <div v-if="activeFilters.length > 0" class="mb-6 md:flex md:items-start">
-        <div class="leading-normal font-medium text-gray-300 mb-4 md:mr-4">Filters:</div>
+        <div class="leading-normal font-medium text-slate-500 mb-4 md:mr-4">Filters:</div>
         <div class="flex flex-wrap gap-4">
           <div
 v-for="(filter, index) in activeFilters" :key="index"
                class="flex items-center p-1 bg-[#F2F2F2] rounded-md">
-                        <span class="text-sm leading-[1.43] text-gray-300 mr-2">
+                        <span class="text-sm leading-[1.43] text-slate-500 mr-2">
                             {{ `${TransactionsFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                         </span>
             <button
-class="flex text-gray-300 transition-colors duration-300 hover:text-blue"
+class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500"
                     @click="removeFilter(index)">
               <svg
 width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"

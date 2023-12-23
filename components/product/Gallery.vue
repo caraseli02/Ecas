@@ -36,15 +36,15 @@
         <div class="absolute top-[15px] right-[15px]">
             <div class="flex flex-col gap-2.5">
                 <button
-                    class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue"
+                    class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500"
                     @click="addToFavourite(product)"
                 >
                     <HeartIcon class="w-6 h-6" />
                 </button>
-                <button class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue">
+                <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
                     <ShareIcon class="w-6 h-6" />
                 </button>
-                <button class="flex justify-end text-gray-100 transition-colors duration-300 hover:text-blue">
+                <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
                     <D3Icon class="w-6 h-6" />
                 </button>
             </div>
