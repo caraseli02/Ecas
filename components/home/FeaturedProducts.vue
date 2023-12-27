@@ -27,14 +27,14 @@
                 </div>
             </div>
             <div class="md:grid md:grid-cols-1 xl:grid-cols-[auto,1fr]  md:gap-5">
-                <div class="px-1 md:pt-1 md:pr-0 mb-6 md:mb-0">
+                <div class="px-1 md:pt-1 md:pr-0 mb-6 md:mb-0 h-[calc(100%-30px)]">
                     <div
-                        class="flex h-[calc(100%-30px)] gap-4 md:gap-[40px] bg-white rounded-md shadow-m p-6 md:m-0 xl:flex-col xl:w-[310px]"
+                        class="flex  gap-4 md:gap-[40px] bg-white rounded-md shadow-m p-6 md:m-0 xl:flex-col xl:w-[310px]"
                     >
                         <img
                             :src="BlackFridayItem"
                             alt="Black Friday Product"
-                            class="h-[100px] w-[120px] md:w-[290px] md:max-h-[240px] xl:w-full"
+                            class="h-[100px] w-[120px] md:h-auto md:w-[290px] md:max-h-[240px] xl:w-full"
                         />
                         <div class="flex-1 flex gap-4 flex-col justify-center xl:justify-start xl:items-start">
                             <div class="font-semibold text-sm xl:text-xl">

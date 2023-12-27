@@ -37,7 +37,7 @@
       </div>
     </section>
     <div class="mt-auto h-full">
-      <div v-if="product.discount" class="text-[11px] leading-tight line-through mb-px md:text-xs">$ 1879,75 (5+)</div>
+      <div class="text-xs min-h-[16px] leading-tight line-through mb-px md:text-xs"><template v-if="product.discount">$ 1879,75 (5+)</template></div>
       <div class="flex gap-1 items-center" :class="[product.discount ? 'text-rose-500' : '']">
         <strong>$ {{ product.price }}</strong> <span class="text-xs">(25+)</span>
       </div>
