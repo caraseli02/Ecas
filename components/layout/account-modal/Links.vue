@@ -17,20 +17,20 @@ v-if="menuItem.text === 'Notifications'"
 </template>
 
 <script setup lang="ts">
-import SvgoMenuApps from '@/assets/icons/menu/apps.svg';
-import SvgoMenuNotification from '@/assets/icons/menu/Notification.svg';
-import SvgoMenuCartAdd from '@/assets/icons/menu/cart-add.svg';
-import SvgoMenuTag from '@/assets/icons/menu/tag.svg';
-import SvgoMenuFileUpload from '@/assets/icons/menu/file-upload.svg';
-import SvgoMenuHeart from '@/assets/icons/menu/heart.svg';
-import SvgoMenuPackagingLocation from '@/assets/icons/menu/packaging-location.svg';
-import SvgoMenuClock from '@/assets/icons/menu/Clock.svg';
-import SvgoMenuSetting from '@/assets/icons/menu/Setting.svg';
+import IconApps from '@/assets/icons/menu/apps.svg?component';
+import SvgoMenuNotification from '@/assets/icons/menu/Notification.svg?component';
+import SvgoMenuCartAdd from '@/assets/icons/menu/cart-add.svg?component';
+import SvgoMenuTag from '@/assets/icons/menu/tag.svg?component';
+import SvgoMenuFileUpload from '@/assets/icons/menu/file-upload.svg?component';
+import SvgoMenuHeart from '@/assets/icons/menu/heart.svg?component';
+import SvgoMenuPackagingLocation from '@/assets/icons/menu/packaging-location.svg?component';
+import SvgoMenuClock from '@/assets/icons/menu/Clock.svg?component';
+import SvgoMenuSetting from '@/assets/icons/menu/Setting.svg?component';
 
 
 const menuItems = [
   {
-    icon: SvgoMenuApps,
+    icon: IconApps,
     text: 'Dashboard',
     to: '/dashboard',
   },
