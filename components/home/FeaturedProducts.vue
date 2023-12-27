@@ -135,7 +135,7 @@
                     class="hidden homeFeaturedProducts--swiper w-[100%] xl:block"
                 >
                     <SwiperSlide v-for="(productGroup, index) in productsXL" :key="index">
-                        <div class="grid grid-cols-4 gap-x-5 gap-y-[30px]">
+                        <div class="grid grid-cols-3 gap-x-5 gap-y-[30px]">
                             <ProductCard
                                 v-for="(product, productIndex) in productGroup"
                                 :key="productIndex"
@@ -179,8 +179,8 @@ const productsLG = computed(() => {
 
 const productsXL = computed(() => {
     const chunkedArray = [];
-    for (let i = 0; i < productList.value.length; i += 7) {
-        chunkedArray.push(productList.value.slice(i, i + 7));
+    for (let i = 0; i < productList.value.length; i += 5) {
+        chunkedArray.push(productList.value.slice(i, i + 5));
     }
     return chunkedArray;
 });
