@@ -1,14 +1,14 @@
 <template>
   <NuxtLink
       :to="`/product/${product.slug}`"
-      class="flex flex-col relative font-Inter bg-white rounded-xl shadow-xs overflow-hidden h-full px-2.5 pt-[34px] pb-2 md:px-[15px] md:pt-10 md:pb-3 xl:pt-[34px]"
+      class="flex flex-col relative font-Inter bg-white rounded-xl shadow-xs overflow-hidden h-full px-2.5 pt-[34px] pb-2 md:px-[15px] md:pt-10 md:pb-3 xl:pt-[34px] min-h-[280px]"
   >
     <ProductCardStock :stock="product.stock" />
     <div class="relative">
       <img
         :src="product.cover"
         :alt="product.title"
-        class="w-[84px] h-[84px] object-contain mx-auto mb-2.5 md:w-[110px] md:h-[110px] md:mb-[15px] xl:w-[120px] xl:h-[120px]"
+        class="object-contain mx-auto xl:w-[120px] xl:h-[120px]"
     />
     <div
           v-if="product.discount"
@@ -42,25 +42,25 @@
         <strong>$ {{ product.price }}</strong> <span class="text-xs">(25+)</span>
       </div>
     </div>
-    <div class="absolute right-0 flex flex-col gap-2.5 md:top-[32px]">
+    <div class="absolute right-0 flex flex-col gap-3 md:top-[32px]">
       <div class="pr-3 flex flex-col gap-2.5 md:pr-[15px]">
         <button
             class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500"
             @click="addToFavourite(product)"
         >
-          <HeartIcon class="w-6 h-6 text-gray-500"/>
+          <SvgoCardHeartIcon class="w-6 h-6 text-gray-500"/>
         </button>
         <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
-          <ShareIcon class="w-6 h-6 text-gray-500"/>
+          <SvgoCardShareIcon class="w-6 h-6 text-gray-500"/>
         </button>
-        <button class="hidden justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500 md:flex">
-          <D3Icon class="w-6 h-6 text-gray-500"/>
+        <button class="justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
+          <SvgoCardD3Icon class="w-6 h-6 text-gray-500"/>
         </button>
       </div>
     </div>
     <div
         v-if="product.stock"
-        class="absolute bottom-0 right-0 bg-blue-500 px-[13px] py-1 rounded-br-xl rounded-tl-xl md:px-6 md:py-3"
+        class="absolute bottom-0 right-0 bg-blue-500 rounded-br-xl rounded-tl-xl px-6 py-3"
         @click.prevent="addToCart(product)"
     >
       <CartIcon class="w-6 h-6 text-white"/>
@@ -78,9 +78,6 @@ import type {ProductCard} from '~~/types';
 import InfoIcon from '@/assets/icons/info-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import ArrowsIcon from '@/assets/icons/double-arrows.svg';
-import HeartIcon from '@/assets/icons/card/heart-icon.svg';
-import ShareIcon from '@/assets/icons/card/share-icon.svg';
-import D3Icon from '@/assets/icons/card/d3-icon.svg';
 import {useNuxtApp} from '#app';
 import type {FavouriteFolderRequestInterface} from '~/model/favourite-folder/request/favourite-folder.interface';
 import type {AddToCartRequestInterface} from '~/model/cart/request/cart.interface';

@@ -26,31 +26,32 @@
                     />
                 </div>
             </div>
-            <div class="md:grid md:grid-cols-[auto,1fr] md:gap-5">
-                <div class="px-1 md:pt-1 md:pr-0">
+            <div class="md:grid md:grid-cols-1 xl:grid-cols-[auto,1fr]  md:gap-5">
+                <div class="px-1 md:pt-1 md:pr-0 mb-6 md:mb-0">
                     <div
-                        class="flex items-center bg-white rounded-md shadow-m pl-[15px] pr-5 pt-7 pb-[34px] mb-3 md:w-[230px] md:px-[15px] md:py-12 md:flex-col md:h-[calc(100%-30px)] lg:px-[21px] lg:pt-[30px] xl:w-[310px] xl:px-2 xl:pt-[15px]"
+                        class="flex h-[calc(100%-30px)] gap-4 md:gap-[40px] bg-white rounded-md shadow-m p-6 md:m-0 xl:flex-col xl:w-[310px]"
                     >
                         <img
                             :src="BlackFridayItem"
                             alt="Black Friday Product"
-                            class="w-[120px] mr-1.5 md:w-full md:mr-0 md:mb-[50px] lg:mb-[87px] xl:mb-2.5"
+                            class="h-[100px] w-[120px] md:w-[290px] md:max-h-[240px] xl:w-full"
                         />
-                        <div class="flex-1 flex flex-col items-center justify-center text-center xl:items-start">
-                            <div class="font-semibold mb-2.5 md:mb-[30px] lg:mb-[35px] xl:text-2xl xl:px-[7px] xl:mb-2.5">
+                        <div class="flex-1 flex gap-4 flex-col justify-center xl:justify-start xl:items-start">
+                            <div class="font-semibold text-sm xl:text-xl">
                                 Exclusive Black Friday
                             </div>
                             <p
-                                class="text-[11px] text-slate-500 mb-[15px] md:text-[13px] md:mb-[50px] lg:mb-[45px] xl:text-base xl:px-[7px] xl:mb-12"
+                                class="text-xs text-slate-500 md:text-[13px] xl:text-base"
                             >
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin accumsan nisi a porttitor.
                             </p>
                             <button
-                                class="flex bg-blue-500 text-[13px] font-medium px-3 py-1.5 rounded text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto"
+                                class="flex w-fit bg-blue-500 text-[13px] font-medium px-3 py-1.5 rounded text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto"
                             >
                                 View More
                             </button>
                         </div>
+                        
                     </div>
                 </div>
                 <div v-if="productList.length === 0" class="px-1 md:pt-1 md:pr-0">
@@ -61,12 +62,8 @@
                     </div>
                 </div>
                 <Swiper
-                    :modules="[A11y, Pagination, Grid]"
-                    :slides-per-view="2"
-                    :grid="{
-                        rows: 2,
-                        fill: 'row',
-                    }"
+                    :modules="[A11y, Pagination]"
+                    :slides-per-view="1"
                     :space-between="15"
                     :grab-cursor="true"
                     :pagination="{
@@ -76,7 +73,9 @@
                     class="homeFeaturedProducts--swiper md:hidden"
                 >
                     <SwiperSlide v-for="(product, index) in productList" :key="index">
-                        <ProductCard :product="product" />
+                        <div class="grid grid-cols-1 gap-x-5 gap-y-[30px]">
+                            <ProductCard :product="product" />
+                        </div>
                     </SwiperSlide>
                 </Swiper>
                 <Swiper
@@ -140,7 +139,7 @@
                                 v-for="(product, productIndex) in productGroup"
                                 :key="productIndex"
                                 :product="product"
-                                class="first:col-span-2"
+                                class="first:col-span-2 first:max-w-full max-w-[330px]"
                             />
                         </div>
                     </SwiperSlide>
@@ -152,7 +151,7 @@
 
 <script setup lang="ts">
 import BlackFridayItem from '@/assets/media/home/black-friday-item.png';
-import { A11y, Pagination, Grid } from 'swiper';
+import { A11y, Pagination } from 'swiper';
 import { PaginatedUserRequest } from '~/model/user/request/PaginatedUserRequest';
 import { ProductCard as ProductCardType } from '~~/types';
 const { $api } = useNuxtApp();
