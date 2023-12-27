@@ -46,12 +46,12 @@ export const useAuthStore = defineStore({
             await firebaseAuth.logout();
         },
         getToken() {
-            console.log(`${moment().diff(this.token.createdAt, 'minutes')} minutes left`);
-            if (moment().diff(this.token.createdAt, 'minutes') > 59) {
+            console.log(`${moment().diff(this.token?.createdAt, 'minutes')} minutes left`);
+            if (moment().diff(this.token?.createdAt, 'minutes') > 59) {
                 this.signOut();
             }
 
-            return this.token.value;
+            return this.token?.value;
         },
     },
     getters: {
