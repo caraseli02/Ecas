@@ -58,6 +58,10 @@ export const initializeQuantities = (
     initialRequestedQuantity: any,
     minPriceConfiguration: PriceConfigurationSettingsInterface
 ) => {
+    if (!data.products?.length) {
+        return;
+    }
+
     const cartProduct = data.products.find((item: CartProductsInterface) => item.id === product?._id);
 
     quantity.value = cartProduct && cartProduct.stock > 0 ? cartProduct.stock : minPriceConfiguration?.quantity || 0;

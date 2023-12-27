@@ -107,14 +107,17 @@ import CheckIcon from '@/assets/icons/check-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import { useNuxtApp } from '#app';
 import { ProductActionObject } from '~/model/cart/response/cart.interface';
-import Emitter from 'tiny-emitter/instance.js';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 import { addToCartHelper, initializeQuantities, parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
+import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore();
+const cartStore = useCartStore();
+
 const { getUserDetails } = storeToRefs(authStore);
+const { getCart } = storeToRefs(cartStore);
 
 const { $api } = useNuxtApp();
 const props = defineProps<{
@@ -141,9 +144,9 @@ const getPricesConfiguration = () => {
 };
 
 const fetchCart = async () => {
-    const { data } = await $api.cart.fetchCartList();
-    Emitter.emit('update-cart', data);
+    const data = await getCart.value;
 
+    getPricesConfiguration();
     initializeQuantities(props.product, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
     getPricesConfiguration();
 };
@@ -169,6 +172,7 @@ const addToCart = async (product: ProductInterface) => {
     const response = (await addToCartHelper(product, stock)) as any;
 
     if (response.status === 'success') {
+        await cartStore.updateAndReturnCart();
         await fetchCart();
     }
 };
