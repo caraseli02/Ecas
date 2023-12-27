@@ -1,5 +1,13 @@
 import { UserDetails } from '~/types/auth/user-details';
-import { ProductDiscountsHelperInterface, ProductInterface } from '~/model/products/response/ProductResponse';
+import {
+    PriceConfigurationSettingsInterface,
+    ProductDiscountsHelperInterface,
+    ProductInterface,
+} from '~/model/products/response/ProductResponse';
+import { CartInterface } from '~/model/cart/response/cart.interface';
+import { CartProductsInterface } from '~/types';
+import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
+import { useNuxtApp } from '#app';
 
 export const parseProductPriceConfiguration = (product: ProductInterface, userDetails: UserDetails, quantity = 0) => {
     let unitPrice = 0;
@@ -9,14 +17,13 @@ export const parseProductPriceConfiguration = (product: ProductInterface, userDe
     }
 
     const minimumOrderQuantityConfiguration = product.priceConfiguration?.configuration[0] || null;
-    let currentPriceConfiguration = null;
+    let currentPriceConfiguration = minimumOrderQuantityConfiguration;
 
     if (quantity) {
         for (let i = product.priceConfiguration.configuration.length - 1; i >= 0; i--) {
             if (quantity > product.priceConfiguration.configuration[i].quantity) {
                 unitPrice = product.priceConfiguration.configuration[i].price;
                 currentPriceConfiguration = product.priceConfiguration.configuration[i];
-
                 break;
             }
         }
@@ -30,12 +37,45 @@ export const parseProductPriceConfiguration = (product: ProductInterface, userDe
     let discountPrice = 0;
 
     discountPrice = productDiscount ? unitPrice * (1 - productDiscount / 100) : unitPrice * (1 - userDiscount / 100);
+    const currentConfigurationDiscountPrice = productDiscount
+        ? currentPriceConfiguration?.price * (1 - productDiscount / 100)
+        : currentPriceConfiguration?.price * (1 - userDiscount / 100);
 
     return {
         userDiscount: userDiscount,
         productDiscount: productDiscount,
         discountPrice: discountPrice,
+        currentConfigurationDiscountPrice: currentConfigurationDiscountPrice,
         priceConfiguration: currentPriceConfiguration,
         minimumOrderQuantityConfiguration: minimumOrderQuantityConfiguration,
     } as unknown as ProductDiscountsHelperInterface;
+};
+
+export const initializeQuantities = (
+    product: ProductInterface,
+    data: CartInterface,
+    quantity: any,
+    initialRequestedQuantity: any,
+    minPriceConfiguration: PriceConfigurationSettingsInterface
+) => {
+    const cartProduct = data.products.find((item: CartProductsInterface) => item.id === product?._id);
+
+    quantity.value = cartProduct && cartProduct.stock > 0 ? cartProduct.stock : minPriceConfiguration?.quantity || 0;
+    initialRequestedQuantity.value = cartProduct && cartProduct.stock > 0 ? cartProduct.stock : 0;
+};
+
+export const addToCartHelper = async (product: ProductInterface, stock: number) => {
+    const { $api } = useNuxtApp();
+    const payload: AddToCartRequestInterface = {
+        userId: '',
+        products: [
+            {
+                id: product._id,
+                stock: stock,
+                isFolder: false,
+            },
+        ],
+    };
+
+    return await $api.cart.addEntityToCart(payload);
 };

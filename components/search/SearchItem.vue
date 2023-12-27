@@ -59,7 +59,7 @@
                     <span class="hidden text-[13px] leading-tight text-neutral-700 font-normal mr-[15px] md:inline"> Price for: Each </span>
                     <span class="hidden text-[13px] leading-tight text-neutral-700 font-normal mr-[15px] md:inline"> Multiple: 1 </span>
                     <span class="hidden text-[13px] leading-tight text-neutral-700 font-normal mr-[15px] md:inline">
-                        Minimum Order: {{ priceConfiguration ? priceConfiguration.quantity : 0 }}
+                        Minimum Order: {{ minPriceConfiguration ? minPriceConfiguration.quantity : 0 }}
                     </span>
                 </div>
                 <section class="flex gap-2 min-w-fit">
@@ -84,7 +84,12 @@
             </div>
         </div>
         <div class="flex gap-2.5 md:col-span-2 xl:col-span-1 xl:items-end">
-            <QuantityButtons v-model="quantity" size="lg" :object="{action : 'add', id: item._id} as ProductActionObject" />
+            <QuantityButtons
+                v-if="minPriceConfiguration"
+                v-model="quantity"
+                size="lg"
+                :object="{action : 'add', min: minPriceConfiguration.quantity, id: item._id} as ProductActionObject"
+            />
             <button
                 :disabled="quantity === 0"
                 class="flex items-center flex-1 justify-center bg-blue-500 rounded text-white px-5 py-[9px]"
@@ -125,14 +130,12 @@ import CartIcon from '@/assets/icons/cart.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
 import ShareIcon from '@/assets/icons/share.svg';
 import { ProductActionObject } from '~/model/cart/response/cart.interface';
-import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
 import Emitter from 'tiny-emitter/instance.js';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
-import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
+import { addToCartHelper, initializeQuantities, parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
-import { CartProductsInterface } from '~/types';
 
 const { $api } = useNuxtApp();
 const quantity = ref(1);
@@ -148,27 +151,31 @@ const props = defineProps({
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
-const discountsHelper = parseProductPriceConfiguration(props.item, getUserDetails.value, quantity);
+const minPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
+const currentPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
+const discountPrice = ref(0);
+const userDiscount = ref(0);
+const productDiscount = ref(0);
 
-const priceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(discountsHelper?.priceConfiguration);
-const discountPrice = ref(discountsHelper?.discountPrice || 0);
-const userDiscount = ref(discountsHelper?.userDiscount || 0);
-const productDiscount = ref(discountsHelper?.productDiscount || 0);
+const getPricesConfiguration = () => {
+    const discountsHelper = parseProductPriceConfiguration(props.item, getUserDetails.value, quantity.value);
 
-const quantityInfo = [
-    {
-        title: 'Price for',
-        value: 'Each',
-    },
-    {
-        title: 'Multiple',
-        value: 1,
-    },
-    {
-        title: 'Minimum order',
-        value: priceConfiguration.value ? priceConfiguration.value.quantity : 1,
-    },
-];
+    minPriceConfiguration.value = discountsHelper?.minimumOrderQuantityConfiguration;
+    currentPriceConfiguration.value = discountsHelper?.priceConfiguration;
+    discountPrice.value = discountsHelper?.discountPrice || 0;
+    userDiscount.value = discountsHelper?.userDiscount || 0;
+    productDiscount.value = discountsHelper?.productDiscount || 0;
+};
+
+const fetchCart = async () => {
+    const { data } = await $api.cart.fetchCartList();
+    Emitter.emit('update-cart', data);
+
+    initializeQuantities(props.item, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
+    getPricesConfiguration();
+};
+
+await fetchCart();
 
 const bulkQuantities = new Map<number, number>();
 
@@ -184,36 +191,16 @@ const buildBulkQuantities = () => {
 };
 
 const addToCart = async (product: ProductInterface) => {
-    if (product && product._id) {
-        const payload: AddToCartRequestInterface = {
-            userId: '',
-            products: [{ id: product._id, stock: quantity.value - initialRequestedQuantity.value, isFolder: false }],
-        };
+    const stock = initialRequestedQuantity.value > 0 ? quantity.value - initialRequestedQuantity.value : quantity.value;
 
-        const object = await $api.cart.addEntityToCart(payload);
+    const response = (await addToCartHelper(product, stock)) as any;
 
-        if (object.response === 'success') {
-            await fetchCart();
-        }
+    if (response.status === 'success') {
+        await fetchCart();
     }
-};
-
-const fetchCart = async () => {
-    const { data } = await $api.cart.fetchCartList();
-    Emitter.emit('update-cart', data);
-
-    const cartProduct = data.products.find((item: CartProductsInterface) => item.id === props.item?._id);
-
-    if (!cartProduct) {
-        return;
-    }
-
-    quantity.value = cartProduct?.stock || 0;
-    initialRequestedQuantity.value = cartProduct.stock;
 };
 
 const showCustomProductPartNumberModal = ref(false);
 
-await fetchCart();
 buildBulkQuantities();
 </script>

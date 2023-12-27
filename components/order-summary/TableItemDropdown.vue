@@ -72,11 +72,13 @@
                                 >$ {{ item.initialUnitPrice.toFixed(2) }}</span
                             >
                             <span class="text-sm font-normal leading-5" :class="discounts?.productDiscount ? 'text-[#FA4B4B]' : ''"
-                                >$ {{ discountedPrice.toFixed(2) }}</span
+                                >$ {{ discounts.currentConfigurationDiscountPrice.toFixed(2) }}</span
                             >
                         </div>
                         <div v-else class="flex flex-col text-center h-[36px] justify-center">
-                            <span class="text-neutral-700 text-sm font-normal leading-5">$ {{ subtotal.toFixed(2) }}</span>
+                            <span class="text-neutral-700 text-sm font-normal leading-5"
+                                >$ {{ discounts.currentConfigurationDiscountPrice.toFixed(2) }}</span
+                            >
                         </div>
                     </div>
                     <div class="flex flex-row justify-between items-center xl:flex-col xl:gap-4">
@@ -234,14 +236,15 @@ export default defineComponent({
         ProductAction() {
             return ProductAction;
         },
-        discountedPrice() {
-            return this.item.unitPriceAfterDiscounts;
-        },
         taxPrice() {
             return (this.subtotal * 0.19).toFixed(2);
         },
         subtotal() {
-            return this.item.stock * this.item.unitPriceAfterDiscounts || 0;
+            if (!this.discounts) {
+                return 0;
+            }
+
+            return this.item.stock * this.discounts.currentConfigurationDiscountPrice || 0;
         },
         discounts() {
             if (!this.item.productEntity) {
@@ -252,16 +255,19 @@ export default defineComponent({
             const { getUserDetails } = storeToRefs(authStore);
 
             const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value, this.item.stock);
-
+            console.log(discountsHelper);
             return {
                 userDiscount: discountsHelper?.userDiscount || 0,
                 productDiscount: discountsHelper?.productDiscount || 0,
+                minPriceConfiguration: discountsHelper?.minimumOrderQuantityConfiguration,
+                currentPriceConfiguration: discountsHelper?.priceConfiguration,
+                discountPrice: discountsHelper?.discountPrice || 0,
+                currentConfigurationDiscountPrice: discountsHelper?.currentConfigurationDiscountPrice || 0,
             };
         },
     },
     methods: {
         likeItem() {
-            // write request to like item here
             this.$emit('like:item', this.item.id);
             this.item.liked = !this.item.liked;
         },

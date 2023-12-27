@@ -1,60 +1,70 @@
 <template>
     <div class="flex flex-col pb-4" :class="[inModal ? '' : 'border-b border-gray-200 mx-2 last:border-b-0']">
         <div class="flex" :class="[inModal ? 'items-center' : 'items-start']">
-            <label v-if="inModal" class="flex cursor-pointer mr-2.5">
-                <input :value="productItem.selected" type="checkbox" class="sr-only" @change="$emit('select')" />
-                <div
-                    class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
-                    :class="[
-                        productItem.selected
-                            ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
-                            : 'bg-white  border-border group-hover:border-gray-300',
-                    ]"
-                >
-                    <CheckIcon v-if="productItem.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
-                </div>
-            </label>
-            <img
-                v-if="productItem.image"
-                :src="productItem.image"
-                :alt="productItem.title"
-                :class="[
-                    inModal
-                        ? 'w-9 h-9 mr-2'
-                        : 'w-12 h-12 border border-border rounded-lg overflow-hidden object-cover mr-3 md:w-14 md:h-14',
-                ]"
-            />
-            <div :class="[inModal ? '<truncate' : '']">
-                <div class="flex items-center" :class="[inModal ? '' : 'mb-1']">
-                    <div class="font-semibold mr-2" :class="[inModal ? 'text-xs leading-tight' : 'text-sm leading-[1.71]']">
-                        {{ productItem.title }}
-                    </div>
-                    <button
-                        v-if="!inModal && !inCart"
-                        class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500"
-                        @click="copyItems = true"
+            <NuxtLink :to="`/product/${product.id}`" class="flex flex-shrink-0 mr-2.5 md:mr-[15px]">
+                <label v-if="inModal" class="flex cursor-pointer mr-2.5">
+                    <input :value="productItem.selected" type="checkbox" class="sr-only" @change="$emit('select')" />
+                    <div
+                        class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
+                        :class="[
+                            productItem.selected
+                                ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
+                                : 'bg-white  border-border group-hover:border-gray-300',
+                        ]"
                     >
-                        <CopyIcon class="w-[18px] h-[18px]" />
-                    </button>
-                    <button v-if="!inModal" class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500">
-                        <InfoIcon class="w-4 h-4" />
-                    </button>
+                        <CheckIcon
+                            v-if="productItem.selected"
+                            class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
+                        />
+                    </div>
+                </label>
+                <img
+                    v-if="productItem.image"
+                    :src="productItem.image"
+                    :alt="productItem.title"
+                    :class="[
+                        inModal
+                            ? 'w-9 h-9 mr-2'
+                            : 'w-12 h-12 border border-border rounded-lg overflow-hidden object-cover mr-3 md:w-14 md:h-14',
+                    ]"
+                />
+                <div :class="[inModal ? '<truncate' : '']">
+                    <div class="flex items-center" :class="[inModal ? '' : 'mb-1']">
+                        <div class="font-semibold mr-2" :class="[inModal ? 'text-xs leading-tight' : 'text-sm leading-[1.71]']">
+                            {{ productItem.title }}
+                        </div>
+                        <button
+                            v-if="!inModal && !inCart"
+                            class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500"
+                            @click="copyItems = true"
+                        >
+                            <CopyIcon class="w-[18px] h-[18px]" />
+                        </button>
+                        <button v-if="!inModal" class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500">
+                            <InfoIcon class="w-4 h-4" />
+                        </button>
+                    </div>
+                    <div class="text-sm leading-[1.43] font-semibold font-Inter" :class="[productDiscount ? 'text-red' : '']">
+                        <strong>
+                            {{
+                                currentConfigurationDiscountPrice
+                                    ? `$ ${currentConfigurationDiscountPrice.toFixed(2)}`
+                                    : minPriceConfiguration?.price.toFixed(2) || '-'
+                            }}
+                        </strong>
+                        {{ currentPriceConfiguration ? `(${currentPriceConfiguration.quantity}+)` : '-' }}
+                    </div>
                 </div>
-                <div class="text-sm leading-[1.43] font-semibold font-Inter" :class="[productDiscount ? 'text-red' : '']">
-                    <strong>
-                        {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : minPriceConfiguration?.price.toFixed(2) || '-' }}
-                    </strong>
-                    {{ currentPriceConfiguration ? `(${currentPriceConfiguration.quantity}+)` : '-' }}
-                </div>
-            </div>
+            </NuxtLink>
             <button
                 v-if="!inModal"
                 class="flex items-center justify-center ml-auto text-slate-500 transition-colors duration-300 hover:text-[#FA4B4B]"
-                @click="deleteItem = true"
+                @click="deleteItemFromCart"
             >
                 <TrashIcon class="w-5 h-5" />
             </button>
         </div>
+
         <div v-if="!inModal" class="flex items-end justify-between">
             <div v-if="!inCart" class="flex items-center">
                 <label class="flex cursor-pointer mr-[15px]">
@@ -80,7 +90,7 @@
             </div>
             <div v-else class="font-Inter font-semibold leading-[1.25]">
                 $
-                {{ product ? (discountPrice * (product.quantity || 1)).toFixed(2) : 0 }}
+                {{ product ? (currentConfigurationDiscountPrice * (product.quantity || 1)).toFixed(2) : 0 }}
             </div>
             <QuantityButtons
                 v-if="typeof productItem.quantity === 'number'"
@@ -123,6 +133,10 @@ import { PriceConfigurationSettingsInterface } from '~/model/products/response/P
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
+import { useNuxtApp } from '#app';
+import Emitter from 'tiny-emitter/instance.js';
+
+const { $api } = useNuxtApp();
 
 const props = defineProps({
     product: {
@@ -150,6 +164,7 @@ const { getUserDetails } = storeToRefs(authStore);
 const minPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
 const currentPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
 const discountPrice = ref(0);
+const currentConfigurationDiscountPrice = ref(0);
 const userDiscount = ref(0);
 const productDiscount = ref(0);
 
@@ -159,13 +174,32 @@ const getPricesConfiguration = () => {
     minPriceConfiguration.value = discountsHelper?.minimumOrderQuantityConfiguration;
     currentPriceConfiguration.value = discountsHelper?.priceConfiguration;
     discountPrice.value = discountsHelper?.discountPrice || 0;
+    currentConfigurationDiscountPrice.value = discountsHelper?.currentConfigurationDiscountPrice || 0;
     userDiscount.value = discountsHelper?.userDiscount || 0;
     productDiscount.value = discountsHelper?.productDiscount || 0;
 };
 
 getPricesConfiguration();
 
-watch(productItem.value.quantity, (value) => {
-    console.log(value);
-});
+const deleteItemFromCart = async () => {
+    const payload = {
+        products: [props.product?.id],
+    };
+
+    await $api.cart.removeEntityFromCart(payload);
+
+    Emitter.emit('delete-product-item', {
+        id: props.product?.id,
+    });
+    const { data } = await $api.cart.fetchCartList();
+    Emitter.emit('update-cart', data);
+};
+
+watch(
+    productItem,
+    (value) => {
+        getPricesConfiguration();
+    },
+    { deep: true }
+);
 </script>

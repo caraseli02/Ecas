@@ -94,6 +94,7 @@ export interface ProductDiscountsHelperInterface {
     userDiscount: number;
     productDiscount: number;
     discountPrice: number;
+    currentConfigurationDiscountPrice: number;
     priceConfiguration: PriceConfigurationSettingsInterface;
     minimumOrderQuantityConfiguration: PriceConfigurationSettingsInterface;
 }

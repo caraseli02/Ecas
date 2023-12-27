@@ -13,7 +13,7 @@
         >
             <div class="flex items-center justify-between leading-[1.25] font-semibold mb-4 md:text-xl md:leading-[1.2] md:mb-6">
                 <div>Total</div>
-                <div class="text-right">$ {{ totalCartPrice.toFixed(3) }}</div>
+                <div class="text-right">$ {{ totalCartPrice.toFixed(2) }}</div>
             </div>
             <NuxtLink
                 class="flex items-center justify-center gap-2 bg-blue-500 text-white rounded-lg px-[15px] py-2 leading-[1.75] font-medium w-full"
@@ -67,8 +67,12 @@ const calculateTotalCartPrice = (items: CartProductsInterface[]) => {
             return;
         }
 
-        const discountsHelper = parseProductPriceConfiguration(cartProduct.productEntity, getUserDetails.value, cartProduct.stock);
-        const discountPrice = discountsHelper?.discountPrice || 0;
+        const discountsHelper = parseProductPriceConfiguration(
+            cartProduct.productEntity,
+            getUserDetails.value,
+            (cartProduct as unknown as FavoriteItem).quantity
+        );
+        const discountPrice = discountsHelper?.currentConfigurationDiscountPrice || 0;
 
         totalCartPrice.value += Number(discountPrice) * Number((cartProduct as unknown as FavoriteItem).quantity);
     });

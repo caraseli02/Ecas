@@ -23,7 +23,8 @@
                     <div
                         v-for="(quantity, index) in bulkQuantities"
                         :key="index"
-                        class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight bg-[#F2F2F2] rounded"
+                        class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight rounded"
+                        :class="currentPriceConfiguration?.quantity === quantity[0] ? 'bg-[#F2F2F2]' : ''"
                     >
                         <div>{{ quantity[0] }}+</div>
                         <div :class="[productDiscount ? 'text-red' : '']">${{ quantity[1].toFixed(2) }}</div>
@@ -104,15 +105,13 @@
 <script setup lang="ts">
 import CheckIcon from '@/assets/icons/check-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
-import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
 import { ProductActionObject } from '~/model/cart/response/cart.interface';
 import Emitter from 'tiny-emitter/instance.js';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
-import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
+import { addToCartHelper, initializeQuantities, parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
-import { CartProductsInterface } from '~/types';
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
@@ -125,18 +124,6 @@ const props = defineProps<{
 const quantity = ref(0);
 const initialRequestedQuantity = ref(0);
 
-const fetchCart = async () => {
-    const { data } = await $api.cart.fetchCartList();
-    Emitter.emit('update-cart', data);
-
-    const cartProduct = data.products.find((item: CartProductsInterface) => item.id === props.product?._id);
-
-    quantity.value = cartProduct?.stock || 0;
-    initialRequestedQuantity.value = cartProduct?.stock;
-};
-
-await fetchCart();
-
 const minPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
 const currentPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
 const discountPrice = ref(0);
@@ -145,7 +132,7 @@ const productDiscount = ref(0);
 
 const getPricesConfiguration = () => {
     const discountsHelper = parseProductPriceConfiguration(props.product, getUserDetails.value, quantity.value);
-    console.log(discountsHelper);
+
     minPriceConfiguration.value = discountsHelper?.minimumOrderQuantityConfiguration;
     currentPriceConfiguration.value = discountsHelper?.priceConfiguration;
     discountPrice.value = discountsHelper?.discountPrice || 0;
@@ -153,7 +140,15 @@ const getPricesConfiguration = () => {
     productDiscount.value = discountsHelper?.productDiscount || 0;
 };
 
-getPricesConfiguration();
+const fetchCart = async () => {
+    const { data } = await $api.cart.fetchCartList();
+    Emitter.emit('update-cart', data);
+
+    initializeQuantities(props.product, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
+    getPricesConfiguration();
+};
+
+await fetchCart();
 
 const bulkQuantities = new Map<number, number>();
 
@@ -169,22 +164,12 @@ const buildBulkQuantities = () => {
 };
 
 const addToCart = async (product: ProductInterface) => {
-    const payload: AddToCartRequestInterface = {
-        userId: '',
-        products: [
-            {
-                id: product._id,
-                stock: quantity.value - initialRequestedQuantity.value,
-                isFolder: false,
-            },
-        ],
-    };
+    const stock = initialRequestedQuantity.value > 0 ? quantity.value - initialRequestedQuantity.value : quantity.value;
 
-    const object = await $api.cart.addEntityToCart(payload);
+    const response = (await addToCartHelper(product, stock)) as any;
 
-    if (object.status === 'success') {
+    if (response.status === 'success') {
         await fetchCart();
-        getPricesConfiguration();
     }
 };
 
