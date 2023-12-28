@@ -135,6 +135,7 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { useNuxtApp } from '#app';
 import Emitter from 'tiny-emitter/instance.js';
+import { useCartStore } from '~/store/cartStore';
 
 const { $api } = useNuxtApp();
 
@@ -159,6 +160,8 @@ const deleteItem = ref(false);
 const copyItems = ref(false);
 
 const authStore = useAuthStore();
+const cartStore = useCartStore();
+
 const { getUserDetails } = storeToRefs(authStore);
 
 const minPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
@@ -191,8 +194,8 @@ const deleteItemFromCart = async () => {
     Emitter.emit('delete-product-item', {
         id: props.product?.id,
     });
-    const { data } = await $api.cart.fetchCartList();
-    Emitter.emit('update-cart', data);
+
+    await cartStore.updateAndReturnCart();
 };
 
 watch(

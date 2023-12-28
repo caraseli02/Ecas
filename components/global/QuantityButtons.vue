@@ -36,9 +36,10 @@ import MinusIcon from '@/assets/icons/minus.svg';
 import { CartProductsInterface, ProductAction, ProductActionObject } from '~/model/cart/response/cart.interface';
 import { UpdateProductCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
-import Emitter from 'tiny-emitter/instance.js';
+import { useCartStore } from '~/store/cartStore';
 
 const { $api } = useNuxtApp();
+const cartStore = useCartStore();
 
 const props = defineProps({
     modelValue: {
@@ -77,8 +78,7 @@ const inputHandler = async (quantity: number) => {
             const object = await $api.cart.updateEntityFromCart(payload);
 
             if (object.status === 'success') {
-                const { data } = await $api.cart.fetchCartList();
-                Emitter.emit('update-cart', data);
+                await cartStore.updateAndReturnCart();
             }
         }
     }

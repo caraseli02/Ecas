@@ -78,8 +78,10 @@ import TrashIcon from '@/assets/icons/trash-can.svg';
 import { FavoriteItem } from '~~/types';
 import { useNuxtApp } from '#app';
 import Emitter from 'tiny-emitter/instance.js';
+import { useCartStore } from '~/store/cartStore';
 
 const { $api } = useNuxtApp();
+const cartStore = useCartStore();
 
 const props = defineProps({
     products: {
@@ -117,8 +119,7 @@ const deleteItem = async (items: FavoriteItem[] = []) => {
                 id: items[0].id,
             });
 
-            const { data } = await $api.cart.fetchCartList();
-            Emitter.emit('update-cart', data);
+            await cartStore.updateAndReturnCart();
         }
     }
 };

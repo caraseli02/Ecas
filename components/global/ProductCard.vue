@@ -88,13 +88,15 @@ import D3Icon from '@/assets/icons/3d.svg';
 import { useNuxtApp } from '#app';
 import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
-import Emitter from 'tiny-emitter/instance.js';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
+import { useCartStore } from '~/store/cartStore';
 
 const authStore = useAuthStore();
+const cartStore = useCartStore();
+
 const { getUserDetails } = storeToRefs(authStore);
 
 const { $api } = useNuxtApp();
@@ -131,8 +133,7 @@ const addToCart = async (product: ProductInterface, stockToAdd = 1) => {
     const object = await $api.cart.addEntityToCart(payload);
 
     if (object.status === 'success') {
-        const { data } = await $api.cart.fetchCartList();
-        Emitter.emit('update-cart', data);
+        await cartStore.updateAndReturnCart();
     }
 };
 </script>

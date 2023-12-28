@@ -25,6 +25,7 @@ export const useAuthStore = defineStore({
         },
         addUserDetail(user: UserDetails) {
             this.userDetails = user;
+
             if (process.client) {
                 localStorage.setItem('userDetails', JSON.stringify(user));
             }
@@ -35,8 +36,10 @@ export const useAuthStore = defineStore({
         signOut() {
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = { createdAt: '', value: '' };
+            this.token = { value: '', createdAt: '' };
+
             Emitter.emit('remove-cart-and-notifications', true);
+
             if (process.client) {
                 localStorage.clear();
             }
@@ -44,6 +47,10 @@ export const useAuthStore = defineStore({
         async firebaseSignOut() {
             const firebaseAuth = useFirebaseAuth();
             await firebaseAuth.logout();
+
+            this.loggedInUser = null;
+            this.userDetails = null;
+            this.token = { value: '', createdAt: '' };
         },
         getToken() {
             console.log(`${moment().diff(this.token?.createdAt, 'minutes')} minutes left`);
@@ -58,10 +65,12 @@ export const useAuthStore = defineStore({
         getCurrentUser: (state) => state.loggedInUser,
         getUserDetails: (state) => {
             if (state.userDetails) {
-                return state.userDetails;
+                return state.userDetails as UserDetails;
             }
+
             if (process.client) {
-                return JSON.parse(<string>localStorage.getItem('userDetails'));
+                const details = localStorage.getItem('userDetails');
+                return details !== null ? (JSON.parse(details) as UserDetails) : null;
             }
         },
     },

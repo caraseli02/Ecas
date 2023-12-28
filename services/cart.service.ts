@@ -15,6 +15,10 @@ class CartService extends HttpFactory {
     async fetchCartList() {
         const token = this.authStore.getToken();
 
+        if (!token) {
+            return null;
+        }
+
         return await this.call<CartResponse>('GET', `${this.RESOURCE}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
