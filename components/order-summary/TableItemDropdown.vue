@@ -1,17 +1,51 @@
 <template>
     <div class="bg-[#FFF] rounded-b-lg flex flex-col gap-4 py-4">
         <div class="gap-2 flex flex-col xl:flex-row xl:justify-between">
-            <div class="flex flex-row px-4 gap-3">
-                <div class="border-2 rounded-lg min-w-[60px] w-[60px] h-[60px] overflow-hidden">
-                    <img :src="item.productEntity?.details?.ProductImage?.ProductImageSmall" class="object-cover w-full h-full" />
-                </div>
-                <div class="flex flex-col w-full truncate">
-                    <div class="flex flex-row justify-between items-center">
-                        <span
-                            class="text-neutral-700 text-xs font-semibold leading-4 truncate xl:hidden max-w-[220px] sm:max-w-[350px] lg:max-w-[180px] xl:max-w-[260px]"
-                            >{{ item.id }}</span
-                        >
-                        <div class="hidden xl:hidden lg:flex">
+            <NuxtLink :to="`/product/${item.id}`" class="flex flex-shrink-0 mr-2.5 md:mr-[15px]">
+                <div class="flex flex-row px-4 gap-3">
+                    <div class="border-2 rounded-lg min-w-[60px] w-[60px] h-[60px] overflow-hidden">
+                        <img :src="item.productEntity?.details?.ProductImage?.ProductImageSmall" class="object-cover w-full h-full" />
+                    </div>
+                    <div class="flex flex-col w-full truncate">
+                        <div class="flex flex-row justify-between items-center">
+                            <span
+                                class="text-neutral-700 text-xs font-semibold leading-4 truncate xl:hidden max-w-[220px] sm:max-w-[350px] lg:max-w-[180px] xl:max-w-[260px]"
+                                >{{ item.id }}</span
+                            >
+                            <div class="hidden xl:hidden lg:flex">
+                                <div v-if="stockItem && !shortStock" class="flex flex-row">
+                                    <GreenCheckCircleSmall />
+                                    <span class="ml-2 text-[#0FAC7E] text-xs font-medium leading-4"
+                                        >{{ item.productEntity?.stock }} in stock</span
+                                    >
+                                </div>
+                                <div v-if="stockItem && shortStock" class="flex flex-row">
+                                    <OrangeCheckCircleSmall />
+                                    <span class="ml-2 text-[#FF8A00] text-xs font-medium leading-4"
+                                        >{{ item.productEntity?.stock }} in stock</span
+                                    >
+                                </div>
+                                <div v-if="!stockItem" class="flex flex-row">
+                                    <WarningError />
+                                    <span class="ml-2 text-[#FA4B4B] text-xs font-medium leading-4"
+                                        >{{ item.productEntity?.stock }} in stock</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col xl:flex-row max-w-[220px] sm:max-w-[350px] lg:max-w-[180px] xl:max-w-[260px] truncate">
+                            <span class="text-[#5E6278] text-xs font-normal leading-4">Description:&nbsp;</span>
+                            <span class="text-neutral-700 text-xs font-medium leading-4 truncate">{{
+                                item.productEntity?.description
+                            }}</span>
+                        </div>
+                        <div class="flex flex-col xl:flex-row max-w-[220px] sm:max-w-[350px] lg:max-w-[180px] xl:max-w-[260px] truncate">
+                            <span class="text-[#5E6278] text-xs font-normal leading-4">Manufacturer:&nbsp;</span>
+                            <span class="text-neutral-700 text-xs font-medium leading-4 truncate">{{
+                                item.productEntity?.manufacturer
+                            }}</span>
+                        </div>
+                        <div class="mt-2 hidden xl:flex">
                             <div v-if="stockItem && !shortStock" class="flex flex-row">
                                 <GreenCheckCircleSmall />
                                 <span class="ml-2 text-[#0FAC7E] text-xs font-medium leading-4"
@@ -32,30 +66,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col xl:flex-row max-w-[220px] sm:max-w-[350px] lg:max-w-[180px] xl:max-w-[260px] truncate">
-                        <span class="text-[#5E6278] text-xs font-normal leading-4">Description:&nbsp;</span>
-                        <span class="text-neutral-700 text-xs font-medium leading-4 truncate">{{ item.productEntity?.description }}</span>
-                    </div>
-                    <div class="flex flex-col xl:flex-row max-w-[220px] sm:max-w-[350px] lg:max-w-[180px] xl:max-w-[260px] truncate">
-                        <span class="text-[#5E6278] text-xs font-normal leading-4">Manufacturer:&nbsp;</span>
-                        <span class="text-neutral-700 text-xs font-medium leading-4 truncate">{{ item.productEntity?.manufacturer }}</span>
-                    </div>
-                    <div class="mt-2 hidden xl:flex">
-                        <div v-if="stockItem && !shortStock" class="flex flex-row">
-                            <GreenCheckCircleSmall />
-                            <span class="ml-2 text-[#0FAC7E] text-xs font-medium leading-4">{{ item.productEntity?.stock }} in stock</span>
-                        </div>
-                        <div v-if="stockItem && shortStock" class="flex flex-row">
-                            <OrangeCheckCircleSmall />
-                            <span class="ml-2 text-[#FF8A00] text-xs font-medium leading-4">{{ item.productEntity?.stock }} in stock</span>
-                        </div>
-                        <div v-if="!stockItem" class="flex flex-row">
-                            <WarningError />
-                            <span class="ml-2 text-[#FA4B4B] text-xs font-medium leading-4">{{ item.productEntity?.stock }} in stock</span>
-                        </div>
-                    </div>
                 </div>
-            </div>
+            </NuxtLink>
             <div class="xl:pl-0 px-4">
                 <div class="grid grid-cols-1 xl:grid-flow-col xl:gap-[16px] gap-2">
                     <div class="flex flex-row justify-between xl:gap-4 items-center xl:flex-col">

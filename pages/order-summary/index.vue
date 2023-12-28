@@ -194,16 +194,28 @@ const accountCredit = ref({
 });
 
 const getShipping = () => {
+    const fallbackAddress: ShippingAddressInterface = {
+        alias: 'N/A',
+        name1: 'N/A',
+        name2: 'N/A',
+        default: false,
+        country: 'N/A',
+        region: 'N/A',
+        city: 'N/A',
+        postcode: 'N/A',
+        phone: 'N/A',
+    };
+
     if (!user.value) {
-        return null;
+        return fallbackAddress;
     }
 
     const address =
-        (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[]).find((address) => address.default) ||
+        (user.value.personalDetails?.shippingAddress as ShippingAddressInterface[]).find((address) => address.default) ||
         user.value?.personalDetails?.shippingAddress[0];
 
     if (!address) {
-        return null;
+        return fallbackAddress;
     }
 
     address.alias = address.alias || 'Address';
@@ -212,8 +224,20 @@ const getShipping = () => {
 };
 
 const getBilling = () => {
+    const fallbackAddress: ShippingAddressInterface = {
+        alias: 'N/A',
+        name1: 'N/A',
+        name2: 'N/A',
+        default: false,
+        country: 'N/A',
+        region: 'N/A',
+        city: 'N/A',
+        postcode: 'N/A',
+        phone: 'N/A',
+    };
+
     if (!user.value) {
-        return null;
+        return fallbackAddress;
     }
 
     const address =
@@ -221,7 +245,7 @@ const getBilling = () => {
         user.value?.personalDetails?.shippingAddress[0];
 
     if (!address) {
-        return null;
+        return fallbackAddress;
     }
 
     address.alias = address.alias || 'Address';
@@ -314,6 +338,7 @@ Emitter.on('checkout', async () => {
                 country: user.value.personalDetails.address.country,
                 address: getShipping(),
                 billingAddress: getBilling(),
+                shippingTypeId: '-',
             },
             paymentDetails: {
                 type: paymentType.value.type,

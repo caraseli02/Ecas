@@ -105,8 +105,7 @@
 <script setup lang="ts">
 import CheckIcon from '@/assets/icons/check-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
-import { useNuxtApp } from '#app';
-import { ProductActionObject } from '~/model/cart/response/cart.interface';
+import { CartInterface, ProductActionObject } from '~/model/cart/response/cart.interface';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 import { addToCartHelper, initializeQuantities, parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
@@ -119,7 +118,6 @@ const cartStore = useCartStore();
 const { getUserDetails } = storeToRefs(authStore);
 const { getCart } = storeToRefs(cartStore);
 
-const { $api } = useNuxtApp();
 const props = defineProps<{
     product: ProductInterface;
 }>();
@@ -144,7 +142,7 @@ const getPricesConfiguration = () => {
 };
 
 const fetchCart = async () => {
-    const data = await getCart.value;
+    const data = (await getCart.value) as CartInterface;
 
     getPricesConfiguration();
     initializeQuantities(props.product, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
@@ -176,6 +174,11 @@ const addToCart = async (product: ProductInterface) => {
         await fetchCart();
     }
 };
+
+watch(quantity, (_quantity) => {
+    console.log(_quantity);
+    getPricesConfiguration();
+});
 
 buildBulkQuantities();
 </script>

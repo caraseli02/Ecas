@@ -1,6 +1,6 @@
 import { DiscountInterface } from '~/types/auth/account-settings';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
-import { AddressInterface } from '~/types/auth/user-details';
+import { ShippingAddressInterface } from '~/types/auth/user-details';
 
 export interface OrderSummaryItem {
     title: string;
@@ -102,8 +102,8 @@ export interface OrderShippingDetailsInterface {
     country: string;
     mobile?: number;
     email?: string;
-    address: AddressInterface;
-    billingAddress: AddressInterface;
+    address: ShippingAddressInterface;
+    billingAddress: ShippingAddressInterface;
     shippingTypeId: string;
 }
 
