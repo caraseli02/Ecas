@@ -18,6 +18,7 @@
             <NuxtLink
                 class="flex items-center justify-center gap-2 bg-blue-500 text-white rounded-lg px-[15px] py-2 leading-[1.75] font-medium w-full"
                 :to="'/order-summary'"
+                @click="$emit('close')"
             >
                 <CartIcon class="w-6 h-6" />
                 <span> Go to Checkout </span>
@@ -41,6 +42,8 @@ const { getUserDetails } = storeToRefs(authStore);
 
 const items = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
 const cart = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
+
+defineEmits(['close']);
 
 const props = defineProps({
     data: {
