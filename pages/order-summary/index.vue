@@ -60,6 +60,7 @@ import { ShippingAddressInterface } from '~/types/auth/user-details';
 import Emitter from 'tiny-emitter/instance.js';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 import { useCartStore } from '~/store/cartStore';
+import { CartInterface } from '~/model/cart/response/cart.interface';
 
 const store = useAuthStore();
 const cartStore = useCartStore();
@@ -83,16 +84,11 @@ const cartItems = ref([] as CartProductsInterface[]);
 const cartId = ref('' as string);
 
 const fetchList = async () => {
-    const response = await cartStore.updateAndReturnCart();
+    const cart = (await cartStore.updateAndReturnCart()) as CartInterface;
 
-    if (response.status === 'success') {
-        let products: CartProductsInterface[] = [];
-        products = response.data.products;
-        cartId.value = response.data._id;
-        mapCartItems(products);
-    } else {
-        console.log('error');
-    }
+    const products = cart.products;
+    cartId.value = cart._id || '';
+    mapCartItems(products);
 };
 
 const showWarning = ref(() => {
@@ -198,21 +194,39 @@ const accountCredit = ref({
 });
 
 const getShipping = () => {
-    if (user.value) {
-        const address =
-            (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[]).find((address) => address.default) ||
-            user.value?.personalDetails?.shippingAddress[0];
-        address.alias = address.alias || 'Address';
-        return address;
+    if (!user.value) {
+        return null;
     }
+
+    const address =
+        (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[]).find((address) => address.default) ||
+        user.value?.personalDetails?.shippingAddress[0];
+
+    if (!address) {
+        return null;
+    }
+
+    address.alias = address.alias || 'Address';
+
+    return address;
 };
 
 const getBilling = () => {
-    if (user.value) {
-        const address = user.value?.personalDetails?.shippingAddress[0];
-        address.alias = address.alias || 'Address';
-        return address;
+    if (!user.value) {
+        return null;
     }
+
+    const address =
+        (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[]).find((address) => address.default) ||
+        user.value?.personalDetails?.shippingAddress[0];
+
+    if (!address) {
+        return null;
+    }
+
+    address.alias = address.alias || 'Address';
+
+    return address;
 };
 
 const order = ref({
@@ -281,7 +295,11 @@ Emitter.on('delete-product-item', async (object: { id: string }) => {
     mapCartItems(cartItems.value);
 });
 
-Emitter.once('checkout', async () => {
+Emitter.on('checkout', async () => {
+    if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails) {
+        return;
+    }
+
     if (user.value.role === AccountRole.Client) {
         orderRequestObject.value = {
             isDraft: false,
@@ -316,10 +334,7 @@ Emitter.once('checkout', async () => {
         if (response.status === 'success') {
             if (paymentType.value.type === 0) {
                 const paymentLink = response.data;
-                window.open(
-                    paymentLink,
-                    '_blank' // <- This is what makes it open in a new window.
-                );
+                window.open(paymentLink, '_blank');
             }
 
             await cartStore.updateAndReturnCart();

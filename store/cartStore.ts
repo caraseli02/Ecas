@@ -28,7 +28,7 @@ export const useCartStore = defineStore({
 
             Emitter.emit('update-cart', this.cart);
 
-            return this.cart;
+            return this.cart as CartInterface;
         },
         emptyCart() {
             this.cart = null;

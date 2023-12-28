@@ -161,7 +161,7 @@
                     >Favourites</span
                 >
             </button>
-            <button v-if="!inModal" class="flex flex-col gap-2 xl:hidden items-center group" @click="deleteItem = true">
+            <button class="flex flex-col gap-2 xl:hidden items-center group" @click="deleteFromCart">
                 <TrashOutlineBig class="text-[#5E6278] group-hover:text-[#FA4B4B] transition duration-150" />
                 <span class="text-[#5E6278] text-xs font-normal leading-5 group-hover:text-[#FA4B4B] transition duration-150">Delete</span>
             </button>
@@ -191,6 +191,9 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import TrashIcon from 'assets/icons/trash-can.svg';
+import { useNuxtApp } from '#app';
+import { useCartStore } from '~/store/cartStore';
+import Emitter from 'tiny-emitter/instance.js';
 
 export default defineComponent({
     name: 'TableItemDropdown',
@@ -255,7 +258,7 @@ export default defineComponent({
             const { getUserDetails } = storeToRefs(authStore);
 
             const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value, this.item.stock);
-            console.log(discountsHelper);
+
             return {
                 userDiscount: discountsHelper?.userDiscount || 0,
                 productDiscount: discountsHelper?.productDiscount || 0,
@@ -270,6 +273,22 @@ export default defineComponent({
         likeItem() {
             this.$emit('like:item', this.item.id);
             this.item.liked = !this.item.liked;
+        },
+        async deleteFromCart() {
+            const { $api } = useNuxtApp();
+            const cartStore = useCartStore();
+
+            const payload = {
+                products: [this.item.id],
+            };
+
+            await $api.cart.removeEntityFromCart(payload);
+
+            Emitter.emit('delete-product-item', {
+                id: this.item.id,
+            });
+
+            await cartStore.updateAndReturnCart();
         },
     },
 });
