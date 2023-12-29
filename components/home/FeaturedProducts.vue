@@ -1,24 +1,24 @@
 <template>
     <section ref="elDOM" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
-        <div class="container px-0 pl-3 xl:pl-6 pr-3 overflow-hidden">
-            <div class="flex items-start justify-between mb-3 ml-3 xl:ml-0 mr-3 md:mb-[20px] xl:mb-7">
+        <div class="container px-2 md:px-3 xl:pl-6 overflow-hidden">
+            <div class="flex items-start justify-between mb-3 mx-2 md:mx-3 xl:ml-0 md:mb-[20px] xl:mb-6">
                 <h2 class="hidden text-xl font-semibold md:block">
                     {{ activeFilter.charAt(0).toUpperCase() + activeFilter.substr(1).toLowerCase().replace('-', ' ') }}
                     products
                 </h2>
-                <div class="relative flex items-center gap-2.5">
+                <div class="relative flex items-center gap-4 xl:gap-6">
                     <button
                         v-for="(filter, index) in filters"
                         :key="index"
                         :data-tab="textUtil.slugify(filter)"
-                        class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue-500 md:text-base md:pb-4"
+                        class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue-500 md:text-base md:pb-3"
                         :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue-500' : 'text-slate-500 after:opacity-0']"
                         @click="setActiveFilter(filter)"
                     >
                         {{ filter }}
                     </button>
                     <div
-                        class="absolute bottom-0 h-[5px] bg-blue-500 rounded-[100px] transition-all duration-300"
+                        class="absolute bottom-0 h-[4px] bg-blue-500 rounded-[100px] transition-all duration-300"
                         :style="{
                             left: filterLineLeftPosition + 'px',
                             width: filterLineWidth + 'px',
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
-                <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-3 xl:mx-0 xl:mr-3 xl:min-w-[330px] ">
+                <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-2 md:mx-3 xl:mx-0 xl:mr-3 xl:min-w-[330px] xl:min-h-[592px]">
                     <div
                         class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-xs p-6 md:m-0 xl:flex-col xl:w-[330px]"
                     >
@@ -73,7 +73,7 @@
                     class="homeFeaturedProducts--swiper md:hidden"
                 >
                     <SwiperSlide v-for="(product, index) in productList" :key="index">
-                        <div class="grid grid-cols-1 gap-6 px-4 mt-6">
+                        <div class="grid grid-cols-1 gap-6 px-2 mt-6">
                             <ProductCard :product="product" />
                         </div>
                     </SwiperSlide>
