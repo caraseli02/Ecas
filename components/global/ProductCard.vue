@@ -11,10 +11,10 @@
         class="object-contain mx-auto max-h-[120px]"
     />
     <div
-          v-if="product.discount"
+          v-if="true"
           class="ring-1 ring-rose-500 rounded-full p-[5px] text-sm font-semibold text-rose-500 md:px-2.5 md:text-sm absolute top-2 left-0"
       >
-        {{ product.discount ?? 20 }}%
+        {{ true ?? 20 }}%
       </div>
     </div>
     
@@ -37,8 +37,8 @@
       </div>
     </section>
     <div class="mt-auto h-full">
-      <div class="text-xs min-h-[16px] leading-tight line-through mb-px md:text-xs"><template v-if="product.discount">$ 1879,75 (5+)</template></div>
-      <div class="flex gap-1 items-center" :class="[product.discount ? 'text-rose-500' : '']">
+      <div class="text-xs min-h-[16px] leading-tight line-through mb-px md:text-xs"><template v-if="true">$ 1879,75 (5+)</template></div>
+      <div class="flex gap-1 items-center" :class="[true ? 'text-rose-500' : '']">
         <strong>$ {{ product.price }}</strong> <span class="text-xs">(25+)</span>
       </div>
     </div>

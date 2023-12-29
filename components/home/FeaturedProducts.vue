@@ -27,9 +27,9 @@
                 </div>
             </div>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
-                <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-6 xl:ml-6 xl:mx-0">
+                <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-6 xl:ml-6 xl:mx-0 xl:min-w-[330px]">
                     <div
-                        class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-m p-6 md:m-0 xl:flex-col xl:w-[310px]"
+                        class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-m p-6 md:m-0 xl:flex-col xl:w-[330px]"
                     >
                         <img
                             :src="BlackFridayItem"
@@ -73,7 +73,7 @@
                     class="homeFeaturedProducts--swiper md:hidden"
                 >
                     <SwiperSlide v-for="(product, index) in productList" :key="index">
-                        <div class="grid grid-cols-1 gap-6 px-6 mt-6">
+                        <div class="grid grid-cols-1 gap-6 px-4 mt-6">
                             <ProductCard :product="product" />
                         </div>
                     </SwiperSlide>
@@ -90,7 +90,7 @@
                     class="hidden homeFeaturedProducts--swiper w-[100%] md:block lg:hidden"
                 >
                     <SwiperSlide v-for="(productGroup, index) in productsMD" :key="index">
-                        <div class="grid grid-cols-2 gap-6 px-6 mt-6">
+                        <div class="grid grid-cols-2 gap-6 px-4 mt-6">
                             <ProductCard
                                 v-for="(product, productIndex) in productGroup"
                                 :key="productIndex"
