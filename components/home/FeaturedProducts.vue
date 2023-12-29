@@ -1,7 +1,7 @@
 <template>
     <section ref="elDOM" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
         <div class="container px-2 md:px-3 xl:pl-6 overflow-hidden">
-            <div class="flex items-start justify-between mb-3 mx-2 md:mx-3 xl:ml-0 md:mb-[20px] xl:mb-6">
+            <div class="flex items-start justify-between mb-3 mx-2 md:mx-3 xl:ml-0 md:mb-[20px] xl:mb-3">
                 <h2 class="hidden text-xl font-semibold md:block">
                     {{ activeFilter.charAt(0).toUpperCase() + activeFilter.substr(1).toLowerCase().replace('-', ' ') }}
                     products
