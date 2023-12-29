@@ -1,7 +1,7 @@
 <template>
     <section ref="elDOM" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
-        <div class="container px-0">
-            <div class="flex items-start justify-between border-b border-gray-200 mb-3 px-6 md:mb-[20px] xl:mb-7">
+        <div class="container px-0 pl-3 xl:pl-6 pr-3 overflow-hidden">
+            <div class="flex items-start justify-between mb-3 ml-3 xl:ml-0 mr-3 md:mb-[20px] xl:mb-7">
                 <h2 class="hidden text-xl font-semibold md:block">
                     {{ activeFilter.charAt(0).toUpperCase() + activeFilter.substr(1).toLowerCase().replace('-', ' ') }}
                     products
@@ -18,7 +18,7 @@
                         {{ filter }}
                     </button>
                     <div
-                        class="absolute bottom-0 h-[5px] bg-blue-500 rounded-t-[5px] transition-all duration-300"
+                        class="absolute bottom-0 h-[5px] bg-blue-500 rounded-[100px] transition-all duration-300"
                         :style="{
                             left: filterLineLeftPosition + 'px',
                             width: filterLineWidth + 'px',
@@ -27,9 +27,9 @@
                 </div>
             </div>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
-                <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-6 xl:ml-6 xl:mx-0 xl:min-w-[330px]">
+                <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-3 xl:mx-0 xl:mr-3 xl:min-w-[330px] ">
                     <div
-                        class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-m p-6 md:m-0 xl:flex-col xl:w-[330px]"
+                        class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-xs p-6 md:m-0 xl:flex-col xl:w-[330px]"
                     >
                         <img
                             :src="BlackFridayItem"
@@ -46,7 +46,7 @@
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin accumsan nisi a porttitor.
                             </p>
                             <button
-                                class="flex w-fit bg-blue-500 text-[13px] font-medium px-3 py-1.5 rounded text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto xl:mt-6"
+                                class="flex w-fit bg-blue-500 text-[13px] font-medium px-3 py-1.5 rounded-lg text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto xl:mt-6"
                             >
                                 View More
                             </button>
@@ -90,7 +90,7 @@
                     class="hidden homeFeaturedProducts--swiper w-[100%] md:block lg:hidden"
                 >
                     <SwiperSlide v-for="(productGroup, index) in productsMD" :key="index">
-                        <div class="grid grid-cols-2 gap-6 px-4 mt-6">
+                        <div class="grid grid-cols-2 gap-6 px-3 mt-6">
                             <ProductCard
                                 v-for="(product, productIndex) in productGroup"
                                 :key="productIndex"
@@ -112,7 +112,7 @@
                     class="hidden homeFeaturedProducts--swiper w-[100%] lg:block xl:hidden"
                 >
                     <SwiperSlide v-for="(productGroup, index) in productsLG" :key="index">
-                        <div class="grid grid-cols-3 gap-6 px-6 mt-6">
+                        <div class="grid grid-cols-3 gap-6 mx-3 mt-6">
                             <ProductCard
                                 v-for="(product, productIndex) in productGroup"
                                 :key="productIndex"
@@ -134,7 +134,7 @@
                     class="hidden homeFeaturedProducts--swiper w-[100%] xl:block"
                 >
                     <SwiperSlide v-for="(productGroup, index) in productsXL" :key="index">
-                        <div class="grid grid-cols-3 gap-6 px-6 mt-3">
+                        <div class="grid grid-cols-3 gap-6 mx-3 mt-3">
                             <ProductCard
                                 v-for="(product, productIndex) in productGroup"
                                 :key="productIndex"
@@ -272,11 +272,11 @@ onMounted(() => {
 }
 
 .homeFeaturedProducts--swiper .swiper-pagination-bullet {
-    @apply w-1.5 h-1.5 bg-[#D9D9D9] rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
+    @apply w-1.5 h-1.5 bg-light-500 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
     margin-right: 0 !important;
 }
 
 .homeFeaturedProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
-    @apply w-[25px] bg-gray-500 #{!important};
+    @apply w-[25px] bg-gray-300 #{!important};
 }
 </style>
