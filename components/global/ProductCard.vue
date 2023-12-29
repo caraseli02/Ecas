@@ -1,25 +1,25 @@
 <template>
   <NuxtLink
       :to="`/product/${product.slug}`"
-      class="flex flex-col relative font-Inter bg-white rounded-xl shadow-xs overflow-hidden h-full px-2.5 pt-[34px] pb-2 md:px-[15px] md:pt-10 md:pb-3 xl:pt-[34px] min-h-[280px]"
+      class="flex flex-col gap-2 relative font-Inter bg-white rounded-xl shadow-xs overflow-hidden h-full px-2.5 pt-[34px] pb-2 md:px-4 md:pt-10 md:pb-3 xl:pt-[34px] min-h-[280px]"
   >
     <ProductCardStock :stock="product.stock" />
     <div class="relative">
       <img
         :src="product.cover"
         :alt="product.title"
-        class="object-contain mx-auto xl:w-[120px] xl:h-[120px]"
+        class="object-contain mx-auto max-h-[120px]"
     />
     <div
           v-if="product.discount"
-          class="ring-1 ring-rose-500 rounded-full p-[5px] text-sm font-semibold text-rose-500 md:px-2.5 md:text-sm absolute top-2 left-2"
+          class="ring-1 ring-rose-500 rounded-full p-[5px] text-sm font-semibold text-rose-500 md:px-2.5 md:text-sm absolute top-2 left-0"
       >
         {{ product.discount ?? 20 }}%
       </div>
     </div>
     
     <section class="flex flex-col gap-1">
-      <div class="flex gap-2 items-center mb-[5px]">
+      <div class="flex gap-2 items-center">
         <h3 class="text-[13px] font-semibold md:text-lg text-neutral-700">
           {{ product.title }}
         </h3>
@@ -27,7 +27,7 @@
           <InfoIcon class="w-4 h-4 text-slate-500"/>
         </button>
       </div>
-      <div class="flex flex-col gap-1 text-xs max-w-[220px] mb-3">
+      <div class="flex flex-col gap-1 text-xs max-w-[220px]">
         <h4 class="text-xs leading-tight font-semibold text-slate-500">
           {{ product.category }}
         </h4>
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="absolute right-0 flex flex-col gap-3 md:top-[32px]">
-      <div class="pr-3 flex flex-col gap-2.5 md:pr-[15px]">
+      <div class="pr-3 flex flex-col gap-2.5 md:pr-4">
         <button
             class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500"
             @click="addToFavourite(product)"

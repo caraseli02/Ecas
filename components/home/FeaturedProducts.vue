@@ -1,12 +1,12 @@
 <template>
     <section ref="elDOM" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
-        <div class="container">
-            <div class="flex items-start justify-between border-b border-gray-200 mb-5 px-1 md:mb-[26px] xl:mb-9">
+        <div class="container px-0">
+            <div class="flex items-start justify-between border-b border-gray-200 mb-3 px-6 md:mb-[20px] xl:mb-7">
                 <h2 class="hidden text-xl font-semibold md:block">
                     {{ activeFilter.charAt(0).toUpperCase() + activeFilter.substr(1).toLowerCase().replace('-', ' ') }}
                     products
                 </h2>
-                <div class="relative flex items-center gap-2.5 md:gap-5">
+                <div class="relative flex items-center gap-2.5">
                     <button
                         v-for="(filter, index) in filters"
                         :key="index"
@@ -26,10 +26,10 @@
                     />
                 </div>
             </div>
-            <div class="md:grid md:grid-cols-1 xl:grid-cols-[auto,1fr]  md:gap-5">
-                <div class="px-1 md:pt-1 md:pr-0 mb-6 md:mb-0 h-[calc(100%-30px)]">
+            <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
+                <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-6 xl:ml-6 xl:mx-0">
                     <div
-                        class="flex  gap-4 md:gap-[40px] bg-white rounded-md shadow-m p-6 md:m-0 xl:flex-col xl:w-[310px]"
+                        class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-m p-6 md:m-0 xl:flex-col xl:w-[310px]"
                     >
                         <img
                             :src="BlackFridayItem"
@@ -46,7 +46,7 @@
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin accumsan nisi a porttitor.
                             </p>
                             <button
-                                class="flex w-fit bg-blue-500 text-[13px] font-medium px-3 py-1.5 rounded text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto"
+                                class="flex w-fit bg-blue-500 text-[13px] font-medium px-3 py-1.5 rounded text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto xl:mt-6"
                             >
                                 View More
                             </button>
@@ -54,7 +54,7 @@
                         
                     </div>
                 </div>
-                <div v-if="productList.length === 0" class="px-1 md:pt-1 md:pr-0">
+                <div v-if="productList.length === 0" class="px-1 md:pt-3 md:pr-0">
                     <div
                         class="flex items-center content-center justify-center bg-white rounded-md flex-row pl-[15px] pr-5 pt-7 pb-[34px] mb-3 md:w-full md:px-[15px] md:py-12 md:h-[calc(100%-30px)] lg:px-[21px] lg:pt-[30px] xl:w-full xl:px-2 xl:pt-[15px]"
                     >
@@ -73,7 +73,7 @@
                     class="homeFeaturedProducts--swiper md:hidden"
                 >
                     <SwiperSlide v-for="(product, index) in productList" :key="index">
-                        <div class="grid grid-cols-1 gap-x-5 gap-y-[30px]">
+                        <div class="grid grid-cols-1 gap-6 px-6 mt-6">
                             <ProductCard :product="product" />
                         </div>
                     </SwiperSlide>
@@ -90,7 +90,7 @@
                     class="hidden homeFeaturedProducts--swiper w-[100%] md:block lg:hidden"
                 >
                     <SwiperSlide v-for="(productGroup, index) in productsMD" :key="index">
-                        <div class="grid grid-cols-2 gap-x-5 gap-y-[30px]">
+                        <div class="grid grid-cols-2 gap-6 px-6 mt-6">
                             <ProductCard
                                 v-for="(product, productIndex) in productGroup"
                                 :key="productIndex"
@@ -112,7 +112,7 @@
                     class="hidden homeFeaturedProducts--swiper w-[100%] lg:block xl:hidden"
                 >
                     <SwiperSlide v-for="(productGroup, index) in productsLG" :key="index">
-                        <div class="grid grid-cols-3 gap-x-5 gap-y-[30px]">
+                        <div class="grid grid-cols-3 gap-6 px-6 mt-6">
                             <ProductCard
                                 v-for="(product, productIndex) in productGroup"
                                 :key="productIndex"
@@ -134,12 +134,12 @@
                     class="hidden homeFeaturedProducts--swiper w-[100%] xl:block"
                 >
                     <SwiperSlide v-for="(productGroup, index) in productsXL" :key="index">
-                        <div class="grid grid-cols-3 gap-x-5 gap-y-[30px]">
+                        <div class="grid grid-cols-3 gap-6 px-6 mt-3">
                             <ProductCard
                                 v-for="(product, productIndex) in productGroup"
                                 :key="productIndex"
                                 :product="product"
-                                class="first:col-span-2 first:max-w-full max-w-[330px]"
+                                class="first:col-span-2 first:max-w-full"
                             />
                         </div>
                     </SwiperSlide>
@@ -260,7 +260,7 @@ onMounted(() => {
 
 <style lang="scss">
 .homeFeaturedProducts--swiper {
-    @apply px-1 pt-1 pb-[30px] #{!important};
+    @apply px-0 pt-0 pb-[30px] #{!important};
 }
 
 .homeFeaturedProducts--swiper .swiper-slide {
