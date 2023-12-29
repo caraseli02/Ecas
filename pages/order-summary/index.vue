@@ -338,8 +338,9 @@ Emitter.on('checkout', async () => {
                 country: user.value.personalDetails.address.country,
                 address: getShipping(),
                 billingAddress: getBilling(),
-                shippingTypeId: '-',
+                shippingTypeId: '658ee675150e8ac6ee9b8932',
             },
+            smallOrderChargeId: '658ea7ccb478b7a51e42fa9f',
             paymentDetails: {
                 type: paymentType.value.type,
             },

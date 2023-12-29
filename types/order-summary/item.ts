@@ -75,6 +75,7 @@ export interface OrderRequestInterface {
     products?: CartProductsInterface[];
     shippingDetails: OrderShippingDetailsInterface;
     paymentDetails: PaymentDetails;
+    smallOrderChargeId: string;
     currency: string;
     type: OrderType;
     discount?: DiscountInterface;
