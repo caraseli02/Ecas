@@ -54,7 +54,12 @@
                         <h3>No items to show from this tab</h3>
                     </div>
                 </div>
-                <ProductGrid :products-list="productsByViewport" />
+                <ProductGrid 
+                    masonryView
+                    hasBanner
+                    card-class="xl:first:max-w-full" 
+                    :products-list="productList" 
+                />
                 <!-- <Swiper
                     :modules="[A11y, Pagination]"
                     :slides-per-view="1"
@@ -145,54 +150,12 @@
 
 <script setup lang="ts">
 import BlackFridayItem from '@/assets/media/home/black-friday-item.png';
-import { PaginatedUserRequest } from '~/model/user/request/PaginatedUserRequest';
-import type { ProductCard as ProductCardType } from '~~/types';
+import type { ProductInterface } from '~/model/products/response/ProductResponse';
 const { $api } = useNuxtApp();
-
-const viewport = useViewport()
 
 const elDOM = ref<HTMLElement | null>(null);
 
 const productList = ref<ProductInterface[]>([]);
-
-const productsMD = computed(() => {
-    const chunkedArray = [];
-    for (let i = 0; i < productList.value.length; i += 3) {
-        chunkedArray.push(productList.value.slice(i, i + 3));
-    }
-    return chunkedArray;
-});
-
-const productsLG = computed(() => {
-    const chunkedArray = [];
-    for (let i = 0; i < productList.value.length; i += 5) {
-        chunkedArray.push(productList.value.slice(i, i + 5));
-    }
-    return chunkedArray;
-});
-
-const productsXL = computed(() => {
-    const chunkedArray = [];
-    for (let i = 0; i < productList.value.length; i += 5) {
-        chunkedArray.push(productList.value.slice(i, i + 5));
-    }
-    return chunkedArray;
-});
-
-const productsByViewport = computed(() => {
-    if(viewport.breakpoint.value === 'xs') {
-        return productList.value;
-    } else if(viewport.breakpoint.value ==='sm') {
-        return productsMD.value;
-    } else if(viewport.breakpoint.value ==='md') {
-        return productsMD.value;
-    } else if(viewport.breakpoint.value === 'xl' || viewport.breakpoint.value === 'lg') {
-        return productsLG.value;
-    } else if(viewport.breakpoint.value === '2xl') {
-        return productsXL.value;
-    } else { return [] }
-})
-    
 
 const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 const activeFilter = ref('featured');
@@ -241,26 +204,3 @@ onMounted(() => {
 });
 
 </script>
-
-<style lang="scss">
-.homeFeaturedProducts--swiper {
-    @apply px-0 pt-0 pb-[30px] #{!important};
-}
-
-.homeFeaturedProducts--swiper .swiper-slide {
-    @apply h-auto #{!important};
-}
-
-.homeFeaturedProducts--swiper .swiper-pagination {
-    @apply bottom-0 space-x-1.5 md:space-x-2 #{!important};
-}
-
-.homeFeaturedProducts--swiper .swiper-pagination-bullet {
-    @apply w-1.5 h-1.5 bg-light-500 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
-    margin-right: 0 !important;
-}
-
-.homeFeaturedProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
-    @apply w-[25px] bg-gray-300 #{!important};
-}
-</style>

@@ -10,19 +10,17 @@
     }" 
      class="homeFeaturedProducts--swiper w-[100%] block"
   >
-  <SwiperSlide v-for="(item, index) in productsList" :key="index">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-2 mt-6 xl:mt-3">
+    <SwiperSlide v-for="(item, index) in productsByViewport" :key="index">
+      <div class="grid gap-6 px-2 mt-6 xl:mt-3" :class="computedCols">
         <template v-if="Array.isArray(item)">
           <ProductCard
             v-for="(product, productIndex) in item"
             :key="productIndex"
             :product="product"
-            class="md:first:col-span-2 xl:first:max-w-full" 
+            :class="[cardClass, {'md:first:col-span-2': masonryView}]" 
           />
         </template>
-        <template v-else>
-          <ProductCard :product="item" />
-        </template>
+        <ProductCard v-else :product="item" />
       </div>
     </SwiperSlide>
   </Swiper>
@@ -30,12 +28,78 @@
 
 <script setup lang="ts">
 import { A11y, Pagination } from 'swiper';
-import type { ProductCard as ProductCardType } from '~~/types';
+import type { ProductInterface } from '~/model/products/response/ProductResponse';
 
-defineProps<{
-  productsList: ProductCardType[][] | ProductCardType[]
+const props = defineProps<{
+  productsList: ProductInterface[]
+  cardClass?: string
+  masonryView?: boolean
+  hasBanner?: boolean
 }>()
+
+const computedCols = computed(() => {
+  if(props.hasBanner) return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+  return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'
+})
+
+function createChunkedArray(chunkSize: number, productList: ProductInterface[]) {
+    const chunkedArray = [];
+    for (let i = 0; i < productList.length; i += chunkSize) {
+        chunkedArray.push(productList.slice(i, i + chunkSize));
+    }
+    return chunkedArray;
+}
+const viewport = useViewport()
+const productsByViewport = computed(() => {
+    const breakpointsMasonryBanner = {
+        'xs': props.productsList,
+        'sm': createChunkedArray(3, props.productsList),
+        'md': createChunkedArray(3, props.productsList),
+        'lg': createChunkedArray(5, props.productsList),
+        'xl': createChunkedArray(5, props.productsList),
+        '2xl': createChunkedArray(5, props.productsList),
+    };
+    
+    const breakpointsMasonry = { ...breakpointsMasonryBanner, '2xl': createChunkedArray(7, props.productsList) };
+
+    const breakpoints = {
+        'xs': props.productsList,
+        'sm': createChunkedArray(4, props.productsList),
+        'md': createChunkedArray(4, props.productsList),
+        'lg': createChunkedArray(6, props.productsList),
+        'xl': createChunkedArray(6, props.productsList),
+        '2xl': createChunkedArray(8, props.productsList),
+    };
+
+    if(props.hasBanner && props.masonryView) {
+      return breakpointsMasonryBanner[viewport.breakpoint.value as keyof typeof breakpoints] || [];
+    }
+    if(props.masonryView) {
+      return breakpointsMasonry[viewport.breakpoint.value as keyof typeof breakpoints] || [];
+    }
+    return breakpoints[viewport.breakpoint.value as keyof typeof breakpoints] || [];
+});
 </script>
 
-<style scoped>
+<style lang="scss">
+.homeFeaturedProducts--swiper {
+    @apply px-0 pt-0 pb-[30px] #{!important};
+}
+
+.homeFeaturedProducts--swiper .swiper-slide {
+    @apply h-auto #{!important};
+}
+
+.homeFeaturedProducts--swiper .swiper-pagination {
+    @apply bottom-0 space-x-1.5 md:space-x-2 #{!important};
+}
+
+.homeFeaturedProducts--swiper .swiper-pagination-bullet {
+    @apply w-1.5 h-1.5 bg-light-500 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
+    margin-right: 0 !important;
+}
+
+.homeFeaturedProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    @apply w-[25px] bg-gray-300 #{!important};
+}
 </style>
