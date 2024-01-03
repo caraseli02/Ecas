@@ -1,71 +1,67 @@
 <template>
     <NuxtLink
         :to="`/product/${product._id}`"
-        class="flex flex-col relative font-Inter bg-white rounded-md shadow-xs overflow-hidden h-full px-2.5 pt-[34px] pb-2 md:px-[15px] md:pt-10 md:pb-3 xl:pt-[34px]"
+        class="flex flex-col gap-2 relative font-Inter bg-white rounded-xl shadow-xs overflow-hidden h-full px-2.5 pt-[34px] pb-2 md:px-4 md:pt-10 md:pb-3 xl:pt-[34px] min-h-[280px]"
     >
-        <div
-            class="absolute top-0 left-0 px-2.5 py-1 flex items-center rounded-tl-md rounded-br-md"
-            :class="[product.stock ? 'bg-green-500' : 'bg-orange-500']"
-        >
-            <CheckIcon v-if="product.stock" class="w-4 h-4 mr-1 text-white" />
-            <InfoIcon v-else class="w-4 h-4 mr-1 text-white" />
-            <span class="text-[11px] leading-tight font-semibold text-white">
-                {{ product.stock ? `${product.stock} in stock` : 'On request' }}
-            </span>
-        </div>
-        <img
-            :src="product.details.ProductImage.ProductImageLarge"
-            :alt="product.alias"
-            class="w-[84px] h-[84px] object-contain mx-auto mb-2.5 md:w-[110px] md:h-[110px] md:mb-[15px] xl:w-[120px] xl:h-[120px]"
-        />
-        <div class="flex items-center mb-[5px]">
-            <h3 class="text-[13px] font-semibold mr-1 md:text-base">
-                {{ product.alias }}
-            </h3>
-            <button class="flex">
-                <InfoIcon class="w-[14px] h-[14px] text-white md:w-4 md:h-4 xl:w-[18px] xl:h-[18px]" />
-            </button>
-        </div>
-        <div class="text-xs leading-tight font-semibold text-slate-500 mb-[9px] md:mb-[5px]">
-            {{ 'TBD' }}
-        </div>
-        <div class="hidden text-xs text-slate-500 truncate mb-4 md:block">{{ product.description }}</div>
-        <div class="mt-auto">
-            <div v-if="productDiscount" class="text-[11px] leading-tight line-through mb-px md:text-xs">
-                {{ priceConfiguration ? `$ ${priceConfiguration.price.toFixed(2)} (${priceConfiguration.quantity}+)` : '-' }}
+        <ProductCardStock :stock="product.stock" />
+        <div class="relative">
+            <img :src="product.details.ProductImage.ProductImageLarge" :alt="product.alias" class="object-contain mx-auto max-h-[120px]" />
+            <div
+                v-if="productDiscount"
+                class="ring-1 ring-rose-500 rounded-full p-[5px] text-sm font-semibold text-rose-500 md:px-2.5 md:text-sm absolute top-2 left-0"
+            >
+                {{ productDiscount ?? 0 }}%
             </div>
-            <div class="text-[13px] leading-tight md:text-base" :class="[productDiscount ? 'text-rose-500' : '']">
+        </div>
+
+        <section class="flex flex-col gap-1">
+            <div class="flex gap-2 items-center">
+                <h3 class="font-semibold text-neutral-700">
+                    {{ product.alias }}
+                </h3>
+                <button class="flex">
+                    <InfoIcon class="w-4 h-4 text-slate-500" />
+                </button>
+            </div>
+            <div class="flex flex-col gap-1 text-xs max-w-[220px]">
+                <h4 class="text-xs leading-tight font-semibold text-slate-500">Category</h4>
+                <p class="hidden text-xs text-slate-500 truncate md:block">{{ product.description }}</p>
+            </div>
+        </section>
+        <div class="mt-auto h-full">
+            <div class="text-xs min-h-[14px] leading-tight line-through mb-px md:text-xs">
+                <template v-if="productDiscount">
+                    {{ priceConfiguration ? `$ ${priceConfiguration.price.toFixed(2)} (${priceConfiguration.quantity}+)` : '-' }}
+                </template>
+            </div>
+            <div class="flex gap-1 items-center" :class="[productDiscount ? 'text-rose-500' : '']">
                 <strong>
                     {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
                 </strong>
-                {{ priceConfiguration ? `(${priceConfiguration.quantity}+)` : '-' }}
+                <span class="text-xs">
+                    {{ priceConfiguration ? `(${priceConfiguration.quantity}+)` : '-' }}
+                </span>
             </div>
         </div>
-        <div class="absolute top-3 right-0 flex flex-col gap-2.5 md:top-[15px]">
-            <div class="pr-3 flex flex-col gap-2.5 md:pr-[15px]">
+        <div class="absolute right-0 flex flex-col gap-3 md:top-[32px]">
+            <div class="pr-3 flex flex-col gap-2.5 md:pr-4">
                 <button
                     class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500"
                     @click="addToFavourite(product)"
                 >
-                    <HeartIcon class="w-6 h-6" />
+                    <SvgoCardHeartIcon class="w-6 h-6 text-gray-500" />
                 </button>
                 <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
-                    <ShareIcon class="w-6 h-6" />
+                    <SvgoCardShareIcon class="w-6 h-6 text-gray-500" />
                 </button>
-                <button class="hidden justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500 md:flex">
-                    <D3Icon class="w-6 h-6" />
+                <button class="justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
+                    <SvgoCardD3Icon class="w-6 h-6 text-gray-500" />
                 </button>
-            </div>
-            <div
-                v-if="productDiscount"
-                class="bg-rose-500 rounded-l-[25px] p-[5px] text-[11px] font-semibold text-white md:px-2.5 md:text-sm xl:translate-y-12"
-            >
-                {{ productDiscount }}%
             </div>
         </div>
         <div
             v-if="product.stock"
-            class="absolute bottom-0 right-0 bg-blue-500 px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]"
+            class="absolute bottom-0 right-0 bg-blue-500 rounded-br-xl rounded-tl-xl px-6 py-3"
             @click.prevent="addToCart(product, priceConfiguration ? priceConfiguration.quantity : 1)"
         >
             <CartIcon class="w-6 h-6 text-white" />
@@ -81,18 +77,15 @@ import { PropType } from 'vue';
 import InfoIcon from '@/assets/icons/info-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import ArrowsIcon from '@/assets/icons/double-arrows.svg';
-import CheckIcon from '@/assets/icons/check-circle.svg';
-import HeartIcon from '@/assets/icons/heart.svg';
-import ShareIcon from '@/assets/icons/share.svg';
-import D3Icon from '@/assets/icons/3d.svg';
 import { useNuxtApp } from '#app';
-import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
-import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
+import type { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import type { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '~/store/cartStore';
+import ProductCardStock from '~/components/global/ProductCardStock.vue';
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
