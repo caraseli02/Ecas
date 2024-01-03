@@ -3,7 +3,7 @@
         <div class="flex items-end justify-between px-2.5 mb-[18px] md:px-[15px]">
             <div class="flex items-center">
                 <div class="text-xl leading-tight font-semibold mr-2">{{ product.alias }}</div>
-                <button class="flex text-gray-300 transition-colors duration-300 mr-2 hover:text-blue">
+                <button class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500">
                     <CopyIcon class="w-[22px] h-[22px]" />
                 </button>
             </div>
@@ -22,7 +22,7 @@
         <div class="flex items-center justify-between gap-3 px-2.5 pt-[5px] pb-1.5 bg-[#F2F2F2] md:px-[15px]">
             <div class="text-xs leading-tight font-medium flex-shrink-0">Customer’s Code</div>
             <button
-                class="flex items-center text-gray-300 transition-colors duration-300 hover:text-blue"
+                class="flex items-center text-slate-500 transition-colors duration-300 hover:text-blue-500"
                 @click="showCustomProductPartNumberModal = true"
             >
                 <span class="text-xs leading-tight font-medium mr-[5px]"> Your Custom Code </span>
@@ -33,7 +33,7 @@
             <div class="text-xs leading-tight font-medium flex-shrink-0">EDA / CAD Models</div>
             <button class="flex items-center">
                 <CADModelsIcon class="w-[22px] h-[22px] mr-[5px]" />
-                <span class="text-xs leading-tight text-gray-300"> ADIN2111BCPZ-ECAD-Model </span>
+                <span class="text-xs leading-tight text-slate-500"> ADIN2111BCPZ-ECAD-Model </span>
             </button>
         </div>
         <div class="flex items-center justify-between gap-3 px-2.5 pt-[5px] pb-1.5 bg-[#F2F2F2] md:px-[15px]">
@@ -45,12 +45,12 @@
                 target="_blank"
             >
                 <PDFIcon class="w-[22px] h-[22px] mr-[5px]" />
-                <span class="text-xs leading-tight text-blue hover:underline"> {{ product.alias }}-DataSheet </span>
+                <span class="text-xs leading-tight text-blue-500 hover:underline"> {{ product.alias }}-DataSheet </span>
             </a>
         </div>
         <div class="flex items-start gap-3 px-2.5 pt-[5px] pb-1.5 md:px-[15px]">
             <div class="text-xs leading-tight font-medium flex-shrink-0">Tags:</div>
-            <button class="flex items-center flex-wrap gap-x-2 gap-y-0.5 text-xs leading-tight font-medium text-blue">
+            <button class="flex items-center flex-wrap gap-x-2 gap-y-0.5 text-xs leading-tight font-medium text-blue-500">
                 <span> #Diode </span>
                 <span> #Connector </span>
                 <span> #GasDetector </span>

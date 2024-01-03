@@ -1,13 +1,15 @@
-import {ProductInterface} from '~/model/products/response/ProductResponse';
+import { ProductInterface } from '~/model/products/response/ProductResponse';
+import { DiscountInterface } from '~/types/auth/account-settings';
 
 export enum ProductAction {
-    update = 'update',
-    add = 'add'
+    Update = 'update',
+    Add = 'add',
 }
 
 export interface ProductActionObject {
-    action: string,
-    id: string,
+    action: ProductAction;
+    id: string;
+    min: number;
 }
 
 export interface CartResponse {
@@ -16,6 +18,7 @@ export interface CartResponse {
 }
 
 export interface CartInterface {
+    _id?: string;
     userId: string;
     products: CartProductsInterface[];
     startDate: string;
@@ -23,11 +26,6 @@ export interface CartInterface {
 }
 
 export interface CartProductsInterface {
-    /**
-     * Database id
-     */
-    _id?: string;
-
     /**
      * Product id
      */
@@ -40,6 +38,31 @@ export interface CartProductsInterface {
 
     /** Either the sent product is a simple product or a folder ID */
     isFolder: boolean;
+
+    /**
+     * Price before any discount per unit
+     */
+    initialUnitPrice: number;
+
+    /**
+     * Price after any discount per unit
+     */
+    unitPriceAfterDiscounts: number;
+
+    /**
+     * Price after applying shipping and other taxes
+     */
+    total: number;
+
+    /**
+     * Price after applying discounts
+     */
+    subtotal: number;
+
+    /**
+     * Value of the applied discount
+     */
+    discount: DiscountInterface;
 
     /** The entire product retrieved from database */
     productEntity?: ProductInterface;

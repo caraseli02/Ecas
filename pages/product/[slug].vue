@@ -3,15 +3,15 @@
     <ProductBreadcrumbs :product="product"/>
     <div class="container mb-[30px] lg:mb-10">
       <div class="hidden items-center justify-end gap-5 mb-2.5 md:flex">
-        <button class="flex items-center text-gray-100 transition-colors duration-300 hover:text-blue">
+        <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
           <QuestionIcon class="w-[22px] h-[22px] mr-[5px]"/>
           <span class="text-xs leading-tight">Ask about the product</span>
         </button>
-        <button class="flex items-center text-gray-100 transition-colors duration-300 hover:text-blue">
+        <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
           <TriangleIcon class="w-[22px] h-[22px] mr-[5px]"/>
           <span class="text-xs leading-tight">Report an error</span>
         </button>
-        <button class="flex items-center text-gray-100 transition-colors duration-300 hover:text-blue">
+        <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
           <PrintIcon class="w-[22px] h-[22px] mr-[5px]"/>
           <span class="text-xs leading-tight">Print this page</span>
         </button>

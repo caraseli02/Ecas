@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between mb-[18px]">
             <div class="font-semibold">
                 All Items Total
-                <span class="text-xs font-normal text-gray-300">(excl VAT)</span>
+                <span class="text-xs font-normal text-slate-500">(excl VAT)</span>
             </div>
             <div class="text-right font-Inter font-semibold">$ 27.874,69</div>
         </div>
@@ -18,14 +18,14 @@
         <div class="flex items-center justify-between mb-2.5">
             <div class="flex items-center">
                 <div class="mr-2">Handling Charge</div>
-                <QuestionIcon class="w-4 h-4 text-gray-300" />
+                <QuestionIcon class="w-4 h-4 text-slate-500" />
             </div>
             <div class="text-right font-Inter">$ 0.00</div>
         </div>
         <div class="flex items-center justify-between pb-1.5 border-b border-border mb-2.5">
             <div class="font-semibold">
                 VAT
-                <span class="text-xs font-normal text-gray-300">(19%)</span>
+                <span class="text-xs font-normal text-slate-500">(19%)</span>
             </div>
             <div class="text-right font-Inter font-semibold">$ 5296,19</div>
         </div>
@@ -33,7 +33,7 @@
             <div class="">Total</div>
             <div class="text-right font-Inter">$ 33.170,88</div>
         </div>
-        <button class="flex items-center justify-center bg-blue text-white rounded px-[15px] py-[9px] text-sm font-medium w-full">
+        <button class="flex items-center justify-center bg-blue-500 text-white rounded px-[15px] py-[9px] text-sm font-medium w-full">
             <LockIcon class="w-6 h-6 mr-2" />
             <span>Pay $33.170,88</span>
         </button>

@@ -3,26 +3,26 @@
         <div v-if="totalItems" class="container">
             <div class="font-semibold font-Inter mb-[15px] md:hidden">Products Found ({{ totalItems }})</div>
             <div
-                class="grid grid-cols-1 gap-5 bg-gray-200 p-2.5 pr-[42px] rounded-md mb-5 md:grid-cols-[auto,auto] md:justify-start md:gap-x-[30px] md:gap-y-[18px] md:px-[15px] md:mb-[30px] lg:flex lg:items-center"
+                class="grid grid-cols-1 gap-5 bg-gray-100 p-2.5 pr-[42px] rounded-md mb-5 md:grid-cols-[auto,auto] md:justify-start md:gap-x-[30px] md:gap-y-[18px] md:px-[15px] md:mb-[30px] lg:flex lg:items-center"
             >
                 <label class="flex items-center">
                     <span class="text-sm flex-shrink-0 mr-2.5">Show</span>
                     <div class="relative min-w-[215px]">
                         <button
                             class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                            :class="[showShowOptions ? 'border-blue' : 'border-border']"
+                            :class="[showShowOptions ? 'border-blue-500' : 'border-border']"
                             @click="showShowOptions = !showShowOptions"
                         >
                             <div class="flex items-center">
                                 <span class="text-sm mr-2.5">{{ show }}</span>
                                 <div
-                                    class="flex items-center justify-center w-[18px] h-[18px] rounded border bg-blue border-blue transition-colors duration-300 mr-[13px]"
+                                    class="flex items-center justify-center w-[18px] h-[18px] rounded border bg-blue-500 border-blue-500 transition-colors duration-300 mr-[13px]"
                                 >
                                     <CheckIcon class="w-4 text-white" />
                                 </div>
                             </div>
                             <ChevronDownIcon
-                                class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                                class="w-6 h-6 text-slate-500 transition-transform duration-300"
                                 :class="[showShowOptions ? 'rotate-180' : '']"
                             />
                         </button>
@@ -52,13 +52,13 @@
                                         class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                                         :class="[
                                             option === show
-                                                ? 'bg-blue border-blue group-hover:bg-white'
+                                                ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                                 : 'bg-white  border-border group-hover:border-gray-300',
                                         ]"
                                     >
                                         <CheckIcon
                                             v-if="option === show"
-                                            class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                                            class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
                                         />
                                     </div>
                                 </label>
@@ -71,12 +71,12 @@
                     <div class="relative min-w-[215px] mr-2.5">
                         <button
                             class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                            :class="[showSortByOptions ? 'border-blue' : 'border-border']"
+                            :class="[showSortByOptions ? 'border-blue-500' : 'border-border']"
                             @click="showSortByOptions = !showSortByOptions"
                         >
                             <span class="text-sm text-left mr-2.5">{{ sortBy.label }}</span>
                             <ChevronDownIcon
-                                class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                                class="w-6 h-6 text-slate-500 transition-transform duration-300"
                                 :class="[showSortByOptions ? 'rotate-180' : '']"
                             />
                         </button>
@@ -89,7 +89,7 @@
                                 <button
                                     v-for="option in sortByOptions.filter((e) => e !== sortBy)"
                                     :key="option.name"
-                                    class="flex w-full text-left text-sm rounded-[5px] transition-colors duration-300 hover:text-blue"
+                                    class="flex w-full text-left text-sm rounded-[5px] transition-colors duration-300 hover:text-blue-500"
                                     @click="
                                         sortBy = option;
                                         emits('sort-by-change', option);
@@ -128,12 +128,12 @@
                     <div class="relative">
                         <button
                             class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                            :class="[showPerPageOptions ? 'border-blue' : 'border-border']"
+                            :class="[showPerPageOptions ? 'border-blue-500' : 'border-border']"
                             @click="showPerPageOptions = !showPerPageOptions"
                         >
                             <span class="text-sm mr-2">{{ perPage }}</span>
                             <ChevronDownIcon
-                                class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                                class="w-6 h-6 text-slate-500 transition-transform duration-300"
                                 :class="[showPerPageOptions ? 'rotate-180' : '']"
                             />
                         </button>
@@ -146,7 +146,7 @@
                                 <button
                                     v-for="option in [5, 10, 20, 50, 100].filter((e) => e !== perPage)"
                                     :key="option"
-                                    class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
+                                    class="flex w-full text-left text-sm rounded-[5px] text-slate-500 transition-colors duration-300 hover:text-blue-500"
                                     @click="
                                         perPage = option;
                                         showPerPageOptions = false;
@@ -166,7 +166,7 @@
                     <Transition name="fade">
                         <button
                             v-if="atPage !== 1"
-                            class="flex transition-colors duration-300 text-gray-300 hover:text-blue"
+                            class="flex transition-colors duration-300 text-slate-500 hover:text-blue-500"
                             @click="atPage--"
                         >
                             <ChevronRightIcon class="w-1.5 h-3 rotate-180 mr-4" />
@@ -195,7 +195,7 @@
                     <Transition name="fade">
                         <button
                             v-if="totalPages !== atPage"
-                            class="flex transition-colors duration-300 text-gray-300 hover:text-blue"
+                            class="flex transition-colors duration-300 text-slate-500 hover:text-blue-500"
                             @click="atPage++"
                         >
                             <ChevronRightIcon class="w-1.5 h-3 ml-4" />
@@ -212,12 +212,12 @@
                     <div class="relative">
                         <button
                             class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                            :class="[showPerPageOptions ? 'border-blue' : 'border-border']"
+                            :class="[showPerPageOptions ? 'border-blue-500' : 'border-border']"
                             @click="showPerPageOptions = !showPerPageOptions"
                         >
                             <span class="text-sm mr-2">{{ perPage }}</span>
                             <ChevronDownIcon
-                                class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                                class="w-6 h-6 text-slate-500 transition-transform duration-300"
                                 :class="[showPerPageOptions ? 'rotate-180' : '']"
                             />
                         </button>
@@ -230,7 +230,7 @@
                                 <button
                                     v-for="option in [5, 10, 20, 50, 100].filter((e) => e !== perPage)"
                                     :key="option"
-                                    class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
+                                    class="flex w-full text-left text-sm rounded-[5px] text-slate-500 transition-colors duration-300 hover:text-blue-500"
                                     @click="
                                         perPage = option;
                                         showPerPageOptions = false;
@@ -247,7 +247,7 @@
                     <Transition name="fade">
                         <button
                             v-if="atPage !== 1"
-                            class="flex transition-colors duration-300 text-gray-300 hover:text-blue"
+                            class="flex transition-colors duration-300 text-slate-500 hover:text-blue-500"
                             @click="atPage--"
                         >
                             <ChevronRightIcon class="w-1.5 h-3 rotate-180 mr-4" />
@@ -276,7 +276,7 @@
                     <Transition name="fade">
                         <button
                             v-if="totalPages !== atPage"
-                            class="flex transition-colors duration-300 text-gray-300 hover:text-blue"
+                            class="flex transition-colors duration-300 text-slate-500 hover:text-blue-500"
                             @click="atPage++"
                         >
                             <ChevronRightIcon class="w-1.5 h-3 ml-4" />
@@ -347,18 +347,18 @@ const setProductsList = () => {
 
     totalItems.value = paginatedProductsData?.items.total_items;
     totalPages.value = paginatedProductsData?.items.page_count;
-
-    if (paginatedProducts) {
-        paginatedProductsList.value = paginatedProducts.map((item) => ({
-            slug: item._id,
-            title: item.alias,
-            cover: item.details.ProductImage.ProductImageSmall,
-            manufacturer: item.manufacturer,
-            manufacturerCode: item.manufacturerCode,
-            stock: item.stock,
-            description: item.description,
-        }));
-    }
+    paginatedProductsList.value = paginatedProducts;
+    // if (paginatedProducts) {
+    //     paginatedProductsList.value = paginatedProducts.map((item) => ({
+    //         slug: item._id,
+    //         title: item.alias,
+    //         cover: item.details.ProductImage.ProductImageSmall,
+    //         manufacturer: item.manufacturer,
+    //         manufacturerCode: item.manufacturerCode,
+    //         stock: item.stock,
+    //         description: item.description,
+    //     }));
+    // }
 };
 
 setProductsList();
@@ -374,11 +374,11 @@ watch(
 
 <style lang="scss">
 .searchProducts--pagination-item {
-    @apply cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md bg-gray-200 text-gray-300 transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white #{!important};
+    @apply cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md bg-gray-100 text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white focus-visible:bg-blue-500 focus-visible:text-white #{!important};
 }
 
 .searchProducts--pagination-item-active .searchProducts--pagination-item {
-    @apply bg-blue text-white #{!important};
+    @apply bg-blue-500 text-white #{!important};
 }
 
 .searchProducts--pagination-item_prev,

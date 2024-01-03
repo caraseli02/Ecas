@@ -4,7 +4,7 @@
             <div class="flex flex-col h-full md:max-w-[410px] md:mx-auto">
                 <div class="flex items-center mb-5">
                     <div class="font-medium mr-2 md:text-xl">Profile Details</div>
-                    <QuestionIcon class="w-5 h-5 text-gray-100" />
+                    <QuestionIcon class="w-5 h-5 text-gray-500" />
                 </div>
                 <div class="mb-[30px]">
                     <div class="grid grid-cols-1 gap-[15px] mb-10">
@@ -14,16 +14,16 @@
                                 class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2.5"
                                 :class="[
                                     details.useContactEmail
-                                        ? 'bg-blue border-blue group-hover:bg-white'
+                                        ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                         : 'bg-white  border-border group-hover:border-gray-300',
                                 ]"
                             >
                                 <CheckIcon
                                     v-if="details.useContactEmail"
-                                    class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                                    class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
                                 />
                             </div>
-                            <span class="text-sm text-gray-300"> Use Contact E-mail </span>
+                            <span class="text-sm text-slate-500"> Use Contact E-mail </span>
                         </label>
                         <div v-if="firebaseToken" class="bg-amber-400 px-3 py-1 rounded">
                             <small>You are logged in with Google, so you are not allowed to change your email account.</small>
@@ -60,10 +60,10 @@
                             placeholder="Repeat Password"
                         />
                         <div class="flex items-center justify-between my-[15px]">
-                            <div class="text-sm leading-tight text-gray-300">Subscribe to our newsletter</div>
+                            <div class="text-sm leading-tight text-slate-500">Subscribe to our newsletter</div>
                             <button
                                 class="relative w-10 h-[22px] rounded-[25px] transition-colors duration-300"
-                                :class="[details.subscribeToNewsletter ? 'bg-blue ' : 'bg-border']"
+                                :class="[details.subscribeToNewsletter ? 'bg-blue-500 ' : 'bg-border']"
                                 @click="details.subscribeToNewsletter = !details.subscribeToNewsletter"
                             >
                                 <div
@@ -83,21 +83,21 @@
                                 class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded border transition-colors duration-300 mr-2.5"
                                 :class="[
                                     details.agreeToTerms
-                                        ? 'bg-blue border-blue group-hover:bg-white'
+                                        ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                         : 'bg-white  border-border group-hover:border-gray-300',
                                 ]"
                             >
                                 <CheckIcon
                                     v-if="details.agreeToTerms"
-                                    class="w-4 text-white transition-colors duration-300 group-hover:text-blue"
+                                    class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
                                 />
                             </div>
-                            <span class="text-xs text-gray-300">
+                            <span class="text-xs text-slate-500">
                                 I have read and agreed to ECAS’s
-                                <NuxtLink to="/" class="text-blue font-medium">Terms of Service</NuxtLink>,
-                                <NuxtLink to="/" class="text-blue font-medium">Privacy Policy</NuxtLink>
+                                <NuxtLink to="/" class="text-blue-500 font-medium">Terms of Service</NuxtLink>,
+                                <NuxtLink to="/" class="text-blue-500 font-medium">Privacy Policy</NuxtLink>
                                 and
-                                <NuxtLink to="/" class="text-blue font-medium">Cookie Policy</NuxtLink>.
+                                <NuxtLink to="/" class="text-blue-500 font-medium">Cookie Policy</NuxtLink>.
                             </span>
                         </label>
                     </div>
@@ -107,19 +107,19 @@
                         </p>
                     </div> -->
                     <div class="flex items-center justify-between">
-                        <button class="flex items-center rounded bg-gray-200 px-[22px] py-[11px] text-gray-300" @click="$emit('back')">
+                        <button class="flex items-center rounded bg-gray-100 px-[22px] py-[11px] text-slate-500" @click="$emit('back')">
                             <ChevronRightIcon class="w-3 h-3 mr-2 rotate-180" />
                             <span class="text-sm font-medium">Back</span>
                         </button>
-                        <button class="flex items-center rounded bg-blue px-[22px] py-[11px] text-white" @click="$emit('continue')">
+                        <button class="flex items-center rounded bg-blue-500 px-[22px] py-[11px] text-white" @click="$emit('continue')">
                             <span class="text-sm font-medium mr-2"> Continue </span>
                             <ChevronRightIcon class="w-3 h-3" />
                         </button>
                     </div>
                 </div>
-                <div class="text-xs text-center text-gray-300 mt-auto">
+                <div class="text-xs text-center text-slate-500 mt-auto">
                     For assistance please contact
-                    <a href="mailto:support@ecas.ro" class="text-blue"> support@ecas.ro </a>
+                    <a href="mailto:support@ecas.ro" class="text-blue-500"> support@ecas.ro </a>
                 </div>
             </div>
         </div>

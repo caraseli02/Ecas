@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-6 pb-6">
         <div class="flex w-full">
-            <span class="text-[#222] text-xl font-semibold leading-7">Similar Products</span>
+            <span class="text-neutral-700 text-xl font-semibold leading-7">Similar Products</span>
         </div>
         <div
             class="max-h-[350px] max-w-[976px] w-[358px] sm:w-[608px] md:w-[736px] lg:w-[636px] xl:w-[976px] 2xl:w-[1024px]">

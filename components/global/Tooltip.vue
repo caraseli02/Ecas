@@ -19,7 +19,7 @@
                         : position === 'bottom'
                         ? '-bottom-2 translate-y-full left-1/2 -translate-x-1/2'
                         : '',
-                    theme === 'gray' ? 'bg-gray-300' : 'bg-[#1B1B28]',
+                    theme === 'gray' ? 'bg-slate-500' : 'bg-[#1B1B28]',
                 ]"
             >
                 <slot name="content"></slot>

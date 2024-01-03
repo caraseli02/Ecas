@@ -157,11 +157,11 @@ watch(
     @apply h-2 mb-3 px-2;
 
     .slider-base {
-        @apply bg-gray-200;
+        @apply bg-gray-100;
     }
 
     .slider-connect {
-        @apply bg-blue h-[9px] -top-px;
+        @apply bg-blue-500 h-[9px] -top-px;
     }
 
     .slider-handle {
@@ -180,11 +180,11 @@ watch(
 }
 
 .vc-header .vc-title {
-    @apply text-dark;
+    @apply text-neutral-700;
 }
 
 .vc-weekday {
-    @apply text-gray-300;
+    @apply text-slate-500;
 }
 
 .vc-focus {
@@ -192,18 +192,18 @@ watch(
 }
 
 .vc-day-content {
-    @apply hover:bg-blue hover:text-white;
+    @apply hover:bg-blue-500 hover:text-white;
 }
 
 .vc-highlight-content-solid.vc-blue {
-    @apply bg-blue;
+    @apply bg-blue-500;
 }
 
 .vc-highlight-content-outline.vc-blue {
-    @apply border border-blue;
+    @apply border border-blue-500;
 }
 
 .vc-highlight-content-light.vc-blue {
-    @apply text-blue font-semibold;
+    @apply text-blue-500 font-semibold;
 }
 </style>

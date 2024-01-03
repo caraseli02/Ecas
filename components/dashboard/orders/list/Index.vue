@@ -5,7 +5,7 @@
                 v-for="(filter, index) in orderFilters"
                 :key="index"
                 class="ordersFilter flex items-center gap-3 relative z-10 text-sm font-medium leading-[1.71] py-5 flex-shrink-0 transition-colors duration-300 md:py-8"
-                :class="[filter.label === activeOrderFilter.label ? 'text-blue' : 'hover:text-blue']"
+                :class="[filter.label === activeOrderFilter.label ? 'text-blue-500' : 'hover:text-blue-500']"
                 @click="
                     activeOrderFilter = filter;
                     setTableData(filter);
@@ -16,13 +16,13 @@
                 </span>
                 <span
                     class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium min-w-[32px] transition-colors duration-300"
-                    :class="filter.label === activeOrderFilter.label ? 'text-white bg-blue' : 'text-gray-300 bg-gray-200'"
+                    :class="filter.label === activeOrderFilter.label ? 'text-white bg-blue-500' : 'text-slate-500 bg-gray-100'"
                 >
                     {{ filter.total_items || '0' }}
                 </span>
             </button>
             <div
-                class="absolute bottom-0 bg-blue h-1 rounded-t-lg transition-all duration-300"
+                class="absolute bottom-0 bg-blue-500 h-1 rounded-t-lg transition-all duration-300"
                 :style="{
                     width: filterHighlightWidth + 'px',
                     left: filterHightlightLeft + 'px',
@@ -39,16 +39,16 @@
                     <div class="flex items-center gap-4">
                         <button
                             v-if="activeFilters.length > 0"
-                            class="group flex items-center text-gray-300 transition-colors duration-300 hover:text-blue max-md:hidden"
+                            class="group flex items-center text-slate-500 transition-colors duration-300 hover:text-blue-500 max-md:hidden"
                             @click="clearFilters"
                         >
                             <span class="text-sm leading-[1.43] font-medium mr-2"> Clear Filters </span>
                             <XIcon class="w-4 h-4" />
                         </button>
-                        <button class="flex items-center justify-center bg-[#F2F2F2] rounded-lg p-2 text-gray-300 max-md:hidden">
+                        <button class="flex items-center justify-center bg-[#F2F2F2] rounded-lg p-2 text-slate-500 max-md:hidden">
                             <FilterIcon class="w-6 h-6" />
                         </button>
-                        <button class="flex items-center justify-center bg-blue rounded-lg px-6 py-2 text-white">
+                        <button class="flex items-center justify-center bg-blue-500 rounded-lg px-6 py-2 text-white">
                             <PlusIcon class="w-6 h-6 mr-2" />
                             <span class="text-sm leading-[1.71] font-medium"> New Order </span>
                         </button>
@@ -57,29 +57,29 @@
                 <div class="flex items-center justify-end gap-4 md:hidden">
                     <button
                         v-if="activeFilters.length > 0"
-                        class="group flex items-center text-gray-300 transition-colors duration-300 hover:text-blue"
+                        class="group flex items-center text-slate-500 transition-colors duration-300 hover:text-blue-500"
                         @click="clearFilters"
                     >
                         <span class="text-sm leading-[1.43] font-medium mr-2"> Clear Filters </span>
                         <XIcon class="w-4 h-4" />
                     </button>
-                    <button class="flex items-center justify-center bg-[#F2F2F2] rounded-lg p-2 text-gray-300">
+                    <button class="flex items-center justify-center bg-[#F2F2F2] rounded-lg p-2 text-slate-500">
                         <FilterIcon class="w-6 h-6" />
                     </button>
                 </div>
             </div>
             <div v-if="activeFilters.filter((item) => !item.hidden).length > 0" class="mb-6 md:flex md:items-start">
-                <div class="leading-normal font-medium text-gray-300 mb-4 md:mr-4">Filters:</div>
+                <div class="leading-normal font-medium text-slate-500 mb-4 md:mr-4">Filters:</div>
                 <div class="flex flex-wrap gap-4">
                     <div
                         v-for="(filter, index) in activeFilters.filter((item) => !item.hidden) as unknown as FilterInterface"
                         :key="index"
                         class="flex items-center p-1 bg-[#F2F2F2] rounded-md"
                     >
-                        <span class="text-sm leading-[1.43] text-gray-300 mr-2">
+                        <span class="text-sm leading-[1.43] text-slate-500 mr-2">
                             {{ `${OrdersFilterLabelsEnum[filter.filter]}: ${filter.value}` }}
                         </span>
-                        <button class="flex text-gray-300 transition-colors duration-300 hover:text-blue" @click="removeFilter(index)">
+                        <button class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500" @click="removeFilter(index)">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
                                 <path
                                     d="M3.33594 3.33398L12.6686 12.6667"

@@ -44,12 +44,12 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-3">
-                <div class="text-sm font-semibold text-gray-300">{{ card.menu.selected.label }}</div>
+                <div class="text-sm font-semibold text-slate-500">{{ card.menu.selected.label }}</div>
                 <WarningIcon v-if="error[indexOfWidget]" class="w-5 h-5"/>
               </div>
               <div
                   v-if="error[indexOfWidget] || card.menu.selected.value === null || card.menu.selected.value === undefined"
-                  class="text-sm font-medium leading-[1.71] text-gray-100">
+                  class="text-sm font-medium leading-[1.71] text-gray-500">
                 No data available
               </div>
               <div v-else class="text-xl font-semibold leading-[1.2] md:text-2xl md:leading-none">
@@ -59,7 +59,7 @@
           </div>
           <div class="relative">
             <button
-                class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue"
+                class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue-500"
                 @click="card.menu.showOptions = !card.menu.showOptions"
             >
               <DotsVerticalIcon class="w-6 h-6"/>
@@ -73,8 +73,8 @@
                 <button
                     v-for="option in card.menu.options"
                     :key="option.label"
-                    class="group/option flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                    :class="[option.label === card.menu.selected.label ? '' : 'text-dark']"
+                    class="group/option flex items-center justify-between w-full px-2 py-2 text-left rounded-lg text-sm font-medium leading-[1.71429] transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
+                    :class="[option.label === card.menu.selected.label ? '' : 'text-neutral-700']"
                     @click="
                                         card.menu.selected = option;
                                         card.menu.showOptions = false;
@@ -88,11 +88,11 @@
                       class="flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 transition-colors duration-300"
                       :class="[
                                             option.label === card.menu.selected.label
-                                                ? 'border-blue'
+                                                ? 'border-blue-500'
                                                 : 'border-border group-hover/option:border-dark',
                                         ]"
                   >
-                    <div v-if="option.label === card.menu.selected.label" class="w-2.5 h-2.5 bg-blue rounded-full"/>
+                    <div v-if="option.label === card.menu.selected.label" class="w-2.5 h-2.5 bg-blue-500 rounded-full"/>
                   </div>
                 </button>
               </div>
@@ -101,16 +101,16 @@
         </template>
       </div>
       <div class="flex items-center justify-between">
-        <div v-if="card.menu.selected.noDropdownLabel" class="text-sm font-medium leading-[1.43] text-gray-300">
+        <div v-if="card.menu.selected.noDropdownLabel" class="text-sm font-medium leading-[1.43] text-slate-500">
           {{ card.menu.selected.noDropdownLabel }}
         </div>
         <div v-else class="relative">
           <button class="flex items-center" @click="card.range.showOptions = !card.range.showOptions">
-                        <span class="text-sm left-[1.43] text-gray-300 font-medium mr-1">
+                        <span class="text-sm left-[1.43] text-slate-500 font-medium mr-1">
                             {{ card.range.selected.label }}
                         </span>
             <ChevronIcon
-                class="w-5 h-5 text-gray-300 transition-transform duration-300"
+                class="w-5 h-5 text-slate-500 transition-transform duration-300"
                 :class="[card.range.showOptions ? 'rotate-180' : '']"
             />
           </button>
@@ -126,8 +126,8 @@
               <button
                   v-for="(option, index) in options"
                   :key="index"
-                  class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue"
-                  :class="card.range.selected.value === option.value ? 'bg-[#F2F2F2] text-blue' : ''"
+                  class="flex items-center w-full text-left px-3 py-2 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
+                  :class="card.range.selected.value === option.value ? 'bg-[#F2F2F2] text-blue-500' : ''"
                   @click="
                                     card.range.showOptions = false;
                                     card.range.selected = option;
@@ -139,7 +139,7 @@
             </div>
           </Transition>
         </div>
-        <button class="flex items-center text-gray-300 mr-2">
+        <button class="flex items-center text-slate-500 mr-2">
           <span class="text-sm font-medium left-[1.43] mr-2"> More </span>
           <ArrowRightIcon class="w-4 h-4"/>
         </button>

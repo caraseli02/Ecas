@@ -24,7 +24,7 @@
                     <p class="text-xs mb-[26px] md:text-sm md:max-w-[420px] md:mb-[15px] lg:max-w-[434px] lg:mb-5 lg:text-center">
                         {{ item.description }}
                     </p>
-                    <button class="flex bg-blue rounded px-3 py-1.5 text-[13px] font-medium md:px-6 md:py-2 md:text-sm lg:mb-0 lg:mx-auto">
+                    <button class="flex bg-blue-500 rounded px-3 py-1.5 text-[13px] font-medium md:px-6 md:py-2 md:text-sm lg:mb-0 lg:mx-auto">
                         Buy Now
                     </button>
                     <img
@@ -83,7 +83,7 @@ const slides = ref([
     @apply bottom-[15px] space-x-1.5 md:space-x-2 lg:left-1/2 lg:-translate-x-1/2 #{!important};
 }
 .orderSummaryExclusiveOffer--swiper .swiper-pagination-bullet {
-    @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
+    @apply w-1.5 h-1.5 bg-gray-500 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
     margin-right: 0 !important;
 }
 .orderSummaryExclusiveOffer--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {

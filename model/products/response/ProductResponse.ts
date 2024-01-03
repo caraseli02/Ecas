@@ -1,3 +1,5 @@
+import { PriceHistory } from '~/types';
+
 export interface ProductResponse {
     data: [ProductInterface];
     status: string;
@@ -14,12 +16,26 @@ export interface ProductInterface {
     stock: number;
     priceRon: number;
     priceEur: number;
+    priceHistory: PriceHistory[];
+    priceConfiguration?: PriceConfigurationInterface;
     measure: string;
     details: ProductDetailsInterface;
     sold: number;
     adminSettings?: AdminSettings;
     additionalInfo?: AdditionalInfoInterface;
     favourite?: boolean;
+}
+
+export interface PriceConfigurationSettingsInterface {
+    price: number;
+    quantity: number;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface PriceConfigurationInterface {
+    smartLinkId: string;
+    configuration: PriceConfigurationSettingsInterface[];
 }
 
 export interface ProductDetailsInterface {
@@ -72,4 +88,13 @@ export interface AdditionalInfoInterface {
 export interface AdminSettings {
     discount?: DiscountInterface;
     featured?: boolean;
+}
+
+export interface ProductDiscountsHelperInterface {
+    userDiscount: number;
+    productDiscount: number;
+    discountPrice: number;
+    currentConfigurationDiscountPrice: number;
+    priceConfiguration: PriceConfigurationSettingsInterface;
+    minimumOrderQuantityConfiguration: PriceConfigurationSettingsInterface;
 }

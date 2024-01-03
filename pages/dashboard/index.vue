@@ -1,9 +1,9 @@
 <template>
     <div class="w-[1488px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
         <DashboardBreadcrumbs title="Customers" class="max-sm:hidden">
-            <button class="flex items-center rounded-lg bg-gray-200 px-6 py-3">
-                <span class="leading-normal text-gray-300 font-medium mr-2"> Download </span>
-                <DownloadIcon class="w-6 h-6 text-gray-300" />
+            <button class="flex items-center rounded-lg bg-gray-100 px-6 py-3">
+                <span class="leading-normal text-slate-500 font-medium mr-2"> Download </span>
+                <DownloadIcon class="w-6 h-6 text-slate-500" />
             </button>
         </DashboardBreadcrumbs>
         <div

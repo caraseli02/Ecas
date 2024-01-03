@@ -1,7 +1,7 @@
 <template>
     <div class="mb-10 lg:mb-[50px]">
         <div
-            class="grid grid-cols-[75px,1fr,100px,64px,145px,120px,120px] border border-border bg-gray-200 px-[15px] py-[22px] rounded-md text-sm font-medium mb-5 max-xl:hidden 2xl:grid-cols-[32px,75px,1fr,100px,64px,145px,130px,120px]"
+            class="grid grid-cols-[75px,1fr,100px,64px,145px,120px,120px] border border-border bg-gray-100 px-[15px] py-[22px] rounded-md text-sm font-medium mb-5 max-xl:hidden 2xl:grid-cols-[32px,75px,1fr,100px,64px,145px,130px,120px]"
         >
             <div class="max-2xl:hidden">No.</div>
             <div />
@@ -14,14 +14,14 @@
                 <span class="mr-[26px]">Actions</span>
                 <div class="flex items-center">
                     <button
-                        class="flex mr-2 text-gray-300 transition-colors duration-300 hover:text-blue disabled:hover:text-gray-300"
+                        class="flex mr-2 text-slate-500 transition-colors duration-300 hover:text-blue-500 disabled:hover:text-slate-500"
                         :disabled="atPage === 1"
                         @click="atPage--"
                     >
                         <ChevronRightIcon class="w-4 h-4 rotate-180" />
                     </button>
                     <button
-                        class="flex text-gray-300 transition-colors duration-300 hover:text-blue disabled:hover:text-gray-300"
+                        class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500 disabled:hover:text-slate-500"
                         :disabled="atPage === totalPages"
                         @click="atPage++"
                     >
@@ -46,12 +46,12 @@
                 <div class="relative">
                     <button
                         class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-                        :class="[showPerPageOptions ? 'border-blue' : 'border-border']"
+                        :class="[showPerPageOptions ? 'border-blue-500' : 'border-border']"
                         @click="showPerPageOptions = !showPerPageOptions"
                     >
                         <span class="text-sm mr-2">{{ perPage }}</span>
                         <ChevronDownIcon
-                            class="w-6 h-6 text-gray-300 transition-transform duration-300"
+                            class="w-6 h-6 text-slate-500 transition-transform duration-300"
                             :class="[showPerPageOptions ? 'rotate-180' : '']"
                         />
                     </button>
@@ -64,7 +64,7 @@
                             <button
                                 v-for="option in [5, 20, 50, 100].filter((e) => e !== perPage)"
                                 :key="option"
-                                class="flex w-full text-left text-sm rounded-[5px] text-gray-300 transition-colors duration-300 hover:text-blue"
+                                class="flex w-full text-left text-sm rounded-[5px] text-slate-500 transition-colors duration-300 hover:text-blue-500"
                                 @click="
                                     perPage = option;
                                     showPerPageOptions = false;
@@ -78,7 +78,7 @@
             </label>
             <div class="flex items-center">
                 <Transition name="fade">
-                    <button v-if="atPage !== 1" class="flex transition-colors duration-300 text-gray-300 hover:text-blue" @click="atPage--">
+                    <button v-if="atPage !== 1" class="flex transition-colors duration-300 text-slate-500 hover:text-blue-500" @click="atPage--">
                         <ChevronRightIcon class="w-1.5 h-3 rotate-180 mr-4" />
                     </button>
                 </Transition>
@@ -104,7 +104,7 @@
                 </Pagination>
                 <button
                     v-if="totalPages !== atPage"
-                    class="flex transition-colors duration-300 text-gray-300 hover:text-blue"
+                    class="flex transition-colors duration-300 text-slate-500 hover:text-blue-500"
                     @click="atPage++"
                 >
                     <ChevronRightIcon class="w-1.5 h-3 ml-4" />
@@ -228,10 +228,10 @@ const totalPages = computed(() => {
 
 <style lang="scss">
 .searchProducts--pagination-item {
-    @apply cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md bg-gray-200 text-gray-300 transition-colors duration-300 hover:bg-blue hover:text-white focus-visible:bg-blue focus-visible:text-white #{!important};
+    @apply cursor-pointer flex items-center justify-center w-8 h-8 mx-1 text-sm font-Inter font-semibold rounded-md bg-gray-100 text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white focus-visible:bg-blue-500 focus-visible:text-white #{!important};
 }
 .searchProducts--pagination-item-active .searchProducts--pagination-item {
-    @apply bg-blue text-white #{!important};
+    @apply bg-blue-500 text-white #{!important};
 }
 .searchProducts--pagination-item_prev,
 .searchProducts--pagination-item_next {

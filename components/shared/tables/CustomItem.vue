@@ -324,7 +324,7 @@ export default defineComponent({
                 invoiceId: {
                     text: true,
                     item: this.item,
-                    class: this.invoiceIdItemClass || 'px-2 py-4 text-sm font-medium leading-[1.71] text-blue',
+                    class: this.invoiceIdItemClass || 'px-2 py-4 text-sm font-medium leading-[1.71] text-blue-500',
                     name: 'invoiceId',
                 },
                 orderAmount: {

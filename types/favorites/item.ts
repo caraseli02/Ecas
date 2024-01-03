@@ -1,3 +1,5 @@
+import {ProductInterface} from '~/model/products/response/ProductResponse';
+
 export interface FavoriteItem {
     id: string;
     type: 'folder' | 'product';
@@ -6,5 +8,6 @@ export interface FavoriteItem {
     items?: FavoriteItem[];
     selected?: boolean;
     quantity?: number;
+    productEntity: ProductInterface;
     image?: any;
 }

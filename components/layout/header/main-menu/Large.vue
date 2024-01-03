@@ -11,14 +11,14 @@
             <button
                 v-for="(category, index) in categories"
                 :key="index"
-                class="group flex items-center px-2 py-1.5 rounded-[5px] w-full text-gray-300 text-left font-Inter transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue xl:px-2.5 xl:py-2"
-                :class="[selectedCategory === category ? 'text-blue bg-[#F4F4F4]' : '']"
+                class="group flex items-center px-2 py-1.5 rounded-[5px] w-full text-slate-500 text-left font-Inter transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500 xl:px-2.5 xl:py-2"
+                :class="[selectedCategory === category ? 'text-blue-500 bg-[#F4F4F4]' : '']"
                 @click="
                     selectedCategory = category;
                     selectedSubCategory = null;
                 "
             >
-                <div class="flex items-center justify-center w-8 h-8 rounded bg-gray-200 mr-2 xl:w-10 xl:h-10 xl:mr-2.5">
+                <div class="flex items-center justify-center w-8 h-8 rounded bg-gray-100 mr-2 xl:w-10 xl:h-10 xl:mr-2.5">
                     <component :is="category.icon" class="w-[22px] h-[22px]" />
                 </div>
                 <div>
@@ -26,8 +26,8 @@
                         {{ category.label }}
                     </div>
                     <div
-                        class="text-xs font-semibold transition-colors duration-300 group-hover:text-gray-300"
-                        :class="[selectedCategory === category ? 'text-gray-300 ' : 'text-gray-100']"
+                        class="text-xs font-semibold transition-colors duration-300 group-hover:text-slate-500"
+                        :class="[selectedCategory === category ? 'text-slate-500 ' : 'text-gray-500']"
                     >
                         {{ category.products }} Products
                     </div>
@@ -47,7 +47,7 @@
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut est massa.
             </p>
             <button
-                class="relative z-20 flex bg-blue text-white rounded px-[15px] py-2 text-xs font-medium mb-[30px] md:px-6 md:py-[11px] md:text-sm md:mb-[60px] lg:mb-[34px] xl:mb-14"
+                class="relative z-20 flex bg-blue-500 text-white rounded px-[15px] py-2 text-xs font-medium mb-[30px] md:px-6 md:py-[11px] md:text-sm md:mb-[60px] lg:mb-[34px] xl:mb-14"
             >
                 View More
             </button>
@@ -76,7 +76,7 @@
             >
                 <SwiperSlide v-for="(item, index) in slides" :key="index">
                     <div
-                        class="flex flex-col items-center justify-center text-center bg-blue/50 border border-blue/50 shadow-m py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
+                        class="flex flex-col items-center justify-center text-center bg-blue-500/50 border border-blue-500/50 shadow-m py-1.5 h-full rounded-md backdrop-blur-[5px] md:py-[15px] lg:pt-[25px] xl:py-[35px]"
                     >
                         <component
                             :is="item.icon"
@@ -108,7 +108,7 @@
             />
             <button
                 v-if="isStatic"
-                class="hidden absolute z-20 top-[15px] right-0 justify-center items-center px-[3px] py-[5px] bg-blue/70 rounded-l overflow-hidden border border-blue/50 transition-all duration-300 hover:px-2 md:flex"
+                class="hidden absolute z-20 top-[15px] right-0 justify-center items-center px-[3px] py-[5px] bg-blue-500/70 rounded-l overflow-hidden border border-blue-500/50 transition-all duration-300 hover:px-2 md:flex"
                 :class="{ 'sideNav--toggler_active': isBannerExpanded }"
                 :style="{
                     boxShadow: '0px 0px 5px rgba(34, 34, 34, 0.15)',
@@ -139,7 +139,7 @@
                 <button class="flex" @click="selectedSubCategory ? (selectedSubCategory = null) : (selectedCategory = null)">
                     <CaretLeft class="w-6 h-6" />
                 </button>
-                <div class="text-sm font-semibold text-blue">
+                <div class="text-sm font-semibold text-blue-500">
                     {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory?.label }}
                 </div>
             </div>
@@ -149,14 +149,14 @@
                         <button
                             v-for="(subCategory, index) in selectedCategory.subCategories"
                             :key="index"
-                            class="group flex items-center px-2 py-1.5 rounded-[5px] text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
+                            class="group flex items-center px-2 py-1.5 rounded-[5px] text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
                             @click="selectedSubCategory = subCategory"
                         >
                             <div>
                                 <div class="text-sm font-semibold">
                                     {{ subCategory.label }}
                                 </div>
-                                <div class="text-xs font-semibold text-gray-100 transition-colors duration-300 group-hover:text-gray-300">
+                                <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
                                     {{ subCategory.products }} Products
                                 </div>
                             </div>
@@ -170,12 +170,12 @@
                             v-for="(subCategory, index) in selectedCategory?.subCategories"
                             :key="index"
                             to="/"
-                            class="relative flex items-center text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue hover:before:opacity-100"
+                            class="relative flex items-center text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue-500 before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue-500 hover:before:opacity-100"
                         >
                             <div class="text-sm font-medium truncate mr-[5px]">Semiconductors ({{ subCategory.products }})</div>
                             <div
                                 v-if="index === 3 || index === 5"
-                                class="bg-blue text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
+                                class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
                             >
                                 New
                             </div>
@@ -194,7 +194,7 @@
                     <button class="flex" @click="selectedSubCategory ? (selectedSubCategory = null) : (selectedCategory = null)">
                         <CaretLeft class="w-6 h-6" />
                     </button>
-                    <div class="text-sm font-semibold text-blue">
+                    <div class="text-sm font-semibold text-blue-500">
                         {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory?.label }}
                     </div>
                 </div>
@@ -204,8 +204,8 @@
                             <button
                                 v-for="(subCategory, index) in selectedCategory.subCategories"
                                 :key="index"
-                                class="group flex items-center px-2 py-1.5 rounded-[5px] text-gray-300 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue"
-                                :class="[selectedSubCategory === subCategory ? 'text-blue bg-[#F4F4F4]' : '']"
+                                class="group flex items-center px-2 py-1.5 rounded-[5px] text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
+                                :class="[selectedSubCategory === subCategory ? 'text-blue-500 bg-[#F4F4F4]' : '']"
                                 @click="selectedSubCategory = subCategory"
                             >
                                 <div>
@@ -213,8 +213,8 @@
                                         {{ subCategory.label }}
                                     </div>
                                     <div
-                                        class="text-xs font-semibold transition-colors duration-300 group-hover:text-gray-300"
-                                        :class="[selectedSubCategory === subCategory ? 'text-gray-300' : 'text-gray-100']"
+                                        class="text-xs font-semibold transition-colors duration-300 group-hover:text-slate-500"
+                                        :class="[selectedSubCategory === subCategory ? 'text-slate-500' : 'text-gray-500']"
                                     >
                                         {{ subCategory.products }} Products
                                     </div>
@@ -226,12 +226,12 @@
                                 v-for="(subCategory, index) in selectedCategory.subCategories"
                                 :key="index"
                                 to="/"
-                                class="relative flex items-start text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue hover:before:opacity-100"
+                                class="relative flex items-start text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue-500 before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue-500 hover:before:opacity-100"
                             >
                                 <div class="text-sm font-medium truncate mr-[5px]">Semiconductors ({{ subCategory.products }})</div>
                                 <div
                                     v-if="index === 3 || index === 5"
-                                    class="bg-blue text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
+                                    class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
                                 >
                                     New
                                 </div>
@@ -723,7 +723,7 @@ onMounted(() => {
     @apply flex justify-center w-full h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px] #{!important};
 }
 .headerSubmenu--swiper .swiper-pagination-bullet {
-    @apply w-1.5 h-1.5 bg-gray-100 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
+    @apply w-1.5 h-1.5 bg-gray-500 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
     margin-right: 0 !important;
 }
 .headerSubmenu--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
