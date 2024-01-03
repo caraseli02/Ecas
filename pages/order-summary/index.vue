@@ -339,6 +339,7 @@ Emitter.on('checkout', async () => {
                 address: getShipping(),
                 billingAddress: getBilling(),
                 shippingTypeId: '658ee675150e8ac6ee9b8932',
+                backorderShippingTypeId: '6595e265a1161659a7431594' || null,
             },
             smallOrderChargeId: '658ea7ccb478b7a51e42fa9f',
             paymentDetails: {

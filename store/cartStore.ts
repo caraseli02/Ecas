@@ -16,6 +16,7 @@ export const useCartStore = defineStore({
             Emitter.emit('update-cart', cart);
         },
         async updateAndReturnCart() {
+            console.log('updating');
             const { $api } = useNuxtApp();
             const cartResponse = await $api.cart.fetchCartList();
 
@@ -37,6 +38,7 @@ export const useCartStore = defineStore({
     getters: {
         getCart: async (state) => {
             const { $api } = useNuxtApp();
+            console.log(state.cart);
             if (!state.cart) {
                 const cartResponse = await $api.cart.fetchCartList();
 

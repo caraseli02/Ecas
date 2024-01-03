@@ -11,3 +11,4 @@ export default defineEventHandler(async (event) => {
         measurementId: config.FIREBASE_MEASUREMENT_ID,
     };
 });
+//test

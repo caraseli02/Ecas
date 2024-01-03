@@ -28,21 +28,15 @@
             </div>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
                 <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-2 md:mx-3 xl:mx-0 xl:mr-3 xl:min-w-[330px] xl:min-h-[592px]">
-                    <div
-                        class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-xs p-6 md:m-0 xl:flex-col xl:w-[330px]"
-                    >
+                    <div class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-xs p-6 md:m-0 xl:flex-col xl:w-[330px]">
                         <img
                             :src="BlackFridayItem"
                             alt="Black Friday Product"
                             class="h-[100px] w-[120px] md:h-auto md:w-[290px] md:max-h-[240px] xl:w-full"
                         />
                         <div class="flex-1 flex gap-4 flex-col justify-center xl:justify-start xl:items-start">
-                            <div class="font-semibold text-sm xl:text-xl">
-                                Exclusive Black Friday
-                            </div>
-                            <p
-                                class="text-xs text-slate-500 md:text-[13px] xl:text-base"
-                            >
+                            <div class="font-semibold text-sm xl:text-xl">Exclusive Black Friday</div>
+                            <p class="text-xs text-slate-500 md:text-[13px] xl:text-base">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin accumsan nisi a porttitor.
                             </p>
                             <button
@@ -51,7 +45,6 @@
                                 View More
                             </button>
                         </div>
-
                     </div>
                 </div>
                 <div v-if="productList.length === 0" class="px-1 md:pt-3 md:pr-0">
@@ -151,10 +144,10 @@
 
 <script setup lang="ts">
 import BlackFridayItem from '@/assets/media/home/black-friday-item.png';
-const { $api } = useNuxtApp();
-import { A11y, Grid, Pagination } from 'swiper';
+import { A11y, Pagination } from 'swiper';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
 
+const { $api } = useNuxtApp();
 
 const elDOM = ref<HTMLElement | null>(null);
 
@@ -194,16 +187,6 @@ watch(activeFilter, async (value) => {
 
     if (data) {
         productList.value = data as unknown as ProductInterface[];
-        // productList.value = data?.map((item) => ({
-        //     slug: item._id,
-        //     title: item.alias,
-        //     category: 'Not supported',
-        //     price: new Intl.NumberFormat('en-US', {
-        //         minimumFractionDigits: 3,
-        //     }).format(item.priceEur),
-        //     cover: item.details.ProductImage.ProductImageLarge,
-        //     stock: item.stock,
-        // }));
     }
 });
 
@@ -233,16 +216,6 @@ async function getProductTab() {
 
     if (data) {
         productList.value = data as unknown as ProductInterface[];
-        // productList.value = data?.map((item) => ({
-        //     slug: item._id,
-        //     title: item.alias,
-        //     category: 'Not supported',
-        //     price: new Intl.NumberFormat('en-US', {
-        //         minimumFractionDigits: 3,
-        //     }).format(item.priceEur),
-        //     cover: item.details.ProductImage.ProductImageLarge,
-        //     stock: item.stock,
-        // }));
     }
 }
 
