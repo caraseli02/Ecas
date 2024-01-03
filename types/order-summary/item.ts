@@ -106,6 +106,7 @@ export interface OrderShippingDetailsInterface {
     address: ShippingAddressInterface;
     billingAddress: ShippingAddressInterface;
     shippingTypeId: string;
+    backorderShippingTypeId?: string;
 }
 
 export interface PaymentDetails {
