@@ -54,7 +54,8 @@
                         <h3>No items to show from this tab</h3>
                     </div>
                 </div>
-                <Swiper
+                <ProductGrid :products-list="productsByViewport" />
+                <!-- <Swiper
                     :modules="[A11y, Pagination]"
                     :slides-per-view="1"
                     :space-between="15"
@@ -70,8 +71,8 @@
                             <ProductCard :product="product" />
                         </div>
                     </SwiperSlide>
-                </Swiper>
-                <Swiper
+                </Swiper> -->
+                <!-- <Swiper
                     :modules="[A11y, Pagination]"
                     :slides-per-view="1"
                     :space-between="15"
@@ -92,8 +93,8 @@
                             />
                         </div>
                     </SwiperSlide>
-                </Swiper>
-                <Swiper
+                </Swiper> -->
+                <!-- <Swiper
                     :modules="[A11y, Pagination]"
                     :slides-per-view="1"
                     :space-between="15"
@@ -114,8 +115,8 @@
                             />
                         </div>
                     </SwiperSlide>
-                </Swiper>
-                <Swiper
+                </Swiper> -->
+                <!-- <Swiper
                     :modules="[A11y, Pagination]"
                     :slides-per-view="1"
                     :space-between="15"
@@ -136,7 +137,7 @@
                             />
                         </div>
                     </SwiperSlide>
-                </Swiper>
+                </Swiper> -->
             </div>
         </div>
     </section>
@@ -144,10 +145,11 @@
 
 <script setup lang="ts">
 import BlackFridayItem from '@/assets/media/home/black-friday-item.png';
-import { A11y, Pagination } from 'swiper';
-import { ProductInterface } from '~/model/products/response/ProductResponse';
-
+import { PaginatedUserRequest } from '~/model/user/request/PaginatedUserRequest';
+import type { ProductCard as ProductCardType } from '~~/types';
 const { $api } = useNuxtApp();
+
+const viewport = useViewport()
 
 const elDOM = ref<HTMLElement | null>(null);
 
@@ -176,6 +178,21 @@ const productsXL = computed(() => {
     }
     return chunkedArray;
 });
+
+const productsByViewport = computed(() => {
+    if(viewport.breakpoint.value === 'xs') {
+        return productList.value;
+    } else if(viewport.breakpoint.value ==='sm') {
+        return productsMD.value;
+    } else if(viewport.breakpoint.value ==='md') {
+        return productsMD.value;
+    } else if(viewport.breakpoint.value === 'xl' || viewport.breakpoint.value === 'lg') {
+        return productsLG.value;
+    } else if(viewport.breakpoint.value === '2xl') {
+        return productsXL.value;
+    } else { return [] }
+})
+    
 
 const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 const activeFilter = ref('featured');
@@ -222,6 +239,7 @@ async function getProductTab() {
 onMounted(() => {
     getProductTab();
 });
+
 </script>
 
 <style lang="scss">
