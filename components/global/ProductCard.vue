@@ -122,11 +122,9 @@ const addToCart = async (product: ProductInterface, stockToAdd = 1) => {
         userId: '',
         products: [{ id: product._id, stock: stockToAdd, isFolder: false }],
     };
-
-    const object = await $api.cart.addEntityToCart(payload);
-
-    if (object.status === 'success') {
-        await cartStore.updateAndReturnCart();
-    }
+    console.log('adding to cart');
+    await $api.cart.addEntityToCart(payload);
+    console.log('test');
+    await cartStore.updateAndReturnCart();
 };
 </script>
