@@ -12,7 +12,7 @@ import OrdersService from '~/services/dashboard/orders.service';
 import CartService from '~/services/cart.service';
 
 /** ApiInstance interface provides us with good typing */
-interface IApiInstance {
+export interface IApiInstance {
     product: ProductService;
     auth: AuthService;
     user: UserService;
@@ -24,6 +24,12 @@ interface IApiInstance {
     controlPanel: ControlPanelService;
     orders: OrdersService;
 }
+
+declare module '#app' {
+    interface NuxtApp {
+      $api: IApiInstance;
+    }
+  }
 
 export default defineNuxtPlugin((nuxtApp) => {
     const fetchOptions: FetchOptions = {
