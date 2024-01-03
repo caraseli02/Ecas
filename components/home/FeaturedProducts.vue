@@ -51,7 +51,7 @@
                                 View More
                             </button>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div v-if="productList.length === 0" class="px-1 md:pt-3 md:pr-0">
@@ -151,14 +151,14 @@
 
 <script setup lang="ts">
 import BlackFridayItem from '@/assets/media/home/black-friday-item.png';
-import { A11y, Pagination } from 'swiper';
-import { PaginatedUserRequest } from '~/model/user/request/PaginatedUserRequest';
-import { ProductCard as ProductCardType } from '~~/types';
 const { $api } = useNuxtApp();
+import { A11y, Grid, Pagination } from 'swiper';
+import { ProductInterface } from '~/model/products/response/ProductResponse';
+
 
 const elDOM = ref<HTMLElement | null>(null);
 
-const productList = ref<ProductCardType[]>([]);
+const productList = ref<ProductInterface[]>([]);
 
 const productsMD = computed(() => {
     const chunkedArray = [];
@@ -193,16 +193,17 @@ watch(activeFilter, async (value) => {
     const { data } = await $api.product.fetchProductTab(value);
 
     if (data) {
-        productList.value = data?.map((item) => ({
-            slug: item._id,
-            title: item.alias,
-            category: 'Not supported',
-            price: new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 3,
-            }).format(item.priceEur),
-            cover: item.details.ProductImage.ProductImageLarge,
-            stock: item.stock,
-        }));
+        productList.value = data as unknown as ProductInterface[];
+        // productList.value = data?.map((item) => ({
+        //     slug: item._id,
+        //     title: item.alias,
+        //     category: 'Not supported',
+        //     price: new Intl.NumberFormat('en-US', {
+        //         minimumFractionDigits: 3,
+        //     }).format(item.priceEur),
+        //     cover: item.details.ProductImage.ProductImageLarge,
+        //     stock: item.stock,
+        // }));
     }
 });
 
@@ -225,31 +226,23 @@ const setActiveFilter = (filter: string) => {
 
 onMounted(async () => {
     setFilterLine();
-
-    // fetchUser()
 });
-
-async function fetchUser() {
-    const payload: PaginatedUserRequest = {
-        page: 1,
-        perPage: 10,
-    };
-    const user = await $api.user.fetchPaginatedUser(payload);
-}
 
 async function getProductTab() {
     const { data } = await $api.product.fetchProductTab('featured');
+
     if (data) {
-        productList.value = data?.map((item) => ({
-            slug: item._id,
-            title: item.alias,
-            category: 'Not supported',
-            price: new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 3,
-            }).format(item.priceEur),
-            cover: item.details.ProductImage.ProductImageLarge,
-            stock: item.stock,
-        }));
+        productList.value = data as unknown as ProductInterface[];
+        // productList.value = data?.map((item) => ({
+        //     slug: item._id,
+        //     title: item.alias,
+        //     category: 'Not supported',
+        //     price: new Intl.NumberFormat('en-US', {
+        //         minimumFractionDigits: 3,
+        //     }).format(item.priceEur),
+        //     cover: item.details.ProductImage.ProductImageLarge,
+        //     stock: item.stock,
+        // }));
     }
 }
 

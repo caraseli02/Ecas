@@ -11,15 +11,15 @@
             <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-6">
                     <span class="text-[#5E6278] text-sm font-normal leading-6">Discount</span>
-                    <span class="text-neutral-700 text-sm font-normal leading-6">({{ discountPercentage }}%)</span>
+                    <!--                    <span class="text-neutral-700 text-sm font-normal leading-6">({{ discountPercentage }}%)</span>-->
                 </div>
-                <span class="text-neutral-700 text-sm font-medium leading-6">- $ {{ calculatedDiscount }}</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ calculatedDiscount.toFixed(2) }}</span>
             </div>
             <div v-if="smallOrder" class="flex flex-row justify-between w-full">
                 <div class="flex flex-col gap-1">
                     <div class="flex flex-row gap-2 items-center">
                         <span class="text-[#5E6278] text-sm font-normal leading-6">Handling Charge</span>
-                        <button @click="showSmallOrderModal = true" class="group">
+                        <button class="group" @click="showSmallOrderModal = true">
                             <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
                         </button>
                     </div>
@@ -30,7 +30,11 @@
                 </div>
             </div>
             <Transition name="fade-bottom">
-                <div v-if="showSmallOrderModal" v-click-outside="() => (showSmallOrderModal = false)" class="absolute bottom-[200px] left-0">
+                <div
+                    v-if="showSmallOrderModal"
+                    v-click-outside="() => (showSmallOrderModal = false)"
+                    class="absolute bottom-[200px] left-0"
+                >
                     <OrderSummarySmallOrderModal />
                 </div>
             </Transition>
@@ -42,9 +46,15 @@
                             <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
                         </button>
                     </div>
-                    <span v-if="order.deliveryMethod === 0" class="text-neutral-700 italic text-sm font-normal leading-6">Free Delivery (3-7 Days)</span>
-                    <span v-if="order.deliveryMethod === 1" class="text-neutral-700 italic text-sm font-normal leading-6">Standard Delivery (3-5 Days)</span>
-                    <span v-if="order.deliveryMethod === 2" class="text-neutral-700 italic text-sm font-normal leading-6">Express Delivery (1-3 Days)</span>
+                    <span v-if="order.deliveryMethod === 0" class="text-neutral-700 italic text-sm font-normal leading-6"
+                        >Free Delivery (3-7 Days)</span
+                    >
+                    <span v-if="order.deliveryMethod === 1" class="text-neutral-700 italic text-sm font-normal leading-6"
+                        >Standard Delivery (3-5 Days)</span
+                    >
+                    <span v-if="order.deliveryMethod === 2" class="text-neutral-700 italic text-sm font-normal leading-6"
+                        >Express Delivery (1-3 Days)</span
+                    >
                 </div>
                 <div class="flex flex-col justify-end">
                     <span v-if="order.deliveryMethod === 0" class="text-neutral-700 text-sm font-medium leading-6">$ 0.00</span>
@@ -56,8 +66,8 @@
                 <div class="flex flex-row">
                     <span class="text-[#5E6278] text-sm font-normal leading-6">Tax:</span>
                     <button class="group ml-2">
-                            <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
-                        </button>
+                        <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
+                    </button>
                     <span class="text-neutral-700 text-sm font-normal leading-6 ml-6">(VAT 19%)</span>
                 </div>
                 <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ calculatedVAT }}</span>
@@ -95,7 +105,7 @@ export default defineComponent({
             if (this.totalWithoutVAT >= 40) {
                 return 0;
             }
-            if (this.totalWithoutVAT < 40 && this.totalWithoutVAT >= 20 ) {
+            if (this.totalWithoutVAT < 40 && this.totalWithoutVAT >= 20) {
                 return 5.49;
             }
             if (this.totalWithoutVAT < 20) {
@@ -105,33 +115,30 @@ export default defineComponent({
         },
         totalWithoutVAT(): number {
             if (this.order.subtotal) {
-                return parseFloat((this.order.subtotal - this.calculatedDiscount).toFixed(2));
+                return parseFloat(Number(this.order.subtotal).toFixed(2));
             }
             return 0;
         },
         calculatedDiscount(): number {
-            if (this.order.discount && this.order.subtotal) {
-                return this.order.subtotal * this.order.discount.value;
-            }
-            return 0;
+            return this.order.discount?.total || 0;
         },
         discountPercentage(): number {
             if (this.order.discount) {
-                return this.order.discount.value*100;
+                return this.order.discount.value;
             }
             return 0;
         },
         calculatedVAT(): number {
             if (this.order.subtotal) {
-                return parseFloat(((this.order.subtotal - this.calculatedDiscount) * 0.19).toFixed(2));
+                return parseFloat((this.order.subtotal * 0.19).toFixed(2));
             }
             return 0;
         },
         calculatedTotal(): number {
             if (this.order.subtotal && !this.smallOrder) {
-                return parseFloat((this.order.subtotal - this.calculatedDiscount + this.calculatedVAT + this.shippingFee).toFixed(2));
+                return parseFloat((Number(this.order.subtotal) + this.calculatedVAT + this.shippingFee).toFixed(2));
             } else if (this.order.subtotal && this.smallOrder) {
-                return parseFloat((this.order.subtotal - this.calculatedDiscount + this.calculatedVAT + this.shippingFee + this.smallOrder).toFixed(2));
+                return parseFloat((Number(this.order.subtotal) + this.calculatedVAT + this.shippingFee + this.smallOrder).toFixed(2));
             }
             return 0;
         },
@@ -147,6 +154,6 @@ export default defineComponent({
             }
             return 0;
         },
-    }
+    },
 });
 </script>
