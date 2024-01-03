@@ -347,18 +347,18 @@ const setProductsList = () => {
 
     totalItems.value = paginatedProductsData?.items.total_items;
     totalPages.value = paginatedProductsData?.items.page_count;
-
-    if (paginatedProducts) {
-        paginatedProductsList.value = paginatedProducts.map((item) => ({
-            slug: item._id,
-            title: item.alias,
-            cover: item.details.ProductImage.ProductImageSmall,
-            manufacturer: item.manufacturer,
-            manufacturerCode: item.manufacturerCode,
-            stock: item.stock,
-            description: item.description,
-        }));
-    }
+    paginatedProductsList.value = paginatedProducts;
+    // if (paginatedProducts) {
+    //     paginatedProductsList.value = paginatedProducts.map((item) => ({
+    //         slug: item._id,
+    //         title: item.alias,
+    //         cover: item.details.ProductImage.ProductImageSmall,
+    //         manufacturer: item.manufacturer,
+    //         manufacturerCode: item.manufacturerCode,
+    //         stock: item.stock,
+    //         description: item.description,
+    //     }));
+    // }
 };
 
 setProductsList();

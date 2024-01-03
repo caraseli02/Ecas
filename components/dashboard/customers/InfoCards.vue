@@ -17,7 +17,7 @@
                         No data available
                     </div>
                     <div v-else-if="!emptyData && !error.lastOrder" class="text-xl font-semibold text-blue-500 leading-[1.2]">
-                        {{ lastOrder?.shortId || '-' }}
+                        {{ `#${lastOrder?.shortId}` || '-' }}
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                         No data available
                     </div>
                     <div v-else-if="!emptyData && !error.totalSpent" class="text-xl font-semibold leading-[1.2]">
-                        ${{ totalSpent || 0 }}
+                        ${{ totalSpent.toFixed(2) || 0 }}
                     </div>
                 </div>
             </div>

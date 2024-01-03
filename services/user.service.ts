@@ -3,11 +3,12 @@ import { PaginatedUserRequest } from '~/model/user/request/PaginatedUserRequest'
 import { useAuthStore } from '~/store/authStore';
 import { ProductResponse } from '~/model/products/response/ProductResponse';
 import { FirebaseError } from 'firebase/app';
+import { AccountAdminSettings } from '~/types/auth/account-settings';
 
 class UserService extends HttpFactory {
     private RESOURCE = '/user';
-
-    private token = useAuthStore().getToken ?? null;
+    private authStore = useAuthStore();
+    private token = this.authStore.getToken() ?? null;
 
     async fetchPaginatedUser(params: PaginatedUserRequest) {
         const baseURL = useRuntimeConfig().public.BASE_URL_API;
@@ -48,6 +49,14 @@ class UserService extends HttpFactory {
             }
             return err;
         }
+    }
+
+    async fetchCustomerCredit(id: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<AccountAdminSettings>('GET', `${this.RESOURCE}/credit`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
     }
 }
 
