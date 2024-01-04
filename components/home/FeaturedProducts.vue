@@ -1,31 +1,8 @@
 <template>
-    <section ref="elDOM" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
+    <!-- <ProductBlocks class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" /> -->
+    <section class="mb-7 lg:mb-[38px] xl:mb-[58px]">
         <div class="container px-2 md:px-3 xl:pl-6 overflow-hidden">
-            <div class="flex items-start justify-between mb-3 mx-2 md:mx-3 xl:ml-0 md:mb-[20px] xl:mb-3">
-                <h2 class="hidden text-xl font-semibold md:block">
-                    {{ activeFilter.charAt(0).toUpperCase() + activeFilter.substr(1).toLowerCase().replace('-', ' ') }}
-                    products
-                </h2>
-                <div class="relative flex items-center gap-4 xl:gap-6">
-                    <button
-                        v-for="(filter, index) in filters"
-                        :key="index"
-                        :data-tab="textUtil.slugify(filter)"
-                        class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue-500 md:text-base md:pb-3"
-                        :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue-500' : 'text-slate-500 after:opacity-0']"
-                        @click="setActiveFilter(filter)"
-                    >
-                        {{ filter }}
-                    </button>
-                    <div
-                        class="absolute bottom-0 h-[4px] bg-blue-500 rounded-[100px] transition-all duration-300"
-                        :style="{
-                            left: filterLineLeftPosition + 'px',
-                            width: filterLineWidth + 'px',
-                        }"
-                    />
-                </div>
-            </div>
+            <ProductTabs :filters="filters" @new-products="productList = $event"/>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
                 <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-2 md:mx-3 xl:mx-0 xl:mr-3 xl:min-w-[330px] xl:min-h-[592px]">
                     <div class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-xs p-6 md:m-0 xl:flex-col xl:w-[330px]">
@@ -55,94 +32,11 @@
                     </div>
                 </div>
                 <ProductGrid 
-                    masonryView
-                    hasBanner
+                    masonry-view
+                    has-banner
                     card-class="xl:first:max-w-full" 
                     :products-list="productList" 
                 />
-                <!-- <Swiper
-                    :modules="[A11y, Pagination]"
-                    :slides-per-view="1"
-                    :space-between="15"
-                    :grab-cursor="true"
-                    :pagination="{
-                        bulletElement: 'button',
-                        clickable: true,
-                    }"
-                    class="homeFeaturedProducts--swiper md:hidden"
-                >
-                    <SwiperSlide v-for="(product, index) in productList" :key="index">
-                        <div class="grid grid-cols-1 gap-6 px-2 mt-6">
-                            <ProductCard :product="product" />
-                        </div>
-                    </SwiperSlide>
-                </Swiper> -->
-                <!-- <Swiper
-                    :modules="[A11y, Pagination]"
-                    :slides-per-view="1"
-                    :space-between="15"
-                    :grab-cursor="true"
-                    :pagination="{
-                        bulletElement: 'button',
-                        clickable: true,
-                    }"
-                    class="hidden homeFeaturedProducts--swiper w-[100%] md:block lg:hidden"
-                >
-                    <SwiperSlide v-for="(productGroup, index) in productsMD" :key="index">
-                        <div class="grid grid-cols-2 gap-6 px-3 mt-6">
-                            <ProductCard
-                                v-for="(product, productIndex) in productGroup"
-                                :key="productIndex"
-                                :product="product"
-                                class="first:col-span-2"
-                            />
-                        </div>
-                    </SwiperSlide>
-                </Swiper> -->
-                <!-- <Swiper
-                    :modules="[A11y, Pagination]"
-                    :slides-per-view="1"
-                    :space-between="15"
-                    :grab-cursor="true"
-                    :pagination="{
-                        bulletElement: 'button',
-                        clickable: true,
-                    }"
-                    class="hidden homeFeaturedProducts--swiper w-[100%] lg:block xl:hidden"
-                >
-                    <SwiperSlide v-for="(productGroup, index) in productsLG" :key="index">
-                        <div class="grid grid-cols-3 gap-6 mx-3 mt-6">
-                            <ProductCard
-                                v-for="(product, productIndex) in productGroup"
-                                :key="productIndex"
-                                :product="product"
-                                class="first:col-span-2"
-                            />
-                        </div>
-                    </SwiperSlide>
-                </Swiper> -->
-                <!-- <Swiper
-                    :modules="[A11y, Pagination]"
-                    :slides-per-view="1"
-                    :space-between="15"
-                    :grab-cursor="true"
-                    :pagination="{
-                        bulletElement: 'button',
-                        clickable: true,
-                    }"
-                    class="hidden homeFeaturedProducts--swiper w-[100%] xl:block"
-                >
-                    <SwiperSlide v-for="(productGroup, index) in productsXL" :key="index">
-                        <div class="grid grid-cols-3 gap-6 mx-3 mt-3">
-                            <ProductCard
-                                v-for="(product, productIndex) in productGroup"
-                                :key="productIndex"
-                                :product="product"
-                                class="first:col-span-2 first:max-w-full"
-                            />
-                        </div>
-                    </SwiperSlide>
-                </Swiper> -->
             </div>
         </div>
     </section>
@@ -153,43 +47,9 @@ import BlackFridayItem from '@/assets/media/home/black-friday-item.png';
 import type { ProductInterface } from '~/model/products/response/ProductResponse';
 const { $api } = useNuxtApp();
 
-const elDOM = ref<HTMLElement | null>(null);
-
 const productList = ref<ProductInterface[]>([]);
 
 const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
-const activeFilter = ref('featured');
-const filterLineLeftPosition = ref(0);
-const filterLineWidth = ref(0);
-
-watch(activeFilter, async (value) => {
-    const { data } = await $api.product.fetchProductTab(value);
-
-    if (data) {
-        productList.value = data as unknown as ProductInterface[];
-    }
-});
-
-const setFilterLine = () => {
-    if (elDOM.value) {
-        const activeFilterEl = elDOM.value.querySelector(`[data-tab=${activeFilter.value}]`) as HTMLButtonElement;
-
-        if (activeFilterEl) {
-            const rect = activeFilterEl.getBoundingClientRect();
-            filterLineLeftPosition.value = activeFilterEl.offsetLeft;
-            filterLineWidth.value = rect.width;
-        }
-    }
-};
-
-const setActiveFilter = (filter: string) => {
-    activeFilter.value = textUtil.slugify(filter);
-    setFilterLine();
-};
-
-onMounted(async () => {
-    setFilterLine();
-});
 
 async function getProductTab() {
     const { data } = await $api.product.fetchProductTab('featured');

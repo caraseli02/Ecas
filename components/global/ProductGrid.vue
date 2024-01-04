@@ -35,6 +35,7 @@ const props = defineProps<{
   cardClass?: string
   masonryView?: boolean
   hasBanner?: boolean
+  rowsNumber?: number
 }>()
 
 const computedCols = computed(() => {
@@ -51,6 +52,7 @@ function createChunkedArray(chunkSize: number, productList: ProductInterface[]) 
 }
 const viewport = useViewport()
 const productsByViewport = computed(() => {
+    const rowsNumber = props.rowsNumber ?? 1
     const breakpointsMasonryBanner = {
         'xs': props.productsList,
         'sm': createChunkedArray(3, props.productsList),
@@ -64,11 +66,11 @@ const productsByViewport = computed(() => {
 
     const breakpoints = {
         'xs': props.productsList,
-        'sm': createChunkedArray(4, props.productsList),
-        'md': createChunkedArray(4, props.productsList),
-        'lg': createChunkedArray(6, props.productsList),
-        'xl': createChunkedArray(6, props.productsList),
-        '2xl': createChunkedArray(8, props.productsList),
+        'sm': createChunkedArray(2 * rowsNumber, props.productsList),
+        'md': createChunkedArray(2 * rowsNumber, props.productsList),
+        'lg': createChunkedArray(3 * rowsNumber, props.productsList),
+        'xl': createChunkedArray(3 * rowsNumber, props.productsList),
+        '2xl': createChunkedArray(4 * rowsNumber, props.productsList),
     };
 
     if(props.hasBanner && props.masonryView) {
