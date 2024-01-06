@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-col gap-8">
     <ProductBlocks :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
       <template #header>
         <section class="flex justify-between items-center">
@@ -14,7 +14,7 @@
       <template #header>
         <section class="flex justify-between items-center">
           <div class="text-xl">Browsing History</div>
-          <NuxtLink class="text-blue-500" to="#">
+          <NuxtLink class="text-blue-500 flex items-center gap-2" to="#">
             View All
             <SvgoArrowRight />
           </NuxtLink>
@@ -26,12 +26,11 @@
     </ProductBlocks>
     <ProductBlocks class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="['Best Sellers', 'Top Searched']" />
     <ProductBlocks :rowsNumber="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="['Best Sellers', 'Top Searched']" />
-    <ProductBlocks masonry-view :rowsNumber="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="['Best Sellers', 'Top Searched']" />
+    <ProductBlocks masonry-view :rowsNumber="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" />
   </div>
 </template>
 
 <script setup lang="ts">
-import BlackFridayItem from '@/assets/media/home/black-friday-item.png';
 import type { ProductInterface } from '~/model/products/response/ProductResponse';
 const { $api } = useNuxtApp();
 
