@@ -1,8 +1,8 @@
 <template>
-    <section>
+    <section class="mt-10">
         <div class="container px-2 md:px-3 xl:pl-6 overflow-hidden">
-
-            <ProductTabs :filters="filters" @new-products="productList = $event"/>
+            <slot name="header" />
+            <ProductTabs v-if="!fetchedProducts" :filters="filters ?? []" @new-products="productList = $event"/>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
                 <slot name="banner" />
                 <div v-if="productList.length === 0" class="px-1 md:pt-3 md:pr-0">
@@ -11,7 +11,12 @@
                         <h3>No items to show from this tab</h3>
                     </div>
                 </div>
-                <ProductGrid :products-list="productList" />
+                <ProductGrid 
+                :masonry-view="masonryView"
+                :has-banner="!!slots.banner"
+                :products-list="productList" 
+                :rowsNumber="rowsNumber"
+                />
             </div>
         </div>
     </section>
@@ -19,34 +24,31 @@
 
 <script setup lang="ts">
 import type { ProductInterface } from '~/model/products/response/ProductResponse';
-const { $api } = useNuxtApp();
 
-defineProps<{
-    filters: string[]
+const props = defineProps<{
+    filters?: string[]
+    masonryView?: boolean
+    fetchedProducts?: ProductInterface[]
+    rowsNumber?: number
+}>()
+
+const slots = defineSlots<{
+    header?: () => any
+    banner?: () => any
 }>()
 
 const productList = ref<ProductInterface[]>([]);
 
-async function getProductTab() {
-    const { data } = await $api.product.fetchProductTab('featured');
-
-    if (data) {
-        productList.value = data as unknown as ProductInterface[];
-        // productList.value = data?.map((item) => ({
-        //     slug: item._id,
-        //     title: item.alias,
-        //     category: 'Not supported',
-        //     price: new Intl.NumberFormat('en-US', {
-        //         minimumFractionDigits: 3,
-        //     }).format(item.priceEur),
-        //     cover: item.details.ProductImage.ProductImageLarge,
-        //     stock: item.stock,
-        // }));
-    }
-}
-
 onMounted(() => {
-    getProductTab();
-});
+    if(props.fetchedProducts) {
+        productList.value = props.fetchedProducts;
+    }
+})
+
+watch(() => props.fetchedProducts, (newVal) => {
+    if(newVal && newVal?.length > 0) {
+        productList.value = props.fetchedProducts as ProductInterface[];
+    }
+})
 
 </script>

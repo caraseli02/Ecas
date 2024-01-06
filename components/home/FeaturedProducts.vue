@@ -1,5 +1,4 @@
 <template>
-    <!-- <ProductBlocks class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" /> -->
     <section class="mb-7 lg:mb-[38px] xl:mb-[58px]">
         <div class="container px-2 md:px-3 xl:pl-6 overflow-hidden">
             <ProductTabs :filters="filters" @new-products="productList = $event"/>
@@ -52,7 +51,7 @@ const productList = ref<ProductInterface[]>([]);
 const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 
 async function getProductTab() {
-    const { data } = await $api.product.fetchProductTab('featured');
+    const { data } = await $api.product.fetchProductTab('top-searched');
 
     if (data) {
         productList.value = data as unknown as ProductInterface[];

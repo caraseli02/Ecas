@@ -23,7 +23,7 @@ v-if="activeFilter === textUtil.slugify(filter)"
 <script setup lang="ts">
 import type { ProductInterface } from '~/model/products/response/ProductResponse';
 
-defineProps<{
+const props = defineProps<{
   filters: string[]
 }>()
 
@@ -31,7 +31,11 @@ const emit = defineEmits<{
   newProducts: [val: ProductInterface[]]
 }>()
 
-const activeFilter = ref('featured');
+const activeFilter = ref('');
+
+onMounted(() => {
+  setActiveFilter(props.filters[0]);
+})
 
 const setActiveFilter = (filter: string) => {
     activeFilter.value = textUtil.slugify(filter);
@@ -40,6 +44,7 @@ const setActiveFilter = (filter: string) => {
 const { $api } = useNuxtApp();
 
 watch(activeFilter, async (value) => {
+  if (!value) return;
   const { data } = await $api.product.fetchProductTab(value);
 
   if (data) {
