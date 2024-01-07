@@ -1,6 +1,6 @@
-import { DiscountInterface } from '~/types/auth/account-settings';
-import { ProductInterface } from '~/model/products/response/ProductResponse';
-import { ShippingAddressInterface } from '~/types/auth/user-details';
+import {DiscountInterface} from '~/types/auth/account-settings';
+import {ProductInterface} from '~/model/products/response/ProductResponse';
+import {ShippingAddressInterface} from '~/types/auth/user-details';
 
 export interface OrderSummaryItem {
     title: string;
