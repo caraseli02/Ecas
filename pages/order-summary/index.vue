@@ -66,7 +66,8 @@ import {CartInterface} from '~/model/cart/response/cart.interface';
 import {
   BackorderShippingTypesInterface,
   GeneralSettingsInterface,
-  ShippingTypesInterface
+  ShippingTypesInterface,
+  SmallOrderChargeInterface
 } from '~/types/general-settings/general-settings';
 import {storeToRefs} from 'pinia';
 
@@ -292,17 +293,19 @@ const order = ref({
   type: '',
   backorderOption: null,
   deliveryMethod: null,
+  smallOrder: null,
 });
 
 const deliveryMethod = ref<ShippingTypesInterface | null>(null)
 const backOrderOption = ref<BackorderShippingTypesInterface | null>(null)
-const smallOrder = ref(null)
+const smallOrder = ref<SmallOrderChargeInterface | null>(null)
 
 watch(
     [order],
     ([_order]) => {
       deliveryMethod.value = _order.deliveryMethod
       backOrderOption.value = _order.backorderOption
+      smallOrder.value = _order.smallOrder
     },
     {deep: true}
 );
@@ -359,7 +362,7 @@ Emitter.on('delete-product-item', async (object: {
 });
 
 Emitter.on('checkout', async () => {
-  if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value) {
+  if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !smallOrder.value) {
     return;
   }
 
@@ -380,7 +383,7 @@ Emitter.on('checkout', async () => {
         shippingTypeId: deliveryMethod.value._id,
         backorderShippingTypeId: backOrderOption?.value?._id || null,
       },
-      smallOrderChargeId: '658ea7ccb478b7a51e42fa9f',
+      smallOrderChargeId: smallOrder.value._id,
       paymentDetails: {
         type: paymentType.value.type,
       },

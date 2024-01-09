@@ -43,7 +43,7 @@ export interface PaymentMethodsInterface {
 }
 
 export interface SmallOrderChargeInterface {
-    _id?: string;
+    _id: string;
     min: number;
     max: number;
     price: number;

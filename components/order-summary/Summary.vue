@@ -120,6 +120,8 @@ export default defineComponent({
       useAuthStore().generalSettings?.orderSettings?.smallOrderCharge?.forEach(charge => {
         if (this.totalWithoutVAT < charge.max && this.totalWithoutVAT >= charge.min) {
           smallOrderFee = charge.price
+          console.log(charge)
+          this.order.smallOrder = charge
         }
       })
       return smallOrderFee;
