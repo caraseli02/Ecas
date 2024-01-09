@@ -5,7 +5,7 @@
       <span class="text-[#FA4B4B] text-sm font-medium leading-6">Select backorder shipping preferences</span>
     </div>
     <div
-        v-for="backorderOptions in generalSettings?.orderSettings?.backorderShippingTypes" v-if="mixedOrBackOrder"
+        v-for="backorderOptions in generalSettings?.orderSettings?.backorderShippingTypes"
         class="flex flex-col gap-4">
       <button
           class="flex flex-row gap-3 items-start group"
@@ -63,6 +63,7 @@ import RadioButtonChecked from '@/assets/icons/radio-button-checked.svg';
 import {BackorderOptionEnum, DeliveryMethodEnum, OrderInterface} from '~/types';
 import {useAuthStore} from '~/store/authStore';
 import {PropType} from 'vue';
+import {storeToRefs} from 'pinia';
 
 export default defineComponent({
   name: 'ShippingPreferencesSection',
@@ -78,9 +79,10 @@ export default defineComponent({
     },
   },
   data() {
-    console.log(useAuthStore().generalSettings)
+    const authStore = useAuthStore();
+    const {getGeneralSettings} = storeToRefs(authStore)
     return {
-      generalSettings: useAuthStore().generalSettings
+      generalSettings: getGeneralSettings.value,
     };
   },
   computed: {

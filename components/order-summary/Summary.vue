@@ -87,8 +87,11 @@ import {DeliveryMethodEnum, OrderInterface} from '~/types';
 import {useAuthStore} from '~/store/authStore';
 import {PropType} from 'vue';
 import {ShippingTypesInterface} from '~/types/general-settings/general-settings';
+import {storeToRefs} from 'pinia';
 
 const shippingTypes = ref({} as ShippingTypesInterface)
+
+
 export default defineComponent({
   name: 'Summary',
   components: {
@@ -101,8 +104,10 @@ export default defineComponent({
     },
   },
   data() {
+    const authStore = useAuthStore();
+    const {getGeneralSettings} = storeToRefs(authStore)
     return {
-      generalSettings: useAuthStore().generalSettings,
+      generalSettings: getGeneralSettings.value,
       showSmallOrderModal: false,
     };
   },
@@ -120,7 +125,7 @@ export default defineComponent({
       return smallOrderFee;
     },
     totalWithoutVAT(): number {
-      if (order.subtotal) {
+      if (this.order.subtotal) {
         return parseFloat(Number(this.order.subtotal).toFixed(2));
       }
       return 0;

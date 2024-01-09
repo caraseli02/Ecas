@@ -80,6 +80,8 @@ export const useAuthStore = defineStore({
                 return details !== null ? (JSON.parse(details) as UserDetails) : null;
             }
         },
+        getGeneralSettings: (state) => state.generalSettings
+
     },
     persist: true,
 });
