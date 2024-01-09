@@ -51,7 +51,7 @@ const productList = ref<ProductInterface[]>([]);
 const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 
 async function getProductTab() {
-    const { data } = await $api.product.fetchProductTab('top-searched');
+    const { data } = await $api.product.fetchProductTab('featured');
 
     if (data) {
         productList.value = data as unknown as ProductInterface[];
