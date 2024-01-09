@@ -34,9 +34,9 @@
           </div>
           <div class="lg:grid lg:grid-cols-1">
             <OrderStockType
-                :items="cartItems" :account-credit="accountCredit" :order="order"/>
+                :items="cartItems" :account-credit="accountCredit" :order="order" :general-settings="generalSettings"/>
             <OrderSummaryNoteSection/>
-            <OrderSummary :order="order"/>
+            <OrderSummary :order="order" :general-settings="generalSettings"/>
             <OrderSummaryCheckoutButtons/>
             <OrderSummaryBannerCard/>
             <!-- <OrderSummaryEcxlusiveOffer class="max-lg:hidden" /> -->
@@ -63,6 +63,12 @@ import Emitter from 'tiny-emitter/instance.js';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 import {useCartStore} from '~/store/cartStore';
 import {CartInterface} from '~/model/cart/response/cart.interface';
+import {
+  BackorderShippingTypesInterface,
+  GeneralSettingsInterface,
+  ShippingTypesInterface
+} from '~/types/general-settings/general-settings';
+import {storeToRefs} from 'pinia';
 
 const store = useAuthStore();
 const cartStore = useCartStore();
@@ -128,6 +134,14 @@ watch(
     },
     {deep: true}
 );
+const generalSettings = ref<GeneralSettingsInterface | null>({} as GeneralSettingsInterface)
+const getGeneralSettingsFunction = () => {
+  const authStore = useAuthStore();
+  const {getGeneralSettings} = storeToRefs(authStore)
+  generalSettings.value = getGeneralSettings.value
+}
+
+await getGeneralSettingsFunction()
 
 const mapCartItems = (cart: CartProductsInterface[]) => {
   cartItems.value = cart.map((product: CartProductsInterface) => ({
@@ -276,9 +290,22 @@ const order = ref({
     type: null,
   },
   type: '',
-  backorderOption: 0,
-  deliveryMethod: 0,
+  backorderOption: null,
+  deliveryMethod: null,
 });
+
+const deliveryMethod = ref<ShippingTypesInterface | null>(null)
+const backOrderOption = ref<BackorderShippingTypesInterface | null>(null)
+const smallOrder = ref(null)
+
+watch(
+    [order],
+    ([_order]) => {
+      deliveryMethod.value = _order.deliveryMethod
+      backOrderOption.value = _order.backorderOption
+    },
+    {deep: true}
+);
 
 const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
   if (!orderItems) {
@@ -308,9 +335,6 @@ const calculateDiscount = (orderItems: CartProductsInterface[]) => {
   order.value.discount.total = discount;
 };
 
-const selectBackorderPreference = () => {
-  console.log(order.value);
-}
 Emitter.on('order-type', async (type: number) => {
   orderType.value = type;
 });
@@ -335,7 +359,7 @@ Emitter.on('delete-product-item', async (object: {
 });
 
 Emitter.on('checkout', async () => {
-  if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails) {
+  if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value) {
     return;
   }
 
@@ -353,14 +377,15 @@ Emitter.on('checkout', async () => {
         country: user.value.personalDetails.address.country,
         address: getShipping(),
         billingAddress: getBilling(),
-        shippingTypeId: '658ee675150e8ac6ee9b8932',
-        backorderShippingTypeId: '6595e265a1161659a7431594' || null,
+        shippingTypeId: deliveryMethod.value._id,
+        backorderShippingTypeId: backOrderOption?.value?._id || null,
       },
       smallOrderChargeId: '658ea7ccb478b7a51e42fa9f',
       paymentDetails: {
         type: paymentType.value.type,
       },
     };
+    console.log(orderRequestObject.value)
 
     if (note.value !== '') {
       orderRequestObject.value.note = {
@@ -369,7 +394,7 @@ Emitter.on('checkout', async () => {
       };
     }
   }
-
+  return;
   if (paymentType.value.selected) {
     const response = await $api.orders.sendOrder(orderRequestObject.value);
 

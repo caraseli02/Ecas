@@ -20,7 +20,7 @@ export interface ProductSettingsInterface {
 }
 
 export interface ShippingTypesInterface {
-    _id?: string;
+    _id: string;
     stripeId: string;
     title: string;
     min: number;
@@ -31,7 +31,7 @@ export interface ShippingTypesInterface {
 }
 
 export interface BackorderShippingTypesInterface {
-    _id?: string;
+    _id: string;
     title: string;
     description: string;
     active: boolean;

@@ -86,8 +86,7 @@ import InformationIcon from '~/assets/icons/information.svg';
 import {DeliveryMethodEnum, OrderInterface} from '~/types';
 import {useAuthStore} from '~/store/authStore';
 import {PropType} from 'vue';
-import {ShippingTypesInterface} from '~/types/general-settings/general-settings';
-import {storeToRefs} from 'pinia';
+import {GeneralSettingsInterface, ShippingTypesInterface} from '~/types/general-settings/general-settings';
 
 const shippingTypes = ref({} as ShippingTypesInterface)
 
@@ -102,12 +101,13 @@ export default defineComponent({
       type: Object as PropType<OrderInterface>,
       required: true,
     },
+    generalSettings: {
+      type: Object as PropType<GeneralSettingsInterface>,
+      required: true,
+    }
   },
   data() {
-    const authStore = useAuthStore();
-    const {getGeneralSettings} = storeToRefs(authStore)
     return {
-      generalSettings: getGeneralSettings.value,
       showSmallOrderModal: false,
     };
   },
@@ -163,14 +163,8 @@ export default defineComponent({
       return shippingFee;
     },
     shipping(): ShippingTypesInterface {
-      let shipping = {} as ShippingTypesInterface;
-      useAuthStore().generalSettings?.orderSettings?.shippingTypes?.forEach(shippingType => {
-        if (this.order.deliveryMethod === DeliveryMethodEnum[shippingType.title.split(' ')[0]]) {
-          shipping = shippingType
-          shippingTypes.value = shippingType
-        }
-      })
-      return shipping;
+      return this.order.deliveryMethod;
+
     }
   },
 });
