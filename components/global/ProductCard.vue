@@ -5,7 +5,10 @@
     >
         <ProductCardStock :stock="product.stock" />
         <div class="relative">
-            <img :src="product.details.ProductImage.ProductImageLarge" :alt="product.alias" class="object-contain mx-auto max-h-[120px]" />
+            <img v-if="product.details.ProductImage.ProductImageLarge" :src="product.details.ProductImage.ProductImageLarge" :alt="product.alias" class="object-contain mx-auto max-h-[120px]" />
+            <div class="w-full flex items-center justify-center" v-else>
+                <svgo-card-placehoder/>
+            </div>
             <div
                 v-if="productDiscount"
                 class="ring-1 ring-rose-500 rounded-full p-[5px] text-sm font-semibold text-rose-500 md:px-2.5 md:text-sm absolute top-2 left-0"
