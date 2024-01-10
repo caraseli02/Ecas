@@ -8,6 +8,7 @@ export const useCartStore = defineStore({
     state: () => {
         return {
             cart: null as CartInterface | null,
+            orderClientSecret: null as string | null,
         };
     },
     actions: {
@@ -15,13 +16,14 @@ export const useCartStore = defineStore({
             this.cart = cart;
             Emitter.emit('update-cart', cart);
         },
+        setOrderClientSecret(secret: string) {
+            this.orderClientSecret = secret;
+        },
         async updateAndReturnCart() {
-            console.log('updating');
             const { $api } = useNuxtApp();
             const cartResponse = await $api.cart.fetchCartList();
 
             if (!cartResponse) {
-                console.log('guest user');
                 return Promise<null>;
             }
 
@@ -33,17 +35,17 @@ export const useCartStore = defineStore({
         },
         emptyCart() {
             this.cart = null;
+            this.orderClientSecret = null;
         },
     },
     getters: {
         getCart: async (state) => {
             const { $api } = useNuxtApp();
-            console.log(state.cart);
+
             if (!state.cart) {
                 const cartResponse = await $api.cart.fetchCartList();
 
                 if (!cartResponse) {
-                    console.log('guest user');
                     return Promise<null>;
                 }
 
@@ -52,6 +54,7 @@ export const useCartStore = defineStore({
 
             return state.cart as CartInterface;
         },
+        getOrderClientSecret: (state) => state.orderClientSecret,
     },
     persist: true,
 });

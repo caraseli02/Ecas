@@ -345,6 +345,7 @@ Emitter.on('checkout', async () => {
             paymentDetails: {
                 type: paymentType.value.type,
             },
+            stripeCardId: 'pm_1OWPIdHH6OAXXqHT50cqSY8l',
         };
 
         if (note.value !== '') {
@@ -360,8 +361,9 @@ Emitter.on('checkout', async () => {
 
         if (response.status === 'success') {
             if (paymentType.value.type === 0) {
-                const paymentLink = response.data;
-                window.open(paymentLink, '_blank');
+                cartStore.setOrderClientSecret(response.data);
+                // const paymentLink = response.data;
+                // window.open(paymentLink, '_blank');
             }
 
             await cartStore.updateAndReturnCart();
