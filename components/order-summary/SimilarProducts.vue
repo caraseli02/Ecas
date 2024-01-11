@@ -1,16 +1,23 @@
 <template>
-    <div class="flex flex-col gap-6 pb-6">
+    <div v-if="slides" class="flex flex-col gap-6 pb-6">
         <div class="flex w-full">
             <span class="text-neutral-700 text-xl font-semibold leading-7">Similar Products</span>
         </div>
-        <div
-            class="max-h-[350px] max-w-[976px] w-[358px] sm:w-[608px] md:w-[736px] lg:w-[636px] xl:w-[976px] 2xl:w-[1024px]">
-            <Swiper :modules="[A11y, Pagination, Autoplay]" :autoplay="{
-                delay: 5000,
-            }" :slides-per-view="viewsPerSlide" :space-between="24" :grab-cursor="true" :pagination="{
-    bulletElement: 'button',
-    clickable: true,
-}" class="orderSummaryExclusiveOffer--swiper">
+        <div class="max-h-[350px] max-w-[976px] w-[358px] sm:w-[608px] md:w-[736px] lg:w-[636px] xl:w-[976px] 2xl:w-[1024px]">
+            <Swiper
+                :modules="[A11y, Pagination, Autoplay]"
+                :autoplay="{
+                    delay: 5000,
+                }"
+                :slides-per-view="viewsPerSlide"
+                :space-between="24"
+                :grab-cursor="true"
+                :pagination="{
+                    bulletElement: 'button',
+                    clickable: true,
+                }"
+                class="orderSummaryExclusiveOffer--swiper"
+            >
                 <SwiperSlide v-for="(item, index) in slides" :key="index">
                     <div class="mb-10 mt-1 flex items-center justify-center">
                         <OrderSummaryProductCard :item="item" />
@@ -31,7 +38,8 @@ const slides = ref([
         stock: 10,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge:
+                    'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',
@@ -50,7 +58,8 @@ const slides = ref([
         stock: 85,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge:
+                    'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',
@@ -69,7 +78,8 @@ const slides = ref([
         stock: 100,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge:
+                    'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',
@@ -88,7 +98,8 @@ const slides = ref([
         stock: 5,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge:
+                    'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',
@@ -107,7 +118,8 @@ const slides = ref([
         stock: 2346,
         details: {
             ProductImage: {
-                ProductImageLarge: 'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                ProductImageLarge:
+                    'https://s3-alpha-sig.figma.com/img/7d3c/615c/44d963c4cf38c99814b953510fac139f?Expires=1702252800&Signature=k6QT-9h4Y80HCnG6PLKsaPDaNiDn2aJk~Nhzx1rVhPsgKdpBSwoRvWvmEKoZEdawvduQ-aN9WR3z753gvgYweWUyiagpiQ6--3H6dMZG9ZZM3GOefZ6aETyoK80fnuRH36yKmcc1d~zu4I1GWtCYjYf3jFUGrrWlm9z3i-LG~zoTwANPbA9wcdDWiXmN9hKEBuLoxphz2tHCYXbnDNspGB~JH4DYwSY7aHHuCiqiVoE9IL2HKt43UVuT94KtxPnmxGxTmKwH0lu9iW59s-zS8d7v-epCFN8W3jFMrxaFCOYgCGQrLpWOFICp5KZPlAusgLNzbWdpg0EjVITxT0NmMA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
             },
             SummaryData: {
                 PartDescription: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW',
@@ -125,7 +137,7 @@ const slides = ref([
 
 const screenWidth = ref(0);
 
-const viewport = useViewport()
+const viewport = useViewport();
 
 if (viewport.breakpoint.value === 'xs') {
     screenWidth.value = 390;
@@ -159,7 +171,7 @@ watch(viewport.breakpoint, (newBreakpoint, oldBreakpoint) => {
     } else {
         screenWidth.value = 390;
     }
-})
+});
 
 const viewsPerSlide = computed(() => {
     if (screenWidth.value < 390) {

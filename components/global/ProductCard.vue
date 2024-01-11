@@ -7,7 +7,7 @@
         <div class="relative">
             <img v-if="hasValidImage" :src="productImageLarge" :alt="product.alias" class="object-contain mx-auto max-h-[120px]" />
             <div v-else class="w-full flex items-center justify-center">
-                <svgo-card-placehoder/>
+                <svgo-card-placehoder />
             </div>
             <div
                 v-if="productDiscount"
@@ -122,9 +122,8 @@ const addToCart = async (product: ProductInterface, stockToAdd = 1) => {
         userId: '',
         products: [{ id: product._id, stock: stockToAdd, isFolder: false }],
     };
-    console.log('adding to cart');
+
     await $api.cart.addEntityToCart(payload);
-    console.log('test');
     await cartStore.updateAndReturnCart();
 };
 const productImageLarge = computed(() => {
@@ -132,5 +131,5 @@ const productImageLarge = computed(() => {
 });
 const hasValidImage = computed(() => {
     return productImageLarge.value && !productImageLarge.value.includes('not_valid_image');
-})
+});
 </script>

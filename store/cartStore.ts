@@ -53,5 +53,7 @@ export const useCartStore = defineStore({
             return state.cart as CartInterface;
         },
     },
-    persist: true,
+    persist: {
+        storage: persistedState.localStorage,
+    },
 });
