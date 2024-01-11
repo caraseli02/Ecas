@@ -86,8 +86,6 @@ import { useAuthStore } from '~/store/authStore';
 import { PropType } from 'vue';
 import { GeneralSettingsInterface, ShippingTypesInterface } from '~/types/general-settings/general-settings';
 
-const shippingTypes = ref({} as ShippingTypesInterface);
-
 export default defineComponent({
     name: 'Summary',
     components: {

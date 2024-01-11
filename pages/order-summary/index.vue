@@ -27,7 +27,7 @@
                             @deleteSelected="deleteSelected"
                         />
                         <div class="hidden lg:flex flex-col">
-                            <OrderSummarySimilarProducts />
+                            <OrderSummarySimilarProducts :loading="loading" />
                             <OrderSummaryBannerImageCard class="hidden xl:flex" />
                         </div>
                     </div>
@@ -42,10 +42,10 @@
                         <OrderSummary :order="order" :general-settings="generalSettings" />
                         <OrderSummaryCheckoutButtons />
                         <OrderSummaryBannerCard />
-                        <!-- <OrderSummaryEcxlusiveOffer class="max-lg:hidden" /> -->
+                        <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
                         <div class="flex flex-col">
                             <div class="flex lg:hidden">
-                                <OrderSummarySimilarProducts />
+                                <OrderSummarySimilarProducts :loading="loading" />
                             </div>
                         </div>
                     </div>

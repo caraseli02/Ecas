@@ -1,5 +1,5 @@
 <template>
-    <div v-if="slides" class="flex flex-col gap-6 pb-6">
+    <div v-if="!loading" class="flex flex-col gap-6 pb-6">
         <div class="flex w-full">
             <span class="text-neutral-700 text-xl font-semibold leading-7">Similar Products</span>
         </div>
@@ -31,6 +31,14 @@
 <script setup lang="ts">
 import { A11y, Autoplay, Pagination } from 'swiper';
 import { ProductInterface } from '@/model/products/response/ProductResponse';
+
+const props = defineProps({
+    loading: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+});
 
 const slides = ref([
     {
