@@ -11,7 +11,7 @@
             </div>
             <div
                 v-if="productDiscount"
-                class="ring-1 ring-rose-500 rounded-full p-[5px] text-sm font-semibold text-rose-500 md:px-2.5 md:text-sm absolute top-2 left-0"
+                class="ring-1 ring-rose-500 rounded-full text-sm !leading-[1.5rem] font-semibold text-rose-500 md:px-2.5 md:text-sm absolute top-2 left-0"
             >
                 {{ productDiscount ?? 0 }}%
             </div>
@@ -19,7 +19,7 @@
 
         <section class="flex flex-col gap-1">
             <div class="flex gap-2 items-center">
-                <h3 class="font-semibold text-neutral-700">
+                <h3 class="font-semibold text-neutral-700 inline truncate">
                     {{ product.alias }}
                 </h3>
                 <button class="flex">
@@ -32,7 +32,7 @@
             </div>
         </section>
         <div class="mt-auto h-full">
-            <div class="text-xs min-h-[14px] leading-tight line-through mb-px md:text-xs">
+            <div class="min-h-[14px] leading-tight line-through mb-px md:text-sm">
                 <template v-if="productDiscount">
                     {{ priceConfiguration ? `$ ${priceConfiguration.price.toFixed(2)} (${priceConfiguration.quantity}+)` : '-' }}
                 </template>
@@ -63,15 +63,11 @@
             </div>
         </div>
         <div
-            v-if="product.stock"
             class="absolute bottom-0 right-0 bg-blue-500 rounded-br-xl rounded-tl-xl px-6 py-3"
             @click.prevent="addToCart(product, priceConfiguration ? priceConfiguration.quantity : 1)"
         >
             <SvgoCart class="w-6 h-6 text-white" />
         </div>
-        <button v-else class="absolute bottom-0 right-0 bg-blue-500 px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]">
-            <SvgoDoubleArrows class="w-6 h-6" />
-        </button>
     </NuxtLink>
 </template>
 
@@ -133,3 +129,4 @@ const hasValidImage = computed(() => {
     return productImageLarge.value && !productImageLarge.value.includes('not_valid_image');
 });
 </script>
+
