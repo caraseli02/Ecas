@@ -42,7 +42,7 @@ export const useAuthStore = defineStore({
             this.loggedInUser = null;
             this.userDetails = null;
             this.token = {value: '', createdAt: ''};
-            this.generalSettings = null;
+            // this.generalSettings = null;
 
             Emitter.emit('remove-cart-and-notifications', true);
 
@@ -57,7 +57,7 @@ export const useAuthStore = defineStore({
             this.loggedInUser = null;
             this.userDetails = null;
             this.token = {value: '', createdAt: ''};
-            this.generalSettings = null;
+            // this.generalSettings = null;
         },
         getToken() {
             console.log(`${moment().diff(this.token?.createdAt, 'minutes')} minutes left`);
