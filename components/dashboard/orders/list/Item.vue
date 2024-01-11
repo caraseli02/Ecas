@@ -91,7 +91,6 @@ const props = defineProps({
         default: false,
     },
 });
-console.log('test');
 
 const showOptions = ref(false);
 const showDeactivatingModal = ref(false);

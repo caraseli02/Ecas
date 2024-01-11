@@ -56,5 +56,7 @@ export const useCartStore = defineStore({
         },
         getOrderClientSecret: (state) => state.orderClientSecret,
     },
-    persist: true,
+    persist: {
+        storage: persistedState.localStorage,
+    },
 });

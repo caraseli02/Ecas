@@ -5,7 +5,10 @@
     >
         <ProductCardStock :stock="product.stock" />
         <div class="relative">
-            <img :src="product.details.ProductImage.ProductImageLarge" :alt="product.alias" class="object-contain mx-auto max-h-[120px]" />
+            <img v-if="hasValidImage" :src="productImageLarge" :alt="product.alias" class="object-contain mx-auto max-h-[120px]" />
+            <div v-else class="w-full flex items-center justify-center">
+                <svgo-card-placehoder />
+            </div>
             <div
                 v-if="productDiscount"
                 class="ring-1 ring-rose-500 rounded-full p-[5px] text-sm font-semibold text-rose-500 md:px-2.5 md:text-sm absolute top-2 left-0"
@@ -20,7 +23,7 @@
                     {{ product.alias }}
                 </h3>
                 <button class="flex">
-                    <InfoIcon class="w-4 h-4 text-slate-500" />
+                    <svgo-info-circle class="w-4 h-4 text-slate-500" />
                 </button>
             </div>
             <div class="flex flex-col gap-1 text-xs max-w-[220px]">
@@ -64,19 +67,16 @@
             class="absolute bottom-0 right-0 bg-blue-500 rounded-br-xl rounded-tl-xl px-6 py-3"
             @click.prevent="addToCart(product, priceConfiguration ? priceConfiguration.quantity : 1)"
         >
-            <CartIcon class="w-6 h-6 text-white" />
+            <SvgoCart class="w-6 h-6 text-white" />
         </div>
         <button v-else class="absolute bottom-0 right-0 bg-blue-500 px-[13px] py-1 rounded-br-md rounded-tl-md md:px-[18px] md:py-[9px]">
-            <ArrowsIcon class="w-6 h-6" />
+            <SvgoDoubleArrows class="w-6 h-6" />
         </button>
     </NuxtLink>
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import InfoIcon from '@/assets/icons/info-circle.svg';
-import CartIcon from '@/assets/icons/cart.svg';
-import ArrowsIcon from '@/assets/icons/double-arrows.svg';
 import { useNuxtApp } from '#app';
 import type { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import type { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
@@ -122,9 +122,14 @@ const addToCart = async (product: ProductInterface, stockToAdd = 1) => {
         userId: '',
         products: [{ id: product._id, stock: stockToAdd, isFolder: false }],
     };
-    console.log('adding to cart');
+
     await $api.cart.addEntityToCart(payload);
-    console.log('test');
     await cartStore.updateAndReturnCart();
 };
+const productImageLarge = computed(() => {
+    return props.product.details.ProductImage.ProductImageLarge;
+});
+const hasValidImage = computed(() => {
+    return productImageLarge.value && !productImageLarge.value.includes('not_valid_image');
+});
 </script>

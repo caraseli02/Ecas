@@ -40,26 +40,25 @@
             </Transition>
             <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-col gap-1">
-                    <div class="flex flex-row gap-2 items-center">
+                    <div v-if="shipping" class="flex flex-row gap-2 items-center">
                         <span class="text-[#5E6278] text-sm font-normal leading-6">Shipping</span>
                         <button class="group">
                             <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
                         </button>
                     </div>
-                    <span v-if="order.deliveryMethod === 0" class="text-neutral-700 italic text-sm font-normal leading-6"
-                        >Free Delivery (3-7 Days)</span
-                    >
-                    <span v-if="order.deliveryMethod === 1" class="text-neutral-700 italic text-sm font-normal leading-6"
-                        >Standard Delivery (3-5 Days)</span
-                    >
-                    <span v-if="order.deliveryMethod === 2" class="text-neutral-700 italic text-sm font-normal leading-6"
-                        >Express Delivery (1-3 Days)</span
-                    >
+                    <span v-if="shipping" class="text-neutral-700 italic text-sm font-normal leading-6">{{
+                        shipping?.title +
+                        ' (' +
+                        shipping?.min +
+                        '-' +
+                        shipping?.max +
+                        (shipping?.unit === 'day' ? '' : ' Business') +
+                        ' Days' +
+                        ')'
+                    }}</span>
                 </div>
-                <div class="flex flex-col justify-end">
-                    <span v-if="order.deliveryMethod === 0" class="text-neutral-700 text-sm font-medium leading-6">$ 0.00</span>
-                    <span v-if="order.deliveryMethod === 1" class="text-neutral-700 text-sm font-medium leading-6">$ 5.49</span>
-                    <span v-if="order.deliveryMethod === 2" class="text-neutral-700 text-sm font-medium leading-6">$ 7.49</span>
+                <div v-if="shipping" class="flex flex-col justify-end">
+                    <span class="text-neutral-700 text-sm font-medium leading-6">{{ '$ ' + shipping?.price }}</span>
                 </div>
             </div>
             <div class="flex flex-row justify-between w-full">
@@ -82,7 +81,10 @@
 </template>
 <script lang="ts">
 import InformationIcon from '~/assets/icons/information.svg';
-import { OrderInterface } from '~/types';
+import { DeliveryMethodEnum, OrderInterface } from '~/types';
+import { useAuthStore } from '~/store/authStore';
+import { PropType } from 'vue';
+import { GeneralSettingsInterface, ShippingTypesInterface } from '~/types/general-settings/general-settings';
 
 export default defineComponent({
     name: 'Summary',
@@ -94,6 +96,10 @@ export default defineComponent({
             type: Object as PropType<OrderInterface>,
             required: true,
         },
+        generalSettings: {
+            type: Object as PropType<GeneralSettingsInterface>,
+            required: true,
+        },
     },
     data() {
         return {
@@ -101,17 +107,18 @@ export default defineComponent({
         };
     },
     computed: {
+        DeliveryMethodEnum() {
+            return DeliveryMethodEnum;
+        },
         smallOrder(): number {
-            if (this.totalWithoutVAT >= 40) {
-                return 0;
-            }
-            if (this.totalWithoutVAT < 40 && this.totalWithoutVAT >= 20) {
-                return 5.49;
-            }
-            if (this.totalWithoutVAT < 20) {
-                return 7.49;
-            }
-            return 0;
+            let smallOrderFee = 0;
+            useAuthStore().generalSettings?.orderSettings?.smallOrderCharge?.forEach((charge) => {
+                if (this.totalWithoutVAT < charge.max && this.totalWithoutVAT >= charge.min) {
+                    smallOrderFee = charge.price;
+                    this.order.smallOrder = charge;
+                }
+            });
+            return smallOrderFee;
         },
         totalWithoutVAT(): number {
             if (this.order.subtotal) {
@@ -143,16 +150,10 @@ export default defineComponent({
             return 0;
         },
         shippingFee(): number {
-            if (this.order.deliveryMethod === 0) {
-                return 0;
-            }
-            if (this.order.deliveryMethod === 1) {
-                return 5.49;
-            }
-            if (this.order.deliveryMethod === 2) {
-                return 7.49;
-            }
-            return 0;
+            return this.order.deliveryMethod?.price || 0;
+        },
+        shipping(): ShippingTypesInterface {
+            return this.order.deliveryMethod;
         },
     },
 });

@@ -97,6 +97,7 @@ import { useAuthStore } from '~~/store/authStore';
 import { UserDetails } from '~~/types/auth/user-details';
 import Emitter from 'tiny-emitter/instance.js';
 import { useCartStore } from '~/store/cartStore';
+import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
 const { checkForInputErrors } = useError();
 const { $api } = useNuxtApp();
@@ -191,6 +192,14 @@ const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
 
     const userDetails = data.value?.data;
     authStore.addUserDetail(userDetails as UserDetails);
+
+    if (userDetails) {
+        const response = (await $api.generalSettings.fetchSettings()) as {
+            data: GeneralSettingsInterface;
+            status: string;
+        };
+        authStore.addGeneralSettings(response.data as GeneralSettingsInterface);
+    }
 
     await cartStore.updateAndReturnCart();
 
