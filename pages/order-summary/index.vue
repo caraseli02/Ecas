@@ -27,20 +27,25 @@
                             @deleteSelected="deleteSelected"
                         />
                         <div class="hidden lg:flex flex-col">
-                            <OrderSummarySimilarProducts />
+                            <OrderSummarySimilarProducts :loading="loading" />
                             <OrderSummaryBannerImageCard class="hidden xl:flex" />
                         </div>
                     </div>
                     <div class="lg:grid lg:grid-cols-1">
-                        <OrderStockType :items="cartItems" :account-credit="accountCredit" :order="order" />
+                        <OrderStockType
+                            :items="cartItems"
+                            :account-credit="accountCredit"
+                            :order="order"
+                            :general-settings="generalSettings"
+                        />
                         <OrderSummaryNoteSection />
-                        <OrderSummary :order="order" />
+                        <OrderSummary :order="order" :general-settings="generalSettings" />
                         <OrderSummaryCheckoutButtons />
                         <OrderSummaryBannerCard />
-                        <!-- <OrderSummaryEcxlusiveOffer class="max-lg:hidden" /> -->
+                        <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
                         <div class="flex flex-col">
                             <div class="flex lg:hidden">
-                                <OrderSummarySimilarProducts />
+                                <OrderSummarySimilarProducts :loading="loading" />
                             </div>
                         </div>
                     </div>
@@ -61,6 +66,13 @@ import Emitter from 'tiny-emitter/instance.js';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 import { useCartStore } from '~/store/cartStore';
 import { CartInterface } from '~/model/cart/response/cart.interface';
+import {
+    BackorderShippingTypesInterface,
+    GeneralSettingsInterface,
+    ShippingTypesInterface,
+    SmallOrderChargeInterface,
+} from '~/types/general-settings/general-settings';
+import { storeToRefs } from 'pinia';
 
 const store = useAuthStore();
 const cartStore = useCartStore();
@@ -103,8 +115,8 @@ const checkAll = (checked: boolean) => {
     });
 };
 
-const deleteSelected = async (deletedItems: boolean) => {
-    const itemsToDelete = cartItems.value.filter((product: any) => product.selected).map((object) => object.id);
+const deleteSelected = async (deletedItems: string) => {
+    const itemsToDelete = cartItems.value.filter((product: any) => product.selected)?.map((object) => object.id);
     cartItems.value = cartItems.value.filter((product: any) => !product.selected);
 
     const payload = {
@@ -126,9 +138,17 @@ watch(
     },
     { deep: true }
 );
+const generalSettings = ref<GeneralSettingsInterface | null>({} as GeneralSettingsInterface);
+const getGeneralSettingsFunction = () => {
+    const authStore = useAuthStore();
+    const { getGeneralSettings } = storeToRefs(authStore);
+    generalSettings.value = getGeneralSettings.value;
+};
 
-const mapCartItems = (cart: CartProductsInterface[]) => {
-    cartItems.value = cart.map((product: CartProductsInterface) => ({
+await getGeneralSettingsFunction();
+
+const mapCartItems = (cart: CartProductsInterface[] = []) => {
+    cartItems.value = cart?.map((product: CartProductsInterface) => ({
         id: product.id,
         stock: product.stock,
         isFolder: false,
@@ -155,8 +175,12 @@ const addToFavsAll = (liked: boolean) => {
     });
 };
 
+const shippingFee = (shippingType: number) => {
+    console.log(shippingType);
+};
+
 const orderItems = computed((): CartProductsInterface[] => {
-    return cartItems.value.map((item: any) => {
+    return cartItems.value?.map((item: any) => {
         const { selected, liked, ...rest } = item;
         return rest as CartProductsInterface;
     });
@@ -211,7 +235,7 @@ const getShipping = () => {
     }
 
     const address =
-        (user.value.personalDetails?.shippingAddress as ShippingAddressInterface[]).find((address) => address.default) ||
+        (user.value.personalDetails?.shippingAddress as ShippingAddressInterface[])?.find((address) => address.default) ||
         user.value?.personalDetails?.shippingAddress[0];
 
     if (!address) {
@@ -241,7 +265,7 @@ const getBilling = () => {
     }
 
     const address =
-        (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[]).find((address) => address.default) ||
+        (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[])?.find((address) => address.default) ||
         user.value?.personalDetails?.shippingAddress[0];
 
     if (!address) {
@@ -269,9 +293,24 @@ const order = ref({
         type: null,
     },
     type: '',
-    backorderOption: 0,
-    deliveryMethod: 0,
+    backorderOption: null,
+    deliveryMethod: null,
+    smallOrder: null,
 });
+
+const deliveryMethod = ref<ShippingTypesInterface | null>(null);
+const backOrderOption = ref<BackorderShippingTypesInterface | null>(null);
+const smallOrder = ref<SmallOrderChargeInterface | null>(null);
+
+watch(
+    [order],
+    ([_order]) => {
+        deliveryMethod.value = _order.deliveryMethod;
+        backOrderOption.value = _order.backorderOption;
+        smallOrder.value = _order.smallOrder;
+    },
+    { deep: true }
+);
 
 const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
     if (!orderItems) {
@@ -320,7 +359,7 @@ Emitter.on('delete-product-item', async (object: { id: string }) => {
 });
 
 Emitter.on('checkout', async () => {
-    if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails) {
+    if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !smallOrder.value) {
         return;
     }
 
@@ -338,10 +377,10 @@ Emitter.on('checkout', async () => {
                 country: user.value.personalDetails.address.country,
                 address: getShipping(),
                 billingAddress: getBilling(),
-                shippingTypeId: '658ee675150e8ac6ee9b8932',
-                backorderShippingTypeId: '6595e265a1161659a7431594' || null,
+                shippingTypeId: deliveryMethod.value._id,
+                backorderShippingTypeId: backOrderOption?.value?._id || undefined,
             },
-            smallOrderChargeId: '658ea7ccb478b7a51e42fa9f',
+            smallOrderChargeId: smallOrder.value._id,
             paymentDetails: {
                 type: paymentType.value.type,
             },
@@ -360,14 +399,14 @@ Emitter.on('checkout', async () => {
 
         if (response.status === 'success') {
             if (paymentType.value.type === 0) {
-                const paymentLink = response.data;
-                window.open(paymentLink, '_blank');
+                // const paymentLink = response.data;
+                // window.open(paymentLink, );
             }
 
             await cartStore.updateAndReturnCart();
 
             const router = useRouter();
-            router.push({ path: '/' });
+            await router.push({ path: '/' });
         }
     }
 });

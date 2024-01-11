@@ -176,7 +176,6 @@ const addToCart = async (product: ProductInterface) => {
 };
 
 watch(quantity, (_quantity) => {
-    console.log(_quantity);
     getPricesConfiguration();
 });
 
