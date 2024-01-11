@@ -400,13 +400,13 @@ Emitter.on('checkout', async () => {
         if (response.status === 'success') {
             if (paymentType.value.type === 0) {
                 // const paymentLink = response.data;
-                // window.open(paymentLink);
+                // window.open(paymentLink, );
             }
 
             await cartStore.updateAndReturnCart();
 
             const router = useRouter();
-            router.push({ path: '/' });
+            await router.push({ path: '/' });
         }
     }
 });
