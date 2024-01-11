@@ -74,7 +74,7 @@
         </button>
         <Transition name="expand">
           <OrderSummaryShippingPreferencesSection
-              v-if="shippingPreferencesExpanded" :order="order" class="item"
+              v-if="shippingPreferencesExpanded" :order="order" class="item" :general-settings="generalSettings"
               @selectBackorderPreference="selectBackorderPreference"/>
         </Transition>
       </div>
@@ -122,6 +122,8 @@ import Tooltip from '~/components/global/Tooltip.vue';
 import {CustomerCreditInterface} from '~/types/auth/account-settings';
 import Emitter from 'tiny-emitter/instance.js';
 import {useAuthStore} from '~/store/authStore';
+import {PropType} from 'vue';
+import {GeneralSettingsInterface} from '~/types/general-settings/general-settings';
 
 export default defineComponent({
   name: 'OrderStockType',
@@ -144,6 +146,10 @@ export default defineComponent({
       type: Object as PropType<OrderInterface>,
       required: true,
     },
+    generalSettings: {
+      type: Object as PropType<GeneralSettingsInterface>,
+      required: true,
+    }
   },
   data() {
     return {

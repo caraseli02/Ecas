@@ -40,64 +40,28 @@
       </Transition>
       <div class="flex flex-row justify-between w-full">
         <div class="flex flex-col gap-1">
-          <div class="flex flex-row gap-2 items-center">
+          <div v-if="shipping" class="flex flex-row gap-2 items-center">
             <span class="text-[#5E6278] text-sm font-normal leading-6">Shipping</span>
             <button class="group">
               <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300"/>
             </button>
           </div>
-          <div
-              v-for="(deliveryType, index) in generalSettings?.orderSettings?.shippingTypes"
-              class='flex flex-col justify-end'
+          <span
+              v-if="shipping"
+              class="text-neutral-700 italic text-sm font-normal leading-6"
+          >{{
+              shipping?.title + ' (' + shipping?.min + '-' + shipping?.max + (shipping?.unit === 'day' ? '' : ' Business') + ' Days' + ')'
+            }}</span
           >
-                          <span
-                              v-if="order.deliveryMethod === DeliveryMethodEnum[deliveryType.title.split(' ')[0]]"
-                              :key="index"
-                              class="text-neutral-700 italic text-sm font-normal leading-6"
-                          >{{
-                              deliveryType.title + '(' + deliveryType.min + '-' + deliveryType.max + (deliveryType.unit === 'day' ? '' : ' Business') + ' Days' + ')'
-                            }}</span
-                          >
-          </div>
-          <!--          <span-->
-          <!--              v-if="order.deliveryMethod === DeliveryMethodEnum.Free"-->
-          <!--              class="text-neutral-700 italic text-sm font-normal leading-6"-->
-          <!--          >{{-->
-          <!--              generalSettings?.orderSettings?.shippingTypes[0].title + '(' + generalSettings?.orderSettings?.shippingTypes[0].min + '-' + generalSettings?.orderSettings?.shippingTypes[0].max + (generalSettings?.orderSettings?.shippingTypes[0].unit === 'day' ? '' : ' Business') + ' Days' + ')'-->
-          <!--            }}</span-->
-          <!--          >-->
-          <!--          <span-->
-          <!--              v-if="order.deliveryMethod === DeliveryMethodEnum.Standard"-->
-          <!--              class="text-neutral-700 italic text-sm font-normal leading-6"-->
-          <!--          >{{-->
-          <!--              generalSettings?.orderSettings?.shippingTypes[1].title + '(' + generalSettings?.orderSettings?.shippingTypes[1].min + '-' + generalSettings?.orderSettings?.shippingTypes[1].max + (generalSettings?.orderSettings?.shippingTypes[1].unit === 'day' ? '' : ' Business') + ' Days' + ')'-->
-          <!--            }}</span-->
-          <!--          >-->
-          <!--          <span-->
-          <!--              v-if="order.deliveryMethod === DeliveryMethodEnum.Express"-->
-          <!--              class="text-neutral-700 italic text-sm font-normal leading-6"-->
-          <!--          >{{-->
-          <!--              generalSettings?.orderSettings?.shippingTypes[2].title + '(' + generalSettings?.orderSettings?.shippingTypes[2].min + '-' + generalSettings?.orderSettings?.shippingTypes[2].max + (generalSettings?.orderSettings?.shippingTypes[2].unit === 'day' ? '' : ' Business') + ' Days' + ')'-->
-          <!--            }}</span-->
-          <!--          >-->
-
         </div>
         <div
-            v-for="(deliveryType, index) in generalSettings?.orderSettings?.shippingTypes"
+            v-if="shipping"
             class="flex flex-col justify-end">
                                     <span
-                                        v-if="order.deliveryMethod === DeliveryMethodEnum[deliveryType.title.split(' ')[0]]"
-                                        :key="index"
                                         class="text-neutral-700 text-sm font-medium leading-6">{{
-                                        '$ ' + deliveryType.price
+                                        '$ ' + shipping?.price
                                       }}</span>
         </div>
-        <!--        <div class="flex flex-col justify-end">-->
-        <!--          <span v-if="order.deliveryMethod === 0" class="text-neutral-700 text-sm font-medium leading-6">$ 0.00</span>-->
-        <!--          <span v-if="order.deliveryMethod === 1" class="text-neutral-700 text-sm font-medium leading-6">$ 5.49</span>-->
-        <!--          <span v-if="order.deliveryMethod === 2" class="text-neutral-700 text-sm font-medium leading-6">$ 7.49</span>-->
-        <!--        </div>-->
-
       </div>
       <div class="flex flex-row justify-between w-full">
         <div class="flex flex-row">
@@ -122,6 +86,10 @@ import InformationIcon from '~/assets/icons/information.svg';
 import {DeliveryMethodEnum, OrderInterface} from '~/types';
 import {useAuthStore} from '~/store/authStore';
 import {PropType} from 'vue';
+import {GeneralSettingsInterface, ShippingTypesInterface} from '~/types/general-settings/general-settings';
+
+const shippingTypes = ref({} as ShippingTypesInterface)
+
 
 export default defineComponent({
   name: 'Summary',
@@ -133,10 +101,13 @@ export default defineComponent({
       type: Object as PropType<OrderInterface>,
       required: true,
     },
+    generalSettings: {
+      type: Object as PropType<GeneralSettingsInterface>,
+      required: true,
+    }
   },
   data() {
     return {
-      generalSettings: useAuthStore().generalSettings,
       showSmallOrderModal: false,
     };
   },
@@ -149,6 +120,8 @@ export default defineComponent({
       useAuthStore().generalSettings?.orderSettings?.smallOrderCharge?.forEach(charge => {
         if (this.totalWithoutVAT < charge.max && this.totalWithoutVAT >= charge.min) {
           smallOrderFee = charge.price
+          console.log(charge)
+          this.order.smallOrder = charge
         }
       })
       return smallOrderFee;
@@ -191,6 +164,10 @@ export default defineComponent({
       })
       return shippingFee;
     },
+    shipping(): ShippingTypesInterface {
+      return this.order.deliveryMethod;
+
+    }
   },
 });
 </script>

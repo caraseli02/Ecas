@@ -104,6 +104,7 @@ import {UserDetails} from '~~/types/auth/user-details';
 import Emitter from 'tiny-emitter/instance.js';
 import {useCartStore} from '~/store/cartStore';
 import {GeneralSettingsInterface} from '~/types/general-settings/general-settings';
+import {storeToRefs} from 'pinia';
 
 const {checkForInputErrors} = useError();
 const {$api} = useNuxtApp();
@@ -198,11 +199,14 @@ const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
 
   const userDetails = data.value?.data;
   authStore.addUserDetail(userDetails as UserDetails);
+  console.log('ajung aici');
   if (userDetails) {
     const response = await $api.generalSettings.fetchSettings() as { data: GeneralSettingsInterface, status: string }
     if (response.status === 'success') {
       console.log(response.data);
       authStore.addGeneralSettings(response.data as GeneralSettingsInterface)
+      const {getGeneralSettings} = storeToRefs(authStore)
+      console.log(getGeneralSettings.value);
     }
   }
   await cartStore.updateAndReturnCart();

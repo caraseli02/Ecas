@@ -1,6 +1,7 @@
 import {DiscountInterface} from '~/types/auth/account-settings';
 import {ProductInterface} from '~/model/products/response/ProductResponse';
 import {ShippingAddressInterface} from '~/types/auth/user-details';
+import {BackorderShippingTypesInterface, ShippingTypesInterface} from '~/types/general-settings/general-settings';
 
 export interface OrderSummaryItem {
     title: string;
@@ -55,8 +56,8 @@ export interface OrderInterface {
     notes: OrderNotesInterface[];
     createdAt?: string;
     updatedAt?: string;
-    backorderOption: BackorderOptionEnum;
-    deliveryMethod: DeliveryMethodEnum;
+    backorderOption: BackorderShippingTypesInterface;
+    deliveryMethod: ShippingTypesInterface;
 
     /**
      * If the order has a parent, it means that the order is
@@ -121,6 +122,7 @@ export enum PaymentStatusEnum {
     Canceled = 2,
     Declined = 3,
 }
+
 
 export const getPaymentStatusById = <
     T extends {
