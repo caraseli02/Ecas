@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-8">
     <ProductBlocks :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
       <template #header>
-        <section class="flex justify-between items-center">
+        <section class="flex justify-between items-center ml-1">
           <div class="text-xl">Browsing History</div>
         </section>
       </template>
@@ -12,7 +12,7 @@
     </ProductBlocks>
     <ProductBlocks :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
       <template #header>
-        <section class="flex justify-between items-center">
+        <section class="flex justify-between items-center ml-1 mr-2">
           <div class="text-xl">Browsing History</div>
           <NuxtLink class="text-blue-500 flex items-center gap-2" to="#">
             View All

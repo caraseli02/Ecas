@@ -1,8 +1,8 @@
 <template>
     <section class="mt-10">
-        <div class="container px-2 md:px-3 xl:pl-6 overflow-hidden">
+        <div class="container px-2 md:px-3 overflow-hidden" :class=" slots.banner ? 'xl:pl-6' : 'xl:pl-5'">
             <slot name="header" />
-            <ProductTabs v-if="!fetchedProducts" :filters="filters ?? []" @new-products="productList = $event"/>
+            <ProductTabs :class="{'xl:ml-0': slots.banner}" v-if="!fetchedProducts" :filters="filters ?? []" @new-products="productList = $event"/>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
                 <slot name="banner" />
                 <div v-if="productList.length === 0 || productList.status === 'failed'" class="px-1 md:pt-3 md:pr-0 min-h-[284px]">
