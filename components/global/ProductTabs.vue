@@ -4,7 +4,7 @@
       {{ activeFilter.charAt(0).toUpperCase() + activeFilter.substr(1).toLowerCase().replace('-', ' ') }}
       products
     </h2>
-    <div class="relative flex items-center gap-4 xl:gap-6">
+    <div class="relative flex items-center gap-4 xl:gap-6 mb-6 md:mb-0">
       <p v-for="(filter, index) in filters" :key="index" class="relative">
         <button
           class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue-500 md:text-base md:pb-3"
