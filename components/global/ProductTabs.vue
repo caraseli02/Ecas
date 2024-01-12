@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-start justify-between mx-2 md:mx-3 xl:mx-2">
+  <div class="flex items-start justify-between mx-2 md:mx-3 xl:mx-3">
     <h2 class="hidden text-xl font-medium md:block">
       {{ activeFilter.charAt(0).toUpperCase() + activeFilter.substr(1).toLowerCase().replace('-', ' ') }}
       products
