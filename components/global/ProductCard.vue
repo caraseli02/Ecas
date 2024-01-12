@@ -11,7 +11,7 @@
             </div>
             <div
                 v-if="productDiscount"
-                class="ring-1 ring-rose-500 rounded-full text-sm !leading-[1.5rem] font-semibold text-rose-500 md:px-2 md:text-sm absolute top-2 left-0"
+                class="ring-1 ring-rose-500 rounded-full text-sm !leading-[1.5rem] font-semibold text-rose-500 px-2 absolute top-2 left-0"
             >
                 {{ productDiscount ?? 0 }}%
             </div>
