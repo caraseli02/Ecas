@@ -1,5 +1,5 @@
 <template>
- <ProductBlocks :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
+ <ProductBlocks :rows-number="2" :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
       <template #header>
         <section class="flex justify-between items-center">
           <div class="text-xl font-medium ml-2">New Products</div>
