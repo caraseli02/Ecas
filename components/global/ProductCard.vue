@@ -31,8 +31,8 @@
                 <p class="hidden text-xs text-slate-500 truncate md:block">{{ product.description }}</p>
             </div>
         </section>
-        <div class="mt-auto h-full">
-            <div class="min-h-[14px] leading-tight line-through mb-px md:text-sm">
+        <div class="mt-auto h-full min-h-[39px]">
+            <div class="min-h-[14px] leading-tight line-through text-xs">
                 <template v-if="productDiscount">
                     {{ priceConfiguration ? `$ ${priceConfiguration.price.toFixed(2)} (${priceConfiguration.quantity}+)` : '-' }}
                 </template>
