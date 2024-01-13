@@ -3,7 +3,7 @@
     <ProductBlocks :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
       <template #header>
         <section class="flex justify-between items-center ml-1">
-          <div class="text-xl">Browsing History</div>
+          <div class="text-xl font-semibold">Browsing History</div>
         </section>
       </template>
       <!-- <template #banner>
@@ -13,7 +13,7 @@
     <ProductBlocks :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
       <template #header>
         <section class="flex justify-between items-center ml-1 mr-2">
-          <div class="text-xl">Browsing History</div>
+          <div class="text-xl font-semibold">Browsing History</div>
           <NuxtLink class="text-blue-500 flex items-center gap-2" to="#">
             View All
             <SvgoArrowRight />
@@ -58,6 +58,19 @@
                 </div>
     </template>
     </ProductBlocks>
+    <div class="max-w-[976px] mx-auto">
+      <ProductBlocks orderSummaryView :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
+        <template #header>
+          <section class="flex justify-between items-center ml-1">
+            <div class="text-xl font-semibold">Similar Products</div>
+          </section>
+        </template>
+        <!-- <template #banner>
+          test banner
+      </template> -->
+      </ProductBlocks>
+      <ProductBlocks orderSummaryView class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="['Best Sellers', 'Top Searched']" />
+    </div>
   </div>
 </template>
 

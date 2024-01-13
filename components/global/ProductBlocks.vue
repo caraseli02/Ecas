@@ -1,6 +1,5 @@
 <template>
-    <section class="mt-10">
-        <div class="container px-2 md:px-4 overflow-hidden" :class=" slots.banner ? 'xl:pl-6' : 'xl:px-4'">
+        <div class="container px-2 md:px-4 overflow-hidden mt-10" :class=" slots.banner ? 'xl:pl-6' : 'xl:px-4'">
             <slot name="header" />
             <ProductTabs v-if="!fetchedProducts" :class="{'xl:ml-0': slots.banner}" :filters="filters ?? []" @new-products="productList = $event"/>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
@@ -21,13 +20,13 @@
                 </div>
                 <ProductGrid 
                 :masonry-view="masonryView"
+                :order-summary-view="orderSummaryView"
                 :has-banner="!!slots.banner"
                 :products-list="productList" 
                 :rows-number="rowsNumber"
                 />
             </div>
         </div>
-    </section>
 </template>
 
 <script setup lang="ts">
@@ -36,6 +35,7 @@ import type { ProductInterface } from '~/model/products/response/ProductResponse
 const props = defineProps<{
     filters?: string[]
     masonryView?: boolean
+    orderSummaryView?: boolean
     fetchedProducts?: ProductInterface[]
     rowsNumber?: number
 }>()

@@ -35,11 +35,13 @@ const props = defineProps<{
   cardClass?: string
   masonryView?: boolean
   hasBanner?: boolean
+  orderSummaryView?: boolean
   rowsNumber?: number
 }>()
 
 const computedCols = computed(() => {
   if(props.hasBanner) return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+  if(props.orderSummaryView) return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
   return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'
 })
 
@@ -73,11 +75,19 @@ const productsByViewport = computed(() => {
         '2xl': createChunkedArray(4 * rowsNumber, props.productsList),
     };
 
+    const breakpointsOrderSummary = { 
+      ...breakpoints, 
+      '2xl': createChunkedArray(3, props.productsList),
+    };
+
     if(props.hasBanner && props.masonryView) {
       return breakpointsMasonryBanner[viewport.breakpoint.value as keyof typeof breakpoints] || [];
     }
     if(props.masonryView) {
       return breakpointsMasonry[viewport.breakpoint.value as keyof typeof breakpoints] || [];
+    }
+    if(props.orderSummaryView) {
+      return breakpointsOrderSummary[viewport.breakpoint.value as keyof typeof breakpoints] || [];
     }
     return breakpoints[viewport.breakpoint.value as keyof typeof breakpoints] || [];
 });
