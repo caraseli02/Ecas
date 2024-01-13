@@ -49,16 +49,16 @@
         <div class="absolute right-0 flex flex-col gap-3 md:top-[32px]">
             <div class="pr-3 flex flex-col gap-2.5 md:pr-4">
                 <button
-                    class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500"
+                    class="flex justify-end text-gray-500"
                     @click="addToFavourite(product)"
                 >
-                    <SvgoCardHeartIcon class="w-6 h-6 text-gray-500" />
+                    <SvgoCardHeartIcon class="w-6 h-6 text-gray-400 transition-colors duration-300 hover:text-blue-500" />
                 </button>
-                <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
-                    <SvgoCardShareIcon class="w-6 h-6 text-gray-500" />
+                <button class="flex justify-end text-gray-400 transition-colors duration-300 hover:text-blue-500">
+                    <SvgoCardShareIcon class="w-6 h-6 text-gray-400 transition-colors duration-300 hover:text-blue-500" />
                 </button>
-                <button class="justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
-                    <SvgoCardD3Icon class="w-6 h-6 text-gray-500" />
+                <button class="justify-end text-gray-400 transition-colors duration-300 hover:text-blue-500">
+                    <SvgoCardD3Icon class="w-6 h-6 text-gray-400 transition-colors duration-300 hover:text-blue-500" />
                 </button>
             </div>
         </div>
