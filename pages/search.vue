@@ -18,7 +18,7 @@
             @sort-by-change="sortBy = $event"
             @sort-order-change="order = $event"
         />
-        <NewProducts :row-count="2" />
+        <ProductBlocks :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="['Best Sellers', 'Top Searched']" />
         <Banner />
         <div class="container mb-[30px] lg:mb-10 xl:mb-[60px]">
             <div class="grid grid-cols-1 gap-[15px] md:grid-cols-[40%,calc(60%-20px)] md:gap-5 xl:grid-cols-[41%,calc(59%-20px)]">
@@ -26,6 +26,7 @@
                 <EcxlusiveOffer />
             </div>
         </div>
+        <NewProducts :row-count="2" />
         <News />
         <Manufacturers />
     </div>
