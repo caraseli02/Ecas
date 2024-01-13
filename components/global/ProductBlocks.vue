@@ -2,13 +2,21 @@
     <section class="mt-10">
         <div class="container px-2 md:px-4 overflow-hidden" :class=" slots.banner ? 'xl:pl-6' : 'xl:px-4'">
             <slot name="header" />
-            <ProductTabs :class="{'xl:ml-0': slots.banner}" v-if="!fetchedProducts" :filters="filters ?? []" @new-products="productList = $event"/>
+            <ProductTabs v-if="!fetchedProducts" :class="{'xl:ml-0': slots.banner}" :filters="filters ?? []" @new-products="productList = $event"/>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
                 <slot name="banner" />
-                <div v-if="productList.length === 0 || productList.status === 'failed'" class="px-1 mt-6 md:mt-0 md:pt-3 md:pr-0 min-h-[284px]">
+                <div v-if="productList.length === 0 || productList.status === 'failed'" class="px-1 mt-6 md:pr-0 min-h-[284px]">
                     <div
-                        class="flex items-center content-center justify-center bg-white rounded-md flex-row pl-[15px] pr-5 pt-7 pb-[34px] mb-3 md:w-full md:px-[15px] md:py-12 md:h-[calc(100%-30px)] lg:px-[21px] lg:pt-[30px] xl:w-full xl:px-2 xl:pt-[15px]">
-                        <h3>No items to show from this tab</h3>
+                        class="flex flex-col gap-10 items-center content-center justify-center w-full h-full">
+                        <div>
+                            <SvgoNotFound class="hidden sm:block"/>
+                            <SvgoNotFoundSmall class="block sm:hidden" />
+                        </div>
+                        <div class="flex flex-col justify-center items-center text-gray-500">
+                            <h4 class="text-xl text-center text-semibold">No Products Found</h4>
+                            <p>Oops! Seems like there’s nothing here yet.</p>
+                        </div>
+                        
                     </div>
                 </div>
                 <ProductGrid 
