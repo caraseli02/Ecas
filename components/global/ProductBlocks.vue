@@ -67,15 +67,13 @@ watch(() => props.fetchedProducts, (newVal) => {
 
 <style scoped>
 .slide-fade-enter-active {
-  transition: all 0.75s ease-out;
+  transition: all 0.5s ease-out;
 }
 
 
 
 .slide-fade-enter-from {
-  transform: translateX(20px);
   opacity: 0;
-  filter: blur(10px);
 }
 
 
