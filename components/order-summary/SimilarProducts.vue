@@ -2,7 +2,7 @@
     <ProductBlocks v-if="!props.loading" order-summary-view :fetched-products="productList"
         class="mb-7 lg:mb-[38px] xl:mb-[58px] !px-0">
         <template #header>
-            <section class="flex justify-between items-center">
+            <section class="flex justify-between items-center px-2">
                 <div class="text-xl font-semibold">Similar Products</div>
             </section>
         </template>

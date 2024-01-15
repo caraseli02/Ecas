@@ -1,8 +1,8 @@
 <template>
     <div class="pt-[30px] lg:pt-10">
         <div class="grid grid-cols-1">
-            <div class="container">
-                <div class="flex items-end justify-between mb-[15px]">
+            <div class="container px-4">
+                <div class="flex items-end justify-between mb-[15px] px-2">
                     <h1 class="text-xl font-semibold">Order Summary</h1>
                     <div class="flex items-center">
                         <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500 mr-[15px]">
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="gap-6 lg:grid lg:grid-cols-[1fr,320px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,392px]">
-                    <div class="flex flex-col gap-9 max-w-[976px]">
+                    <div class="flex flex-col gap-9 max-w-[992px]">
                         <OrderSummaryBackOrderWarning v-if="showWarning()" />
                         <OrderSummaryTable
                             :items="cartItems"

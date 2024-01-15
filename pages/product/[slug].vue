@@ -39,7 +39,7 @@
         <EcxlusiveOffer/>
       </div>
     </div>
-    <ProductBlocks :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="['Best Sellers', 'Top Searched']" />
+    <ProductBlocks :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" />
     <News/>
     <Manufacturers/>
   </div>
@@ -65,4 +65,7 @@ const {data} = (await $api.product.fetchSingleProduct(route.params.slug)) as Pro
 const product = data as ProductDetail;
 
 const images: ProductImage[] = Array(3).fill(product.details.ProductImage);
+
+const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
+
 </script>
