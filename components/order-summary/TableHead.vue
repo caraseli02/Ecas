@@ -19,8 +19,8 @@
                 >
             </button>
             <button class="flex group" @click="deleteSelected">
-                <TrashOutline class="text-[#5E6278] group-hover:text-[#FA4B4B] transition duration-150" />
-                <span class="text-sm font-normal text-[#5E6278] ml-2 group-hover:text-[#FA4B4B] transition duration-150"
+                <TrashOutline class="text-[#5E6278] group-hover:text-rose-500 transition duration-150" />
+                <span class="text-sm font-normal text-[#5E6278] ml-2 group-hover:text-rose-500 transition duration-150"
                     >Delete Selected</span
                 >
             </button>

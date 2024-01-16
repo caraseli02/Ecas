@@ -14,7 +14,7 @@
                 ? 'text-blue-500 bg-blue-500'
                 : status === OrderStatus.PartiallyRefunded || status === OrderStatus.Processing
                 ? 'text-[#A460BC] bg-[#A460BC]'
-                : 'text-[#FA4B4B] bg-[#FA4B4B]',
+                : 'text-rose-500 bg-rose-500',
         ]"
     >
         {{ status }}
