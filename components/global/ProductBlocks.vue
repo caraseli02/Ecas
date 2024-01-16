@@ -4,7 +4,6 @@
             <ProductTabs v-if="!fetchedProducts" :class="{'xl:ml-0': slots.banner}" :filters="filters ?? []" @new-products="productList = $event"/>
             <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
                 <slot name="banner" />
-                <TransitionGroup  appear name="slide-fade">
                 <div v-if="productList.length === 0 || productList.status === 'failed'" class="px-1 mt-6 md:pr-0 min-h-[284px]">
                     <div
                         class="flex flex-col gap-10 items-center content-center justify-center w-full h-full">
@@ -19,7 +18,6 @@
                         
                     </div>
                 </div>
-                
                     <ProductGrid 
                     v-else
                     :masonry-view="masonryView"
@@ -28,7 +26,6 @@
                     :products-list="productList" 
                     :rows-number="rowsNumber"
                     />
-                </TransitionGroup>
             </div>
         </div>
 </template>
@@ -65,16 +62,3 @@ watch(() => props.fetchedProducts, (newVal) => {
 
 </script>
 
-<style scoped>
-.slide-fade-enter-active {
-  transition: all 0.5s ease-out;
-}
-
-
-
-.slide-fade-enter-from {
-  opacity: 0;
-}
-
-
-</style>
