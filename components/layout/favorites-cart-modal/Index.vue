@@ -101,11 +101,14 @@ const setActiveNav = (item: string) => {
 };
 
 onMounted(() => {
-    setNavLine();
+    document.body.style.overflow = 'hidden';
+    document.body.style.maxHeight = '100vh';
     documentUtil.toggleBodyScroll();
 });
 
 onBeforeUnmount(() => {
     documentUtil.toggleBodyScroll();
+    document.body.style.overflow = 'auto';
+    document.body.style.maxHeight = '100%';
 });
 </script>
