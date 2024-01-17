@@ -38,7 +38,16 @@ export default defineNuxtConfig({
             ],
         },
     },
-    modules: ['nuxt-svgo', 'nuxt-swiper', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', 'nuxt-lodash', 'nuxt3-leaflet', 'nuxt-viewport'],
+    modules: [
+        'nuxt-svgo',
+        'nuxt-swiper',
+        '@pinia/nuxt',
+        '@pinia-plugin-persistedstate/nuxt',
+        'nuxt-lodash',
+        'nuxt3-leaflet',
+        'nuxt-viewport',
+        'nuxt-headlessui'
+    ],
     viewport: {
         breakpoints: {
             xs: 390,
@@ -53,9 +62,9 @@ export default defineNuxtConfig({
         svgo: true,
         defaultImport: 'component',
         svgoConfig: {
-          multipass: true,
+            multipass: true,
         },
-      },
+    },
     css: [
         '~/assets/css/main.css',
         '~/assets/css/resets.css',
@@ -95,4 +104,7 @@ export default defineNuxtConfig({
             ['isDate', 'isLodashDate'], // => _isLodashDate
         ],
     },
+    headlessui: {
+        prefix: ''
+    }
 });
