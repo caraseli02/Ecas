@@ -110,47 +110,115 @@
             class="item"
         />
       </Transition>
+      <AppModal>
+        <OrderSummaryPaymentModal />
+      </AppModal>
     </div>
   </div>
 </template>
-<script lang="ts">
-import {CartProductsInterface, OrderInterface} from '~/types';
+
+<script setup lang="ts">
+import { defineProps, ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { CartProductsInterface, OrderInterface } from '~/types';
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
 import Tooltip from '~/components/global/Tooltip.vue';
-import {CustomerCreditInterface} from '~/types/auth/account-settings';
+import { CustomerCreditInterface } from '~/types/auth/account-settings';
 import Emitter from 'tiny-emitter/instance.js';
-import {useAuthStore} from '~/store/authStore';
-import {PropType} from 'vue';
-import {GeneralSettingsInterface} from '~/types/general-settings/general-settings';
+import { useAuthStore } from '~/store/authStore';
+// import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
-export default defineComponent({
-  name: 'OrderStockType',
-  components: {
-    ChevronDownIcon,
-    WarningErrorYellow,
-    Tooltip,
-    WarningErrorHuge,
-  },
-  props: {
-    items: {
-      type: Array as PropType<CartProductsInterface[]>,
-      required: true,
-    },
-    accountCredit: {
-      type: Object as PropType<CustomerCreditInterface>,
-      required: true,
-    },
-    order: {
-      type: Object as PropType<OrderInterface>,
-      required: true,
-    },
-    generalSettings: {
-      type: Object as PropType<GeneralSettingsInterface>,
-      required: true,
-    }
-  },
+const props = defineProps<{
+  items: CartProductsInterface[]
+  accountCredit: CustomerCreditInterface
+  order: OrderInterface
+  // generalSettings: GeneralSettingsInterface
+}>();
+
+const shippingAndBillingExpanded = ref(false);
+const shippingPreferencesExpanded = ref(false);
+const paymentMethodExpanded = ref(false);
+
+const generalSettings = useAuthStore().generalSettings;
+
+const stockOrder = computed(() => {
+  const stockItems = props.items.filter(
+    (item: CartProductsInterface) =>
+      item.productEntity?.stock !== undefined && item.productEntity.stock >= item.stock
+  );
+  return stockItems.length === props.items.length;
+});
+
+const backOrder = computed(() => {
+  const backOrderItems = props.items.filter(
+    (item: CartProductsInterface) =>
+      item.productEntity?.stock !== undefined && item.productEntity.stock === 0
+  );
+  return backOrderItems.length === props.items.length;
+});
+
+const orderType = computed(() => {
+  if (stockOrder.value) {
+    Emitter.emit('order-type', 0);
+    return 0;
+  } else if (backOrder.value) {
+    Emitter.emit('order-type', 1);
+    return 1;
+  } else {
+    Emitter.emit('order-type', 2);
+    return 2;
+  }
+});
+
+const shippingAndBillingMissingInfoWarning = computed(() => {
+  if (props.order.shippingDetails?.address && props.order.shippingDetails?.billingAddress) {
+    return (
+      !props.order.shippingDetails.address.name1 ||
+      !props.order.shippingDetails.address.city ||
+      !props.order.shippingDetails.address.region ||
+      !props.order.shippingDetails.address.postcode ||
+      !props.order.shippingDetails.address.country ||
+      !props.order.shippingDetails.billingAddress.name1 ||
+      !props.order.shippingDetails.billingAddress.city ||
+      !props.order.shippingDetails.billingAddress.region ||
+      !props.order.shippingDetails.billingAddress.postcode ||
+      !props.order.shippingDetails.billingAddress.country
+    );
+  }
+});
+
+const mixedOrBackOrder = computed(() => props.order.type === 1 || props.order.type === 2);
+
+const paymentMethodWarning = computed(() => props.order.paymentDetails?.type === null);
+
+
+watch(orderType, (newOrderType) => {
+  props.order.type = orderType.value;
+});
+
+onMounted(() => {
+  props.order.type = orderType.value;
+});
+
+onBeforeUnmount(() => {
+  // Cleanup logic, if needed
+});
+
+function expandShippingAndBilling() {
+  shippingAndBillingExpanded.value = !shippingAndBillingExpanded.value;
+}
+
+function expandShippingPreferences() {
+  shippingPreferencesExpanded.value = !shippingPreferencesExpanded.value;
+}
+
+function expandPaymentMethod() {
+  paymentMethodExpanded.value = !paymentMethodExpanded.value;
+}
+</script>
+
+<!-- 
   data() {
     return {
       shippingAndBillingExpanded: false,
@@ -227,7 +295,8 @@ export default defineComponent({
     },
   },
 });
-</script>
+</script> -->
+
 <style scoped>
 .expand-enter-from,
 .expand-leave-to {
