@@ -106,5 +106,12 @@ export default defineNuxtConfig({
     },
     headlessui: {
         prefix: ''
-    }
+    },
+    vite: {
+        vue: {
+          script: {
+            defineModel: true,
+          },
+        },
+      },
 });

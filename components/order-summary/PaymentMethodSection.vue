@@ -8,10 +8,22 @@
     </div>
     <div class="flex flex-col gap-4 relative">
       <OrderSummaryPayByCard
+        @select-payment-option="selectPaymentOption($event)"
+        view="payment"
+      />
+      <OrderSummaryPayByCard
+        has-card
+        @select-payment-option="selectPaymentOption($event)"
+        view="payment"
+        card-type="amex"
+      />
+      <OrderSummaryPayByCard
         has-card
         :is-selected="order.paymentDetails?.type === 0"
         @select-payment-option="selectPaymentOption($event)"
         view="payment"
+        is-expired
+        card-type="master"
       />
       <!-- <button
         class="p-3 flex flex-col gap-2.5 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"

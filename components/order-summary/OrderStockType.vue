@@ -110,7 +110,7 @@
             class="item"
         />
       </Transition>
-      <AppModal>
+      <AppModal v-model="showCardsModal">
         <OrderSummaryPaymentModal />
       </AppModal>
     </div>
@@ -118,15 +118,15 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, watch, onMounted, onBeforeUnmount } from 'vue';
-import { CartProductsInterface, OrderInterface } from '~/types';
+import type { CartProductsInterface, OrderInterface } from '~/types';
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
-import Tooltip from '~/components/global/Tooltip.vue';
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
 import Emitter from 'tiny-emitter/instance.js';
 import { useAuthStore } from '~/store/authStore';
+import { usePaymentStore } from '~/store/paymentStore';
+import { storeToRefs } from 'pinia';
 // import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
 const props = defineProps<{
@@ -216,6 +216,8 @@ function expandShippingPreferences() {
 function expandPaymentMethod() {
   paymentMethodExpanded.value = !paymentMethodExpanded.value;
 }
+const paymentStore = usePaymentStore();
+const { showCardsModal } = storeToRefs(paymentStore); 
 </script>
 
 <!-- 
