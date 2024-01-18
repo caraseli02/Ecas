@@ -28,10 +28,10 @@
         <div v-if="!showAvatar && showFlag" class="flex items-center gap-3 cursor-default">
           <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
             <component :is="item.flag"/>
-            <div class="flex items-center text-sm font-medium leading-[1.75] break-all">
+            <div class="flex items-center text-sm font-medium leading-[1.75] break-all w-5 h-5 flex-1">
               <img
                   v-if="item.flag && item.flag.icon" :src="item.flag.icon" :alt="item.flag.label"
-                  class="w-8 rounded mr-2"/>
+                  class="rounded"/>
             </div>
           </Tooltip>
         </div>
@@ -42,7 +42,9 @@
         <div class="flex items-center gap-3 cursor-default">
           <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
             <component :is="item.flag" v-if="showFlag && showAvatar"/>
-            <div class="flex items-center text-sm font-medium leading-[1.75] break-all w-5 h-5 flex-1">
+            <div
+v-if="showAvatar"
+                 class="flex items-center text-sm font-medium leading-[1.75] break-all w-5 h-5 flex-1">
               <img
                   v-if="item.flag && item.flag.icon" :src="item.flag.icon" :alt="item.flag.label"
                   class="rounded"/>
@@ -77,7 +79,7 @@
       </div>
       <SkeletonLoader v-if="loading" class="w-full h-4"/>
       <div v-else class="text-xs leading-[1.33] text-slate-500 truncate">
-        {{ item.email }}
+        {{ item.email || 'email@gmail.com' }}
       </div>
     </div>
   </NuxtLink>
