@@ -10,6 +10,7 @@ import NotificationsService from '~/services/notifications.service';
 import ControlPanelService from '~/services/dashboard/control-panel.service';
 import OrdersService from '~/services/dashboard/orders.service';
 import CartService from '~/services/cart.service';
+import GeneralSettings from '~/services/general-settings.service';
 
 /** ApiInstance interface provides us with good typing */
 export interface IApiInstance {
@@ -23,13 +24,14 @@ export interface IApiInstance {
     notifications: NotificationsService;
     controlPanel: ControlPanelService;
     orders: OrdersService;
+    generalSettings: GeneralSettings;
 }
 
 declare module '#app' {
     interface NuxtApp {
-      $api: IApiInstance;
+        $api: IApiInstance;
     }
-  }
+}
 
 export default defineNuxtPlugin((nuxtApp) => {
     const fetchOptions: FetchOptions = {
@@ -51,6 +53,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         notifications: new NotificationsService(apiFetcher),
         controlPanel: new ControlPanelService(apiFetcher),
         orders: new OrdersService(apiFetcher),
+        generalSettings: new GeneralSettings(apiFetcher),
 
     };
 
