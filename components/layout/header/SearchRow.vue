@@ -19,7 +19,7 @@
                         <div class="flex items-center mr-0.5">
                             <CartIcon class="w-6 h-6 text-slate-500 lg:mr-0" />
                             <span
-                                class="flex -translate-y-2 -translate-x-2.5 items-center justify-center h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white rounded-[100px] text-xs font-semibold leading-[1.5]"
+                                class="flex -translate-y-2 -translate-x-2.5 items-center justify-center h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5]"
                                 :class="[cartItems < 10 ? 'w-[18px]' : cartItems < 100 ? 'w-6' : 'w-[31px]']"
                             >
                                 <span> {{ cartItems }} </span>

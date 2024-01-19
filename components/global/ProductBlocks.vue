@@ -1,25 +1,33 @@
 <template>
-    <section class="mt-10">
-        <div class="container px-2 md:px-3 xl:pl-6 overflow-hidden">
+        <div class="container px-2 md:px-4 overflow-hidden mt-10" :class=" slots.banner ? 'xl:pl-6' : 'xl:px-4'">
             <slot name="header" />
-            <ProductTabs v-if="!fetchedProducts" :filters="filters ?? []" @new-products="productList = $event"/>
-            <div class="md:flex flex-col xl:grid xl:grid-cols-[auto,1fr]">
+            <ProductTabs v-if="!fetchedProducts" :class="{'xl:ml-0': slots.banner}" :filters="filters ?? []" @new-products="productList = $event"/>
+            <div :class="['md:flex flex-col xl:grid', {'xl:grid-cols-[auto,1fr]' : slots.banner}]">
                 <slot name="banner" />
-                <div v-if="productList.length === 0" class="px-1 md:pt-3 md:pr-0">
+                <div v-if="productList.length === 0 || productList.status === 'failed'" class="px-1 mt-6 md:pr-0 min-h-[284px] w-full">
                     <div
-                        class="flex items-center content-center justify-center bg-white rounded-md flex-row pl-[15px] pr-5 pt-7 pb-[34px] mb-3 md:w-full md:px-[15px] md:py-12 md:h-[calc(100%-30px)] lg:px-[21px] lg:pt-[30px] xl:w-full xl:px-2 xl:pt-[15px]">
-                        <h3>No items to show from this tab</h3>
+                        class="flex flex-col gap-10 items-center content-center justify-center w-full h-full">
+                        <div>
+                            <SvgoNotFound class="hidden sm:block"/>
+                            <SvgoNotFoundSmall class="block sm:hidden" />
+                        </div>
+                        <div class="flex flex-col justify-center items-center text-gray-500">
+                            <h4 class="text-xl text-center text-semibold">No Products Found</h4>
+                            <p>Oops! Seems like there’s nothing here yet.</p>
+                        </div>
+                        
                     </div>
                 </div>
-                <ProductGrid 
-                :masonry-view="masonryView"
-                :has-banner="!!slots.banner"
-                :products-list="productList" 
-                :rowsNumber="rowsNumber"
-                />
+                    <ProductGrid 
+                    v-else
+                    :masonry-view="masonryView"
+                    :order-summary-view="orderSummaryView"
+                    :has-banner="!!slots.banner"
+                    :products-list="productList" 
+                    :rows-number="rowsNumber"
+                    />
             </div>
         </div>
-    </section>
 </template>
 
 <script setup lang="ts">
@@ -28,6 +36,7 @@ import type { ProductInterface } from '~/model/products/response/ProductResponse
 const props = defineProps<{
     filters?: string[]
     masonryView?: boolean
+    orderSummaryView?: boolean
     fetchedProducts?: ProductInterface[]
     rowsNumber?: number
 }>()
@@ -52,3 +61,4 @@ watch(() => props.fetchedProducts, (newVal) => {
 })
 
 </script>
+

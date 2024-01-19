@@ -55,7 +55,7 @@
       </div>
       <div class="flex items-center gap-4 mb-6">
         <button
-            class="flex items-center justify-center border-[1.5px] border-[#FA4B4B] rounded-md px-4 py-1 text-[#FA4B4B] h-8"
+            class="flex items-center justify-center border-[1.5px] border-[#FA4B4B] rounded-md px-4 py-1 text-rose-500 h-8"
             @click="switchClose()"
         >
           <TrashIcon class="w-4 h-4 mr-2"/>
