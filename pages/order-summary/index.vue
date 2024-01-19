@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import { AccountRole, CartProductsInterface, OrderRequestInterface } from '~/types';
+import { AccountRole, CartProductsInterface, OrderRequestInterface, PaymentTypeEnum } from '~/types';
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
 import { useAuthStore } from '~/store/authStore';
 import { ShippingAddressInterface } from '~/types/auth/user-details';
@@ -73,6 +73,9 @@ import {
     SmallOrderChargeInterface,
 } from '~/types/general-settings/general-settings';
 import { storeToRefs } from 'pinia';
+import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
+
+const router = useRouter();
 
 const store = useAuthStore();
 const cartStore = useCartStore();
@@ -384,7 +387,7 @@ Emitter.on('checkout', async () => {
             paymentDetails: {
                 type: paymentType.value.type,
             },
-            stripeCardId: 'pm_1OWPIdHH6OAXXqHT50cqSY8l',
+            // stripeCardId: 'pm_1OWPIdHH6OAXXqHT50cqSY8l',
         };
 
         if (note.value !== '') {
@@ -395,22 +398,42 @@ Emitter.on('checkout', async () => {
         }
     }
 
-    if (paymentType.value.selected) {
-        const response = await $api.orders.sendOrder(orderRequestObject.value);
-
-        if (response.status === 'success') {
-            if (paymentType.value.type === 0) {
-                cartStore.setOrderClientSecret(response.data);
-                // const paymentLink = response.data;
-                // window.open(paymentLink, '_blank');
-            }
-
-            await cartStore.updateAndReturnCart();
-
-            const router = useRouter();
-            await router.push({ path: '/' });
-        }
+    if (!paymentType.value.selected) {
+        return;
     }
+
+    const response = (await $api.orders.sendOrder(orderRequestObject.value)) as PlaceOrderInterface;
+
+    if (response.status !== 'success') {
+        await router.push({ path: '/checkout/fail' });
+
+        return;
+    }
+
+    if (paymentType.value.type === PaymentTypeEnum.Card) {
+        if (orderRequestObject.value.stripeCardId && response.data.paid) {
+            const result = response.data.result;
+
+            if (result?.status === 'succeeded') {
+                console.log('order paid with a default card');
+                await router.push({ path: '/checkout/success' });
+            } else if (result?.status === 'canceled') {
+                console.log('order canceled reason: ', result?.cancellation_reason);
+                await router.push({ path: '/checkout/fail' });
+            } else {
+                console.log('order pending', result?.status);
+                await router.push({ path: '/checkout/pending' });
+            }
+        } else if (!response.data.paid && response.data.clientSecret) {
+            cartStore.setOrderClientSecret(response.data.clientSecret);
+            await router.push({ path: '/checkout/session' });
+        }
+    } else if (paymentType.value.type === PaymentTypeEnum.Credit) {
+        console.log('paid with credit');
+        await router.push({ path: '/checkout/success' });
+    }
+
+    await cartStore.updateAndReturnCart();
 });
 
 await fetchList();

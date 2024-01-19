@@ -3,7 +3,6 @@
         <div id="payment-element" />
         <button id="submit" :disabled="isLoading">Pay now</button>
     </form>
-    <div id="card-list" />
 </template>
 
 <script setup lang="ts">
@@ -16,7 +15,7 @@ const { getOrderClientSecret } = storeToRefs(cartStore);
 
 const isLoading = ref(false);
 
-let stripe: Stripe;
+let stripe: Stripe | null;
 let elements: StripeElements;
 let paymentIntent: PaymentIntentResult;
 
@@ -28,6 +27,7 @@ onMounted(async () => {
     if (!stripe || !getOrderClientSecret.value) {
         return;
     }
+    
     paymentIntent = await stripe.retrievePaymentIntent(getOrderClientSecret.value);
     elements = stripe.elements({
         mode: 'payment',
@@ -36,7 +36,6 @@ onMounted(async () => {
         setup_future_usage: paymentIntent.paymentIntent?.setup_future_usage,
         payment_method_types: paymentIntent.paymentIntent?.payment_method_types,
     });
-    // await stripe.
 
     const card = elements.create('payment', {
         layout: {
@@ -45,13 +44,18 @@ onMounted(async () => {
             radios: true,
             spacedAccordionItems: false,
         },
+        fields: {
+            billingDetails: {
+                name: 'auto',
+            },
+        },
     });
 
     card.mount('#payment-element');
 });
 
 const handleSubmit = async () => {
-    if (isLoading.value || !getOrderClientSecret.value) {
+    if (isLoading.value || !getOrderClientSecret.value || !stripe) {
         return;
     }
 
@@ -72,20 +76,4 @@ const handleSubmit = async () => {
     console.log(error);
     isLoading.value = false;
 };
-
-// Fetch Checkout Session and retrieve the client secret
-// async function initialize() {
-//     const response = await fetch('/create-checkout-session', {
-//         method: 'POST',
-//     });
-//
-//     const { clientSecret } = await response.json();
-//
-//     const checkout = await stripe.initEmbeddedCheckout({
-//         clientSecret,
-//     });
-//
-//     // Mount Checkout
-//     checkout.mount('#checkout');
-// }
 </script>
