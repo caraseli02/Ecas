@@ -58,7 +58,7 @@
             </NuxtLink>
             <button
                 v-if="!inModal"
-                class="flex items-center justify-center ml-auto text-slate-500 transition-colors duration-300 hover:text-[#FA4B4B]"
+                class="flex items-center justify-center ml-auto text-slate-500 transition-colors duration-300 hover:text-rose-500"
                 @click="deleteItemFromCart"
             >
                 <TrashIcon class="w-5 h-5" />

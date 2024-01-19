@@ -2,7 +2,7 @@
     <div class="mt-6 flex flex-col gap-6">
         <div v-if="!order.backorderOption && mixedOrBackOrder" class="flex flex-row gap-3 items-center">
             <WarningErrorHuge class="w-6 h-5" />
-            <span class="text-[#FA4B4B] text-sm font-medium leading-6">Select backorder shipping preferences</span>
+            <span class="text-rose-500 text-sm font-medium leading-6">Select backorder shipping preferences</span>
         </div>
         <div v-for="backOrderOption in generalSettings?.orderSettings?.backorderShippingTypes" class="flex flex-col gap-4">
             <button class="flex flex-row gap-3 items-start group" @click="selectBackorderPreference(backOrderOption)">

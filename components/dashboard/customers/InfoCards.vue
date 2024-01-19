@@ -73,8 +73,8 @@
             <div class="flex items-center">
                 <div class="mr-4">
                     <EmojiSadIcon v-if="emptyData || error.abandonedCheckout" class="w-[52px] h-[52px]" />
-                    <div v-else class="flex items-center justify-center w-14 h-14 bg-[#FA4B4B] bg-opacity-25 rounded-full">
-                        <div class="flex items-center justify-center w-10 h-10 bg-[#FA4B4B] rounded-full">
+                    <div v-else class="flex items-center justify-center w-14 h-14 bg-rose-500 bg-opacity-25 rounded-full">
+                        <div class="flex items-center justify-center w-10 h-10 bg-rose-500 rounded-full">
                             <AbandonedCheckoutIcon class="w-6 h-6 text-white" />
                         </div>
                     </div>

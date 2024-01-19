@@ -56,7 +56,7 @@
                                     : notification.title === 'Password change' || notification.title === 'Reset password'
                                     ? 'text-blue-500'
                                     : notification.title === 'Removed'
-                                    ? 'text-[#FA4B4B]'
+                                    ? 'text-rose-500'
                                     : notification.title === 'Completed'
                                     ? 'text-[#00D395]'
                                     : notification.title === 'Pending'
