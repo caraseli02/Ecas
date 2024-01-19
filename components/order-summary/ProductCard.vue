@@ -1,7 +1,8 @@
 <template>
     <div class="flex flex-col gap-2 rounded-xl bg-[#FFF] shadow-xs w-[304px] h-[282px]">
         <div class="flex flex-row items-start">
-            <div class="px-2 py-1 flex flex-row gap-2 rounded-br-lg rounded-tl-xl"
+            <div
+class="px-2 py-1 flex flex-row gap-2 rounded-br-lg rounded-tl-xl"
                 :class="shortStock ? 'bg-[#FF8A00]' : 'bg-[#0FAC7E]'">
                 <CheckCircleHollowSmall />
                 <span class="text-[#FFF] text-xs font-medium leading-4">{{ item.stock }} in stock</span>
@@ -42,8 +43,8 @@
                     <div class="flex flex-col py-3 gap-[2px]" :class="itemDiscount ? 'pt-0 pb-3' : 'py-3'">
                         <span v-if="itemDiscount" class="text-neutral-700 text-xs font-normal leading-[14px] line-through">$ {{ item.priceRon }} (100+)</span>
                         <div v-if="itemDiscount" class="flex flex-row">
-                            <span class="text-[#FA4B4B] text-base font-bold leading-5">$ {{ item.priceRon }}</span>
-                            <span class="text-[#FA4B4B] text-xs font-normal leading-5 self-center pl-2">(100+)</span>
+                            <span class="text-rose-500 text-base font-bold leading-5">$ {{ item.priceRon }}</span>
+                            <span class="text-rose-500 text-xs font-normal leading-5 self-center pl-2">(100+)</span>
                         </div>
                         <div v-else class="flex flex-row">
                             <span class="text-neutral-700 text-base font-bold leading-6">$ {{ item.priceRon }}</span>
@@ -81,16 +82,16 @@ export default defineComponent({
         InformationIcon,
         CartIcon,
     },
-    data() {
-        return {
-            liked: false,
-        };
-    },
     props: {
         item: {
             type: Object as PropType<ProductInterface>,
             required: true
         },
+    },
+    data() {
+        return {
+            liked: false,
+        };
     },
     computed: {
         shortStock() {

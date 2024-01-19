@@ -9,7 +9,7 @@
                             Sales: +40724 360 250 (Mon-Fri 8:00AM - 4:00PM EST)
                         </div>
                     </div>
-                    <div class="text-xs leading-[1.67] font-semibold text-[#FA4B4B] mr-auto md:mr-0 lg:text-sm lg:leading-[1.43]">
+                    <div class="text-xs leading-[1.67] font-semibold text-rose-500 mr-auto md:mr-0 lg:text-sm lg:leading-[1.43]">
                         <span class="uppercase">Free</span> shipping on orders over $150
                     </div>
                     <button class="flex items-center" @click="showRegionalPreferencesModal = true">

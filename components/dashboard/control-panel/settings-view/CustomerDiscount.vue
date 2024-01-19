@@ -32,7 +32,7 @@
         >
             <button
                 v-if="customerDiscount"
-                class="flex items-center justify-center w-full border-[1.5px] border-[#FA4B4B] rounded-lg px-5 py-2 text-[#FA4B4B] h-11"
+                class="flex items-center justify-center w-full border-[1.5px] border-[#FA4B4B] rounded-lg px-5 py-2 text-rose-500 h-11"
                 @click="
                     customerDiscount = 0;
                     customerDiscountBuffer = 0;

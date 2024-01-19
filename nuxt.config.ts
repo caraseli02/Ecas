@@ -46,6 +46,7 @@ export default defineNuxtConfig({
         'nuxt-lodash',
         'nuxt3-leaflet',
         'nuxt-viewport',
+        'nuxt-headlessui'
     ],
     viewport: {
         breakpoints: {
@@ -103,4 +104,14 @@ export default defineNuxtConfig({
             ['isDate', 'isLodashDate'], // => _isLodashDate
         ],
     },
+    headlessui: {
+        prefix: ''
+    },
+    vite: {
+        vue: {
+          script: {
+            defineModel: true,
+          },
+        },
+      },
 });

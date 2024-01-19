@@ -9,7 +9,7 @@
                 : status === PaymentStatusEnum.Pending
                 ? 'text-[#FF8A00] bg-[#FF8A00]'
                 : status === PaymentStatusEnum.Canceled || status === PaymentStatusEnum.Declined
-                ? 'text-[#FA4B4B] bg-[#FA4B4B]'
+                ? 'text-rose-500 bg-rose-500'
                 : 'text-blue-500 bg-blue-500',
         ]"
     >
