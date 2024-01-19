@@ -27,7 +27,7 @@
                                 </div>
                                 <div v-if="!stockItem" class="flex flex-row">
                                     <WarningError />
-                                    <span class="ml-2 text-[#FA4B4B] text-xs font-medium leading-4"
+                                    <span class="ml-2 text-rose-500 text-xs font-medium leading-4"
                                         >{{ item.productEntity?.stock }} in stock</span
                                     >
                                 </div>
@@ -60,7 +60,7 @@
                             </div>
                             <div v-if="!stockItem" class="flex flex-row">
                                 <WarningError />
-                                <span class="ml-2 text-[#FA4B4B] text-xs font-medium leading-4"
+                                <span class="ml-2 text-rose-500 text-xs font-medium leading-4"
                                     >{{ item.productEntity?.stock }} in stock</span
                                 >
                             </div>
@@ -76,14 +76,14 @@
                         >
                         <div v-if="stockItem && item.discount.value" class="flex lg:hidden">
                             <div class="px-2 border-[1px] rounded-[25px] border-[#FA4B4B] bg-white ml-4 flex items-center lg:hidden">
-                                <span class="text-xs font-semibold leading-5 text-[#FA4B4B]">{{ item.discount.value }} %</span>
+                                <span class="text-xs font-semibold leading-5 text-rose-500">{{ item.discount.value }} %</span>
                             </div>
                         </div>
                         <div v-if="item.discount?.value" class="flex flex-col text-center h-[36px] justify-center">
                             <span v-if="discounts?.productDiscount" class="line-through text-neutral-700 text-sm font-normal leading-5"
                                 >$ {{ item.initialUnitPrice.toFixed(2) }}</span
                             >
-                            <span class="text-sm font-normal leading-5" :class="discounts?.productDiscount ? 'text-[#FA4B4B]' : ''"
+                            <span class="text-sm font-normal leading-5" :class="discounts?.productDiscount ? 'text-rose-500' : ''"
                                 >$ {{ discounts.currentConfigurationDiscountPrice.toFixed(2) }}</span
                             >
                         </div>
@@ -162,7 +162,7 @@
                     <div class="h-[1px] w-full bg-[#EBEBEB] rounded-lg"></div>
                     <div class="flex flex-row gap-2">
                         <span class="text-neutral-700 text-xs font-normal leading-5">Estimated delivery date</span>
-                        <span class="text-[#FA4B4B] text-xs font-medium leading-5">26/5/2024</span>
+                        <span class="text-rose-500 text-xs font-medium leading-5">26/5/2024</span>
                     </div>
                 </div>
             </Transition>
@@ -174,8 +174,8 @@
                 >
             </button>
             <button class="flex flex-col gap-2 xl:hidden items-center group" @click="deleteFromCart">
-                <TrashOutlineBig class="text-[#5E6278] group-hover:text-[#FA4B4B] transition duration-150" />
-                <span class="text-[#5E6278] text-xs font-normal leading-5 group-hover:text-[#FA4B4B] transition duration-150">Delete</span>
+                <TrashOutlineBig class="text-[#5E6278] group-hover:text-rose-500 transition duration-150" />
+                <span class="text-[#5E6278] text-xs font-normal leading-5 group-hover:text-rose-500 transition duration-150">Delete</span>
             </button>
         </div>
     </div>

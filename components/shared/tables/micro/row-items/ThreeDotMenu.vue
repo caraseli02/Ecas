@@ -58,7 +58,7 @@
         </button>
         <button
             v-if="trashButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg text-[#FA4B4B] transition-colors duration-300 hover:bg-[#F2F2F2]"
+            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg text-rose-500 transition-colors duration-300 hover:bg-[#F2F2F2]"
             @click="trashClicked"
         >
             <TrashIcon class="w-6 h-6 text-current" />

@@ -27,7 +27,7 @@ v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-
                         :class="expanded && shortStock ? 'hidden sm:block' : 'block'"
                         >{{ item.productEntity?.alias }}</span
                     >
-                    <span v-else class="block truncate text-[#FA4B4B] text-sm font-normal leading-6 self-center justify-self-center">{{
+                    <span v-else class="block truncate text-rose-500 text-sm font-normal leading-6 self-center justify-self-center">{{
                         item.productEntity.alias
                     }}</span>
                 </div>
@@ -43,7 +43,7 @@ v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-
                 <div v-if="!stockItem" class="flex flex-row items-center ml-4">
                     <WarningErrorHuge class="hidden lg:block" />
                     <WarningError class="block lg:hidden" />
-                    <span class="hidden sm:flex text-sm font-medium leading-6 text-[#FA4B4B] ml-2"
+                    <span class="hidden sm:flex text-sm font-medium leading-6 text-rose-500 ml-2"
                         >{{ item.stock - item.productEntity?.stock }} items will be on back order.</span
                     >
                 </div>
@@ -51,7 +51,7 @@ v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-
                     v-if="stockItem && item.discount.value && discounts?.productDiscount"
                     class="px-2 border-[1px] rounded-[25px] border-[#FA4B4B] bg-white ml-4 sm:flex items-center hidden"
                 >
-                    <span class="text-xs font-semibold leading-5 text-[#FA4B4B]">{{ item.discount.value }} %</span>
+                    <span class="text-xs font-semibold leading-5 text-rose-500">{{ item.discount.value }} %</span>
                 </div>
             </div>
             <div>
@@ -67,7 +67,7 @@ v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-
                     </Tooltip>
                     <button
                         v-if="!inModal"
-                        class="flex items-center justify-center ml-auto text-gray-300 transition-colors duration-300 hover:text-[#FA4B4B]"
+                        class="flex items-center justify-center ml-auto text-gray-300 transition-colors duration-300 hover:text-rose-500"
                         @click="deleteItem = true"
                     >
                         <TrashIcon class="w-5 h-5" />

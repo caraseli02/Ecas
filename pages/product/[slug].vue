@@ -28,7 +28,9 @@
       <ProductTable :features="product.details.ParametricData.Features"/>
     </div>
     <ProductBanners/>
-    <NewProducts/>
+    <NewProducts>
+      Similar Products
+    </NewProducts>
     <Banner class="hidden lg:flex xl:hidden"/>
     <div class="container mb-[30px] lg:mb-10 xl:mb-[60px]">
       <div
@@ -37,7 +39,7 @@
         <EcxlusiveOffer/>
       </div>
     </div>
-    <NewProducts/>
+    <ProductBlocks :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" />
     <News/>
     <Manufacturers/>
   </div>
@@ -63,4 +65,7 @@ const {data} = (await $api.product.fetchSingleProduct(route.params.slug)) as Pro
 const product = data as ProductDetail;
 
 const images: ProductImage[] = Array(3).fill(product.details.ProductImage);
+
+const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
+
 </script>

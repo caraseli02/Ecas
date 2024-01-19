@@ -15,7 +15,7 @@
                 <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
                 <div class="flex flex-row justify-between">
                     <span class="text-neutral-700 text-xs font-normal leading-5">$40.00 or more excl. VAT</span>
-                    <span class="text-[#FA4B4B] text-xs font-medium leading-5">FREE</span>
+                    <span class="text-rose-500 text-xs font-medium leading-5">FREE</span>
                 </div>
                 <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
                 <div class="flex flex-row justify-between">

@@ -8,7 +8,7 @@
                     ? 'bg-[#00D395]'
                     : item.status === PaymentStatusEnum.Pending
                     ? 'bg-[#FF8A00]'
-                    : 'bg-[#FA4B4B]'
+                    : 'bg-rose-500'
             "
         />
         <span
@@ -18,7 +18,7 @@
                     ? 'text-[#00D395]'
                     : item.status === PaymentStatusEnum.Pending
                     ? 'text-[#FF8A00]'
-                    : 'text-[#FA4B4B]'
+                    : 'text-rose-500'
             "
         >
             {{ getPaymentStatusById(item.status) }}</span
