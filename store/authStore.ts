@@ -1,10 +1,10 @@
-import { defineStore } from 'pinia';
-import { UserInfoJWT } from '~~/types';
-import { UserDetails } from '~~/types/auth/user-details';
+import {defineStore} from 'pinia';
+import {UserInfoJWT} from '~~/types';
+import {UserDetails} from '~~/types/auth/user-details';
 import Emitter from 'tiny-emitter/instance.js';
 import useFirebaseAuth from '~/composables/useFirebaseAuth';
 import moment from 'moment';
-import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import {GeneralSettingsInterface} from '~/types/general-settings/general-settings';
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore({
         signOut() {
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = { value: '', createdAt: '' };
+            this.token = {value: '', createdAt: ''};
             this.generalSettings = null;
 
             Emitter.emit('remove-cart-and-notifications', true);
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore({
 
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = { value: '', createdAt: '' };
+            this.token = {value: '', createdAt: ''};
             this.generalSettings = null;
         },
         getToken() {

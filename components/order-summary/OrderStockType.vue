@@ -107,32 +107,34 @@
             v-if="paymentMethodExpanded"
             :order="order"
             :account-credit="accountCredit"
+            :cards="cards"
             class="item"
         />
       </Transition>
       <AppModal v-model="showCardsModal">
-        <OrderSummaryPaymentModal />
+        <OrderSummaryPaymentModal/>
       </AppModal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { CartProductsInterface, OrderInterface } from '~/types';
+import type {CartProductsInterface, OrderInterface} from '~/types';
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
-import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import {CustomerCreditInterface} from '~/types/auth/account-settings';
 import Emitter from 'tiny-emitter/instance.js';
-import { useAuthStore } from '~/store/authStore';
-import { usePaymentStore } from '~/store/paymentStore';
-import { storeToRefs } from 'pinia';
+import {useAuthStore} from '~/store/authStore';
+import {usePaymentStore} from '~/store/paymentStore';
+import {storeToRefs} from 'pinia';
 // import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
 const props = defineProps<{
   items: CartProductsInterface[]
   accountCredit: CustomerCreditInterface
   order: OrderInterface
+  cards: any
   // generalSettings: GeneralSettingsInterface
 }>();
 
@@ -144,16 +146,16 @@ const generalSettings = useAuthStore().generalSettings;
 
 const stockOrder = computed(() => {
   const stockItems = props.items.filter(
-    (item: CartProductsInterface) =>
-      item.productEntity?.stock !== undefined && item.productEntity.stock >= item.stock
+      (item: CartProductsInterface) =>
+          item.productEntity?.stock !== undefined && item.productEntity.stock >= item.stock
   );
   return stockItems.length === props.items.length;
 });
 
 const backOrder = computed(() => {
   const backOrderItems = props.items.filter(
-    (item: CartProductsInterface) =>
-      item.productEntity?.stock !== undefined && item.productEntity.stock === 0
+      (item: CartProductsInterface) =>
+          item.productEntity?.stock !== undefined && item.productEntity.stock === 0
   );
   return backOrderItems.length === props.items.length;
 });
@@ -174,16 +176,16 @@ const orderType = computed(() => {
 const shippingAndBillingMissingInfoWarning = computed(() => {
   if (props.order.shippingDetails?.address && props.order.shippingDetails?.billingAddress) {
     return (
-      !props.order.shippingDetails.address.name1 ||
-      !props.order.shippingDetails.address.city ||
-      !props.order.shippingDetails.address.region ||
-      !props.order.shippingDetails.address.postcode ||
-      !props.order.shippingDetails.address.country ||
-      !props.order.shippingDetails.billingAddress.name1 ||
-      !props.order.shippingDetails.billingAddress.city ||
-      !props.order.shippingDetails.billingAddress.region ||
-      !props.order.shippingDetails.billingAddress.postcode ||
-      !props.order.shippingDetails.billingAddress.country
+        !props.order.shippingDetails.address.name1 ||
+        !props.order.shippingDetails.address.city ||
+        !props.order.shippingDetails.address.region ||
+        !props.order.shippingDetails.address.postcode ||
+        !props.order.shippingDetails.address.country ||
+        !props.order.shippingDetails.billingAddress.name1 ||
+        !props.order.shippingDetails.billingAddress.city ||
+        !props.order.shippingDetails.billingAddress.region ||
+        !props.order.shippingDetails.billingAddress.postcode ||
+        !props.order.shippingDetails.billingAddress.country
     );
   }
 });
@@ -216,8 +218,9 @@ function expandShippingPreferences() {
 function expandPaymentMethod() {
   paymentMethodExpanded.value = !paymentMethodExpanded.value;
 }
+
 const paymentStore = usePaymentStore();
-const { showCardsModal } = storeToRefs(paymentStore); 
+const {showCardsModal} = storeToRefs(paymentStore);
 </script>
 
 <!-- 
