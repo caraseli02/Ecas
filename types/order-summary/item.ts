@@ -75,6 +75,7 @@ export interface OrderRequestInterface {
     cartId?: string;
     products?: CartProductsInterface[];
     shippingDetails: OrderShippingDetailsInterface;
+    stripeCardId?: any;
     paymentDetails: PaymentDetails;
     smallOrderChargeId: string;
     currency: string;
@@ -114,6 +115,7 @@ export interface PaymentDetails {
     type: PaymentTypeEnum;
     status?: PaymentStatusEnum;
     paymentIntentId?: string;
+    cardId?: string;
 }
 
 export enum PaymentStatusEnum {

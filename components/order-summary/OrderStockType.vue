@@ -108,6 +108,7 @@
             :order="order"
             :account-credit="accountCredit"
             :cards="cards"
+            :card_id="cardId"
             class="item"
         />
       </Transition>
@@ -135,6 +136,7 @@ const props = defineProps<{
   accountCredit: CustomerCreditInterface
   order: OrderInterface
   cards: any
+  cardId: any
   // generalSettings: GeneralSettingsInterface
 }>();
 

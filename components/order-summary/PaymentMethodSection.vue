@@ -10,34 +10,17 @@
       <div v-for="card in cards" class>
         <OrderSummaryPayByCard
             view="payment"
-            :card-type='card?.type'
+            :card-info="card"
+            :card-type='card?.card.brand'
+            :is-selected="order?.paymentDetails?.cardId === card.id"
             :has-card=true
-            :is-expired=true
-            @select-payment-option="selectPaymentOption($event)"/>
+            :is-expired=cardExpired(card)
+            @select-payment-option="selectPaymentOption({type: 'Card', info: $event});"/>
       </div>
-
-      <!--      <OrderSummaryPayByCard-->
-      <!--          view="payment"-->
-      <!--          @select-payment-option="selectPaymentOption($event)"-->
-      <!--      />-->
-      <!--      <OrderSummaryPayByCard-->
-      <!--          has-card-->
-      <!--          view="payment"-->
-      <!--          card-type="amex"-->
-      <!--          @select-payment-option="selectPaymentOption($event)"-->
-      <!--      />-->
-      <!--      <OrderSummaryPayByCard-->
-      <!--          has-card-->
-      <!--          :is-selected="order.paymentDetails?.type === 0"-->
-      <!--          view="payment"-->
-      <!--          is-expired-->
-      <!--          card-type="master"-->
-      <!--          @select-payment-option="selectPaymentOption($event)"-->
-      <!--      />-->
       <button
           class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
           :class="order.paymentDetails?.type === 3 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
-          @click="selectPaymentOption('Bank')">
+          @click="selectPaymentOption({type: 'Bank'})">
         <div class="flex flex-row justify-between w-full">
           <RadioButtonChecked
               v-if="order.paymentDetails?.type === 3"
@@ -54,7 +37,7 @@
       <button
           class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
           :class="order.paymentDetails?.type === 1 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
-          :disabled="accountCredit.active" @click="selectPaymentOption('Credit')">
+          :disabled="accountCredit.active" @click="selectPaymentOption({type: 'Credit'})">
         <div class="flex flex-row justify-between w-full">
           <RadioButtonChecked
               v-if="order.paymentDetails?.type === 1"
@@ -88,7 +71,7 @@
       <button
           class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
           :class="order.paymentDetails?.type === 2 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
-          @click="selectPaymentOption('Cash')">
+          @click="selectPaymentOption({type: 'Cash'})">
         <div class="flex flex-row justify-between w-full">
           <RadioButtonChecked
               v-if="order.paymentDetails?.type === 2"
@@ -112,21 +95,37 @@ import RadioButtonChecked from '@/assets/icons/radio-button-checked.svg';
 import BankIcon from '@/assets/icons/bank.svg';
 import PieChart from '@/assets/icons/pie-chart.svg';
 import MoneyIcon from '@/assets/icons/money.svg';
-import {OrderInterface, PaymentTypeEnum} from '~/types';
+import {OrderInterface, PaymentDetails, PaymentTypeEnum} from '~/types';
 import {CustomerCreditInterface} from '~/types/auth/account-settings';
+import moment from 'moment/moment';
 
 const props = defineProps<{
   order: OrderInterface
   accountCredit: CustomerCreditInterface
   cards: any
+  cardId: any
 }>()
 
 const showCreditInfoModal = ref(false)
 
-function selectPaymentOption(option: string) {
-  if (props.order.paymentDetails) {
-    props.order.paymentDetails.type = PaymentTypeEnum[option as keyof typeof PaymentTypeEnum] as number;
+function selectPaymentOption(option: { type: string, info?: any }) {
 
+  const payment = {} as PaymentDetails
+  if (props.order.paymentDetails) {
+    payment.type = PaymentTypeEnum[option.type as keyof typeof PaymentTypeEnum] as number;
+    // props.order.paymentDetails.type = PaymentTypeEnum[option.type as keyof typeof PaymentTypeEnum] as number;
+    if (option.info) {
+      payment.cardId = option.info.id;
+    }
+    props.order.paymentDetails = payment
   }
 }
+
+function cardExpired(card: any) {
+  const month = moment().format('m');
+  const year = moment().format('y');
+  return Number(year) <= card.card.exp_year && Number(month) <= card.card.exp_month;
+}
+
+
 </script>

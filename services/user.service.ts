@@ -59,11 +59,12 @@ class UserService extends HttpFactory {
         });
     }
 
-    async userCards(id: string | null) {
-        if (id !== null) {
-            return await this.call<AccountAdminSettings>('GET', `${this.RESOURCE}/${id}/cards`, null);
-        }
-
+    async userCards() {
+        const token = this.authStore.getToken();
+        
+        return await this.call<AccountAdminSettings>('GET', `${this.RESOURCE}/cards`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
     }
 }
 

@@ -39,6 +39,7 @@
                 :order="order"
                 :general-settings="generalSettings"
                 :cards="cards"
+                :card-id="card_id"
             />
             <OrderSummaryNoteSection/>
             <OrderSummary :order="order" :general-settings="generalSettings"/>
@@ -60,7 +61,7 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import {AccountRole, CartProductsInterface, OrderRequestInterface} from '~/types';
+import {AccountRole, CartProductsInterface, OrderRequestInterface, PaymentDetails} from '~/types';
 import {CustomerCreditInterface} from '~/types/auth/account-settings';
 import {useAuthStore} from '~/store/authStore';
 import {ShippingAddressInterface} from '~/types/auth/user-details';
@@ -85,10 +86,7 @@ const userId = user.value?.firebaseId;
 const creditObject = ref({} as CustomerCreditInterface);
 const orderType = ref(0);
 const note = ref('');
-const paymentType = ref({
-  type: 0 as number,
-  selected: false,
-});
+
 
 const {$api} = useNuxtApp();
 useHead({
@@ -146,31 +144,15 @@ const {getGeneralSettings} = storeToRefs(authStore);
 const getGeneralSettingsFunction = () => {
   generalSettings.value = getGeneralSettings.value;
 };
-
+const card_id = ref({});
 const cards = ref([] as any)
 const fetchCards = async () => {
-  const id = authStore.userDetails?.firebaseId
-  if (id) {
-    const response = await $api.user.userCards(id) as { status: string, data: any }
-    console.log(response);
-    // if (response.status === 'success') {
-    // cards.value = response.data;
-
-    cards.value = [
-      {
-        type: 'master',
-        name: '1'
-      },
-      {
-        type: 'visa',
-        name: '2'
-      },
-      {
-        type: 'amex',
-        name: '3'
-      },
-    ]
-    // }
+  const response = await $api.user.userCards() as {
+    status: string,
+    data: any
+  }
+  if (response.status === 'success') {
+    cards.value = response.data;
   }
 }
 await fetchCards();
@@ -319,10 +301,7 @@ const order = ref({
     address: getShipping(),
     billingAddress: getBilling(),
   },
-  paymentDetails: {
-    type: null,
-    id: ''
-  },
+  paymentDetails: {} as PaymentDetails,
   type: '',
   backorderOption: null,
   deliveryMethod: null,
@@ -332,7 +311,7 @@ const order = ref({
 const deliveryMethod = ref<ShippingTypesInterface | null>(null);
 const backOrderOption = ref<BackorderShippingTypesInterface | null>(null);
 const smallOrder = ref<SmallOrderChargeInterface | null>(null);
-const paymentDetails = ref<any | null>(null);
+const paymentDetails = ref<PaymentDetails | null>(null);
 
 watch(
     [order],
@@ -340,7 +319,7 @@ watch(
       deliveryMethod.value = _order.deliveryMethod;
       backOrderOption.value = _order.backorderOption;
       smallOrder.value = _order.smallOrder;
-      paymentDetails.value = _order.paymentDetails
+      paymentDetails.value = _order.paymentDetails;
     },
     {deep: true}
 );
@@ -377,24 +356,23 @@ Emitter.on('order-type', async (type: number) => {
   orderType.value = type;
 });
 
-Emitter.on('payment-type', async (object: { type: number; selected: boolean }) => {
-  paymentType.value.type = object.type;
-  paymentType.value.selected = object.selected;
-});
 
 Emitter.on('note', async (noteText: string) => {
   note.value = noteText;
 });
 
-Emitter.on('delete-product-item', async (object: { id: string }) => {
+Emitter.on('delete-product-item', async (object: {
+  id: string
+}) => {
   cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
   mapCartItems(cartItems.value);
 });
 
 Emitter.on('checkout', async () => {
-  if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !smallOrder.value) {
+  if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !smallOrder.value || !paymentDetails.value) {
     return;
   }
+
 
   if (user.value.role === AccountRole.Client) {
     orderRequestObject.value = {
@@ -415,10 +393,12 @@ Emitter.on('checkout', async () => {
       },
       smallOrderChargeId: smallOrder.value._id,
       paymentDetails: {
-        type: paymentType.value.type,
+        type: paymentDetails.value.type,
       },
     };
-
+    if (paymentDetails.value && paymentDetails.value.type === 0) {
+      orderRequestObject.value.stripeCardId = paymentDetails.value.cardId
+    }
     if (note.value !== '') {
       orderRequestObject.value.note = {
         sender: user.value.firebaseId,
@@ -426,21 +406,20 @@ Emitter.on('checkout', async () => {
       };
     }
   }
+  if (paymentDetails.value) {
+    console.log(orderRequestObject.value);
+    // const response = await $api.orders.sendOrder(orderRequestObject.value);
+    // if (response.status === 'success') {
+    //   if (paymentType.value.type === 0) {
+    // const paymentLink = response.data;
+    // window.open(paymentLink, );
+    // }
 
-  if (paymentType.value.selected) {
-    const response = await $api.orders.sendOrder(orderRequestObject.value);
-
-    if (response.status === 'success') {
-      if (paymentType.value.type === 0) {
-        // const paymentLink = response.data;
-        // window.open(paymentLink, );
-      }
-
-      await cartStore.updateAndReturnCart();
-
-      const router = useRouter();
-      await router.push({path: '/'});
-    }
+    // await cartStore.updateAndReturnCart();
+    //
+    // const router = useRouter();
+    // await router.push({path: '/'});
+    // }
   }
 });
 
