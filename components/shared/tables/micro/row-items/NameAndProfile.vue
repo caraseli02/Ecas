@@ -26,7 +26,7 @@
       <SkeletonLoader v-if="loading" class="w-full h-5 mb-2"/>
       <div v-else class="flex items-center gap-3 mb-1">
         <div v-if="!showAvatar && showFlag" class="flex items-center gap-3 cursor-default">
-          <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+          <Tooltip :text="item.flag.label" :position="index === 0 ? 'bottom' : 'top'" theme="black">
             <component :is="item.flag"/>
             <div class="flex items-center text-sm font-medium leading-[1.75] break-all w-5 h-5 flex-1">
               <img
@@ -40,11 +40,11 @@
           {{ item.name }}
         </div>
         <div class="flex items-center gap-3 cursor-default">
-          <Tooltip :position="index === 0 ? 'bottom' : 'top'" theme="black">
+          <Tooltip :text="item.flag.label" :position="index === 0 ? 'bottom' : 'top'" theme="black">
             <component :is="item.flag" v-if="showFlag && showAvatar"/>
             <div
-v-if="showAvatar"
-                 class="flex items-center text-sm font-medium leading-[1.75] break-all w-5 h-5 flex-1">
+                v-if="showAvatar"
+                class="flex items-center text-sm font-medium leading-[1.75] break-all w-5 h-5 flex-1">
               <img
                   v-if="item.flag && item.flag.icon" :src="item.flag.icon" :alt="item.flag.label"
                   class="rounded"/>
