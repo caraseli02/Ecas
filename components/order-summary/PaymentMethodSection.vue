@@ -7,7 +7,7 @@
       </button>
     </div>
     <div class="flex flex-col gap-4 relative">
-      <div v-for="card in cards" class>
+      <div v-for="(card, index) in cards" :key="index" class="">
         <OrderSummaryPayByCard
             view="payment"
             :card-info="card"
@@ -15,7 +15,8 @@
             :is-selected="order?.paymentDetails?.cardId === card.id"
             :has-card=true
             :is-expired=cardExpired(card)
-            @select-payment-option="selectPaymentOption({type: 'Card', info: $event});"/>
+            @select-payment-option="selectPaymentOption({type: 'Card', info: $event});"
+        />
       </div>
       <button
           class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"

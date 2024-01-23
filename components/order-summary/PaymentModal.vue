@@ -1,5 +1,5 @@
 <template>
-  <section class="items-start shadow-sm bg-white flex max-w-[326px] md:max-w-[400px] flex-col px-4 md:px-6 py-6 rounded-xl">
+  <section class="flex flex-col items-start justify-center w-full shadow-sm bg-white  max-w-[358px] md:max-w-[400px]  px-4 md:px-6 py-6 rounded-xl">
     <div
       class="justify-between items-center self-stretch flex gap-5">
       <div class="text-zinc-800 text-base font-semibold leading-7 my-auto">
@@ -16,7 +16,7 @@
         Saved cards
       </h4>
       <OrderSummaryPayByCard view="modal" has-card card-type="visa"/>
-      <OrderSummaryPayByCard view="modal" has-card is-selected is-expired card-type="master" />
+      <OrderSummaryPayByCard view="modal" has-card is-selected is-expired card-type="mastercard" />
       <OrderSummaryPayByCard view="modal" has-card card-type="amex" />
       <OrderSummaryNewCard />
       <OrderSummaryNewCard is-selected />
