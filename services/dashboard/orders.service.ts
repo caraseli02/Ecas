@@ -11,7 +11,7 @@ class OrdersService extends HttpFactory {
 
     async fetchWidget(type: 'string', time: number) {
         const token = this.authStore.getToken();
-        
+
         return await this.call<any>('GET', `${this.ORDERS_DASHBOARD_RESOURCE}/${type}?time=${time}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
@@ -42,6 +42,14 @@ class OrdersService extends HttpFactory {
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
+    }
+
+    async createAndRetrieveSetupIntent() {
+        const token = this.authStore.getToken();
+
+        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/setup-intent/new`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
     }
 }
 
