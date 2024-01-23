@@ -43,7 +43,7 @@
                 </button>
                 <button
                     v-if="user.active"
-                    class="flex px-5 py-2 rounded-lg bg-[#FA4B4B] text-sm leading-[1.71] justify-center text-white font-medium"
+                    class="flex px-5 py-2 rounded-lg bg-rose-500 text-sm leading-[1.71] justify-center text-white font-medium"
                     @click="deactivateAccountAsAdmin(user.firebaseId)"
                 >
                     <span>Lock Account</span>

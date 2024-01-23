@@ -1,8 +1,8 @@
 <template>
   <div class="pt-[30px] lg:pt-10">
     <div class="grid grid-cols-1">
-      <div class="container">
-        <div class="flex items-end justify-between mb-[15px]">
+      <div class="container px-4">
+        <div class="flex items-end justify-between mb-[15px] px-2">
           <h1 class="text-xl font-semibold">Order Summary</h1>
           <div class="flex items-center">
             <button
@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="gap-6 lg:grid lg:grid-cols-[1fr,320px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,392px]">
-          <div class="flex flex-col gap-9 max-w-[976px]">
+          <div class="flex flex-col gap-9 max-w-[992px]">
             <OrderSummaryBackOrderWarning v-if="showWarning()"/>
             <OrderSummaryTable
                 :items="cartItems"
@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import {AccountRole, CartProductsInterface, OrderRequestInterface} from '~/types';
+import {AccountRole, CartProductsInterface, OrderRequestInterface, PaymentTypeEnum} from '~/types';
 import {CustomerCreditInterface} from '~/types/auth/account-settings';
 import {useAuthStore} from '~/store/authStore';
 import {ShippingAddressInterface} from '~/types/auth/user-details';
@@ -74,6 +74,9 @@ import {
   SmallOrderChargeInterface,
 } from '~/types/general-settings/general-settings';
 import {storeToRefs} from 'pinia';
+import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
+
+const router = useRouter();
 
 const store = useAuthStore();
 const cartStore = useCartStore();
@@ -383,7 +386,8 @@ Emitter.on('checkout', async () => {
       paymentDetails: {
         type: paymentType.value.type,
       },
-    };
+    // stripeCardId: 'pm_1OWPIdHH6OAXXqHT50cqSY8l',
+        };
 
     if (note.value !== '') {
       orderRequestObject.value.note = {
@@ -393,21 +397,44 @@ Emitter.on('checkout', async () => {
     }
   }
 
-  if (paymentType.value.selected) {
-    const response = await $api.orders.sendOrder(orderRequestObject.value);
+  if (!paymentType.value.selected) {
+    return;
+    }
 
-    if (response.status === 'success') {
-      if (paymentType.value.type === 0) {
-        // const paymentLink = response.data;
-        // window.open(paymentLink, );
+    const response = (await $api.orders.sendOrder(orderRequestObject.value)) as PlaceOrderInterface;
+
+    if (response.status !== 'success') {
+        await router.push({ path: '/checkout/fail' });
+
+        return;
+    }
+
+    if (paymentType.value.type === PaymentTypeEnum.Card) {
+        if (orderRequestObject.value.stripeCardId && response.data.paid) {
+            const result = response.data.result;
+
+            if (result?.status === 'succeeded') {
+                console.log('order paid with a default card');
+                await router.push({ path: '/checkout/success' });
+      } else if (result?.status === 'canceled') {
+                console.log('order canceled reason: ', result?.cancellation_reason);
+                await router.push({ path: '/checkout/fail' });
+            } else {
+                console.log('order pending', result?.status);
+                await router.push({ path: '/checkout/pending' });
+            }
+        } else if (!response.data.paid && response.data.clientSecret) {
+            cartStore.setOrderClientSecret(response.data.clientSecret);
+            await router.push({ path: '/checkout/session' });
+        }
+    } else if (paymentType.value.type === PaymentTypeEnum.Credit) {
+        console.log('paid with credit');
+        await router.push({ path: '/checkout/success' } );
       }
 
       await cartStore.updateAndReturnCart();
 
-      const router = useRouter();
-      await router.push({path: '/'});
-    }
-  }
+
 });
 
 await fetchList();

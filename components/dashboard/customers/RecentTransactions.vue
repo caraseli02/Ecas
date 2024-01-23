@@ -34,7 +34,7 @@
                                     transaction.status === 'success'
                                         ? 'bg-[#00D395]'
                                         : transaction.status === 'declined'
-                                        ? 'bg-[#FA4B4B]'
+                                        ? 'bg-rose-500'
                                         : 'bg-[#FF8A00]',
                                 ]"
                             />
@@ -44,7 +44,7 @@
                                     transaction.status === 'success'
                                         ? 'text-[#00D395]'
                                         : transaction.status === 'declined'
-                                        ? 'text-[#FA4B4B]'
+                                        ? 'text-rose-500'
                                         : 'text-[#FF8A00]',
                                 ]"
                                 >{{ transaction.status }}</span

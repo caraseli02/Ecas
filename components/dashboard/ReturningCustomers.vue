@@ -5,7 +5,7 @@
             <div v-if="error" class="flex justify-end w-10 h-10">
                 <WarningIcon class="w-6 h-6" />
             </div>
-            <div v-else class="flex items-center justify-center bg-[#FA4B4B] rounded-full w-10 h-10">
+            <div v-else class="flex items-center justify-center bg-rose-500 rounded-full w-10 h-10">
                 <PeopleIcon class="w-6 h-6" />
             </div>
         </div>

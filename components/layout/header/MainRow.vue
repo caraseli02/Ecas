@@ -86,7 +86,7 @@
                   </div>
                   <span
                       v-if="unreadNotifications > 0"
-                      class="flex items-center justify-center -translate-y-2 -translate-x-2.5 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white rounded-[100px] text-xs font-semibold leading-[1.5] xl:-translate-x-[38px] xl:-translate-y-[18px]"
+                      class="flex items-center justify-center -translate-y-2 -translate-x-2.5 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5] xl:-translate-x-[38px] xl:-translate-y-[18px]"
                       :class="[unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]']"
                   >
                                         <span>
@@ -130,7 +130,7 @@
                 <CartIcon class="w-6 h-6 text-white" :class="[cartItems > 0 ? 'mr-0' : 'mr-4']"/>
                 <span
 v-if="cartItems > 0"
-                      class="flex items-center justify-center -translate-y-2 -translate-x-2.5 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-[#FA4B4B] text-white rounded-[100px] text-xs font-semibold leading-[1.5]"
+                      class="flex items-center justify-center -translate-y-2 -translate-x-2.5 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5]"
                       :class="[cartItems < 10 ? 'w-[18px]' : cartItems < 100 ? 'w-6' : 'w-[31px]']"
                 >
                                     <span> {{ cartItems }} </span>

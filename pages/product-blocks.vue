@@ -2,8 +2,8 @@
   <div class="flex flex-col gap-8">
     <ProductBlocks :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
       <template #header>
-        <section class="flex justify-between items-center">
-          <div class="text-xl">Browsing History</div>
+        <section class="flex justify-between items-center ml-1">
+          <div class="text-xl font-semibold">Browsing History</div>
         </section>
       </template>
       <!-- <template #banner>
@@ -12,8 +12,8 @@
     </ProductBlocks>
     <ProductBlocks :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
       <template #header>
-        <section class="flex justify-between items-center">
-          <div class="text-xl">Browsing History</div>
+        <section class="flex justify-between items-center ml-1 mr-2">
+          <div class="text-xl font-semibold">Browsing History</div>
           <NuxtLink class="text-blue-500 flex items-center gap-2" to="#">
             View All
             <SvgoArrowRight />
@@ -29,7 +29,7 @@
     <ProductBlocks masonry-view :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" />
     <ProductBlocks masonry-view :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters">
     <template #banner>
-      <div class="md:pt-3 md:pr-0 h-[calc(100%-30px)] mx-2 md:mx-3 xl:mx-0 xl:mr-3 xl:min-w-[330px] xl:min-h-[592px]">
+      <div class="md:pt-6 md:pr-0 h-[calc(100%-30px)] mx-2 xl:mx-0 xl:mr-3 xl:min-w-[330px] xl:min-h-[592px]">
                     <div
                         class="flex h-full gap-4 md:gap-[40px] bg-white rounded-xl shadow-xs p-6 md:m-0 xl:flex-col xl:w-[330px]"
                     >
@@ -58,6 +58,19 @@
                 </div>
     </template>
     </ProductBlocks>
+    <div class="max-w-[976px] mx-auto">
+      <ProductBlocks orderSummaryView :fetched-products="productList" class="mb-7 lg:mb-[38px] xl:mb-[58px]">
+        <template #header>
+          <section class="flex justify-between items-center ml-1">
+            <div class="text-xl font-semibold">Similar Products</div>
+          </section>
+        </template>
+        <!-- <template #banner>
+          test banner
+      </template> -->
+      </ProductBlocks>
+      <ProductBlocks orderSummaryView class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="['Best Sellers', 'Top Searched']" />
+    </div>
   </div>
 </template>
 

@@ -82,6 +82,7 @@ export interface OrderRequestInterface {
     discount?: DiscountInterface;
     isDraft: boolean;
     note?: OrderNotesInterface;
+    stripeCardId?: string;
 }
 
 export enum DeliveryMethodEnum {
