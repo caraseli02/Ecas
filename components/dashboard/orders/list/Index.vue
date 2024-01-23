@@ -314,6 +314,7 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
         id: order.shortId,
         type: order.type,
         name: order.userName || '-',
+        email: order.userEmail || '-',
         date: moment(order.createdAt).format('DD/MM/YYYY'),
         firebaseId: order.userId,
         payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
