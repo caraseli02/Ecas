@@ -60,21 +60,21 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import {AccountRole, CartProductsInterface, OrderRequestInterface, PaymentDetails, PaymentTypeEnum} from '~/types';
-import {CustomerCreditInterface} from '~/types/auth/account-settings';
-import {useAuthStore} from '~/store/authStore';
-import {ShippingAddressInterface} from '~/types/auth/user-details';
+import { AccountRole, CartProductsInterface, OrderRequestInterface, PaymentDetails, PaymentTypeEnum } from '~/types';
+import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import { useAuthStore } from '~/store/authStore';
+import { ShippingAddressInterface } from '~/types/auth/user-details';
 import Emitter from 'tiny-emitter/instance.js';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
-import {useCartStore} from '~/store/cartStore';
-import {CartInterface} from '~/model/cart/response/cart.interface';
+import { useCartStore } from '~/store/cartStore';
+import { CartInterface } from '~/model/cart/response/cart.interface';
 import {
-  BackorderShippingTypesInterface,
-  GeneralSettingsInterface,
-  ShippingTypesInterface,
-  SmallOrderChargeInterface,
+    BackorderShippingTypesInterface,
+    GeneralSettingsInterface,
+    ShippingTypesInterface,
+    SmallOrderChargeInterface,
 } from '~/types/general-settings/general-settings';
-import {storeToRefs} from 'pinia';
+import { storeToRefs } from 'pinia';
 import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
 
 const router = useRouter();
@@ -89,65 +89,65 @@ const creditObject = ref({} as CustomerCreditInterface);
 const orderType = ref(0);
 const note = ref('');
 const paymentType = ref({
-  type: 0 as number,
-  selected: false,
+    type: 0 as number,
+    selected: false,
 });
 
-const {$api} = useNuxtApp();
+const { $api } = useNuxtApp();
 useHead({
-  title: 'Order Summary',
+    title: 'Order Summary',
 });
 const cartItems = ref([] as CartProductsInterface[]);
 const cartId = ref('' as string);
 
 const fetchList = async () => {
-  const cart = (await cartStore.updateAndReturnCart()) as CartInterface;
+    const cart = (await cartStore.updateAndReturnCart()) as CartInterface;
 
-  const products = cart.products;
-  cartId.value = cart._id || '';
-  mapCartItems(products);
+    const products = cart.products;
+    cartId.value = cart._id || '';
+    mapCartItems(products);
 };
 
 const showWarning = ref(() => {
-  return cartItems.value.some((item: any) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
+    return cartItems.value.some((item: any) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
 });
 
 const loading = ref(true);
 
 const checkAll = (checked: boolean) => {
-  cartItems.value.forEach((item: any) => {
-    item.selected = checked;
-  });
+    cartItems.value.forEach((item: any) => {
+        item.selected = checked;
+    });
 };
 
 const deleteSelected = async (deletedItems: string) => {
-  const itemsToDelete = cartItems.value.filter((product: any) => product.selected)?.map((object) => object.id);
-  cartItems.value = cartItems.value.filter((product: any) => !product.selected);
+    const itemsToDelete = cartItems.value.filter((product: any) => product.selected)?.map((object) => object.id);
+    cartItems.value = cartItems.value.filter((product: any) => !product.selected);
 
-  const payload = {
-    products: itemsToDelete,
-  };
+    const payload = {
+        products: itemsToDelete,
+    };
 
-  const removed = await $api.cart.removeEntityFromCart(payload);
+    const removed = await $api.cart.removeEntityFromCart(payload);
 
-  if (removed.status === 'success') {
-    await cartStore.updateAndReturnCart();
-  }
+    if (removed.status === 'success') {
+        await cartStore.updateAndReturnCart();
+    }
 };
 
 watch(
     [cartItems],
     ([_items]) => {
-      calculateSubtotal(_items);
-      calculateDiscount(_items);
+        calculateSubtotal(_items);
+        calculateDiscount(_items);
     },
-    {deep: true}
+    { deep: true }
 );
 const generalSettings = ref<GeneralSettingsInterface | null>({} as GeneralSettingsInterface);
 const authStore = useAuthStore();
 const { getGeneralSettings } = storeToRefs(authStore);
 const getGeneralSettingsFunction = () => {
-  generalSettings.value = getGeneralSettings.value;
+    generalSettings.value = getGeneralSettings.value;
 };
 const card_id = ref({});
 const cards = ref([] as any);
@@ -165,131 +165,132 @@ await fetchCards();
 await getGeneralSettingsFunction();
 
 const mapCartItems = (cart: CartProductsInterface[] = []) => {
-  cartItems.value = cart?.map((product: CartProductsInterface) => ({
-    id: product.id,
-    stock: product.stock,
-    isFolder: false,
-    initialUnitPrice: product.initialUnitPrice,
-    unitPriceAfterDiscounts: product.unitPriceAfterDiscounts,
-    subtotal: product.subtotal || 0,
-    total: product.total || 0,
-    discount: product.discount || {
-      value: 0,
-      startDate: '',
-      endDate: '',
-    },
-    productEntity: product.productEntity,
-    liked: false,
-    selected: false,
-  }));
+    cartItems.value = cart?.map((product: CartProductsInterface) => ({
+        id: product.id,
+        stock: product.stock,
+        isFolder: false,
+        initialUnitPrice: product.initialUnitPrice,
+        unitPriceAfterDiscounts: product.unitPriceAfterDiscounts,
+        subtotal: product.subtotal || 0,
+        total: product.total || 0,
+        discount: product.discount || {
+            value: 0,
+            startDate: '',
+            endDate: '',
+        },
+        productEntity: product.productEntity,
+        liked: false,
+        selected: false,
+    }));
 };
 
 const addToFavsAll = (liked: boolean) => {
-  cartItems.value.forEach((item: any) => {
-    if (item.selected) {
-      item.liked = liked;
-    }
-  });
+    cartItems.value.forEach((item: any) => {
+        if (item.selected) {
+            item.liked = liked;
+        }
+    });
 };
 
 const shippingFee = (shippingType: number) => {
-  console.log(shippingType);
+    console.log(shippingType);
 };
 
 const orderItems = computed((): CartProductsInterface[] => {
-  return cartItems.value?.map((item: any) => {
-    const {selected, liked, ...rest} = item;
-    return rest as CartProductsInterface;
-  });
+    return cartItems.value?.map((item: any) => {
+        const { selected, liked, ...rest } = item;
+        return rest as CartProductsInterface;
+    });
 });
 
 const getCustomerCredit = async () => {
-  if (!userId) {
-    return;
-  }
-  const response = await $api.user.fetchCustomerCredit(userId);
+    if (!userId) {
+        return;
+    }
+    const response = await $api.user.fetchCustomerCredit(userId);
 
-  if (response.status !== 'success') {
-    setTimeout(() => {
-      loading.value = false;
-    }, 100);
-    return;
-  } else {
-    setTimeout(() => {
-      loading.value = false;
-    }, 100);
-  }
+    if (response.status !== 'success') {
+        setTimeout(() => {
+            loading.value = false;
+        }, 100);
+        return;
+    } else {
+        setTimeout(() => {
+            loading.value = false;
+        }, 100);
+    }
 
-  creditObject.value = response.data;
+    creditObject.value = response.data;
 };
 
 await getCustomerCredit();
 
 const accountCredit = ref({
-  limit: creditObject.value?.limit,
-  spent: creditObject.value?.spent,
-  available: creditObject.value?.available,
-  dueDate: creditObject.value?.dueDate,
-  tillDue: creditObject.value?.tillDue,
-  term: creditObject.value?.term,
+    limit: creditObject.value?.limit,
+    spent: creditObject.value?.spent,
+    available: creditObject.value?.available,
+    dueDate: creditObject.value?.dueDate,
+    tillDue: creditObject.value?.tillDue,
+    term: creditObject.value?.term,
 });
 
 const getShipping = () => {
-  const fallbackAddress: ShippingAddressInterface = {
-    alias: 'N/A',
-    name1: 'N/A',
-    name2: 'N/A',
-    default: false,
-    country: 'N/A',
-    region: 'N/A',
-    city: 'N/A',
-    postcode: 'N/A',
-    phone: 'N/A',
-  };
+    const fallbackAddress: ShippingAddressInterface = {
+        alias: 'N/A',
+        name1: 'N/A',
+        name2: 'N/A',
+        default: false,
+        country: 'N/A',
+        region: 'N/A',
+        city: 'N/A',
+        postcode: 'N/A',
+        phone: 'N/A',
+    };
 
-  if (!user.value) {
-    return fallbackAddress;
-  }
+    if (!user.value) {
+        return fallbackAddress;
+    }
 
-  const address =
-      (user.value.personalDetails?.shippingAddress as ShippingAddressInterface[])?.find((address) => address.default) ||
-      user.value?.personalDetails?.shippingAddress[0];
+    const address =
+        (user.value.personalDetails?.shippingAddress as ShippingAddressInterface[])?.find((address) => address.default) ||
+        (user.value?.personalDetails?.shippingAddress && user.value?.personalDetails?.shippingAddress[0]);
 
-  if (!address) {
-    return fallbackAddress;
-  }
+    if (!address) {
+        return fallbackAddress;
+    }
 
-  address.alias = address.alias || 'Address';
+    address.alias = address.alias || 'Address';
 
-  return address;
+    return address;
 };
 
 const getBilling = () => {
-  const fallbackAddress: ShippingAddressInterface = {
-    alias: 'N/A',
-    name1: 'N/A',
-    name2: 'N/A',
-    default: false,
-    country: 'N/A',
-    region: 'N/A',
-    city: 'N/A',
-    postcode: 'N/A',
-    phone: 'N/A',
-  };
+    const fallbackAddress: ShippingAddressInterface = {
+        alias: 'N/A',
+        name1: 'N/A',
+        name2: 'N/A',
+        default: false,
+        country: 'N/A',
+        region: 'N/A',
+        city: 'N/A',
+        postcode: 'N/A',
+        phone: 'N/A',
+    };
 
-  if (!user.value) {
-    return fallbackAddress;
-  }
-  const address = (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[])?.find((address) => address.default) ||
-      user.value?.companyDetails?.shippingAddress[0]
+    if (!user.value) {
+        return fallbackAddress;
+    }
+    const address =
+        (user.value?.personalDetails?.shippingAddress as ShippingAddressInterface[])?.find((address) => address.default) ||
+        user.value?.companyDetails?.shippingAddress[0];
 
-  if (!address) {
-    return fallbackAddress;
-  }
+    if (!address) {
+        return fallbackAddress;
+    }
 
-  address.alias = address.alias || 'Address';
+    address.alias = address.alias || 'Address';
 
-  return address;
+    return address;
 };
 
 const order = ref({
@@ -305,10 +306,10 @@ const order = ref({
         billingAddress: getBilling(),
     },
     paymentDetails: {} as PaymentDetails,
-  type: '',
-  backorderOption: null,
-  deliveryMethod: null,
-  smallOrder: null,
+    type: '',
+    backorderOption: null,
+    deliveryMethod: null,
+    smallOrder: null,
 });
 
 const deliveryMethod = ref<ShippingTypesInterface | null>(null);
@@ -319,62 +320,62 @@ const paymentDetails = ref<PaymentDetails | null>(null);
 watch(
     [order],
     ([_order]) => {
-      deliveryMethod.value = _order.deliveryMethod;
-      backOrderOption.value = _order.backorderOption;
-      smallOrder.value = _order.smallOrder;
+        deliveryMethod.value = _order.deliveryMethod;
+        backOrderOption.value = _order.backorderOption;
+        smallOrder.value = _order.smallOrder;
         paymentDetails.value = _order.paymentDetails;
     },
-    {deep: true}
+    { deep: true }
 );
 
 const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
-  if (!orderItems) {
-    return;
-  }
+    if (!orderItems) {
+        return;
+    }
 
-  let subtotal = 0;
+    let subtotal = 0;
 
-  orderItems.forEach((item: CartProductsInterface) => {
-    subtotal += Number(item.unitPriceAfterDiscounts) * item.stock;
-  });
+    orderItems.forEach((item: CartProductsInterface) => {
+        subtotal += Number(item.unitPriceAfterDiscounts) * item.stock;
+    });
 
-  order.value.subtotal = subtotal.toFixed(2) as unknown as number;
+    order.value.subtotal = subtotal.toFixed(2) as unknown as number;
 };
 
 const calculateDiscount = (orderItems: CartProductsInterface[]) => {
-  if (!orderItems) {
-    return;
-  }
+    if (!orderItems) {
+        return;
+    }
 
-  let discount = 0;
+    let discount = 0;
 
-  orderItems.forEach((item: CartProductsInterface) => {
-    discount += Number(item.initialUnitPrice) * item.stock - Number(item.unitPriceAfterDiscounts) * item.stock;
-  });
+    orderItems.forEach((item: CartProductsInterface) => {
+        discount += Number(item.initialUnitPrice) * item.stock - Number(item.unitPriceAfterDiscounts) * item.stock;
+    });
 
-  order.value.discount.total = discount;
+    order.value.discount.total = discount;
 };
 
 Emitter.on('order-type', async (type: number) => {
-  orderType.value = type;
+    orderType.value = type;
 });
 
 Emitter.on('payment-type', async (object: { type: number; selected: boolean }) => {
-  paymentType.value.type = object.type;
-  paymentType.value.selected = object.selected;
+    paymentType.value.type = object.type;
+    paymentType.value.selected = object.selected;
 });
 
 Emitter.on('note', async (noteText: string) => {
-  note.value = noteText;
+    note.value = noteText;
 });
 
 Emitter.on('delete-product-item', async (object: { id: string }) => {
-  cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
-  mapCartItems(cartItems.value);
+    cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
+    mapCartItems(cartItems.value);
 });
 
 Emitter.on('checkout', async () => {
-  if (
+    if (
         !user.value ||
         !user.value?.personalDetails ||
         !user.value?.contactDetails ||
@@ -382,29 +383,29 @@ Emitter.on('checkout', async () => {
         !smallOrder.value ||
         !paymentDetails.value
     ) {
-    return;
-  }
+        return;
+    }
 
-  if (user.value.role === AccountRole.Client) {
-    orderRequestObject.value = {
-      isDraft: false,
-      cartId: cartId.value,
-      currency: 'usd',
-      type: orderType.value,
-      shippingDetails: {
-        firstName: user.value.personalDetails.firstName,
-        lastName: user.value.personalDetails.lastName,
-        phone: user.value.contactDetails.phone,
-        city: user.value.personalDetails.address.city,
-        country: user.value.personalDetails.address.country,
-        address: getShipping(),
-        billingAddress: getBilling(),
-        shippingTypeId: deliveryMethod.value._id,
-        backorderShippingTypeId: backOrderOption?.value?._id || undefined,
-      },
-      smallOrderChargeId: smallOrder.value._id,
-      paymentDetails: {
-        type: paymentDetails.value.type,
+    if (user.value.role === AccountRole.Client) {
+        orderRequestObject.value = {
+            isDraft: false,
+            cartId: cartId.value,
+            currency: 'usd',
+            type: orderType.value,
+            shippingDetails: {
+                firstName: user.value.personalDetails.firstName,
+                lastName: user.value.personalDetails.lastName,
+                phone: user.value.contactDetails.phone,
+                city: user.value.personalDetails.address.city,
+                country: user.value.personalDetails.address.country,
+                address: getShipping(),
+                billingAddress: getBilling(),
+                shippingTypeId: deliveryMethod.value._id,
+                backorderShippingTypeId: backOrderOption?.value?._id || undefined,
+            },
+            smallOrderChargeId: smallOrder.value._id,
+            paymentDetails: {
+                type: paymentDetails.value.type,
             },
         };
 
@@ -412,16 +413,16 @@ Emitter.on('checkout', async () => {
             orderRequestObject.value.stripeCardId = paymentDetails.value.cardId;
         }
 
-    if (note.value !== '') {
-      orderRequestObject.value.note = {
-        sender: user.value.firebaseId,
-        message: note.value,
-      };
+        if (note.value !== '') {
+            orderRequestObject.value.note = {
+                sender: user.value.firebaseId,
+                message: note.value,
+            };
+        }
     }
-  }
 
-  if (typeof paymentDetails.value.type === 'undefined') {
-    return;
+    if (typeof paymentDetails.value.type === 'undefined') {
+        return;
     }
 
     const response = (await $api.orders.sendOrder(orderRequestObject.value)) as PlaceOrderInterface;
@@ -439,7 +440,7 @@ Emitter.on('checkout', async () => {
             if (result?.status === 'succeeded') {
                 console.log('order paid with a default card');
                 await router.push({ path: '/checkout/success' });
-      } else if (result?.status === 'canceled') {
+            } else if (result?.status === 'canceled') {
                 console.log('order canceled reason: ', result?.cancellation_reason);
                 await router.push({ path: '/checkout/fail' });
             } else {
@@ -452,8 +453,8 @@ Emitter.on('checkout', async () => {
         }
     } else if (paymentDetails.value.type === PaymentTypeEnum.Credit) {
         console.log('paid with credit');
-        await router.push({ path: '/checkout/success' } );
-      }
+        await router.push({ path: '/checkout/success' });
+    }
 
     await cartStore.updateAndReturnCart();
     await router.push({ path: '/' });
