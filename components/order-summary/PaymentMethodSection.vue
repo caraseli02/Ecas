@@ -123,9 +123,10 @@ function selectPaymentOption(option: { type: string, info?: any }) {
 }
 
 function cardExpired(card: any) {
-  const month = moment().format('m');
-  const year = moment().format('y');
-  return Number(year) <= card.card.exp_year && Number(month) <= card.card.exp_month;
+  const exp_date = moment([card.card.exp_year, card.card.exp_month]);
+  const date = moment([Number(moment().format('y')), Number(moment().format('M'))]);
+  const dif = exp_date.diff(date, 'months');
+  return dif < 0;
 }
 
 
