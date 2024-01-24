@@ -32,7 +32,7 @@
       :order-total-inner-class="'justify-between w-full'"
       :order-status-title="'Order status'"
       :order-status-key="'status'"
-      :show-avatar="true"
+      :show-avatar="false"
       :show-lock="true"
       :show-discount="true"
       :show-flag="true"

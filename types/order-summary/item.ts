@@ -39,6 +39,7 @@ export interface OrderInterface {
     _id: string;
     shortId: string;
     userId?: string;
+    userEmail?: string;
     userName: string;
     businessId?: string;
     products?: (CartProductsInterface & {
