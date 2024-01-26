@@ -4,10 +4,10 @@
   >
     <div class="items-stretch flex justify-between gap-4">
       <div
-        class="justify-center items-center bg-sky-500 bg-opacity-30 flex aspect-square flex-col w-14 h-14 px-2 rounded-[100px] self-start"
+        class="justify-center items-center bg-blue-500 bg-opacity-30 flex aspect-square flex-col w-14 h-14 px-2 rounded-[100px] self-start"
       >
         <div
-          class="justify-center items-center bg-sky-500 flex aspect-square flex-col w-full h-10 px-2 rounded-[100px]"
+          class="justify-center items-center bg-blue-500 flex aspect-square flex-col w-full h-10 px-2 rounded-[100px]"
         >
         <svg
           class="aspect-square object-contain object-center w-full justify-center items-center overflow-hidden"
@@ -40,7 +40,7 @@
     </div>
     <div class="items-stretch flex justify-between gap-3 mt-10">
       <div
-        class="justify-between items-stretch bg-emerald-500 flex gap-2 px-4 py-2 rounded-lg"
+        class="justify-between items-stretch bg-green-600 flex gap-2 px-4 py-2 rounded-lg"
       >
       <svg 
         class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"
@@ -57,7 +57,7 @@
         </div>
       </div>
       <div
-        class="justify-between items-stretch bg-sky-500 flex gap-2 px-5 py-2 rounded-lg"
+        class="justify-between items-stretch bg-blue-500 flex gap-2 px-5 py-2 rounded-lg"
       >
       <svg 
         class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"

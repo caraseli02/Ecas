@@ -1,48 +1,89 @@
 <template>
-  <div class="items-stretch shadow-sm bg-white flex w-full max-w-[530px] flex-col pb-3 rounded-xl">
-    <section class="items-stretch bg-gray-700 flex w-full flex-col justify-center px-8 py-2 rounded-t-xl max-md:max-w-full max-md:px-5">
-      <div class="justify-between items-stretch flex gap-5 max-md:max-w-full max-md:flex-wrap">
-        <div class="text-white text-sm font-semibold leading-6 grow shrink basis-auto">October Hot Sale</div>
-        <div class="text-white text-sm font-semibold leading-6 whitespace-nowrap justify-center items-stretch border aspect-[2.04] px-2 rounded-[100px] border-solid border-white">20 %</div>
-      </div>
-    </section>
-    <div class="justify-between items-stretch self-stretch flex max-w-[530px] flex-col pt-3 px-8 max-md:px-5">
-    <header class="max-md:max-w-full">
-      <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
-        <div class="flex flex-col items-stretch w-[22%] max-md:w-full max-md:ml-0">
-        <SvgoNotFoundSmall class="w-[100px] h-[100px]" />
+    <div class="items-stretch shadow-sm bg-white flex w-full max-w-[530px] flex-col rounded-xl">
+   
+   <Swiper 
+    :modules="[A11y, Pagination]" 
+    :slides-per-view="1" 
+    :space-between="15" 
+    :grab-cursor="true" 
+    :pagination="{
+      bulletElement: 'button',
+      clickable: true,
+    }" 
+     class="homeFeaturedProducts--swiper w-[100%] h-[1005] block"
+  >
+  <SwiperSlide v-for="(item, index) in 5" :key="index">
+      <section class="items-stretch bg-gray-700 flex w-full flex-col justify-center px-8 py-2 rounded-t-xl max-md:max-w-full max-md:px-5">
+        <div class="justify-between items-stretch flex gap-5 max-md:max-w-full max-md:flex-wrap">
+          <div class="text-white text-sm font-semibold leading-6 grow shrink basis-auto">October Hot Sale</div>
+          <div class="text-white text-sm font-semibold leading-6 whitespace-nowrap justify-center items-stretch border aspect-[2.04] px-2 rounded-[100px] border-solid border-white">20 %</div>
         </div>
-        <div class="flex flex-col items-stretch w-[78%] ml-5 max-md:w-full max-md:ml-0">
-          <div class="items-stretch flex flex-col text-xs text-zinc-800 font-medium mt-2.5 max-md:mt-7">
-            <div class="text-base leading-6">ADGN2999BCPZ3577XKRT</div>
-            <div class="leading-[167%] mt-1">Voltage Regulators</div>
-            <div class="overflow-hidden text-gray-500 text-ellipsis leading-[133%] mt-1">PHY 1-CH 1.1V/1.8V/2.5V/3.3V 48-Pin</div>
+      </section>
+      <div class="justify-between items-stretch self-stretch flex max-w-[530px] flex-col pt-3 px-8 max-md:px-5">
+      <div class="max-md:max-w-full">
+        <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+          <div class="flex flex-col items-stretch w-[22%] max-md:w-full max-md:ml-0">
+          <SvgoNotFoundSmall class="w-[100px] h-[100px]" />
+          </div>
+          <div class="flex flex-col items-stretch w-[78%] ml-5 max-md:w-full max-md:ml-0">
+            <div class="items-stretch flex flex-col text-xs text-zinc-800 font-medium mt-2.5 max-md:mt-7">
+              <div class="text-base leading-6">ADGN2999BCPZ3577XKRT</div>
+              <div class="leading-[167%] mt-1">Voltage Regulators</div>
+              <div class="overflow-hidden text-gray-500 text-ellipsis leading-[133%] mt-1">PHY 1-CH 1.1V/1.8V/2.5V/3.3V 48-Pin</div>
+            </div>
           </div>
         </div>
       </div>
-    </header>
-    <div class="justify-between items-stretch flex w-full gap-5 mt-3 max-md:max-w-full max-md:flex-wrap">
-      <section class="justify-center items-stretch flex flex-col whitespace-nowrap self-start">
-        <div class="text-zinc-800 text-sm leading-4">$ 0,15 (100+)</div>
-        <div class="items-stretch flex justify-between gap-1 text-red-500 mt-1">
-          <div class="text-base font-bold leading-5 grow">$ 0,095</div>
-          <div class="text-sm leading-5 grow">(100+)</div>
+      <div class="justify-between items-stretch flex w-full gap-5 mt-3 max-md:max-w-full max-md:flex-wrap">
+        <section class="justify-center items-stretch flex flex-col whitespace-nowrap self-start">
+          <div class="text-zinc-800 text-sm leading-4">$ 0,15 (100+)</div>
+          <div class="items-stretch flex justify-between gap-1 text-red-500 mt-1">
+            <div class="text-base font-bold leading-5 grow">$ 0,095</div>
+            <div class="text-sm leading-5 grow">(100+)</div>
+          </div>
+        </section>
+        <div class="justify-between items-stretch bg-blue-500 flex gap-2 px-9 py-2 rounded-lg max-md:px-5">
+          <svg 
+            class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"
+            width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.5 20.5C11.5 21.3284 10.8284 22 10 22C9.17157 22 8.5 21.3284 8.5 20.5C8.5 19.6716 9.17157 19 10 19C10.8284 19 11.5 19.6716 11.5 20.5Z" stroke="white" stroke-width="1.5"/>
+            <path d="M20.5 20.5C20.5 21.3284 19.8284 22 19 22C18.1716 22 17.5 21.3284 17.5 20.5C17.5 19.6716 18.1716 19 19 19C19.8284 19 20.5 19.6716 20.5 20.5Z" stroke="white" stroke-width="1.5"/>
+            <path d="M6.5 4H18.5C20.7091 4 22.5 5.79086 22.5 8V13C22.5 15.2091 20.7091 17 18.5 17H10.5C8.29086 17 6.5 15.2091 6.5 13V4ZM6.5 4C6.5 2.89543 5.60457 2 4.5 2H2.5M6.5 8H22" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="text-white text-sm font-medium leading-6 grow whitespace-nowrap">Add to cart</div>
         </div>
-      </section>
-      <div class="justify-between items-stretch bg-sky-500 flex gap-2 px-9 py-2 rounded-lg max-md:px-5">
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6aad1a87d9e885b79d6137386645dc553a1a21107170084eab1a373cf5b1e34c?apiKey=20497529553648aab918fa2d322ece87&" class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full" />
-        <div class="text-white text-sm font-medium leading-6 grow whitespace-nowrap">Add to cart</div>
       </div>
     </div>
-    <div class="bg-neutral-300 self-center flex w-[18px] shrink-0 h-1.5 flex-col mt-5 rounded-3xl"></div>
-  </div>
-  </div>
+  </SwiperSlide>
+  </Swiper>
+</div>
+
 </template>
 
 <script setup lang="ts">
+import { A11y, Pagination } from 'swiper';
 
 </script>
 
-<style scoped>
+<style lang="scss">
+.homeFeaturedProducts--swiper {
+    @apply px-0 pt-0 pb-[30px] #{!important};
+}
 
+.homeFeaturedProducts--swiper .swiper-slide {
+    @apply h-auto #{!important};
+}
+
+.homeFeaturedProducts--swiper .swiper-pagination {
+    @apply bottom-0 space-x-1.5 md:space-x-2 #{!important};
+}
+
+.homeFeaturedProducts--swiper .swiper-pagination-bullet {
+    @apply w-1.5 h-1.5 bg-light-500 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
+    margin-right: 0 !important;
+}
+
+.homeFeaturedProducts--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    @apply w-[25px] bg-gray-300 #{!important};
+}
 </style>

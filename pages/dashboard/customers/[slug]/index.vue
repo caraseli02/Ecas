@@ -57,6 +57,11 @@
                     </template>
                 </div>
             </div>
+            <section class="flex justify-between gap-6">
+                <DashboardCustomersActiveOrders />
+                <DashboardCustomersAnalytics />
+                <DashboardCustomersBanner />
+            </section>
             <DashboardCustomersInfoCards :id="route.params.slug" />
             <div class="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:grid-rows-[repeat(2,auto)] md:gap-6">
                 <DashboardCustomersCustomerInformation :id="route.params.slug" class="xl:col-start-1 xl:row-start-1 xl:row-span-2" />
