@@ -1,5 +1,5 @@
 <template>
-  <div aria-label="Shipping" role="group" class="items-stretch shadow-sm bg-white flex max-w-md flex-col p-6 rounded-xl">
+  <div aria-label="Shipping" role="group" class="items-stretch shadow-xs bg-white flex max-w-md flex-col p-6 rounded-xl">
     <section class="justify-between items-stretch flex gap-5">
       <div class="text-neutral-800 text-sm font-medium leading-5">Shipping</div>
       <svg
@@ -42,7 +42,7 @@
       </div>
     </div>
   </div>
-  <div aria-label="Shipping" role="group" class="items-stretch shadow-sm bg-white flex max-w-md flex-col p-6 rounded-xl">
+  <div aria-label="Shipping" role="group" class="items-stretch shadow-xs bg-white flex max-w-md flex-col p-6 rounded-xl">
     <section class="justify-between items-stretch flex gap-5">
       <div class="text-neutral-800 text-sm font-medium leading-5">Billing</div>
       <svg

@@ -1,5 +1,5 @@
 <template>
-  <div class="justify-between items-stretch shadow-sm bg-white flex max-w-[330px] flex-col p-6 rounded-xl">
+  <div class="justify-between items-stretch shadow-xs bg-white flex max-w-[330px] flex-col p-6 rounded-xl">
     <header class="text-zinc-800 text-base font-semibold leading-6">Recently Bought</header>
     <section class="w-[282px] h-[312px] overflow-hidden flex flex-col gap-7 mt-8 ">
       <div v-for="item in 5" :key="item" class="items-stretch flex justify-between gap-3">

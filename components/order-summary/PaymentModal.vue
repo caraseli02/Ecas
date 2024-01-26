@@ -1,5 +1,5 @@
 <template>
-  <section class="items-start shadow-sm bg-white flex max-w-[326px] md:max-w-[400px] flex-col px-4 md:px-6 py-6 rounded-xl">
+  <section class="items-start shadow-xs bg-white flex max-w-[326px] md:max-w-[400px] flex-col px-4 md:px-6 py-6 rounded-xl">
     <div
       class="justify-between items-center self-stretch flex gap-5">
       <div class="text-zinc-800 text-base font-semibold leading-7 my-auto">

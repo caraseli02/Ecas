@@ -10,7 +10,7 @@
 }" class="homeNews--swiper">
       <SwiperSlide v-for="item in 9" :key="item">
         <div
-          class="max-w-[396px] items-stretch self-stretch shadow-sm flex flex-col justify-center px-4 py-3 rounded-xl bg-gradient-to-r from-[#42239A] via-[#454DBB] to-[#007FFF]">
+          class="max-w-[396px] items-stretch self-stretch shadow-xs flex flex-col justify-center px-4 py-3 rounded-xl bg-gradient-to-r from-[#42239A] via-[#454DBB] to-[#007FFF]">
           <div class="items-stretch flex justify-between gap-4">
             <div class="items-stretch flex grow basis-[0%] flex-col gap-4">
               <div class="flex flex-col gap-1">
@@ -33,7 +33,7 @@
       </SwiperSlide>
       <SwiperSlide :key="2">
         <div
-          class="max-w-[396px] items-stretch self-stretch shadow-sm flex flex-col justify-center px-4 py-3 rounded-xl bg-gradient-to-r from-[#42239A] via-[#454DBB] to-[#007FFF]">
+          class="max-w-[396px] items-stretch self-stretch shadow-xs flex flex-col justify-center px-4 py-3 rounded-xl bg-gradient-to-r from-[#42239A] via-[#454DBB] to-[#007FFF]">
           <div class="items-stretch flex justify-between gap-4">
             <div class="items-stretch flex grow basis-[0%] flex-col gap-4">
               <div class="flex flex-col gap-1">

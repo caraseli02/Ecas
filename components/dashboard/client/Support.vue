@@ -1,6 +1,6 @@
 <template>
   <section
-    class="items-stretch shadow-sm bg-white max-w-[330px] h-full flex flex-col justify-center px-6 py-12 rounded-xl">
+    class="items-stretch shadow-xs bg-white max-w-[330px] h-full flex flex-col justify-center px-6 py-12 rounded-xl">
     <div class="justify-center items-stretch flex flex-col mt-12 px-16">
       <svg
         class="aspect-square object-contain object-center w-10 justify-center items-center overflow-hidden self-center max-w-full"

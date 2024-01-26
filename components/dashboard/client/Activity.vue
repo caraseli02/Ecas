@@ -1,6 +1,6 @@
 <template>
   <div
-    class="items-stretch shadow-sm bg-white flex flex-col p-6 rounded-xl max-md:px-5"
+    class="items-stretch shadow-xs bg-white flex flex-col p-6 rounded-xl max-md:px-5"
   >
     <div
       class="text-zinc-800 text-base font-semibold leading-6 max-md:max-w-full"

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative items-stretch shadow-sm bg-white flex w-[472px] max-w-[472px] flex-col p-6 rounded-xl">
+  <div class="relative items-stretch shadow-xs bg-white flex w-[472px] max-w-[472px] flex-col p-6 rounded-xl">
     <header class="text-neutral-800 text-base font-semibold leading-6">Analytics</header>
     <div class="items-stretch flex justify-between gap-3 mt-6">
       <div class="justify-between items-stretch flex basis-[0%] flex-col text-xs text-gray-500 whitespace-nowrap pb-8">
@@ -69,7 +69,7 @@
         </div>
       </section>
     </div>
-    <section class="items-stretch ring-1 ring-neutral-300 shadow-sm bg-white flex max-w-[110px] flex-col rounded-lg border-solid absolute right-0">
+    <section class="items-stretch ring-1 ring-neutral-300 shadow-xs bg-white flex max-w-[110px] flex-col rounded-lg border-solid absolute right-0">
                 <article class="items-stretch border-b border-neutral-300 bg-zinc-100 flex w-full flex-col justify-center px-2 py-1 rounded-t-lg border-solid">
                   <header class="items-stretch flex justify-between gap-2">
                     <span class="justify-center items-center bg-sky-500 flex w-2 shrink-0 h-2 flex-col my-auto rounded-[100px]"></span>
