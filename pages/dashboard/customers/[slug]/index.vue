@@ -20,7 +20,13 @@
                             <div v-else>€ 45,328.63</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
-	@@ -30,41 +32,57 @@
+                    </div>
+                </div>
+            </div>
+        </DashboardBreadcrumbs>
+        <div class="grid grid-cols-1 gap-4 md:gap-6">
+            <div class="bg-white rounded-xl px-4 py-3 shadow-xs grid grid-cols-2 md:py-2 lg:hidden">
+                <div class="pr-4 md:flex md:items-center md:py-2">
                     <SkeletonLoader v-if="isLoading" class="w-full h-[45px] md:h-5" />
                     <template v-else>
                         <div
@@ -62,6 +68,8 @@
             </div>
             <DashboardCustomersOrders :id="route.params.slug" />
         </div>
+    </div>
+</template>
 
 <script setup lang="ts">
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
