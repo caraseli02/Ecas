@@ -1,7 +1,7 @@
 <template>
-    <div class="w-[1392px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
+    <div class="w-[1392px] max-w-full p-4 mx-auto transition-all duration-300 md:py-6 md:px-6 xl:p-0 xl:pt-8">
         <div class="grid grid-cols-1 gap-4 md:gap-6">
-            <section class="flex justify-between gap-6 flew-wrap">
+            <section class="flex justify-between gap-6 flex-wrap xl:flex-nowrap">
                 <DashboardClientActiveOrders />
                 <DashboardClientAnalytics />
                 <DashboardClientBanner />

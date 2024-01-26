@@ -1,6 +1,6 @@
 <template>
   <div
-    class="justify-between items-stretch shadow-xs bg-white flex w-[342px] max-w-[342px] flex-col p-6 rounded-xl"
+    class="justify-between items-stretch shadow-xs bg-white flex min-w-[476px] xl:min-w-[342px] flex-col p-6 rounded-xl"
   >
     <div class="items-stretch flex justify-between gap-4">
       <div
@@ -30,7 +30,7 @@
             <div
               v-for="item in items"
               :key="item"
-              class="text-gray-500 hover:text-sky-500 text-[11px] font-medium flex justify-center items-center bg-gray-200 px-1.5 rounded-3xl"
+              class="text-gray-500 hover:text-sky-500 text-[11px] leading-5 font-medium flex justify-center items-center bg-gray-200 px-1 rounded-3xl"
             >
               {{ item }}
             </div>

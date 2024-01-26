@@ -1,5 +1,5 @@
 <template>
-    <div class="items-stretch shadow-xs bg-white flex w-full max-w-[530px] flex-col rounded-xl">
+    <div class="items-stretch shadow-xs bg-white flex w-full xl:max-w-[530px] flex-col rounded-xl">
    
    <Swiper 
     :modules="[A11y, Pagination]" 
@@ -13,13 +13,13 @@
      class="homeFeaturedProducts--swiper w-[100%] h-[1005] block"
   >
   <SwiperSlide v-for="(item, index) in 5" :key="index">
-      <section class="items-stretch bg-gray-700 flex w-full flex-col justify-center px-8 py-2 rounded-t-xl max-md:max-w-full max-md:px-5">
+      <section class="items-stretch bg-gray-700 w-full flex flex-col justify-center px-8 py-2 rounded-t-xl max-md:max-w-full max-md:px-5">
         <div class="justify-between items-stretch flex gap-5 max-md:max-w-full max-md:flex-wrap">
           <div class="text-white text-sm font-semibold leading-6 grow shrink basis-auto">October Hot Sale</div>
           <div class="text-white text-sm font-semibold leading-6 whitespace-nowrap justify-center items-stretch border aspect-[2.04] px-2 rounded-[100px] border-solid border-white">20 %</div>
         </div>
       </section>
-      <div class="justify-between items-stretch self-stretch flex max-w-[530px] flex-col pt-3 px-8 max-md:px-5">
+      <div class="justify-between items-stretch self-stretch xl:max-w-[530px] flex xl:flex-col pt-3 px-8 max-md:px-5">
       <div class="max-md:max-w-full">
         <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
           <div class="flex flex-col items-stretch w-[22%] max-md:w-full max-md:ml-0">
@@ -34,15 +34,15 @@
           </div>
         </div>
       </div>
-      <div class="justify-between items-stretch flex w-full gap-5 mt-3 max-md:max-w-full max-md:flex-wrap">
-        <section class="justify-center items-stretch flex flex-col whitespace-nowrap self-start">
-          <div class="text-zinc-800 text-sm leading-4">$ 0,15 (100+)</div>
+      <div class="justify-between items-end flex flex-col xl:flex-row w-full gap-5 mt-3 max-md:max-w-full max-md:flex-wrap">
+        <section class="justify-center items-stretch flex flex-col whitespace-nowrap self-end">
+          <div class="text-zinc-800 text-sm leading-4 line-through">$ 0,15 (100+)</div>
           <div class="items-stretch flex justify-between gap-1 text-red-500 mt-1">
             <div class="text-base font-bold leading-5 grow">$ 0,095</div>
             <div class="text-sm leading-5 grow">(100+)</div>
           </div>
         </section>
-        <div class="justify-between items-stretch bg-blue-500 flex gap-2 px-9 py-2 rounded-lg max-md:px-5">
+        <div class="justify-between items-stretch bg-blue-500 flex gap-2 px-9 py-2 rounded-lg max-md:px-5 w-fit">
           <svg 
             class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"
             width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
