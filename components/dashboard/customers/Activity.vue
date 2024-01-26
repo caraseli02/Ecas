@@ -1,0 +1,180 @@
+<template>
+  <div
+    class="items-stretch shadow-sm bg-white flex flex-col p-6 rounded-xl max-md:px-5"
+  >
+    <div
+      class="text-zinc-800 text-base font-semibold leading-6 max-md:max-w-full"
+    >
+      My Activity
+    </div>
+    <div class="mt-9 max-md:max-w-full">
+      <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+        <div
+          class="flex flex-col items-stretch w-[33%] max-md:w-full max-md:ml-0"
+        >
+          <div class="items-start flex grow flex-col max-md:mt-10">
+            <div class="items-stretch flex gap-4 self-start">
+              <div
+                class="justify-center items-center bg-red-500 bg-opacity-30 flex aspect-square flex-col w-14 h-14 px-2 rounded-[100px] self-start"
+              >
+                <div
+                  class="justify-center items-center bg-red-500 flex aspect-square flex-col w-full h-10 px-2 rounded-[100px]"
+                >
+                <svg 
+                class="aspect-square object-contain object-center w-full overflow-hidden"
+                width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.765 4.70229L12 5.52422L11.235 4.70229C9.12233 2.43257 5.69709 2.43257 3.58447 4.70229C1.47184 6.972 1.47184 10.6519 3.58447 12.9217L10.4699 20.3191C11.315 21.227 12.685 21.227 13.5301 20.3191L20.4155 12.9217C22.5282 10.6519 22.5282 6.972 20.4155 4.70229C18.3029 2.43257 14.8777 2.43257 12.765 4.70229Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
+                </div>
+              </div>
+              <div
+                class="items-stretch flex grow basis-[0%] flex-col text-sm whitespace-nowrap"
+              >
+                <div class="text-neutral-800 font-semibold leading-[143%]">
+                  My Favorites
+                </div>
+                <div class="items-stretch flex justify-between gap-3 mt-2">
+                  <div class="text-slate-500 leading-6">Products</div>
+                  <div class="text-neutral-800 font-medium leading-6">37</div>
+                </div>
+                <div class="items-stretch flex justify-between gap-3">
+                  <div class="text-slate-500 leading-6">Folders</div>
+                  <div class="text-neutral-800 font-medium leading-6">6</div>
+                </div>
+              </div>
+            </div>
+            <div class="items-stretch flex gap-2 mt-4 self-end">
+              <div class="text-slate-500 text-sm font-medium leading-5 grow">
+                Favorites
+              </div>
+              <svg 
+              class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto"
+              
+              width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.3335 8L13.5535 8" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+            </div>
+          </div>
+        </div>
+        <div class="h-[114px] w-[2px] bg-gray-200" />
+        <div
+          class="flex flex-col items-stretch w-[33%] ml-5 max-md:w-full max-md:ml-0"
+        >
+          <div
+            class="justify-between items-stretch self-stretch flex grow flex-col max-md:mt-10"
+          >
+            <div class="items-stretch flex justify-between gap-4">
+              <div
+                class="justify-center items-center bg-sky-500 bg-opacity-30 flex aspect-square flex-col w-14 h-14 px-2 rounded-[100px]"
+              >
+                <div
+                  class="justify-center items-center bg-sky-500 flex aspect-square flex-col w-full h-10 px-2 rounded-[100px]"
+                >
+                  <svg 
+                    class="aspect-square object-contain object-center w-full justify-center items-center overflow-hidden"
+                    width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 7V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V7C3 4 4.5 2 8 2H16C19.5 2 21 4 21 7Z" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14.5 4.5V6.5C14.5 7.6 15.4 8.5 16.5 8.5H18.5" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 13H12" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 17H16" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="items-stretch flex grow basis-[0%] flex-col text-sm whitespace-nowrap self-start"
+              >
+                <div class="items-stretch flex gap-2 font-semibold self-start">
+                  <div class="text-neutral-800 leading-[143%] grow">
+                    Total Orders
+                  </div>
+                  <div class="text-zinc-800 leading-[143%]">257</div>
+                </div>
+                <div class="text-slate-500 leading-5 mt-2">
+                  This month you have placed
+                  <span class="font-semibold text-neutral-800">37</span> orders.
+                </div>
+              </div>
+            </div>
+            <div class="items-stretch flex gap-2 mt-10 self-end">
+              <div class="text-slate-500 text-sm font-medium leading-5">
+                Orders
+              </div>
+              <svg 
+                class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto"
+                width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2.3335 8L13.5535 8" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="h-[114px] w-[2px] bg-gray-200" />
+        <div
+          class="flex flex-col items-stretch w-[33%] ml-5 max-md:w-full max-md:ml-0"
+        >
+          <div
+            class="justify-between items-stretch self-stretch flex grow flex-col max-md:mt-10"
+          >
+          <div class="items-stretch flex gap-4">
+            <div
+              class="justify-center items-center bg-red-500 bg-opacity-30 flex aspect-square flex-col w-14 h-14 px-2 rounded-[100px]"
+            >
+              <div
+                class="justify-center items-center bg-red-500 flex aspect-square flex-col w-full h-10 px-2 rounded-[100px]"
+              >
+              <svg
+                class="aspect-square object-contain object-center w-full overflow-hidden"
+                width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 8L15 8C17.2091 8 19 9.79086 19 12C19 14.2091 17.2091 16 15 16L5 16M5 8L9 5M5 8L9 11" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              </div>
+            </div>
+            <div class="items-stretch flex grow basis-[0%] flex-col">
+              <div
+                class="items-stretch flex gap-2 text-sm font-semibold whitespace-nowrap"
+              >
+                <div class="text-neutral-800 leading-[143%] shrink basis-auto">
+                  Returns
+                </div>
+                <div class="text-zinc-800 leading-[143%]">257</div>
+              </div>
+              <div class="items-stretch flex gap-2 mt-4">
+                <svg
+                class="aspect-square object-contain object-center w-4 overflow-hidden shrink-0 max-w-full my-auto"
+                width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.3335 5.3335L10.0002 5.3335C11.4729 5.3335 12.6668 6.5274 12.6668 8.00016C12.6668 9.47292 11.4729 10.6668 10.0002 10.6668L3.3335 10.6668M3.3335 5.3335L6.00016 3.3335M3.3335 5.3335L6.00016 7.3335" stroke="#5E6278" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="text-slate-500 text-sm leading-5">
+                  File a return
+                </div>
+              </div>
+            </div>
+          </div>
+            <div class="items-stretch flex gap-2 mt-10 self-end">
+              <div
+                class="text-slate-500 text-sm font-medium leading-5 grow whitespace-nowrap"
+              >
+                All Returns
+              </div>
+              <svg 
+                class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto"
+                width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2.3335 8L13.5535 8" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+
+</script>
+
+<style scoped>
+
+</style>

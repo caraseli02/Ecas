@@ -1,8 +1,8 @@
 <template>
-    <div class="bg-white rounded-xl p-4 shadow-xs md:p-6">
-        <div class="flex items-center justify-between" :class="[emptyData || error ? 'mb-[169px] md:mb-[161px]' : 'mb-8']">
+    <div class="bg-white rounded-xl p-4 shadow-xs md:p-6 w-[684px] h-[474px]">
+        <div class="flex items-center justify-between mb-8">
             <div class="flex items-center justify-between">
-                <div class="text-sm font-semibold md:text-xl md:leading-[1.2]">Customer Information</div>
+                <div class="font-semibold md:leading-[1.2]">Account Information</div>
             </div>
             <WarningIcon v-if="error" class="w-6 h-6" />
             <div v-else class="relative">
@@ -97,7 +97,7 @@
                 </div>
             </div>
             <div>
-                <div class="pb-5 border-b border-gray-200 mb-5">
+                <div class="pb-3 border-b border-gray-200 mb-3">
                     <SkeletonLoader v-if="isLoading" class="w-full h-[304px] md:h-[232px]" />
                     <template v-else>
                         <div class="flex flex-row gap-3">
