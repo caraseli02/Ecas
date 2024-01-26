@@ -1,5 +1,5 @@
 <template>
-  <div class="relative items-stretch shadow-sm bg-white flex max-w-[472px] flex-col p-6 rounded-xl">
+  <div class="relative items-stretch shadow-sm bg-white flex w-[472px] max-w-[472px] flex-col p-6 rounded-xl">
     <header class="text-neutral-800 text-base font-semibold leading-6">Analytics</header>
     <div class="items-stretch flex justify-between gap-3 mt-6">
       <div class="justify-between items-stretch flex basis-[0%] flex-col text-xs text-gray-500 whitespace-nowrap pb-8">

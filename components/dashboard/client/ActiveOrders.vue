@@ -1,6 +1,6 @@
 <template>
   <div
-    class="justify-between items-stretch shadow-sm bg-white flex max-w-[342px] flex-col p-6 rounded-xl"
+    class="justify-between items-stretch shadow-sm bg-white flex w-[342px] max-w-[342px] flex-col p-6 rounded-xl"
   >
     <div class="items-stretch flex justify-between gap-4">
       <div
