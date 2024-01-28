@@ -1,7 +1,7 @@
 <template>
   <section
-    class="items-stretch shadow-xs bg-white max-w-[330px] h-full flex flex-col justify-center px-6 py-12 rounded-xl">
-    <div class="justify-center items-stretch flex flex-col mt-12 px-16">
+    class="items-stretch shadow-xs bg-white w-full xl:max-w-[330px] h-168 xl:h-full flex flex-col justify-center px-6 py-12 rounded-xl">
+    <div class="justify-center items-stretch flex flex-col px-16">
       <svg
         class="aspect-square object-contain object-center w-10 justify-center items-center overflow-hidden self-center max-w-full"
         width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -14,7 +14,7 @@
           stroke-linejoin="round" />
       </svg>
 
-      <div class="text-neutral-800 text-base font-medium leading-6 whitespace-nowrap mt-4"> Customer Support </div>
+      <div class="text-neutral-800 text-center font-medium leading-6 whitespace-nowrap mt-4"> Customer Support </div>
     </div>
   </section>
 </template>

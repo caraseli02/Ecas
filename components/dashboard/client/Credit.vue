@@ -1,5 +1,5 @@
 <template>
-  <div class="items-stretch shadow-xs bg-white flex max-w-[330px] flex-col p-6 rounded-xl">
+  <div class="items-stretch shadow-xs bg-white flex w-full w-full lg:max-w-[476px] xl:max-w-[330px] flex-col p-6 rounded-xl">
     <header class="justify-between items-stretch flex gap-5">
       <div class="justify-center items-stretch flex flex-col whitespace-nowrap">
         <div class="text-zinc-800 text-2xl font-semibold leading-7"> € 2,438.77 </div>

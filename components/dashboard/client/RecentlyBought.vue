@@ -1,5 +1,5 @@
 <template>
-  <div class="justify-between items-stretch shadow-xs bg-white flex max-w-[330px] flex-col p-6 rounded-xl">
+  <div class="h-[474px] max-w-[330px] justify-between items-stretch shadow-xs bg-white hidden lg:flex flex-col p-6 rounded-xl">
     <header class="text-zinc-800 text-base font-semibold leading-6">Recently Bought</header>
     <section class="w-[282px] h-[312px] overflow-hidden flex flex-col gap-7 mt-8 ">
       <div v-for="item in 5" :key="item" class="items-stretch flex justify-between gap-3">
@@ -17,7 +17,7 @@
         </div>
       </div>
     </section>
-    <form>
+    <section>
       <div class="items-stretch self-center flex gap-2 mt-10">
         <a href="..." class="text-gray-500 text-sm font-medium leading-5 grow whitespace-nowrap"
           aria-label="View Orders">View Orders</a>
@@ -26,7 +26,7 @@
           class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto"
           alt="Image" />
       </div>
-    </form>
+    </section>
   </div>
 </template>
 

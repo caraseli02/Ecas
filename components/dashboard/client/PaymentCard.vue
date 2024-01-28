@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[448px] items-stretch shadow-xs bg-white flex max-w-md flex-col p-6 rounded-xl">
+  <div class="items-stretch shadow-xs bg-white flex w-full lg:max-w-[476px] xl:max-w-md flex-col p-6 rounded-xl">
     <header class="justify-between items-stretch flex gap-5">
       <div class="text-neutral-800 text-sm font-medium leading-5">Card</div>
       <svg

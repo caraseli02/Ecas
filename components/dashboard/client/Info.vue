@@ -1,13 +1,13 @@
 <template>
-    <div class="bg-white rounded-xl p-4 shadow-xs md:p-6 w-[684px] h-[474px]">
+    <div class="bg-white rounded-xl p-4 shadow-xs md:p-6 w-full lg:w-[622px] xl:w-[684px] max-h-[592px] md:h-[474px]">
         <div class="flex items-center justify-between mb-8">
             <div class="flex items-center justify-between">
                 <div class="font-semibold md:leading-[1.2]">Account Information</div>
             </div>
-            <WarningIcon v-if="error" class="w-6 h-6" />
+            <SvgoDashboardWarning v-if="error" class="w-6 h-6" />
             <div v-else class="relative">
                 <button class="flex" @click="showOptions = !showOptions">
-                    <DotsVerticalIcon class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue-500" />
+                    <SvgoDotsVertical class="w-6 h-6 text-[#9296AA] transition-colors duration-300 hover:text-blue-500" />
                 </button>
                 <Transition name="fade-bottom">
                     <ThreeDotMenu
@@ -52,14 +52,14 @@
             </div>
         </div>
         <div v-if="emptyData || error" class="flex flex-col items-center justify-center flex-1 mb-[157px] md:mb-[149px]">
-            <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+            <SvgoDashboardEmojiSad class="w-[52px] h-[52px] mb-4" />
             <div class="text-sm font-medium text-gray-500">No data available</div>
         </div>
         <template v-else>
             <div class="flex items-start md:items-center" :class="[isLoading ? 'mb-3' : 'mb-5']">
                 <SkeletonLoader v-if="isLoading" type="circle" class="w-16 h-16 mr-4" />
                 <img v-else :src="Avatar" alt="Name" class="w-16 h-16 flex-shrink-0 rounded-full object-cover mr-4" />
-                <div class="md:grid md:grid-cols-[repeat(2,auto)] md:justify-between md:flex-1">
+                <div class="flex flex-col md:grid md:grid-cols-[repeat(2,auto)] md:justify-between md:flex-1">
                     <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
                     <div v-else class="flex md:flex-row-reverse">
                         <div class="font-semibold leading-tight mb-2 md:order-1">
@@ -172,7 +172,7 @@
                     <SkeletonLoader v-if="isLoading" class="w-[120px] h-10 md:w-[160px] md:h-[18px]" />
                     <div v-else class="md:flex md:items-center">
                         <div class="flex items-center mb-1 md:mb-0">
-                            <div class="w-2 h-2 rounded-full bg-[#00D395] mr-2" />
+                            <div class="w-2 h-2 rounded-full bg-green-500 mr-2" />
                             <span class="text-sm font-medium leading-tight text-slate-500">Registered</span>
                         </div>
                         <div class="text-sm font-medium leading-tight pl-4">{{ getCurrentDate(customerInformation.createdAt) }}</div>
@@ -199,11 +199,8 @@
 
 <script setup lang="ts">
 import Avatar from '@/assets/icons/dashboard/avatar.png';
-import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
-import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
-import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
-import { UserDetails } from '~/types/auth/user-details';
+import type { UserDetails } from '~/types/auth/user-details';
 import { AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';

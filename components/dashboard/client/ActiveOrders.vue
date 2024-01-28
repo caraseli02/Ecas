@@ -1,6 +1,6 @@
 <template>
   <div
-    class="justify-between items-stretch shadow-xs bg-white flex min-w-[476px] xl:min-w-[342px] flex-col p-6 rounded-xl"
+    class="justify-between items-stretch shadow-xs bg-white flex w-full lg:w-fit lg:max-w-[476px] xl:min-w-[342px] flex-col p-6 rounded-xl"
   >
     <div class="items-stretch flex justify-between gap-4">
       <div
@@ -23,14 +23,14 @@
         <div class="text-neutral-800 text-base font-semibold leading-6">
           Active Orders
         </div>
-        <div class="grid grid-cols-3 gap-2 mt-2 flex-wrap">
-          <div class="text-gray-500 text-sm leading-5 grow whitespace-nowrap">
+        <div class="flex xl:grid grid-cols-3 gap-2 mt-2 flex-wrap">
+          <div class="text-gray-500 text-sm leading-5 whitespace-nowrap">
             Order ID:
           </div>
             <div
               v-for="item in items"
               :key="item"
-              class="text-gray-500 hover:text-sky-500 text-[11px] leading-5 font-medium flex justify-center items-center bg-gray-200 px-1 rounded-3xl"
+              class="w-fit text-gray-500 hover:text-sky-500 text-[11px] leading-5 font-medium flex justify-center items-center bg-gray-200 px-1 rounded-3xl"
             >
               {{ item }}
             </div>
@@ -39,8 +39,8 @@
       </div>
     </div>
     <div class="items-stretch flex justify-between gap-3 mt-10">
-      <div
-        class="justify-between items-stretch bg-green-600 flex gap-2 px-4 py-2 rounded-lg"
+      <button
+        class="justify-between items-stretch bg-green-600 flex gap-2 px-4 py-2 rounded-lg w-full"
       >
       <svg 
         class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"
@@ -55,9 +55,9 @@
         >
           All Active
         </div>
-      </div>
-      <div
-        class="justify-between items-stretch bg-blue-500 flex gap-2 px-5 py-2 rounded-lg"
+      </button>
+      <button
+        class="justify-between items-stretch bg-blue-500 flex gap-2 px-5 py-2 rounded-lg w-full"
       >
       <svg 
         class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"
@@ -71,7 +71,7 @@
         >
           Track Order
         </div>
-      </div>
+      </button>
     </div>
   </div>
 </template>

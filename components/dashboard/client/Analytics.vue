@@ -1,5 +1,5 @@
 <template>
-  <div class="relative items-stretch shadow-xs bg-white flex min-w-[476px] xl:min-w-[472px] flex-col p-6 rounded-xl">
+  <div class="relative items-stretch shadow-xs bg-white flex min-w-[358px] md:w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] flex-col p-6 rounded-xl">
     <header class="text-neutral-800 text-base font-semibold leading-6">Analytics</header>
     <div class="items-stretch flex justify-between gap-3 mt-6">
       <div class="justify-between items-stretch flex basis-[0%] flex-col text-xs text-gray-500 whitespace-nowrap pb-8">
@@ -8,7 +8,7 @@
         <div class="leading-[133%] mt-4">10</div>
         <div class="leading-[133%] mt-4">0</div>
       </div>
-      <section class="flex flex-col">
+      <section class="flex flex-col w-full overflow-y-auto scroll-smooth">
         <div class="items-stretch flex grow basis-[0%] flex-col">
           <div class="items-stretch flex gap-0">
             <div class="flex grow basis-[0%] flex-col items-stretch">
