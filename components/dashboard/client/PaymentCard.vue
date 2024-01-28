@@ -29,8 +29,8 @@
           </svg>
         </div>
         <div class="items-stretch flex gap-1 text-sm text-gray-500 mt-1">
-          <div class="leading-[143%] shrink basis-auto">Expiration date:</div>
-          <div class="font-medium leading-[143%] grow shrink basis-auto">05/2026</div>
+          <div class="leading-5 shrink basis-auto">Expiration date:</div>
+          <div class="font-medium leading-5 grow shrink basis-auto">05/2026</div>
         </div>
       </div>
     </div>

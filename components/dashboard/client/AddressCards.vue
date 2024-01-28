@@ -35,8 +35,8 @@
           stroke="#00C088" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
       <div role="form" class="items-stretch flex grow basis-[0%] flex-col text-sm text-neutral-800">
-        <div class="font-medium leading-[143%]">Address Alias 1</div>
-        <div class="leading-[143%] mt-1">Madalina Popescu</div>
+        <div class="font-medium leading-5">Address Alias 1</div>
+        <div class="leading-5 mt-1">Madalina Popescu</div>
         <div class="leading-5 mt-1">5073 Mark Brown Rd, NE Dalton, Georgia (GA), 30721, United States
         </div>
       </div>
@@ -78,8 +78,8 @@
           stroke="#00C088" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
       <div role="form" class="items-stretch flex grow basis-[0%] flex-col text-sm text-neutral-800">
-        <div class="font-medium leading-[143%]">Address Alias 1</div>
-        <div class="leading-[143%] mt-1">Madalina Popescu</div>
+        <div class="font-medium leading-5">Address Alias 1</div>
+        <div class="leading-5 mt-1">Madalina Popescu</div>
         <div class="leading-5 mt-1">5073 Mark Brown Rd, NE Dalton, Georgia (GA), 30721, United States
         </div>
       </div>

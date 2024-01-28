@@ -30,7 +30,7 @@
               <div
                 class="items-stretch flex grow basis-[0%] flex-col text-sm whitespace-nowrap"
               >
-                <div class="text-neutral-800 font-semibold leading-[143%]">
+                <div class="text-neutral-800 font-semibold leading-5">
                   My Favorites
                 </div>
                 <div class="items-stretch flex justify-between gap-3 mt-2">
@@ -85,10 +85,10 @@
                 class="items-stretch flex grow basis-[0%] flex-col text-sm self-start"
               >
                 <div class="items-stretch flex gap-2 font-semibold self-start">
-                  <div class="text-neutral-800 leading-[143%] grow">
+                  <div class="text-neutral-800 leading-5 grow">
                     Total Orders
                   </div>
-                  <div class="text-zinc-800 leading-[143%]">257</div>
+                  <div class="text-zinc-800 leading-5">257</div>
                 </div>
                 <div class="text-slate-500 leading-6 mt-2">
                   This month you have placed
@@ -134,10 +134,10 @@
               <div
                 class="items-stretch flex gap-2 text-sm font-semibold whitespace-nowrap"
               >
-                <div class="text-neutral-800 leading-[143%] shrink basis-auto">
+                <div class="text-neutral-800 leading-5 shrink basis-auto">
                   Returns
                 </div>
-                <div class="text-zinc-800 leading-[143%]">257</div>
+                <div class="text-zinc-800 leading-5">257</div>
               </div>
               <div class="items-stretch flex gap-2 mt-4">
                 <svg

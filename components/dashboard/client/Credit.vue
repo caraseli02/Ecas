@@ -14,8 +14,8 @@
     </div>
     <form class="justify-between items-stretch flex w-full gap-5 mt-4">
       <div class="items-stretch flex justify-between gap-2 text-sm whitespace-nowrap">
-        <label for="balance" class="text-gray-500 leading-[143%] grow">Balance:</label>
-        <div class="text-zinc-800 font-semibold leading-[143%] grow"> € 7,561.23 </div>
+        <label for="balance" class="text-gray-500 leading-5 grow">Balance:</label>
+        <div class="text-zinc-800 font-semibold leading-5 grow"> € 7,561.23 </div>
       </div>
       <div class="flex items-center justify-between gap-2">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
