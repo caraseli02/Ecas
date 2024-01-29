@@ -1,5 +1,5 @@
 <template>
-    <div class="items-stretch shadow-xs bg-white flex w-full xl:max-w-[530px] flex-col rounded-xl">
+    <div class="items-stretch shadow-xs bg-white flex w-full xl:max-w-[514px] flex-col rounded-xl">
       <Swiper 
         :modules="[A11y, Pagination]" 
         :slides-per-view="1" 

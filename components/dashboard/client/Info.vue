@@ -96,7 +96,7 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="flex flex-col gap-3">
                 <div class="pb-3 border-b border-gray-200 mb-3">
                     <SkeletonLoader v-if="isLoading" class="w-full h-[304px] md:h-[232px]" />
                     <template v-else>

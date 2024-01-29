@@ -1,5 +1,5 @@
 <template>
-  <ProductBlocks class="mt-0 px-0 md:px-0 lg:px-0" :fetched-products="productList">
+  <ProductBlocks class="!mt-6 px-0 md:px-0 lg:px-0 xl:px-0" :fetched-products="productList">
     <template #header>
       <h5 class="font-semibold leading-6">
         View History

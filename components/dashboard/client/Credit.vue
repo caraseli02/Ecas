@@ -10,7 +10,7 @@
       </a>
     </header>
     <div class="items-stretch bg-gray-200 flex flex-col justify-center mt-6 pr-12 rounded-[100px]">
-      <div class="justify-end items-center bg-emerald-500 flex shrink-0 h-3 flex-col rounded-[100px]"></div>
+      <div class="justify-end items-center bg-green-500 flex shrink-0 h-3 flex-col rounded-[100px]"></div>
     </div>
     <form class="justify-between items-stretch flex w-full gap-5 mt-4">
       <div class="items-stretch flex justify-between gap-2 text-sm whitespace-nowrap">
