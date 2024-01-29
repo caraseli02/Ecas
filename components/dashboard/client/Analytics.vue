@@ -1,55 +1,105 @@
 <template>
-  <div class="relative items-stretch shadow-xs bg-white flex min-w-[358px] md:w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] flex-col p-6 rounded-xl">
-    <header class="text-neutral-800 text-base font-semibold leading-6">Analytics</header>
-    <div class="items-stretch flex justify-between gap-3 mt-6">
-      <div class="justify-between items-stretch flex basis-[0%] flex-col text-xs text-gray-500 whitespace-nowrap pb-8">
-        <div class="leading-[133%]">67</div>
-        <div class="leading-[133%] mt-4">15</div>
-        <div class="leading-[133%] mt-4">10</div>
-        <div class="leading-[133%] mt-4">0</div>
-      </div>
-      <section class="flex flex-col w-full overflow-y-auto scroll-smooth">
-        <div class="items-stretch flex grow basis-[0%] flex-col">
-          <div class="items-stretch flex gap-0">
-            <div class="flex grow basis-[0%] flex-col items-stretch">
-              <div class="flex justify-between gap-5 mt-1 items-end ml-1">
-                <div class="bg-sky-500 flex w-3 shrink-0 h-24 flex-col mt-4 rounded-[50px] self-start"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-[63px] flex-col mt-12 rounded-[50px] self-end"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-[81px] flex-col mt-8 rounded-[50px] self-end"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-28 flex-col rounded-[50px]"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-[33px] flex-col mt-16 rounded-[50px]"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-12 flex-col mt-12 rounded-[50px]"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-12 flex-col mt-12 rounded-[50px]"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-[81px] flex-col mt-5 rounded-[50px] self-start"></div>
-                <div class="bg-sky-500 self-stretch flex w-3 shrink-0 h-[99px] flex-col rounded-[50px]"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-[63px] flex-col mt-9 rounded-[50px]"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-12 flex-col mt-12 rounded-[50px]"></div>
-                <div class="bg-sky-500 flex w-3 shrink-0 h-[33px] flex-col mt-16 rounded-[50px]"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="items-stretch flex gap-1 text-xs text-gray-500 whitespace-nowrap text-center mt-4">
-          <div v-for="item in months" :key="item" class="justify-center leading-[133%] flex-1">{{ item }}</div>
-        </div>
-      </section>
+  <ClientOnly>
+    <div
+      class="relative items-stretch shadow-xs bg-white flex w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] flex-col p-4 rounded-xl overflow-scroll">
+    <div class="min-w-[476px] md:min-w-fit">
+      <apexchart height="192" type="bar" :options="chartOptions" :series="series"></apexchart>
     </div>
-    <section
-      class="items-stretch ring-1 ring-neutral-300 shadow-xs bg-white flex max-w-[110px] flex-col rounded-lg border-solid absolute right-0">
-      <article
-        class="items-stretch border-b border-neutral-300 bg-zinc-100 flex w-full flex-col justify-center px-2 py-1 rounded-t-lg border-solid">
-        <header class="items-stretch flex justify-between gap-2">
-          <span
-            class="justify-center items-center bg-sky-500 flex w-2 shrink-0 h-2 flex-col my-auto rounded-[100px]"></span>
-          <span class="text-neutral-800 text-sm leading-6 grow">September</span>
-        </header>
-      </article>
-      <div class="text-neutral-800 text-sm leading-6 self-center whitespace-nowrap mt-1">17 Orders</div>
-    </section>
-  </div>
+    </div>
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">
+const chartOptions = ref({
+  chart: {
+    type: 'bar',
+    toolbar: {
+      show: false // Hides the toolbar
+    }
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      horizontal: false,
+      columnWidth: '45%', // Adjust as needed
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    show: true,
+    width: 2,
+    colors: ['transparent']
+  },
+  xaxis: {
+    categories: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+    axisBorder: {
+      show: false
+    },
+    axisTicks: {
+      show: false
+    },
+    labels: {
+      style: {
+        colors: '#777',
+        fontSize: '12px',
+        fontFamily: 'Helvetica, Arial, sans-serif' // Match your font
+      }
+    }
+  },
+  yaxis: {
+    labels: {
+      style: {
+        colors: '#777',
+        fontSize: '14px',
+        fontFamily: 'Helvetica, Arial, sans-serif' // Match your font
+      }
+    }
+  },
+  fill: {
+    opacity: 1
+  },
+  tooltip: {
+    y: {
+      formatter: function (val) {
+        return val + " Orders"
+      }
+    }
+  },
+  colors: ['#008FFB'], // Use your desired colors
+  grid: {
+    show: false,
+    borderColor: '#e7e7e7',
+    strokeDashArray: 0,
+    xaxis: {
+      lines: {
+        show: false
+      }
+    },
+    yaxis: {
+      lines: {
+        show: true
+      }
+    }
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right',
+    floating: true,
+    offsetY: -25,
+    offsetX: -5,
+    markers: {
+      radius: 12
+    }
+  }
+});
+
+
+const series = ref([{
+  name: 'Orders',
+  data: [23, 44, 35, 30, 49, 60, 70, 91, 125, 48, 60, 70] // Replace with your actual data
+}]);
 const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 </script>
 
