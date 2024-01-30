@@ -1,5 +1,5 @@
 <template>
-    <div class="items-stretch shadow-xs bg-white flex w-full xl:max-w-[514px] flex-col rounded-xl">
+    <div class="items-stretch shadow-xs bg-white flex w-full xl:max-w-[514px] flex-col rounded-xl h-[233px] md:h-[192px] xl:h-[240px]">
       <Swiper 
         :modules="[A11y, Pagination]" 
         :slides-per-view="1" 
@@ -14,18 +14,18 @@
       <SwiperSlide v-for="(item, index) in 5" :key="index">
           <section class="items-stretch bg-gray-700 w-full flex flex-col justify-center px-8 py-2 rounded-t-xl max-md:max-w-full max-md:px-5">
             <div class="justify-between items-stretch flex gap-5 max-md:max-w-full max-md:flex-wrap">
-              <div class="text-white text-sm font-semibold leading-6 grow shrink basis-auto">October Hot Sale</div>
-              <div class="text-white text-sm font-semibold leading-6 whitespace-nowrap justify-center items-stretch border aspect-[2.04] px-2 rounded-[100px] border-solid border-white">20 %</div>
+              <div class="text-white text-sm leading-6 grow shrink basis-auto">October Hot Sale</div>
+              <div class="text-white text-sm leading-[22px] whitespace-nowrap justify-center items-stretch border px-2 rounded-[100px] border-solid border-white">20 %</div>
             </div>
           </section>
           <div class="justify-between items-stretch self-stretch xl:max-w-[530px] flex flex-col md:flex-row xl:flex-col pt-3 px-8 max-md:px-5 gap-2">
           <div class="max-md:max-w-full">
-            <div class="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+            <div class="gap-5 flex  max-md:items-stretch max-md:gap-0 h-[100px]">
               <div class="flex flex-col items-stretch w-[22%] max-md:w-full max-md:ml-0">
-              <SvgoNotFoundSmall class="w-[100px] h-[100px]" />
+              <SvgoCardPlaceholderSmall class="w-[100px] h-[100px]" />
               </div>
               <div class="flex flex-col items-stretch w-[78%] ml-5 max-md:w-full max-md:ml-0">
-                <div class="items-stretch flex flex-col text-xs text-zinc-800 font-medium mt-2.5 max-md:mt-7">
+                <div class="items-stretch flex flex-col text-xs text-zinc-800 font-medium mt-2.5 ">
                   <div class="text-base leading-6">ADGN2999BCPZ3577XKRT</div>
                   <div class="leading-[167%] mt-1">Voltage Regulators</div>
                   <div class="overflow-hidden text-gray-500 text-ellipsis leading-[133%] mt-1">PHY 1-CH 1.1V/1.8V/2.5V/3.3V 48-Pin</div>

@@ -5,7 +5,7 @@
       <div v-for="item in 5" :key="item" class="items-stretch flex justify-between gap-3">
         <div
           class="justify-center items-center border border-neutral-300 flex aspect-square flex-col w-10 h-10 rounded-lg border-solid">
-          <SvgoNotFound class="w-10 h-10" />
+          <svgo-card-placeholder-small />
         </div>
         <div class="items-stretch flex grow basis-[0%] flex-col whitespace-nowrap max-w-[230px]">
           <div class="text-neutral-800 text-sm font-semibold leading-4 text-ellipsis overflow-hidden">RSCSK3343R3D02008T

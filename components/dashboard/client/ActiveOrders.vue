@@ -1,17 +1,20 @@
 <template>
   <div
-    class="justify-between items-stretch shadow-xs bg-white flex w-full lg:w-fit lg:max-w-[476px] xl:min-w-[358px] flex-col p-6 rounded-xl"
+    class="justify-between items-stretch shadow-xs bg-white flex w-full lg:w-fit lg:max-w-[476px] xl:min-w-[358px] h-[240px] flex-col p-6 rounded-xl"
   >
     <div class="items-stretch flex justify-between gap-4">
       <div class="justify-center items-stretch flex grow basis-[0%] flex-col">
-        <div class="text-neutral-800 text-base font-semibold leading-6">
+        <div class="text-neutral-800 text-base font-semibold leading-6 flex justify-between">
           Active Orders
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.99984 9.99984H9.49984C9.49984 10.2151 9.63755 10.4061 9.84172 10.4742L9.99984 9.99984ZM10.4998 5.83317C10.4998 5.55703 10.276 5.33317 9.99984 5.33317C9.72369 5.33317 9.49984 5.55703 9.49984 5.83317H10.4998ZM12.3417 11.3075C12.6037 11.3948 12.8869 11.2533 12.9742 10.9913C13.0615 10.7293 12.9199 10.4462 12.658 10.3588L12.3417 11.3075ZM10.4998 9.99984V5.83317H9.49984V9.99984H10.4998ZM9.84172 10.4742L12.3417 11.3075L12.658 10.3588L10.158 9.5255L9.84172 10.4742ZM17.8332 9.99984C17.8332 14.3261 14.3261 17.8332 9.99984 17.8332V18.8332C14.8784 18.8332 18.8332 14.8784 18.8332 9.99984H17.8332ZM9.99984 17.8332C5.67361 17.8332 2.1665 14.3261 2.1665 9.99984H1.1665C1.1665 14.8784 5.12132 18.8332 9.99984 18.8332V17.8332ZM2.1665 9.99984C2.1665 5.67361 5.67361 2.1665 9.99984 2.1665V1.1665C5.12132 1.1665 1.1665 5.12132 1.1665 9.99984H2.1665ZM9.99984 2.1665C14.3261 2.1665 17.8332 5.67361 17.8332 9.99984H18.8332C18.8332 5.12132 14.8784 1.1665 9.99984 1.1665V2.1665Z" fill="#5E6278"/>
+          </svg>
         </div>
-        <div class="flex gap-2 mt-2 flex-wrap">
+        <div class="flex gap-2 mt-6 flex-wrap">
             <div
               v-for="item in items"
               :key="item"
-              class="w-fit text-gray-500 hover:text-sky-500 text-[12px] leading-5 font-medium flex justify-center items-center bg-gray-200 px-1 rounded-3xl"
+              class="w-fit text-gray-500 hover:text-sky-500 text-[12px] leading-5 font-medium flex justify-center items-center bg-gray-200 px-[6px] rounded-3xl"
             >
               {{ item }}
             </div>

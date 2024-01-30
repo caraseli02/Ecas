@@ -1,7 +1,7 @@
 <template>
   <ClientOnly>
     <div
-      class="relative items-stretch shadow-xs bg-white flex w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] flex-col p-4 rounded-xl overflow-scroll">
+      class="relative items-stretch shadow-xs bg-white flex w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] h-[240px] flex-col p-4 rounded-xl overflow-y-scroll md:overflow-y-hidden">
     <div class="min-w-[476px] md:min-w-fit">
       <apexchart height="192" type="bar" :options="chartOptions" :series="series"></apexchart>
     </div>
