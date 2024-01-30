@@ -100,7 +100,6 @@ const series = ref([{
   name: 'Orders',
   data: [23, 44, 35, 30, 49, 60, 70, 91, 125, 48, 60, 70] // Replace with your actual data
 }]);
-const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 </script>
 
 <style scoped>

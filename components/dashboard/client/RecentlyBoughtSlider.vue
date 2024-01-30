@@ -35,19 +35,19 @@
                   }"
         class="homeFeaturedProducts--swiper w-[100%] h-[100%] block"
         >
-          <SwiperSlide v-for="(item, index) in 5" :key="index">
+          <SwiperSlide v-for="(item, index) in data" :key="index">
             <div class="max-w-[320px] overflow-hidden flex gap-3">
               <div
                 class="justify-center items-center border-neutral-300 flex flex-col w-[60px] h-[60px] md:w-[80px] md:h-[80px] rounded-lg border-2 border-solid">
                 <svgo-card-placeholder-small class="w-8 h-8" />
+                <img v-if="item.photo" :src="item.photo" />
               </div>
               <div class="items-stretch flex flex-col whitespace-nowrap flex-1 self-start max-w-[240px] overflow-hidden">
                 <div class="text-neutral-800 text-sm font-semibold leading-4 text-ellipsis overflow-hidden">
-                  RSCSK3343R3D02008T
+                  {{ item.title }}
                 </div>
                 <div class="text-gray-500 text-ellipsis text-xs leading-4 mt-2 overflow-hidden">
-                  Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V;
-                  200mW
+                  {{ item.subtitle }}
                 </div>
               </div>
             </div>
@@ -59,7 +59,33 @@
 
 <script setup lang="ts">
 import { A11y, Pagination } from 'swiper';
-
+const data = [
+  {
+    photo: '',
+    title: 'RSCSK3343R3D02008T',
+    subtitle: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW'
+  },
+  {
+    photo: '',
+    title: 'RSCSK3343R3D02008T',
+    subtitle: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW'
+  },
+  {
+    photo: '',
+    title: 'RSCSK3343R3D02008T',
+    subtitle: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW'
+  },
+  {
+    photo: '',
+    title: 'RSCSK3343R3D02008T',
+    subtitle: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW'
+  },
+  {
+    photo: '',
+    title: 'RSCSK3343R3D02008T',
+    subtitle: 'Diode: rectifying; SMD; 100V; 0.15A; 4ns; SOD323; Ufmax: 1.2V; 200mW'
+  },
+]
 </script>
 
 <style lang="scss">

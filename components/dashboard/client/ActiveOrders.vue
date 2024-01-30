@@ -11,13 +11,13 @@
           </svg>
         </div>
         <div class="flex gap-2 mt-6 flex-wrap">
-            <div
+            <button
               v-for="item in items"
               :key="item"
               class="w-fit text-gray-500 hover:text-sky-500 text-[12px] leading-5 font-medium flex justify-center items-center bg-gray-200 px-[6px] rounded-3xl"
             >
               {{ item }}
-            </div>
+            </button>
         </div>
 
       </div>
@@ -61,7 +61,9 @@
 </template>
 
 <script setup lang="ts">
-const items = ["M-100003", "S-100004", "M-100003", "S-100004", "M-100003", "S-100004", "M-100003", "S-100004", "M-100003", "S-100004"]
+defineProps<{
+  items: string[]
+}>()
 </script>
 
 <style scoped>
