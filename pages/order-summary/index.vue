@@ -77,6 +77,7 @@ import {
 } from '~/types/general-settings/general-settings';
 import {storeToRefs} from 'pinia';
 import {PlaceOrderInterface} from '~/model/order/response/PlaceOrder';
+import _ from 'lodash';
 
 const router = useRouter();
 
@@ -159,7 +160,7 @@ const fetchCards = async () => {
   };
   if (response.status === 'success') {
     cards.value = response.data;
-    card.value = cards.value[0]
+    card.value = _.cloneDeep(cards.value[0])
   }
 };
 await fetchCards();
