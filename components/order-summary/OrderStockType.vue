@@ -107,13 +107,13 @@
             v-if="paymentMethodExpanded"
             :order="order"
             :account-credit="accountCredit"
-            :cards="cards"
+            :card="cards[0]"
             :card_id="cardId"
             class="item"
         />
       </Transition>
       <AppModal v-model="showCardsModal">
-        <OrderSummaryPaymentModal/>
+        <OrderSummaryPaymentModal :cards="cards" :order="order" :card_id="cardId"/>
       </AppModal>
     </div>
   </div>

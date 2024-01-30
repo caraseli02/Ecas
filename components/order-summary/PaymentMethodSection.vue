@@ -7,17 +7,15 @@
       </button>
     </div>
     <div class="flex flex-col gap-4 relative">
-      <div v-for="(card, index) in cards" :key="index" class="">
-        <OrderSummaryPayByCard
-            view="payment"
-            :card-info="card"
-            :card-type='card?.card.brand'
-            :is-selected="order?.paymentDetails?.cardId === card.id"
-            :has-card=true
-            :is-expired=cardExpired(card)
-            @select-payment-option="selectPaymentOption({type: 'Card', info: $event});"
-        />
-      </div>
+      <OrderSummaryPayByCard
+          view="payment"
+          :card-info="card"
+          :card-type='card?.card.brand'
+          :is-selected="order?.paymentDetails?.cardId === card.id"
+          :has-card=true
+          :is-expired=cardExpired(card)
+          @select-payment-option="selectPaymentOption({type: 'Card', info: $event});"
+      />
       <button
           class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
           :class="order.paymentDetails?.type === 3 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
@@ -103,13 +101,16 @@ import moment from 'moment/moment';
 const props = defineProps<{
   order: OrderInterface
   accountCredit: CustomerCreditInterface
-  cards: any
+  card: any
   cardId: any
 }>()
 
 const showCreditInfoModal = ref(false)
 
-function selectPaymentOption(option: { type: string, info?: any }) {
+function selectPaymentOption(option: {
+  type: string,
+  info?: any
+}) {
 
   const payment = {} as PaymentDetails
   if (props.order.paymentDetails) {
