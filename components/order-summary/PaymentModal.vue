@@ -8,7 +8,7 @@
       </div>
       <Button
           class="justify-center items-center bg-zinc-100 self-stretch flex aspect-square flex-col w-8 h-8 px-1 rounded-lg"
-          @click="paymentStore.toggleCardModal">
+          @click="paymentStore.toggleCardModal();exitCardModal(true)">
         <SvgoX class="aspect-square object-contain object-center w-full justify-center items-center overflow-hidden"/>
       </Button>
     </div>
@@ -17,15 +17,15 @@
         Saved cards
       </h4>
 
-      <div v-for="(card, index) in cards" :key="index" class="">
+      <div v-for="card in cards" :key="card.id" class="">
         <OrderSummaryPayByCard
             view="payment"
             :card-info="card"
-            :card-type='card?.card.brand'
-            :is-selected="order?.paymentDetails?.cardId === card.id"
+            :card-type='card?.card?.brand'
+            :is-selected="payment.card?.id ? payment.card?.id === card?.id : order.paymentDetails?.card?.id === card?.id"
             :has-card=true
             :is-expired=cardExpired(card)
-            @select-payment-option="selectPaymentOption({type: 'Card', info: $event});"
+            @select-payment-option="selectPaymentOption({type: 'Card', info: card})"
         />
       </div>
       <OrderSummaryNewCard/>
@@ -42,8 +42,9 @@
       </div>
     </div>
     <button
-onclick="changeCard"
-            class="justify-center items-center self-stretch bg-sky-500 flex w-full flex-col mt-10 px-16 py-2 rounded-lg">
+        class="justify-center items-center self-stretch bg-sky-500 flex w-full flex-col mt-10 px-16 py-2 rounded-lg"
+        @click="paymentStore.toggleCardModal();exitCardModal(false)"
+    >
       <span class="flex items-center gap-2">
         <div class="text-white text-base font-medium leading-7 grow whitespace-nowrap">
           Continue
@@ -68,8 +69,9 @@ const paymentStore = usePaymentStore();
 const props = defineProps<{
   order: OrderInterface
   cards: any
-  cardId: any
+  card: any
 }>()
+
 
 const payment = ref({} as PaymentDetails)
 
@@ -78,15 +80,30 @@ function selectPaymentOption(option: {
   info?: any
 }) {
 
-
   if (props.order.paymentDetails) {
     payment.value.type = PaymentTypeEnum[option.type as keyof typeof PaymentTypeEnum] as number;
-    // props.order.paymentDetails.type = PaymentTypeEnum[option.type as keyof typeof PaymentTypeEnum] as number;
     if (option.info) {
-      payment.value.cardId = option.info.id;
+
+      payment.value.card = option.info;
     }
-    props.order.paymentDetails = payment
   }
+}
+
+
+function exitCardModal(option: boolean) {
+  // console.log(props.cards);
+  if (!option) {
+
+    console.log(props.cards);
+
+    props.order.paymentDetails = payment.value
+    props.card.billing_details = payment.value.card?.billing_details
+    props.card.card = payment.value.card?.card
+    props.card.id = payment.value.card?.id
+    props.card.customer = payment.value.card?.customer
+
+  }
+  // console.log(props.card);
 }
 
 

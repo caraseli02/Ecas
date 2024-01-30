@@ -10,8 +10,8 @@
       <OrderSummaryPayByCard
           view="payment"
           :card-info="card"
-          :card-type='card?.card.brand'
-          :is-selected="order?.paymentDetails?.cardId === card.id"
+          :card-type='card?.card?.brand'
+          :is-selected="order?.paymentDetails?.card?.id === card.id"
           :has-card=true
           :is-expired=cardExpired(card)
           @select-payment-option="selectPaymentOption({type: 'Card', info: $event});"
@@ -102,7 +102,6 @@ const props = defineProps<{
   order: OrderInterface
   accountCredit: CustomerCreditInterface
   card: any
-  cardId: any
 }>()
 
 const showCreditInfoModal = ref(false)
@@ -117,7 +116,7 @@ function selectPaymentOption(option: {
     payment.type = PaymentTypeEnum[option.type as keyof typeof PaymentTypeEnum] as number;
     // props.order.paymentDetails.type = PaymentTypeEnum[option.type as keyof typeof PaymentTypeEnum] as number;
     if (option.info) {
-      payment.cardId = option.info.id;
+      payment.card = option.info;
     }
     props.order.paymentDetails = payment
   }

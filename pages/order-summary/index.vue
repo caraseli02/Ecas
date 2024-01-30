@@ -39,7 +39,7 @@
                 :order="order"
                 :general-settings="generalSettings"
                 :cards="cards"
-                :card-id="card_id"
+                :card="card"
             />
             <OrderSummaryNoteSection/>
             <OrderSummary :order="order" :general-settings="generalSettings"/>
@@ -150,8 +150,8 @@ const {getGeneralSettings} = storeToRefs(authStore);
 const getGeneralSettingsFunction = () => {
   generalSettings.value = getGeneralSettings.value;
 };
-const card_id = ref({});
-const cards = ref([] as any);
+const card = ref({});
+const cards = ref([]);
 const fetchCards = async () => {
   const response = (await $api.user.userCards()) as {
     status: string;
@@ -159,6 +159,7 @@ const fetchCards = async () => {
   };
   if (response.status === 'success') {
     cards.value = response.data;
+    card.value = cards.value[0]
   }
 };
 await fetchCards();
@@ -330,6 +331,7 @@ watch(
     {deep: true}
 );
 
+
 const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
   if (!orderItems) {
     return;
@@ -417,7 +419,7 @@ Emitter.on('checkout', async () => {
     };
 
     if (paymentDetails.value && paymentDetails.value.type === 0) {
-      orderRequestObject.value.stripeCardId = paymentDetails.value.cardId;
+      orderRequestObject.value.stripeCardId = paymentDetails.value.card.info.id;
     }
 
     if (note.value !== '') {

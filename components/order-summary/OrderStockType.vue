@@ -107,13 +107,12 @@
             v-if="paymentMethodExpanded"
             :order="order"
             :account-credit="accountCredit"
-            :card="cards[0]"
-            :card_id="cardId"
+            :card="card"
             class="item"
         />
       </Transition>
       <AppModal v-model="showCardsModal">
-        <OrderSummaryPaymentModal :cards="cards" :order="order" :card_id="cardId"/>
+        <OrderSummaryPaymentModal :cards=cards :order="order" :card="card"/>
       </AppModal>
     </div>
   </div>
@@ -136,7 +135,7 @@ const props = defineProps<{
   accountCredit: CustomerCreditInterface
   order: OrderInterface
   cards: any
-  cardId: any
+  card: any
   // generalSettings: GeneralSettingsInterface
 }>();
 
