@@ -91,11 +91,7 @@ function selectPaymentOption(option: {
 
 
 function exitCardModal(option: boolean) {
-  // console.log(props.cards);
   if (!option) {
-
-    console.log(props.cards);
-
     props.order.paymentDetails = payment.value
     props.card.billing_details = payment.value.card?.billing_details
     props.card.card = payment.value.card?.card
@@ -103,7 +99,6 @@ function exitCardModal(option: boolean) {
     props.card.customer = payment.value.card?.customer
 
   }
-  // console.log(props.card);
 }
 
 
