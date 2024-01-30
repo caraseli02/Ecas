@@ -324,6 +324,9 @@ const paymentDetails = ref<PaymentDetails | null>(null);
 watch(
     [order],
     ([_order]) => {
+
+      console.log(_order.paymentDetails);
+
       deliveryMethod.value = _order.deliveryMethod;
       backOrderOption.value = _order.backorderOption;
       smallOrder.value = _order.smallOrder;
@@ -420,7 +423,7 @@ Emitter.on('checkout', async () => {
     };
 
     if (paymentDetails.value && paymentDetails.value.type === 0) {
-      orderRequestObject.value.stripeCardId = paymentDetails.value.card.info.id;
+      orderRequestObject.value.stripeCardId = paymentDetails.value.card?.id;
     }
 
     if (note.value !== '') {

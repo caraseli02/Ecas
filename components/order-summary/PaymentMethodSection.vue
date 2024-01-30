@@ -11,15 +11,15 @@
           view="payment"
           :card-info="card"
           :card-type='card?.card?.brand'
-          :is-selected="order?.paymentDetails?.card?.id === card.id"
+          :is-selected="order?.paymentDetails?.type === PaymentTypeEnum.Card && order?.paymentDetails?.card?.id === card.id"
           :has-card=true
           :is-expired=cardExpired(card)
-          @select-payment-option="selectPaymentOption({type: 'Card', info: $event});"
+          @select-payment-option="selectPaymentOption({type: PaymentTypeEnum.Card, info: $event});"
       />
       <button
           class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
           :class="order.paymentDetails?.type === 3 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
-          @click="selectPaymentOption({type: 'Bank'})">
+          @click="selectPaymentOption({type: PaymentTypeEnum.Bank})">
         <div class="flex flex-row justify-between w-full">
           <RadioButtonChecked
               v-if="order.paymentDetails?.type === 3"
@@ -36,7 +36,7 @@
       <button
           class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
           :class="order.paymentDetails?.type === 1 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
-          :disabled="accountCredit.active" @click="selectPaymentOption({type: 'Credit'})">
+          :disabled="accountCredit.active" @click="selectPaymentOption({type: PaymentTypeEnum.Credit})">
         <div class="flex flex-row justify-between w-full">
           <RadioButtonChecked
               v-if="order.paymentDetails?.type === 1"
@@ -70,7 +70,7 @@
       <button
           class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
           :class="order.paymentDetails?.type === 2 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
-          @click="selectPaymentOption({type: 'Cash'})">
+          @click="selectPaymentOption({type: PaymentTypeEnum.Cash})">
         <div class="flex flex-row justify-between w-full">
           <RadioButtonChecked
               v-if="order.paymentDetails?.type === 2"
@@ -105,20 +105,19 @@ const props = defineProps<{
 }>()
 
 const showCreditInfoModal = ref(false)
+const payment = ref({} as PaymentDetails)
 
 function selectPaymentOption(option: {
-  type: string,
+  type: PaymentTypeEnum,
   info?: any
 }) {
-
-  const payment = {} as PaymentDetails
+  payment.value = {} as PaymentDetails
   if (props.order.paymentDetails) {
-    payment.type = PaymentTypeEnum[option.type as keyof typeof PaymentTypeEnum] as number;
-    // props.order.paymentDetails.type = PaymentTypeEnum[option.type as keyof typeof PaymentTypeEnum] as number;
-    if (option.info) {
-      payment.card = option.info;
+    payment.value.type = option.type;
+    if (option.type === PaymentTypeEnum.Card) {
+      payment.value.card = option.info;
     }
-    props.order.paymentDetails = payment
+    props.order.paymentDetails = payment.value
   }
 }
 
