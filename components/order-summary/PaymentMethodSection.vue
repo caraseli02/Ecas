@@ -11,7 +11,7 @@
           view="payment"
           :card-info="card"
           :card-type='card?.card?.brand'
-          :is-selected="order?.paymentDetails?.type === PaymentTypeEnum.Card && order?.paymentDetails?.card?.id === card.id"
+          :is-selected="!isNewCardSelected && order?.paymentDetails?.type === PaymentTypeEnum.Card && order?.paymentDetails?.card?.id === card.id"
           :has-card=true
           :is-expired=cardExpired(card)
           @select-payment-option="selectPaymentOption({type: PaymentTypeEnum.Card, info: $event});"
@@ -102,6 +102,7 @@ const props = defineProps<{
   order: OrderInterface
   accountCredit: CustomerCreditInterface
   card: any
+  isNewCardSelected: boolean
 }>()
 
 const showCreditInfoModal = ref(false)

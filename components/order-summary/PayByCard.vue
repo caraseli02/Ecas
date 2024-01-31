@@ -97,7 +97,6 @@ const props = defineProps<{
 const emits = defineEmits(['selectPaymentOption']);
 const paymentMethods = async (cardInfo: any) => {
   emits('selectPaymentOption', cardInfo);
-
 }
 
 
