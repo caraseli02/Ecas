@@ -77,6 +77,7 @@ import {
 } from '~/types/general-settings/general-settings';
 import {storeToRefs} from 'pinia';
 import {PlaceOrderInterface} from '~/model/order/response/PlaceOrder';
+import _ from 'lodash';
 
 const router = useRouter();
 
@@ -159,7 +160,7 @@ const fetchCards = async () => {
   };
   if (response.status === 'success') {
     cards.value = response.data;
-    card.value = cards.value[0]
+    card.value = _.cloneDeep(cards.value[0])
   }
 };
 await fetchCards();
@@ -323,6 +324,9 @@ const paymentDetails = ref<PaymentDetails | null>(null);
 watch(
     [order],
     ([_order]) => {
+
+      console.log(_order.paymentDetails);
+
       deliveryMethod.value = _order.deliveryMethod;
       backOrderOption.value = _order.backorderOption;
       smallOrder.value = _order.smallOrder;
@@ -419,7 +423,7 @@ Emitter.on('checkout', async () => {
     };
 
     if (paymentDetails.value && paymentDetails.value.type === 0) {
-      orderRequestObject.value.stripeCardId = paymentDetails.value.card.info.id;
+      orderRequestObject.value.stripeCardId = paymentDetails.value.card?.id;
     }
 
     if (note.value !== '') {

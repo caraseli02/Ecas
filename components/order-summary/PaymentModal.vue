@@ -22,13 +22,17 @@
             view="payment"
             :card-info="card"
             :card-type='card?.card?.brand'
-            :is-selected="payment.card?.id ? payment.card?.id === card?.id : order.paymentDetails?.card?.id === card?.id"
+            :is-selected="!isNewCardSelected && (payment.card?.id ? payment.card?.id === card?.id : order.paymentDetails?.card?.id === card?.id)"
             :has-card=true
             :is-expired=cardExpired(card)
-            @select-payment-option="selectPaymentOption({type: 'Card', info: card})"
+            @click="isNewCardSelected=false"
+            @select-payment-option="selectPaymentOption({type: PaymentTypeEnum.Card, info: card})"
         />
       </div>
-      <OrderSummaryNewCard/>
+      <OrderSummaryNewCard
+          :is-selected="payment.type === PaymentTypeEnum.Card && !payment.card"
+          @click="isNewCardSelected=true"
+          @select-payment-option="selectPaymentOption({type: PaymentTypeEnum.Card, info: null})"/>
     </div>
     <div class="items-stretch self-center flex gap-3 mt-10">
       <svg width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,28 +78,23 @@ const props = defineProps<{
 
 
 const payment = ref({} as PaymentDetails)
+const isNewCardSelected = ref(false)
 
 function selectPaymentOption(option: {
-  type: string,
+  type: PaymentTypeEnum,
   info?: any
 }) {
-
   if (props.order.paymentDetails) {
-    payment.value.type = PaymentTypeEnum[option.type as keyof typeof PaymentTypeEnum] as number;
-    if (option.info) {
+    payment.value.type = option.type;
+    if (option.type === PaymentTypeEnum.Card) {
 
       payment.value.card = option.info;
     }
   }
 }
 
-
 function exitCardModal(option: boolean) {
-  // console.log(props.cards);
   if (!option) {
-
-    console.log(props.cards);
-
     props.order.paymentDetails = payment.value
     props.card.billing_details = payment.value.card?.billing_details
     props.card.card = payment.value.card?.card
@@ -103,9 +102,7 @@ function exitCardModal(option: boolean) {
     props.card.customer = payment.value.card?.customer
 
   }
-  // console.log(props.card);
 }
-
 
 function cardExpired(card: any) {
   const exp_date = moment([card.card.exp_year, card.card.exp_month]);
