@@ -18,7 +18,7 @@
           <div class="flex items-center gap-2 text-zinc-800 text-sm font-medium leading-6 grow whitespace-nowrap">
             <span class="font-extrabold">••••</span>
             <span class="">{{ cardInfo?.card.last4 }}</span>
-            <SvgoGreenCheckCircleSmall v-if="isSelected"/>
+            <SvgoGreenCheckCircleSmall v-if="cardInfo.hasOwnProperty('default')"/>
           </div>
         </span>
         <SvgoCardVisa v-if="hasCard && cardType === 'visa'"/>
