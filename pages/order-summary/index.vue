@@ -159,10 +159,8 @@ const fetchCards = async () => {
     data: any;
   };
   if (response.status === 'success') {
-    cards.value = response.data;
+    cards.value = [];
     card.value = _.cloneDeep((cards.value.find((card: any) => card.default)))
-    console.log(card.value);
-
   }
 };
 await fetchCards();
