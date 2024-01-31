@@ -13,6 +13,7 @@
       <div class="text-zinc-800 text-sm leading-6 self-stretch grow shrink basis-auto">
         Pay with a new card
       </div>
+
     </section>
     <div class="text-gray-500 text-xs leading-4 whitespace-nowrap self-end">
       Your card details will be required at checkout

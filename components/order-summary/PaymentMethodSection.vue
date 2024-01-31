@@ -102,6 +102,7 @@ const props = defineProps<{
   order: OrderInterface
   accountCredit: CustomerCreditInterface
   card: any
+  isNewCardSelected: boolean
 }>()
 
 const showCreditInfoModal = ref(false)

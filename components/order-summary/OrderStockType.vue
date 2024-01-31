@@ -108,11 +108,12 @@
             :order="order"
             :account-credit="accountCredit"
             :card="card"
+            :is-new-card-selected="isNewCardSelected"
             class="item"
         />
       </Transition>
       <AppModal v-model="showCardsModal">
-        <OrderSummaryPaymentModal :cards=cards :order="order" :card="card"/>
+        <OrderSummaryPaymentModal :cards=cards :order="order" :card="card" :is-new-card-selected="isNewCardSelected"/>
       </AppModal>
     </div>
   </div>
@@ -128,7 +129,6 @@ import Emitter from 'tiny-emitter/instance.js';
 import {useAuthStore} from '~/store/authStore';
 import {usePaymentStore} from '~/store/paymentStore';
 import {storeToRefs} from 'pinia';
-// import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
 const props = defineProps<{
   items: CartProductsInterface[]
@@ -136,8 +136,9 @@ const props = defineProps<{
   order: OrderInterface
   cards: any
   card: any
-  // generalSettings: GeneralSettingsInterface
 }>();
+
+const isNewCardSelected = ref(false)
 
 const shippingAndBillingExpanded = ref(false);
 const shippingPreferencesExpanded = ref(false);
@@ -160,6 +161,11 @@ const backOrder = computed(() => {
   );
   return backOrderItems.length === props.items.length;
 });
+
+Emitter.on('isNewCardSelected', async (newCardSelected: boolean) => {
+  isNewCardSelected.value = newCardSelected;
+});
+
 
 const orderType = computed(() => {
   if (stockOrder.value) {

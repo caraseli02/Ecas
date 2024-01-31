@@ -25,13 +25,13 @@
             :is-selected="!isNewCardSelected && (payment.card?.id ? payment.card?.id === card?.id : order.paymentDetails?.card?.id === card?.id)"
             :has-card=true
             :is-expired=cardExpired(card)
-            @click="isNewCardSelected=false"
+            @click="newCardSelected(false)"
             @select-payment-option="selectPaymentOption({type: PaymentTypeEnum.Card, info: card})"
         />
       </div>
       <OrderSummaryNewCard
           :is-selected="payment.type === PaymentTypeEnum.Card && !payment.card"
-          @click="isNewCardSelected=true"
+          @click="newCardSelected(true)"
           @select-payment-option="selectPaymentOption({type: PaymentTypeEnum.Card, info: null})"/>
     </div>
     <div class="items-stretch self-center flex gap-3 mt-10">
@@ -67,6 +67,7 @@
 import {usePaymentStore} from '~/store/paymentStore';
 import {OrderInterface, PaymentDetails, PaymentTypeEnum} from '~/types';
 import moment from 'moment';
+import Emitter from 'tiny-emitter/instance.js';
 
 const paymentStore = usePaymentStore();
 
@@ -74,11 +75,14 @@ const props = defineProps<{
   order: OrderInterface
   cards: any
   card: any
+  isNewCardSelected: boolean
 }>()
 
-
 const payment = ref({} as PaymentDetails)
-const isNewCardSelected = ref(false)
+const newCardSelected = async (newCardSelected: boolean) => {
+  // emits('isNewCardSelected', newCardSelected);
+  Emitter.emit('isNewCardSelected', newCardSelected)
+}
 
 function selectPaymentOption(option: {
   type: PaymentTypeEnum,
@@ -87,7 +91,6 @@ function selectPaymentOption(option: {
   if (props.order.paymentDetails) {
     payment.value.type = option.type;
     if (option.type === PaymentTypeEnum.Card) {
-
       payment.value.card = option.info;
     }
   }
@@ -96,11 +99,13 @@ function selectPaymentOption(option: {
 function exitCardModal(option: boolean) {
   if (!option) {
     props.order.paymentDetails = payment.value
-    props.card.billing_details = payment.value.card?.billing_details
-    props.card.card = payment.value.card?.card
-    props.card.id = payment.value.card?.id
-    props.card.customer = payment.value.card?.customer
+    if (payment.value.card) {
+      props.card.billing_details = payment.value.card?.billing_details
+      props.card.card = payment.value.card?.card
+      props.card.id = payment.value.card?.id
+      props.card.customer = payment.value.card?.customer
 
+    }
   }
 }
 

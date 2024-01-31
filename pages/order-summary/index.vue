@@ -151,7 +151,7 @@ const {getGeneralSettings} = storeToRefs(authStore);
 const getGeneralSettingsFunction = () => {
   generalSettings.value = getGeneralSettings.value;
 };
-const card = ref({});
+const card = ref<any | null>({});
 const cards = ref([]);
 const fetchCards = async () => {
   const response = (await $api.user.userCards()) as {
@@ -160,7 +160,9 @@ const fetchCards = async () => {
   };
   if (response.status === 'success') {
     cards.value = response.data;
-    card.value = _.cloneDeep(cards.value[0])
+    card.value = _.cloneDeep((cards.value.find((card: any) => card.default)))
+    console.log(card.value);
+
   }
 };
 await fetchCards();
@@ -324,13 +326,18 @@ const paymentDetails = ref<PaymentDetails | null>(null);
 watch(
     [order],
     ([_order]) => {
-
-      console.log(_order.paymentDetails);
-
       deliveryMethod.value = _order.deliveryMethod;
       backOrderOption.value = _order.backorderOption;
       smallOrder.value = _order.smallOrder;
       paymentDetails.value = _order.paymentDetails;
+    },
+    {deep: true}
+);
+
+watch(
+    [card],
+    ([_card]) => {
+      card.value = _card;
     },
     {deep: true}
 );
@@ -423,7 +430,7 @@ Emitter.on('checkout', async () => {
     };
 
     if (paymentDetails.value && paymentDetails.value.type === 0) {
-      orderRequestObject.value.stripeCardId = paymentDetails.value.card?.id;
+      orderRequestObject.value.stripeCardId = paymentDetails.value.card?.id || null;
     }
 
     if (note.value !== '') {
