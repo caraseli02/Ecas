@@ -37,9 +37,13 @@
           </svg>
           <div class="text-red-500 text-sm leading-6">Card expired</div>
       </span>
-      <span v-else class="text-neutral-700 text-sm font-normal leading-6 w-full text-start">Pay by card</span>
+      <span
+          v-else
+          class="text-neutral-700 text-sm font-normal leading-6 w-full text-start">Pay {{
+          isNewCardSelected ? 'with new card' : 'by card'
+        }}</span>
       <button
-          v-if="hasCard"
+          v-if="cards"
           class="flex gap-2 items-center w-full justify-end hover:underline"
           @click="paymentStore.toggleCardModal()">
         <SvgoChangeCard/>
@@ -89,8 +93,10 @@ const props = defineProps<{
   cardInfo?: any,
   isSelected?: boolean
   hasCard?: boolean;
+  cards: boolean;
   view: 'modal' | 'payment'
   isExpired?: boolean;
+  isNewCardSelected?: boolean
   cardType?: 'visa' | 'mastercard' | 'amex'
 }>()
 

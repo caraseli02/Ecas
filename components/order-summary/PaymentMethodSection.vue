@@ -8,14 +8,36 @@
     </div>
     <div class="flex flex-col gap-4 relative">
       <OrderSummaryPayByCard
+          v-if="card && !isNewCardSelected"
           view="payment"
           :card-info="card"
           :card-type='card?.card?.brand'
           :is-selected="order?.paymentDetails?.type === PaymentTypeEnum.Card && order?.paymentDetails?.card?.id === card.id"
           :has-card=true
+          :cards="true"
+          :is-new-card-selected="isNewCardSelected"
           :is-expired=cardExpired(card)
           @select-payment-option="selectPaymentOption({type: PaymentTypeEnum.Card, info: $event});"
       />
+
+      <OrderSummaryPayByCard
+          v-else-if="card && isNewCardSelected"
+          view="payment"
+          :cards="true"
+          :is-new-card-selected="isNewCardSelected"
+          :is-selected="isNewCardSelected"
+          @select-payment-option="selectPaymentOption({type: PaymentTypeEnum.Card, info: null});"
+      />
+      <OrderSummaryPayByCard
+          v-else-if="!card"
+          view="payment"
+          :cards="false"
+          :is-new-card-selected="isNewCardSelected"
+          :is-selected="order?.paymentDetails?.type === PaymentTypeEnum.Card && !order?.paymentDetails?.card"
+          @select-payment-option="selectPaymentOption({type: PaymentTypeEnum.Card, info: null});"
+      />
+
+
       <button
           class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
           :class="order.paymentDetails?.type === 3 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
@@ -102,6 +124,7 @@ const props = defineProps<{
   order: OrderInterface
   accountCredit: CustomerCreditInterface
   card: any
+  cards: any
   isNewCardSelected: boolean
 }>()
 
