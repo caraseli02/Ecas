@@ -4,7 +4,7 @@ import { PaginatedCustomersInterface } from '~/model/dashboard/response/Customer
 import { OrderRequestInterface } from '~/types';
 
 class OrdersService extends HttpFactory {
-    private ORDERS_DASHBOARD_RESOURCE = '/dashboard/orders';
+    private ORDERS_DASHBOARD_RESOURCE = '/dashboard/orders/admin';
     private ORDERS_RESOURCE = '/orders';
 
     private authStore = useAuthStore();
