@@ -6,16 +6,12 @@
         Recently Bought
       </p>
       <div class="items-stretch flex gap-2 self-start">
-        <a href="#" class="text-gray-500 text-sm font-medium leading-5 grow whitespace-nowrap">
+        <a href="#" class="text-slate-500 text-sm font-medium leading-5 grow whitespace-nowrap">
           View Orders
         </a>
-        <svg class="aspect-square object-contain object-center w-4 justify-center items-center shrink-0 my-auto"
-          width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465" stroke="#5E6278" stroke-width="1.5"
-            stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M2.33301 8L13.553 8" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
+        <SvgoArrowLeft16
+          class="aspect-square object-contain object-center w-4 justify-center items-center shrink-0 my-auto text-slate-500"
+        />
       </div>
     </section>
       <div class="items-stretch justify-between gap-5 max-w-[326px] md:max-w-[688px]">
@@ -46,7 +42,7 @@
                 <div class="text-neutral-800 text-sm font-semibold leading-4 text-ellipsis overflow-hidden">
                   {{ item.title }}
                 </div>
-                <div class="text-gray-500 text-ellipsis text-xs leading-4 mt-2 overflow-hidden">
+                <div class="text-slate-500 text-ellipsis text-xs leading-4 mt-2 overflow-hidden">
                   {{ item.subtitle }}
                 </div>
               </div>

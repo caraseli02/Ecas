@@ -25,34 +25,29 @@
                   My Favorites
                 </div>
                 <div v-for="(val, key) in data.favorites" class="items-stretch flex justify-between gap-3 mt-2">
-                  <div class="text-slate-500 leading-6 capitalize">{{key}}</div>
-                  <div class="text-neutral-800 font-medium leading-6">{{val}}</div>
+                  <div class="text-slate-500 leading-6 capitalize">{{ key }}</div>
+                  <div class="text-neutral-800 font-medium leading-6">{{ val }}</div>
                 </div>
               </div>
             </div>
-            <div class="items-stretch flex gap-2 self-end">
-              <button class="text-slate-500 text-sm font-medium leading-5 grow">
+            <div class="items-stretch flex gap-2 self-end text-slate-500 hover:text-blue-500 transition-all cursor-pointer">
+              <button class="text-sm font-medium leading-5 grow">
                 Favorites
               </button>
-              <svg
-                class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto"
-                width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465" stroke="#5E6278" stroke-width="1.5"
-                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M2.3335 8L13.5535 8" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10"
-                  stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
+              <SvgoArrowLeft16
+                class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto" 
+              />
             </div>
           </div>
         </div>
-        <div class="h-0.5 w-full md:h-[114px] md:w-[2px] bg-gray-200" />
+        <div class="h-0.5 w-full md:h-[114px]  md:w-[2px] bg-light-500" />
         <div class="flex flex-col items-stretch w-[33%] min-h-[114px] justify-between lg:ml-5 max-md:w-full max-md:ml-0">
           <div class="justify-between items-stretch self-stretch flex grow flex-col ">
             <div class="items-stretch flex justify-between gap-4">
               <div
-                class="justify-center items-center bg-sky-500 bg-opacity-30 flex aspect-square flex-col p-2 w-13 h-13 md:w-11 md:h-11 md:p-1 lg:w-14 lg:h-14 lg:p-2 rounded-[100px]">
+                class="justify-center items-center bg-blue-500 bg-opacity-30 flex aspect-square flex-col p-2 w-13 h-13 md:w-11 md:h-11 md:p-1 lg:w-14 lg:h-14 lg:p-2 rounded-[100px]">
                 <div
-                  class="justify-center items-center bg-sky-500 flex aspect-square flex-col w-full h-9 lg:h-10 px-2 rounded-[100px]">
+                  class="justify-center items-center bg-blue-500 flex aspect-square flex-col w-full h-9 lg:h-10 px-2 rounded-[100px]">
                   <svg
                     class="w-5 h-5 lg:w-6 lg:h-6 aspect-square object-contain object-center justify-center items-center overflow-hidden"
                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,29 +76,24 @@
                 </div>
               </div>
             </div>
-            <div class="items-stretch flex gap-2 self-end">
-              <button class="text-slate-500 text-sm font-medium leading-5">
+            <div class="items-stretch flex gap-2 self-end text-slate-500 hover:text-blue-500 cursor-pointer">
+              <button class="text-sm font-medium leading-5">
                 Orders
               </button>
-              <svg
-                class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto"
-                width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465" stroke="#5E6278" stroke-width="1.5"
-                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M2.3335 8L13.5535 8" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10"
-                  stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
+              <SvgoArrowLeft16
+                class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto" 
+              />
             </div>
           </div>
         </div>
-        <div class="h-0.5 w-full md:h-[114px] md:w-[2px] bg-gray-200" />
+        <div class="h-0.5 w-full md:h-[114px] md:w-[2px] bg-light-500" />
         <div class="flex flex-col items-stretch w-[33%] min-h-[114px] justify-between lg:ml-5 max-md:w-full max-md:ml-0">
           <div class="justify-between items-stretch self-stretch flex grow flex-col ">
             <div class="items-stretch flex gap-4">
               <div
-                class="justify-center items-center bg-red-500 bg-opacity-30 flex aspect-square flex-col p-2 w-13 h-13 md:w-11 md:h-11 md:p-1 lg:w-14 lg:h-14 lg:p-2 rounded-[100px]">
+                class="justify-center items-center bg-slate-500 bg-opacity-30 flex aspect-square flex-col p-2 w-13 h-13 md:w-11 md:h-11 md:p-1 lg:w-14 lg:h-14 lg:p-2 rounded-[100px]">
                 <div
-                  class="justify-center items-center bg-red-500 flex aspect-square flex-col w-full h-9 lg:h-10 px-2 rounded-[100px]">
+                  class="justify-center items-center bg-slate-500 flex aspect-square flex-col w-full h-9 lg:h-10 px-2 rounded-[100px]">
                   <svg class="aspect-square object-contain object-center overflow-hidden w-5 h-5 lg:w-6 lg:h-6"
                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5 8L15 8C17.2091 8 19 9.79086 19 12C19 14.2091 17.2091 16 15 16L5 16M5 8L9 5M5 8L9 11"
@@ -123,7 +113,7 @@
                     width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M3.3335 5.3335L10.0002 5.3335C11.4729 5.3335 12.6668 6.5274 12.6668 8.00016C12.6668 9.47292 11.4729 10.6668 10.0002 10.6668L3.3335 10.6668M3.3335 5.3335L6.00016 3.3335M3.3335 5.3335L6.00016 7.3335"
-                      stroke="#5E6278" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                   <div class="text-slate-500 text-sm leading-5">
                     File a return
@@ -131,18 +121,13 @@
                 </div>
               </div>
             </div>
-            <div class="items-stretch flex gap-2 self-end">
-              <button class="text-slate-500 text-sm font-medium leading-5 grow whitespace-nowrap">
+            <div class="items-stretch flex gap-2 self-end text-slate-500 hover:text-blue-500 cursor-pointer">
+              <button class="text-sm font-medium leading-5 grow whitespace-nowrap">
                 All Returns
               </button>
-              <svg
-                class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto"
-                width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465" stroke="#5E6278" stroke-width="1.5"
-                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M2.3335 8L13.5535 8" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10"
-                  stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
+              <SvgoArrowLeft16
+                    class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto" 
+                  />
             </div>
           </div>
         </div>
@@ -156,10 +141,11 @@ const data = {
   returns: 257,
   totalOrders: 257,
   monthOrder: 37,
-  favorites : {
-  products : 37,
-  folders: 6
-}}
+  favorites: {
+    products: 37,
+    folders: 6
+  }
+}
 </script>
 
 <style scoped>

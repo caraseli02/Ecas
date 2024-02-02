@@ -27,7 +27,7 @@
                 <div class="items-stretch flex flex-col text-xs text-zinc-800 font-medium mt-2.5 ">
                   <div class="text-base leading-6">{{ item.productCode }}</div>
                   <div class="leading-[20px] mt-1">{{ item.description }}</div>
-                  <div class="overflow-hidden text-gray-500 text-ellipsis leading-[16px] mt-1">{{ item.details }}</div>
+                  <div class="overflow-hidden text-slate-500 text-ellipsis leading-[16px] mt-1">{{ item.details }}</div>
                 </div>
               </div>
             </div>
@@ -41,7 +41,7 @@
                 <div class="text-sm leading-5 grow">{{ item.quantity }}</div>
               </div>
             </section>
-            <div class="justify-between items-stretch bg-blue-500 flex gap-2 px-9 py-2 rounded-lg max-md:px-5 w-fit">
+            <button class="justify-between items-stretch bg-blue-500 flex gap-2 px-9 py-2 rounded-lg max-md:px-5 w-fit hover:bg-blue-400 hover:opacity-90">
               <svg class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full" width="25"
                 height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -55,7 +55,7 @@
                   stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
               <div class="text-white text-sm font-medium leading-6 grow whitespace-nowrap">Add to cart</div>
-            </div>
+            </button>
           </div>
         </div>
       </SwiperSlide>

@@ -50,7 +50,7 @@
             <div class="text-zinc-800 text-sm leading-6 self-center grow whitespace-nowrap my-auto">Secure credit card payment</div>
         </div>
         <button
-            class="justify-center items-center self-stretch bg-sky-500 flex w-full flex-col mt-10 px-16 py-2 rounded-lg"
+            class="justify-center items-center self-stretch bg-blue-500 flex w-full flex-col mt-10 px-16 py-2 rounded-lg"
             @click="
                 paymentStore.toggleCardModal();
                 exitCardModal(false);

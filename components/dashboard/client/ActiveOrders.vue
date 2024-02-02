@@ -14,7 +14,7 @@
             <button
               v-for="item in items"
               :key="item"
-              class="w-fit text-gray-500 hover:text-sky-500 text-[12px] leading-5 font-medium flex justify-center items-center bg-gray-200 px-[6px] rounded-3xl"
+              class="w-fit text-slate-500 hover:text-blue-500 text-[12px] leading-5 font-medium flex justify-center items-center bg-gray-200 px-[6px] rounded-3xl"
             >
               {{ item }}
             </button>
@@ -24,7 +24,7 @@
     </div>
     <div class="items-stretch flex justify-between gap-3 mt-10">
       <button
-        class="justify-between items-stretch bg-green-600 flex gap-2 px-4 py-2 rounded-lg w-full"
+        class="justify-between items-stretch bg-green-600 flex gap-2 px-4 py-2 rounded-lg w-full hover:bg-green-500 hover:opacity-90 transition-all"
       >
       <svg 
         class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"
@@ -35,13 +35,13 @@
           <path d="M12 11V22" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <div
-          class="text-white text-sm font-medium leading-6 grow whitespace-nowrap"
+          class="text-white text-sm font-medium leading-6 grow whitespace-nowrap "
         >
           All Active
         </div>
       </button>
       <button
-        class="justify-between items-stretch bg-blue-500 flex gap-2 px-5 py-2 rounded-lg w-full"
+        class="justify-between items-stretch bg-blue-500 flex gap-2 px-5 py-2 rounded-lg w-full hover:bg-blue-400 hover:opacity-90"
       >
       <svg 
         class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"

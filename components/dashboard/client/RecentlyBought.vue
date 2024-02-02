@@ -12,23 +12,18 @@
           <div class="text-neutral-800 text-sm font-semibold leading-4 text-ellipsis overflow-hidden">
             {{ item.title }}
           </div>
-          <div class="overflow-hidden text-gray-500 text-ellipsis text-xs leading-4 mt-2 inline">
+          <div class="overflow-hidden text-slate-500 text-ellipsis text-xs leading-4 mt-2 inline">
             {{ item.subtitle }}
           </div>
         </div>
       </div>
     </section>
-    <div class="self-end align-end flex justify-end items-end gap-2 h-fit grow">
-      <a href="..." class="text-gray-500 text-sm font-medium leading-5 grow whitespace-nowrap"
+    <div class="self-end align-end flex justify-end items-end gap-2 h-fit grow text-slate-500 hover:text-blue-500 transition-colors">
+      <a href="..." class="text-sm font-medium leading-5 grow whitespace-nowrap"
         aria-label="View Orders">View Orders</a>
-      <svg 
+        <SvgoArrowLeft16
         class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full mb-0.5"
-        width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465" stroke="#5E6278" stroke-width="1.5"
-          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M2.3335 8L13.5535 8" stroke="#5E6278" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-          stroke-linejoin="round" />
-      </svg>
+        />
     </div>
   </div>
 </template>

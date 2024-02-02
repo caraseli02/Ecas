@@ -51,9 +51,9 @@
                 </Teleport>
             </div>
         </div>
-        <div v-if="emptyData || error" class="flex flex-col items-center justify-center flex-1 mb-[157px] md:mb-[149px]">
+        <div v-if="emptyData || error" class="flex flex-col w-full h-[80%] items-center justify-center flex-1">
             <SvgoDashboardEmojiSad class="w-[52px] h-[52px] mb-4" />
-            <div class="text-sm font-medium text-gray-500">No data available</div>
+            <div class="text-sm font-medium text-slate-500">No data available</div>
         </div>
         <template v-else>
             <div class="flex items-start md:items-center" :class="[isLoading ? 'mb-3' : 'mb-5']">

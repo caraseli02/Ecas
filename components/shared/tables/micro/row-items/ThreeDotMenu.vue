@@ -1,6 +1,6 @@
 <template>
     <div
-        class="absolute z-10 grid grid-cols-1 gap-1 rounded-lg bg-white p-3 w-[195px] shadow-m -translate-x-full"
+        class="absolute z-10 grid grid-cols-1 gap-1 rounded-lg bg-white p-1 w-[195px] shadow-m -translate-x-full"
         :class="[index > 5 ? '-translate-y-[calc(100%+42px)]' : '']"
         :style="{
             top: dropdownTop + 'px',
@@ -9,59 +9,59 @@
     >
         <button
             v-if="profileButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
+            class="flex items-center w-full text-left p-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="profileClicked"
         >
-            <ProfileIcon class="w-6 h-6 text-current" />
+            <SvgoDashboardProfile class="w-5 h-5 text-current" />
             <span class="text-sm leading-[1.71] font-medium">{{ profileText }}</span>
         </button>
         <button
             v-if="documentButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
+            class="flex items-center w-full text-left p-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="documentClicked"
         >
-            <OrdersIcon class="w-6 h-6 text-current" />
+            <OrdersIcon class="w-5 h-5 text-current" />
             <span class="text-sm leading-[1.71] font-medium">{{ documentText }}</span>
         </button>
         <button
             v-if="settingsButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
+            class="flex items-center w-full text-left p-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="settingsClicked"
         >
-            <SettingsIcon class="w-6 h-6 text-current" />
+            <SettingsIcon class="w-5 h-5 text-current" />
             <span class="text-sm leading-[1.71] font-medium">{{ settingsText }}</span>
         </button>
         <button
             v-if="deactivateButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
+            class="flex items-center w-full text-left p-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="deactivateClicked"
         >
-            <DeactivateIcon v-if="profile.active" class="w-6 h-6 text-current" />
-            <UserUnlockIcon v-else class="w-6 h-6 text-current" />
+            <SvgoDashboardDeactivate viewBox="0 0 20 20" v-if="profile.active" class="w-5 h-5 text-current" />
+            <UserUnlockIcon v-else class="w-5 h-5 text-current" />
             <span class="text-sm leading-[1.71] font-medium"> {{ deactivateText }} </span>
         </button>
         <button
             v-if="invoiceButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
+            class="flex items-center w-full text-left p-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="invoiceClicked"
         >
-            <InvoiceIcon class="w-6 h-6 text-current" />
+            <InvoiceIcon class="w-5 h-5 text-current" />
             <span class="text-sm leading-[1.71] font-medium">{{ invoiceText }}</span>
         </button>
         <button
             v-if="editButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
+            class="flex items-center w-full text-left p-2 gap-3 rounded-lg transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-blue-500"
             @click="editClicked"
         >
-            <EditIcon class="w-6 h-6 text-current" />
+            <EditIcon class="w-5 h-5 text-current" />
             <span class="text-sm leading-[1.71] font-medium">{{ editText }}</span>
         </button>
         <button
             v-if="trashButton"
-            class="flex items-center w-full text-left px-3 py-2 gap-3 rounded-lg text-rose-500 transition-colors duration-300 hover:bg-[#F2F2F2]"
+            class="flex items-center w-full text-left p-2 gap-3 rounded-lg text-rose-500 transition-colors duration-300 hover:bg-[#F2F2F2]"
             @click="trashClicked"
         >
-            <TrashIcon class="w-6 h-6 text-current" />
+            <TrashIcon class="w-5 h-5 text-current" />
             <span class="text-sm leading-[1.71] font-medium"> {{ trashText }} </span>
         </button>
     </div>

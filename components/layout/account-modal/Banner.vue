@@ -22,7 +22,7 @@
                 </p>
               </div>
               <div
-                class="w-fit text-sky-500 text-sm font-medium leading-6 whitespace-nowrap justify-center bg-zinc-100  py-1 px-4 rounded-md items-start">
+                class="w-fit text-blue-500 text-sm font-medium leading-6 whitespace-nowrap justify-center bg-zinc-100  py-1 px-4 rounded-md items-start">
                 View More
               </div>
             </div>
@@ -45,7 +45,7 @@
                 </p>
               </div>
               <div
-                class="w-fit text-sky-500 text-sm font-medium leading-6 whitespace-nowrap justify-center bg-zinc-100  py-1 px-4 rounded-md items-start">
+                class="w-fit text-blue-500 text-sm font-medium leading-6 whitespace-nowrap justify-center bg-zinc-100  py-1 px-4 rounded-md items-start">
                 View More
               </div>
             </div>
