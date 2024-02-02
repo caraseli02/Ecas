@@ -1,6 +1,6 @@
 <template>
   <div
-    class="items-stretch shadow-xs bg-white flex w-full xl:max-w-[514px] flex-col rounded-xl h-[233px] md:h-[192px] xl:h-[240px]">
+    class="items-stretch shadow-xs bg-white flex w-full xl:max-w-[514px] flex-col rounded-xl h-[233px] md:h-[192px] xl:h-[240px] pb-1.5">
     <Swiper :modules="[A11y, Pagination]" :slides-per-view="1" :space-between="15" :grab-cursor="true" :pagination="{
       bulletElement: 'button',
       clickable: true,
@@ -17,7 +17,7 @@
           </div>
         </section>
         <div
-          class="justify-between items-stretch self-stretch xl:max-w-[530px] flex flex-col md:flex-row xl:flex-col pt-3 px-8 max-md:px-5 gap-2">
+          class="justify-between items-stretch self-stretch xl:max-w-[530px] flex flex-col md:flex-row xl:flex-col pt-3 px-8 max-md:px-5 gap-3">
           <div class="max-md:max-w-full">
             <div class="gap-5 flex  max-md:items-stretch max-md:gap-0 h-[100px]">
               <div class="flex flex-col items-stretch w-[22%] max-md:w-full max-md:ml-0">
@@ -33,7 +33,7 @@
             </div>
           </div>
           <div
-            class="justify-between items-end flex flex-row md:flex-col xl:flex-row w-full gap-5 mt-3 max-md:max-w-full max-md:flex-wrap">
+            class="justify-between items-end flex flex-row md:flex-col xl:flex-row w-full gap-5 max-md:max-w-full max-md:flex-wrap">
             <section class="justify-center items-stretch flex flex-col whitespace-nowrap md:self-end">
               <div class="text-zinc-800 text-sm leading-4 line-through">{{ item.originalPrice }}</div>
               <div class="items-stretch flex justify-between gap-1 text-red-500 mt-1">

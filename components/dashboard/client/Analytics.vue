@@ -1,9 +1,9 @@
 <template>
   <ClientOnly>
     <div
-      class="relative items-stretch shadow-xs bg-white flex w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] h-[240px] flex-col rounded-xl overflow-y-scroll md:overflow-y-hidden">
-    <div class="min-w-[476px] md:min-w-fit">
-      <apexchart height="222" type="bar" :options="chartOptions" :series="series"></apexchart>
+      class="relative items-stretch shadow-xs bg-white flex w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] h-[240px] flex-col rounded-xl overflow-y-scroll md:overflow-y-hidden pr-2">
+    <div class="min-w-[476px] md:min-w-fit mt-3 ml-1">
+      <apexchart height="215" type="bar" :options="chartOptions" :series="series"></apexchart>
     </div>
     </div>
   </ClientOnly>

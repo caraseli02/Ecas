@@ -1,6 +1,6 @@
 <template>
   <div
-    class="justify-between items-stretch shadow-xs bg-white flex w-full lg:w-fit lg:max-w-[476px] xl:min-w-[358px] h-[240px] flex-col p-6 rounded-xl"
+    class="justify-between items-stretch shadow-xs bg-white flex w-full lg:w-fit lg:max-w-[476px] xl:min-w-[358px] h-[240px] flex-col p-4 md:p-6 rounded-xl"
   >
     <div class="items-stretch flex justify-between gap-4">
       <div class="justify-center items-stretch flex grow basis-[0%] flex-col">
@@ -22,7 +22,7 @@
 
       </div>
     </div>
-    <div class="items-stretch flex justify-between gap-3 mt-10">
+    <div class="items-stretch flex justify-between gap-3">
       <button
         class="justify-between items-stretch bg-green-600 flex gap-2 px-4 py-2 rounded-lg w-full hover:bg-green-500 hover:opacity-90 transition-all"
       >
