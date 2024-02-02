@@ -54,7 +54,7 @@
                     >
           <div class="flex flex-row gap-6">
             <div
-                v-if="!shippingPreferencesExpanded && order.backorderOption === 0 && mixedOrBackOrder"
+                v-if="!shippingPreferencesExpanded && order.backorderOption && mixedOrBackOrder"
                 class="flex flex-row gap-2 items-center"
             >
               <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
