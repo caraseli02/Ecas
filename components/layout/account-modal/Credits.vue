@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="bg-gray-200 flex items-start justify-start shrink-0 h-4 flex-col mt-3 rounded-full">
-      <div class="bg-green rounded-full text-xs leading-none h-full z-10" style="width: 50%"></div>
+      <div class="bg-green-500 rounded-full text-xs leading-none h-full z-10" style="width: 50%"></div>
     </div>
     <div class="justify-between items-stretch flex w-full gap-5 mt-3 px-0.5">
       <div class="items-stretch flex justify-between gap-1">

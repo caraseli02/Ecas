@@ -2,7 +2,7 @@
   <div>
     <NuxtLink
 v-for="(menuItem, index) in menuItems" :key="index" :to="menuItem.to"
-      class=" hover:bg-zinc-100 text-neutral-800 hover:text-sky-500 items-stretch flex justify-start gap-3 pl-3 pr-20 py-3 rounded-lg">
+      class=" hover:bg-zinc-100 text-neutral-800 hover:text-blue-500 items-stretch flex justify-start gap-3 pl-3 pr-20 py-3 rounded-lg">
       <component :is="menuItem.icon" class="w-6 h-6" />
       <div class="transition-all text-sm font-medium leading-6 whitespace-nowrap">
         {{ menuItem.text }}
