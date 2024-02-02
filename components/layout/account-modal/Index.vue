@@ -33,12 +33,12 @@
                 </div>
                 <div class="mx-2 text-xs text-gray-300 text-center mt-auto pb-2.5 pt-6 flex flex-col gap-6">
                     <button
-                        class="sticky bottom-0 w-full justify-center items-center self-stretch flex flex-col px-16 py-2 rounded-lg border-[1.5px] border-solid border-sky-500"
+                        class="sticky bottom-0 w-full justify-center items-center self-stretch flex flex-col px-16 py-2 rounded-lg border-[1.5px] border-solid border-blue-500"
                         @click="handleSignOut"
                     >
                         <div class="flex items-center gap-2">
                             <SignOutIcon class="w-6 h-6" />
-                            <div class="text-sky-500 text-base font-medium leading-7 self-stretch grow whitespace-nowrap">Sign Out</div>
+                            <div class="text-blue-500 text-base font-medium leading-7 self-stretch grow whitespace-nowrap">Sign Out</div>
                         </div>
                     </button>
                     <p class="flex justify-center items-center gap-2 text-slate-500">

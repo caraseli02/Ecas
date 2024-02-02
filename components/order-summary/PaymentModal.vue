@@ -1,6 +1,6 @@
 <template>
     <section
-        class="flex flex-col items-start justify-center w-full shadow-sm bg-white max-w-[358px] md:max-w-[400px] px-4 md:px-6 py-6 rounded-xl"
+        class="flex flex-col items-start justify-center w-full shadow-xs bg-white max-w-[358px] md:max-w-[400px] px-4 md:px-6 py-6 rounded-xl"
     >
         <div class="justify-between items-center self-stretch flex gap-5">
             <div class="text-zinc-800 text-base font-semibold leading-7 my-auto">Payment Method</div>
@@ -50,7 +50,7 @@
             <div class="text-zinc-800 text-sm leading-6 self-center grow whitespace-nowrap my-auto">Secure credit card payment</div>
         </div>
         <button
-            class="justify-center items-center self-stretch bg-sky-500 flex w-full flex-col mt-10 px-16 py-2 rounded-lg"
+            class="justify-center items-center self-stretch bg-blue-500 flex w-full flex-col mt-10 px-16 py-2 rounded-lg"
             @click="
                 paymentStore.toggleCardModal();
                 exitCardModal(false);
