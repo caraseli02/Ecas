@@ -325,6 +325,7 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
 
     })
   }
+  return data.data
 };
 
 await loadTabFilters();
