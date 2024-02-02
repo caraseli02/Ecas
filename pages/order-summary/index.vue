@@ -39,6 +39,7 @@
                             :general-settings="generalSettings"
                             :cards="cards"
                             :card="card"
+                            @update-payment-details="order.paymentDetails = $event"
                         />
                         <OrderSummaryNoteSection />
                         <OrderSummary :order="order" :general-settings="generalSettings" />
