@@ -24,7 +24,7 @@
                 <div class="text-neutral-800 font-semibold leading-5">
                   My Favorites
                 </div>
-                <div v-for="(val, key) in data.favorites" class="items-stretch flex justify-between gap-3 mt-2">
+                <div v-for="(val, key) in data.favorites" class="items-stretch flex justify-between gap-3 mt-0.5">
                   <div class="text-slate-500 leading-6 capitalize">{{ key }}</div>
                   <div class="text-neutral-800 font-medium leading-6">{{ val }}</div>
                 </div>
@@ -70,7 +70,7 @@
                   </div>
                   <div class="text-zinc-800 leading-5">{{ data.totalOrders }}</div>
                 </div>
-                <div class="text-slate-500 leading-6 mt-2">
+                <div class="text-slate-500 leading-6 mt-0.5">
                   This month you have placed
                   <span class="font-semibold text-neutral-800">{{ data.monthOrder }}</span> orders.
                 </div>
