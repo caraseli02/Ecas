@@ -127,17 +127,17 @@
                             "
             >
               <div class="flex items-center -mr-2.5 md:-mr-5 xl:-mr-5">
-                <CartIcon class="w-6 h-6 text-white" :class="[cartItems > 0 ? 'mr-0' : 'mr-4']"/>
+                <CartIcon class="w-6 h-6 text-white lg" :class="[cartItems > 0 ? 'mr-0' : 'mr-4']"/>
                 <span
-v-if="cartItems > 0"
-                      class="flex items-center justify-center -translate-y-2 -translate-x-2.5 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5]"
-                      :class="[cartItems < 10 ? 'w-[18px]' : cartItems < 100 ? 'w-6' : 'w-[31px]']"
+                    v-if="cartItems > 0"
+                    class="flex -translate-y-2 -translate-x-2.5 items-center justify-center h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5]"
+                    :class="[cartItems < 10 ? 'w-[18px]' : cartItems < 100 ? 'w-6' : 'w-[31px]']"
                 >
-                                    <span> {{ cartItems }} </span>
-                                </span>
+                                <span> {{ cartItems }} </span>
+                            </span>
               </div>
-              <div class="flex-col text-white flex-shrink-0 ml-6 max-md:hidden">
-                <div class="leading-[1.25] font-medium mb-0.5">37.000,00 RON</div>
+              <div v-if=totalCartPrice class="flex-col text-white flex-shrink-0 ml-6 max-md:hidden">
+                <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice + ' RON' }}</div>
                 <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
               </div>
             </button>
@@ -244,7 +244,18 @@ import {storeToRefs} from 'pinia';
 const {$api} = useNuxtApp();
 const cartStore = useCartStore();
 
-const {getCart} = storeToRefs(cartStore);
+const {getCart, getCartSubtotal} = storeToRefs(cartStore);
+const totalCartPrice = ref(0);
+
+
+const subtotal = () => {
+
+  getCartSubtotal.value.then(res => {
+    totalCartPrice.value = res
+  })
+}
+
+subtotal();
 
 defineProps({
   isScrolled: {
@@ -264,6 +275,7 @@ const favoritesCartModal = ref({
 });
 
 const cartItems = ref(0);
+const cart = ref<CartInterface | null>(null)
 
 const navItems = [
   {
@@ -293,8 +305,10 @@ const isLoading = ref(false);
 
 Emitter.on('remove-cart-and-notifications', async (isSignout: boolean) => {
   if (isSignout) {
-    unreadNotifications.value = 0;
     cartStore.emptyCart();
+    cartItems.value = 0;
+    totalCartPrice.value = 0;
+    items.value = {} as CartInterface;
   }
 });
 
@@ -302,8 +316,11 @@ Emitter.on('update-cart', async (data: CartInterface) => {
   if (data) {
     items.value = data;
     cartItems.value = items.value.products.length;
+    cart.value = items.value;
+    subtotal()
   }
 });
+
 
 Emitter.on('notifications', async (notifications: boolean) => {
   if (notifications) {
@@ -320,6 +337,7 @@ const fetchList = async () => {
 
   items.value = data;
   cartItems.value = data.products.length;
+  cart.value = data.products
 };
 
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {

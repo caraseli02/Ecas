@@ -26,8 +26,8 @@
                                 <span> {{ cartItems }} </span>
                             </span>
             </div>
-            <div class="flex-col text-slate-500 flex-shrink-0">
-              <div class="leading-[1.25] font-medium mb-0.5">37.000,00 RON</div>
+            <div v-if=totalCartPrice class="flex-col text-slate-500 flex-shrink-0">
+              <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice + 'RON' }}</div>
               <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
             </div>
           </button>
@@ -70,9 +70,11 @@ import {useCartStore} from '~/store/cartStore';
 import {storeToRefs} from 'pinia';
 
 const cartStore = useCartStore();
-const {getCart} = storeToRefs(cartStore);
 
 const {$api} = useNuxtApp();
+
+const {getCart, getCartSubtotal} = storeToRefs(cartStore);
+const totalCartPrice = ref(0);
 
 const cartItems = ref(0);
 const items = ref<CartInterface>({} as CartInterface);
@@ -88,6 +90,7 @@ Emitter.on('update-cart', async (data: CartInterface) => {
   if (data) {
     items.value = data;
     cartItems.value = items.value.products.length;
+    subtotal()
   }
 });
 
@@ -101,6 +104,7 @@ Emitter.on('remove-cart-and-notifications', async (isSignout: boolean) => {
     cartStore.emptyCart();
     cartItems.value = 0;
     items.value = {} as CartInterface;
+    totalCartPrice.value = 0;
   }
 });
 
@@ -121,6 +125,16 @@ const fetchList = async () => {
   items.value = data;
   cartItems.value = data.products.length;
 };
+
+
+const subtotal = () => {
+
+  getCartSubtotal.value.then(res => {
+    totalCartPrice.value = res
+  })
+}
+
+subtotal();
 
 Promise.all([fetchList()]);
 </script>

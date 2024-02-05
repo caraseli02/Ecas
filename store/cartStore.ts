@@ -1,7 +1,10 @@
-import { defineStore } from 'pinia';
-import { CartInterface } from '~/model/cart/response/cart.interface';
-import { useNuxtApp } from '#app';
+import {defineStore, storeToRefs} from 'pinia';
+import {CartInterface} from '~/model/cart/response/cart.interface';
+import {useNuxtApp} from '#app';
 import Emitter from 'tiny-emitter/instance.js';
+import {parseProductPriceConfiguration} from '~/helpers/prices.helper';
+import {useAuthStore} from '~/store/authStore';
+import {CartProductsInterface} from '~/types';
 
 export const useCartStore = defineStore({
     id: 'cart-store',
@@ -9,6 +12,7 @@ export const useCartStore = defineStore({
         return {
             cart: null as CartInterface | null,
             orderClientSecret: null as string | null,
+            cartSubtotal: 0,
         };
     },
     actions: {
@@ -20,7 +24,7 @@ export const useCartStore = defineStore({
             this.orderClientSecret = secret;
         },
         async updateAndReturnCart() {
-            const { $api } = useNuxtApp();
+            const {$api} = useNuxtApp();
             const cartResponse = await $api.cart.fetchCartList();
 
             if (!cartResponse) {
@@ -28,6 +32,7 @@ export const useCartStore = defineStore({
             }
 
             this.cart = cartResponse.data;
+
 
             Emitter.emit('update-cart', this.cart);
 
@@ -40,7 +45,7 @@ export const useCartStore = defineStore({
     },
     getters: {
         getCart: async (state) => {
-            const { $api } = useNuxtApp();
+            const {$api} = useNuxtApp();
 
             if (!state.cart) {
                 const cartResponse = await $api.cart.fetchCartList();
@@ -53,6 +58,26 @@ export const useCartStore = defineStore({
             }
 
             return state.cart as CartInterface;
+        },
+        getCartSubtotal: async (state) => {
+            state.cartSubtotal = 0
+            const authStore = useAuthStore();
+            const {getUserDetails} = storeToRefs(authStore);
+            state?.cart?.products.forEach((cartProduct: CartProductsInterface) => {
+                if (!cartProduct.productEntity) {
+                    return;
+                }
+
+                const discountsHelper = parseProductPriceConfiguration(
+                    cartProduct.productEntity,
+                    getUserDetails.value,
+                    cartProduct.stock
+                );
+                console.log()
+                const discountPrice = discountsHelper?.currentConfigurationDiscountPrice || 0;
+                state.cartSubtotal += Number(discountPrice) * Number(cartProduct.stock);
+            });
+            return Number(state.cartSubtotal.toFixed(2))
         },
         getOrderClientSecret: (state) => state.orderClientSecret,
     },
