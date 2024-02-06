@@ -47,8 +47,18 @@ export default defineNuxtConfig({
         'nuxt3-leaflet',
         'nuxt-viewport',
         'nuxt-headlessui',
-        'shadcn-nuxt'
     ],
+    shadcn: {
+        /**
+         * Prefix for all the imported component
+         */
+        prefix: '',
+        /**
+         * Directory that the component lives in.
+         * @default "./components/ui"
+         */
+        componentDir: './components/ui'
+      },
     viewport: {
         breakpoints: {
             xs: 390,
