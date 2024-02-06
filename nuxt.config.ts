@@ -46,7 +46,8 @@ export default defineNuxtConfig({
         'nuxt-lodash',
         'nuxt3-leaflet',
         'nuxt-viewport',
-        'nuxt-headlessui'
+        'nuxt-headlessui',
+        'shadcn-nuxt'
     ],
     viewport: {
         breakpoints: {

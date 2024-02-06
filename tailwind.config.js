@@ -1,5 +1,8 @@
+const animate = require('tailwindcss-animate');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+    darkMode: ["class"],
     content: [
         './components/**/*.{js,vue,ts}',
         './layouts/**/*.vue',
@@ -10,6 +13,13 @@ module.exports = {
         './utils/**/*.{js,ts,html}',
     ],
     theme: {
+        // container: {
+        //   center: true,
+        //   padding: "2rem",
+        //   screens: {
+        //     "2xl": "1400px",
+        //   },
+        // },
         extend: {
           colors: {
             light: {
@@ -229,8 +239,20 @@ module.exports = {
               900: '#692020',
             },
           },
+          keyframes: {
+            "accordion-down": {
+              from: { height: 0 },
+              to: { height: "var(--radix-accordion-content-height)" },
+            },
+            "accordion-up": {
+              from: { height: "var(--radix-accordion-content-height)" },
+              to: { height: 0 },
+            },
+          },
             animation: {
                 'ping-once': 'ping 1s cubic-bezier(0, 0, 0.2, 1) 1',
+                "accordion-down": "accordion-down 0.2s ease-out",
+                "accordion-up": "accordion-up 0.2s ease-out",
             },
             fontFamily: {
                 Inter: ['Inter', 'sans-serif'],
@@ -261,7 +283,7 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    plugins: [animate],
     safelist: [
         'grid-cols-[359px,154px,254px,244px,129px,148px,104px]',
         'grid-cols-[154px,359px,254px,244px,129px,148px,104px]',
