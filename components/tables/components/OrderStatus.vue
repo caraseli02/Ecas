@@ -53,7 +53,7 @@ const statuses = [
 
 const status = computed(() => {
   return statuses.find(
-    status => status.value === props.status,
+    status => status.label === props.status,
   )
 })
 </script>

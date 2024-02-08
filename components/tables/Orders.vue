@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import tasks from './data/tasks.json'
+import orders from './data/orders.json'
 import DataTable from './components/DataTable.vue'
-import UserNav from './components/UserNav.vue'
 import { columns } from './components/columns'
 </script>
 
@@ -14,6 +13,6 @@ import { columns } from './components/columns'
         </h2>
       </div>
     </div>
-    <DataTable :data="tasks" :columns="columns" />
+    <DataTable :data="orders" :columns="columns" />
   </div>
 </template>

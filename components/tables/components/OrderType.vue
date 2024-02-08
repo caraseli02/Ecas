@@ -4,13 +4,13 @@
       {{ status?.icon.text }}
     </span>
     {{ status?.label }}
-
   </div>
 </template>
 
 <script setup lang="ts">
-const orderType = [
-  {
+
+const orderType = {
+  0 : {
     'value': 'stock_order',
     'label': 'Stock Order',
     'icon': {
@@ -18,7 +18,7 @@ const orderType = [
       text: 'S',
     }
   },
-  {
+  1 : {
     'value': 'back_order',
     'label': 'Back Order',
     'icon': {
@@ -26,7 +26,7 @@ const orderType = [
       text: 'B',
     }
   },
-  {
+  2 : {
     'value': 'mixed_order',
     'label': 'Mixed Order',
     'icon': {
@@ -34,17 +34,13 @@ const orderType = [
       text: 'M',
     }
   }
-];
+}
 
 const props = defineProps<{
-  type: string
+  type: number
 }>()
 
-const status = computed(() => {
-  return orderType.find(
-    status => status.value === props.type,
-  )
-})
+const status = computed(() => orderType[props.type as keyof typeof orderType])
 </script>
 
 <style scoped>

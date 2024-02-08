@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Row } from '@tanstack/vue-table'
 import { computed } from 'vue'
-import { taskSchema } from '../data/schema'
+import { orderSchema } from '../data/schema'
 import { type Task } from '../data/schema'
 import { DotsHorizontalIcon } from '@radix-icons/vue'
 
@@ -25,7 +25,7 @@ interface DataTableRowActionsProps {
 }
 const props = defineProps<DataTableRowActionsProps>()
 
-const task = computed(() => taskSchema.parse(props.row.original))
+const task = computed(() => orderSchema.parse(props.row.original))
 </script>
 
 <template>

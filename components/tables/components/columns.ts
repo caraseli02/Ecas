@@ -1,16 +1,17 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
-import type { Task } from '../data/schema'
+import type { Order } from '../data/schema'
 import DataTableColumnHeader from './DataTableColumnHeader.vue'
 import DataTableRowActions from './DataTableRowActions.vue'
 import OrderId from './OrderId.vue'
 import OrderType from './OrderType.vue'
 import OrderStatus from './OrderStatus.vue'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Badge } from '@/components/ui/badge'
+import OrderUserInfo from './OrderUserInfo.vue'
+// import { Checkbox } from '@/components/ui/checkbox'
+// import { Badge } from '@/components/ui/badge'
 
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<Order>[] = [
   // {
   //   id: 'select',
   //   header: ({ table }) => h(Checkbox,
@@ -21,9 +22,9 @@ export const columns: ColumnDef<Task>[] = [
   //   enableHiding: false,
   // },
   {
-    accessorKey: 'order_id',
+    accessorKey: 'shortId',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Order' }),
-    cell: ({ row }) => h(OrderId, { order: row.getValue('order_id') }),
+    cell: ({ row }) => h(OrderId, { orderId: row.getValue('shortId'), notes: row.getValue('notes') }),
     enableHiding: false,
   },
   {
@@ -32,17 +33,16 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => h(OrderType, { type: row.getValue('type') }),
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'userName',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Name', }),
+    cell: ({ row }) => 
+    h(OrderUserInfo, { name: row.getValue('userName') ?? 'fix userName', email: row.getValue('userEmail') ?? 'fix userEmail' }),
 
-    cell: ({ row }) => {
-      return h('div', { class: 'flex space-x-2' }, h('span', { class: 'max-w-[283px] truncate font-medium' }, row.getValue('name')))
-    },
   },
   {
-    accessorKey: 'date',
+    accessorKey: 'createdAt',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Date' }),
-    cell: ({ row }) => h('div', { class: 'w-[236px]' }, row.getValue('date')),
+    cell: ({ row }) => h('div', { class: 'w-[236px]' }, row.getValue('createdAt')),
     enableSorting: false,
     enableHiding: false,
   },
