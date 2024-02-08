@@ -28,7 +28,7 @@
                         <DashboardClientSupport class="xl:hidden" />
                     </div>
                 </div>
-                <TasksExample />
+                <TablesOrders />
             </div>
         </div>
         <DashboardClientViewHistory />
