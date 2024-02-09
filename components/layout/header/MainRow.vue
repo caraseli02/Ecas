@@ -1,223 +1,213 @@
 <template>
-  <div
-      class="bg-blue-500 py-[18px] shadow-m"
-      :class="[
+    <div
+        class="bg-blue-500 py-[18px] shadow-m"
+        :class="[
             isScrolled
                 ? showMobileSearch
                     ? 'md:py-2 lg:py-3 xl:py-[14px]'
                     : 'md:py-[11px] lg:py-[15px] xl:py-[14px]'
                 : 'md:py-[18px] lg:py-[22px] xl:py-[14px]',
         ]"
-  >
-    <div class="container">
-      <div class="relative">
-        <div
-            class="flex items-center justify-between gap-4 lg:gap-[35px] xl:gap-[78px]"
-            :class="[isScrolled ? 'md:gap-0' : '']">
-          <div class="flex items-center">
-            <div class="flex items-center" :class="[isScrolled ? 'md:mr-[29px] lg:mr-0' : 'md:mr-4 lg:mr-6']">
-              <button class="flex items-center mr-4 md:mr-0" @click="toggleNavModal">
-                <BurgerIcon class="w-6 h-6"/>
-                <span
-                    v-if="!isScrolled"
-                    class="hidden leading-normal font-medium text-white ml-2 md:inline-block lg:ml-4">
+    >
+        <div class="container">
+            <div class="relative">
+                <div class="flex items-center justify-between gap-4 lg:gap-[35px] xl:gap-[78px]" :class="[isScrolled ? 'md:gap-0' : '']">
+                    <div class="flex items-center">
+                        <div class="flex items-center" :class="[isScrolled ? 'md:mr-[29px] lg:mr-0' : 'md:mr-4 lg:mr-6']">
+                            <button class="flex items-center mr-4 md:mr-0" @click="toggleNavModal">
+                                <BurgerIcon class="w-6 h-6" />
+                                <span v-if="!isScrolled" class="hidden leading-normal font-medium text-white ml-2 md:inline-block lg:ml-4">
                                     Products
                                 </span>
-              </button>
-              <NuxtLink to="/" class="flex" :class="[isScrolled ? 'md:ml-4 lg:ml-6' : 'md:hidden']">
-                <LogoSM class="w-[22px] h-5" :class="[isScrolled ? 'md:hidden' : '']"/>
-                <Logo
-                    class="hidden w-[82px] grayscale brightness-0 invert lg:w-[102px]"
-                    :class="[isScrolled ? 'md:flex' : '']"
-                />
-              </NuxtLink>
-            </div>
-            <ul v-if="!isScrolled" class="hidden items-center gap-4 md:flex md:gap-6">
-              <li v-for="(navItem, index) in navItems" :key="index" class="">
-                <NuxtLink :to="navItem.to" class="flex leading-normal font-medium text-white">
-                  {{ navItem.label }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
-          <LayoutHeaderSearch
-              v-if="isScrolled"
-              :show-results="true"
-              :is-visible="showMobileSearch"
-              :is-scrolled="isScrolled"
-              class="flex-1 max-md:hidden xl:block"
-              :class="[showMobileSearch ? 'lg:block' : 'md:hidden']"
-              @blur="showMobileSearch = false"
-          />
-          <div
-              class="flex items-center gap-7 md:gap-9 lg:ml-0 lg:gap-9 xl:gap-9"
-              :class="[isScrolled ? 'md:ml-4' : 'md:gap-6']">
-            <button
-                class="items-center xl:hidden"
-                :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex lg:flex') : 'md:hidden']"
-                @click="showMobileSearch = true"
-            >
-              <SearchIcon class="w-6 h-6 text-white xl:mr-2"/>
-              <span class="hidden leading-normal font-medium text-white xl:inline-block"> Search </span>
-            </button>
-            <button
-                class="flex flex-col items-center"
-                :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden xl:flex' : 'lg:flex xl:flex') : '']"
-                @click="
+                            </button>
+                            <NuxtLink to="/" class="flex" :class="[isScrolled ? 'md:ml-4 lg:ml-6' : 'md:hidden']">
+                                <LogoSM class="w-[22px] h-5" :class="[isScrolled ? 'md:hidden' : '']" />
+                                <Logo
+                                    class="hidden w-[82px] grayscale brightness-0 invert lg:w-[102px]"
+                                    :class="[isScrolled ? 'md:flex' : '']"
+                                />
+                            </NuxtLink>
+                        </div>
+                        <ul v-if="!isScrolled" class="hidden items-center gap-4 md:flex md:gap-6">
+                            <li v-for="(navItem, index) in navItems" :key="index" class="">
+                                <NuxtLink :to="navItem.to" class="flex leading-normal font-medium text-white">
+                                    {{ navItem.label }}
+                                </NuxtLink>
+                            </li>
+                        </ul>
+                    </div>
+                    <LayoutHeaderSearch
+                        v-if="isScrolled"
+                        :show-results="true"
+                        :is-visible="showMobileSearch"
+                        :is-scrolled="isScrolled"
+                        class="flex-1 max-md:hidden xl:block"
+                        :class="[showMobileSearch ? 'lg:block' : 'md:hidden']"
+                        @blur="showMobileSearch = false"
+                    />
+                    <div class="flex items-center gap-7 md:gap-9 lg:ml-0 lg:gap-9 xl:gap-9" :class="[isScrolled ? 'md:ml-4' : 'md:gap-6']">
+                        <button
+                            class="items-center xl:hidden"
+                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex lg:flex') : 'md:hidden']"
+                            @click="showMobileSearch = true"
+                        >
+                            <SearchIcon class="w-6 h-6 text-white xl:mr-2" />
+                            <span class="hidden leading-normal font-medium text-white xl:inline-block"> Search </span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center"
+                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden xl:flex' : 'lg:flex xl:flex') : '']"
+                            @click="
                                 favoritesCartModal = {
                                     show: true,
                                     tab: 'favorites',
                                 }
                             "
-            >
-              <HeartIcon class="w-6 h-6 text-white xl:mb-1"/>
-              <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block"> Favorites </span>
-            </button>
-            <div
-                class="relative"
-                :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex') : 'xl:flex']">
-              <button class="flex items-center -mr-2.5 xl:-mr-4" @click="showNotifications = true">
-                <div class="flex items-center">
-                  <div class="flex items-center flex-col">
-                    <BellIcon class="w-6 h-6 text-white xl:mb-1"/>
-                    <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block">
+                        >
+                            <HeartIcon class="w-6 h-6 text-white xl:mb-1" />
+                            <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block"> Favorites </span>
+                        </button>
+                        <div class="relative" :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex') : 'xl:flex']">
+                            <button class="flex items-center -mr-2.5 xl:-mr-4" @click="showNotifications = true">
+                                <div class="flex items-center">
+                                    <div class="flex items-center flex-col">
+                                        <BellIcon class="w-6 h-6 text-white xl:mb-1" />
+                                        <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block">
                                             Notifications
                                         </span>
-                  </div>
-                  <span
-                      v-if="unreadNotifications > 0"
-                      class="flex items-center justify-center -translate-y-2 -translate-x-2.5 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5] xl:-translate-x-[38px] xl:-translate-y-[18px]"
-                      :class="[unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]']"
-                  >
+                                    </div>
+                                    <span
+                                        v-if="unreadNotifications > 0"
+                                        class="flex items-center justify-center -translate-y-2 -translate-x-2.5 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5] xl:-translate-x-[38px] xl:-translate-y-[18px]"
+                                        :class="[unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]']"
+                                    >
                                         <span>
                                             {{ unreadNotifications }}
                                         </span>
                                     </span>
-                </div>
-              </button>
-              <Transition name="slide-fast-from-bottom">
-                <Notifications
-                    v-if="showNotifications"
-                    :notifications="notifications"
-                    @delete="deleteNotification"
-                    @mark-as-read="markNotificationAsRead"
-                    @close="showNotifications = false"
-                />
-              </Transition>
-            </div>
-            <button class="flex items-center md:hidden" @click="showAccountModal = true">
-              <UserIcon class="w-6 h-6 text-white"/>
-            </button>
-            <button
-                class="hidden items-center flex-col md:flex"
-                :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:flex' : 'md:flex') : '']"
-                @click="showAccountModal = true"
-            >
-              <UserIcon class="w-6 h-6 text-white xl:mb-1"/>
-              <span class="hidden text-xs leading-[1.33] font-medium text-white xl:inline-block"> My Account </span>
-            </button>
-            <button
-                class="relative items-center text-left"
-                :class="[isScrolled ? '' : 'md:hidden', showMobileSearch ? 'hidden md:flex' : 'flex']"
-                @click="
+                                </div>
+                            </button>
+                            <Transition name="slide-fast-from-bottom">
+                                <Notifications
+                                    v-if="showNotifications"
+                                    :notifications="notifications"
+                                    @delete="deleteNotification"
+                                    @mark-as-read="markNotificationAsRead"
+                                    @close="showNotifications = false"
+                                />
+                            </Transition>
+                        </div>
+                        <button class="flex items-center md:hidden" @click="showAccountModal = true">
+                            <UserIcon class="w-6 h-6 text-white" />
+                        </button>
+                        <button
+                            class="hidden items-center flex-col md:flex"
+                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:flex' : 'md:flex') : '']"
+                            @click="showAccountModal = true"
+                        >
+                            <UserIcon class="w-6 h-6 text-white xl:mb-1" />
+                            <span class="hidden text-xs leading-[1.33] font-medium text-white xl:inline-block"> My Account </span>
+                        </button>
+                        <button
+                            class="relative items-center text-left"
+                            :class="[isScrolled ? '' : 'md:hidden', showMobileSearch ? 'hidden md:flex' : 'flex']"
+                            @click="
                                 favoritesCartModal = {
                                     show: true,
                                     tab: 'shopping-cart',
                                 }
                             "
-            >
-              <div class="flex items-center -mr-2.5 md:-mr-5 xl:-mr-5">
-                <CartIcon class="w-6 h-6 text-white lg" :class="[cartItems > 0 ? 'mr-0' : 'mr-4']"/>
-                <span
-                    v-if="cartItems > 0"
-                    class="flex -translate-y-2 -translate-x-2.5 items-center justify-center h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5]"
-                    :class="[cartItems < 10 ? 'w-[18px]' : cartItems < 100 ? 'w-6' : 'w-[31px]']"
-                >
-                                <span> {{ cartItems }} </span>
-                            </span>
-              </div>
-              <div v-if=totalCartPrice class="flex-col text-white flex-shrink-0 ml-6 max-md:hidden">
-                <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice + ' RON' }}</div>
-                <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
-              </div>
-            </button>
-          </div>
-        </div>
-        <Transition name="fade">
-          <div
-              v-if="showMobileSearch && isMobile"
-              class="absolute z-50 top-1/2 -translate-y-1/2 left-0 w-full md:hidden">
-            <div class="flex items-center border border-border bg-white h-10 rounded-lg px-3">
-              <label class="relative z-10 flex-1 flex items-center justify-between h-10">
-                <form action="" @submit.prevent="showMobileSearch = false">
-                  <input
-                      ref="searchDOM"
-                      v-model="searchVal"
-                      type="search"
-                      placeholder="Search products"
-                      class="bg-transparent flex-1 w-full py-2 h-10 text-sm leading-[1.71] placeholder:text-gray-500 focus:outline-none"
-                      @input="onInput"
-                      @keypress.enter="
+                        >
+                            <div class="flex items-center -mr-2.5 md:-mr-5 xl:-mr-5">
+                                <CartIcon class="w-6 h-6 text-white lg" :class="[cartItems > 0 ? 'mr-0' : 'mr-4']" />
+                                <span
+                                    v-if="cartItems > 0"
+                                    class="flex -translate-y-2 -translate-x-2.5 items-center justify-center h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5]"
+                                    :class="[cartItems < 10 ? 'w-[18px]' : cartItems < 100 ? 'w-6' : 'w-[31px]']"
+                                >
+                                    <span> {{ cartItems }} </span>
+                                </span>
+                            </div>
+                            <div v-if="totalCartPrice" class="flex-col text-white flex-shrink-0 ml-6 max-md:hidden">
+                                <div class="leading-[1.25] font-medium mb-0.5">{{ '$ ' + totalCartPrice }}</div>
+                                <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <Transition name="fade">
+                    <div v-if="showMobileSearch && isMobile" class="absolute z-50 top-1/2 -translate-y-1/2 left-0 w-full md:hidden">
+                        <div class="flex items-center border border-border bg-white h-10 rounded-lg px-3">
+                            <label class="relative z-10 flex-1 flex items-center justify-between h-10">
+                                <form action="" @submit.prevent="showMobileSearch = false">
+                                    <input
+                                        ref="searchDOM"
+                                        v-model="searchVal"
+                                        type="search"
+                                        placeholder="Search products"
+                                        class="bg-transparent flex-1 w-full py-2 h-10 text-sm leading-[1.71] placeholder:text-gray-500 focus:outline-none"
+                                        @input="onInput"
+                                        @keypress.enter="
                                             $router.push('/search');
                                             searchVal = '';
                                         "
-                      @blur="showMobileSearch = false"
-                  />
-                </form>
-                <XIcon class="flex-shrink-0 w-5 h-5 text-slate-500" @click="showMobileSearch = false"/>
-              </label>
+                                        @blur="showMobileSearch = false"
+                                    />
+                                </form>
+                                <XIcon class="flex-shrink-0 w-5 h-5 text-slate-500" @click="showMobileSearch = false" />
+                            </label>
+                        </div>
+                    </div>
+                </Transition>
+                <Transition name="fade">
+                    <LayoutHeaderSearchResults
+                        v-if="searchVal"
+                        :products="productList"
+                        :keyword="searchVal"
+                        :is-scrolled="isScrolled"
+                        :is-loading="isLoading"
+                    />
+                </Transition>
+                <Transition name="fade">
+                    <LayoutHeaderMainMenuLarge
+                        v-if="showNavModal"
+                        class="hidden absolute z-[60] -bottom-[8px] left-0 translate-y-full w-full max-w-max md:grid"
+                    />
+                </Transition>
             </div>
-          </div>
-        </Transition>
-        <Transition name="fade">
-          <LayoutHeaderSearchResults
-              v-if="searchVal"
-              :products="productList"
-              :keyword="searchVal"
-              :is-scrolled="isScrolled"
-              :is-loading="isLoading"
-          />
-        </Transition>
-        <Transition name="fade">
-          <LayoutHeaderMainMenuLarge
-              v-if="showNavModal"
-              class="hidden absolute z-[60] -bottom-[8px] left-0 translate-y-full w-full max-w-max md:grid"
-          />
-        </Transition>
-      </div>
+        </div>
     </div>
-  </div>
-  <Teleport to="body">
-    <Transition name="slide-from-left">
-      <LayoutHeaderMainMenu v-if="showNavModal"/>
-    </Transition>
-    <Transition name="fade">
-      <div
-          v-if="showAccountModal || favoritesCartModal.show"
-          class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[rgba(47,50,65,0.10)] transition-opacity duration-300 cursor-pointer md:block"
-          :class="[
+    <Teleport to="body">
+        <Transition name="slide-from-left">
+            <LayoutHeaderMainMenu v-if="showNavModal" />
+        </Transition>
+        <Transition name="fade">
+            <div
+                v-if="showAccountModal || favoritesCartModal.show"
+                class="hidden fixed z-[60] top-0 left-0 w-full h-full bg-[rgba(47,50,65,0.10)] transition-opacity duration-300 cursor-pointer md:block"
+                :class="[
                     showAccountModal || favoritesCartModal.show
                         ? 'backdrop-blur-[7.5px]'
                         : 'backdrop-blur-none opacity-0 pointer-events-none',
                 ]"
-          @click="
+                @click="
                     showAccountModal = false;
                     favoritesCartModal.show = false;
                 "
-      />
-    </Transition>
-    <Transition name="slide-from-right">
-      <LayoutAccountModal v-if="showAccountModal" @close="showAccountModal = false"/>
-    </Transition>
-    <Transition name="slide-from-right">
-      <CartModal
-          v-if="favoritesCartModal.show"
-          :tab="favoritesCartModal.tab"
-          :data="items"
-          @close="favoritesCartModal.show = false"
-      />
-    </Transition>
-  </Teleport>
+            />
+        </Transition>
+        <Transition name="slide-from-right">
+            <LayoutAccountModal v-if="showAccountModal" @close="showAccountModal = false" />
+        </Transition>
+        <Transition name="slide-from-right">
+            <CartModal
+                v-if="favoritesCartModal.show"
+                :tab="favoritesCartModal.tab"
+                :data="items"
+                @close="favoritesCartModal.show = false"
+            />
+        </Transition>
+    </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -234,34 +224,32 @@ import Notifications from '@/components/global/Notifications.vue';
 import CartModal from '@/components/layout/favorites-cart-modal/Index.vue';
 import _ from 'lodash';
 import Emitter from 'tiny-emitter/instance';
-import {showNavModal} from '~~/config/modal/nav';
-import {Notification} from '~/types';
-import {ProductSearchItems, SearchData} from '~/model/products/response/ProductSearchResponse';
-import {CartInterface} from '~/model/cart/response/cart.interface';
-import {useCartStore} from '~/store/cartStore';
-import {storeToRefs} from 'pinia';
+import { showNavModal } from '~~/config/modal/nav';
+import { Notification } from '~/types';
+import { ProductSearchItems, SearchData } from '~/model/products/response/ProductSearchResponse';
+import { CartInterface } from '~/model/cart/response/cart.interface';
+import { useCartStore } from '~/store/cartStore';
+import { storeToRefs } from 'pinia';
 
-const {$api} = useNuxtApp();
+const { $api } = useNuxtApp();
 const cartStore = useCartStore();
 
-const {getCart, getCartSubtotal} = storeToRefs(cartStore);
+const { getCart, getCartSubtotal } = storeToRefs(cartStore);
 const totalCartPrice = ref(0);
 
-
 const subtotal = () => {
-
-  getCartSubtotal.value.then(res => {
-    totalCartPrice.value = res
-  })
-}
+    getCartSubtotal.value.then((res) => {
+        totalCartPrice.value = res;
+    });
+};
 
 subtotal();
 
 defineProps({
-  isScrolled: {
-    type: Boolean,
-    required: true,
-  },
+    isScrolled: {
+        type: Boolean,
+        required: true,
+    },
 });
 
 const route = useRoute();
@@ -270,30 +258,30 @@ const isMobile = ref(false);
 const signinQuery = computed(() => route.query.signin);
 const showAccountModal = ref(false);
 const favoritesCartModal = ref({
-  show: false,
-  tab: 'favorites' as 'favorites' | 'shopping-cart',
+    show: false,
+    tab: 'favorites' as 'favorites' | 'shopping-cart',
 });
 
 const cartItems = ref(0);
-const cart = ref<CartInterface | null>(null)
+const cart = ref<CartInterface | null>(null);
 
 const navItems = [
-  {
-    label: 'News',
-    to: '/',
-  },
-  {
-    label: 'How to Buy',
-    to: '/',
-  },
-  {
-    label: 'About',
-    to: '/',
-  },
-  {
-    label: 'Contact',
-    to: '/',
-  },
+    {
+        label: 'News',
+        to: '/',
+    },
+    {
+        label: 'How to Buy',
+        to: '/',
+    },
+    {
+        label: 'About',
+        to: '/',
+    },
+    {
+        label: 'Contact',
+        to: '/',
+    },
 ];
 
 const searchVal = ref('');
@@ -304,65 +292,64 @@ const productList = ref<ProductSearchItems[]>([]);
 const isLoading = ref(false);
 
 Emitter.on('remove-cart-and-notifications', async (isSignout: boolean) => {
-  if (isSignout) {
-    cartStore.emptyCart();
-    cartItems.value = 0;
-    totalCartPrice.value = 0;
-    items.value = {} as CartInterface;
-  }
+    if (isSignout) {
+        cartStore.emptyCart();
+        cartItems.value = 0;
+        totalCartPrice.value = 0;
+        items.value = {} as CartInterface;
+    }
 });
 
 Emitter.on('update-cart', async (data: CartInterface) => {
-  if (data) {
-    items.value = data;
-    cartItems.value = items.value.products.length;
-    cart.value = items.value;
-    subtotal()
-  }
+    if (data) {
+        items.value = data;
+        cartItems.value = items.value.products.length;
+        cart.value = items.value;
+        subtotal();
+    }
 });
 
-
 Emitter.on('notifications', async (notifications: boolean) => {
-  if (notifications) {
-    await fetchNofications();
-  }
+    if (notifications) {
+        await fetchNofications();
+    }
 });
 
 const fetchList = async () => {
-  const data = await getCart.value;
+    const data = await getCart.value;
 
-  if (!data || !data.products?.length) {
-    return;
-  }
+    if (!data || !data.products?.length) {
+        return;
+    }
 
-  items.value = data;
-  cartItems.value = data.products.length;
-  cart.value = data.products
+    items.value = data;
+    cartItems.value = data.products.length;
+    cart.value = data.products;
 };
 
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
-  isLoading.value = true;
+    isLoading.value = true;
 
-  const {data: products} = (await $api.product.fetchSearchProduct(keyword, page, perPage)) as SearchData;
+    const { data: products } = (await $api.product.fetchSearchProduct(keyword, page, perPage)) as SearchData;
 
-  if (!products) {
-    return;
-  }
+    if (!products) {
+        return;
+    }
 
-  const data = products as SearchData;
+    const data = products as SearchData;
 
-  if (!data) {
-    return;
-  }
+    if (!data) {
+        return;
+    }
 
-  Emitter.emit('product-keyword-change', {keyword: keyword, products: data});
+    Emitter.emit('product-keyword-change', { keyword: keyword, products: data });
 
-  return data.items.items;
+    return data.items.items;
 };
 
 const onInput = _.debounce(async () => {
-  productList.value = await searchProduct(searchVal.value);
-  isLoading.value = false;
+    productList.value = await searchProduct(searchVal.value);
+    isLoading.value = false;
 }, 200);
 
 const error = ref(false);
@@ -372,75 +359,75 @@ const notifications = ref<Notification[]>([] as Notification[]);
 const unreadNotifications = ref(0);
 const showNotifications = ref(false);
 const fetchNofications = async () => {
-  error.value = false;
-  isLoading.value = true;
+    error.value = false;
+    isLoading.value = true;
 
-  const response = await $api.notifications.fetchGetNotifications();
-  if (response.status !== 'success') {
-    isLoading.value = false;
-    error.value = true;
+    const response = await $api.notifications.fetchGetNotifications();
+    if (response.status !== 'success') {
+        isLoading.value = false;
+        error.value = true;
 
-    return;
-  } else {
-    isLoading.value = false;
-  }
-  notifications.value = response.description;
-  Object.keys(notifications.value).forEach((notification) => {
-    if (notifications.value[notification].seen === false) {
-      unreadNotifications.value++;
+        return;
+    } else {
+        isLoading.value = false;
     }
-  });
+    notifications.value = response.description;
+    Object.keys(notifications.value).forEach((notification) => {
+        if (notifications.value[notification].seen === false) {
+            unreadNotifications.value++;
+        }
+    });
 };
 
 const markNotificationAsRead = async (notification: Notification, index: number) => {
-  if (notifications.value[index].seen !== true) {
-    unreadNotifications.value--;
-  }
-  const response = await $api.notifications.fetchMarkNotificationAsRead(notification.id);
-  if (response.status !== 'success') {
-    return;
-  }
-  notifications.value[index].seen = true;
+    if (notifications.value[index].seen !== true) {
+        unreadNotifications.value--;
+    }
+    const response = await $api.notifications.fetchMarkNotificationAsRead(notification.id);
+    if (response.status !== 'success') {
+        return;
+    }
+    notifications.value[index].seen = true;
 };
 const deleteNotification = async (notification: Notification, index: number) => {
-  const response = await $api.notifications.deleteNotificationById(notification.id);
-  if (response.status !== 'success') {
-    return;
-  }
-  notifications.value.splice(index, 1);
+    const response = await $api.notifications.deleteNotificationById(notification.id);
+    if (response.status !== 'success') {
+        return;
+    }
+    notifications.value.splice(index, 1);
 };
 
 const toggleNavModal = () => {
-  if (window.innerWidth < 768 || route.name !== 'index') {
-    showNavModal.value = !showNavModal.value;
-    return;
-  }
-  if (window.scrollY > 20) {
-    showNavModal.value = !showNavModal.value;
-  }
+    if (window.innerWidth < 768 || route.name !== 'index') {
+        showNavModal.value = !showNavModal.value;
+        return;
+    }
+    if (window.scrollY > 20) {
+        showNavModal.value = !showNavModal.value;
+    }
 };
 
 watch(showMobileSearch, (newVal) => {
-  if (newVal) {
-    nextTick(() => {
-      searchDOM.value?.focus();
-    });
-  } else {
-    searchVal.value = '';
-  }
+    if (newVal) {
+        nextTick(() => {
+            searchDOM.value?.focus();
+        });
+    } else {
+        searchVal.value = '';
+    }
 });
 
 watch(signinQuery, (newVal) => {
-  if (newVal === 'true') {
-    showAccountModal.value = true;
-  }
+    if (newVal === 'true') {
+        showAccountModal.value = true;
+    }
 });
 
 onMounted(() => {
-  isMobile.value = window.innerWidth <= 1024;
-  if (signinQuery.value === 'true') {
-    showAccountModal.value = true;
-  }
+    isMobile.value = window.innerWidth <= 1024;
+    if (signinQuery.value === 'true') {
+        showAccountModal.value = true;
+    }
 });
 
 Promise.all([fetchNofications(), fetchList()]);
