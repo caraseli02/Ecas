@@ -38,7 +38,15 @@
       "_id": "650a0708c76a5334a2391975"
     },
     "createdAt": "2023-09-23T20:39:36.330Z",
-    "userName": "Laur"
+    "userName": "Laur",
+    "userEmail": "test@test.com",
+    "notes": {
+      "_id": "string",
+    "sender": "string",
+    "message": "string",
+    "createdAt": "string",
+    "updatedAt": "string"
+    }
   },
   {
     "_id": "650a178e39fdd0fe24b83d69",
@@ -78,7 +86,16 @@
       "type": 0,
       "_id": "650a178e39fdd0fe24b83d79"
     },
-    "createdAt": "2023-09-19T21:50:06.716Z"
+    "createdAt": "2023-09-19T21:50:06.716Z",
+    "userName": "Laur",
+    "userEmail": "test@test.com",
+    "notes": {
+      "_id": "string",
+      "sender": "string",
+      "message": "string",
+      "createdAt": "string",
+      "updatedAt": "string"
+      }
   },
   {
     "_id": "650a1981eded48c5281fa3c8",

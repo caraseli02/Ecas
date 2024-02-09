@@ -24,7 +24,7 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: 'shortId',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Order' }),
-    cell: ({ row }) => h(OrderId, { orderId: row.getValue('shortId'), notes: row.getValue('notes') }),
+    cell: ({ row }) => h(OrderId, { orderId: row.getValue('shortId'), notes: [] }),
     enableHiding: false,
   },
   {
@@ -36,7 +36,7 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: 'userName',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Name', }),
     cell: ({ row }) => 
-    h(OrderUserInfo, { name: row.getValue('userName') ?? 'fix userName', email: row.getValue('userEmail') ?? 'fix userEmail' }),
+    h(OrderUserInfo, { name: 'add userName', email: 'add userEmail' }),
 
   },
   {
