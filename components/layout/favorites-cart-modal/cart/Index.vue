@@ -12,7 +12,7 @@
             }"
         >
             <div class="flex items-center justify-between leading-[1.25] font-semibold mb-4 md:text-xl md:leading-[1.2] md:mb-6">
-                <div>Total</div>
+                <div>Subtotal</div>
                 <div class="text-right">$ {{ totalCartPrice.toFixed(2) }}</div>
             </div>
             <NuxtLink
