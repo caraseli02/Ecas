@@ -32,7 +32,7 @@ const addToSearch = () => {
           <UiSeparator orientation="vertical" class="mx-2 h-4" />
           <UiBadge
             variant="secondary"
-            class="rounded-sm px-1 font-normal lg:hidden"
+            class="rounded bg-light-300 px-1 font-normal lg:hidden"
           >
             {{ searchArr.length }}
           </UiBadge>
@@ -40,7 +40,7 @@ const addToSearch = () => {
             <UiBadge
               v-if="searchArr.length > 2"
               variant="secondary"
-              class="rounded-sm px-1 font-normal"
+              class="rounded bg-light-300 px-1 font-normal"
             >
               {{ searchArr.length }} selected
             </UiBadge>
@@ -49,7 +49,7 @@ const addToSearch = () => {
                 v-for="item in searchArr"
                 :key="item"
                 variant="secondary"
-                class="rounded-sm px-1 font-normal"
+                class="rounded bg-light-300 px-1 font-normal"
               >
                 {{ item }}
               </UiBadge>

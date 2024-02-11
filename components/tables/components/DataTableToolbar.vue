@@ -9,6 +9,8 @@ import { statuses, orderType}  from '../data/data'
 import DataTableFacetedFilter from './DataTableFacetedFilter.vue'
 import DataTableViewOptions from './DataTableViewOptions.vue'
 import DataTableInputFilter from './DataTableInputFilter.vue'
+import DataTableDateFilter from './DataTableDateFilter.vue'
+import DataTableRangeFilter from './DataTableRangeFilter.vue'
 import {Cross2Icon} from '@radix-icons/vue'
 
 interface DataTableToolbarProps {
@@ -36,16 +38,27 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         :options="orderType"
       />
       <DataTableInputFilter
+        v-if="table.getColumn('userName')"
         :column="table.getColumn('userName')"
         title="Name"
-        :modelValue="(table.getColumn('userName')?.getFilterValue() as string) ?? ''"
-        @onInput="table.getColumn('userName')?.setFilterValue($event)"
+        :model-value="(table.getColumn('userName')?.getFilterValue() as string) ?? ''"
+        @on-input="table.getColumn('userName')?.setFilterValue($event)"
+      />
+      <DataTableDateFilter
+        title="Date"
       />
       <DataTableFacetedFilter
         v-if="table.getColumn('status')"
         :column="table.getColumn('status')"
         title="Status"
         :options="statuses"
+      />
+      <DataTableRangeFilter
+        v-if="table.getColumn('total')"
+        :column="table.getColumn('total')"
+        title="Total"
+        :model-value="(table.getColumn('total')?.getFilterValue() as string) ?? ''"
+        @on-input="table.getColumn('total')?.setFilterValue($event)"
       />
       <UIButton
         v-if="isFiltered"

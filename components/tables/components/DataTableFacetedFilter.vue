@@ -57,7 +57,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
             <Badge
               v-if="selectedValues.size > 2"
               variant="secondary"
-              class="rounded-sm px-1 font-normal"
+              class="rounded bg-light-300 px-1 font-normal"
             >
               {{ selectedValues.size }} selected
             </Badge>
@@ -68,8 +68,12 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
                   .filter((option) => selectedValues.has(option.value))"
                 :key="option.value"
                 variant="secondary"
-                class="rounded-sm px-1 font-normal"
+                class="rounded bg-light-300 px-1 font-normal"
               >
+                              <span v-if="option?.badge" :class="option?.badge?.bg" class="h-4 w-4 mr-2 rounded-full text-xs text-white flex justify-center items-center">
+                {{ option?.badge?.text }}
+              </span>
+              <span v-if="option?.color" :class="option?.color" class="h-3 w-3 mr-2 rounded-full text-xs text-white flex justify-center items-center" />
                 {{ option.label }}
               </Badge>
             </template>
@@ -114,7 +118,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
               <span v-if="option?.badge" :class="option?.badge?.bg" class="h-4 w-4 mr-2 rounded-full text-xs text-white flex justify-center items-center">
                 {{ option?.badge?.text }}
               </span>
-              <span :class="option?.color" class="h-3 w-3 mr-2 rounded-full text-xs text-white flex justify-center items-center">
+              <span v-if="option?.color" :class="option?.color" class="h-3 w-3 mr-2 rounded-full text-xs text-white flex justify-center items-center">
               </span>
               <option.icon v-if="option.icon" class="mr-2 h-4 w-4 text-muted-foreground" />
               <span class="inline truncate">{{ option.label }}</span>
