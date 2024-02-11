@@ -39,7 +39,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         :column="table.getColumn('userName')"
         title="Name"
         :modelValue="(table.getColumn('userName')?.getFilterValue() as string) ?? ''"
-        @onInput="table.getColumn('userName')?.setFilterValue($event.target.value)"
+        @onInput="table.getColumn('userName')?.setFilterValue($event)"
       />
       <DataTableFacetedFilter
         v-if="table.getColumn('status')"
