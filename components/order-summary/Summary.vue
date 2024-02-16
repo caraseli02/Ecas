@@ -112,12 +112,14 @@ export default defineComponent({
         },
         smallOrder(): number {
             let smallOrderFee = 0;
+
             useAuthStore().generalSettings?.orderSettings?.smallOrderCharge?.forEach((charge) => {
-                if (this.totalWithoutVAT < charge.max && this.totalWithoutVAT >= charge.min) {
+                if (Number(this.totalWithoutVAT) < charge.max && Number(this.totalWithoutVAT) >= charge.min) {
                     smallOrderFee = charge.price;
                     this.order.smallOrder = charge;
                 }
             });
+
             return smallOrderFee;
         },
         totalWithoutVAT(): number {
@@ -127,12 +129,14 @@ export default defineComponent({
             return 0;
         },
         calculatedDiscount(): number {
+            console.log(this.order.discount);
             return this.order.discount?.total || 0;
         },
         discountPercentage(): number {
             if (this.order.discount) {
                 return this.order.discount.value;
             }
+
             return 0;
         },
         calculatedVAT(): number {
@@ -142,12 +146,18 @@ export default defineComponent({
             return 0;
         },
         calculatedTotal(): number {
-            if (this.order.subtotal && !this.smallOrder) {
-                return parseFloat((Number(this.order.subtotal) + this.calculatedVAT + this.shippingFee).toFixed(2));
-            } else if (this.order.subtotal && this.smallOrder) {
-                return parseFloat((Number(this.order.subtotal) + this.calculatedVAT + this.shippingFee + this.smallOrder).toFixed(2));
+            if (!this.order.subtotal) {
+                return 0;
             }
-            return 0;
+
+            return parseFloat(
+                (
+                    Number(this.order.subtotal || 0) +
+                    Number(this.calculatedVAT) +
+                    Number(this.shippingFee) +
+                    Number(this.calculatedDiscount)
+                ).toFixed(2)
+            );
         },
         shippingFee(): number {
             return this.order.deliveryMethod?.price || 0;

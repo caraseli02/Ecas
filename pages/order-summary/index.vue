@@ -373,9 +373,10 @@ const calculateDiscount = (orderItems: CartProductsInterface[]) => {
     let discount = 0;
 
     orderItems.forEach((item: CartProductsInterface) => {
+        console.log(item.productEntity?.alias, item.discount);
         discount += Number(item.initialUnitPrice) * item.stock - Number(item.unitPriceAfterDiscounts) * item.stock;
     });
-
+    console.log(discount);
     order.value.discount.total = discount;
 };
 
@@ -406,6 +407,7 @@ Emitter.on('checkout', async () => {
         !smallOrder.value ||
         !paymentDetails.value
     ) {
+        console.log('Cannot place order');
         return;
     }
 
@@ -480,7 +482,7 @@ Emitter.on('checkout', async () => {
     }
 
     await cartStore.updateAndReturnCart();
-    await router.push({ path: '/' });
+    // await router.push({ path: '/' });
 });
 
 await fetchList();

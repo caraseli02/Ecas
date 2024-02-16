@@ -10,9 +10,9 @@ import { loadStripe, PaymentIntentResult, Stripe, StripeElements } from '@stripe
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 
+const router = useRouter();
 const cartStore = useCartStore();
 const { getOrderClientSecret } = storeToRefs(cartStore);
-
 const isLoading = ref(false);
 
 let stripe: Stripe | null;
@@ -27,7 +27,7 @@ onMounted(async () => {
     if (!stripe || !getOrderClientSecret.value) {
         return;
     }
-    
+
     paymentIntent = await stripe.retrievePaymentIntent(getOrderClientSecret.value);
     elements = stripe.elements({
         mode: 'payment',
@@ -70,8 +70,13 @@ const handleSubmit = async () => {
         },
     });
 
+    cartStore.emptyOrderClientSecret();
+
     if (error.type === 'card_error' || error.type === 'validation_error') {
         console.log(error.message);
+        await router.push({ path: '/checkout/fail', query: {} });
+    } else {
+        await router.push({ path: '/checkout/success', query: {} });
     }
     console.log(error);
     isLoading.value = false;
