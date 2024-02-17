@@ -1,13 +1,11 @@
 <template>
-    <p>Payment failed {{ failReason }}</p>
+    <p>Payment failed. Reason: {{ getPreviousCheckoutError?.message }}</p>
 </template>
 
 <script setup lang="ts">
-const route = useRoute();
-const failReason = ref('N/A');
+import { useCartStore } from '~/store/cartStore';
+import { storeToRefs } from 'pinia';
 
-onMounted(() => {
-    console.log(route.params);
-    failReason.value = route.params.failReason as string;
-});
+const cartStore = useCartStore();
+const { getPreviousCheckoutError } = storeToRefs(cartStore);
 </script>

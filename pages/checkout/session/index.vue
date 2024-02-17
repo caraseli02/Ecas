@@ -71,9 +71,11 @@ const handleSubmit = async () => {
     });
 
     cartStore.emptyOrderClientSecret();
+    cartStore.emptyPreviousCheckoutError();
 
     if (error.type === 'card_error' || error.type === 'validation_error') {
         console.log(error.message);
+        cartStore.setPreviousCheckoutError(error);
         await router.push({ path: '/checkout/fail', query: {} });
     } else {
         await router.push({ path: '/checkout/success', query: {} });

@@ -459,7 +459,7 @@ Emitter.on('checkout', async () => {
     }
 
     if (paymentDetails.value.type === PaymentTypeEnum.Card) {
-        if (orderRequestObject.value.stripeCardId && response.data.paid) {
+        if (orderRequestObject.value.stripeCardId && response.data.useExistingPaymentMethod) {
             const result = response.data.result;
 
             if (result?.status === 'succeeded') {
@@ -472,7 +472,7 @@ Emitter.on('checkout', async () => {
                 console.log('order pending', result?.status);
                 await router.push({ path: '/checkout/pending' });
             }
-        } else if (!response.data.paid && response.data.clientSecret) {
+        } else if (!response.data.useExistingPaymentMethod && response.data.clientSecret) {
             cartStore.setOrderClientSecret(response.data.clientSecret);
             await router.push({ path: '/checkout/session' });
         }

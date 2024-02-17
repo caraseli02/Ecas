@@ -5,6 +5,7 @@ import Emitter from 'tiny-emitter/instance.js';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { CartProductsInterface } from '~/types';
+import { StripeError } from '@stripe/stripe-js';
 
 export const useCartStore = defineStore({
     id: 'cart-store',
@@ -12,6 +13,7 @@ export const useCartStore = defineStore({
         return {
             cart: null as CartInterface | null,
             orderClientSecret: null as string | null,
+            previousCheckoutError: null as StripeError | null,
             cartSubtotal: 0,
         };
     },
@@ -23,8 +25,14 @@ export const useCartStore = defineStore({
         setOrderClientSecret(secret: string) {
             this.orderClientSecret = secret;
         },
+        setPreviousCheckoutError(error: StripeError) {
+            this.previousCheckoutError = error;
+        },
         emptyOrderClientSecret() {
             this.orderClientSecret = null;
+        },
+        emptyPreviousCheckoutError() {
+            this.previousCheckoutError = null;
         },
         async updateAndReturnCart() {
             const { $api } = useNuxtApp();
@@ -78,7 +86,8 @@ export const useCartStore = defineStore({
 
             return Number(state.cartSubtotal.toFixed(2));
         },
-        getOrderClientSecret: (state) => state.orderClientSecret,
+        getOrderClientSecret: (state): string => state.orderClientSecret as string,
+        getPreviousCheckoutError: (state): StripeError => state.previousCheckoutError as StripeError,
     },
     persist: {
         storage: persistedState.localStorage,
