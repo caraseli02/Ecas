@@ -43,7 +43,7 @@ const clearFilters = () => {
 <template>
   <UiPopover>
     <UiPopoverTrigger as-child>
-      <UiButton variant="outline" size="sm" class="h-8 border-dashed">
+      <UiButton variant="outline" size="sm" class="!ml-0 h-8 border-dashed">
         <PlusCircledIcon class="mr-2 h-4 w-4" />
         {{ title }}
         <template v-if="searchArr.length > 0">

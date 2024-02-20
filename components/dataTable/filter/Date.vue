@@ -13,12 +13,14 @@ defineProps<{
 </script>
 
 <template>
-  <div :class="cn('grid gap-2', $attrs.class ?? '')">
+  <div :class="cn('grid gap-2 !ml-0', $attrs.class ?? '')">
     <UiPopover>
       <UiPopoverTrigger as-child>
-        <UiButton
-id="date" :variant="'outline'" :class="cn(
-          'h-8 justify-start text-left font-normal border-dashed px-2',
+        <UiButton 
+        id="date" 
+        :variant="'outline'" 
+        :class="cn(
+          'h-8 justify-start text-left font-normal border-dashed px-2 !ml-0',
           !date && 'text-muted-foreground',
         )">
           <PlusCircledIcon class="mr-2 h-4 w-4" />
