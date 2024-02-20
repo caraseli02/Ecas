@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Column } from '@tanstack/vue-table'
 import { type Order } from '../data/schema'
-import { PlusCircledIcon, MagnifyingGlassIcon } from '@radix-icons/vue'
+import { PlusCircledIcon, MagnifyingGlassIcon, MinusCircledIcon } from '@radix-icons/vue'
 
 interface DataTableInputFilter {
   column?: Column<Order, any>
@@ -14,10 +14,28 @@ const emit = defineEmits<{
   onInput: [value: string]
 }>()
 
+const isNameValid = (name: string) => {
+  // Regular expression for basic name validation (alphabets and spaces)
+  const nameRegex = /^[A-Za-z\s]+$/;
+  return nameRegex.test(name);
+};
+
 const searchArr = ref<string[]>([])
 const searchText = ref('')
+
 const addToSearch = () => {
-  searchArr.value.push(searchText.value)
+  const trimmedName = searchText.value.trim();
+
+  if (trimmedName && isNameValid(trimmedName)) {
+    searchArr.value.push(trimmedName);
+    searchText.value = '';
+  } else {
+    // Handle invalid name input, e.g., show an error message or prevent adding invalid names
+    console.error('Invalid name input. Please enter a valid name.');
+  }
+};
+
+const clearFilters = () => {
   searchText.value = ''
 }
 </script>
@@ -58,8 +76,9 @@ const addToSearch = () => {
         </template>
       </UiButton>
     </UiPopoverTrigger>
-    <UiPopoverContent class="w-[280px] flex gap-4 p-2 justify-between" align="start">
-      <UiInput v-model=searchText placeholder="Filter name or email..." class="h-8 w-full" />
+    <UiPopoverContent class="w-[280px] flex flex-col gap-2 p-2" align="start">
+      <div class="flex gap-4 justify-between">
+        <UiInput v-model=searchText placeholder="Filter name or email..." class="h-8 w-full" />
       <!-- <UiInput
         placeholder="Filter name or email..."
         :model-value=modelValue
@@ -69,6 +88,8 @@ const addToSearch = () => {
       <UiButton variant="secondary" size="sm" class="h-8" @click="addToSearch()">
         <MagnifyingGlassIcon class="w-5 h-5" />
       </UiButton>
+      </div>
+      <UiButton v-if="searchText.length > 0" size="sm" variant="ghost" @click="clearFilters">Clear filters</UiButton>
     </UiPopoverContent>
   </UiPopover>
 </template>

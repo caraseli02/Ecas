@@ -2,7 +2,7 @@
 import type { Column } from '@tanstack/vue-table'
 import { type Order } from './data/schema'
 import { PlusCircledIcon } from '@radix-icons/vue'
-
+import { PopoverClose } from 'radix-vue';
 interface DataTableInputFilter {
   column?: Column<Order, any>
   title?: string
@@ -15,7 +15,7 @@ const emit = defineEmits<{
 }>()
 
 const cancel = () => {
-  console.log('cancel');
+  range.value = [0, 0]
 }
 
 const apply = () => {
@@ -28,7 +28,7 @@ const range = ref([0,0])
 <template>
   <UiPopover>
     <UiPopoverTrigger as-child>
-      <UiButton variant="outline" size="sm" class="h-8 border-dashed">
+      <UiButton variant="outline" size="sm" class="!ml-0 h-8 border-dashed">
         <PlusCircledIcon class="mr-2 h-4 w-4" />
         {{ title }}
   <!-- Check if either min or max range values are greater than 0 -->
@@ -85,11 +85,13 @@ class="flex px-4 py-2 rounded-lg text-sm bg-gray-100 leading-[1.67] h-10 text-sl
             @click="cancel">
             Clear Filter
           </button>
-          <button
-            class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue-500 leading-[1.67] h-10 text-white font-medium"
-            @click="apply">
-            Apply
-          </button>
+          <PopoverClose class="w-fit" as-child>
+            <button
+              class="flex justify-center px-8 py-2 text-sm w-full rounded-lg bg-blue-500 leading-[1.67] h-10 text-white font-medium"
+              @click="apply">
+              Apply
+            </button>
+          </PopoverClose>
         </div>
       </div>
     </UiPopoverContent>
