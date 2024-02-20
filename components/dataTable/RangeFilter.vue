@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Column } from '@tanstack/vue-table'
-import { type Order } from '../data/schema'
+import { type Order } from './data/schema'
 import { PlusCircledIcon } from '@radix-icons/vue'
 
 interface DataTableInputFilter {

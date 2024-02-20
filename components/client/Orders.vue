@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import orders from './data/orders.json'
-import DataTable from './components/DataTable.vue'
-import { columns } from './components/columns'
+import orders from '../dataTable/data/orders.json'
+import { columns } from '../dataTable/columns'
 </script>
 
 <template>
@@ -16,3 +15,4 @@ import { columns } from './components/columns'
     <DataTable :data="orders" :columns="columns" />
   </div>
 </template>
+../dataTable/columns../dataTable/data/orders.json

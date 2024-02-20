@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import {statuses} from '../data/data'
+import {statuses} from './data/data'
 const props = defineProps<{
   status: string
 }>()

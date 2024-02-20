@@ -1,24 +1,8 @@
 <script setup lang="ts">
 import type { Row } from '@tanstack/vue-table'
-import { computed } from 'vue'
-import { orderSchema } from '../data/schema'
-import { type Task } from '../data/schema'
+import { orderSchema } from './data/schema'
+import { type Task } from './data/schema'
 import { DotsHorizontalIcon } from '@radix-icons/vue'
-
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 
 interface DataTableRowActionsProps {
   row: Row<Task>
@@ -58,35 +42,35 @@ d="M14.1663 10L5.83301 10" stroke="currentColor" stroke-width="1.5" stroke-linec
 d="M9.99967 14.167L5.83301 14.167" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
         stroke-linejoin="round" />
     </svg>
-    <DropdownMenu>
-    <DropdownMenuTrigger as-child>
-      <Button variant="ghost" class="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
+    <UiDropdownMenu>
+    <UiDropdownMenuTrigger as-child>
+      <UiButton variant="ghost" class="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
         <DotsHorizontalIcon class="h-4 w-4" />
         <span class="sr-only">Open menu</span>
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent align="end" class="w-[167px]">
-      <DropdownMenuItem>Edit</DropdownMenuItem>
-      <DropdownMenuItem>Make a copy</DropdownMenuItem>
-      <DropdownMenuItem>Favorite</DropdownMenuItem>
-      <DropdownMenuSeparator />
-      <DropdownMenuSub>
-        <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-        <DropdownMenuSubContent>
-          <DropdownMenuRadioGroup :value="task.label">
-            <!-- <DropdownMenuRadioItem v-for="label in labels" :key="label.value" :value="label.value">
+      </UiButton>
+    </UiDropdownMenuTrigger>
+    <UiDropdownMenuContent align="end" class="w-[167px]">
+      <UiDropdownMenuItem>Edit</UiDropdownMenuItem>
+      <UiDropdownMenuItem>Make a copy</UiDropdownMenuItem>
+      <UiDropdownMenuItem>Favorite</UiDropdownMenuItem>
+      <UiDropdownMenuSeparator />
+      <UiDropdownMenuSub>
+        <UiDropdownMenuSubTrigger>Labels</UiDropdownMenuSubTrigger>
+        <UiDropdownMenuSubContent>
+          <UiDropdownMenuRadioGroup :value="task.label">
+            <!-- <UiDropdownMenuRadioItem v-for="label in labels" :key="label.value" :value="label.value">
               {{ label.label }}
-            </DropdownMenuRadioItem> -->
-          </DropdownMenuRadioGroup>
-        </DropdownMenuSubContent>
-      </DropdownMenuSub>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem>
+            </UiDropdownMenuRadioItem> -->
+          </UiDropdownMenuRadioGroup>
+        </UiDropdownMenuSubContent>
+      </UiDropdownMenuSub>
+      <UiDropdownMenuSeparator />
+      <UiDropdownMenuItem>
         Delete
-      <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-    </DropdownMenuItem>
-  </DropdownMenuContent>
-</DropdownMenu>
+      <UiDropdownMenuShortcut>⌘⌫</UiDropdownMenuShortcut>
+    </UiDropdownMenuItem>
+  </UiDropdownMenuContent>
+</UiDropdownMenu>
   </section>
 
 </template>

@@ -17,24 +17,14 @@ import {
 } from '@tanstack/vue-table'
 
 import { ref } from 'vue'
-import { type Order } from '../data/schema'
-import DataTablePagination from './DataTablePagination.vue'
-import DataTableToolbar from './DataTableToolbar.vue'
+import { type Order } from './data/schema'
 import { valueUpdater } from '@/lib/utils'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 
-interface DataTableProps {
+interface Props {
   columns: ColumnDef<Order, any>[]
   data: Order[]
 }
-const props = defineProps<DataTableProps>()
+const props = defineProps<Props>()
 
 const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
@@ -68,37 +58,37 @@ const table = useVueTable({
   <div class="space-y-4">
     <DataTableToolbar :table="table" />
     <div class="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-            <TableHead v-for="header in headerGroup.headers" :key="header.id">
+      <UiTable>
+        <UiTableHeader>
+          <UiTableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <UiTableHead v-for="header in headerGroup.headers" :key="header.id">
               <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+            </UiTableHead>
+          </UiTableRow>
+        </UiTableHeader>
+        <UiTableBody>
           <template v-if="table.getRowModel().rows?.length">
-            <TableRow
+            <UiTableRow
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               :data-state="row.getIsSelected() && 'selected'"
             >
-              <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+              <UiTableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
-              </TableCell>
-            </TableRow>
+              </UiTableCell>
+            </UiTableRow>
           </template>
 
-          <TableRow v-else>
-            <TableCell
+          <UiTableRow v-else>
+            <UiTableCell
               col-span="{columns.length}"
               class="h-24 text-center"
             >
               No results.
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+            </UiTableCell>
+          </UiTableRow>
+        </UiTableBody>
+      </UiTable>
     </div>
 
     <DataTablePagination :table="table" />

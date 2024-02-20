@@ -1,9 +1,9 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
-import type { Order } from '../data/schema'
-import DataTableColumnHeader from './DataTableColumnHeader.vue'
-import DataTableRowActions from './DataTableRowActions.vue'
+import type { Order } from '../client/data/schema'
+import ColumnHeader from './ColumnHeader.vue'
+import RowActions from './RowActions.vue'
 import OrderId from './OrderId.vue'
 import OrderType from './OrderType.vue'
 import OrderStatus from './OrderStatus.vue'
@@ -23,32 +23,32 @@ export const columns: ColumnDef<Order>[] = [
   // },
   {
     accessorKey: 'shortId',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Order' }),
+    header: ({ column }) => h(ColumnHeader, { column, title: 'Order' }),
     cell: ({ row }) => h(OrderId, { orderId: row.getValue('shortId'), notes: [] }),
     enableHiding: false,
   },
   {
     accessorKey: 'type',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Type' }),
+    header: ({ column }) => h(ColumnHeader, { column, title: 'Type' }),
     cell: ({ row }) => h(OrderType, { type: row.getValue('type') }),
   },
   {
     accessorKey: 'userName',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Name', }),
+    header: ({ column }) => h(ColumnHeader, { column, title: 'Name', }),
     cell: ({ row }) => 
     h(OrderUserInfo, { name: 'add userName', email: 'add userEmail' }),
 
   },
   {
     accessorKey: 'createdAt',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Date' }),
+    header: ({ column }) => h(ColumnHeader, { column, title: 'Date' }),
     cell: ({ row }) => h('div', { class: 'w-[236px]' }, row.getValue('createdAt')),
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: 'status',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Status' }),
+    header: ({ column }) => h(ColumnHeader, { column, title: 'Status' }),
     cell: ({ row }) => h(OrderStatus, { status: row.getValue('status') }),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -56,13 +56,13 @@ export const columns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: 'total',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Total' }),
+    header: ({ column }) => h(ColumnHeader, { column, title: 'Total' }),
     cell: ({ row }) => h('div', { class: 'w-[144px]' }, row.getValue('total')),
     enableSorting: false,
     enableHiding: false,
   },
   {
     id: 'actions',
-    cell: ({ row }) => h(DataTableRowActions, { row }),
+    cell: ({ row }) => h(RowActions, { row }),
   },
 ]
