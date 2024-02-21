@@ -8,6 +8,7 @@ import OrderId from './OrderId.vue'
 import OrderType from './OrderType.vue'
 import OrderStatus from './OrderStatus.vue'
 import OrderUserInfo from './OrderUserInfo.vue'
+import OrderDate from './OrderDate.vue'
 // import { Checkbox } from '@/components/ui/checkbox'
 // import { Badge } from '@/components/ui/badge'
 
@@ -42,8 +43,7 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: 'createdAt',
     header: ({ column }) => h(ColumnHeader, { column, title: 'Date' }),
-    cell: ({ row }) => h('div', { class: 'w-[236px]' }, row.getValue('createdAt')),
-    enableSorting: false,
+    cell: ({ row }) => h(OrderDate, { inputDateString: row.getValue('createdAt')}),
     enableHiding: false,
   },
   {
@@ -57,12 +57,12 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: 'total',
     header: ({ column }) => h(ColumnHeader, { column, title: 'Total' }),
-    cell: ({ row }) => h('div', { class: 'w-[144px]' }, row.getValue('total')),
-    enableSorting: false,
+    cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas(row.getValue('total'))),
     enableHiding: false,
   },
   {
     id: 'actions',
+    header: ({ column }) => h(ColumnHeader, { column, title: 'Actions' }),
     cell: ({ row }) => h(RowActions, { row }),
   },
 ]

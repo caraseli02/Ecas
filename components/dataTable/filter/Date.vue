@@ -17,12 +17,9 @@ defineProps<{
     <UiPopover>
       <UiPopoverTrigger as-child>
         <UiButton 
-        id="date" 
+        id="date"
         :variant="'outline'" 
-        :class="cn(
-          'h-8 justify-start text-left font-normal border-dashed px-2 !ml-0',
-          !date && 'text-muted-foreground',
-        )">
+        :class="cn('h-8 justify-start text-left font-normal border-dashed px-2 !ml-0')">
           <PlusCircledIcon class="mr-2 h-4 w-4" />
          {{ title }}
          <template v-if="date?.start && date.end">

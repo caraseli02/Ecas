@@ -1,5 +1,5 @@
 <template>
-  <ul class="flex flex-col">
+  <ul class="flex flex-col min-w-[228px]">
     <li>{{ name }}</li>
     <li>{{ email }}</li>
   </ul>

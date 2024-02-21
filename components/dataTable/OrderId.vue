@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[158px] flex justify-between">
+  <div class="min-w-[128px] flex justify-between">
     <span class="text-sm">#{{ orderId }}</span>
     <NuxtLink v-if="notes" to="#">
       <svg class="w-4 h-4 hover:text-blue-500" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

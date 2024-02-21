@@ -27,7 +27,7 @@ export default {
   <div v-if="column.getCanSort()" :class="cn('flex items-center space-x-2', $attrs.class ?? '')">
     <UiDropdownMenu>
       <UiDropdownMenuTrigger as-child>
-        <UiButton variant="ghost" size="sm" class="-ml-3 h-8 data-[state=open]:bg-accent">
+        <UiButton variant="ghost" size="sm" class="-ml-3 font-medium h-8 text-neutral-700 data-[state=open]:bg-accent">
           <span>{{ title }}</span>
           <ArrowDownIcon v-if="column.getIsSorted() === 'desc'" class="ml-2 h-4 w-4" />
           <ArrowUpIcon v-else-if="column.getIsSorted() === 'asc'" class="ml-2 h-4 w-4" />
@@ -52,7 +52,7 @@ export default {
     </UiDropdownMenu>
   </div>
   <!-- <UiInput v-if="column.getCanFilter()" placeholder="Filter tasks..." class="h-8 w-[150px] lg:w-[250px]" /> -->
-  <div v-else :class="$attrs.class">
+  <div v-else class="text-neutral-700" :class="$attrs.class">
     {{ title }}
   </div>
 </template>

@@ -5,7 +5,7 @@ import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon } from 'lucide-vue-next';
 </script>
 
 <template>
-  <div class="h-full flex-1 flex-col space-y-8 flex">
+  <div class="h-full flex-1 flex-col space-y-8 flex max-w-[1344px]">
     <div class="flex items-center justify-between space-y-2">
       <div class="flex items-center justify-between w-full">
         <h2 class="text-2xl font-bold tracking-tight">
@@ -33,7 +33,7 @@ import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon } from 'lucide-vue-next';
               </defs>
             </svg>
           </UiButton>
-          <UiButton class="bg-blue-500 hover:bg-blue-400">Add New</UiButton>
+          <UiButton size="sm" class="bg-blue-500 hover:bg-blue-400">Add New</UiButton>
         </div>
       </div>
     </div>

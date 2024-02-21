@@ -1,5 +1,5 @@
 <template>
-  <div class='flex w-[202px] items-center'>
+  <div class='flex min-w-[174px] items-center'>
     <span :class="status?.color" class="h-4 w-4 mr-1 rounded-full text-xs text-white flex justify-center items-center">
     </span>
     {{ status?.label }}
