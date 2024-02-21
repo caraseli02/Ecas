@@ -59,7 +59,7 @@ const table = useVueTable({
     <DataTableToolbar :table="table" />
     <div class="rounded-md border">
       <UiTable>
-        <UiTableHeader>
+        <UiTableHeader class="bg-light-200">
           <UiTableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
             <UiTableHead v-for="header in headerGroup.headers" :key="header.id">
               <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
@@ -69,6 +69,7 @@ const table = useVueTable({
         <UiTableBody>
           <template v-if="table.getRowModel().rows?.length">
             <UiTableRow
+              class="hover:bg-light-200"
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               :data-state="row.getIsSelected() && 'selected'"
