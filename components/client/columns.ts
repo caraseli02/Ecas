@@ -1,14 +1,13 @@
 import type { ColumnDef } from '@tanstack/vue-table'
-import { h } from 'vue'
-
-import type { Order } from '../client/data/schema'
-import ColumnHeader from './ColumnHeader.vue'
-import RowActions from './RowActions.vue'
-import OrderId from './OrderId.vue'
-import OrderType from './OrderType.vue'
-import OrderStatus from './OrderStatus.vue'
-import OrderUserInfo from './OrderUserInfo.vue'
-import OrderDate from './OrderDate.vue'
+import type { Order } from '~/components/dataTable/schema'
+import ColumnHeader from '~/components/dataTable/ColumnHeader.vue'
+import RowActions from '~/components/dataTable/RowActions.vue'
+import OrderId from '~/components/dataTable/OrderId.vue'
+import OrderType from '~/components/dataTable/OrderType.vue'
+import OrderStatus from '~/components/dataTable/OrderStatus.vue'
+import OrderUserInfo from '~/components/dataTable/OrderUserInfo.vue'
+import OrderDate from '~/components/dataTable/OrderDate.vue'
+import { statuses } from '~/components/dataTable/options'
 // import { Checkbox } from '@/components/ui/checkbox'
 // import { Badge } from '@/components/ui/badge'
 
@@ -49,7 +48,7 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => h(ColumnHeader, { column, title: 'Status' }),
-    cell: ({ row }) => h(OrderStatus, { status: row.getValue('status') }),
+    cell: ({ row }) => h(OrderStatus, { status: row.getValue('status'), statuses: statuses }),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },

@@ -16,8 +16,7 @@ import {
   useVueTable,
 } from '@tanstack/vue-table'
 
-import { ref } from 'vue'
-import { type Order } from './data/schema'
+import { type Order } from './schema'
 import { valueUpdater } from '@/lib/utils'
 
 interface Props {

@@ -8,13 +8,17 @@
 </template>
 
 <script setup lang="ts">
-import {statuses} from './data/data'
 const props = defineProps<{
   status: string
+  statuses: {
+    value: string;
+    label: string;
+    color: string;
+}[]
 }>()
 
 const status = computed(() => {
-  return statuses.find(
+  return props.statuses.find(
     status => status.label === props.status,
   )
 })

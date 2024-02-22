@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import type { Column, Table } from '@tanstack/vue-table'
-import { type Task } from './data/schema'
-import { ArrowDownIcon } from '@radix-icons/vue'
-import { ArrowUpIcon } from '@radix-icons/vue'
+import { type Order } from './schema'
 import { CaretSortIcon } from '@radix-icons/vue'
-import { EyeNoneIcon } from '@radix-icons/vue'
+// import { ArrowDownIcon } from '@radix-icons/vue'
+// import { ArrowUpIcon } from '@radix-icons/vue'
+// import { EyeNoneIcon } from '@radix-icons/vue'
 
 import { cn } from '@/lib/utils'
 
 interface DataTableColumnHeaderProps {
-  column: Column<Task, any>
+  column: Column<Order, any>
   title: string
-  table?: Table<Task>
+  table?: Table<Order>
 }
 
 defineProps<DataTableColumnHeaderProps>()
@@ -25,7 +25,9 @@ export default {
 
 <template>
   <div v-if="column.getCanSort()" :class="cn('flex items-center space-x-2', $attrs.class ?? '')">
-    <UiDropdownMenu>
+    <span>{{ title }}</span>
+    <CaretSortIcon class="ml-2 h-4 w-4" />
+    <!-- <UiDropdownMenu>
       <UiDropdownMenuTrigger as-child>
         <UiButton variant="ghost" size="sm" class="-ml-3 font-medium h-8 text-neutral-700 data-[state=open]:bg-accent">
           <span>{{ title }}</span>
@@ -49,7 +51,7 @@ export default {
           Hide
         </UiDropdownMenuItem>
       </UiDropdownMenuContent>
-    </UiDropdownMenu>
+    </UiDropdownMenu> -->
   </div>
   <!-- <UiInput v-if="column.getCanFilter()" placeholder="Filter tasks..." class="h-8 w-[150px] lg:w-[250px]" /> -->
   <div v-else class="text-neutral-700" :class="$attrs.class">

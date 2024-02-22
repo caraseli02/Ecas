@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type Table } from '@tanstack/vue-table'
-import { type Order } from './data/schema'
-import { statuses, orderType}  from './data/data'
+import { type Order } from './schema'
+import { statuses, orderType}  from './options'
 
 import { Cross2Icon } from '@radix-icons/vue'
 

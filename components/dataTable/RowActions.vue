@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { Row } from '@tanstack/vue-table'
-import { orderSchema } from './data/schema'
-import { type Task } from './data/schema'
+// import type { Row } from '@tanstack/vue-table'
+// import { orderSchema } from './data/schema'
+// import { type Order } from './data/schema'
 import { DotsHorizontalIcon } from '@radix-icons/vue'
 
-interface DataTableRowActionsProps {
-  row: Row<Task>
-}
-const props = defineProps<DataTableRowActionsProps>()
+// interface DataTableRowActionsProps {
+//   row: Row<Order>
+// }
+// const props = defineProps<DataTableRowActionsProps>()
 
-const task = computed(() => orderSchema.parse(props.row.original))
+// const task = computed(() => orderSchema.parse(props.row.original))
 </script>
 
 <template>
@@ -54,17 +54,17 @@ d="M9.99967 14.167L5.83301 14.167" stroke="currentColor" stroke-width="1.5" stro
       <UiDropdownMenuItem>Make a copy</UiDropdownMenuItem>
       <UiDropdownMenuItem>Favorite</UiDropdownMenuItem>
       <UiDropdownMenuSeparator />
-      <UiDropdownMenuSub>
+      <!-- <UiDropdownMenuSub>
         <UiDropdownMenuSubTrigger>Labels</UiDropdownMenuSubTrigger>
         <UiDropdownMenuSubContent>
           <UiDropdownMenuRadioGroup :value="task.label">
-            <!-- <UiDropdownMenuRadioItem v-for="label in labels" :key="label.value" :value="label.value">
+            <UiDropdownMenuRadioItem v-for="label in labels" :key="label.value" :value="label.value">
               {{ label.label }}
-            </UiDropdownMenuRadioItem> -->
+            </UiDropdownMenuRadioItem>
           </UiDropdownMenuRadioGroup>
         </UiDropdownMenuSubContent>
-      </UiDropdownMenuSub>
-      <UiDropdownMenuSeparator />
+      </UiDropdownMenuSub> -->
+      <!-- <UiDropdownMenuSeparator /> -->
       <UiDropdownMenuItem>
         Delete
       <UiDropdownMenuShortcut>⌘⌫</UiDropdownMenuShortcut>

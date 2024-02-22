@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import orders from '../dataTable/data/orders.json'
-import { columns } from '../dataTable/columns'
+import orders from './data/orders.json'
+import { columns } from './columns'
 import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon } from 'lucide-vue-next';
 </script>
 
