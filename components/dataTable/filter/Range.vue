@@ -28,8 +28,8 @@ const range = ref([0,0])
 <template>
   <UiPopover>
     <UiPopoverTrigger as-child>
-      <UiButton variant="outline" size="sm" class="!ml-0 h-8 border-dashed">
-        <PlusCircledIcon class="mr-2 h-4 w-4" />
+      <UiButton variant="outline" size="sm" class="!ml-0 border-dashed text-neutral-700">
+        <PlusCircledIcon class="mr-2 h-4 w-4  text-neutral-700" />
         {{ title }}
   <!-- Check if either min or max range values are greater than 0 -->
         <template v-if="range[0] > 0 || range[1] > 0">

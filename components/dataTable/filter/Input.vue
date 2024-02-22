@@ -43,7 +43,7 @@ const clearFilters = () => {
 <template>
   <UiPopover>
     <UiPopoverTrigger as-child>
-      <UiButton variant="outline" size="sm" class="!ml-0 h-8 border-dashed">
+      <UiButton variant="outline" size="sm" class="!ml-0 border-dashed  text-neutral-700">
         <PlusCircledIcon class="mr-2 h-4 w-4" />
         {{ title }}
         <template v-if="searchArr.length > 0">
@@ -78,18 +78,18 @@ const clearFilters = () => {
     </UiPopoverTrigger>
     <UiPopoverContent class="w-[280px] flex flex-col gap-2 p-2" align="start">
       <div class="flex gap-4 justify-between">
-        <UiInput v-model=searchText placeholder="Filter name or email..." class="h-8 w-full" />
+        <UiInput v-model=searchText placeholder="Filter name or email..." class="h-8 w-full text-neutral-700 border-gray-300" />
       <!-- <UiInput
         placeholder="Filter name or email..."
         :model-value=modelValue
         class="h-8 w-full"
         @input="emit('onInput',$event.target.value)"
       /> -->
-      <UiButton variant="secondary" size="sm" class="h-8" @click="addToSearch()">
+      <UiButton variant="secondary" size="sm" class="bg-light-300 text-neutral-700" @click="addToSearch()">
         <MagnifyingGlassIcon class="w-5 h-5" />
       </UiButton>
       </div>
-      <UiButton v-if="searchText.length > 0" size="sm" variant="ghost" @click="clearFilters">Clear filters</UiButton>
+      <UiButton class="text-neutral-700 font-normal text-sm" v-if="searchText.length > 0" size="sm" variant="ghost" @click="clearFilters">Clear filters</UiButton>
     </UiPopoverContent>
   </UiPopover>
 </template>

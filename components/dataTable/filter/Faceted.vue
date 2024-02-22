@@ -30,29 +30,29 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
 <template>
   <UiPopover>
     <UiPopoverTrigger as-child>
-      <UiButton variant="outline" size="xs" class="!ml-0 border-dashed">
+      <UiButton variant="outline" size="sm" class="!ml-0 border-dashed  text-neutral-700">
         <PlusCircledIcon class="mr-2 h-4 w-4" />
         {{ title }}
         <template v-if="selectedValues.size > 0">
           <UiSeparator orientation="vertical" class="mx-2 h-4" />
-          <UiBadge variant="secondary" class="rounded-sm px-1 font-normal lg:hidden">
+          <UiBadge variant="secondary" class="bg-light-300 text-neutral-700 rounded-sm px-1 font-normal lg:hidden">
             {{ selectedValues.size }}
           </UiBadge>
           <div class="hidden space-x-1 lg:flex">
-            <UiBadge v-if="selectedValues.size > 2" variant="secondary" class="rounded bg-light-300 px-1 font-normal">
+            <UiBadge v-if="selectedValues.size > 2" variant="secondary" class="rounded bg-light-300 text-neutral-700 px-1 font-normal">
               {{ selectedValues.size }} selected
             </UiBadge>
 
             <template v-else>
               <UiBadge v-for="option in options
                 .filter((option) => selectedValues.has(option.value))" :key="option.value" variant="secondary"
-                class="rounded bg-light-300 px-1 font-normal">
+                class="rounded bg-light-300 px-1 font-normal text-neutral-700">
                 <span v-if="option?.badge" :class="option?.badge?.bg"
                   class="h-4 w-4 mr-2 rounded-full text-xs text-white flex justify-center items-center">
                   {{ option?.badge?.text }}
                 </span>
                 <span v-if="option?.color" :class="option?.color"
-                  class="h-3 w-3 mr-2 rounded-full text-xs text-white flex justify-center items-center" />
+                  class="h-3 w-3 mr-2 rounded-full text-xs flex justify-center items-center" />
                 {{ option.label }}
               </UiBadge>
             </template>

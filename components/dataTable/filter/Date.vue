@@ -19,7 +19,8 @@ defineProps<{
         <UiButton 
         id="date"
         :variant="'outline'" 
-        :class="cn('h-8 justify-start text-left font-normal border-dashed px-2 !ml-0')">
+        size="sm"
+        :class="cn('justify-start text-left font-normal border-dashed px-2 !ml-0  text-neutral-700')">
           <PlusCircledIcon class="mr-2 h-4 w-4" />
          {{ title }}
          <template v-if="date?.start && date.end">

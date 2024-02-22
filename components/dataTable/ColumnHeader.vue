@@ -2,6 +2,7 @@
 import type { Column, Table } from '@tanstack/vue-table'
 import { type Order } from './schema'
 import { CaretSortIcon } from '@radix-icons/vue'
+import { ArrowDownWideNarrowIcon, ArrowUpWideNarrowIcon, ChevronsUpDownIcon } from 'lucide-vue-next'
 // import { ArrowDownIcon } from '@radix-icons/vue'
 // import { ArrowUpIcon } from '@radix-icons/vue'
 // import { EyeNoneIcon } from '@radix-icons/vue'
@@ -26,7 +27,9 @@ export default {
 <template>
   <div v-if="column.getCanSort()" :class="cn('flex items-center space-x-2', $attrs.class ?? '')">
     <span>{{ title }}</span>
-    <CaretSortIcon class="ml-2 h-4 w-4" />
+    <ArrowDownWideNarrowIcon @click="column.toggleSorting(undefined)"  v-if="column.getIsSorted() === 'desc'" class="ml-2 h-4 w-4" />
+    <ArrowUpWideNarrowIcon @click="column.toggleSorting(true)" v-else-if="column.getIsSorted() === 'asc'" class="ml-2 h-4 w-4" />
+    <ChevronsUpDownIcon @click="column.toggleSorting(false)" v-else class="ml-2 h-4 w-4" />
     <!-- <UiDropdownMenu>
       <UiDropdownMenuTrigger as-child>
         <UiButton variant="ghost" size="sm" class="-ml-3 font-medium h-8 text-neutral-700 data-[state=open]:bg-accent">
