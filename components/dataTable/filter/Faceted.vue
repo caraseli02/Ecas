@@ -80,7 +80,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
               )
             }">
               <div :class="cn(
-                'mr-3 flex h-4 w-4 items-center justify-center rounded-md ',
+                'mr-3 flex h-4 w-4 items-center justify-center rounded ',
                 selectedValues.has(option.value)
                   ? 'bg-blue-500 text-white'
                   : 'opacity-50 [&_svg]:invisible border border-gray-600',
