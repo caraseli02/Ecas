@@ -56,7 +56,7 @@ const table = useVueTable({
 <template>
   <div class="space-y-4 mt-5">
     <DataTableToolbar :table="table" />
-    <div class="rounded-md border">
+    <div class="rounded-xl border">
       <UiTable>
         <UiTableHeader class="bg-light-200">
           <UiTableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
