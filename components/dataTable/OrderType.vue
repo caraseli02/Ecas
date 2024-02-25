@@ -1,6 +1,6 @@
 <template>
   <div class='flex min-w-[106px] items-center'>
-    <span :class="status?.icon.bg" class="h-4 w-4 mr-1 rounded-full text-xs text-white flex justify-center items-center">
+    <span :class="status?.icon.bg" class="h-4 w-4 mr-2 rounded-full text-xs text-white flex justify-center items-center">
       {{ status?.icon.text }}
     </span>
     {{ status?.label }}
@@ -8,6 +8,7 @@
 </template>
 
 <script setup lang="ts">
+import { OrderType } from '~/types/order-summary/item'
 
 const orderType = {
   0 : {
@@ -37,7 +38,7 @@ const orderType = {
 }
 
 const props = defineProps<{
-  type: number
+  type: number,
 }>()
 
 const status = computed(() => orderType[props.type as keyof typeof orderType])
