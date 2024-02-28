@@ -54,7 +54,7 @@
                     >
                     <div class="flex flex-row gap-6">
                         <div
-                            v-if="!shippingPreferencesExpanded && order.backorderOption && mixedOrBackOrder"
+                            v-if="!shippingPreferencesExpanded && (!order.stockorderOption || !order.backorderOption)"
                             class="flex flex-row gap-2 items-center"
                         >
                             <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
@@ -132,7 +132,7 @@
 </template>
 
 <script setup lang="ts">
-import type { CartProductsInterface, OrderInterface } from '~/types';
+import { CartProductsInterface, OrderInterface, OrderType } from '~/types';
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
@@ -168,20 +168,20 @@ const stockOrder = computed(() => {
 
 const backOrder = computed(() => {
     const backOrderItems = props.items.filter(
-        (item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock === 0
+        (item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock
     );
     return backOrderItems.length === props.items.length;
 });
 
 const orderType = computed(() => {
     if (stockOrder.value) {
-        Emitter.emit('order-type', 0);
+        Emitter.emit('order-type', OrderType.Stock);
         return 0;
     } else if (backOrder.value) {
-        Emitter.emit('order-type', 1);
+        Emitter.emit('order-type', OrderType.Back);
         return 1;
     } else {
-        Emitter.emit('order-type', 2);
+        Emitter.emit('order-type', OrderType.Mixed);
         return 2;
     }
 });
@@ -203,7 +203,8 @@ const shippingAndBillingMissingInfoWarning = computed(() => {
     }
 });
 
-const mixedOrBackOrder = computed(() => props.order.type === 1 || props.order.type === 2);
+const mixedOrBackOrder = computed(() => props.order.type === OrderType.Back || props.order.type === OrderType.Mixed);
+const mixedOrStockOrder = computed(() => props.order.type === OrderType.Stock || props.order.type === OrderType.Mixed);
 
 const paymentMethodWarning = computed(() => props.order.paymentDetails?.type === null);
 

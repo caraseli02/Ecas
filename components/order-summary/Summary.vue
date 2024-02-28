@@ -84,7 +84,7 @@ import InformationIcon from '~/assets/icons/information.svg';
 import { DeliveryMethodEnum, OrderInterface } from '~/types';
 import { useAuthStore } from '~/store/authStore';
 import { PropType } from 'vue';
-import { GeneralSettingsInterface, ShippingTypesInterface } from '~/types/general-settings/general-settings';
+import { DeliveryTypesInterface, GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
 export default defineComponent({
     name: 'Summary',
@@ -162,7 +162,7 @@ export default defineComponent({
         shippingFee(): number {
             return this.order.deliveryMethod?.price || 0;
         },
-        shipping(): ShippingTypesInterface {
+        shipping(): DeliveryTypesInterface {
             return this.order.deliveryMethod;
         },
     },

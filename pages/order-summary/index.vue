@@ -78,9 +78,10 @@ import { useCartStore } from '~/store/cartStore';
 import { CartInterface } from '~/model/cart/response/cart.interface';
 import {
     BackorderShippingTypesInterface,
+    DeliveryTypesInterface,
     GeneralSettingsInterface,
-    ShippingTypesInterface,
     SmallOrderChargeInterface,
+    StockorderShippingTypesInterface,
 } from '~/types/general-settings/general-settings';
 import { storeToRefs } from 'pinia';
 import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
@@ -323,12 +324,14 @@ const order = ref({
     paymentDetails: {} as PaymentDetails,
     type: '',
     backorderOption: null,
+    stockorderOption: null,
     deliveryMethod: null,
     smallOrder: null,
 });
 
-const deliveryMethod = ref<ShippingTypesInterface | null>(null);
+const deliveryMethod = ref<DeliveryTypesInterface | null>(null);
 const backOrderOption = ref<BackorderShippingTypesInterface | null>(null);
+const stockOrderOption = ref<StockorderShippingTypesInterface | null>(null);
 const smallOrder = ref<SmallOrderChargeInterface | null>(null);
 const paymentDetails = ref<PaymentDetails | null>(null);
 
@@ -337,6 +340,7 @@ watch(
     ([_order]) => {
         deliveryMethod.value = _order.deliveryMethod;
         backOrderOption.value = _order.backorderOption;
+        stockOrderOption.value = _order.stockorderOption;
         smallOrder.value = _order.smallOrder;
         paymentDetails.value = _order.paymentDetails;
     },
@@ -399,14 +403,7 @@ Emitter.on('delete-product-item', async (object: { id: string }) => {
 });
 
 Emitter.on('checkout', async () => {
-    if (
-        !user.value ||
-        !user.value?.personalDetails ||
-        !user.value?.contactDetails ||
-        !deliveryMethod.value ||
-        !smallOrder.value ||
-        !paymentDetails.value
-    ) {
+    if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !paymentDetails.value) {
         console.log('Cannot place order');
         return;
     }
@@ -425,7 +422,8 @@ Emitter.on('checkout', async () => {
                 country: user.value.personalDetails.address.country,
                 address: getShipping(),
                 billingAddress: getBilling(),
-                shippingTypeId: deliveryMethod.value._id,
+                deliveryTypeId: deliveryMethod.value._id,
+                stockorderShippingTypeId: stockOrderOption?.value?._id || undefined,
                 backorderShippingTypeId: backOrderOption?.value?._id || undefined,
             },
             smallOrderChargeId: smallOrder.value._id,
