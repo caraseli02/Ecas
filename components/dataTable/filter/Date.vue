@@ -13,22 +13,22 @@ defineProps<{
 </script>
 
 <template>
-  <div :class="cn('grid gap-2', $attrs.class ?? '')">
+  <div :class="cn('grid gap-2 !ml-0', $attrs.class ?? '')">
     <UiPopover>
       <UiPopoverTrigger as-child>
-        <UiButton
-id="date" :variant="'outline'" :class="cn(
-          'h-8 justify-start text-left font-normal border-dashed px-2',
-          !date && 'text-muted-foreground',
-        )">
+        <UiButton 
+        id="date"
+        :variant="'outline'" 
+        size="sm"
+        :class="cn('justify-start text-left border-dashed px-2 !ml-0  text-neutral-700')">
           <PlusCircledIcon class="mr-2 h-4 w-4" />
          {{ title }}
          <template v-if="date?.start && date.end">
          <UiSeparator orientation="vertical" class="mx-2 h-4" />
-          <span class="text-xs text-neutral-700 bg-light-300 p-1 mr-2 rounded">
+          <span class="text-xs text-neutral-700 bg-light-300 p-1 mr-2 rounded font-light">
             {{ date.start ? format((date.start) as Date, 'dd-MM-yyyy') : '' }}
           </span>
-          <span class="text-xs text-neutral-700 bg-light-300 p-1 rounded">
+          <span class="text-xs text-neutral-700 bg-light-300 p-1 rounded font-light">
             {{ date.end ? format((date.end as Date), 'dd-MM-yyyy') : '' }}
           </span>
         </template>

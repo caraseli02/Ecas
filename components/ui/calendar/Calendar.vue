@@ -79,10 +79,10 @@ const vCalendarSlots = computed(() => {
 <template>
   <div class="relative">
     <div v-if="$attrs.mode !== 'time'" class="absolute flex justify-between w-full px-4 top-3 z-[1]">
-      <UiButton variant="outline" size="sm" class="h-8" @click="handleNav('prev')">
+      <UiButton variant="outline" size="sm" class="h-7 w-7 p-0 opacity-50 hover:opacity-100" @click="handleNav('prev')">
         <ChevronLeft class="w-4 h-4" />
       </UiButton>
-      <UiButton variant="outline" size="sm" class="h-8" @click="handleNav('next')">
+      <UiButton variant="outline" size="sm" class="h-7 w-7 p-0 opacity-50 hover:opacity-100" @click="handleNav('next')">
         <ChevronRight class="w-4 h-4" />
       </UiButton>
     </div>
@@ -114,7 +114,7 @@ const vCalendarSlots = computed(() => {
 
 <style lang="css">
 .calendar {
-  @apply p-3 text-center;
+  @apply p-3 text-center !rounded-[0.35rem];
 }
 .calendar .vc-pane-layout {
   @apply grid gap-4;
@@ -123,7 +123,7 @@ const vCalendarSlots = computed(() => {
   @apply text-sm font-medium relative z-20;
 }
 .vc-popover-content-wrapper .vc-popover-content {
-  @apply mt-3 rounded-md max-w-xs border;
+  @apply mt-3 rounded-lg max-w-xs;
 }
 .vc-popover-content-wrapper .vc-nav-header {
   @apply flex justify-between items-center p-2;
@@ -132,9 +132,14 @@ const vCalendarSlots = computed(() => {
   @apply grid grid-cols-4 gap-2 p-2;
 }
 .vc-popover-content-wrapper .vc-nav-items .vc-nav-item {
-  @apply rounded-md px-2 py-1;
+  @apply rounded-lg px-2 py-1;
 }
-
+.vc-popover-content-wrapper .vc-nav-items .vc-nav-item:hover {
+  @apply text-muted-foreground bg-muted;
+}
+.vc-popover-content-wrapper .vc-nav-items .vc-nav-item.is-active {
+  @apply bg-primary text-primary-foreground;
+}
 .calendar .vc-pane-header-wrapper {
   @apply hidden;
 }
@@ -142,16 +147,10 @@ const vCalendarSlots = computed(() => {
   @apply mt-4;
 }
 .calendar .vc-weekdays {
-  @apply flex;
+  @apply justify-items-center;
 }
 .calendar .vc-weekday {
-  @apply  rounded-md w-full font-normal text-[0.8rem];
-}
-.calendar .vc-weekday-1 {
-	@apply pr-3;
-}
-.calendar .vc-weekday-7 {
-	@apply pl-3;
+  @apply text-muted-foreground rounded-lg font-normal text-[0.8rem];
 }
 .calendar .vc-weeks {
   @apply w-full space-y-2 flex flex-col [&>_div]:grid [&>_div]:grid-cols-7;
@@ -160,7 +159,7 @@ const vCalendarSlots = computed(() => {
   @apply first:rounded-l-md last:rounded-r-md;
 }
 .calendar .vc-day.is-today:not(:has(.vc-day-layer)) .vc-day-content {
-  @apply   rounded-md;
+  @apply bg-secondary text-primary rounded-lg;
 }
 .calendar .vc-day:has(.vc-highlight-base-start) {
   @apply rounded-l-md;
@@ -168,20 +167,32 @@ const vCalendarSlots = computed(() => {
 .calendar .vc-day:has(.vc-highlight-base-end) {
   @apply rounded-r-md;
 }
-.calendar .vc-day:has(.vc-highlight-bg-outline):not(:has(.vc-highlight-base-start)):not(:has(.vc-highlight-base-end)) {
-  @apply rounded-md;
+.calendar
+  .vc-day:has(.vc-highlight-bg-outline):not(:has(.vc-highlight-base-start)):not(
+    :has(.vc-highlight-base-end)
+  ) {
+  @apply rounded-lg;
 }
-.calendar .vc-day-content  {
-  @apply text-center text-sm p-0 relative focus-within:relative focus-within:z-20 inline-flex items-center justify-center  transition-colors focus-visible:outline-none focus-visible:ring-2  focus-visible:ring-offset-2   h-9 w-9 font-normal aria-selected:opacity-100 select-none;
+.calendar .vc-day-content {
+  @apply text-center text-sm p-0 relative focus-within:relative focus-within:z-20 inline-flex items-center justify-center ring-offset-background hover:transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-9 w-9 font-normal aria-selected:opacity-100 select-none;
 }
 .calendar .vc-day-content:not(.vc-highlight-content-light) {
-  @apply rounded-md;
+  @apply rounded-lg;
 }
-.calendar .is-not-in-month:not(:has(.vc-highlight-content-solid)):not(:has(.vc-highlight-content-light)):not(:has(.vc-highlight-content-outline)),
+.calendar
+  .is-not-in-month:not(:has(.vc-highlight-content-solid)):not(
+    :has(.vc-highlight-content-light)
+  ):not(:has(.vc-highlight-content-outline)),
 .calendar .vc-disabled {
-  @apply  opacity-50;
+  @apply text-muted-foreground opacity-50;
 }
-
+.calendar .vc-highlight-content-solid,
+.calendar .vc-highlight-content-outline {
+  @apply bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground;
+}
+/* .calendar .vc-highlight-content-light {
+  @apply bg-accent text-accent-foreground;
+} */
 .calendar .vc-pane-container.in-transition {
   @apply overflow-hidden;
 }
@@ -189,9 +200,9 @@ const vCalendarSlots = computed(() => {
   @apply w-full relative;
 }
 :root {
-	--vc-slide-translate: 22px;
-	--vc-slide-duration: 0.15s;
-	--vc-slide-timing: ease;
+  --vc-slide-translate: 22px;
+  --vc-slide-duration: 0.15s;
+  --vc-slide-timing: ease;
 }
 
 .calendar .vc-fade-enter-active,
@@ -206,19 +217,19 @@ const vCalendarSlots = computed(() => {
 .calendar .vc-slide-down-leave-active,
 .calendar .vc-slide-fade-enter-active,
 .calendar .vc-slide-fade-leave-active {
-	transition:
-		opacity var(--vc-slide-duration) var(--vc-slide-timing),
-		-webkit-transform var(--vc-slide-duration) var(--vc-slide-timing);
-	transition:
-		transform var(--vc-slide-duration) var(--vc-slide-timing),
-		opacity var(--vc-slide-duration) var(--vc-slide-timing);
-	transition:
-		transform var(--vc-slide-duration) var(--vc-slide-timing),
-		opacity var(--vc-slide-duration) var(--vc-slide-timing),
-		-webkit-transform var(--vc-slide-duration) var(--vc-slide-timing);
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
-	pointer-events: none;
+  transition:
+    opacity var(--vc-slide-duration) var(--vc-slide-timing),
+    -webkit-transform var(--vc-slide-duration) var(--vc-slide-timing);
+  transition:
+    transform var(--vc-slide-duration) var(--vc-slide-timing),
+    opacity var(--vc-slide-duration) var(--vc-slide-timing);
+  transition:
+    transform var(--vc-slide-duration) var(--vc-slide-timing),
+    opacity var(--vc-slide-duration) var(--vc-slide-timing),
+    -webkit-transform var(--vc-slide-duration) var(--vc-slide-timing);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  pointer-events: none;
 }
 
 .calendar .vc-none-leave-active,
@@ -227,8 +238,8 @@ const vCalendarSlots = computed(() => {
 .calendar .vc-slide-right-leave-active,
 .calendar .vc-slide-up-leave-active,
 .calendar .vc-slide-down-leave-active {
-	position: absolute !important;
-	width: 100%;
+  position: absolute !important;
+  width: 100%;
 }
 
 .calendar .vc-none-enter-from,
@@ -245,39 +256,39 @@ const vCalendarSlots = computed(() => {
 .calendar .vc-slide-down-leave-to,
 .calendar .vc-slide-fade-enter-from,
 .calendar .vc-slide-fade-leave-to {
-	opacity: 0;
+  opacity: 0;
 }
 
 .calendar .vc-slide-left-enter-from,
 .calendar .vc-slide-right-leave-to,
 .calendar .vc-slide-fade-enter-from.direction-left,
 .calendar .vc-slide-fade-leave-to.direction-left {
-	-webkit-transform: translateX(var(--vc-slide-translate));
-	transform: translateX(var(--vc-slide-translate));
+  -webkit-transform: translateX(var(--vc-slide-translate));
+  transform: translateX(var(--vc-slide-translate));
 }
 
 .calendar .vc-slide-right-enter-from,
 .calendar .vc-slide-left-leave-to,
 .calendar .vc-slide-fade-enter-from.direction-right,
 .calendar .vc-slide-fade-leave-to.direction-right {
-	-webkit-transform: translateX(calc(-1 * var(--vc-slide-translate)));
-	transform: translateX(calc(-1 * var(--vc-slide-translate)));
+  -webkit-transform: translateX(calc(-1 * var(--vc-slide-translate)));
+  transform: translateX(calc(-1 * var(--vc-slide-translate)));
 }
 
 .calendar .vc-slide-up-enter-from,
 .calendar .vc-slide-down-leave-to,
 .calendar .vc-slide-fade-enter-from.direction-top,
 .calendar .vc-slide-fade-leave-to.direction-top {
-	-webkit-transform: translateY(var(--vc-slide-translate));
-	transform: translateY(var(--vc-slide-translate));
+  -webkit-transform: translateY(var(--vc-slide-translate));
+  transform: translateY(var(--vc-slide-translate));
 }
 
 .calendar .vc-slide-down-enter-from,
 .calendar .vc-slide-up-leave-to,
 .calendar .vc-slide-fade-enter-from.direction-bottom,
 .calendar .vc-slide-fade-leave-to.direction-bottom {
-	-webkit-transform: translateY(calc(-1 * var(--vc-slide-translate)));
-	transform: translateY(calc(-1 * var(--vc-slide-translate)));
+  -webkit-transform: translateY(calc(-1 * var(--vc-slide-translate)));
+  transform: translateY(calc(-1 * var(--vc-slide-translate)));
 }
 /**
  * Timepicker styles
@@ -289,7 +300,7 @@ const vCalendarSlots = computed(() => {
   @apply pointer-events-none opacity-50;
 }
 .vc-time-picker.vc-attached {
-  @apply border-t border-solid  mt-2;
+  @apply border-t border-solid border-secondary mt-2;
 }
 .vc-time-picker > * + * {
   @apply mt-1;
@@ -298,25 +309,25 @@ const vCalendarSlots = computed(() => {
   @apply flex items-center text-sm font-semibold uppercase mt-1 px-1 leading-6;
 }
 .vc-time-select-group {
-  @apply inline-flex items-center px-1 rounded-md  border border-solid ;
+  @apply inline-flex items-center px-1 rounded-lg bg-primary-foreground border border-solid border-secondary;
 }
 .vc-time-select-group .vc-base-icon {
-  @apply mr-1  ;
+  @apply mr-1 text-primary stroke-primary;
 }
 .vc-time-select-group select {
-  @apply  p-1 appearance-none outline-none text-center;
+  @apply bg-primary-foreground p-1 appearance-none outline-none text-center;
 }
 .vc-time-weekday {
-  @apply  tracking-wide;
+  @apply text-muted-foreground tracking-wide;
 }
 .vc-time-month {
-  @apply  ml-2;
+  @apply text-primary ml-2;
 }
 .vc-time-day {
-  @apply  ml-1;
+  @apply text-primary ml-1;
 }
 .vc-time-year {
-  @apply  ml-2;
+  @apply text-muted-foreground ml-2;
 }
 .vc-time-colon {
   @apply mb-0.5;

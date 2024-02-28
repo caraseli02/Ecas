@@ -1,18 +1,7 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import { computed } from 'vue'
-import { type Task } from '../data/schema'
+import { type Task } from './data/schema'
 import {MixerHorizontalIcon} from '@radix-icons/vue'
-
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 
 interface DataTableViewOptionsProps {
   table: Table<Task>
@@ -28,22 +17,22 @@ const columns = computed(() => props.table.getAllColumns()
 </script>
 
 <template>
-  <DropdownMenu>
-    <DropdownMenuTrigger as-child>
-      <Button
+  <UiDropdownMenu>
+    <UiDropdownMenuTrigger as-child>
+      <UiButton
         variant="outline"
         size="sm"
         class="ml-auto hidden h-8 lg:flex"
       >
         <MixerHorizontalIcon class="mr-2 h-4 w-4" />
         View
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent align="end" class="w-[150px]">
-      <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-      <DropdownMenuSeparator />
+      </UiButton>
+    </UiDropdownMenuTrigger>
+    <UiDropdownMenuContent align="end" class="w-[150px]">
+      <UiDropdownMenuLabel>Toggle columns</UiDropdownMenuLabel>
+      <UiDropdownMenuSeparator />
 
-      <DropdownMenuCheckboxItem
+      <UiDropdownMenuCheckboxItem
         v-for="column in columns"
         :key="column.id"
         class="capitalize"
@@ -51,7 +40,7 @@ const columns = computed(() => props.table.getAllColumns()
         @update:checked="(value) => column.toggleVisibility(!!value)"
       >
         {{ column.id }}
-      </DropdownMenuCheckboxItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
+      </UiDropdownMenuCheckboxItem>
+    </UiDropdownMenuContent>
+  </UiDropdownMenu>
 </template>
