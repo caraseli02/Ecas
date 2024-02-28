@@ -1,6 +1,6 @@
 <template>
-  <div class="min-w-[128px] flex justify-between">
-    <span class="text-sm">#{{ orderId }}</span>
+  <div class="min-w-[128px] flex justify-between items-center text-neutral-700">
+    <UiButton variant="link" class="text-sm hover:text-blue-500">#{{ orderId }}</UiButton>
     <NuxtLink v-if="notes" to="#">
       <svg class="w-4 h-4 text-slate-500 hover:text-blue-500" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path

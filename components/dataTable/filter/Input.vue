@@ -58,7 +58,7 @@ const clearFilters = () => {
             <UiBadge
               v-if="searchArr.length > 2"
               variant="secondary"
-              class="rounded bg-light-300 px-1 font-normal"
+              class="rounded bg-light-300 px-1 py-[3px] font-normal"
             >
               {{ searchArr.length }} selected
             </UiBadge>
@@ -67,7 +67,7 @@ const clearFilters = () => {
                 v-for="item in searchArr"
                 :key="item"
                 variant="secondary"
-                class="rounded bg-light-300 px-1 font-normal"
+                class="rounded bg-light-300 px-1 py-[3px] font-normal"
               >
                 {{ item }}
               </UiBadge>
@@ -78,14 +78,14 @@ const clearFilters = () => {
     </UiPopoverTrigger>
     <UiPopoverContent class="w-[280px] flex flex-col gap-2 p-2" align="start">
       <div class="flex gap-4 justify-between">
-        <UiInput v-model=searchText placeholder="Filter name or email..." class="h-8 w-full text-neutral-700 border-gray-300" />
+        <UiInput v-model=searchText placeholder="Filter name or email..." class="h-9 w-full text-neutral-700 border-gray-300" />
       <!-- <UiInput
         placeholder="Filter name or email..."
         :model-value=modelValue
         class="h-8 w-full"
         @input="emit('onInput',$event.target.value)"
       /> -->
-      <UiButton variant="secondary" size="sm" class="bg-light-300 text-neutral-700" @click="addToSearch()">
+      <UiButton variant="secondary" size="icon" class="h-9 min-w-9" @click="addToSearch()">
         <MagnifyingGlassIcon class="w-5 h-5" />
       </UiButton>
       </div>

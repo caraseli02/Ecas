@@ -54,7 +54,7 @@ const table = useVueTable({
 </script>
 
 <template>
-  <div class="space-y-4 mt-5">
+  <div class="space-y-4 mt-5 font-Poppins text-neutral-700">
     <DataTableToolbar :table="table" />
     <div class="rounded-xl border">
       <UiTable>

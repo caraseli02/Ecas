@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { OrderType } from '~/types/order-summary/item'
+import { getOrderById } from '~/types/order-summary/item'
 
 const orderType = {
   0 : {
@@ -42,6 +43,12 @@ const props = defineProps<{
 }>()
 
 const status = computed(() => orderType[props.type as keyof typeof orderType])
+
+onMounted(() => {
+  const test = getOrderById(props.type)
+  console.log(test);
+  
+})
 </script>
 
 <style scoped>

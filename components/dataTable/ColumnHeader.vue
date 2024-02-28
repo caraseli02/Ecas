@@ -25,11 +25,11 @@ export default {
 </script>
 
 <template>
-  <div v-if="column.getCanSort()" :class="cn('flex items-center space-x-2 rounded-xl', $attrs.class ?? '')">
+  <div v-if="column.getCanSort()" :class="cn('flex items-center space-x-2 rounded-xl hover:bg-transparent', $attrs.class ?? '')">
     <span>{{ title }}</span>
-    <ArrowDownWideNarrowIcon @click="column.toggleSorting(undefined)"  v-if="column.getIsSorted() === 'desc'" class="ml-2 h-4 w-4" />
-    <ArrowUpWideNarrowIcon @click="column.toggleSorting(true)" v-else-if="column.getIsSorted() === 'asc'" class="ml-2 h-4 w-4" />
-    <ChevronsUpDownIcon @click="column.toggleSorting(false)" v-else class="ml-2 h-4 w-4" />
+    <ArrowDownWideNarrowIcon @click="column.toggleSorting(undefined)"  v-if="column.getIsSorted() === 'desc'" class="ml-2 h-4 w-4 cursor-pointer" />
+    <ArrowUpWideNarrowIcon @click="column.toggleSorting(true)" v-else-if="column.getIsSorted() === 'asc'" class="ml-2 h-4 w-4 cursor-pointer" />
+    <ChevronsUpDownIcon @click="column.toggleSorting(false)" v-else class="ml-2 h-4 w-4 cursor-pointer" />
     <!-- <UiDropdownMenu>
       <UiDropdownMenuTrigger as-child>
         <UiButton variant="ghost" size="sm" class="-ml-3 font-medium h-8 text-neutral-700 data-[state=open]:bg-accent">

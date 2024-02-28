@@ -79,10 +79,10 @@ const vCalendarSlots = computed(() => {
 <template>
   <div class="relative">
     <div v-if="$attrs.mode !== 'time'" class="absolute flex justify-between w-full px-4 top-3 z-[1]">
-      <UiButton variant="outline" size="sm" class="h-8" @click="handleNav('prev')">
+      <UiButton variant="outline" size="sm" class="h-7 w-7 p-0 opacity-50 hover:opacity-100" @click="handleNav('prev')">
         <ChevronLeft class="w-4 h-4" />
       </UiButton>
-      <UiButton variant="outline" size="sm" class="h-8" @click="handleNav('next')">
+      <UiButton variant="outline" size="sm" class="h-7 w-7 p-0 opacity-50 hover:opacity-100" @click="handleNav('next')">
         <ChevronRight class="w-4 h-4" />
       </UiButton>
     </div>
