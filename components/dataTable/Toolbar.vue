@@ -20,7 +20,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
       <UiInput
         placeholder="Filter orders..."
         :model-value="(table.getColumn('shortId')?.getFilterValue() as string) ?? ''"
-        class="h-9 w-[150px] lg:w-[250px]"
+        class="h-9 w-full md:w-[150px] lg:w-[250px]"
         @input="table.getColumn('shortId')?.setFilterValue($event.target.value)"
       />
       <DataTableFilterFaceted

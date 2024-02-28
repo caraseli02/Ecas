@@ -5,9 +5,9 @@ import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon } from 'lucide-vue-next';
 </script>
 
 <template>
-  <div class="h-full flex-1 flex-col space-y-8 flex w-[1392px] shadow-xs p-6 rounded-xl">
+  <div class="h-full flex-1 flex-col space-y-8 flex w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px] shadow-xs p-2 pt-6 md:p-6 rounded-xl">
     <div class="flex items-center justify-between space-y-2">
-      <div class="flex items-center justify-between w-full">
+      <div class="flex flex-col gap-4 md:flex-row  xl:items-center justify-between w-full">
         <h2 class="text-xl font-bold tracking-tight text-neutral-700">
           Orders List
         </h2>
@@ -33,7 +33,7 @@ import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon } from 'lucide-vue-next';
               </defs>
             </svg>
           </UiButton>
-          <UiButton size="sm">Add New</UiButton>
+          <UiButton class="flex-1 md:flex-grow-0" size="sm">Add New</UiButton>
         </div>
       </div>
     </div>

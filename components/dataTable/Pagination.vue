@@ -10,13 +10,13 @@ defineProps<DataTablePaginationProps>()
 </script>
 
 <template>
-  <div class="flex items-center justify-between px-2">
+  <div class="flex flex-col md:flex-row gap-4 md:items-center justify-between px-2">
     <div class="flex-1 text-sm text-grey-600">
       {{ table.getFilteredSelectedRowModel().rows.length }} of
       {{ table.getFilteredRowModel().rows.length }} row(s) Selected.
     </div>
-    <div class="flex items-center space-x-6 lg:space-x-8">
-      <div class="flex items-center space-x-2">
+    <div class="flex items-center justify-between space-x-6 lg:space-x-8">
+      <div class="flex flex-col md:flex-row gap-4 md:items-center space-x-2">
         <p class="text-sm font-medium">
           Rows per page
         </p>
@@ -34,7 +34,8 @@ defineProps<DataTablePaginationProps>()
           </UiSelectContent>
         </UiSelect>
       </div>
-      <div class="flex w-[100px] items-center justify-center text-sm font-medium">
+      <section class="flex flex-col md:flex-row gap-4 item-center">
+      <div class="flex  w-[100px] items-center justify-center text-sm font-medium">
         Page {{ table.getState().pagination.pageIndex + 1 }} of
         {{ table.getPageCount() }}
       </div>
@@ -75,7 +76,7 @@ defineProps<DataTablePaginationProps>()
           <span class="sr-only">Go to last page</span>
           <DoubleArrowRightIcon class="h-4 w-4" />
         </UiButton>
-      </div>
+      </div></section>
     </div>
   </div>
 </template>
