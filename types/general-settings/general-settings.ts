@@ -1,8 +1,9 @@
-import {PaymentTypeEnum} from '../order-summary/item'
+import { PaymentTypeEnum } from '../order-summary/item';
 
 export interface OrderSettingsInterface {
-    shippingTypes: ShippingTypesInterface[];
+    deliveryTypes: DeliveryTypesInterface[];
     backorderShippingTypes: BackorderShippingTypesInterface[];
+    stockorderShippingTypes: StockorderShippingTypesInterface[];
     paymentMethods: PaymentMethodsInterface[];
     smallOrderCharge: SmallOrderChargeInterface[];
 }
@@ -11,15 +12,11 @@ export interface LayoutSettingsInterface {
     _id: string;
 }
 
-export interface ShopSettingsInterface {
-    _id: string;
-}
-
 export interface ProductSettingsInterface {
     _id: string;
 }
 
-export interface ShippingTypesInterface {
+export interface DeliveryTypesInterface {
     _id: string;
     stripeId: string;
     title: string;
@@ -37,6 +34,13 @@ export interface BackorderShippingTypesInterface {
     active: boolean;
 }
 
+export interface StockorderShippingTypesInterface {
+    _id?: string;
+    title: string;
+    description: string;
+    active: boolean;
+}
+
 export interface PaymentMethodsInterface {
     _id?: string;
     type: PaymentTypeEnum;
@@ -49,10 +53,19 @@ export interface SmallOrderChargeInterface {
     price: number;
 }
 
+export interface ShopSettingsInterface {
+    backorderThreshold: BackorderThresholdInterface;
+}
+
+export interface BackorderThresholdInterface {
+    _id?: string;
+    value: number;
+    active: boolean;
+}
+
 export interface GeneralSettingsInterface {
     layoutSettings?: LayoutSettingsInterface;
     orderSettings?: OrderSettingsInterface;
     productSettings?: ProductSettingsInterface;
     shopSettings?: ShopSettingsInterface;
 }
-
