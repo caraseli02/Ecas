@@ -1,7 +1,11 @@
-import {DiscountInterface} from '~/types/auth/account-settings';
-import {ProductInterface} from '~/model/products/response/ProductResponse';
-import {ShippingAddressInterface} from '~/types/auth/user-details';
-import {BackorderShippingTypesInterface, ShippingTypesInterface} from '~/types/general-settings/general-settings';
+import { DiscountInterface } from '~/types/auth/account-settings';
+import { ProductInterface } from '~/model/products/response/ProductResponse';
+import { ShippingAddressInterface } from '~/types/auth/user-details';
+import {
+    BackorderShippingTypesInterface,
+    DeliveryTypesInterface,
+    StockorderShippingTypesInterface,
+} from '~/types/general-settings/general-settings';
 
 export interface OrderSummaryItem {
     title: string;
@@ -58,7 +62,8 @@ export interface OrderInterface {
     createdAt?: string;
     updatedAt?: string;
     backorderOption: BackorderShippingTypesInterface;
-    deliveryMethod: ShippingTypesInterface;
+    stockorderOption: StockorderShippingTypesInterface;
+    deliveryMethod: DeliveryTypesInterface;
 
     /**
      * If the order has a parent, it means that the order is
@@ -108,8 +113,9 @@ export interface OrderShippingDetailsInterface {
     email?: string;
     address: ShippingAddressInterface;
     billingAddress: ShippingAddressInterface;
-    shippingTypeId: string;
+    deliveryTypeId: string;
     backorderShippingTypeId?: string;
+    stockorderShippingTypeId?: string;
 }
 
 export interface PaymentDetails {
@@ -120,24 +126,24 @@ export interface PaymentDetails {
 }
 
 export interface StripeCardInterface {
-    billing_details: ShippingAddressInterface,
-    card: StripeCardInfoInterface
-    id: string,
-    customer?: string,
-    type?: string,
+    billing_details: ShippingAddressInterface;
+    card: StripeCardInfoInterface;
+    id: string;
+    customer?: string;
+    type?: string;
 }
 
 export interface StripeCardInfoInterface {
-    brand?: string,
-    checks?: object,
-    country?: string,
-    exp_month: number,
-    exo_year: number,
-    fingerprint?: string,
-    funding?: string,
-    generated_from?: string | null,
-    last4: string,
-    type: string
+    brand?: string;
+    checks?: object;
+    country?: string;
+    exp_month: number;
+    exo_year: number;
+    fingerprint?: string;
+    funding?: string;
+    generated_from?: string | null;
+    last4: string;
+    type: string;
 }
 
 export enum PaymentStatusEnum {
@@ -146,7 +152,6 @@ export enum PaymentStatusEnum {
     Canceled = 2,
     Declined = 3,
 }
-
 
 export const getPaymentStatusById = <
     T extends {

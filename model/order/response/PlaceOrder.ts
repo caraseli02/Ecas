@@ -3,7 +3,7 @@ import { PaymentStatusEnum } from '~/types';
 
 export interface OrderCreateResponse {
     result?: PaymentIntent;
-    paid: boolean;
+    useExistingPaymentMethod: boolean;
     clientSecret?: string;
     status: PaymentStatusEnum;
 }

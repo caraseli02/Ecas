@@ -78,9 +78,10 @@ import { useCartStore } from '~/store/cartStore';
 import { CartInterface } from '~/model/cart/response/cart.interface';
 import {
     BackorderShippingTypesInterface,
+    DeliveryTypesInterface,
     GeneralSettingsInterface,
-    ShippingTypesInterface,
     SmallOrderChargeInterface,
+    StockorderShippingTypesInterface,
 } from '~/types/general-settings/general-settings';
 import { storeToRefs } from 'pinia';
 import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
@@ -327,8 +328,9 @@ const order = ref({
     smallOrder: null,
 });
 
-const deliveryMethod = ref<ShippingTypesInterface | null>(null);
+const deliveryMethod = ref<DeliveryTypesInterface | null>(null);
 const backOrderOption = ref<BackorderShippingTypesInterface | null>(null);
+const stockOrderOption = ref<StockorderShippingTypesInterface | null>(null);
 const smallOrder = ref<SmallOrderChargeInterface | null>(null);
 const paymentDetails = ref<PaymentDetails | null>(null);
 
@@ -337,6 +339,7 @@ watch(
     ([_order]) => {
         deliveryMethod.value = _order.deliveryMethod;
         backOrderOption.value = _order.backorderOption;
+        stockOrderOption.value = _order.stockorderOption;
         smallOrder.value = _order.smallOrder;
         paymentDetails.value = _order.paymentDetails;
     },
@@ -373,9 +376,10 @@ const calculateDiscount = (orderItems: CartProductsInterface[]) => {
     let discount = 0;
 
     orderItems.forEach((item: CartProductsInterface) => {
+        console.log(item.productEntity?.alias, item.discount);
         discount += Number(item.initialUnitPrice) * item.stock - Number(item.unitPriceAfterDiscounts) * item.stock;
     });
-
+    console.log(discount);
     order.value.discount.total = discount;
 };
 
@@ -398,14 +402,8 @@ Emitter.on('delete-product-item', async (object: { id: string }) => {
 });
 
 Emitter.on('checkout', async () => {
-    if (
-        !user.value ||
-        !user.value?.personalDetails ||
-        !user.value?.contactDetails ||
-        !deliveryMethod.value ||
-        !smallOrder.value ||
-        !paymentDetails.value
-    ) {
+    if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !paymentDetails.value) {
+        console.log('Cannot place order');
         return;
     }
 
@@ -423,7 +421,7 @@ Emitter.on('checkout', async () => {
                 country: user.value.personalDetails.address.country,
                 address: getShipping(),
                 billingAddress: getBilling(),
-                shippingTypeId: deliveryMethod.value._id,
+                deliveryTypeId: deliveryMethod.value._id,
                 backorderShippingTypeId: backOrderOption?.value?._id || undefined,
             },
             smallOrderChargeId: smallOrder.value._id,
@@ -457,7 +455,7 @@ Emitter.on('checkout', async () => {
     }
 
     if (paymentDetails.value.type === PaymentTypeEnum.Card) {
-        if (orderRequestObject.value.stripeCardId && response.data.paid) {
+        if (orderRequestObject.value.stripeCardId && response.data.useExistingPaymentMethod) {
             const result = response.data.result;
 
             if (result?.status === 'succeeded') {
@@ -470,7 +468,7 @@ Emitter.on('checkout', async () => {
                 console.log('order pending', result?.status);
                 await router.push({ path: '/checkout/pending' });
             }
-        } else if (!response.data.paid && response.data.clientSecret) {
+        } else if (!response.data.useExistingPaymentMethod && response.data.clientSecret) {
             cartStore.setOrderClientSecret(response.data.clientSecret);
             await router.push({ path: '/checkout/session' });
         }
@@ -480,7 +478,7 @@ Emitter.on('checkout', async () => {
     }
 
     await cartStore.updateAndReturnCart();
-    await router.push({ path: '/' });
+    // await router.push({ path: '/' });
 });
 
 await fetchList();
