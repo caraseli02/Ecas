@@ -53,10 +53,7 @@
                         >Shipping Preferences</span
                     >
                     <div class="flex flex-row gap-6">
-                        <div
-                            v-if="!shippingPreferencesExpanded && (!order.stockorderOption || !order.backorderOption)"
-                            class="flex flex-row gap-2 items-center"
-                        >
+                        <div v-if="!shippingPreferencesExpanded && !order.backorderOption" class="flex flex-row gap-2 items-center">
                             <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
                                 <WarningErrorHuge />
                                 <template #content>

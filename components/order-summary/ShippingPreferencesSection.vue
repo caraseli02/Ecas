@@ -27,33 +27,6 @@
             </div>
         </template>
 
-        <div v-if="!order.stockorderOption && isMixedOrStockOrder" class="flex flex-row gap-3 items-center">
-            <WarningErrorHuge class="w-6 h-5" />
-            <span class="text-rose-500 text-sm font-medium leading-6">Select stockorder shipping preferences</span>
-        </div>
-        <template v-if="isMixedOrStockOrder">
-            <div v-for="stockOrderOption in generalSettings?.orderSettings?.stockorderShippingTypes" class="flex flex-col gap-4">
-                <button class="flex flex-row gap-3 items-start group" @click="selectStockorderPreference(stockOrderOption)">
-                    <RadioButtonChecked
-                        v-if="order.stockorderOption === stockOrderOption"
-                        class="w-10 sm:w-5 lg:w-10 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300"
-                    />
-                    <RadioButton
-                        v-else
-                        class="w-10 sm:w-5 lg:w-10 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300"
-                    />
-                    <div class="flex flex-col items-start">
-                        <h2 class="text-neutral-700 text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300">
-                            {{ stockOrderOption.title }}
-                        </h2>
-                        <p class="text-neutral-700 text-sm font-normal leading-6 text-start">
-                            {{ stockOrderOption.description }}
-                        </p>
-                    </div>
-                </button>
-            </div>
-        </template>
-
         <div class="flex flex-col gap-4">
             <span class="text-neutral-700 text-sm font-medium leading-6">Delivery Method</span>
             <div v-for="deliveryType in generalSettings?.orderSettings?.deliveryTypes" class="flex flex-col gap-4">

@@ -324,7 +324,6 @@ const order = ref({
     paymentDetails: {} as PaymentDetails,
     type: '',
     backorderOption: null,
-    stockorderOption: null,
     deliveryMethod: null,
     smallOrder: null,
 });
@@ -423,7 +422,6 @@ Emitter.on('checkout', async () => {
                 address: getShipping(),
                 billingAddress: getBilling(),
                 deliveryTypeId: deliveryMethod.value._id,
-                stockorderShippingTypeId: stockOrderOption?.value?._id || undefined,
                 backorderShippingTypeId: backOrderOption?.value?._id || undefined,
             },
             smallOrderChargeId: smallOrder.value._id,
