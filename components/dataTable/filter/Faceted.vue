@@ -35,7 +35,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
         {{ title }}
         <template v-if="selectedValues.size > 0">
           <UiSeparator orientation="vertical" class="mx-2 h-4 bg-gray-300" />
-          <UiBadge variant="secondary" class="bg-light-300 text-neutral-700 rounded-sm px-1 py-[6px] font-normal lg:hidden">
+          <UiBadge variant="secondary" class="bg-light-300 text-neutral-700 rounded-sm px-1 py-[3px] font-normal lg:hidden">
             {{ selectedValues.size }}
           </UiBadge>
           <div class="hidden space-x-1 lg:flex">
