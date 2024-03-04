@@ -16,7 +16,7 @@ const orderType = {
     'value': 'stock_order',
     'label': 'Stock Order',
     'icon': {
-      bg: 'bg-green-500',
+      bg: 'bg-green-600',
       text: 'S',
     }
   },

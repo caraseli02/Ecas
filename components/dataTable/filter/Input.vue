@@ -77,7 +77,7 @@ const clearFilters = () => {
       </UiButton>
     </UiPopoverTrigger>
     <UiPopoverContent class="w-[280px] flex flex-col gap-2 p-2" align="start">
-      <div class="flex gap-4 justify-between">
+      <div class="flex gap-3 justify-between">
         <UiInput v-model=searchText placeholder="Filter name or email..." class="h-9 w-full text-neutral-700 border-gray-300" />
       <!-- <UiInput
         placeholder="Filter name or email..."
@@ -89,7 +89,7 @@ const clearFilters = () => {
         <MagnifyingGlassIcon class="w-5 h-5" />
       </UiButton>
       </div>
-      <UiButton class="text-neutral-700 font-normal text-sm" v-if="searchText.length > 0" size="sm" variant="ghost" @click="clearFilters">Clear filters</UiButton>
+      <UiButton class="text-neutral-700 font-normal text-sm" v-if="searchText.length > 0 || searchArr.length > 0" size="sm" variant="ghost" @click="clearFilters">Clear filters</UiButton>
     </UiPopoverContent>
   </UiPopover>
 </template>

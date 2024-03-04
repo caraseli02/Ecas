@@ -28,18 +28,18 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
 </script>
 
 <template>
-  <UiPopover>
+  <UiPopover class="">
     <UiPopoverTrigger as-child>
       <UiButton variant="outline" size="sm" class="!ml-0 border-dashed  text-neutral-700 hover:bg-light-300">
         <PlusCircledIcon class="mr-2 h-4 w-4" />
         {{ title }}
         <template v-if="selectedValues.size > 0">
-          <UiSeparator orientation="vertical" class="mx-2 h-4 bg-gray-300" />
-          <UiBadge variant="secondary" class="bg-light-300 text-neutral-700 rounded-sm px-1 py-[3px] font-normal lg:hidden">
+          <UiSeparator orientation="vertical" class="mx-2 h-4 bg-grey-300" />
+          <UiBadge variant="secondary" class="bg-light-300 text-neutral-700 rounded-sm px-1 py-[3px] font-normal lg:hidden hover:bg-light-500">
             {{ selectedValues.size }}
           </UiBadge>
           <div class="hidden space-x-1 lg:flex">
-            <UiBadge v-if="selectedValues.size > 2" variant="secondary" class="rounded bg-light-300 text-neutral-700 px-1 py-[3px] font-normal">
+            <UiBadge v-if="selectedValues.size > 2" variant="secondary" class="rounded bg-light-300 hover:bg-light-500 text-neutral-700 px-1 py-[3px] font-normal">
               {{ selectedValues.size }} selected
             </UiBadge>
 
@@ -48,7 +48,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
                 .filter((option) => selectedValues.has(option.value))" :key="option.value" variant="secondary"
                 class="rounded bg-light-300 px-1 py-[3px] font-normal text-neutral-700">
                 <span v-if="option?.badge" :class="option?.badge?.bg"
-                  class="h-4 w-4 mr-2 rounded-full text-[12px] leading-3 text-white flex justify-center items-center">
+                  class="h-4 w-4 mr-2 rounded-full font-poppins text-[12px] leading-3 text-white flex justify-center items-center">
                   {{ option?.badge?.text }}
                 </span>
                 <span v-if="option?.color" :class="option?.color"
@@ -103,7 +103,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
           </UiCommandGroup>
 
           <template v-if="selectedValues.size > 0">
-            <UiSeparator class="bg-gray-300" />
+            <UiSeparator class="bg-grey-300" />
             <UiCommandGroup>
               <UiCommandItem :value="{ label: 'Clear filters' }" class="justify-center text-center"
                 @select="column?.setFilterValue(undefined)">

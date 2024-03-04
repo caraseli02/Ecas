@@ -57,14 +57,14 @@ const range = ref([0,0])
       <div class="grid grid-cols-1 gap-5 rounded-lg bg-white p-4 px-3  w-[256px] shadow-xs">
           <div class="flex items-end gap-3">
             <label>
-              <div class="flex items-center border border-gray-300 rounded-lg pl-3 text-sm h-8">
+              <div class="flex items-center border border-gray-300 rounded-lg pl-3 text-[14px] leading-4 h-8">
                 <span class="font-medium mr-1">$</span>
                 <input v-model.number="range[0]" type="number" class=" bg-transparent py-2 w-full focus:outline-none" />
               </div>
             </label>
-            <div class="text-sm leading-[1.43] mb-3">-</div>
+            <div class="">-</div>
             <label>
-              <div class="flex items-center border border-gray-300 rounded-lg pl-3 text-sm h-8">
+              <div class="flex items-center border border-gray-300 rounded-lg pl-3 text-[14px] leading-4 h-8">
                 <span class="font-medium mr-1">$</span>
                 <input v-model.number="range[1]" type="number" class=" bg-transparent py-2 w-full focus:outline-none" />
               </div>

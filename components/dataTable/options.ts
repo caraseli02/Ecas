@@ -3,7 +3,7 @@ export const orderType = [
     'value': 'stock_order',
     'label': 'Stock Order',
     'badge': {
-      bg: 'bg-green-500',
+      bg: 'bg-green-600',
       text: 'S',
     }
   },
@@ -44,7 +44,7 @@ export const statuses = [
   {
     'value': 'Completed',
     'label': 'Completed',
-    'color': 'bg-green-500'
+    'color': 'bg-green-600'
   },
   {
     'value': 'Partially Shipped',
