@@ -114,10 +114,10 @@ const vCalendarSlots = computed(() => {
 
 <style lang="css">
 .calendar {
-  @apply p-3 text-center !rounded-[0.35rem];
+  @apply p-3 text-center !rounded-[0.3rem];
 }
 .calendar .vc-pane-layout {
-  @apply grid gap-4;
+  @apply !flex !flex-col md:!grid gap-4;
 }
 .calendar .vc-title {
   @apply text-sm font-medium relative z-20;

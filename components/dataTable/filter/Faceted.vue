@@ -80,7 +80,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
               )
             }">
               <div :class="cn(
-                'mr-3 flex h-4 w-4 items-center justify-center rounded ',
+                'mr-3 flex h-4 w-4 items-center justify-center rounded',
                 selectedValues.has(option.value)
                   ? 'bg-blue-500 text-white'
                   : 'opacity-50 [&_svg]:invisible border border-grey-600',
@@ -95,7 +95,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
                 class="h-3 w-3 mr-2 rounded-full text-xs text-white flex justify-center items-center">
               </span>
               <option.icon v-if="option.icon" class="mr-2 h-4 w-4 text-muted-foreground" />
-              <span class="inline truncate">{{ option.label }}</span>
+              <span class="inline truncate cursor-pointer">{{ option.label }}</span>
               <!-- <span v-if="facets?.get(option.value)" class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                 {{ facets.get(option.value) }}
               </span> -->

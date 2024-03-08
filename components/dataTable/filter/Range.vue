@@ -62,7 +62,7 @@ const range = ref([0,0])
                 <input v-model.number="range[0]" type="number" class=" bg-transparent py-2 w-full focus:outline-none" />
               </div>
             </label>
-            <div class="">-</div>
+            <div class="h-full pt-[2.5px]">-</div>
             <label>
               <div class="flex items-center border border-gray-300 rounded-lg pl-3 text-[14px] leading-4 h-8">
                 <span class="font-medium mr-1">$</span>
@@ -76,17 +76,18 @@ const range = ref([0,0])
               <div class="text-sm leading-[1.43] font-medium">${{ range[1] }}</div>
             </div>
             <UiSlider
-  v-model="range" :min="0" :max="100000" :step="10" :tooltips="false" class="rangeSlider"
+  v-model="range" :min="0" :max="100000" :step="10" :tooltips="false" class="rangeSlider bg-light-500"
               @slide="range = $event" />
           </section>
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center gap-3">
           <UiButton
             variant="secondary"
+            class="w-full"
             size="xs"
             @click="cancel">
             Clear Filter
           </UiButton>
-          <PopoverClose class="w-fit" as-child>
+          <PopoverClose class="w-full" as-child>
             <UiButton
               size="xs"
               @click="apply">

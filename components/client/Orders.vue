@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import orders from './data/orders.json'
 import { columns } from './columns'
-import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon } from 'lucide-vue-next';
+import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon, PlusIcon } from 'lucide-vue-next';
 </script>
 
 <template>
@@ -33,7 +33,9 @@ import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon } from 'lucide-vue-next';
               </defs>
             </svg>
           </UiButton>
-          <UiButton class="flex-1 md:flex-grow-0" size="sm">Add New</UiButton>
+          <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
+            <PlusIcon class="h-6 w-6" />
+            Create New</UiButton>
         </div>
       </div>
     </div>
