@@ -11,7 +11,6 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
@@ -21,7 +20,8 @@ import { valueUpdater } from '@/lib/utils'
 
 interface Props {
   columns: ColumnDef<Order, any>[]
-  data: Order[]
+  data: Order[],
+  fetchFn: (page: number, perPage: number, filters?: any, sort?: any) => Promise<void>
 }
 const props = defineProps<Props>()
 
@@ -40,17 +40,27 @@ const table = useVueTable({
     get rowSelection() { return rowSelection.value },
   },
   enableRowSelection: true,
+  manualPagination: true,
+  pageCount: 10,
   onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
   onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
   onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
   onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
   getCoreRowModel: getCoreRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
   getFacetedRowModel: getFacetedRowModel(),
   getFacetedUniqueValues: getFacetedUniqueValues(),
 })
+
+watch(
+  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize],
+  () => {
+    const {pageIndex, pageSize} = table.getState().pagination;
+    props.fetchFn(pageIndex, pageSize)
+  }
+);
+
 </script>
 
 <template>
@@ -68,9 +78,9 @@ const table = useVueTable({
         <UiTableBody>
           <template v-if="table.getRowModel().rows?.length">
             <UiTableRow
-              class="hover:bg-light-200"
               v-for="row in table.getRowModel().rows"
               :key="row.id"
+              class="hover:bg-light-200"
               :data-state="row.getIsSelected() && 'selected'"
             >
               <UiTableCell v-for="cell in row.getVisibleCells()" :key="cell.id">

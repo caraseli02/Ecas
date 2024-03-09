@@ -1,7 +1,55 @@
 <script setup lang="ts">
-import orders from './data/orders.json'
+import { PaymentStatusEnum, type DashboardOrderItem, type OrderInterface } from '~~/types';
 import { columns } from './columns'
 import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon, PlusIcon } from 'lucide-vue-next';
+import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
+import moment from 'moment';
+import _ from 'lodash';
+
+const {$api} = useNuxtApp();
+
+const atPage = ref(1);
+const perPage = ref(10);
+const totalItems = ref(0);
+const loading = ref(true);
+const error = ref(false);
+const emptyData = ref(false);
+const activeFilters = ref([] as FilterInterface[]);
+const activeSort = ref({} as SortInterface);
+const listItems = ref<DashboardOrderItem[]>([]);
+  const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
+  loading.value = true;
+  error.value = false;
+
+  // FIX to use userID
+  filters['userId'] = '';
+
+  const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
+
+  if (!data || data.status !== 'success') {
+    loading.value = false;
+    error.value = true;
+    return;
+  }
+
+  loading.value = false;
+  totalItems.value = data.data.total_items;
+
+  const paginatedOrders = data.data.items as unknown as OrderInterface[];
+
+  if (paginatedOrders) {
+    listItems.value = paginatedOrders.map((order) => ({
+      id: order.shortId,
+      type: order.type,
+      date: moment(order.createdAt).format('DD/MM/YYYY'),
+      payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
+      status: order.status,
+      total: order.total,
+    })) as unknown as DashboardOrderItem[];
+  }
+}, 500);
+
+await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
 </script>
 
 <template>
@@ -39,6 +87,6 @@ import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon, PlusIcon } from 'lucide-
         </div>
       </div>
     </div>
-    <DataTable :data="orders" :columns="columns" />
+    <DataTable :fetchFn="fetchAndSetOrdersList" v-if="listItems" :data="listItems" :columns="columns" />
   </div>
 </template>
