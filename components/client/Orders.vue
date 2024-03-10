@@ -16,7 +16,7 @@ const error = ref(false);
 const emptyData = ref(false);
 const activeFilters = ref([] as FilterInterface[]);
 const activeSort = ref({} as SortInterface);
-const listItems = ref<DashboardOrderItem[]>([]);
+const listItems = ref<OrderInterface[]>([]);
   const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
   loading.value = true;
   error.value = false;
@@ -35,18 +35,8 @@ const listItems = ref<DashboardOrderItem[]>([]);
   loading.value = false;
   totalItems.value = data.data.total_items;
 
-  const paginatedOrders = data.data.items as unknown as OrderInterface[];
+  listItems.value  = data.data.items as unknown as OrderInterface[];
 
-  if (paginatedOrders) {
-    listItems.value = paginatedOrders.map((order) => ({
-      id: order.shortId,
-      type: order.type,
-      date: moment(order.createdAt).format('DD/MM/YYYY'),
-      payment: order.paymentDetails?.status || PaymentStatusEnum.Pending,
-      status: order.status,
-      total: order.total,
-    })) as unknown as DashboardOrderItem[];
-  }
 }, 500);
 
 await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);

@@ -1,29 +1,19 @@
+import { OrderType, type OrderTypeInfo } from '~/types/order-summary/item';
+
 export const orderType = [
-  {
-    'value': 'stock_order',
-    'label': 'Stock Order',
-    'badge': {
-      bg: 'bg-green-600',
-      text: 'S',
-    }
-  },
-  {
-    'value': 'back_order',
-    'label': 'Back Order',
-    'badge': {
-      bg: 'bg-purple-500',
-      text: 'B',
-    }
-  },
-  {
-    'value': 'mixed_order',
-    'label': 'Mixed Order',
-    'badge': {
-      bg: 'bg-blue-500',
-      text: 'M',
-    }
-  }
-]
+  { value: OrderType.Stock, label: 'Stock Order', badge: { bg: 'bg-green-600', text: 'S' }},
+  { value: OrderType.Back,  label: 'Back Order', badge: { bg: 'bg-purple-500', text: 'B' }},
+  { value: OrderType.Mixed, label: 'Mixed Order', badge: { bg: 'bg-blue-500', text: 'M' }},
+];
+
+export function getOrderTypeInfo(Order: number): OrderTypeInfo | null {
+  return orderType.find((item) => item.value === Order) as unknown as OrderTypeInfo | null;
+}
+
+// export function getIconBgColor(type: OrderType): string {
+//   const orderInfo = getOrderTypeInfo(type);
+//   return orderInfo?.badge.bg || 'bg-gray-400'; // Default color
+// }
 
 export const statuses = [
   {

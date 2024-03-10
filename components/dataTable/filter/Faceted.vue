@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Column } from '@tanstack/vue-table'
 import type { Component } from 'vue'
+import type { OrderType } from '~/types/order-summary/item'
 import { type Order } from '../schema'
 import { PlusCircledIcon, CheckIcon } from '@radix-icons/vue'
 
@@ -11,7 +12,7 @@ interface DataTableFacetedFilter {
   title?: string
   options: {
     label: string
-    value: string
+    value: OrderType; // will need a review
     icon?: Component
     color?: string
     badge?: {

@@ -261,13 +261,14 @@ export enum OrderType {
     Mixed = 2,
 }
 
-export const getOrderById = <
-    T extends {
-        [index: string]: number;
-    }
->(
-    enumValue: number
-): string | null => {
-    const keys = Object.keys(OrderType).filter((x) => OrderType[x] === enumValue);
+// The 'as T' is a type assertion to help TypeScript
+export const getOrderById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
+    const keys = Object.keys(OrderType as unknown as T).filter((x) => (OrderType as unknown as T)[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
-};
+  };
+
+export interface OrderTypeInfo {
+    value: OrderType;
+    label: string;
+    badge: { bg: string; text: string };
+  }

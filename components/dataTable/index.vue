@@ -16,7 +16,7 @@ import {
 } from '@tanstack/vue-table'
 
 import { type Order } from './schema'
-import { valueUpdater, transformSortingKeys } from '@/lib/utils'
+import { valueUpdater, transformSortingKeys, transformFiltersToObject } from '@/lib/utils'
 
 interface Props {
   columns: ColumnDef<Order, any>[]
@@ -50,17 +50,17 @@ const table = useVueTable({
   onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
   onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
   getCoreRowModel: getCoreRowModel(),
-  getFilteredRowModel: getFilteredRowModel(),
+  // getFilteredRowModel: getFilteredRowModel(),
   // getSortedRowModel: getSortedRowModel(),
   getFacetedRowModel: getFacetedRowModel(),
   getFacetedUniqueValues: getFacetedUniqueValues(),
 })
 
 watch(
-  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting],
+  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting, table.getState().columnFilters, table.getState().columnFilters],
   () => {
     const {pageIndex, pageSize} = table.getState().pagination;
-    props.fetchFn(pageIndex, pageSize, {}, transformSortingKeys(table.getState().sorting[0]))
+    props.fetchFn(pageIndex, pageSize, transformFiltersToObject(table.getState().columnFilters), transformSortingKeys(table.getState().sorting[0]),)
   }
 );
 
