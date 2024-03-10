@@ -13,3 +13,18 @@ export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref
       ? updaterOrValue(ref.value)
       : updaterOrValue
 }
+
+export function transformSortingKeys(sortingResponse: { id: string, desc: boolean} ) {
+  if (!sortingResponse) {
+    return {}; // Return empty object for no sorting information
+  }
+
+  const sortBy = sortingResponse.id;
+  const sortOrder = sortingResponse.desc ? 'desc' : 'asc';
+
+  return {
+    sortBy,
+    sortOrder,
+  };
+}
+

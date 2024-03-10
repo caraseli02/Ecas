@@ -16,7 +16,7 @@ import {
 } from '@tanstack/vue-table'
 
 import { type Order } from './schema'
-import { valueUpdater } from '@/lib/utils'
+import { valueUpdater, transformSortingKeys } from '@/lib/utils'
 
 interface Props {
   columns: ColumnDef<Order, any>[]
@@ -40,24 +40,27 @@ const table = useVueTable({
     get rowSelection() { return rowSelection.value },
   },
   enableRowSelection: true,
+  //For Server Request
   manualPagination: true,
+  manualSorting: true,
   pageCount: 10,
+  //For Server Request
   onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
   onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
   onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
   onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
   getCoreRowModel: getCoreRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
-  getSortedRowModel: getSortedRowModel(),
+  // getSortedRowModel: getSortedRowModel(),
   getFacetedRowModel: getFacetedRowModel(),
   getFacetedUniqueValues: getFacetedUniqueValues(),
 })
 
 watch(
-  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize],
+  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting],
   () => {
     const {pageIndex, pageSize} = table.getState().pagination;
-    props.fetchFn(pageIndex, pageSize)
+    props.fetchFn(pageIndex, pageSize, {}, transformSortingKeys(table.getState().sorting[0]))
   }
 );
 
