@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { PaymentStatusEnum, type DashboardOrderItem, type OrderInterface } from '~~/types';
+import { type OrderInterface } from '~~/types';
 import { columns } from './columns'
 import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon, PlusIcon } from 'lucide-vue-next';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
-import moment from 'moment';
 import _ from 'lodash';
 
 const {$api} = useNuxtApp();

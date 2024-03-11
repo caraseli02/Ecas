@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type Table } from '@tanstack/vue-table'
 import { type Order } from './schema'
-import { statuses, orderType}  from './options'
+import { statusColors, orderType}  from './options'
 
 import { Cross2Icon } from '@radix-icons/vue'
 
@@ -33,24 +33,21 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         v-if="table.getColumn('userName')"
         :column="table.getColumn('userName')"
         title="Name"
-        :model-value="(table.getColumn('userName')?.getFilterValue() as string) ?? ''"
-        @on-input="table.getColumn('userName')?.setFilterValue($event)"
       />
       <DataTableFilterDate
         title="Date"
+        :column="table.getColumn('createdAt')"
       />
       <DataTableFilterFaceted
         v-if="table.getColumn('status')"
         :column="table.getColumn('status')"
         title="Status"
-        :options="statuses"
+        :status-colors="statusColors"
       />
       <DataTableFilterRange
         v-if="table.getColumn('total')"
         :column="table.getColumn('total')"
         title="Total"
-        :model-value="(table.getColumn('total')?.getFilterValue() as string) ?? ''"
-        @on-input="table.getColumn('total')?.setFilterValue($event)"
       />
       <UiButton
         v-if="isFiltered"

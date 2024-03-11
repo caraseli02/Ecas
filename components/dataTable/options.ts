@@ -1,4 +1,4 @@
-import { OrderType, type OrderTypeInfo } from '~/types/order-summary/item';
+import { OrderStatus, OrderType, type OrderTypeInfo } from '~/types/order-summary/item';
 
 export const orderType = [
   { value: OrderType.Stock, label: 'Stock Order', badge: { bg: 'bg-green-600', text: 'S' }},
@@ -10,10 +10,18 @@ export function getOrderTypeInfo(Order: number): OrderTypeInfo | null {
   return orderType.find((item) => item.value === Order) as unknown as OrderTypeInfo | null;
 }
 
-// export function getIconBgColor(type: OrderType): string {
-//   const orderInfo = getOrderTypeInfo(type);
-//   return orderInfo?.badge.bg || 'bg-gray-400'; // Default color
-// }
+export const statusColors = {
+  [OrderStatus.AbandonedCheckout]: 'bg-gray-800',
+  [OrderStatus.AwaitingPayment]: 'bg-orange-500',
+  [OrderStatus.PartiallyRefunded]: 'bg-purple-500',
+  [OrderStatus.Completed]: 'bg-green-600',
+  [OrderStatus.PartiallyShipped]: 'bg-blue-500',
+  [OrderStatus.Processing]: 'bg-purple-500',
+  [OrderStatus.AwaitingFulfillment]: 'bg-orange-500', 
+  [OrderStatus.VerificationRequired]: 'bg-gray-500', 
+  [OrderStatus.Canceled]: 'bg-gray-500', 
+  // ... potentially more statuses
+};
 
 export const statuses = [
   {

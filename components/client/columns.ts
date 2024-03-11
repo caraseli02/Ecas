@@ -36,7 +36,7 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: 'userName',
     header: ({ column }) => h(ColumnHeader, { column, title: 'Name', }),
     cell: ({ row }) => 
-    h(OrderUserInfo, { name: 'add userName', email: 'add userEmail' }),
+    h(OrderUserInfo, { name: row.getValue('userName') ?? 'add userName', email: row.getValue('userEmail') ?? 'add userEmail' }),
 
   },
   {
@@ -48,7 +48,7 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => h(ColumnHeader, { column, title: 'Status' }),
-    cell: ({ row }) => h(OrderStatus, { status: row.getValue('status'), statuses: statuses }),
+    cell: ({ row }) => h(OrderStatus, { status: row.getValue('status') }),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },

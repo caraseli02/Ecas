@@ -60,7 +60,14 @@ watch(
   () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting, table.getState().columnFilters, table.getState().columnFilters],
   () => {
     const {pageIndex, pageSize} = table.getState().pagination;
-    props.fetchFn(pageIndex, pageSize, transformFiltersToObject(table.getState().columnFilters), transformSortingKeys(table.getState().sorting[0]),)
+    console.log(transformFiltersToObject(table.getState().columnFilters));
+    
+    props.fetchFn(
+      pageIndex, 
+      pageSize, 
+      transformFiltersToObject(table.getState().columnFilters), 
+      transformSortingKeys(table.getState().sorting[0])
+      )
   }
 );
 

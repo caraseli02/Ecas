@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Column } from '@tanstack/vue-table'
 import type { Component } from 'vue'
-import type { OrderType } from '~/types/order-summary/item'
+import { OrderStatus, type OrderType } from '~/types/order-summary/item'
 import { type Order } from '../schema'
 import { PlusCircledIcon, CheckIcon } from '@radix-icons/vue'
 
@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 interface DataTableFacetedFilter {
   column?: Column<Order, any>
   title?: string
-  options: {
+  options?: {
     label: string
     value: OrderType; // will need a review
     icon?: Component
@@ -20,6 +20,9 @@ interface DataTableFacetedFilter {
       text: string;
     }
   }[]
+  statusColors?: { // Corrected property name
+    [key in OrderStatus]: string; // Index signature using 'key in'
+  }
 }
 
 const props = defineProps<DataTableFacetedFilter>()
@@ -36,26 +39,39 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
         {{ title }}
         <template v-if="selectedValues.size > 0">
           <UiSeparator orientation="vertical" class="mx-2 h-4 bg-grey-300" />
-          <UiBadge variant="secondary" class="bg-light-300 text-neutral-700 rounded-sm px-1 py-[3px] font-normal lg:hidden hover:bg-light-500">
+          <UiBadge variant="secondary"
+            class="bg-light-300 text-neutral-700 rounded-sm px-1 py-[3px] font-normal lg:hidden hover:bg-light-500">
             {{ selectedValues.size }}
           </UiBadge>
           <div class="hidden space-x-1 lg:flex">
-            <UiBadge v-if="selectedValues.size > 2" variant="secondary" class="rounded bg-light-300 hover:bg-light-500 text-neutral-700 px-1 py-[3px] font-normal">
+            <UiBadge v-if="selectedValues.size > 2" variant="secondary"
+              class="rounded bg-light-300 hover:bg-light-500 text-neutral-700 px-1 py-[3px] font-normal">
               {{ selectedValues.size }} selected
             </UiBadge>
 
             <template v-else>
-              <UiBadge v-for="option in options
-                .filter((option) => selectedValues.has(option.value))" :key="option.value" variant="secondary"
-                class="rounded bg-light-300 px-1 py-[3px] font-normal text-neutral-700">
-                <span v-if="option?.badge" :class="option?.badge?.bg"
-                  class="h-4 w-4 mr-2 rounded-full font-poppins text-[12px] leading-3 text-white flex justify-center items-center">
-                  {{ option?.badge?.text }}
-                </span>
-                <span v-if="option?.color" :class="option?.color"
-                  class="h-3 w-3 mr-2 rounded-full text-xs flex justify-center items-center" />
-                {{ option.label }}
-              </UiBadge>
+              <template v-if="options">
+                <UiBadge v-for="option in options
+                  .filter((option) => selectedValues.has(option.value))" :key="option.value" variant="secondary"
+                  class="rounded bg-light-300 px-1 py-[3px] font-normal text-neutral-700">
+                  <span v-if="option?.badge" :class="option?.badge?.bg"
+                    class="h-4 w-4 mr-2 rounded-full font-poppins text-[12px] leading-3 text-white flex justify-center items-center">
+                    {{ option?.badge?.text }}
+                  </span>
+                  <span v-if="option?.color" :class="option?.color"
+                    class="h-3 w-3 mr-2 rounded-full text-xs flex justify-center items-center" />
+                  {{ option.label }}
+                </UiBadge>
+              </template>
+              <template v-if="statusColors">
+                <UiBadge v-for="option in props.column?.getFilterValue()
+                  .filter((option) => selectedValues.has(option))" :key="option" variant="secondary"
+                  class="rounded bg-light-300 px-1 py-[3px] font-normal text-neutral-700">
+                  <span :class="statusColors[option]"
+                    class="h-3 w-3 mr-2 rounded-full text-xs flex justify-center items-center" />
+                  {{ option }}
+                </UiBadge>
+              </template>
             </template>
           </div>
         </template>
@@ -67,40 +83,73 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
         <UiCommandList>
           <UiCommandEmpty>No results found.</UiCommandEmpty>
           <UiCommandGroup>
-            <UiCommandItem v-for="option in options" :key="option.value" :value="option" @select="() => {
-              const isSelected = selectedValues.has(option.value)
-              if (isSelected) {
-                selectedValues.delete(option.value)
-              }
-              else {
-                selectedValues.add(option.value)
-              }
-              const filterValues = Array.from(selectedValues)
-              column?.setFilterValue(
-                filterValues.length ? filterValues : undefined,
-              )
-            }">
-              <div :class="cn(
-                'mr-3 flex h-4 w-4 items-center justify-center rounded',
-                selectedValues.has(option.value)
-                  ? 'bg-blue-500 text-white'
-                  : 'opacity-50 [&_svg]:invisible border border-grey-600',
-              )">
-                <CheckIcon :class="cn('h-4 w-4')" />
-              </div>
-              <span v-if="option?.badge" :class="option?.badge?.bg"
-                class="h-4 w-4 mr-2 rounded-full text-[12px] leading-3 text-white flex justify-center items-center">
-                {{ option?.badge?.text }}
-              </span>
-              <span v-if="option?.color" :class="option?.color"
-                class="h-3 w-3 mr-2 rounded-full text-xs text-white flex justify-center items-center">
-              </span>
-              <option.icon v-if="option.icon" class="mr-2 h-4 w-4 text-muted-foreground" />
-              <span class="inline truncate cursor-pointer">{{ option.label }}</span>
-              <!-- <span v-if="facets?.get(option.value)" class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+            <template v-if="options">
+              <UiCommandItem v-for="option in options" :key="option.value" :value="option" @select="() => {
+                const isSelected = selectedValues.has(option.value)
+                if (isSelected) {
+                  selectedValues.delete(option.value)
+                }
+                else {
+                  selectedValues.add(option.value)
+                }
+                const filterValues = Array.from(selectedValues)
+                column?.setFilterValue(
+                  filterValues.length ? filterValues : undefined,
+                )
+              }">
+                <div :class="cn(
+                  'mr-3 flex h-4 w-4 items-center justify-center rounded',
+                  selectedValues.has(option.value)
+                    ? 'bg-blue-500 text-white'
+                    : 'opacity-50 [&_svg]:invisible border border-grey-600',
+                )">
+                  <CheckIcon :class="cn('h-4 w-4')" />
+                </div>
+                <span v-if="option?.badge" :class="option?.badge?.bg"
+                  class="h-4 w-4 mr-2 rounded-full text-[12px] leading-3 text-white flex justify-center items-center">
+                  {{ option?.badge?.text }}
+                </span>
+                <span v-if="option?.color" :class="option?.color"
+                  class="h-3 w-3 mr-2 rounded-full text-xs text-white flex justify-center items-center">
+                </span>
+                <option.icon v-if="option.icon" class="mr-2 h-4 w-4 text-muted-foreground" />
+                <span class="inline truncate cursor-pointer">{{ option.label }}</span>
+                <!-- <span v-if="facets?.get(option.value)" class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                 {{ facets.get(option.value) }}
               </span> -->
-            </UiCommandItem>
+              </UiCommandItem>
+            </template>
+            <template v-if="statusColors">
+              <UiCommandItem v-for="(color, value) in statusColors" :key="value" :value="value" @select="() => {
+                const isSelected = selectedValues.has(value)
+                if (isSelected) {
+                  selectedValues.delete(value)
+                }
+                else {
+                  selectedValues.add(value)
+                }
+                const filterValues = Array.from(selectedValues)
+                column?.setFilterValue(
+                  filterValues.length ? filterValues : undefined,
+                )
+              }">
+                <div :class="cn(
+                  'mr-3 flex h-4 w-4 items-center justify-center rounded',
+                  selectedValues.has(value)
+                    ? 'bg-blue-500 text-white'
+                    : 'opacity-50 [&_svg]:invisible border border-grey-600',
+                )">
+                  <CheckIcon :class="cn('h-4 w-4')" />
+                </div>
+                <span v-if="color" :class="color"
+                  class="h-3 w-3 mr-2 rounded-full text-xs text-white flex justify-center items-center">
+                </span>
+                <span class="inline truncate cursor-pointer">{{ value }}</span>
+                <!-- <span v-if="facets?.get(option.value)" class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+                {{ facets.get(option.value) }}
+              </span> -->
+              </UiCommandItem>
+            </template>
           </UiCommandGroup>
 
           <template v-if="selectedValues.size > 0">

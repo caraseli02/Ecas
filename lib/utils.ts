@@ -33,34 +33,24 @@ export function transformSortingKeys(sortingResponse: { id: string, desc: boolea
   };
 }
 
-function transformFilters(filters: Filter[]): { filter: string; value: unknown }[] {
-  const transformed_filters: { filter: string; value: unknown }[] = [];
-
-  for (const filter_obj of filters) {
-    const filter_id = filter_obj.id;
-    const filter_value = filter_obj.value;
-
-    // Handle single value filters
-    if (!Array.isArray(filter_value)) {
-      transformed_filters.push({ filter: filter_id, value: filter_value });
-    }
-
-    // Handle multiple value filters
-    else {
-      for (const value of filter_value) {
-        transformed_filters.push({ filter: filter_id, value });
-      }
-    }
-  }
-
-  return transformed_filters;
-}
-
 export function transformFiltersToObject(filters: Filter[]): Record<string, unknown> {
   const transformedFilters: Record<string, unknown> = {};
 
   for (const filter of filters) {
-    if (Array.isArray(filter.value)) {
+    if (filter.id === 'userName') {
+      // Change the key to 'name'
+      transformedFilters['name'] = filter.value;
+    } else if (filter.id === 'createdAt') {
+        transformedFilters['startDate'] = (filter.value as string[])[0];
+        transformedFilters['endDate'] = (filter.value as string[])[1];
+  
+    }
+    else if (filter.id === 'total') {
+      transformedFilters['totalFrom'] = (filter.value as string[])[0];
+      transformedFilters['totalTo'] = (filter.value as string[])[1];
+
+    }
+    else if (Array.isArray(filter.value)) {
       transformedFilters[filter.id] = filter.value.join(', ');
     } else {
       transformedFilters[filter.id] = filter.value;
