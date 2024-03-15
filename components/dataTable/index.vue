@@ -21,7 +21,9 @@ import { valueUpdater, transformSortingKeys, transformFiltersToObject } from '@/
 interface Props {
   columns: ColumnDef<Order, any>[]
   data: Order[],
-  fetchFn: (page: number, perPage: number, filters?: any, sort?: any) => Promise<void>
+  fetchFn: (page: number, perPage: number, filters?: any, sort?: any) => Promise<void>,
+  rowCount: number,
+  pageCount: number,
 }
 const props = defineProps<Props>()
 
@@ -43,7 +45,7 @@ const table = useVueTable({
   //For Server Request
   manualPagination: true,
   manualSorting: true,
-  pageCount: 10,
+  pageCount: props.pageCount,
   //For Server Request
   onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
   onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
@@ -52,15 +54,14 @@ const table = useVueTable({
   getCoreRowModel: getCoreRowModel(),
   // getFilteredRowModel: getFilteredRowModel(),
   // getSortedRowModel: getSortedRowModel(),
-  getFacetedRowModel: getFacetedRowModel(),
-  getFacetedUniqueValues: getFacetedUniqueValues(),
+  // getFacetedRowModel: getFacetedRowModel(),
+  // getFacetedUniqueValues: getFacetedUniqueValues(),
 })
 
 watch(
-  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting, table.getState().columnFilters, table.getState().columnFilters],
+  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting, table.getState().columnFilters],
   () => {
     const {pageIndex, pageSize} = table.getState().pagination;
-    console.log(transformFiltersToObject(table.getState().columnFilters));
     
     props.fetchFn(
       pageIndex, 
@@ -70,6 +71,38 @@ watch(
       )
   }
 );
+
+watch(
+  () => table.getState().columnFilters,
+  () => {
+    const { pageSize } = table.getState().pagination;
+    table.setPageIndex(0)
+    console.log(table.getState().columnFilters);
+    
+    // table.setOptions({ ...table.options, pageCount: props.pageCount });
+    // table.options.pageCount = props.pageCount
+    props.fetchFn(
+      1, 
+      pageSize, 
+      transformFiltersToObject(table.getState().columnFilters), 
+      transformSortingKeys(table.getState().sorting[0])
+      )
+  }
+);
+
+watch(
+  () => props.pageCount,
+  async () => {
+    await nextTick();
+    table.setOptions({ ...table.options, pageCount: props.pageCount });
+  }, {deep: true}
+);
+
+// watch(() => props.rowCount, () => {
+//   console.log('reset');
+  
+//   table.reset()
+// }, {deep: true})
 
 </script>
 
@@ -111,6 +144,6 @@ watch(
       </UiTable>
     </div>
 
-    <DataTablePagination :table="table" />
+    <DataTablePagination :pageCount="props.pageCount" :table="table" />
   </div>
 </template>

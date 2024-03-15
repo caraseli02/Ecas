@@ -7,9 +7,8 @@ import _ from 'lodash';
 
 const {$api} = useNuxtApp();
 
-const atPage = ref(1);
-const perPage = ref(10);
 const totalItems = ref(0);
+const pageCount = ref(0);
 const loading = ref(true);
 const error = ref(false);
 const emptyData = ref(false);
@@ -17,11 +16,9 @@ const activeFilters = ref([] as FilterInterface[]);
 const activeSort = ref({} as SortInterface);
 const listItems = ref<OrderInterface[]>([]);
   const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
-  loading.value = true;
   error.value = false;
 
   // FIX to use userID
-  filters['userId'] = '';
 
   const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
 
@@ -31,14 +28,14 @@ const listItems = ref<OrderInterface[]>([]);
     return;
   }
 
-  loading.value = false;
   totalItems.value = data.data.total_items;
-
+  pageCount.value = data.data.page_count;
   listItems.value  = data.data.items as unknown as OrderInterface[];
-
+  loading.value = false
 }, 500);
 
-await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, activeSort.value);
+await fetchAndSetOrdersList(1, 10, activeFilters.value, activeSort.value);
+
 </script>
 
 <template>
@@ -76,6 +73,6 @@ await fetchAndSetOrdersList(atPage.value, perPage.value, activeFilters.value, ac
         </div>
       </div>
     </div>
-    <DataTable :fetchFn="fetchAndSetOrdersList" v-if="listItems" :data="listItems" :columns="columns" />
+    <DataTable v-if="!loading" :fetchFn="fetchAndSetOrdersList" :pageCount="pageCount" :data="listItems" :columns="columns" />
   </div>
 </template>

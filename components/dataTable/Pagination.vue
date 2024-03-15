@@ -4,9 +4,12 @@ import { type Task } from './data/schema'
 import {ChevronLeftIcon, DoubleArrowRightIcon, ChevronRightIcon, DoubleArrowLeftIcon} from '@radix-icons/vue'
 
 interface DataTablePaginationProps {
-  table: Table<Task>
+  table: Table<Task>,
+  pageCount: number,
 }
-defineProps<DataTablePaginationProps>()
+const props = defineProps<DataTablePaginationProps>()
+
+const test = computed(() => props.table.getPageCount())
 </script>
 
 <template>
@@ -28,7 +31,7 @@ defineProps<DataTablePaginationProps>()
             <UiSelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
           </UiSelectTrigger>
           <UiSelectContent side="top">
-            <UiSelectItem class="cursor-pointer" v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" :value="`${pageSize}`">
+            <UiSelectItem v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" class="cursor-pointer" :value="`${pageSize}`">
               {{ pageSize }}
             </UiSelectItem>
           </UiSelectContent>
@@ -37,7 +40,7 @@ defineProps<DataTablePaginationProps>()
       <section class="flex flex-col md:flex-row gap-4 item-center">
       <div class="flex  w-[100px] items-center justify-center text-sm font-medium">
         Page {{ table.getState().pagination.pageIndex + 1 }} of
-        {{ table.getPageCount() }}
+        {{ pageCount }}
       </div>
       <div class="flex items-center space-x-2">
         <UiButton

@@ -13,10 +13,15 @@ const emit = defineEmits<{
   onInput: [value: string]
 }>()
 
-const isNameValid = (name: string) => {
-  // Regular expression for basic name validation (alphabets and spaces)
-  const nameRegex = /^[A-Za-z\s]+$/;
-  return nameRegex.test(name);
+const isNameOrEmailValid = (input: string) => {
+  // 1. Basic name validation (alphabets, spaces, hyphens, apostrophes)
+  const nameRegex = /^[A-Za-z\s\-']+$/;
+
+  // 2. Simple email validation (local part, @, domain)
+  const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
+
+  // Test against either regex
+  return nameRegex.test(input) || emailRegex.test(input);
 };
 
 const searchText = ref('')
@@ -24,7 +29,7 @@ const searchText = ref('')
 const addToSearch = () => {
   const trimmedName = searchText.value.trim();
 
-  if (trimmedName && isNameValid(trimmedName)) {
+  if (trimmedName && isNameOrEmailValid(trimmedName)) {
     props.column?.setFilterValue(trimmedName)
     searchText.value = '';
   } else {

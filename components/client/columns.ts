@@ -36,7 +36,7 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: 'userName',
     header: ({ column }) => h(ColumnHeader, { column, title: 'Name', }),
     cell: ({ row }) => 
-    h(OrderUserInfo, { name: row.getValue('userName') ?? 'add userName', email: row.getValue('userEmail') ?? 'add userEmail' }),
+    h(OrderUserInfo, { name: row.getValue('userName') ?? 'add userName', email: 'add userEmail' }),
 
   },
   {
