@@ -16,12 +16,11 @@ const range = ref([0,0])
 const cancel = () => {
   range.value = [0, 0]
   props.column?.setFilterValue(undefined)
-  console.log(range.value);
   
 }
 const apply = () => {
-  console.log(range.value);
   props.column?.setFilterValue(range.value)
+  range.value = [0, 0]
 }
 
 const selectedValues = computed(() => props.column?.getFilterValue() as string[])

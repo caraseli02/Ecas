@@ -42,6 +42,7 @@ const props = defineProps<{
 watch(date, () => {
   const filterValue = transformObject(date.value as Filter)
   props.column?.setFilterValue(filterValue)
+  date.value = undefined
 }, {deep: true})
 
 const selectedValues = computed(() => props.column?.getFilterValue()) as unknown as [string, string]

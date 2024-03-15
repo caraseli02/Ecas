@@ -25,7 +25,6 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: 'shortId',
     header: ({ column }) => h(ColumnHeader, { column, title: 'Order' }),
     cell: ({ row }) => h(OrderId, { orderId: row.getValue('shortId'), notes: [] }),
-    enableHiding: false,
   },
   {
     accessorKey: 'type',
@@ -43,7 +42,6 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: 'createdAt',
     header: ({ column }) => h(ColumnHeader, { column, title: 'Date' }),
     cell: ({ row }) => h(OrderDate, { inputDateString: row.getValue('createdAt')}),
-    enableHiding: false,
   },
   {
     accessorKey: 'status',
@@ -57,7 +55,6 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: 'total',
     header: ({ column }) => h(ColumnHeader, { column, title: 'Total' }),
     cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas(row.getValue('total'))),
-    enableHiding: false,
   },
   {
     id: 'actions',
