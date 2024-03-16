@@ -58,12 +58,13 @@ const table = useVueTable({
 })
 
 watch(
-  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting, table.getState().columnFilters],
+  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting],
   () => {
     const {pageIndex, pageSize} = table.getState().pagination;
+    const rightIndex = pageIndex + 1;
     
     props.fetchFn(
-      pageIndex, 
+      rightIndex, 
       pageSize, 
       transformFiltersToObject(table.getState().columnFilters), 
       transformSortingKeys(table.getState().sorting[0])
@@ -89,13 +90,13 @@ watch(
   }
 );
 
-watch(
-  () => props.pageCount,
-  async () => {
-    await nextTick();
-    table.setOptions({ ...table.options, pageCount: props.pageCount });
-  }, {deep: true}
-);
+// watch(
+//   () => props.pageCount,
+//   async () => {
+//     await nextTick();
+//     table.setOptions({ ...table.options, pageCount: props.pageCount });
+//   }, {deep: true}
+// );
 
 // watch(() => props.rowCount, () => {
 //   console.log('reset');
