@@ -1,11 +1,10 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import type { Column } from '@tanstack/vue-table'
 
 import { PlusCircledIcon } from '@radix-icons/vue'
 import { PopoverClose } from 'radix-vue';
-import { Order } from '../schema';
 interface DataTableInputFilter {
-  column?: Column<Order, any>
+  column?: Column<TData, any>
   title?: string
 }
 

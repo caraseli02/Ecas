@@ -74,6 +74,8 @@ export interface OrderInterface {
     parent?: string;
 }
 
+export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'userName' | 'createdAt' | 'status' | 'total'>;
+
 export interface OrderRequestInterface {
     userId?: string;
     userName?: string;

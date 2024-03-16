@@ -1,14 +1,14 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import type { Column } from '@tanstack/vue-table'
 import type { Component } from 'vue'
 import { OrderStatus, type OrderType } from '~/types/order-summary/item'
-import { type Order } from '../schema'
+
 import { PlusCircledIcon, CheckIcon } from '@radix-icons/vue'
 
 import { cn } from '@/lib/utils'
 
 interface DataTableFacetedFilter {
-  column?: Column<Order, any>
+  column?: Column<TData, any>
   title?: string
   options?: {
     label: string
@@ -20,8 +20,8 @@ interface DataTableFacetedFilter {
       text: string;
     }
   }[]
-  statusColors?: { // Corrected property name
-    [key in OrderStatus]: string; // Index signature using 'key in'
+  statusColors?: {
+    [value in OrderStatus]: string; // Index signature
   }
 }
 

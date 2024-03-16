@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData, TValue">
 import type {
   ColumnDef,
   ColumnFiltersState,
@@ -15,14 +15,13 @@ import {
   useVueTable,
 } from '@tanstack/vue-table'
 
-import { type Order } from './schema'
 import { valueUpdater, transformSortingKeys, transformFiltersToObject } from '@/lib/utils'
+import { DebouncedFunc } from 'lodash'
 
 interface Props {
-  columns: ColumnDef<Order, any>[]
-  data: Order[],
-  fetchFn: (page: number, perPage: number, filters?: any, sort?: any) => Promise<void>,
-  rowCount: number,
+  columns: ColumnDef<TData, TValue>[]
+    data: TData[]
+  fetchFn: DebouncedFunc<(page: number, perPage: number, filters?: any, sort?: any) => Promise<void>>,
   pageCount: number,
 }
 const props = defineProps<Props>()

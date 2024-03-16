@@ -1,10 +1,9 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import type { Table } from '@tanstack/vue-table'
-import { type Task } from './data/schema'
 import { EyeIcon } from 'lucide-vue-next';
 
 interface DataTableViewOptionsProps {
-  table: Table<Task>
+  table: Table<TData>
 }
 
 const props = defineProps<DataTableViewOptionsProps>()

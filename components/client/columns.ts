@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { Order } from '~/components/dataTable/schema'
+import { OrderTableColumns, type OrderInterface } from '~~/types';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue'
 import RowActions from '~/components/dataTable/RowActions.vue'
 import OrderId from '~/components/dataTable/OrderId.vue'
@@ -11,7 +11,7 @@ import { statuses } from '~/components/dataTable/options'
 // import { Checkbox } from '@/components/ui/checkbox'
 // import { Badge } from '@/components/ui/badge'
 
-export const columns: ColumnDef<Order>[] = [
+export const columns: ColumnDef<OrderTableColumns>[] = [
   // {
   //   id: 'select',
   //   header: ({ table }) => h(Checkbox,

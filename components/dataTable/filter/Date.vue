@@ -1,11 +1,9 @@
-<script setup lang="ts">
-import { addDays, format } from 'date-fns'
+<script setup lang="ts" generic="TData">
 import { PlusCircledIcon } from '@radix-icons/vue'
 import { DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker'
 import { ref } from 'vue'
 import { cn } from '@/lib/utils'
 import { Column } from '@tanstack/vue-table'
-import { Order } from '../schema'
 
 interface Filter {
   start: Date;
@@ -36,7 +34,7 @@ function transformObject(data: Filter): [string, string] {
 
 const props = defineProps<{
   title: string,
-  column?: Column<Order, any>
+  column?: Column<TData, any>
 }>()
 
 watch(date, () => {

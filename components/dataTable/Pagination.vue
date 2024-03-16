@@ -1,15 +1,13 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
-import { type Task } from './data/schema'
 import {ChevronLeftIcon, DoubleArrowRightIcon, ChevronRightIcon, DoubleArrowLeftIcon} from '@radix-icons/vue'
 
 interface DataTablePaginationProps {
-  table: Table<Task>,
+  table: Table<TData>,
   pageCount: number,
 }
 const props = defineProps<DataTablePaginationProps>()
 
-const test = computed(() => props.table.getPageCount())
 </script>
 
 <template>

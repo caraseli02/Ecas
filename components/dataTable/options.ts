@@ -20,7 +20,17 @@ export const statusColors = {
   [OrderStatus.AwaitingFulfillment]: 'bg-orange-500', 
   [OrderStatus.VerificationRequired]: 'bg-gray-500', 
   [OrderStatus.Canceled]: 'bg-gray-500', 
-  // ... potentially more statuses
+  [OrderStatus.OnDispute]: 'bg-yellow-500',
+  [OrderStatus.Disputed]: 'bg-yellow-600',
+  [OrderStatus.Refunded]: 'bg-red-500',
+  [OrderStatus.Returned]: 'bg-red-600', 
+  [OrderStatus.Shipped]: 'bg-green-700',
+  [OrderStatus.Delivered]: 'bg-green-800',
+  [OrderStatus.PaymentDeclined]: 'bg-red-700',
+  [OrderStatus.Pending]: 'bg-yellow-400',
+  [OrderStatus.AwaitingShipment]: 'bg-yellow-300',
+  [OrderStatus.AwaitingPickup]: 'bg-yellow-200',
+  [OrderStatus.PaymentReceived]: 'bg-teal-400',  
 };
 
 export const statuses = [

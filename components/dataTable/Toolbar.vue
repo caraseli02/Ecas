@@ -1,12 +1,11 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
-import { type Order } from './schema'
 import { statusColors, orderType}  from './options'
 
 import { Cross2Icon } from '@radix-icons/vue'
 
 interface DataTableToolbarProps {
-  table: Table<Order>
+  table: Table<TData>
 }
 
 const props = defineProps<DataTableToolbarProps>()

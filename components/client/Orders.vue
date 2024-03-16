@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { type OrderInterface } from '~~/types';
+import { OrderTableColumns, type OrderInterface } from '~~/types';
 import { columns } from './columns'
-import { RefreshCwIcon, EyeIcon, SlidersHorizontalIcon, PlusIcon } from 'lucide-vue-next';
 import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import _ from 'lodash';
 
@@ -14,7 +13,7 @@ const error = ref(false);
 const emptyData = ref(false);
 const activeFilters = ref([] as FilterInterface[]);
 const activeSort = ref({} as SortInterface);
-const listItems = ref<OrderInterface[]>([]);
+const listItems = ref<OrderTableColumns[]>([]);
 const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
   error.value = false;
 
@@ -41,43 +40,15 @@ await fetchAndSetOrdersList(1, 10, activeFilters.value, activeSort.value);
 <template>
   <div
     class="h-full flex-1 flex-col space-y-8 flex w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px] shadow-xs p-2 pt-6 md:p-6 rounded-xl">
-    <DataTable v-if="!loading" :fetch-fn="fetchAndSetOrdersList" :page-count="pageCount" :data="listItems"
-      :columns="columns">
+    <DataTable 
+    v-if="!loading" 
+    :fetch-fn="fetchAndSetOrdersList" 
+    :page-count="pageCount" 
+    :data="listItems"
+    :columns="columns"
+    >
       <template #header="{table}">
-        <div class="flex items-center justify-between space-y-2">
-          <div class="flex flex-col gap-4 md:flex-row  xl:items-center justify-between w-full">
-            <h2 class="text-xl font-bold tracking-tight text-neutral-700">
-              Orders List
-            </h2>
-            <div class="flex items-center gap-3">
-              <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
-                <RefreshCwIcon class="w-4 h-4" />
-              </UiButton>
-              <DataTableViewOptions :table="table" />
-              <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
-                <SlidersHorizontalIcon class="w-4 h-4" />
-              </UiButton>
-              <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_709_23457)">
-                    <path
-                      d="M8.03066 6.97C7.73776 6.6771 7.26289 6.6771 6.97 6.97C6.6771 7.26289 6.6771 7.73776 6.97 8.03066L8.03066 6.97ZM11.1788 8.82182L10.6485 8.29148L11.1788 8.82182ZM13.0307 8.03066C13.3235 7.73776 13.3235 7.26289 13.0307 6.97C12.7378 6.6771 12.2629 6.6771 11.97 6.97L13.0307 8.03066ZM9.25033 9.16699C9.25033 9.58121 9.58611 9.91699 10.0003 9.91699C10.4145 9.91699 10.7503 9.58121 10.7503 9.16699H9.25033ZM10.7503 5.00033C10.7503 4.58611 10.4145 4.25033 10.0003 4.25033C9.58611 4.25033 9.25033 4.58611 9.25033 5.00033H10.7503ZM6.33366 11.5003L5.73366 11.9503H5.73366L6.33366 11.5003ZM7.33366 12.8337L7.93366 12.3837H7.93366L7.33366 12.8337ZM12.667 12.8337L12.067 12.3837L12.667 12.8337ZM13.667 11.5003L13.067 11.0503V11.0503L13.667 11.5003ZM6.97 8.03066L8.29148 9.35214L9.35214 8.29148L8.03066 6.97L6.97 8.03066ZM11.7092 9.35215L13.0307 8.03066L11.97 6.97L10.6485 8.29148L11.7092 9.35215ZM10.7503 9.16699V5.00033H9.25033V9.16699H10.7503ZM8.29148 9.35214C9.23525 10.2959 10.7654 10.2959 11.7092 9.35214L10.6485 8.29148C10.2905 8.64947 9.71012 8.64947 9.35214 8.29148L8.29148 9.35214ZM17.5837 13.3337V15.8337H19.0837V13.3337H17.5837ZM15.8337 17.5837H4.16699V19.0837H15.8337V17.5837ZM2.41699 15.8337V13.3337H0.916992V15.8337H2.41699ZM4.16699 11.5837H5.00033V10.0837H4.16699V11.5837ZM5.73366 11.9503L6.73366 13.2837L7.93366 12.3837L6.93366 11.0503L5.73366 11.9503ZM15.0003 11.5837H15.8337V10.0837H15.0003V11.5837ZM13.267 13.2837L14.267 11.9503L13.067 11.0503L12.067 12.3837L13.267 13.2837ZM10.0003 14.917C11.2856 14.917 12.4958 14.3119 13.267 13.2837L12.067 12.3837C11.5791 13.0342 10.8134 13.417 10.0003 13.417V14.917ZM15.0003 10.0837C14.2397 10.0837 13.5234 10.4418 13.067 11.0503L14.267 11.9503C14.4401 11.7195 14.7118 11.5837 15.0003 11.5837V10.0837ZM6.73366 13.2837C7.50481 14.3119 8.71507 14.917 10.0003 14.917V13.417C9.1872 13.417 8.42153 13.0342 7.93366 12.3837L6.73366 13.2837ZM5.00033 11.5837C5.28885 11.5837 5.56054 11.7195 5.73366 11.9503L6.93366 11.0503C6.47726 10.4418 5.76099 10.0837 5.00033 10.0837V11.5837ZM4.16699 17.5837C3.20049 17.5837 2.41699 16.8002 2.41699 15.8337H0.916992C0.916992 17.6286 2.37207 19.0837 4.16699 19.0837V17.5837ZM17.5837 15.8337C17.5837 16.8002 16.8002 17.5837 15.8337 17.5837V19.0837C17.6286 19.0837 19.0837 17.6286 19.0837 15.8337H17.5837ZM19.0837 13.3337C19.0837 11.5387 17.6286 10.0837 15.8337 10.0837V11.5837C16.8002 11.5837 17.5837 12.3672 17.5837 13.3337H19.0837ZM2.41699 13.3337C2.41699 12.3672 3.20049 11.5837 4.16699 11.5837V10.0837C2.37207 10.0837 0.916992 11.5387 0.916992 13.3337H2.41699ZM17.417 10.8337V5.00033H15.917V10.8337H17.417ZM13.3337 0.916992H6.66699V2.41699H13.3337V0.916992ZM2.58366 5.00033V10.8337H4.08366V5.00033H2.58366ZM6.66699 0.916992C4.41183 0.916992 2.58366 2.74516 2.58366 5.00033H4.08366C4.08366 3.57359 5.24026 2.41699 6.66699 2.41699V0.916992ZM17.417 5.00033C17.417 2.74516 15.5888 0.916992 13.3337 0.916992V2.41699C14.7604 2.41699 15.917 3.57359 15.917 5.00033H17.417Z"
-                      fill="#2D2D2D" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_709_23457">
-                      <rect width="20" height="20" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </UiButton>
-              <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
-                <PlusIcon class="h-6 w-6" />
-                Create New
-              </UiButton>
-            </div>
-          </div>
-        </div>
+        <DataTableHeadControls :table="table" />
       </template>
   </DataTable>
 </div></template>
