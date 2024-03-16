@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/vue-table'
-import { OrderTableColumns, type OrderInterface } from '~~/types';
+import { OrderTableColumns } from '~~/types';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue'
 import RowActions from '~/components/dataTable/RowActions.vue'
 import OrderId from '~/components/dataTable/OrderId.vue'
@@ -7,10 +7,9 @@ import OrderType from '~/components/dataTable/OrderType.vue'
 import OrderStatus from '~/components/dataTable/OrderStatus.vue'
 import OrderUserInfo from '~/components/dataTable/OrderUserInfo.vue'
 import OrderDate from '~/components/dataTable/OrderDate.vue'
-import { statuses } from '~/components/dataTable/options'
 // import { Checkbox } from '@/components/ui/checkbox'
 // import { Badge } from '@/components/ui/badge'
-
+import { OrderTableColumnsEnum } from '~~/types';
 export const columns: ColumnDef<OrderTableColumns>[] = [
   // {
   //   id: 'select',
@@ -22,39 +21,39 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
   //   enableHiding: false,
   // },
   {
-    accessorKey: 'shortId',
+    accessorKey: OrderTableColumnsEnum.SHORT_ID,
     header: ({ column }) => h(ColumnHeader, { column, title: 'Order' }),
-    cell: ({ row }) => h(OrderId, { orderId: row.getValue('shortId'), notes: [] }),
+    cell: ({ row }) => h(OrderId, { orderId: row.getValue(OrderTableColumnsEnum.SHORT_ID), notes: [] }),
   },
   {
-    accessorKey: 'type',
-    header: ({ column }) => h(ColumnHeader, { column, title: 'Type' }),
+    accessorKey: OrderTableColumnsEnum.TYPE,
+    header: ({ column }) => h(ColumnHeader, { column, title: OrderTableColumnsEnum.TYPE }),
     cell: ({ row }) => h(OrderType, { type: row.getValue('type') }),
   },
   {
-    accessorKey: 'userName',
+    accessorKey: OrderTableColumnsEnum.USER_NAME,
     header: ({ column }) => h(ColumnHeader, { column, title: 'Name', }),
     cell: ({ row }) => 
-    h(OrderUserInfo, { name: row.getValue('userName') ?? 'add userName', email: 'add userEmail' }),
+    h(OrderUserInfo, { name: row.getValue(OrderTableColumnsEnum.USER_NAME) ?? 'add userName', email: 'add userEmail' }),
 
   },
   {
-    accessorKey: 'createdAt',
+    accessorKey: OrderTableColumnsEnum.CREATED_AT,
     header: ({ column }) => h(ColumnHeader, { column, title: 'Date' }),
-    cell: ({ row }) => h(OrderDate, { inputDateString: row.getValue('createdAt')}),
+    cell: ({ row }) => h(OrderDate, { inputDateString: row.getValue(OrderTableColumnsEnum.CREATED_AT)}),
   },
   {
-    accessorKey: 'status',
+    accessorKey: OrderTableColumnsEnum.STATUS,
     header: ({ column }) => h(ColumnHeader, { column, title: 'Status' }),
-    cell: ({ row }) => h(OrderStatus, { status: row.getValue('status') }),
+    cell: ({ row }) => h(OrderStatus, { status: row.getValue(OrderTableColumnsEnum.STATUS) }),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
   },
   {
-    accessorKey: 'total',
+    accessorKey: OrderTableColumnsEnum.TOTAL,
     header: ({ column }) => h(ColumnHeader, { column, title: 'Total' }),
-    cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas(row.getValue('total'))),
+    cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas(row.getValue(OrderTableColumnsEnum.TOTAL))),
   },
   {
     id: 'actions',

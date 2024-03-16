@@ -274,3 +274,14 @@ export interface OrderTypeInfo {
     label: string;
     badge: { bg: string; text: string };
   }
+
+  export enum OrderTableColumnsEnum {
+    SELECT = 'select',
+    SHORT_ID = 'shortId',
+    TYPE = 'type',
+    USER_NAME = 'userName',
+    CREATED_AT = 'createdAt',
+    STATUS = 'status',
+    TOTAL = 'total',
+    ACTIONS = 'actions'
+  }
