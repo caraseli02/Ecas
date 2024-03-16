@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData">
 import type { Column } from '@tanstack/vue-table'
+import { PlusCircleIcon } from 'lucide-vue-next'
 
-import { PlusCircledIcon } from '@radix-icons/vue'
 import { PopoverClose } from 'radix-vue';
 interface DataTableInputFilter {
   column?: Column<TData, any>
@@ -30,7 +30,7 @@ const selectedValues = computed(() => props.column?.getFilterValue() as string[]
   <UiPopover>
     <UiPopoverTrigger as-child>
       <UiButton variant="outline" size="sm" class="!ml-0 border-dashed text-neutral-700">
-        <PlusCircledIcon class="mr-2 h-4 w-4  text-neutral-700" />
+        <PlusCircleIcon class="mr-2 h-4 w-4  text-neutral-700" />
         {{ title }}
   <!-- Check if either min or max range values are greater than 0 -->
         <template v-if="selectedValues">

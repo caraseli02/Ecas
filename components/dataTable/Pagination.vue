@@ -1,7 +1,6 @@
 <script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
-import {ChevronLeftIcon, DoubleArrowRightIcon, ChevronRightIcon, DoubleArrowLeftIcon} from '@radix-icons/vue'
-
+import { ChevronRightIcon, ChevronLeftIcon, ChevronsRightIcon, ChevronsLeftIcon } from 'lucide-vue-next';
 interface DataTablePaginationProps {
   table: Table<TData>,
   pageCount: number,
@@ -48,7 +47,7 @@ const props = defineProps<DataTablePaginationProps>()
           @click="table.setPageIndex(0)"
         >
           <span class="sr-only">Go to first page</span>
-          <DoubleArrowLeftIcon class="h-4 w-4" />
+          <ChevronsLeftIcon class="h-4 w-4" />
         </UiButton>
         <UiButton
           variant="outline"
@@ -75,7 +74,7 @@ const props = defineProps<DataTablePaginationProps>()
           @click="table.setPageIndex(table.getPageCount() - 1)"
         >
           <span class="sr-only">Go to last page</span>
-          <DoubleArrowRightIcon class="h-4 w-4" />
+          <ChevronsRightIcon class="h-4 w-4" />
         </UiButton>
       </div></section>
     </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TData">
-import { PlusCircledIcon } from '@radix-icons/vue'
+import { PlusCircleIcon } from 'lucide-vue-next'
 import { DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker'
 import { ref } from 'vue'
 import { cn } from '@/lib/utils'
@@ -55,7 +55,7 @@ const selectedValues = computed(() => props.column?.getFilterValue()) as unknown
         :variant="'outline'" 
         size="sm"
         :class="cn('justify-start text-left border-dashed px-2 !ml-0  text-neutral-700')">
-          <PlusCircledIcon class="mr-2 h-4 w-4" />
+          <PlusCircleIcon class="mr-2 h-4 w-4" />
          {{ title }}
          <template v-if="selectedValues">
          <UiSeparator orientation="vertical" class="mx-2 h-4" />

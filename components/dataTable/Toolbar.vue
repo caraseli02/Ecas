@@ -2,8 +2,7 @@
 import { type Table } from '@tanstack/vue-table'
 import { statusColors, orderType}  from './options'
 
-import { Cross2Icon } from '@radix-icons/vue'
-
+import { XIcon } from 'lucide-vue-next';
 interface DataTableToolbarProps {
   table: Table<TData>
 }
@@ -55,7 +54,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         @click="table.resetColumnFilters()"
       >
         Reset
-        <Cross2Icon class="ml-2 h-4 w-4" />
+        <XIcon class="ml-2 h-4 w-4" />
       </UiButton>
     </div>
     <!-- <DataTableViewOptions :table="table" /> -->

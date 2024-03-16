@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="TData">
 import type { Column } from '@tanstack/vue-table'
-import { PlusCircledIcon, MagnifyingGlassIcon } from '@radix-icons/vue'
+import { PlusCircleIcon, SearchIcon } from 'lucide-vue-next'
 
 interface DataTableInputFilter {
   column?: Column<TData, any>
@@ -51,7 +51,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
   <UiPopover>
     <UiPopoverTrigger as-child>
       <UiButton variant="outline" size="sm" class="!ml-0 border-dashed  text-neutral-700">
-        <PlusCircledIcon class="mr-2 h-4 w-4" />
+        <PlusCircleIcon class="mr-2 h-4 w-4" />
         {{ title }}
         <template v-if="selectedValues.size > 0">
           <UiSeparator orientation="vertical" class="mx-2 h-4" />
@@ -97,7 +97,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
         @input="emit('onInput',$event.target.value)"
       /> -->
         <UiButton variant="secondary" size="icon" class="h-9 min-w-9" @click="addToSearch()">
-          <MagnifyingGlassIcon class="w-5 h-5" />
+          <SearchIcon class="w-5 h-5" />
         </UiButton>
       </div>
       <UiButton v-if="selectedValues.size > 0" class="text-neutral-700 font-normal text-sm" size="sm" variant="ghost"

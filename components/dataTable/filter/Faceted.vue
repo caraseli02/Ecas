@@ -3,8 +3,7 @@ import type { Column } from '@tanstack/vue-table'
 import type { Component } from 'vue'
 import { OrderStatus, type OrderType } from '~/types/order-summary/item'
 
-import { PlusCircledIcon, CheckIcon } from '@radix-icons/vue'
-
+import { PlusCircleIcon, CheckIcon } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 
 interface DataTableFacetedFilter {
@@ -35,7 +34,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
   <UiPopover class="">
     <UiPopoverTrigger as-child>
       <UiButton variant="outline" size="sm" class="!ml-0 border-dashed  text-neutral-700 hover:bg-light-300">
-        <PlusCircledIcon class="mr-2 h-4 w-4" />
+        <PlusCircleIcon class="mr-2 h-4 w-4" />
         {{ title }}
         <template v-if="selectedValues.size > 0">
           <UiSeparator orientation="vertical" class="mx-2 h-4 bg-grey-300" />

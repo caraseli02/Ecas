@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import type { Column, Table } from '@tanstack/vue-table'
 import { type Order } from './schema'
-import { CaretSortIcon } from '@radix-icons/vue'
 import { ArrowDownWideNarrowIcon, ArrowUpWideNarrowIcon, ChevronsUpDownIcon } from 'lucide-vue-next'
-// import { ArrowDownIcon } from '@radix-icons/vue'
-// import { ArrowUpIcon } from '@radix-icons/vue'
-// import { EyeNoneIcon } from '@radix-icons/vue'
 
 import { cn } from '@/lib/utils'
 
