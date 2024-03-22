@@ -1,15 +1,49 @@
-<script setup lang="ts">
-import { addDays, format } from 'date-fns'
-import { PlusCircledIcon } from '@radix-icons/vue'
+<script setup lang="ts" generic="TData">
+import { PlusCircleIcon } from 'lucide-vue-next'
 import { DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker'
 import { ref } from 'vue'
 import { cn } from '@/lib/utils'
+import { Column } from '@tanstack/vue-table'
+
+interface Filter {
+  start: Date;
+  end: Date;
+}
 
 const date = ref<DatePickerRangeObject | undefined>(undefined)
 
-defineProps<{
-  title: string
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+}
+
+function transformObject(data: Filter): [string, string] {
+  const formattedStartDate = formatDate(data.start as Date);
+  const formattedEndDate = formatDate(data.end as Date);
+
+  // return {
+  //   startDate: formattedStartDate,
+  //   endDate: formattedEndDate
+  // };
+  return [formattedStartDate, formattedEndDate]
+}
+
+
+const props = defineProps<{
+  title: string,
+  column?: Column<TData, any>
 }>()
+
+watch(date, () => {
+  const filterValue = transformObject(date.value as Filter)
+  props.column?.setFilterValue(filterValue)
+  date.value = undefined
+}, {deep: true})
+
+const selectedValues = computed(() => props.column?.getFilterValue()) as unknown as [string, string]
 </script>
 
 <template>
@@ -21,15 +55,15 @@ defineProps<{
         :variant="'outline'" 
         size="sm"
         :class="cn('justify-start text-left border-dashed px-2 !ml-0  text-neutral-700')">
-          <PlusCircledIcon class="mr-2 h-4 w-4" />
+          <PlusCircleIcon class="mr-2 h-4 w-4" />
          {{ title }}
-         <template v-if="date?.start && date.end">
+         <template v-if="selectedValues">
          <UiSeparator orientation="vertical" class="mx-2 h-4" />
           <span class="text-xs text-neutral-700 bg-light-300 p-1 mr-2 rounded font-light">
-            {{ date.start ? format((date.start) as Date, 'dd-MM-yyyy') : '' }}
+            {{ selectedValues[0].replaceAll('/', '-') }}
           </span>
           <span class="text-xs text-neutral-700 bg-light-300 p-1 rounded font-light">
-            {{ date.end ? format((date.end as Date), 'dd-MM-yyyy') : '' }}
+            {{ selectedValues[1].replaceAll('/', '-') }}
           </span>
         </template>
         </UiButton>

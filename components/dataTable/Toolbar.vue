@@ -1,12 +1,10 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
-import { type Order } from './schema'
-import { statuses, orderType}  from './options'
+import { statusColors, orderType}  from './options'
 
-import { Cross2Icon } from '@radix-icons/vue'
-
+import { XIcon } from 'lucide-vue-next';
 interface DataTableToolbarProps {
-  table: Table<Order>
+  table: Table<TData>
 }
 
 const props = defineProps<DataTableToolbarProps>()
@@ -33,24 +31,21 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         v-if="table.getColumn('userName')"
         :column="table.getColumn('userName')"
         title="Name"
-        :model-value="(table.getColumn('userName')?.getFilterValue() as string) ?? ''"
-        @on-input="table.getColumn('userName')?.setFilterValue($event)"
       />
       <DataTableFilterDate
         title="Date"
+        :column="table.getColumn('createdAt')"
       />
       <DataTableFilterFaceted
         v-if="table.getColumn('status')"
         :column="table.getColumn('status')"
         title="Status"
-        :options="statuses"
+        :status-colors="statusColors"
       />
       <DataTableFilterRange
         v-if="table.getColumn('total')"
         :column="table.getColumn('total')"
         title="Total"
-        :model-value="(table.getColumn('total')?.getFilterValue() as string) ?? ''"
-        @on-input="table.getColumn('total')?.setFilterValue($event)"
       />
       <UiButton
         v-if="isFiltered"
@@ -59,7 +54,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         @click="table.resetColumnFilters()"
       >
         Reset
-        <Cross2Icon class="ml-2 h-4 w-4" />
+        <XIcon class="ml-2 h-4 w-4" />
       </UiButton>
     </div>
     <!-- <DataTableViewOptions :table="table" /> -->

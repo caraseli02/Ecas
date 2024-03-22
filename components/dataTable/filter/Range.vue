@@ -1,54 +1,55 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import type { Column } from '@tanstack/vue-table'
-import { type Order } from './data/schema'
-import { PlusCircledIcon } from '@radix-icons/vue'
+import { PlusCircleIcon } from 'lucide-vue-next'
+
 import { PopoverClose } from 'radix-vue';
 interface DataTableInputFilter {
-  column?: Column<Order, any>
+  column?: Column<TData, any>
   title?: string
-  modelValue: string
 }
 
-defineProps<DataTableInputFilter>()
-const emit = defineEmits<{
-  onInput: [value: string]
-}>()
+const props = defineProps<DataTableInputFilter>()
+
+const range = ref([0,0])
 
 const cancel = () => {
   range.value = [0, 0]
+  props.column?.setFilterValue(undefined)
+  
 }
-
 const apply = () => {
-  console.log('cancel');
+  props.column?.setFilterValue(range.value)
+  range.value = [0, 0]
 }
 
-const range = ref([0,0])
+const selectedValues = computed(() => props.column?.getFilterValue() as string[])
+
 </script>
 
 <template>
   <UiPopover>
     <UiPopoverTrigger as-child>
       <UiButton variant="outline" size="sm" class="!ml-0 border-dashed text-neutral-700">
-        <PlusCircledIcon class="mr-2 h-4 w-4  text-neutral-700" />
+        <PlusCircleIcon class="mr-2 h-4 w-4  text-neutral-700" />
         {{ title }}
   <!-- Check if either min or max range values are greater than 0 -->
-        <template v-if="range[0] > 0 || range[1] > 0">
+        <template v-if="selectedValues">
           <UiSeparator orientation="vertical" class="mx-2 h-4" />
           <!-- Badge for Min -->
           <UiBadge
-            v-if="range[0] > 0"
+            v-if="selectedValues[0]"
             variant="secondary"
             class="rounded bg-light-300 px-1 py-[3px] font-normal mr-1"
           >
-            Min: {{ range[0] }}
+            Min: {{ selectedValues[0] }}
           </UiBadge>
           <!-- Badge for Max -->
           <UiBadge
-            v-if="range[1] > 0"
+            v-if="selectedValues[1]"
             variant="secondary"
             class="rounded bg-light-300 px-1 py-[3px] font-normal"
           >
-            Max: {{ range[1] }}
+            Max: {{ selectedValues[1] }}
           </UiBadge>
         </template>
       </UiButton>

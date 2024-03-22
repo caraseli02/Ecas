@@ -81,7 +81,7 @@ const orderFilters = ref<TabFilter[]>([
   },
 ]);
 
-const activeOrderFilter = ref<TabFilter>(orderFilters.value[0]);
+const activeOrderFilter = defineModel<TabFilter>();
 
 const filterHighlightWidth = ref(0);
 const filterHightlightLeft = ref(0);

@@ -1,12 +1,12 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
-import { type Task } from './data/schema'
-import {ChevronLeftIcon, DoubleArrowRightIcon, ChevronRightIcon, DoubleArrowLeftIcon} from '@radix-icons/vue'
-
+import { ChevronRightIcon, ChevronLeftIcon, ChevronsRightIcon, ChevronsLeftIcon } from 'lucide-vue-next';
 interface DataTablePaginationProps {
-  table: Table<Task>
+  table: Table<TData>,
+  pageCount: number,
 }
-defineProps<DataTablePaginationProps>()
+const props = defineProps<DataTablePaginationProps>()
+
 </script>
 
 <template>
@@ -28,7 +28,7 @@ defineProps<DataTablePaginationProps>()
             <UiSelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
           </UiSelectTrigger>
           <UiSelectContent side="top">
-            <UiSelectItem class="cursor-pointer" v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" :value="`${pageSize}`">
+            <UiSelectItem v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" class="cursor-pointer" :value="`${pageSize}`">
               {{ pageSize }}
             </UiSelectItem>
           </UiSelectContent>
@@ -37,7 +37,7 @@ defineProps<DataTablePaginationProps>()
       <section class="flex flex-col md:flex-row gap-4 item-center">
       <div class="flex  w-[100px] items-center justify-center text-sm font-medium">
         Page {{ table.getState().pagination.pageIndex + 1 }} of
-        {{ table.getPageCount() }}
+        {{ pageCount }}
       </div>
       <div class="flex items-center space-x-2">
         <UiButton
@@ -47,7 +47,7 @@ defineProps<DataTablePaginationProps>()
           @click="table.setPageIndex(0)"
         >
           <span class="sr-only">Go to first page</span>
-          <DoubleArrowLeftIcon class="h-4 w-4" />
+          <ChevronsLeftIcon class="h-4 w-4" />
         </UiButton>
         <UiButton
           variant="outline"
@@ -74,7 +74,7 @@ defineProps<DataTablePaginationProps>()
           @click="table.setPageIndex(table.getPageCount() - 1)"
         >
           <span class="sr-only">Go to last page</span>
-          <DoubleArrowRightIcon class="h-4 w-4" />
+          <ChevronsRightIcon class="h-4 w-4" />
         </UiButton>
       </div></section>
     </div>
