@@ -1,6 +1,6 @@
 <template>
   <div class="min-w-[128px] flex justify-between items-center text-neutral-700">
-    <UiButton variant="link" class="text-sm hover:text-blue-500">#{{ orderId }}</UiButton>
+    <UiButton variant="link" class="text-sm hover:text-blue-500">{{ orderId ?? '-' }}</UiButton>
     <NuxtLink v-if="notes" to="#">
       <UiTooltipProvider>
         <UiTooltip>

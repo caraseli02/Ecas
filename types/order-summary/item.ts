@@ -285,3 +285,14 @@ export interface OrderTypeInfo {
     TOTAL = 'total',
     ACTIONS = 'actions'
   }
+
+  export enum TransactionTableColumnsEnum {
+    TRANSACTION_ID = 'orderShortId',
+    ORDER_ID = 'orderId',
+    INVOICE_ID = 'invoiceId',
+    TYPE = 'type',
+    CREATED_AT = 'createdAt',
+    STATUS = 'status',
+    TOTAL = 'amount',
+    ACTIONS = 'actions'
+  }

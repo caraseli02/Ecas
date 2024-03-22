@@ -4,12 +4,14 @@ import ColumnHeader from '~/components/dataTable/ColumnHeader.vue'
 import RowActions from '~/components/dataTable/RowActions.vue'
 import OrderId from '~/components/dataTable/OrderId.vue'
 import OrderType from '~/components/dataTable/OrderType.vue'
-import OrderStatus from '~/components/dataTable/OrderStatus.vue'
+import StatusWithColor from '~/components/dataTable/StatusWithColor.vue'
 import OrderUserInfo from '~/components/dataTable/OrderUserInfo.vue'
 import OrderDate from '~/components/dataTable/OrderDate.vue'
 // import { Checkbox } from '@/components/ui/checkbox'
 // import { Badge } from '@/components/ui/badge'
 import { OrderTableColumnsEnum } from '~~/types';
+import { statusColors } from '../dataTable/options';
+
 export const columns: ColumnDef<OrderTableColumns>[] = [
   // {
   //   id: 'select',
@@ -45,7 +47,7 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
   {
     accessorKey: OrderTableColumnsEnum.STATUS,
     header: ({ column }) => h(ColumnHeader, { column, title: 'Status' }),
-    cell: ({ row }) => h(OrderStatus, { status: row.getValue(OrderTableColumnsEnum.STATUS) }),
+    cell: ({ row }) => h(StatusWithColor, { status: row.getValue(OrderTableColumnsEnum.STATUS), options: statusColors }),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },

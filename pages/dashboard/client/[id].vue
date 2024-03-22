@@ -2,6 +2,7 @@
     <section class="flex flex-col justify-center mb-16">
         <div class="max-w-full p-4 mx-auto transition-all duration-300 !pb-0 md:py-6 lg:px-6 xl:p-0 xl:pt-8">
             <div class="grid grid-cols-1 gap-4 md:gap-6 w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px]">
+                <ClientTransactions />
                 <section class="flex justify-between gap-6 flex-wrap xl:flex-nowrap">
                     <DashboardClientActiveOrders
                     :items="testOrders"
