@@ -300,8 +300,8 @@ export interface OrderTypeInfo {
   }
 
   export enum TransactionTableColumnsEnum {
-    TRANSACTION_ID = 'orderShortId',
-    ORDER_ID = 'orderId',
+    TRANSACTION_ID = 'shortId',
+    ORDER_ID = 'orderShortId',
     INVOICE_ID = 'invoiceId',
     TYPE = 'type',
     CREATED_AT = 'createdAt',
