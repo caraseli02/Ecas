@@ -50,7 +50,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
       />
       <DataTableFilterRange
         v-if="table.getColumn(TransactionTableColumnsEnum.TOTAL)"
-        :column="table.getColumn('total')"
+        :column="table.getColumn(TransactionTableColumnsEnum.TOTAL)"
         title="Total"
       />
       <UiButton

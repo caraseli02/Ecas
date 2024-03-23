@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { OrderTableColumns, type OrderInterface } from '~~/types';
 import { columns } from './columns'
-import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 import _ from 'lodash';
+import { PlusIcon } from 'lucide-vue-next';
 
 const { $api } = useNuxtApp();
 
@@ -11,12 +11,10 @@ const pageCount = ref(0);
 const loading = ref(true);
 const error = ref(false);
 const emptyData = ref(false);
-const activeFilters = ref([] as FilterInterface[]);
-const activeSort = ref({} as SortInterface);
 const listItems = ref<OrderTableColumns[]>([]);
 const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
   error.value = false;
-
+  
   // FIX to use userID
 
   const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
@@ -33,7 +31,7 @@ const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, f
   loading.value = false
 }, 500);
 
-await fetchAndSetOrdersList(1, 10, activeFilters.value, activeSort.value);
+await fetchAndSetOrdersList(1, 10);
 
 </script>
 
@@ -41,22 +39,25 @@ await fetchAndSetOrdersList(1, 10, activeFilters.value, activeSort.value);
   <div
     class="h-full flex-1 flex-col space-y-8 flex w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px] shadow-xs p-2 pt-6 md:p-6 rounded-xl">
     <DataTable 
-    v-if="!loading" 
+    v-if="listItems.length > 0" 
     :fetch-fn="fetchAndSetOrdersList" 
     :page-count="pageCount" 
     :data="listItems"
     :columns="columns"
+    :loading="loading"
     >
       <template #header="{table}">
-        <DataTableHeadControls title="Orders List" :table="table">
-          <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
+        <DataTableHeadControls title="Orders List" :table="table" @refresh="loading = true">
+          <!-- <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
             <PlusIcon class="h-6 w-6" />
             Create New
-          </UiButton>
+          </UiButton> -->
         </DataTableHeadControls>
       </template>
       <template #toolbar="{table}">
         <ClientOrdersToolbar :table="table" />
       </template>
-  </DataTable>
-</div></template>
+    </DataTable>
+    <UiSkeleton v-if="loading" class="w-full h-full rounded absolute inset-0 z-0 p-4" />
+  </div>
+</template>

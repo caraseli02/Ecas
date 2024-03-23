@@ -16,8 +16,8 @@ const colors = {
   Cash: 'bg-neutral-700',
   Paid: 'bg-green-600',
   Pending: 'bg-orange-600',
-  Canceled: 'bg-rosa-500',
-  Declined: 'bg-rosa-500',
+  Canceled: 'bg-rose-500',
+  Declined: 'bg-rose-500',
 }
 
 const props = defineProps<{

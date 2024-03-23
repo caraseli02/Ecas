@@ -20,9 +20,10 @@ import { DebouncedFunc } from 'lodash'
 
 interface Props {
   columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+  data: TData[]
   fetchFn: DebouncedFunc<(page: number, perPage: number, filters?: any, sort?: any) => Promise<void>>,
   pageCount: number,
+  loading: boolean
 }
 const props = defineProps<Props>()
 
@@ -58,11 +59,11 @@ const table = useVueTable({
 })
 
 watch(
-  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting],
+  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting, props.loading],
   () => {
     const {pageIndex, pageSize} = table.getState().pagination;
     const rightIndex = pageIndex + 1;
-    
+    if(!props.loading) return
     props.fetchFn(
       rightIndex, 
       pageSize, 
@@ -77,10 +78,6 @@ watch(
   () => {
     const { pageSize } = table.getState().pagination;
     table.setPageIndex(0)
-    console.log(table.getState().columnFilters);
-    
-    // table.setOptions({ ...table.options, pageCount: props.pageCount });
-    // table.options.pageCount = props.pageCount
     props.fetchFn(
       1, 
       pageSize, 
@@ -110,7 +107,7 @@ watch(
   <div class="space-y-4 mt-5 font-Poppins text-neutral-700">
     <slot name="header" :table="table" />
     <slot name="toolbar" :table="table" />
-    <div class="rounded-xl border">
+    <div class="rounded-xl border relative">
       <UiTable>
         <UiTableHeader class="bg-light-200">
           <UiTableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
@@ -143,8 +140,8 @@ watch(
           </UiTableRow>
         </UiTableBody>
       </UiTable>
+      <UiSkeleton v-if="loading" class="w-full h-full rounded absolute inset-0 z-10" />
     </div>
-
-    <DataTablePagination :pageCount="props.pageCount" :table="table" />
+    <DataTablePagination :page-count="props.pageCount" :table="table" />
   </div>
 </template>

@@ -1,3 +1,20 @@
+<script setup lang="ts" generic="TData">
+import type { Table } from '@tanstack/vue-table'
+import { RefreshCwIcon, SlidersHorizontalIcon } from 'lucide-vue-next';
+
+interface DataTableViewOptionsProps {
+  table: Table<TData>,
+  title: string
+}
+
+const props = defineProps<DataTableViewOptionsProps>()
+
+const emit = defineEmits<{
+  refresh: [val: boolean]
+}>()
+
+</script>
+
 <template>
   <div class="flex items-center justify-between space-y-2">
     <div class="flex flex-col gap-4 md:flex-row  xl:items-center justify-between w-full">
@@ -5,14 +22,14 @@
         {{ title }}
       </h2>
       <div class="flex items-center gap-3">
-        <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
+        <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon" @click="emit('refresh', true)">
           <RefreshCwIcon class="w-4 h-4" />
         </UiButton>
         <DataTableViewOptions :table="table" />
-        <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
+        <!-- <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
           <SlidersHorizontalIcon class="w-4 h-4" />
-        </UiButton>
-        <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
+        </UiButton> -->
+        <!-- <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_709_23457)">
               <path
@@ -25,24 +42,12 @@
               </clipPath>
             </defs>
           </svg>
-        </UiButton>
+        </UiButton> -->
         <slot />
       </div>
     </div>
   </div>
 </template>
-
-<script setup lang="ts" generic="TData">
-import type { Table } from '@tanstack/vue-table'
-import { RefreshCwIcon, SlidersHorizontalIcon, PlusIcon } from 'lucide-vue-next';
-
-interface DataTableViewOptionsProps {
-  table: Table<TData>,
-  title: string
-}
-
-const props = defineProps<DataTableViewOptionsProps>()
-</script>
 
 <style scoped>
 </style>
