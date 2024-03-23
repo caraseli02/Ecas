@@ -109,7 +109,7 @@ watch(
 <template>
   <div class="space-y-4 mt-5 font-Poppins text-neutral-700">
     <slot name="header" :table="table" />
-    <DataTableToolbar :table="table" />
+    <slot name="toolbar" :table="table" />
     <div class="rounded-xl border">
       <UiTable>
         <UiTableHeader class="bg-light-200">

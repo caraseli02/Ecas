@@ -27,13 +27,13 @@ const searchText = ref('')
 
 const addToSearch = () => {
   const trimmedName = searchText.value.trim();
-
-  if (trimmedName && isNameOrEmailValid(trimmedName)) {
+  if(props.title === 'Name' && !isNameOrEmailValid(trimmedName)) {
+    console.error('Invalid name input. Please enter a valid name.');
+    return
+  }
+  if (trimmedName) {
     props.column?.setFilterValue(trimmedName)
     searchText.value = '';
-  } else {
-    // Handle invalid name input, e.g., show an error message or prevent adding invalid names
-    console.error('Invalid name input. Please enter a valid name.');
   }
 };
 
@@ -88,7 +88,8 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
     </UiPopoverTrigger>
     <UiPopoverContent class="w-[280px] flex flex-col gap-2 p-2" align="start">
       <div class="flex gap-3 justify-between">
-        <UiInput v-model=searchText placeholder="Filter name or email..."
+        <UiInput
+v-model=searchText placeholder="Filter name or email..."
           class="h-9 w-full text-neutral-700 border-gray-300" />
         <!-- <UiInput
         placeholder="Filter name or email..."
@@ -100,7 +101,8 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
           <SearchIcon class="w-5 h-5" />
         </UiButton>
       </div>
-      <UiButton v-if="selectedValues.size > 0" class="text-neutral-700 font-normal text-sm" size="sm" variant="ghost"
+      <UiButton
+v-if="selectedValues.size > 0" class="text-neutral-700 font-normal text-sm" size="sm" variant="ghost"
         @click="column?.setFilterValue(undefined)">
         Clear filters
       </UiButton>

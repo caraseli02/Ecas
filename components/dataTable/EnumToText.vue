@@ -11,7 +11,6 @@
 
 const colors = {
   Credit: 'bg-blue-500',
-  Debit: 'bg-green-600',
   Card: 'bg-green-600',
   Bank: 'bg-neutral-700',
   Cash: 'bg-neutral-700',

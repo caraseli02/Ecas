@@ -1,8 +1,8 @@
 <template>
   <div class="flex items-center justify-between space-y-2">
     <div class="flex flex-col gap-4 md:flex-row  xl:items-center justify-between w-full">
-      <h2 class="text-xl font-bold tracking-tight text-neutral-700">
-        Orders List
+      <h2 class="text-xl font-semibold tracking-tight text-neutral-700">
+        {{ title }}
       </h2>
       <div class="flex items-center gap-3">
         <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
@@ -26,10 +26,7 @@
             </defs>
           </svg>
         </UiButton>
-        <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
-          <PlusIcon class="h-6 w-6" />
-          Create New
-        </UiButton>
+        <slot />
       </div>
     </div>
   </div>
@@ -40,7 +37,8 @@ import type { Table } from '@tanstack/vue-table'
 import { RefreshCwIcon, SlidersHorizontalIcon, PlusIcon } from 'lucide-vue-next';
 
 interface DataTableViewOptionsProps {
-  table: Table<TData>
+  table: Table<TData>,
+  title: string
 }
 
 const props = defineProps<DataTableViewOptionsProps>()

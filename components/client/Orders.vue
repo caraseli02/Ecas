@@ -48,7 +48,15 @@ await fetchAndSetOrdersList(1, 10, activeFilters.value, activeSort.value);
     :columns="columns"
     >
       <template #header="{table}">
-        <DataTableHeadControls :table="table" />
+        <DataTableHeadControls title="Orders List" :table="table">
+          <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
+            <PlusIcon class="h-6 w-6" />
+            Create New
+          </UiButton>
+        </DataTableHeadControls>
+      </template>
+      <template #toolbar="{table}">
+        <ClientOrdersToolbar :table="table" />
       </template>
   </DataTable>
 </div></template>
