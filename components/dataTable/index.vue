@@ -23,7 +23,7 @@ interface Props {
   data: TData[]
   fetchFn: DebouncedFunc<(page: number, perPage: number, filters?: any, sort?: any) => Promise<void>>,
   pageCount: number,
-  loading: boolean
+  loading: boolean,
 }
 const props = defineProps<Props>()
 
@@ -71,18 +71,23 @@ watch(
       )
   }
 );
+
+const refresh = ref(false)
 watch(
-  () => props.loading,
-  () => {
-    if(!props.loading) return
+  refresh,
+  async () => {
+    if(!refresh) return
     const {pageIndex, pageSize} = table.getState().pagination;
     const rightIndex = pageIndex + 1;
-    props.fetchFn(
+    await props.fetchFn(
       rightIndex, 
       pageSize, 
       transformFiltersToObject(table.getState().columnFilters), 
       transformSortingKeys(table.getState().sorting[0])
       )
+    setTimeout(() => {
+      refresh.value = false
+    }, 500);
   }
 );
 
@@ -114,11 +119,15 @@ watch(
 //   table.reset()
 // }, {deep: true})
 
-</script>
+const loadingSize = computed(() => {
+  const size = (60 * Number(table.getState().pagination.pageSize))
+  return `${size}px`
+  })
+</script>w
 
 <template>
-  <div class="space-y-4 mt-5 font-Poppins text-neutral-700">
-    <slot name="header" :table="table" />
+  <div class="space-y-4 mt-5 font-Poppins text-neutral-700 relative">
+    <slot name="header" :make-refresh="() => refresh = true" :table="table" />
     <slot name="toolbar" :table="table" />
     <div class="rounded-xl border relative">
       <UiTable>
@@ -153,7 +162,7 @@ watch(
           </UiTableRow>
         </UiTableBody>
       </UiTable>
-      <UiSkeleton v-if="loading" class="w-full h-full rounded absolute inset-0 z-10" />
+      <UiSkeleton v-if="refresh" :style="{height: loadingSize}" class="w-full rounded absolute inset-0 top-[49px] z-10" />
     </div>
     <DataTablePagination :page-count="props.pageCount" :table="table" />
   </div>

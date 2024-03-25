@@ -46,15 +46,15 @@ await fetchAndSetTransactionList(1, 10);
   <div
     class="h-full flex-1 flex-col space-y-8 flex w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px] shadow-xs p-2 pt-6 md:p-6 rounded-xl">
     <DataTable
-      v-if="listItems.length > 0" 
+      v-if="!loading" 
       :fetch-fn="fetchAndSetTransactionList" 
       :page-count="pageCount" 
       :data="listItems"
       :columns="columns"
       :loading="loading"
     >
-      <template #header="{ table }">
-        <DataTableHeadControls title="Transaction History" :table="table" @refresh="loading = true">
+    <template #header="{table, makeRefresh}">
+        <DataTableHeadControls title="Orders List" :table="table" @refresh="makeRefresh()">
           <!-- <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path

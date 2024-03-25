@@ -33,7 +33,6 @@ const addToSearch = () => {
   }
   if (trimmedName) {
     props.column?.setFilterValue(trimmedName)
-    searchText.value = '';
   }
 };
 
@@ -89,7 +88,8 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
     <UiPopoverContent class="w-[280px] flex flex-col gap-2 p-2" align="start">
       <div class="flex gap-3 justify-between">
         <UiInput
-v-model=searchText placeholder="Filter name or email..."
+          v-model=searchText 
+          placeholder="Filter name or email..."
           class="h-9 w-full text-neutral-700 border-gray-300" />
         <!-- <UiInput
         placeholder="Filter name or email..."
