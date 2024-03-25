@@ -45,6 +45,7 @@ await fetchAndSetOrdersList(1, 10);
     :data="listItems"
     :columns="columns"
     :loading="loading"
+    :total-items="totalItems" 
     >
       <template #header="{table, makeRefresh}">
         <DataTableHeadControls title="Orders List" :table="table" @refresh="makeRefresh()">

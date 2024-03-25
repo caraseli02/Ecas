@@ -49,6 +49,7 @@ await fetchAndSetTransactionList(1, 10);
       v-if="!loading" 
       :fetch-fn="fetchAndSetTransactionList" 
       :page-count="pageCount" 
+      :totalItems="totalItems" 
       :data="listItems"
       :columns="columns"
       :loading="loading"

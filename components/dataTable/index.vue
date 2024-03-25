@@ -23,6 +23,7 @@ interface Props {
   data: TData[]
   fetchFn: DebouncedFunc<(page: number, perPage: number, filters?: any, sort?: any) => Promise<void>>,
   pageCount: number,
+  totalItems: number,
   loading: boolean,
 }
 const props = defineProps<Props>()
@@ -164,6 +165,6 @@ const loadingSize = computed(() => {
       </UiTable>
       <UiSkeleton v-if="refresh" :style="{height: loadingSize}" class="w-full rounded absolute inset-0 top-[49px] z-10" />
     </div>
-    <DataTablePagination :page-count="props.pageCount" :table="table" />
+    <DataTablePagination :totalItems="totalItems" :page-count="props.pageCount" :table="table" />
   </div>
 </template>

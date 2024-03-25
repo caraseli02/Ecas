@@ -4,6 +4,7 @@ import { ChevronRightIcon, ChevronLeftIcon, ChevronsRightIcon, ChevronsLeftIcon 
 interface DataTablePaginationProps {
   table: Table<TData>,
   pageCount: number,
+  totalItems: number,
 }
 const props = defineProps<DataTablePaginationProps>()
 
@@ -12,8 +13,7 @@ const props = defineProps<DataTablePaginationProps>()
 <template>
   <div class="flex flex-col md:flex-row gap-4 md:items-center justify-between px-2">
     <div class="flex-1 text-sm text-grey-600">
-      {{ table.getFilteredSelectedRowModel().rows.length }} of
-      {{ table.getFilteredRowModel().rows.length }} row(s) Selected.
+      {{ totalItems }} item(s)
     </div>
     <div class="flex items-center justify-between space-x-6 lg:space-x-8">
       <div class="flex flex-col md:flex-row gap-4 md:items-center space-x-2">
