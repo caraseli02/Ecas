@@ -14,7 +14,7 @@ import {
   getSortedRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
-
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import { valueUpdater, transformSortingKeys, transformFiltersToObject } from '@/lib/utils'
 import { DebouncedFunc } from 'lodash'
 
@@ -153,18 +153,20 @@ const loadingSize = computed(() => {
             </UiTableRow>
           </template>
 
-          <UiTableRow v-else>
-            <UiTableCell
-              col-span="{columns.length}"
-              class="h-24 text-center"
-            >
-              No results.
-            </UiTableCell>
+          <UiTableRow class="relative" v-else>
+            <section 
+              class="min-h-[600px] w-full flex flex-col items-center justify-center text-center"
+              >
+              <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+              <div class="w-full">
+                No results.
+              </div>
+            </section>
           </UiTableRow>
         </UiTableBody>
       </UiTable>
       <UiSkeleton v-if="refresh" :style="{height: loadingSize}" class="w-full rounded absolute inset-0 top-[49px] z-10" />
     </div>
-    <DataTablePagination :totalItems="totalItems" :page-count="props.pageCount" :table="table" />
+    <DataTablePagination :total-items="totalItems" :page-count="props.pageCount" :table="table" />
   </div>
 </template>
