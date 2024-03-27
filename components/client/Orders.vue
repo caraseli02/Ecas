@@ -64,6 +64,5 @@ await fetchAndSetOrdersList(1, 10);
         <ClientOrdersToolbar :table="table" />
       </template>
     </DataTable>
-    <UiSkeleton v-if="loading" class="w-full h-full rounded absolute inset-0 z-0 p-4" />
   </div>
 </template>
