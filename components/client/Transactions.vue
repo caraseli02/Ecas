@@ -20,6 +20,9 @@ const fetchAndSetTransactionList = _.debounce(async (page: number, perPage: numb
   if (!data || data.status !== 'success') {
     loading.value = false;
     error.value = true;
+    totalItems.value = 0;
+    pageCount.value = 0;
+    listItems.value = [];
     return;
   }
 
