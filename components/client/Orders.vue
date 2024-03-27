@@ -48,7 +48,12 @@ await fetchAndSetOrdersList(1, 10);
     :total-items="totalItems" 
     >
       <template #header="{table, makeRefresh}">
-        <DataTableHeadControls title="Orders List" :table="table" @refresh="makeRefresh()">
+        <DataTableHeadControls 
+          :error="error"
+          title="Orders List" 
+          :table="table" 
+          @refresh="makeRefresh()"
+        >
           <!-- <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
             <PlusIcon class="h-6 w-6" />
             Create New

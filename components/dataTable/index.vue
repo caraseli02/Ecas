@@ -130,7 +130,7 @@ const loadingSize = computed(() => {
   <div class="space-y-4 mt-5 font-Poppins text-neutral-700 relative">
     <slot name="header" :make-refresh="() => refresh = true" :table="table" />
     <slot name="toolbar" :table="table" />
-    <div class="rounded-xl border relative">
+    <div class="rounded-xl border relative min-h-[650px]">
       <UiTable>
         <UiTableHeader class="bg-light-200">
           <UiTableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
@@ -139,7 +139,7 @@ const loadingSize = computed(() => {
             </UiTableHead>
           </UiTableRow>
         </UiTableHeader>
-        <UiTableBody>
+        <UiTableBody class="relative min-h-[600px]">
           <template v-if="table.getRowModel().rows?.length">
             <UiTableRow
               v-for="row in table.getRowModel().rows"
@@ -153,16 +153,16 @@ const loadingSize = computed(() => {
             </UiTableRow>
           </template>
 
-          <UiTableRow class="relative" v-else>
+          <div v-else class=" w-full min-h-[600px]">
             <section 
-              class="min-h-[600px] w-full flex flex-col items-center justify-center text-center"
+              class="absolute inset-0 flex flex-col items-center justify-center text-center"
               >
               <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
               <div class="w-full">
                 No results.
               </div>
             </section>
-          </UiTableRow>
+          </div>
         </UiTableBody>
       </UiTable>
       <UiSkeleton v-if="refresh" :style="{height: loadingSize}" class="w-full rounded absolute inset-0 top-[49px] z-10" />

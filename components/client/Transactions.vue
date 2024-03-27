@@ -2,7 +2,6 @@
 import { columns } from './transactionCols'
 import _ from 'lodash';
 import { TransactionInterface } from '~/types/dashboard/transaction';
-
 const { $api } = useNuxtApp();
 
 const totalItems = ref(0);
@@ -49,13 +48,18 @@ await fetchAndSetTransactionList(1, 10);
       v-if="!loading" 
       :fetch-fn="fetchAndSetTransactionList" 
       :page-count="pageCount" 
-      :totalItems="totalItems" 
+      :total-items="totalItems" 
       :data="listItems"
       :columns="columns"
       :loading="loading"
     >
     <template #header="{table, makeRefresh}">
-        <DataTableHeadControls title="Orders List" :table="table" @refresh="makeRefresh()">
+        <DataTableHeadControls 
+          :error="error"
+          title="Transaction History" 
+          :table="table" 
+          @refresh="makeRefresh()"
+        >
           <!-- <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
