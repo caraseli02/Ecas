@@ -14,7 +14,9 @@
                 <ClientOrders v-if="activeOrderFilter.value === 'orders'" />
                 <ClientTransactions v-if="activeOrderFilter.value === 'transaction_history'" />
                 </TransitionGroup>
+                <ClientOnly>
                 <DashboardClientActivity />
+                </ClientOnly>
                 <!-- <DashboardClientInfoCards :id="route.params.slug" /> -->
                 <div class="flex flex-wrap gap-4 xl:grid-cols-3 xl:grid-rows-[repeat(2,auto)] md:gap-6">
                     <DashboardClientInfo
