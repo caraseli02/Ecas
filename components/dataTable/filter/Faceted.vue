@@ -78,7 +78,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
     </UiPopoverTrigger>
     <UiPopoverContent class="w-[215px] p-0" align="start">
       <UiCommand>
-        <UiCommandInput :placeholder="title" />
+        <UiCommandInput v-if="statusColors" :placeholder="title" />
         <UiCommandList>
           <UiCommandEmpty>No results found.</UiCommandEmpty>
           <UiCommandGroup>

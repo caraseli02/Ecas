@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { OrderTableColumns, type OrderInterface } from '~~/types';
-import { columns } from './columns'
+import { columns } from './ordersCols'
 import _ from 'lodash';
-import { PlusIcon } from 'lucide-vue-next';
 
 const { $api } = useNuxtApp();
 
