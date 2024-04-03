@@ -162,7 +162,7 @@ import CopyIcon from '@/assets/icons/dashboard/copy.svg';
 import { countries } from '@/data/countries';
 import { FormSelectOption } from '~~/types';
 import { useNuxtApp } from '#app';
-import { AddressInterface, CompanyDetails, ContactDetails, UserDetails } from '~/types/auth/user-details';
+import { AddressInterface, CompanyDetails, ContactDetails, UserInterface } from '~/types/auth/user-interface';
 import { PropType } from 'nuxt/dist/app/compat/capi';
 import { getRegionByCountry } from '~/helpers/form.helpers';
 
@@ -174,7 +174,7 @@ const props = defineProps({
         required: true,
     },
     account: {
-        type: Object as PropType<UserDetails>,
+        type: Object as PropType<UserInterface>,
         required: true,
     },
 });
@@ -316,6 +316,6 @@ const updateAccountDetails = async () => {
     if (!props.id || props.account.accountType === null || typeof props.account.accountType === 'undefined') {
         return;
     }
-    await $api.controlPanel.updateAccountDetails(props.id, payload as UserDetails, props.account.accountType);
+    await $api.controlPanel.updateAccountDetails(props.id, payload as UserInterface, props.account.accountType);
 };
 </script>

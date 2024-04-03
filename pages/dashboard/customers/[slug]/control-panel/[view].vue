@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { ControlPanelTabs, ControlPanelTabsEnum } from '~/types/dashboard/control-panel';
-import { UserDetails } from '~/types/auth/user-details';
+import { UserInterface } from '~/types/auth/user-interface';
 import { useNuxtApp } from '#app';
 import { AccountType } from '~/types';
 
@@ -41,7 +41,7 @@ const activeView = computed(() => {
     return route.params.view as ControlPanelTabs;
 });
 
-const customerDetails = ref({} as UserDetails);
+const customerDetails = ref({} as UserInterface);
 
 onMounted(() => {
     if (!Object.values(ControlPanelTabsEnum).includes(route.params.view as ControlPanelTabsEnum)) {
@@ -68,7 +68,7 @@ const fetchInformation = async () => {
 
     const response = (await $api.customerProfile.fetchCustomerInformation(route.params.slug as string)) as {
         status: string;
-        data: UserDetails;
+        data: UserInterface;
     };
 
     if (response.status !== 'success') {

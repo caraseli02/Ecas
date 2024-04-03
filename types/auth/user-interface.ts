@@ -1,25 +1,49 @@
-import { AccountRole } from '~/types';
+import { AccountRole, AccountType } from '~/types';
 import { AccountAdminSettings } from '~/types/auth/account-settings';
 
-export interface UserDetails {
-    _id: string;
-    accountType?: number;
+export interface UserInterface {
+    _id?: string;
+    accountType?: AccountType;
     role: AccountRole;
-    firebaseId: string;
+    firebaseId?: string;
+    stripeId?: string;
     active: boolean;
-    ordersCount: number;
-    spent: number;
-    contactDetails: ContactDetails;
-    profileDetails: ProfileDetails;
     companyDetails?: CompanyDetails;
+    contactDetails: ContactDetails;
     personalDetails?: PersonalDetails;
-    createdAt: string;
-    updatedAt: string;
+    profileDetails?: ProfileDetails;
     currentStatus?: 'online' | 'offline';
     adminSettings?: AccountAdminSettings;
-    marketingPreferences?: MarketingPreferences;
-    __v: number;
-    lastActivityDate: string;
+    spent?: number;
+    ordersCount?: number;
+    messages?: AccountMessageInterface[];
+    productVisitedHistory?: ProductVisitedHistory[];
+    createdAt?: string;
+}
+
+export type CustomerTableColumns = Pick<
+    UserInterface,
+    'accountType' | 'spent' | 'ordersCount' | 'contactDetails' | 'companyDetails' | 'createdAt'
+>;
+
+export interface ProductVisitedHistory {
+    productId: string;
+    count: number;
+    createdAt?: string;
+}
+
+export interface AccountMessageInterface extends MessageEntityInterface {
+    messageTemplateId?: string;
+    read?: boolean;
+}
+
+export interface MessageEntityInterface {
+    _id?: string;
+    title: string;
+    body: string;
+    icon?: string;
+    link: string;
+    sentTo?: string[];
 }
 
 export interface PersonalDetails {
@@ -35,26 +59,27 @@ export interface ContactDetails {
     phone: string;
     mobile?: number;
     email: string;
-    _id: string;
+    _id?: string;
 }
 
 export interface ProfileDetails {
     email: string;
-    _id: string;
+    password?: string;
+    _id?: string;
 }
 
 export interface CompanyDetails {
     name: string;
     registrationNumber: string;
     vat?: string;
-    taxId: string;
+    taxId?: string;
     address: AddressInterface;
     shippingAddress: ShippingAddressInterface[];
-    _id: string;
+    _id?: string;
 }
 
 export interface AddressInterface {
-    alias: string;
+    alias?: string;
     name1: string;
     name2?: string;
     country: string;

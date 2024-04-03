@@ -9,6 +9,12 @@ export enum AccountType {
     Agent = 3,
 }
 
+export interface AccountTypeInfo {
+    value: AccountType;
+    label: string;
+    badge: { bg: string; text: string };
+}
+
 export const getAccountTypeById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
     const keys = Object.keys(AccountType).filter((x) => AccountType[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
@@ -31,6 +37,7 @@ export interface SignupBusinessDetails {
     addressLine1: InputObject;
     addressLine2: InputObject;
 }
+
 export interface SignupPersonalDetails {
     firstName: InputObject;
     lastName: InputObject;

@@ -1,4 +1,4 @@
-import { UserDetails } from '~/types/auth/user-details';
+import { UserInterface } from '~/types/auth/user-interface';
 import { TransactionInterface } from '~/types/dashboard/transaction';
 
 export interface PaginatedCustomersInterface {
@@ -7,7 +7,7 @@ export interface PaginatedCustomersInterface {
         total_items: number;
         page_count: number;
         page: number;
-        items: UserDetails[];
+        items: UserInterface[];
     };
 }
 
@@ -36,7 +36,7 @@ export type ReturningCustomersInterface = TotalCustomersInterface;
 
 export interface NewCustomersInterface {
     status: string;
-    data: UserDetails[];
+    data: UserInterface[];
 }
 
 export interface CustomersByCountryInterface {

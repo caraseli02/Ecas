@@ -1,6 +1,6 @@
 import { DiscountInterface } from '~/types/auth/account-settings';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
-import { ShippingAddressInterface } from '~/types/auth/user-details';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import {
     BackorderShippingTypesInterface,
     DeliveryTypesInterface,
@@ -166,12 +166,11 @@ export const getPaymentStatusById = <
     return keys.length > 0 ? keys[0] : null;
 };
 
-  
 export interface PaymentStatusOption {
-    label:  string | null;
+    label: string | null;
     value: unknown;
-    color: string; 
-  }
+    color: string;
+}
 
 export enum PaymentTypeEnum {
     Card = 0,
@@ -195,7 +194,7 @@ export interface PaymentTypeOption {
     label: string | null;
     value: unknown;
     color?: string;
-  }
+}
 
 export interface CartProductsInterface {
     /**
@@ -280,32 +279,10 @@ export enum OrderType {
 export const getOrderById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
     const keys = Object.keys(OrderType as unknown as T).filter((x) => (OrderType as unknown as T)[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
-  };
+};
 
 export interface OrderTypeInfo {
     value: OrderType;
     label: string;
     badge: { bg: string; text: string };
-  }
-
-  export enum OrderTableColumnsEnum {
-    SELECT = 'select',
-    SHORT_ID = 'shortId',
-    TYPE = 'type',
-    USER_NAME = 'userName',
-    CREATED_AT = 'createdAt',
-    STATUS = 'status',
-    TOTAL = 'total',
-    ACTIONS = 'actions'
-  }
-
-  export enum TransactionTableColumnsEnum {
-    TRANSACTION_ID = 'shortId',
-    ORDER_ID = 'orderShortId',
-    INVOICE_ID = 'invoiceId',
-    TYPE = 'type',
-    CREATED_AT = 'createdAt',
-    STATUS = 'status',
-    TOTAL = 'amount',
-    ACTIONS = 'actions'
-  }
+}

@@ -175,7 +175,9 @@
                             <div class="w-2 h-2 rounded-full bg-[#00D395] mr-2" />
                             <span class="text-sm font-medium leading-tight text-slate-500">Registered</span>
                         </div>
-                        <div class="text-sm font-medium leading-tight pl-4">{{ getCurrentDate(customerInformation.createdAt) }}</div>
+                        <div class="text-sm font-medium leading-tight pl-4">
+                            {{ getCurrentDate(customerInformation.createdAt) }}
+                        </div>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[120px] h-10 md:w-[160px] md:h-[18px]" />
                     <div v-else class="md:flex md:items-center">
@@ -203,7 +205,7 @@ import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
-import { UserDetails } from '~/types/auth/user-details';
+import { UserInterface } from '~/types/auth/user-interface';
 import { AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
@@ -225,7 +227,7 @@ const props = defineProps({
         required: true,
     },
 });
-const customerInformation = ref<UserDetails>({} as UserDetails);
+const customerInformation = ref<UserInterface>({} as UserInterface);
 const customerDetails = ref<DashboardCustomerTableItem>({} as DashboardCustomerTableItem);
 const { $api } = useNuxtApp();
 
@@ -238,7 +240,7 @@ const fetchInformation = async () => {
     }
     const response = (await $api.customerProfile.fetchCustomerInformation(props.id)) as {
         status: string;
-        data: UserDetails;
+        data: UserInterface;
     };
 
     if (response.status !== 'success') {
