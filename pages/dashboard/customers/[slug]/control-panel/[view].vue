@@ -16,10 +16,7 @@
                 :id="route.params.slug"
                 :account-type="customerDetails?.accountType"
             />
-            <DashboardControlPanelTransactionHistoryView
-                v-else-if="activeView === ControlPanelTabsEnum.TransactionHistory"
-                :id="route.params.slug"
-            />
+            <ClientTableTransaction v-else-if="activeView === ControlPanelTabsEnum.TransactionHistory" :user-id="route.params.slug" />
             <DashboardControlPanelBillingView v-else-if="activeView === ControlPanelTabsEnum.Billing" />
         </div>
         <DashboardControlPanelSettingsView v-if="activeView === ControlPanelTabsEnum.Settings" />

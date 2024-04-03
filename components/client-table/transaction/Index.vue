@@ -5,6 +5,12 @@ import { TransactionInterface } from '~/types/dashboard/transaction';
 
 const { $api } = useNuxtApp();
 
+const props = defineProps({
+    userId: {
+        type: String,
+    },
+});
+
 const totalItems = ref(0);
 const pageCount = ref(0);
 const loading = ref(true);
@@ -14,7 +20,9 @@ const listItems = ref<TransactionInterface[]>([]);
 const fetchAndSetTransactionList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
     error.value = false;
 
-    // filters['userId'] = props.id;
+    if (props.userId) {
+        filters['userId'] = props.userId;
+    }
 
     const data = await $api.controlPanel.fetchTransactions(page, perPage, filters, sort);
 

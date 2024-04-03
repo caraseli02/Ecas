@@ -2,15 +2,13 @@
 import { type OrderInterface, OrderTableColumns } from '~/types';
 import { columns } from './columns';
 
-interface TabFilter {
-    label: string;
-    value: string;
-    key?: any;
-    total_items: number;
-    items?: OrderInterface[];
-}
-
 const { $api } = useNuxtApp();
+
+const props = defineProps({
+    userId: {
+        type: String,
+    },
+});
 
 const totalItems = ref(0);
 const pageCount = ref(0);
@@ -21,6 +19,10 @@ const listItems = ref<OrderTableColumns[]>([]);
 
 const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
     error.value = false;
+
+    if (props.userId) {
+        filters['userId'] = props.userId;
+    }
 
     // FIX to use userID
     const data = await $api.orders.fetchOrders(page, perPage, filters, sort);

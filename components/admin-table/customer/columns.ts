@@ -11,7 +11,7 @@ import { $fetch, FetchOptions } from 'ohmyfetch';
 import UserDashboardService from '~/services/dashboard/user.service';
 
 const fetchOptions: FetchOptions = {
-    baseURL: 'test',
+    baseURL: process.env.NUXT_PUBLIC_BASE_URL_API,
 };
 
 /** create a new instance of $fetcher with custom option */

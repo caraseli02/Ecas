@@ -27,7 +27,7 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
     },
     {
         accessorKey: OrderTableColumnsEnum.TYPE,
-        header: ({ column }) => h(ColumnHeader, { column, title: OrderTableColumnsEnum.TYPE }),
+        header: ({ column }) => h(ColumnHeader, { column, title: 'Type' }),
         cell: ({ row }) => h(OrderType, { type: row.getValue('type') }),
     },
     {
