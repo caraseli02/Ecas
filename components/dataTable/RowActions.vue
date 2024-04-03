@@ -12,7 +12,6 @@ interface DataTableRowActionsProps {
 }
 
 const props = defineProps<DataTableRowActionsProps>();
-console.log(props.options, props.row);
 // const task = computed(() => orderSchema.parse(props.row.original));
 </script>
 

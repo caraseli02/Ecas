@@ -14,7 +14,7 @@
             <DashboardReturningCustomers class="md:row-start-3 md:col-start-1 xl:col-start-2 xl:row-start-2" />
             <DashboardNewCustomers class="md:row-start-2 md:row-span-2 md:col-start-2 xl:col-start-3 xl:row-start-1 xl:row-span-2" />
             <!--            <DashboardCustomersList class="md:col-span-2 xl:col-span-3" />-->
-            <AdminTableCustomer />
+            <AdminTableCustomer class="md:col-span-2 xl:col-span-3" />
         </div>
     </div>
 </template>

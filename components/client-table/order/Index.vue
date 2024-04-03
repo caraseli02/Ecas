@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { type OrderInterface, OrderTableColumns } from '~/types';
 import { columns } from './columns';
-import _ from 'lodash';
+
+interface TabFilter {
+    label: string;
+    value: string;
+    key?: any;
+    total_items: number;
+    items?: OrderInterface[];
+}
 
 const { $api } = useNuxtApp();
 
@@ -11,11 +18,11 @@ const loading = ref(true);
 const error = ref(false);
 const emptyData = ref(false);
 const listItems = ref<OrderTableColumns[]>([]);
-const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
+
+const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
     error.value = false;
 
     // FIX to use userID
-
     const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
 
     if (!data || data.status !== 'success') {
@@ -31,7 +38,7 @@ const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, f
     pageCount.value = data.data.page_count;
     listItems.value = data.data.items as unknown as OrderInterface[];
     loading.value = false;
-}, 500);
+};
 
 await fetchAndSetOrdersList(1, 10);
 </script>
