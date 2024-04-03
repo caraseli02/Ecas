@@ -4,7 +4,7 @@
     >
         <div class="justify-between items-center self-stretch flex gap-5">
             <div class="text-zinc-800 text-base font-semibold leading-7 my-auto">Payment Method</div>
-            <Button
+            <button
                 class="justify-center items-center bg-zinc-100 self-stretch flex aspect-square flex-col w-8 h-8 px-1 rounded-lg"
                 @click="
                     paymentStore.toggleCardModal();
@@ -12,7 +12,7 @@
                 "
             >
                 <SvgoX class="aspect-square object-contain object-center w-full justify-center items-center overflow-hidden" />
-            </Button>
+            </button>
         </div>
         <div class="flex flex-col gap-3">
             <h4 class="text-zinc-800 text-sm font-medium leading-6 self-stretch mt-10">Saved cards</h4>

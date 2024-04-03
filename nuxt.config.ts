@@ -46,8 +46,19 @@ export default defineNuxtConfig({
         'nuxt-lodash',
         'nuxt3-leaflet',
         'nuxt-viewport',
-        'nuxt-headlessui'
+        'nuxt-headlessui',
     ],
+    shadcn: {
+        /**
+         * Prefix for all the imported component
+         */
+        prefix: 'Ui',
+        /**
+         * Directory that the component lives in.
+         * @default "./components/ui"
+         */
+        componentDir: './components/ui'
+      },
     viewport: {
         breakpoints: {
             xs: 390,

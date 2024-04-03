@@ -24,7 +24,7 @@
                 <div class="text-neutral-800 font-semibold leading-5">
                   My Favorites
                 </div>
-                <div v-for="(val, key) in data.favorites" class="items-stretch flex justify-between gap-3 mt-0.5">
+                <div v-for="(val, key, index) in data.favorites" :key="index" class="items-stretch flex justify-between gap-3 mt-0.5">
                   <div class="text-slate-500 leading-6 capitalize">{{ key }}</div>
                   <div class="text-neutral-800 font-medium leading-6">{{ val }}</div>
                 </div>
