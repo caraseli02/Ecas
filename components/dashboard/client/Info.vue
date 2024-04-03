@@ -235,7 +235,7 @@ const fetchInformation = async () => {
     if (!props.id) {
         return;
     }
-    const response = (await $api.customerProfile.fetchCustomerInformation(props.id)) as {
+    const response = (await $api.customerProfile.fetchCustomerInformation(props.id)) as unknown as {
         status: string;
         data: UserInterface;
     };

@@ -1,12 +1,23 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
-import RowActions from '~/components/dataTable/RowActions.vue';
+import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';
 import OrderUserInfo from '~/components/dataTable/OrderUserInfo.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
 import { CustomerTableColumns } from '~/types/auth/user-interface';
 import { CustomerTableColumnsEnum } from '~/components/admin-table/customer/columns.enum';
 import AccountType from '~/components/dataTable/AccountType.vue';
+
+const RowActionOptions: ActionOptionsConfiguration[] = [
+    {
+        label: 'Profile',
+        // actionFn: ,
+    },
+    {
+        label: 'Delete',
+        // actionFn: $api.userDashboard.deleteUser,
+    },
+];
 
 export const columns: ColumnDef<CustomerTableColumns>[] = [
     // {
@@ -55,6 +66,6 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
     {
         id: 'actions',
         header: ({ column }) => h(ColumnHeader, { column, title: 'Actions' }),
-        cell: ({ row }) => h(RowActions, { row }),
+        cell: ({ row }) => h(RowActions, { row: row, options: RowActionOptions }),
     },
 ];
