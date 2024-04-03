@@ -72,7 +72,8 @@ class UserDashboardService extends HttpFactory {
     async deactivateUser(userID: string) {
         const authStore = useAuthStore();
         const token = authStore.getToken();
-        return await this.call('DELETE', `${this.RESOURCE}/deactivate/${userID}`, null, {
+        console.log(userID);
+        return await this.call<CustomersByCountryInterface>('DELETE', `${this.RESOURCE}/deactivate/${userID}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -88,6 +89,7 @@ class UserDashboardService extends HttpFactory {
     async deleteUser(userID: string) {
         const authStore = useAuthStore();
         const token = authStore.getToken();
+        console.log(userID);
         return await this.call('DELETE', `${this.RESOURCE}/${userID}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });

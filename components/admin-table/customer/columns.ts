@@ -7,17 +7,16 @@ import CellDate from '~/components/dataTable/CellDate.vue';
 import { CustomerTableColumns } from '~/types/auth/user-interface';
 import { CustomerTableColumnsEnum } from '~/components/admin-table/customer/columns.enum';
 import AccountType from '~/components/dataTable/AccountType.vue';
+import { $fetch, FetchOptions } from 'ohmyfetch';
+import UserDashboardService from '~/services/dashboard/user.service';
 
-const RowActionOptions: ActionOptionsConfiguration[] = [
-    {
-        label: 'Profile',
-        // actionFn: ,
-    },
-    {
-        label: 'Delete',
-        // actionFn: $api.userDashboard.deleteUser,
-    },
-];
+const fetchOptions: FetchOptions = {
+    baseURL: 'test',
+};
+
+/** create a new instance of $fetcher with custom option */
+const apiFetcher = $fetch.create(fetchOptions);
+const userDashboard = new UserDashboardService(apiFetcher);
 
 export const columns: ColumnDef<CustomerTableColumns>[] = [
     // {
@@ -66,6 +65,35 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
     {
         id: 'actions',
         header: ({ column }) => h(ColumnHeader, { column, title: 'Actions' }),
-        cell: ({ row }) => h(RowActions, { row: row, options: RowActionOptions }),
+        cell: ({ row }) =>
+            h(RowActions, {
+                row: row,
+                options: [
+                    {
+                        label: 'Profile',
+                        enable: true,
+                        isRouter: true,
+                        navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
+                    },
+                    {
+                        label: 'Delete',
+                        enable: true,
+                        isRouter: false,
+                        actionFn: userDashboard.deleteUser,
+                    },
+                    {
+                        label: 'Unlock account',
+                        enable: !row.original.active,
+                        isRouter: false,
+                        actionFn: userDashboard.activateUser,
+                    },
+                    {
+                        label: 'Lock account',
+                        enable: row.original.active,
+                        isRouter: false,
+                        actionFn: userDashboard.deactivateUser,
+                    },
+                ] as ActionOptionsConfiguration[],
+            }),
     },
 ];

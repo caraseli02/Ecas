@@ -1,5 +1,5 @@
-import {$fetch, FetchOptions} from 'ohmyfetch';
-import {defineNuxtPlugin} from '#app';
+import { $fetch, FetchOptions } from 'ohmyfetch';
+import { defineNuxtPlugin } from '#app';
 import ProductService from '~/services/products.service';
 import AuthService from '~/services/auth.service';
 import UserService from '~/services/user.service';
@@ -54,7 +54,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         controlPanel: new ControlPanelService(apiFetcher),
         orders: new OrdersService(apiFetcher),
         generalSettings: new GeneralSettings(apiFetcher),
-
     };
 
     return {

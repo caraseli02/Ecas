@@ -23,7 +23,7 @@ export interface UserInterface {
 
 export type CustomerTableColumns = Pick<
     UserInterface,
-    'accountType' | 'spent' | 'ordersCount' | 'contactDetails' | 'companyDetails' | 'createdAt'
+    'accountType' | 'firebaseId' | 'active' | 'spent' | 'ordersCount' | 'contactDetails' | 'companyDetails' | 'createdAt'
 >;
 
 export interface ProductVisitedHistory {

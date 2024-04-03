@@ -3,6 +3,9 @@ import { Row } from '@tanstack/vue-table';
 
 export interface ActionOptionsConfiguration {
     label: string;
+    enable: boolean;
+    isRouter: boolean;
+    navigateToRoute?: string; // only if isRouter = true
     actionFn?: (id: string) => Promise<unknown>;
 }
 
@@ -111,9 +114,12 @@ const props = defineProps<DataTableRowActionsProps>();
                 </UiButton>
             </UiDropdownMenuTrigger>
             <UiDropdownMenuContent align="end" class="w-[167px]">
-                <UiDropdownMenuItem v-for="option of props.options">
-                    {{ option.label }}
-                </UiDropdownMenuItem>
+                <template v-for="option of props.options">
+                    <UiDropdownMenuItem v-if="option.enable" @click="option.actionFn && option.actionFn(row.original.firebaseId as string)">
+                        {{ option.label }}
+                    </UiDropdownMenuItem>
+                </template>
+
                 <!--                <UiDropdownMenuItem>Edit</UiDropdownMenuItem>-->
                 <!--                <UiDropdownMenuItem>Make a copy</UiDropdownMenuItem>-->
                 <!--                <UiDropdownMenuItem>Favorite</UiDropdownMenuItem>-->
