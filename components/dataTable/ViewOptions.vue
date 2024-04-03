@@ -16,7 +16,7 @@ const columns = computed(() => props.table.getAllColumns()
 </script>
 
 <template>
-  <UiDropdownMenu>
+  <UiDropdownMenu :modal="false">
     <UiDropdownMenuTrigger as-child>
       <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
         <EyeIcon class="w-4 h-4" />

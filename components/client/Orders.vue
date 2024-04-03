@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { OrderTableColumns, type OrderInterface } from '~~/types';
-import { columns } from './columns'
-import { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
+import { columns } from './ordersCols'
 import _ from 'lodash';
 
 const { $api } = useNuxtApp();
@@ -11,12 +10,10 @@ const pageCount = ref(0);
 const loading = ref(true);
 const error = ref(false);
 const emptyData = ref(false);
-const activeFilters = ref([] as FilterInterface[]);
-const activeSort = ref({} as SortInterface);
 const listItems = ref<OrderTableColumns[]>([]);
 const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
   error.value = false;
-
+  
   // FIX to use userID
 
   const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
@@ -24,6 +21,9 @@ const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, f
   if (!data || data.status !== 'success') {
     loading.value = false;
     error.value = true;
+    totalItems.value = 0;
+    pageCount.value = 0;
+    listItems.value = [];
     return;
   }
 
@@ -33,7 +33,7 @@ const fetchAndSetOrdersList = _.debounce(async (page: number, perPage: number, f
   loading.value = false
 }, 500);
 
-await fetchAndSetOrdersList(1, 10, activeFilters.value, activeSort.value);
+await fetchAndSetOrdersList(1, 10);
 
 </script>
 
@@ -46,9 +46,25 @@ await fetchAndSetOrdersList(1, 10, activeFilters.value, activeSort.value);
     :page-count="pageCount" 
     :data="listItems"
     :columns="columns"
+    :loading="loading"
+    :total-items="totalItems" 
     >
-      <template #header="{table}">
-        <DataTableHeadControls :table="table" />
+      <template #header="{table, makeRefresh}">
+        <DataTableHeadControls 
+          :error="error"
+          title="Orders List" 
+          :table="table" 
+          @refresh="makeRefresh()"
+        >
+          <!-- <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
+            <PlusIcon class="h-6 w-6" />
+            Create New
+          </UiButton> -->
+        </DataTableHeadControls>
       </template>
-  </DataTable>
-</div></template>
+      <template #toolbar="{table}">
+        <ClientOrdersToolbar :table="table" />
+      </template>
+    </DataTable>
+  </div>
+</template>

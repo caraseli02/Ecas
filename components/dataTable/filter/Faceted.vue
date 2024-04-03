@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData">
 import type { Column } from '@tanstack/vue-table'
 import type { Component } from 'vue'
-import { OrderStatus, type OrderType } from '~/types/order-summary/item'
+import { OrderStatus } from '~/types/order-summary/item'
 
 import { PlusCircleIcon, CheckIcon } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
@@ -10,8 +10,8 @@ interface DataTableFacetedFilter {
   column?: Column<TData, any>
   title?: string
   options?: {
-    label: string
-    value: OrderType; // will need a review
+    label: string | null
+    value: unknown; // will need a review
     icon?: Component
     color?: string
     badge?: {
@@ -78,7 +78,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
     </UiPopoverTrigger>
     <UiPopoverContent class="w-[215px] p-0" align="start">
       <UiCommand>
-        <UiCommandInput :placeholder="title" />
+        <UiCommandInput v-if="statusColors" :placeholder="title" />
         <UiCommandList>
           <UiCommandEmpty>No results found.</UiCommandEmpty>
           <UiCommandGroup>

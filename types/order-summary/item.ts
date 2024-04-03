@@ -166,6 +166,13 @@ export const getPaymentStatusById = <
     return keys.length > 0 ? keys[0] : null;
 };
 
+  
+export interface PaymentStatusOption {
+    label:  string | null;
+    value: unknown;
+    color: string; 
+  }
+
 export enum PaymentTypeEnum {
     Card = 0,
     Credit = 1,
@@ -183,6 +190,12 @@ export const getPaymentTypeById = <
     const keys = Object.keys(PaymentTypeEnum).filter((x) => PaymentTypeEnum[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
+
+export interface PaymentTypeOption {
+    label: string | null;
+    value: unknown;
+    color?: string;
+  }
 
 export interface CartProductsInterface {
     /**
@@ -283,5 +296,16 @@ export interface OrderTypeInfo {
     CREATED_AT = 'createdAt',
     STATUS = 'status',
     TOTAL = 'total',
+    ACTIONS = 'actions'
+  }
+
+  export enum TransactionTableColumnsEnum {
+    TRANSACTION_ID = 'shortId',
+    ORDER_ID = 'orderShortId',
+    INVOICE_ID = 'invoiceId',
+    TYPE = 'type',
+    CREATED_AT = 'createdAt',
+    STATUS = 'status',
+    TOTAL = 'amount',
     ACTIONS = 'actions'
   }

@@ -14,15 +14,17 @@ import {
   getSortedRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
-
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import { valueUpdater, transformSortingKeys, transformFiltersToObject } from '@/lib/utils'
 import { DebouncedFunc } from 'lodash'
 
 interface Props {
   columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+  data: TData[]
   fetchFn: DebouncedFunc<(page: number, perPage: number, filters?: any, sort?: any) => Promise<void>>,
   pageCount: number,
+  totalItems: number,
+  loading: boolean,
 }
 const props = defineProps<Props>()
 
@@ -62,7 +64,6 @@ watch(
   () => {
     const {pageIndex, pageSize} = table.getState().pagination;
     const rightIndex = pageIndex + 1;
-    
     props.fetchFn(
       rightIndex, 
       pageSize, 
@@ -72,15 +73,30 @@ watch(
   }
 );
 
+const refresh = ref(false)
+watch(
+  refresh,
+  async () => {
+    if(!refresh) return
+    const {pageIndex, pageSize} = table.getState().pagination;
+    const rightIndex = pageIndex + 1;
+    await props.fetchFn(
+      rightIndex, 
+      pageSize, 
+      transformFiltersToObject(table.getState().columnFilters), 
+      transformSortingKeys(table.getState().sorting[0])
+      )
+    setTimeout(() => {
+      refresh.value = false
+    }, 500);
+  }
+);
+
 watch(
   () => table.getState().columnFilters,
   () => {
     const { pageSize } = table.getState().pagination;
     table.setPageIndex(0)
-    console.log(table.getState().columnFilters);
-    
-    // table.setOptions({ ...table.options, pageCount: props.pageCount });
-    // table.options.pageCount = props.pageCount
     props.fetchFn(
       1, 
       pageSize, 
@@ -104,13 +120,17 @@ watch(
 //   table.reset()
 // }, {deep: true})
 
-</script>
+const loadingSize = computed(() => {
+  const size = (60 * Number(table.getState().pagination.pageSize))
+  return `${size}px`
+  })
+</script>w
 
 <template>
-  <div class="space-y-4 mt-5 font-Poppins text-neutral-700">
-    <slot name="header" :table="table" />
-    <DataTableToolbar :table="table" />
-    <div class="rounded-xl border">
+  <div class="space-y-4 mt-5 font-Poppins text-neutral-700 relative">
+    <slot name="header" :make-refresh="() => refresh = true" :table="table" />
+    <slot name="toolbar" :table="table" />
+    <div class="rounded-xl border relative min-h-[650px]">
       <UiTable>
         <UiTableHeader class="bg-light-200">
           <UiTableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
@@ -119,7 +139,7 @@ watch(
             </UiTableHead>
           </UiTableRow>
         </UiTableHeader>
-        <UiTableBody>
+        <UiTableBody class="relative min-h-[600px]">
           <template v-if="table.getRowModel().rows?.length">
             <UiTableRow
               v-for="row in table.getRowModel().rows"
@@ -133,18 +153,20 @@ watch(
             </UiTableRow>
           </template>
 
-          <UiTableRow v-else>
-            <UiTableCell
-              col-span="{columns.length}"
-              class="h-24 text-center"
-            >
-              No results.
-            </UiTableCell>
-          </UiTableRow>
+          <div v-else class=" w-full min-h-[600px]">
+            <section 
+              class="absolute inset-0 flex flex-col items-center justify-center text-center"
+              >
+              <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+              <div class="w-full">
+                No results.
+              </div>
+            </section>
+          </div>
         </UiTableBody>
       </UiTable>
+      <UiSkeleton v-if="refresh" :style="{height: loadingSize}" class="w-full rounded absolute inset-0 top-[49px] z-10" />
     </div>
-
-    <DataTablePagination :pageCount="props.pageCount" :table="table" />
+    <DataTablePagination :total-items="totalItems" :page-count="props.pageCount" :table="table" />
   </div>
 </template>

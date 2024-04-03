@@ -8,17 +8,12 @@
 </template>
 
 <script setup lang="ts">
-import { statusColors } from './options';
-
 const props = defineProps<{
   status: string
+  options: Record<string, string>
 }>()
 
 const statusColor = computed(() => {
-  return statusColors[props.status as keyof typeof statusColors];
+  return props.options[props.status];
 })
 </script>
-
-<style scoped>
-
-</style>

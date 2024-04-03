@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
-import { statusColors, orderType}  from './options'
-
+import { statusColors, orderType}  from '../dataTable/options'
+import { OrderTableColumnsEnum } from '~~/types';
 import { XIcon } from 'lucide-vue-next';
 interface DataTableToolbarProps {
   table: Table<TData>
@@ -17,34 +17,34 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
     <div class="flex flex-wrap gap-2 flex-1 items-center space-x-2">
       <UiInput
         placeholder="Filter orders..."
-        :model-value="(table.getColumn('shortId')?.getFilterValue() as string) ?? ''"
+        :model-value="(table.getColumn(OrderTableColumnsEnum.SHORT_ID)?.getFilterValue() as string) ?? ''"
         class="h-9 w-full md:w-[150px] lg:w-[250px]"
-        @input="table.getColumn('shortId')?.setFilterValue($event.target.value)"
+        @input="table.getColumn(OrderTableColumnsEnum.SHORT_ID)?.setFilterValue($event.target.value)"
       />
       <DataTableFilterFaceted
-        v-if="table.getColumn('type')"
-        :column="table.getColumn('type')"
+        v-if="table.getColumn(OrderTableColumnsEnum.TYPE)"
+        :column="table.getColumn(OrderTableColumnsEnum.TYPE)"
         title="Type"
         :options="orderType"
       />
       <DataTableFilterInput
-        v-if="table.getColumn('userName')"
-        :column="table.getColumn('userName')"
+        v-if="table.getColumn(OrderTableColumnsEnum.USER_NAME)"
+        :column="table.getColumn(OrderTableColumnsEnum.USER_NAME)"
         title="Name"
       />
       <DataTableFilterDate
         title="Date"
-        :column="table.getColumn('createdAt')"
+        :column="table.getColumn(OrderTableColumnsEnum.CREATED_AT)"
       />
       <DataTableFilterFaceted
-        v-if="table.getColumn('status')"
-        :column="table.getColumn('status')"
+        v-if="table.getColumn(OrderTableColumnsEnum.STATUS)"
+        :column="table.getColumn(OrderTableColumnsEnum.STATUS)"
         title="Status"
         :status-colors="statusColors"
       />
       <DataTableFilterRange
-        v-if="table.getColumn('total')"
-        :column="table.getColumn('total')"
+        v-if="table.getColumn(OrderTableColumnsEnum.TOTAL)"
+        :column="table.getColumn(OrderTableColumnsEnum.TOTAL)"
         title="Total"
       />
       <UiButton

@@ -37,7 +37,7 @@
       <path d="M9.99967 14.167L5.83301 14.167" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
         stroke-linejoin="round" />
     </svg>
-    <UiDropdownMenu>
+    <UiDropdownMenu :modal="false">
       <UiDropdownMenuTrigger as-child>
         <UiButton variant="ghost" class="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -68,7 +68,6 @@
         <!-- <UiDropdownMenuSeparator /> -->
         <UiDropdownMenuItem>
           Delete
-          <UiDropdownMenuShortcut>⌘⌫</UiDropdownMenuShortcut>
         </UiDropdownMenuItem>
       </UiDropdownMenuContent>
     </UiDropdownMenu>
