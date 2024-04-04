@@ -5,7 +5,7 @@ import RowActions from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';
 import OrderType from '~/components/dataTable/OrderType.vue';
 import StatusWithColor from '~/components/dataTable/StatusWithColor.vue';
-import OrderUserInfo from '~/components/dataTable/OrderUserInfo.vue';
+import UserInfo from '~/components/dataTable/UserInfo.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
 import { statusColors } from './options';
 import { OrderTableColumnsEnum } from '~/components/client-table/order/columns.enum';
@@ -34,7 +34,7 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
         accessorKey: OrderTableColumnsEnum.USER_NAME,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Name' }),
         cell: ({ row }) =>
-            h(OrderUserInfo, {
+            h(UserInfo, {
                 name: row.getValue(OrderTableColumnsEnum.USER_NAME) ?? 'add userName',
                 email: 'add userEmail',
             }),

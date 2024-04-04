@@ -2,7 +2,7 @@ import type { ColumnDef } from '@tanstack/vue-table';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
 import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';
-import OrderUserInfo from '~/components/dataTable/OrderUserInfo.vue';
+import UserInfo from '~/components/dataTable/UserInfo.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
 import { CustomerTableColumns } from '~/types/auth/user-interface';
 import { CustomerTableColumnsEnum } from '~/components/admin-table/customer/columns.enum';
@@ -32,9 +32,10 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
         accessorKey: CustomerTableColumnsEnum.NAME,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Name' }),
         cell: ({ row }) =>
-            h(OrderUserInfo, {
+            h(UserInfo, {
                 name: `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'add userName',
                 email: row.original.contactDetails?.email,
+                navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
             }),
     },
     {
@@ -73,25 +74,21 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                     {
                         label: 'Profile',
                         enable: true,
-                        isRouter: true,
                         navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
                     },
                     {
                         label: 'Delete',
                         enable: true,
-                        isRouter: false,
                         actionFn: "deleteUser",
                     },
                     {
                         label: 'Unlock account',
                         enable: !row.original.active,
-                        isRouter: false,
                         actionFn: "activateUser",
                     },
                     {
                         label: 'Lock account',
                         enable: row.original.active,
-                        isRouter: false,
                         actionFn: "deactivateUser",
                     },
                 ] as ActionOptionsConfiguration[],

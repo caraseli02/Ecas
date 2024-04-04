@@ -4,7 +4,6 @@ import { $fetch, FetchOptions } from 'ohmyfetch';
 export interface ActionOptionsConfiguration {
     label: string;
     enable: boolean;
-    isRouter: boolean;
     navigateToRoute?: string; // only if isRouter = true
     actionFn?: (id: string) => Promise<unknown>;
 }
@@ -12,7 +11,7 @@ export interface ActionOptionsConfiguration {
 interface DataTableRowActionsProps {
     row: Row<any>;
     options: ActionOptionsConfiguration[];
-    service: any;
+    service?: any;
 
 }
 
@@ -24,7 +23,10 @@ const fetchOptions: FetchOptions = {
     baseURL: runtimeConfig.public.BASE_URL_API,
 };
 const apiFetcher = $fetch.create(fetchOptions);
-const actionService = new props.service(apiFetcher);
+let actionService
+if(props.service) {
+    actionService  = new props.service(apiFetcher);
+}
 </script>
 
 <template>
@@ -124,8 +126,11 @@ const actionService = new props.service(apiFetcher);
             </UiDropdownMenuTrigger>
             <UiDropdownMenuContent align="end" class="w-[167px]">
                 <template v-for="(option, index) of props.options">
-                    <UiDropdownMenuItem v-if="option.enable" :key="index" @click="actionService[option.actionFn](row.original.firebaseId as string)">
+                    <UiDropdownMenuItem v-if="option.enable && option.actionFn" :key="index" @click="actionService[option.actionFn](row.original.firebaseId as string)">
                         {{ option.label }}
+                    </UiDropdownMenuItem>
+                    <UiDropdownMenuItem v-if="option.enable && option.navigateToRoute" :key="index">
+                        <NuxtLink class="w-full h-full" :to="option.navigateToRoute">{{ option.label }}</NuxtLink>
                     </UiDropdownMenuItem>
                 </template>
 
