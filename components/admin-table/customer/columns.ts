@@ -68,6 +68,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
         cell: ({ row }) =>
             h(RowActions, {
                 row: row,
+                service: UserDashboardService,
                 options: [
                     {
                         label: 'Profile',
@@ -79,19 +80,19 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                         label: 'Delete',
                         enable: true,
                         isRouter: false,
-                        actionFn: userDashboard.deleteUser,
+                        actionFn: "deleteUser",
                     },
                     {
                         label: 'Unlock account',
                         enable: !row.original.active,
                         isRouter: false,
-                        actionFn: userDashboard.activateUser,
+                        actionFn: "activateUser",
                     },
                     {
                         label: 'Lock account',
                         enable: row.original.active,
                         isRouter: false,
-                        actionFn: userDashboard.deactivateUser,
+                        actionFn: "deactivateUser",
                     },
                 ] as ActionOptionsConfiguration[],
             }),

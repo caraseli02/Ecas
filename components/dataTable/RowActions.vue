@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Row } from '@tanstack/vue-table';
-
+import { $fetch, FetchOptions } from 'ohmyfetch';
 export interface ActionOptionsConfiguration {
     label: string;
     enable: boolean;
@@ -12,10 +12,19 @@ export interface ActionOptionsConfiguration {
 interface DataTableRowActionsProps {
     row: Row<any>;
     options: ActionOptionsConfiguration[];
+    service: any;
+
 }
 
 const props = defineProps<DataTableRowActionsProps>();
 // const task = computed(() => orderSchema.parse(props.row.original));
+
+const runtimeConfig = useRuntimeConfig()
+const fetchOptions: FetchOptions = {
+    baseURL: runtimeConfig.public.BASE_URL_API,
+};
+const apiFetcher = $fetch.create(fetchOptions);
+const actionService = new props.service(apiFetcher);
 </script>
 
 <template>
@@ -115,7 +124,7 @@ const props = defineProps<DataTableRowActionsProps>();
             </UiDropdownMenuTrigger>
             <UiDropdownMenuContent align="end" class="w-[167px]">
                 <template v-for="(option, index) of props.options">
-                    <UiDropdownMenuItem v-if="option.enable" :key="index" @click="option.actionFn && option.actionFn(row.original.firebaseId as string)">
+                    <UiDropdownMenuItem v-if="option.enable" :key="index" @click="actionService[option.actionFn](row.original.firebaseId as string)">
                         {{ option.label }}
                     </UiDropdownMenuItem>
                 </template>
