@@ -114,8 +114,8 @@ const props = defineProps<DataTableRowActionsProps>();
                 </UiButton>
             </UiDropdownMenuTrigger>
             <UiDropdownMenuContent align="end" class="w-[167px]">
-                <template v-for="option of props.options">
-                    <UiDropdownMenuItem v-if="option.enable" @click="option.actionFn && option.actionFn(row.original.firebaseId as string)">
+                <template v-for="(option, index) of props.options">
+                    <UiDropdownMenuItem v-if="option.enable" :key="index" @click="option.actionFn && option.actionFn(row.original.firebaseId as string)">
                         {{ option.label }}
                     </UiDropdownMenuItem>
                 </template>
