@@ -4,6 +4,7 @@ import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import { transformFiltersToObject, transformSortingKeys, valueUpdater } from '@/lib/utils';
 import { DebouncedFunc } from 'lodash';
+import { watchDebounced } from '@vueuse/core';
 
 interface Props {
     columns: ColumnDef<TData, TValue>[];
@@ -61,8 +62,10 @@ const table = useVueTable({
 
 watch(
     () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting],
-    () => {
+    (oldVal, newVal) => {
         const { pageIndex, pageSize } = table.getState().pagination;
+        if(_isEqual(oldVal, newVal)) return;
+        
         const rightIndex = pageIndex + 1;
         props.fetchFn(
             rightIndex,
@@ -89,7 +92,7 @@ watch(refresh, async () => {
     }, 500);
 });
 
-watch(
+watchDebounced(
     () => table.getState().columnFilters,
     () => {
         const { pageSize } = table.getState().pagination;
@@ -100,7 +103,8 @@ watch(
             transformFiltersToObject(table.getState().columnFilters),
             transformSortingKeys(table.getState().sorting[0])
         );
-    }
+    },
+    { debounce: 500, maxWait: 1000 }
 );
 
 // watch(
@@ -125,6 +129,7 @@ const loadingSize = computed(() => {
 
 <template>
     <div class="space-y-4 mt-5 font-Poppins text-neutral-700 relative">
+        <slot name="tabs" :table="table" />
         <slot name="header" :make-refresh="() => (refresh = true)" :table="table" />
         <slot name="toolbar" :table="table" />
         <div class="rounded-xl border relative min-h-[650px]">
