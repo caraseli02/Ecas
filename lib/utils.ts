@@ -56,7 +56,7 @@ export function transformFiltersToObject(filters: Filter[]): Record<string, unkn
             transformedFilters[`${filter.id}From`] = (filter.value as string[])[0] || 'any';
             transformedFilters[`${filter.id}To`] = (filter.value as string[])[1] || 'any';
         } else if (Array.isArray(filter.value)) {
-            transformedFilters[filter.id] = filter.value.join(', ');
+            transformedFilters[filter.id] = filter.value.join(',');
         } else {
             transformedFilters[filter.id] = filter.value;
         }
