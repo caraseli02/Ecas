@@ -11,7 +11,7 @@
         <ClientOrders v-if="activeOrderFilter.value === 'orders'"/>
         <ClientTransactions v-if="activeOrderFilter.value === 'transaction_history'"/>
         <ClientOnly>
-          <DashboardClientActivity/>
+          <DashboardClientActivity :data="myActivityData"/>
         </ClientOnly>
         <!-- <DashboardClientInfoCards :id="route.params.slug" /> -->
         <div class="flex flex-wrap gap-4 xl:grid-cols-3 xl:grid-rows-[repeat(2,auto)] md:gap-6">
@@ -39,6 +39,8 @@
 
 <script setup lang="ts">
 
+import {CustomerDashboardActivityData} from '~/model/dashboard/customer-information/customer-information';
+
 const {$api} = useNuxtApp();
 
 // Remove after integration
@@ -47,17 +49,36 @@ const activeOrderFilter = ref({
   icon: 'dashboard',
   value: 'home',
 })
+const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboardActivityData)
 
 const activeOrders = async () => {
   const {data, status} = await $api.customerDashboard.fetchCustomerActiveOrders()
   if (status && data && data.total) {
     OrdersIds.value = data.total.map(object => object.shortId);
-    OrdersIds.value.push(data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId, data.total[0].shortId);
-    // console.log(OrdersIds.value)
   }
 }
-await activeOrders();
 
+const activityWidgets = async () => {
+  const favorites = await $api.customerDashboard.fetchFavorites();
+  const totalOrders = await $api.customerDashboard.fetchTotalOrders();
+  const returns = await $api.customerDashboard.fetchReturns();
+  if (favorites.status) {
+    myActivityData.value.favorites = {
+      products: favorites.data.products_number || 0,
+      folders: favorites.data.folders_number || 0
+    }
+  }
+  if (totalOrders.status) {
+    myActivityData.value.totalOrders = totalOrders.data.total_orders || 0
+    myActivityData.value.monthOrder = totalOrders.data.total_orders_current_month || 0
+  }
+  if (returns.status) {
+    myActivityData.value.returns = returns.data.total || 0
+  }
+  console.log(myActivityData.value);
+}
+
+await Promise.all([activeOrders(), activityWidgets()]);
 
 </script>
 

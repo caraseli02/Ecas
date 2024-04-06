@@ -12,7 +12,7 @@
                 fill="#5E6278"/>
           </svg>
         </div>
-        <div class="flex gap-1.5 mt-4 mb-1 flex-wrap max-h-[130px] overflow-auto">
+        <div class="flex gap-1.5 mt-4 mb-1 flex-wrap">
           <button
               v-for="item in items"
               :key="item"
