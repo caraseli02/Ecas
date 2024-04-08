@@ -6,6 +6,7 @@ import {
     TotalOrdersResponse,
     TotalReturnsResponse
 } from '~/model/dashboard/customer-information/customer-information';
+import {UserDetailsResponse} from '~/types';
 
 class CustomerDashboard extends HttpFactory {
     private RESOURCE = '/dashboard';
@@ -40,6 +41,14 @@ class CustomerDashboard extends HttpFactory {
         const authStore = useAuthStore();
         const token = authStore.getToken();
         return await this.call<TotalReturnsResponse>('GET', `${this.ORDERS_RESOURCE}/returns`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
+    async fetchCustomerAccountInformation() {
+        const authStore = useAuthStore();
+        const token = authStore.getToken();
+        return await this.call<UserDetailsResponse>('GET', `${this.ORDERS_RESOURCE}/account-information`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }

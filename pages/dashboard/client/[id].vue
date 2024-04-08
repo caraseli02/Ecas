@@ -16,16 +16,21 @@
         <!-- <DashboardClientInfoCards :id="route.params.slug" /> -->
         <div class="flex flex-wrap gap-4 xl:grid-cols-3 xl:grid-rows-[repeat(2,auto)] md:gap-6">
           <DashboardClientInfo
-              id="4vJCGY6q0jZT3JLWZL9eP0DEIyx1"
+              :id=myAccountInformation._id
+              :account-information="myAccountInformation"
               class="xl:col-start-1 xl:row-start-1 xl:row-span-2"/>
           <DashboardClientRecentlyBought/>
           <DashboardClientRecentlyBoughtSlider/>
           <section class="hidden xl:flex flex-col gap-6 min-w-[330px]">
-            <DashboardClientCredit/>
+            <DashboardClientCredit
+                :available-credit="myAccountInformation.adminSettings?.customerCredit?.spent || 0"
+                :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"/>
             <DashboardClientSupport/>
           </section>
           <div class="flex gap-6 w-full flex-wrap">
-            <DashboardClientCredit class="xl:hidden"/>
+            <DashboardClientCredit
+                :available-credit="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0" class="xl:hidden"/>
             <DashboardClientAddressCards/>
             <DashboardClientPaymentCard/>
             <DashboardClientSupport class="xl:hidden"/>
@@ -40,6 +45,7 @@
 <script setup lang="ts">
 
 import {CustomerDashboardActivityData} from '~/model/dashboard/customer-information/customer-information';
+import {UserDetails} from '~/types/auth/user-details';
 
 const {$api} = useNuxtApp();
 
@@ -50,6 +56,7 @@ const activeOrderFilter = ref({
   value: 'home',
 })
 const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboardActivityData)
+const myAccountInformation = ref<UserDetails>({} as UserDetails)
 
 const activeOrders = async () => {
   const {data, status} = await $api.customerDashboard.fetchCustomerActiveOrders()
@@ -62,23 +69,30 @@ const activityWidgets = async () => {
   const favorites = await $api.customerDashboard.fetchFavorites();
   const totalOrders = await $api.customerDashboard.fetchTotalOrders();
   const returns = await $api.customerDashboard.fetchReturns();
-  if (favorites.status) {
+  if (favorites.status === 'success') {
     myActivityData.value.favorites = {
       products: favorites.data.products_number || 0,
       folders: favorites.data.folders_number || 0
     }
   }
-  if (totalOrders.status) {
+  if (totalOrders.status === 'success') {
     myActivityData.value.totalOrders = totalOrders.data.total_orders || 0
     myActivityData.value.monthOrder = totalOrders.data.total_orders_current_month || 0
   }
-  if (returns.status) {
+  if (returns.status === 'success') {
     myActivityData.value.returns = returns.data.total || 0
   }
-  console.log(myActivityData.value);
 }
 
-await Promise.all([activeOrders(), activityWidgets()]);
+const customerInformation = async () => {
+  const accountInformation = await $api.customerDashboard.fetchCustomerAccountInformation();
+  if (accountInformation.status === 'success') {
+    myAccountInformation.value = accountInformation.data
+  }
+}
+
+
+await Promise.all([activeOrders(), activityWidgets(), customerInformation()]);
 
 </script>
 
