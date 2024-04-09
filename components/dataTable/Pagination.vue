@@ -16,13 +16,15 @@ const props = defineProps<DataTablePaginationProps>()
       {{ totalItems }} item(s)
     </div>
     <div class="flex items-center justify-between space-x-6 lg:space-x-8">
-      <div v-if="totalItems > 0" class="flex flex-col md:flex-row gap-4 md:items-center space-x-2">
+      <div v-if="totalItems > 10" class="flex flex-col md:flex-row gap-4 md:items-center space-x-2">
         <p class="text-sm font-medium">
           Rows per page
         </p>
         <UiSelect
           :model-value="`${table.getState().pagination.pageSize}`"
           @update:model-value="table.setPageSize"
+          v-if="totalItems"
+          :key="totalItems"
         >
           <UiSelectTrigger class="h-8 w-[70px]">
             <UiSelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
@@ -61,7 +63,7 @@ const props = defineProps<DataTablePaginationProps>()
         <UiButton
           variant="outline"
           class="h-8 w-8 p-0"
-          :disabled="!table.getCanNextPage()"
+          :disabled="pageCount === table.getState().pagination.pageIndex + 1 || pageCount === 1"
           @click="table.nextPage()"
         >
           <span class="sr-only">Go to next page</span>
@@ -70,8 +72,8 @@ const props = defineProps<DataTablePaginationProps>()
         <UiButton
           variant="outline"
           class="hidden h-8 w-8 p-0 lg:flex"
-          :disabled="!table.getCanNextPage()"
-          @click="table.setPageIndex(table.getPageCount() - 1)"
+          :disabled="pageCount === table.getState().pagination.pageIndex + 1 || pageCount === 1"
+          @click="table.setPageIndex(pageCount - 1)"
         >
           <span class="sr-only">Go to last page</span>
           <ChevronsRightIcon class="h-4 w-4" />

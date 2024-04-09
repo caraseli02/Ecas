@@ -7,7 +7,6 @@ import {
 } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import { OrderInterface } from '~/types';
 
 class UserDashboardService extends HttpFactory {
     private RESOURCE = '/user';
@@ -73,7 +72,7 @@ class UserDashboardService extends HttpFactory {
     async deactivateUser(userID: string) {
         const authStore = useAuthStore();
         const token = authStore.getToken();
-        return await this.call<OrderInterface[]>('DELETE', `${this.RESOURCE}/deactivate/${userID}`, null, {
+        return await this.call<CustomersByCountryInterface>('DELETE', `${this.RESOURCE}/deactivate/${userID}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -81,7 +80,7 @@ class UserDashboardService extends HttpFactory {
     async activateUser(userID: string) {
         const authStore = useAuthStore();
         const token = authStore.getToken();
-        return await this.call<OrderInterface[]>('POST', `${this.RESOURCE}/activate/${userID}`, null, {
+        return await this.call('POST', `${this.RESOURCE}/activate/${userID}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -89,7 +88,8 @@ class UserDashboardService extends HttpFactory {
     async deleteUser(userID: string) {
         const authStore = useAuthStore();
         const token = authStore.getToken();
-        return await this.call<OrderInterface[]>('DELETE', `${this.RESOURCE}/${userID}`, null, {
+        console.log(userID);
+        return await this.call('DELETE', `${this.RESOURCE}/${userID}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }

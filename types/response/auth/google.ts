@@ -1,6 +1,6 @@
-import { UserDetails } from '~~/types/auth/user-details';
+import { UserInterface } from '~/types/auth/user-interface';
 
 export interface UserDetailsResponse {
-    data: UserDetails;
+    data: UserInterface;
     status: string;
 }
