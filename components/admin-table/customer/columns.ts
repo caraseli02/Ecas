@@ -36,6 +36,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                 name: `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'add userName',
                 email: row.original.contactDetails?.email,
                 navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
+                discount: row.original?.adminSettings?.discount?.value
             }),
     },
     {
@@ -79,17 +80,17 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                     {
                         label: 'Delete',
                         enable: true,
-                        actionFn: "deleteUser",
+                        actionFn: 'deleteUser',
                     },
                     {
                         label: 'Unlock account',
                         enable: !row.original.active,
-                        actionFn: "activateUser",
+                        actionFn: 'activateUser',
                     },
                     {
                         label: 'Lock account',
                         enable: row.original.active,
-                        actionFn: "deactivateUser",
+                        actionFn: 'deactivateUser',
                     },
                 ] as ActionOptionsConfiguration[],
             }),
