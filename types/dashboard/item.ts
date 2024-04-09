@@ -1,6 +1,6 @@
-import {OrderStatus, OrderType, PaymentStatusEnum} from '~/types';
-import {AccountAdminSettings} from '~/types/auth/account-settings';
-import {AddressInterface} from '~/types/auth/user-details';
+import { OrderStatus, OrderType, PaymentStatusEnum } from '~/types';
+import { AccountAdminSettings } from '~/types/auth/account-settings';
+import { AddressInterface } from '~/types/auth/user-interface';
 
 export interface DashboardCustomerTableItem {
     avatar?: any;
@@ -51,8 +51,8 @@ export interface DashboardOrderItem {
     type: OrderType;
     date: string;
     name?: string;
-    firebaseId: string,
-    email?: string,
+    firebaseId: string;
+    email?: string;
     customer?: {
         avatar?: any;
         name: string;
