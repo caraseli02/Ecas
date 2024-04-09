@@ -71,7 +71,7 @@ import {
 } from '~/types';
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
 import { useAuthStore } from '~/store/authStore';
-import { ShippingAddressInterface } from '~/types/auth/user-details';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 import { useCartStore } from '~/store/cartStore';

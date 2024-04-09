@@ -109,7 +109,7 @@ import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { countries } from '@/data/countries';
 import { FormSelectOption } from '~/types';
 import Emitter from 'tiny-emitter/instance.js';
-import { ShippingAddressInterface } from '~/types/auth/user-details';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { getRegionByCountry } from '~/helpers/form.helpers';
 
 const props = defineProps({

@@ -7,7 +7,8 @@
             </button>
         </DashboardOrdersBreadcrumbs>
         <DashboardOrdersInfoCards />
-        <DashboardOrdersList />
+        <!--        <DashboardOrdersList />-->
+        <AdminTableOrder />
     </div>
 </template>
 

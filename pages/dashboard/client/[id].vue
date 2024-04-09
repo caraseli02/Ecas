@@ -8,15 +8,14 @@
                     <DashboardClientBanner />
                 </section>
                 <DashboardClientTabBar v-model="activeOrderFilter" />
-                    <ClientOrders v-if="activeOrderFilter.value === 'orders'" />
-                    <ClientTransactions v-if="activeOrderFilter.value === 'transaction_history'" />
+                <ClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
+                <ClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
                 <ClientOnly>
                     <DashboardClientActivity />
                 </ClientOnly>
                 <!-- <DashboardClientInfoCards :id="route.params.slug" /> -->
                 <div class="flex flex-wrap gap-4 xl:grid-cols-3 xl:grid-rows-[repeat(2,auto)] md:gap-6">
-                    <DashboardClientInfo id="4vJCGY6q0jZT3JLWZL9eP0DEIyx1"
-                        class="xl:col-start-1 xl:row-start-1 xl:row-span-2" />
+                    <DashboardClientInfo id="4vJCGY6q0jZT3JLWZL9eP0DEIyx1" class="xl:col-start-1 xl:row-start-1 xl:row-span-2" />
                     <DashboardClientRecentlyBought />
                     <DashboardClientRecentlyBoughtSlider />
                     <section class="hidden xl:flex flex-col gap-6 min-w-[330px]">
@@ -38,11 +37,11 @@
 
 <script setup lang="ts">
 // Remove after integration
-const testOrders = ['M-100003', 'S-100004', 'M-100003', 'S-100004', 'M-100003', 'S-100004', 'M-100003', 'S-100004', 'M-100003', 'S-100004']
+const testOrders = ['M-100003', 'S-100004', 'M-100003', 'S-100004', 'M-100003', 'S-100004', 'M-100003', 'S-100004', 'M-100003', 'S-100004'];
 const activeOrderFilter = ref({
     icon: 'dashboard',
     value: 'home',
-})
+});
 </script>
 
 <style>

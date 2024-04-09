@@ -11,7 +11,9 @@
                     <BusinessIcon class="w-8 h-8 flex-shrink-0 text-slate-500" />
                     <div class="md:w-[301px] lg:w-auto">
                         <div class="flex items-center mb-2">
-                            <div class="font-semibold leading-normal md:mr-6">{{ address.alias || 'Address Alias ' + (index + 1) }}</div>
+                            <div class="font-semibold leading-normal md:mr-6">
+                                {{ address.alias || 'Address Alias ' + (index + 1) }}
+                            </div>
                             <div
                                 v-if="address.default"
                                 class="flex items-center gap-1 bg-[#00D395] rounded-[100px] px-2 py-1 text-white max-md:hidden"
@@ -109,7 +111,7 @@ import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import CheckIcon from '@/assets/icons/check-circle.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { useNuxtApp } from '#app';
-import { ShippingAddressInterface } from '~/types/auth/user-details';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance';
 
 const addAddressModal = ref(false);
