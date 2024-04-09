@@ -63,7 +63,7 @@ const props = defineProps<DataTablePaginationProps>()
         <UiButton
           variant="outline"
           class="h-8 w-8 p-0"
-          :disabled="!table.getCanNextPage() || pageCount === 1"
+          :disabled="pageCount === table.getState().pagination.pageIndex + 1 || pageCount === 1"
           @click="table.nextPage()"
         >
           <span class="sr-only">Go to next page</span>
@@ -72,8 +72,8 @@ const props = defineProps<DataTablePaginationProps>()
         <UiButton
           variant="outline"
           class="hidden h-8 w-8 p-0 lg:flex"
-          :disabled="!table.getCanNextPage() || pageCount === 1"
-          @click="table.setPageIndex(table.getPageCount() - 1)"
+          :disabled="pageCount === table.getState().pagination.pageIndex + 1 || pageCount === 1"
+          @click="table.setPageIndex(pageCount - 1)"
         >
           <span class="sr-only">Go to last page</span>
           <ChevronsRightIcon class="h-4 w-4" />
