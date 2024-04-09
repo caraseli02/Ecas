@@ -8,8 +8,8 @@
           <DashboardClientBanner/>
         </section>
         <DashboardClientTabBar v-model="activeOrderFilter"/>
-        <ClientOrders v-if="activeOrderFilter.value === 'orders'"/>
-        <ClientTransactions v-if="activeOrderFilter.value === 'transaction_history'"/>
+        <ClientTableOrder v-if="activeOrderFilter.value === 'orders'"/>
+        <ClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'"/>
         <ClientOnly>
           <DashboardClientActivity :data="myActivityData"/>
         </ClientOnly>

@@ -1,7 +1,7 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import { AccountAdminSettings } from '~/types/auth/account-settings';
-import { ShippingAddressInterface, UserDetails } from '~/types/auth/user-details';
+import { ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
 import { PaginatedTransactionsInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 
 class ControlPanelService extends HttpFactory {
@@ -108,7 +108,7 @@ class ControlPanelService extends HttpFactory {
         });
     }
 
-    async updateAccountDetails(id: string, account: UserDetails, type: number) {
+    async updateAccountDetails(id: string, account: UserInterface, type: number) {
         const token = this.authStore.getToken();
 
         return await this.call<AccountAdminSettings>('POST', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, account, {

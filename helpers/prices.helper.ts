@@ -1,4 +1,4 @@
-import { UserDetails } from '~/types/auth/user-details';
+import { UserInterface } from '~/types/auth/user-interface';
 import {
     PriceConfigurationSettingsInterface,
     ProductDiscountsHelperInterface,
@@ -9,7 +9,7 @@ import { CartProductsInterface } from '~/types';
 import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
 
-export const parseProductPriceConfiguration = (product: ProductInterface, userDetails: UserDetails, quantity = 0) => {
+export const parseProductPriceConfiguration = (product: ProductInterface, userDetails: UserInterface, quantity = 0) => {
     let unitPrice = 0;
 
     if (!product.priceConfiguration) {

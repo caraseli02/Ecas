@@ -79,7 +79,7 @@ const props = defineProps({
 
 const userCountry = async () => {
     if (props.user) {
-        country.value = countries.find((country) => country.value === props.user.address.country);
+        country.value = countries.find((country) => country.value === props.user.address?.country);
     }
 };
 await userCountry();

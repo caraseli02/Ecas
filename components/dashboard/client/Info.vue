@@ -198,7 +198,7 @@
 
 <script setup lang="ts">
 import Avatar from '@/assets/icons/dashboard/avatar.png';
-import type {UserDetails} from '~/types/auth/user-details';
+import type {UserInterface} from '~/types/auth/user-interface';
 import {AccountType, DashboardCustomerTableItem, getAccountTypeById} from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
@@ -224,7 +224,7 @@ const props = defineProps({
     required: true,
   }
 });
-const customerInformation = ref<UserDetails>({} as UserDetails);
+const customerInformation = ref<UserInterface>({} as UserInterface);
 const customerDetails = ref<DashboardCustomerTableItem>({} as DashboardCustomerTableItem);
 
 const fetchInformation = async () => {

@@ -94,7 +94,7 @@ import SignINIcon from '@/assets/icons/menu/in.svg';
 import CheckIcon from '@/assets/icons/check.svg';
 import { SigninResponse, UserDetailsResponse, UserInfoJWT } from '~~/types';
 import { useAuthStore } from '~~/store/authStore';
-import { UserDetails } from '~~/types/auth/user-details';
+import { UserInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import { useCartStore } from '~/store/cartStore';
 import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
@@ -191,7 +191,7 @@ const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
     }
 
     const userDetails = data.value?.data;
-    authStore.addUserDetail(userDetails as UserDetails);
+    authStore.addUserDetail(userDetails as UserInterface);
 
     if (userDetails) {
         const response = (await $api.generalSettings.fetchSettings()) as {
