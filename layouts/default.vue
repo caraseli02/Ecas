@@ -59,11 +59,6 @@ body {
   scrollbar-color: #ebebeb #ddd;
 }
 
-body::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
 body::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom right, #ebebeb 0%, #d6d6d6 100%);
   border-radius: 5px;

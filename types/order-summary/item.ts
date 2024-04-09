@@ -1,6 +1,6 @@
 import { DiscountInterface } from '~/types/auth/account-settings';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
-import { ShippingAddressInterface } from '~/types/auth/user-details';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import {
     BackorderShippingTypesInterface,
     DeliveryTypesInterface,
@@ -73,6 +73,8 @@ export interface OrderInterface {
      */
     parent?: string;
 }
+
+export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'userName' | 'createdAt' | 'status' | 'total'>;
 
 export interface OrderRequestInterface {
     userId?: string;
@@ -164,6 +166,12 @@ export const getPaymentStatusById = <
     return keys.length > 0 ? keys[0] : null;
 };
 
+export interface PaymentStatusOption {
+    label: string | null;
+    value: unknown;
+    color: string;
+}
+
 export enum PaymentTypeEnum {
     Card = 0,
     Credit = 1,
@@ -181,6 +189,12 @@ export const getPaymentTypeById = <
     const keys = Object.keys(PaymentTypeEnum).filter((x) => PaymentTypeEnum[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
+
+export interface PaymentTypeOption {
+    label: string | null;
+    value: unknown;
+    color?: string;
+}
 
 export interface CartProductsInterface {
     /**
@@ -261,13 +275,14 @@ export enum OrderType {
     Mixed = 2,
 }
 
-export const getOrderById = <
-    T extends {
-        [index: string]: number;
-    }
->(
-    enumValue: number
-): string | null => {
-    const keys = Object.keys(OrderType).filter((x) => OrderType[x] === enumValue);
+// The 'as T' is a type assertion to help TypeScript
+export const getOrderById = <T extends { [index: string]: number }>(enumValue: number): string | null => {
+    const keys = Object.keys(OrderType as unknown as T).filter((x) => (OrderType as unknown as T)[x] === enumValue);
     return keys.length > 0 ? keys[0] : null;
 };
+
+export interface OrderTypeInfo {
+    value: OrderType;
+    label: string;
+    badge: { bg: string; text: string };
+}

@@ -275,7 +275,7 @@ import { Notification } from '~/types/dashboard/notification';
 import moment from 'moment';
 import { useAuthStore } from '~/store/authStore';
 import { AccountType } from '../../types';
-import { UserDetails } from '~/types/auth/user-details';
+import { UserInterface } from '~/types/auth/user-interface';
 import { storeToRefs } from 'pinia';
 import Emitter from 'tiny-emitter/instance.js';
 
@@ -304,7 +304,7 @@ const showOptions = ref(false);
 const showNotifications = ref(false);
 const unreadNotifications = ref(0);
 
-const user = ref({} as UserDetails);
+const user = ref({} as UserInterface);
 
 onMounted(() => {
     user.value = getUserDetails.value;

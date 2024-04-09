@@ -1,43 +1,45 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
-import { type Task } from './data/schema'
-import {ChevronLeftIcon, DoubleArrowRightIcon, ChevronRightIcon, DoubleArrowLeftIcon} from '@radix-icons/vue'
-
+import { ChevronRightIcon, ChevronLeftIcon, ChevronsRightIcon, ChevronsLeftIcon } from 'lucide-vue-next';
 interface DataTablePaginationProps {
-  table: Table<Task>
+  table: Table<TData>,
+  pageCount: number,
+  totalItems: number,
 }
-defineProps<DataTablePaginationProps>()
+const props = defineProps<DataTablePaginationProps>()
+
 </script>
 
 <template>
   <div class="flex flex-col md:flex-row gap-4 md:items-center justify-between px-2">
     <div class="flex-1 text-sm text-grey-600">
-      {{ table.getFilteredSelectedRowModel().rows.length }} of
-      {{ table.getFilteredRowModel().rows.length }} row(s) Selected.
+      {{ totalItems }} item(s)
     </div>
     <div class="flex items-center justify-between space-x-6 lg:space-x-8">
-      <div class="flex flex-col md:flex-row gap-4 md:items-center space-x-2">
+      <div v-if="totalItems > 10" class="flex flex-col md:flex-row gap-4 md:items-center space-x-2">
         <p class="text-sm font-medium">
           Rows per page
         </p>
         <UiSelect
           :model-value="`${table.getState().pagination.pageSize}`"
           @update:model-value="table.setPageSize"
+          v-if="totalItems"
+          :key="totalItems"
         >
           <UiSelectTrigger class="h-8 w-[70px]">
             <UiSelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
           </UiSelectTrigger>
           <UiSelectContent side="top">
-            <UiSelectItem class="cursor-pointer" v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" :value="`${pageSize}`">
+            <UiSelectItem v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" class="cursor-pointer" :value="`${pageSize}`">
               {{ pageSize }}
             </UiSelectItem>
           </UiSelectContent>
         </UiSelect>
       </div>
-      <section class="flex flex-col md:flex-row gap-4 item-center">
+      <section v-if="totalItems > 0" class="flex flex-col md:flex-row gap-4 item-center">
       <div class="flex  w-[100px] items-center justify-center text-sm font-medium">
         Page {{ table.getState().pagination.pageIndex + 1 }} of
-        {{ table.getPageCount() }}
+        {{ pageCount }}
       </div>
       <div class="flex items-center space-x-2">
         <UiButton
@@ -47,7 +49,7 @@ defineProps<DataTablePaginationProps>()
           @click="table.setPageIndex(0)"
         >
           <span class="sr-only">Go to first page</span>
-          <DoubleArrowLeftIcon class="h-4 w-4" />
+          <ChevronsLeftIcon class="h-4 w-4" />
         </UiButton>
         <UiButton
           variant="outline"
@@ -61,7 +63,7 @@ defineProps<DataTablePaginationProps>()
         <UiButton
           variant="outline"
           class="h-8 w-8 p-0"
-          :disabled="!table.getCanNextPage()"
+          :disabled="pageCount === table.getState().pagination.pageIndex + 1 || pageCount === 1"
           @click="table.nextPage()"
         >
           <span class="sr-only">Go to next page</span>
@@ -70,11 +72,11 @@ defineProps<DataTablePaginationProps>()
         <UiButton
           variant="outline"
           class="hidden h-8 w-8 p-0 lg:flex"
-          :disabled="!table.getCanNextPage()"
-          @click="table.setPageIndex(table.getPageCount() - 1)"
+          :disabled="pageCount === table.getState().pagination.pageIndex + 1 || pageCount === 1"
+          @click="table.setPageIndex(pageCount - 1)"
         >
           <span class="sr-only">Go to last page</span>
-          <DoubleArrowRightIcon class="h-4 w-4" />
+          <ChevronsRightIcon class="h-4 w-4" />
         </UiButton>
       </div></section>
     </div>

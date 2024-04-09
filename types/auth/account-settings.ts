@@ -3,6 +3,11 @@ export interface AccountAdminSettings {
     customerCredit?: CustomerCreditInterface;
     alertsAndNotifications?: AlertsAndNotificationsInterface;
     marketingPreferences?: MarketingPreferencesInterface;
+    messagesPreferences?: MessagesPreferencesInterface;
+}
+
+export interface MessagesPreferencesInterface {
+    messages: AlertsAndNotificationsTypes;
 }
 
 export interface AlertsAndNotificationsInterface {

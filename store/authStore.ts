@@ -1,10 +1,10 @@
-import {defineStore} from 'pinia';
-import {UserInfoJWT} from '~~/types';
-import {UserDetails} from '~~/types/auth/user-details';
+import { defineStore } from 'pinia';
+import { UserInfoJWT } from '~~/types';
+import { UserInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import useFirebaseAuth from '~/composables/useFirebaseAuth';
 import moment from 'moment';
-import {GeneralSettingsInterface} from '~/types/general-settings/general-settings';
+import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
@@ -12,7 +12,7 @@ export const useAuthStore = defineStore({
         return {
             token: {} as { value: string; createdAt: any },
             loggedInUser: null as UserInfoJWT | null,
-            userDetails: null as UserDetails | null,
+            userDetails: null as UserInterface | null,
             firebaseTempToken: null as string | null,
             generalSettings: null as GeneralSettingsInterface | null,
         };
@@ -25,7 +25,7 @@ export const useAuthStore = defineStore({
         addUser(user: UserInfoJWT) {
             this.loggedInUser = user;
         },
-        addUserDetail(user: UserDetails) {
+        addUserDetail(user: UserInterface) {
             this.userDetails = user;
         },
         addFirebaseToken(token: string) {
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore({
         signOut() {
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = {value: '', createdAt: ''};
+            this.token = { value: '', createdAt: '' };
             this.generalSettings = null;
 
             Emitter.emit('remove-cart-and-notifications', true);
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore({
 
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = {value: '', createdAt: ''};
+            this.token = { value: '', createdAt: '' };
             this.generalSettings = null;
         },
         getToken() {
@@ -66,7 +66,7 @@ export const useAuthStore = defineStore({
     },
     getters: {
         getCurrentUser: (state) => state.loggedInUser,
-        getUserDetails: (state) => state.userDetails as UserDetails,
+        getUserDetails: (state) => state.userDetails as UserInterface,
         getGeneralSettings: (state) => state.generalSettings as GeneralSettingsInterface,
     },
     persist: {

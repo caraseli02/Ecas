@@ -1,10 +1,9 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import type { Table } from '@tanstack/vue-table'
-import { type Task } from './data/schema'
-import {MixerHorizontalIcon} from '@radix-icons/vue'
+import { EyeIcon } from 'lucide-vue-next';
 
 interface DataTableViewOptionsProps {
-  table: Table<Task>
+  table: Table<TData>
 }
 
 const props = defineProps<DataTableViewOptionsProps>()
@@ -17,15 +16,10 @@ const columns = computed(() => props.table.getAllColumns()
 </script>
 
 <template>
-  <UiDropdownMenu>
+  <UiDropdownMenu :modal="false">
     <UiDropdownMenuTrigger as-child>
-      <UiButton
-        variant="outline"
-        size="sm"
-        class="ml-auto hidden h-8 lg:flex"
-      >
-        <MixerHorizontalIcon class="mr-2 h-4 w-4" />
-        View
+      <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
+        <EyeIcon class="w-4 h-4" />
       </UiButton>
     </UiDropdownMenuTrigger>
     <UiDropdownMenuContent align="end" class="w-[150px]">
