@@ -22,7 +22,7 @@
                 :loading="loading"
             />
         </div>
-        <div v-else class="flex flex-col items-center justify-center flex-1 max-lg:mt-11 max-lg:mb-3">
+        <div v-if="people.length === 0" class="flex flex-col items-center justify-center flex-1 max-lg:mt-11 max-lg:mb-3">
             <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
             <div class="text-sm font-medium leading-normal text-gray-500">No data available</div>
         </div>

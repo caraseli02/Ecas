@@ -2,6 +2,7 @@
 import { type OrderInterface, OrderStatus, OrderTableColumns } from '~/types';
 import { columns } from './columns';
 import moment from 'moment/moment';
+import { Table } from '@tanstack/vue-table';
 
 interface TabFilter {
     label: string;
@@ -135,62 +136,34 @@ watch(
             filter['status'] = activeOrderFilter.value.key.join(',');
         }
 
-        await fetchAndSetOrdersList(1, 10, filter, {});
+        // await fetchAndSetOrdersList(1, 10, filter, {});
     },
     { deep: true }
 );
+
+const onTabChange = async (filter: TabFilter, table: Table<OrderTableColumns>) => {
+    activeOrderFilter.value = filter
+    table.resetColumnFilters();    
+    table.getColumn(filter.value)?.setFilterValue(filter.key)
+}
 
 await loadTabFilters();
 await fetchAndSetOrdersList(1, 10);
 
 onMounted(() => {
-    setActiveFilterHighlight();
-
     setTimeout(() => {
+        setActiveFilterHighlight();
         loading.value = false;
     }, 1000);
 });
 </script>
 
 <template>
-    <div class="relative flex items-center gap-8 bg-white rounded-xl px-6 shadow-xs overflow-x-auto hide-scrollbar mb-6">
-        <button
-            v-for="(filter, index) in orderFilters"
-            :key="index"
-            class="ordersFilter flex items-center gap-3 relative z-10 text-sm font-medium leading-[1.71] py-5 flex-shrink-0 transition-colors duration-300 md:py-8"
-            :class="[filter.label === activeOrderFilter.label ? 'text-blue-500' : 'hover:text-blue-500']"
-            @click="activeOrderFilter = filter"
-        >
-            <span>
-                {{ filter.label }}
-            </span>
-            <span
-                class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium min-w-[32px] transition-colors duration-300"
-                :class="filter.label === activeOrderFilter.label ? 'text-white bg-blue-500' : 'text-slate-500 bg-gray-100'"
-            >
-                {{ filter.total_items || '0' }}
-            </span>
-        </button>
-        <div
-            class="absolute bottom-0 bg-blue-500 h-1 rounded-t-lg transition-all duration-300"
-            :style="{
-                width: filterHighlightWidth + 'px',
-                left: filterHightlightLeft + 'px',
-            }"
-        />
-    </div>
     <div
-        class="h-full flex-1 flex-col space-y-8 flex w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px] shadow-xs p-2 pt-6 md:p-6 rounded-xl"
-    >
+        class="h-full flex-1 flex-col space-y-8 flex w-[393px] md:w-[640px] lg:w-[896px] xl:w-[1312px] 2xl:w-[1444px] shadow-xs p-2 pt-6 md:p-6 rounded-xl">
         <DataTable
-            v-if="!loading"
-            :fetch-fn="fetchAndSetOrdersList"
-            :page-count="pageCount"
-            :data="listItems"
-            :columns="columns"
-            :loading="loading"
-            :total-items="totalItems"
-        >
+            v-if="!loading" :fetch-fn="fetchAndSetOrdersList" :page-count="pageCount" :data="listItems"
+            :columns="columns" :loading="loading" :total-items="totalItems">
             <template #header="{ table, makeRefresh }">
                 <DataTableHeadControls :error="error" title="Orders List" :table="table" @refresh="makeRefresh()">
                     <!-- <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
@@ -201,6 +174,29 @@ onMounted(() => {
             </template>
             <template #toolbar="{ table }">
                 <AdminTableOrderToolbar :table="table" />
+            </template>
+            <template #tabs="{ table }">
+                <div class="relative flex items-center gap-8 rounded-xl pl-2 overflow-x-auto hide-scrollbar mb-6">
+                    <button
+                        v-for="(filter, index) in orderFilters" :key="index"
+                        class="ordersFilter flex items-center gap-3 relative z-10 text-sm font-medium leading-[1.71] py-5 flex-shrink-0 transition-colors duration-300 md:py-8"
+                        :class="[filter.label === activeOrderFilter.label ? 'text-blue-500' : 'hover:text-blue-500']"
+                        @click="onTabChange(filter, table)">
+                        <span>
+                            {{ filter.label }}
+                        </span>
+                        <span
+                            class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium min-w-[32px] transition-colors duration-300"
+                            :class="filter.label === activeOrderFilter.label ? 'text-white bg-blue-500' : 'text-slate-500 bg-gray-100'">
+                            {{ filter.total_items || '0' }}
+                        </span>
+                    </button>
+                    <div
+class="absolute bottom-0 bg-blue-500 h-1 rounded-t-lg transition-all duration-300" :style="{
+                        width: filterHighlightWidth + 'px',
+                        left: filterHightlightLeft + 'px',
+                    }" />
+                </div>
             </template>
         </DataTable>
     </div>

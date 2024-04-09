@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { Row } from '@tanstack/vue-table';
-
+import { $fetch, FetchOptions } from 'ohmyfetch';
 export interface ActionOptionsConfiguration {
     label: string;
     enable: boolean;
-    isRouter: boolean;
     navigateToRoute?: string; // only if isRouter = true
     actionFn?: (id: string) => Promise<unknown>;
 }
@@ -12,14 +11,31 @@ export interface ActionOptionsConfiguration {
 interface DataTableRowActionsProps {
     row: Row<any>;
     options: ActionOptionsConfiguration[];
+    service?: any;
+    discount?: number
+
 }
 
 const props = defineProps<DataTableRowActionsProps>();
 // const task = computed(() => orderSchema.parse(props.row.original));
+
+const runtimeConfig = useRuntimeConfig()
+const fetchOptions: FetchOptions = {
+    baseURL: runtimeConfig.public.BASE_URL_API,
+};
+const apiFetcher = $fetch.create(fetchOptions);
+let actionService
+if(props.service) {
+    actionService  = new props.service(apiFetcher);
+}
 </script>
 
 <template>
     <section class="flex justify-around items-center gap-6">
+        <UiBadge v-if="discount" class="h-[22px] text-xs !pt-[3px]" variant="outline">
+        {{ discount }}%
+        </UiBadge>
+        <p class="h-[22px] w-[44px] text-xs !pt-[3px]" v-else></p>
         <svg
             class="text-slate-500 hover:text-blue-500 cursor-pointer"
             width="20"
@@ -114,9 +130,12 @@ const props = defineProps<DataTableRowActionsProps>();
                 </UiButton>
             </UiDropdownMenuTrigger>
             <UiDropdownMenuContent align="end" class="w-[167px]">
-                <template v-for="option of props.options">
-                    <UiDropdownMenuItem v-if="option.enable" @click="option.actionFn && option.actionFn(row.original.firebaseId as string)">
+                <template v-for="(option, index) of props.options">
+                    <UiDropdownMenuItem v-if="option.enable && option.actionFn" :key="index" @click="actionService[option.actionFn](row.original.firebaseId as string)">
                         {{ option.label }}
+                    </UiDropdownMenuItem>
+                    <UiDropdownMenuItem v-if="option.enable && option.navigateToRoute" :key="index">
+                        <NuxtLink class="w-full h-full" :to="option.navigateToRoute">{{ option.label }}</NuxtLink>
                     </UiDropdownMenuItem>
                 </template>
 
