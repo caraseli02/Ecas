@@ -12,6 +12,7 @@ interface DataTableRowActionsProps {
     row: Row<any>;
     options: ActionOptionsConfiguration[];
     service?: any;
+    discount?: number
 
 }
 
@@ -31,6 +32,10 @@ if(props.service) {
 
 <template>
     <section class="flex justify-around items-center gap-6">
+        <UiBadge v-if="discount" class="h-[22px] text-xs !pt-[3px]" variant="outline">
+        {{ discount }}%
+        </UiBadge>
+        <p class="h-[22px] w-[44px] text-xs !pt-[3px]" v-else></p>
         <svg
             class="text-slate-500 hover:text-blue-500 cursor-pointer"
             width="20"

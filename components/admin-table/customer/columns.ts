@@ -36,7 +36,6 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                 name: `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'add userName',
                 email: row.original.contactDetails?.email,
                 navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
-                discount: row.original?.adminSettings?.discount?.value
             }),
     },
     {
@@ -71,6 +70,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
             h(RowActions, {
                 row: row,
                 service: UserDashboardService,
+                discount: row.original?.adminSettings?.discount?.value,
                 options: [
                     {
                         label: 'Profile',
