@@ -3,6 +3,7 @@ import HttpFactory from '~/composables/HttpFactory';
 import {
     ActiveOrdersResponse,
     FavoritesResponse,
+    RecentlyBoughtResponse,
     TotalOrdersResponse,
     TotalReturnsResponse
 } from '~/model/dashboard/customer-information/customer-information';
@@ -49,6 +50,14 @@ class CustomerDashboard extends HttpFactory {
         const authStore = useAuthStore();
         const token = authStore.getToken();
         return await this.call<UserDetailsResponse>('GET', `${this.ORDERS_RESOURCE}/account-information`, null, {
+            headers: {Authorization: `Bearer ${token}`},
+        });
+    }
+
+    async fetchRecentlyBought() {
+        const authStore = useAuthStore();
+        const token = authStore.getToken();
+        return await this.call<RecentlyBoughtResponse>('GET', `${this.ORDERS_RESOURCE}/recently-bought`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }

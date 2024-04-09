@@ -65,3 +65,8 @@ export interface CustomerDashboardActivityData {
         folders: number
     }
 }
+
+export interface RecentlyBoughtResponse {
+    status: string,
+    data: any;
+}
