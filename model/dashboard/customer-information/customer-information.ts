@@ -1,5 +1,6 @@
 import {AddressInterface} from '~/types/auth/user-details';
 import {AccountRole} from '~/types';
+import {ProductInterface} from '~/model/products/response/ProductResponse';
 
 export interface CustomersProfileInformation {
     email: string;
@@ -69,4 +70,9 @@ export interface CustomerDashboardActivityData {
 export interface RecentlyBoughtResponse {
     status: string,
     data: any;
+}
+
+export interface ViewHistoryResponse {
+    status: string,
+    data: ProductInterface[]
 }

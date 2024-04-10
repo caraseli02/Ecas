@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <DashboardClientViewHistory/>
+    <DashboardClientViewHistory :view-history="myViewHistory"/>
   </section>
 </template>
 
@@ -51,6 +51,7 @@ import {CustomerDashboardActivityData} from '~/model/dashboard/customer-informat
 
 import {ShippingAddressInterface, UserInterface} from '~/types/auth/user-interface';
 import {useAuthStore} from '~/store/authStore';
+import {ProductInterface} from '~/model/products/response/ProductResponse';
 
 
 const {$api} = useNuxtApp();
@@ -67,6 +68,7 @@ const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboar
 const myAccountInformation = ref<UserInterface>({} as UserInterface);
 const myRecentlyBougth = ref<any>([] as any)
 const myAddresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterface[])
+const myViewHistory = ref<ProductInterface[]>([] as ProductInterface[])
 
 
 const activeOrders = async () => {
@@ -118,7 +120,16 @@ const addresses = async () => {
   }
 }
 
-await Promise.all([activeOrders(), activityWidgets(), customerInformation(), recentlyBougth(), addresses()]);
+const viewHistory = async () => {
+  const history = await $api.customerDashboard.fetchViewHistory();
+  if (history.status === 'success') {
+    myViewHistory.value = history.data
+    console.log(myViewHistory.value);
+  }
+
+}
+
+await Promise.all([activeOrders(), activityWidgets(), customerInformation(), recentlyBougth(), addresses(), viewHistory()]);
 </script>
 
 <style>
