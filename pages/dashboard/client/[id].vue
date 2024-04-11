@@ -5,7 +5,7 @@
         <section class="flex justify-between gap-6 flex-wrap xl:flex-nowrap">
           <DashboardClientActiveOrders :items="OrdersIds"/>
           <DashboardClientAnalytics/>
-          <DashboardClientBanner/>
+          <DashboardClientBanner :slides="hotSales"/>
         </section>
         <DashboardClientTabBar v-model="activeOrderFilter"/>
         <ClientTableOrder v-if="activeOrderFilter.value === 'orders'"/>
@@ -47,7 +47,10 @@
 </template>
 
 <script setup lang="ts">
-import {CustomerDashboardActivityData} from '~/model/dashboard/customer-information/customer-information';
+import {
+  CustomerDashboardActivityData,
+  ProductBannerInterface
+} from '~/model/dashboard/customer-information/customer-information';
 
 import {ShippingAddressInterface, UserInterface} from '~/types/auth/user-interface';
 import {useAuthStore} from '~/store/authStore';
@@ -69,6 +72,8 @@ const myAccountInformation = ref<UserInterface>({} as UserInterface);
 const myRecentlyBougth = ref<any>([] as any)
 const myAddresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterface[])
 const myViewHistory = ref<ProductInterface[]>([] as ProductInterface[])
+const myMonthHotSale = ref<ProductInterface[]>([] as ProductInterface[])
+const hotSales = ref<ProductBannerInterface[]>([] as ProductBannerInterface[])
 
 
 const activeOrders = async () => {
@@ -129,7 +134,31 @@ const viewHistory = async () => {
 
 }
 
-await Promise.all([activeOrders(), activityWidgets(), customerInformation(), recentlyBougth(), addresses(), viewHistory()]);
+const monthHotSale = async () => {
+  const hotSale = await $api.customerDashboard.fetchMonthHotSale();
+  if (hotSale.status === 'success') {
+    myMonthHotSale.value = hotSale.data
+    await hotSalesFunction()
+    console.log(hotSales.value);
+  }
+}
+
+const hotSalesFunction = async () => {
+  hotSales.value = myMonthHotSale.value.map((slide) => ({
+    title: 'October hot sale',
+    discount: slide.adminSettings?.discount?.value + ' %',
+    productCode: slide.manufacturerCode,
+    description: slide.description,
+    details: slide.variant,
+    originalPrice: '$ 0,15 (100+)',
+    salePrice: '$ 0,095',
+    quantity: '(100+)',
+    addToCartText: 'Add to cart'
+  })) as unknown as ProductBannerInterface[];
+};
+
+
+await Promise.all([activeOrders(), activityWidgets(), customerInformation(), recentlyBougth(), addresses(), viewHistory(), monthHotSale()]);
 </script>
 
 <style>

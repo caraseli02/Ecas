@@ -13,8 +13,8 @@
                 <div
                     class="justify-center items-center bg-red-500 flex aspect-square flex-col w-full h-9 lg:h-10 px-2 rounded-[100px]">
                   <svg
-class="w-5 h-5 lg:w-6 lg:h-6 aspect-square object-contain object-center overflow-hidden"
-                       viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      class="w-5 h-5 lg:w-6 lg:h-6 aspect-square object-contain object-center overflow-hidden"
+                      viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M12.765 4.70229L12 5.52422L11.235 4.70229C9.12233 2.43257 5.69709 2.43257 3.58447 4.70229C1.47184 6.972 1.47184 10.6519 3.58447 12.9217L10.4699 20.3191C11.315 21.227 12.685 21.227 13.5301 20.3191L20.4155 12.9217C22.5282 10.6519 22.5282 6.972 20.4155 4.70229C18.3029 2.43257 14.8777 2.43257 12.765 4.70229Z"
                         stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
@@ -26,8 +26,8 @@ class="w-5 h-5 lg:w-6 lg:h-6 aspect-square object-contain object-center overflow
                   My Favorites
                 </div>
                 <div
-v-for="(val, key, index) in data.favorites" :key="index"
-                     class="items-stretch flex justify-between gap-3 mt-0.5">
+                    v-for="(val, key, index) in data.favorites" :key="index"
+                    class="items-stretch flex justify-between gap-3 mt-0.5">
                   <div class="text-slate-500 leading-6 capitalize">{{ key }}</div>
                   <div class="text-neutral-800 font-medium leading-6">{{ val }}</div>
                 </div>
@@ -35,7 +35,9 @@ v-for="(val, key, index) in data.favorites" :key="index"
             </div>
             <div
                 class="items-stretch flex gap-2 self-end text-slate-500 hover:text-blue-500 transition-all cursor-pointer">
-              <button class="text-sm font-medium leading-5 grow">
+              <button
+class="text-sm font-medium leading-5 grow"
+                      @click="Emitter.emit('customer-dashboard-nav-tab', {label : 'Favorites', value: 'favorites'})">
                 Favorites
               </button>
               <SvgoArrowLeft16
@@ -57,18 +59,18 @@ v-for="(val, key, index) in data.favorites" :key="index"
                       class="w-5 h-5 lg:w-6 lg:h-6 aspect-square object-contain object-center justify-center items-center overflow-hidden"
                       viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
-d="M21 7V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V7C3 4 4.5 2 8 2H16C19.5 2 21 4 21 7Z"
-                          stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                          stroke-linejoin="round"/>
+                        d="M21 7V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V7C3 4 4.5 2 8 2H16C19.5 2 21 4 21 7Z"
+                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round"/>
                     <path
-d="M14.5 4.5V6.5C14.5 7.6 15.4 8.5 16.5 8.5H18.5" stroke="white" stroke-width="1.5"
-                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                        d="M14.5 4.5V6.5C14.5 7.6 15.4 8.5 16.5 8.5H18.5" stroke="white" stroke-width="1.5"
+                        stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                     <path
-d="M8 13H12" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                          stroke-linejoin="round"/>
+                        d="M8 13H12" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round"/>
                     <path
-d="M8 17H16" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                          stroke-linejoin="round"/>
+                        d="M8 17H16" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round"/>
                   </svg>
                 </div>
               </div>
@@ -86,7 +88,9 @@ d="M8 17H16" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-lin
               </div>
             </div>
             <div class="items-stretch flex gap-2 self-end text-slate-500 hover:text-blue-500 cursor-pointer">
-              <button class="text-sm font-medium leading-5">
+              <button
+                  class="text-sm font-medium leading-5"
+                  @click="Emitter.emit('customer-dashboard-nav-tab', {label : 'Orders', value: 'orders'})">
                 Orders
               </button>
               <SvgoArrowLeft16
@@ -105,11 +109,11 @@ d="M8 17H16" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-lin
                 <div
                     class="justify-center items-center bg-slate-500 flex aspect-square flex-col w-full h-9 lg:h-10 px-2 rounded-[100px]">
                   <svg
-class="aspect-square object-contain object-center overflow-hidden w-5 h-5 lg:w-6 lg:h-6"
-                       viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      class="aspect-square object-contain object-center overflow-hidden w-5 h-5 lg:w-6 lg:h-6"
+                      viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
-d="M5 8L15 8C17.2091 8 19 9.79086 19 12C19 14.2091 17.2091 16 15 16L5 16M5 8L9 5M5 8L9 11"
-                          stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        d="M5 8L15 8C17.2091 8 19 9.79086 19 12C19 14.2091 17.2091 16 15 16L5 16M5 8L9 5M5 8L9 11"
+                        stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
               </div>
@@ -151,6 +155,7 @@ d="M5 8L15 8C17.2091 8 19 9.79086 19 12C19 14.2091 17.2091 16 15 16L5 16M5 8L9 5
 
 <script setup lang="ts">
 import {CustomerDashboardActivityData} from '~/model/dashboard/customer-information/customer-information';
+import Emitter from 'tiny-emitter/instance';
 
 defineProps<{
   data: CustomerDashboardActivityData

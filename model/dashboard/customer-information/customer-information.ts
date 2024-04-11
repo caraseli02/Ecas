@@ -76,3 +76,20 @@ export interface ViewHistoryResponse {
     status: string,
     data: ProductInterface[]
 }
+
+export interface MonthHotSaleResponse {
+    status: string,
+    data: ProductInterface[]
+}
+
+export interface ProductBannerInterface {
+    title: string,
+    discount: string,
+    productCode: string,
+    description: string,
+    details: string,
+    originalPrice: string,
+    salePrice: string,
+    quantity: string,
+    addToCartText: string,
+}
