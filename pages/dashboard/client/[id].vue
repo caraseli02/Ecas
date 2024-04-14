@@ -5,7 +5,7 @@
         <section class="flex justify-between gap-6 flex-wrap xl:flex-nowrap">
           <DashboardClientActiveOrders :items="OrdersIds"/>
           <DashboardClientAnalytics/>
-          <DashboardClientBanner/>
+          <DashboardClientBanner :slides="hotSales"/>
         </section>
         <DashboardClientTabBar v-model="activeOrderFilter"/>
         <ClientTableOrder v-if="activeOrderFilter.value === 'orders'"/>
@@ -36,26 +36,32 @@
                 class="xl:hidden"
             />
             <DashboardClientAddressCards :addresses="myAddresses"/>
-            <DashboardClientPaymentCard/>
+            <DashboardClientPaymentCard :card="myCard"/>
             <DashboardClientSupport class="xl:hidden"/>
           </div>
         </div>
       </div>
     </div>
-    <DashboardClientViewHistory/>
+    <DashboardClientViewHistory :view-history="myViewHistory"/>
   </section>
 </template>
 
 <script setup lang="ts">
-import {CustomerDashboardActivityData} from '~/model/dashboard/customer-information/customer-information';
+import {
+  CustomerDashboardActivityData,
+  ProductBannerInterface
+} from '~/model/dashboard/customer-information/customer-information';
 
 import {ShippingAddressInterface, UserInterface} from '~/types/auth/user-interface';
 import {useAuthStore} from '~/store/authStore';
+import {ProductInterface} from '~/model/products/response/ProductResponse';
+import {StripeCardInterface} from '~/types';
 
 
 const {$api} = useNuxtApp();
 
 const userDetails = useAuthStore().userDetails
+const userCards = useAuthStore().userCards
 
 // Remove after integration
 const OrdersIds = ref([] as any);
@@ -67,6 +73,10 @@ const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboar
 const myAccountInformation = ref<UserInterface>({} as UserInterface);
 const myRecentlyBougth = ref<any>([] as any)
 const myAddresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterface[])
+const myViewHistory = ref<ProductInterface[]>([] as ProductInterface[])
+const myMonthHotSale = ref<ProductInterface[]>([] as ProductInterface[])
+const hotSales = ref<ProductBannerInterface[]>([] as ProductBannerInterface[])
+const myCard = ref<StripeCardInterface>({} as StripeCardInterface)
 
 
 const activeOrders = async () => {
@@ -100,7 +110,6 @@ const activityWidgets = async () => {
 const customerInformation = async () => {
   if (userDetails) {
     myAccountInformation.value = userDetails
-    console.log(userDetails)
   }
 }
 
@@ -118,7 +127,43 @@ const addresses = async () => {
   }
 }
 
-await Promise.all([activeOrders(), activityWidgets(), customerInformation(), recentlyBougth(), addresses()]);
+const viewHistory = async () => {
+  const history = await $api.customerDashboard.fetchViewHistory();
+  if (history.status === 'success') {
+    myViewHistory.value = history.data
+  }
+
+}
+
+const monthHotSale = async () => {
+  const hotSale = await $api.customerDashboard.fetchMonthHotSale();
+  if (hotSale.status === 'success') {
+    myMonthHotSale.value = hotSale.data
+    await hotSalesFunction()
+  }
+}
+
+const hotSalesFunction = async () => {
+  hotSales.value = myMonthHotSale.value.map((slide) => ({
+    title: 'October hot sale',
+    discount: slide.adminSettings?.discount?.value + ' %',
+    productCode: slide.manufacturerCode,
+    description: slide.description,
+    details: slide.variant,
+    originalPrice: '$ 0,15 (100+)',
+    salePrice: '$ 0,095',
+    quantity: '(100+)',
+    addToCartText: 'Add to cart'
+  })) as unknown as ProductBannerInterface[];
+};
+
+const getDefaultCard = async () => {
+  myCard.value = userCards?.filter((card) => card.default)[0] as StripeCardInterface
+  // return userCards?.filter((card) => card.default)[0] as StripeCardInterface
+}
+
+
+await Promise.all([activeOrders(), activityWidgets(), customerInformation(), recentlyBougth(), addresses(), viewHistory(), monthHotSale(), getDefaultCard()]);
 </script>
 
 <style>

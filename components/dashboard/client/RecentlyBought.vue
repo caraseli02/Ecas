@@ -20,9 +20,10 @@
     </section>
     <div
         class="self-end align-end flex justify-end items-end gap-2 h-fit grow text-slate-500 hover:text-blue-500 transition-colors">
-      <a
-          href="..." class="text-sm font-medium leading-5 grow whitespace-nowrap"
-          aria-label="View Orders">View Orders</a>
+      <button
+          class="text-sm font-medium leading-5 grow whitespace-nowrap"
+          @click="Emitter.emit('customer-dashboard-nav-tab', {label : 'Orders', value: 'orders'})">View Orders
+      </button>
       <SvgoArrowLeft16
           class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full mb-0.5"
       />
@@ -31,6 +32,9 @@
 </template>
 
 <script setup lang="ts">
+
+import Emitter from 'tiny-emitter/instance';
+
 // const data = [
 //   {
 //     photo: '',
