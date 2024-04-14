@@ -1,10 +1,11 @@
-import { defineStore } from 'pinia';
-import { UserInfoJWT } from '~~/types';
-import { UserInterface } from '~/types/auth/user-interface';
+import {defineStore} from 'pinia';
+import {StripeCardInterface, UserInfoJWT} from '~~/types';
+import {UserInterface} from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import useFirebaseAuth from '~/composables/useFirebaseAuth';
 import moment from 'moment';
-import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import {GeneralSettingsInterface} from '~/types/general-settings/general-settings';
+import {useNuxtApp} from '#app';
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
@@ -14,6 +15,7 @@ export const useAuthStore = defineStore({
             loggedInUser: null as UserInfoJWT | null,
             userDetails: null as UserInterface | null,
             firebaseTempToken: null as string | null,
+            userCards: null as StripeCardInterface[] | null,
             generalSettings: null as GeneralSettingsInterface | null,
         };
     },
@@ -28,6 +30,20 @@ export const useAuthStore = defineStore({
         addUserDetail(user: UserInterface) {
             this.userDetails = user;
         },
+        async addUserCards() {
+            const {$api} = useNuxtApp();
+            const cardsResponse = await $api.user.userCards();
+
+            if (!cardsResponse) {
+                return Promise<null>;
+            }
+
+            this.userCards = cardsResponse.data;
+
+            Emitter.emit('update-cart', this.userCards);
+
+            return this.userCards as StripeCardInterface[];
+        },
         addFirebaseToken(token: string) {
             this.firebaseTempToken = token;
         },
@@ -37,7 +53,7 @@ export const useAuthStore = defineStore({
         signOut() {
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = { value: '', createdAt: '' };
+            this.token = {value: '', createdAt: ''};
             this.generalSettings = null;
 
             Emitter.emit('remove-cart-and-notifications', true);
@@ -52,7 +68,7 @@ export const useAuthStore = defineStore({
 
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = { value: '', createdAt: '' };
+            this.token = {value: '', createdAt: ''};
             this.generalSettings = null;
         },
         getToken() {

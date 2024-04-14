@@ -36,7 +36,7 @@
                 class="xl:hidden"
             />
             <DashboardClientAddressCards :addresses="myAddresses"/>
-            <DashboardClientPaymentCard/>
+            <DashboardClientPaymentCard :card="myCard"/>
             <DashboardClientSupport class="xl:hidden"/>
           </div>
         </div>
@@ -55,11 +55,13 @@ import {
 import {ShippingAddressInterface, UserInterface} from '~/types/auth/user-interface';
 import {useAuthStore} from '~/store/authStore';
 import {ProductInterface} from '~/model/products/response/ProductResponse';
+import {StripeCardInterface} from '~/types';
 
 
 const {$api} = useNuxtApp();
 
 const userDetails = useAuthStore().userDetails
+const userCards = useAuthStore().userCards
 
 // Remove after integration
 const OrdersIds = ref([] as any);
@@ -74,6 +76,7 @@ const myAddresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterfa
 const myViewHistory = ref<ProductInterface[]>([] as ProductInterface[])
 const myMonthHotSale = ref<ProductInterface[]>([] as ProductInterface[])
 const hotSales = ref<ProductBannerInterface[]>([] as ProductBannerInterface[])
+const myCard = ref<StripeCardInterface>({} as StripeCardInterface)
 
 
 const activeOrders = async () => {
@@ -107,7 +110,6 @@ const activityWidgets = async () => {
 const customerInformation = async () => {
   if (userDetails) {
     myAccountInformation.value = userDetails
-    console.log(userDetails)
   }
 }
 
@@ -129,7 +131,6 @@ const viewHistory = async () => {
   const history = await $api.customerDashboard.fetchViewHistory();
   if (history.status === 'success') {
     myViewHistory.value = history.data
-    console.log(myViewHistory.value);
   }
 
 }
@@ -139,7 +140,6 @@ const monthHotSale = async () => {
   if (hotSale.status === 'success') {
     myMonthHotSale.value = hotSale.data
     await hotSalesFunction()
-    console.log(hotSales.value);
   }
 }
 
@@ -157,8 +157,13 @@ const hotSalesFunction = async () => {
   })) as unknown as ProductBannerInterface[];
 };
 
+const getDefaultCard = async () => {
+  myCard.value = userCards?.filter((card) => card.default)[0] as StripeCardInterface
+  // return userCards?.filter((card) => card.default)[0] as StripeCardInterface
+}
 
-await Promise.all([activeOrders(), activityWidgets(), customerInformation(), recentlyBougth(), addresses(), viewHistory(), monthHotSale()]);
+
+await Promise.all([activeOrders(), activityWidgets(), customerInformation(), recentlyBougth(), addresses(), viewHistory(), monthHotSale(), getDefaultCard()]);
 </script>
 
 <style>
