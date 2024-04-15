@@ -6,8 +6,8 @@
     <ProductCardStock :stock="product.stock"/>
     <div class="relative">
       <img
-          v-if="hasValidImage" :src="productImageLarge" :alt="product.alias"
-          class="object-contain mx-auto max-h-[120px]"/>
+v-if="hasValidImage" :src="productImageLarge" :alt="product.alias"
+           class="object-contain mx-auto max-h-[120px]"/>
       <div v-else class="w-full flex items-center justify-center">
         <svgo-card-placehoder/>
       </div>
@@ -125,10 +125,9 @@ const addToCart = async (product: ProductInterface, stockToAdd = 1) => {
   await cartStore.updateAndReturnCart();
 };
 const productImageLarge = computed(() => {
-  return props.product.details?.ProductImage ? props.product.details.ProductImage.ProductImageLarge : '';
+  return props.product.details.ProductImage.ProductImageLarge;
 });
 const hasValidImage = computed(() => {
   return productImageLarge.value && !productImageLarge.value.includes('not_valid_image');
 });
 </script>
-
