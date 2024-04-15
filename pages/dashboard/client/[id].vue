@@ -49,7 +49,8 @@
 <script setup lang="ts">
 import {
   CustomerDashboardActivityData,
-  ProductBannerInterface
+  ProductBannerInterface,
+  ViewHistoryProductInterface
 } from '~/model/dashboard/customer-information/customer-information';
 
 import {ShippingAddressInterface, UserInterface} from '~/types/auth/user-interface';
@@ -75,7 +76,7 @@ const myRecentlyBougth = ref<any>([] as any)
 const myAddresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterface[])
 const myViewHistory = ref<ProductInterface[]>([] as ProductInterface[])
 const myMonthHotSale = ref<ProductInterface[]>([] as ProductInterface[])
-const hotSales = ref<ProductBannerInterface[]>([] as ProductBannerInterface[])
+const hotSales = ref<ProductInterface[][]>([] as ProductInterface[][])
 const myCard = ref<StripeCardInterface>({} as StripeCardInterface)
 
 
@@ -130,7 +131,24 @@ const addresses = async () => {
 const viewHistory = async () => {
   const history = await $api.customerDashboard.fetchViewHistory();
   if (history.status === 'success') {
-    myViewHistory.value = history.data
+    myViewHistory.value = history.data.map((item: ViewHistoryProductInterface) => ({
+      _id: item._id,
+      class: item.productInfo.class,
+      alias: item.productInfo.alias,
+      description: item.productInfo.description,
+      variant: item.productInfo.variant,
+      manufacturer: item.productInfo.manufacturer,
+      manufacturerCode: item.productInfo.manufacturerCode,
+      stock: item.productInfo.stock,
+      priceHistory: item.productInfo.priceHistory,
+      priceConfiguration: item.productInfo.priceConfiguration,
+      measure: item.productInfo.measure,
+      details: '',
+      sold: item.productInfo.sold
+    })) as unknown as ProductInterface[];
+    console.log(myViewHistory);
+
+
   }
 
 }

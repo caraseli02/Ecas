@@ -74,7 +74,16 @@ export interface RecentlyBoughtResponse {
 
 export interface ViewHistoryResponse {
     status: string,
-    data: ProductInterface[]
+    data: ViewHistoryProductInterface[]
+}
+
+export interface ViewHistoryProductInterface {
+    productId: string,
+    count: number
+    _id: string,
+    createdAt: string,
+    updatedAt: string,
+    productInfo: ProductInterface,
 }
 
 export interface MonthHotSaleResponse {
