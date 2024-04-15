@@ -3,7 +3,7 @@
       :to="`/product/${product._id}`"
       class="flex flex-col gap-2 relative font-Inter bg-white rounded-xl shadow-xs overflow-hidden h-full px-2.5 pt-[34px] pb-2 md:px-4 md:pt-10 md:pb-3 xl:pt-[34px] min-h-[280px]"
   >
-    <ProductCardStock :stock="product.productInfo.stock"/>
+    <ProductCardStock :stock="product.stock"/>
     <div class="relative">
       <img
           v-if="hasValidImage" :src="productImageLarge" :alt="product.alias"
@@ -22,7 +22,7 @@
     <section class="flex flex-col gap-1">
       <div class="flex gap-2 items-center">
         <h3 class="font-semibold text-neutral-700 inline truncate">
-          {{ product.productInfo.alias }}
+          {{ product.alias }}
         </h3>
         <button class="flex">
           <svgo-info-circle class="w-4 h-4 text-slate-500"/>
@@ -30,7 +30,7 @@
       </div>
       <div class="flex flex-col gap-1 text-xs max-w-[220px]">
         <h4 class="text-xs leading-tight font-semibold text-slate-500">Category</h4>
-        <p class="hidden text-xs text-slate-500 truncate md:block">{{ product.productInfo.description }}</p>
+        <p class="hidden text-xs text-slate-500 truncate md:block">{{ product.description }}</p>
       </div>
     </section>
     <div class="mt-auto h-full min-h-[39px]">
@@ -98,7 +98,7 @@ const props = defineProps({
   },
 });
 
-const discountsHelper = parseProductPriceConfiguration(props.product.productInfo, getUserDetails.value, props.product?.productInfo.stock);
+const discountsHelper = parseProductPriceConfiguration(props.product, getUserDetails.value, props.product?.stock);
 
 const priceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(discountsHelper?.minimumOrderQuantityConfiguration);
 const discountPrice = ref(discountsHelper?.discountPrice || 0);
