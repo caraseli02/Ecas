@@ -53,10 +53,12 @@ import {
   ViewHistoryProductInterface
 } from '~/model/dashboard/customer-information/customer-information';
 
-import {ShippingAddressInterface, UserInterface} from '~/types/auth/user-interface';
+import {BillingAddressInterface, ShippingAddressInterface, UserInterface} from '~/types/auth/user-interface';
 import {useAuthStore} from '~/store/authStore';
 import {ProductInterface} from '~/model/products/response/ProductResponse';
-import {StripeCardInterface} from '~/types';
+import {AccountType, StripeCardInterface} from '~/types';
+import {parseProductPriceConfiguration} from '~/helpers/prices.helper';
+import {storeToRefs} from 'pinia';
 
 
 const {$api} = useNuxtApp();
@@ -122,10 +124,38 @@ const recentlyBougth = async () => {
 }
 
 const addresses = async () => {
-  if (userDetails && userDetails.personalDetails && userDetails.personalDetails?.shippingAddress) {
-    myAddresses.value.push(userDetails.personalDetails?.shippingAddress[0])
-    myAddresses.value.push(userDetails.personalDetails?.shippingAddress[0])
+  const shipping = ref<ShippingAddressInterface>({
+    alias: '-',
+    name1: '-',
+    name2: '-',
+    default: false,
+    country: '-',
+    region: '-',
+    city: '-',
+    postcode: '-',
+    phone: '-'
+  } as ShippingAddressInterface)
+  const billing = ref<BillingAddressInterface>({
+    alias: '-',
+    name1: '-',
+    name2: '-',
+    default: false,
+    country: '-',
+    region: '-',
+    city: '-',
+    postcode: '-',
+    phone: '-'
+  } as BillingAddressInterface)
+
+  const details = userDetails?.accountType === AccountType.Personal ? userDetails?.personalDetails : userDetails?.companyDetails
+  if (details?.shippingAddress && details?.shippingAddress[0]) {
+    shipping.value = details?.shippingAddress[0]
   }
+  if (details?.billingAddress && details?.billingAddress[0]) {
+    shipping.value = details?.billingAddress[0]
+  }
+  myAddresses.value.push(shipping.value);
+  myAddresses.value.push(billing.value);
 }
 
 const viewHistory = async () => {
@@ -160,19 +190,25 @@ const monthHotSale = async () => {
     await hotSalesFunction()
   }
 }
+const authStore = useAuthStore();
+const {getUserDetails} = storeToRefs(authStore);
 
 const hotSalesFunction = async () => {
-  hotSales.value = myMonthHotSale.value.map((slide) => ({
-    title: 'October hot sale',
-    discount: slide.adminSettings?.discount?.value + ' %',
-    productCode: slide.manufacturerCode,
-    description: slide.description,
-    details: slide.variant,
-    originalPrice: '$ 0,15 (100+)',
-    salePrice: '$ 0,095',
-    quantity: '(100+)',
-    addToCartText: 'Add to cart'
-  })) as unknown as ProductBannerInterface[];
+  hotSales.value = myMonthHotSale.value.map((slide) => {
+    const discoutPrice = (parseProductPriceConfiguration(slide, getUserDetails.value, slide.stock))
+    return {
+      title: 'October hot sale',
+      discount: slide.adminSettings?.discount?.value + ' %',
+      productCode: slide.manufacturerCode,
+      description: slide.description,
+      details: slide.variant,
+      originalPrice: `$ ${discoutPrice?.priceConfiguration.price.toFixed(2)} (${discoutPrice?.minimumOrderQuantityConfiguration.quantity}+)`,
+      salePrice: `$ ${discoutPrice?.currentConfigurationDiscountPrice.toFixed(2)}`,
+      quantity: `(${discoutPrice?.minimumOrderQuantityConfiguration.quantity}+)`,
+      addToCartText: 'Add to cart'
+    }
+  }) as unknown as ProductBannerInterface[];
+
 };
 
 const getDefaultCard = async () => {
