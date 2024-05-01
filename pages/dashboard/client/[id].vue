@@ -59,6 +59,7 @@ import {ProductInterface} from '~/model/products/response/ProductResponse';
 import {AccountType, StripeCardInterface} from '~/types';
 import {parseProductPriceConfiguration} from '~/helpers/prices.helper';
 import {storeToRefs} from 'pinia';
+import moment from 'moment'
 
 
 const {$api} = useNuxtApp();
@@ -194,10 +195,13 @@ const authStore = useAuthStore();
 const {getUserDetails} = storeToRefs(authStore);
 
 const hotSalesFunction = async () => {
+
+  const currMonthName = moment().format('MMMM');
+
   hotSales.value = myMonthHotSale.value.map((slide) => {
     const discoutPrice = (parseProductPriceConfiguration(slide, getUserDetails.value, slide.stock))
     return {
-      title: 'October hot sale',
+      title: currMonthName + ' hot sale',
       discount: slide.adminSettings?.discount?.value + ' %',
       productCode: slide.manufacturerCode,
       description: slide.description,

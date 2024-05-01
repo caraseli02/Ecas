@@ -132,7 +132,7 @@ export interface StripeCardInterface {
     card: StripeCardInfoInterface;
     id: string;
     customer?: string;
-    type?: string;
+    type: string;
     default?: boolean;
 }
 
