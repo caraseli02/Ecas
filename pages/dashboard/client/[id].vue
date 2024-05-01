@@ -3,7 +3,7 @@
     <div class="max-w-full p-4 mx-auto transition-all duration-300 !pb-0 md:py-6 lg:px-6 xl:p-0 xl:pt-8">
       <div class="grid grid-cols-1 gap-4 md:gap-6 w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px]">
         <section class="flex justify-between gap-6 flex-wrap xl:flex-nowrap">
-          <DashboardClientActiveOrders :items="OrdersIds"/>
+          <DashboardClientActiveOrders :items="ordersIds"/>
           <DashboardClientAnalytics/>
           <DashboardClientBanner :slides="hotSales"/>
         </section>
@@ -53,10 +53,12 @@ import {
   ViewHistoryProductInterface
 } from '~/model/dashboard/customer-information/customer-information';
 
-import {ShippingAddressInterface, UserInterface} from '~/types/auth/user-interface';
+import {BillingAddressInterface, ShippingAddressInterface, UserInterface} from '~/types/auth/user-interface';
 import {useAuthStore} from '~/store/authStore';
 import {ProductInterface} from '~/model/products/response/ProductResponse';
-import {StripeCardInterface} from '~/types';
+import {AccountType, StripeCardInterface} from '~/types';
+import {parseProductPriceConfiguration} from '~/helpers/prices.helper';
+import {storeToRefs} from 'pinia';
 
 
 const {$api} = useNuxtApp();
@@ -65,7 +67,7 @@ const userDetails = useAuthStore().userDetails
 const userCards = useAuthStore().userCards
 
 // Remove after integration
-const OrdersIds = ref([] as any);
+const ordersIds = ref([] as any);
 const activeOrderFilter = ref({
   icon: 'dashboard',
   value: 'home',
@@ -83,7 +85,7 @@ const myCard = ref<StripeCardInterface>({} as StripeCardInterface)
 const activeOrders = async () => {
   const {data, status} = await $api.customerDashboard.fetchCustomerActiveOrders();
   if (status && data && data.total) {
-    OrdersIds.value = data.total.map((object) => object.shortId);
+    ordersIds.value = data.total.map((object) => object.shortId);
   }
 };
 
@@ -122,10 +124,38 @@ const recentlyBougth = async () => {
 }
 
 const addresses = async () => {
-  if (userDetails && userDetails.personalDetails && userDetails.personalDetails?.shippingAddress) {
-    myAddresses.value.push(userDetails.personalDetails?.shippingAddress[0])
-    myAddresses.value.push(userDetails.personalDetails?.shippingAddress[0])
+  const shipping = ref<ShippingAddressInterface>({
+    alias: '-',
+    name1: '-',
+    name2: '-',
+    default: false,
+    country: '-',
+    region: '-',
+    city: '-',
+    postcode: '-',
+    phone: '-'
+  } as ShippingAddressInterface)
+  const billing = ref<BillingAddressInterface>({
+    alias: '-',
+    name1: '-',
+    name2: '-',
+    default: false,
+    country: '-',
+    region: '-',
+    city: '-',
+    postcode: '-',
+    phone: '-'
+  } as BillingAddressInterface)
+
+  const details = userDetails?.accountType === AccountType.Personal ? userDetails?.personalDetails : userDetails?.companyDetails
+  if (details?.shippingAddress && details?.shippingAddress[0]) {
+    shipping.value = details?.shippingAddress[0]
   }
+  if (details?.billingAddress && details?.billingAddress[0]) {
+    shipping.value = details?.billingAddress[0]
+  }
+  myAddresses.value.push(shipping.value);
+  myAddresses.value.push(billing.value);
 }
 
 const viewHistory = async () => {
@@ -160,19 +190,25 @@ const monthHotSale = async () => {
     await hotSalesFunction()
   }
 }
+const authStore = useAuthStore();
+const {getUserDetails} = storeToRefs(authStore);
 
 const hotSalesFunction = async () => {
-  hotSales.value = myMonthHotSale.value.map((slide) => ({
-    title: 'October hot sale',
-    discount: slide.adminSettings?.discount?.value + ' %',
-    productCode: slide.manufacturerCode,
-    description: slide.description,
-    details: slide.variant,
-    originalPrice: '$ 0,15 (100+)',
-    salePrice: '$ 0,095',
-    quantity: '(100+)',
-    addToCartText: 'Add to cart'
-  })) as unknown as ProductBannerInterface[];
+  hotSales.value = myMonthHotSale.value.map((slide) => {
+    const discoutPrice = (parseProductPriceConfiguration(slide, getUserDetails.value, slide.stock))
+    return {
+      title: 'October hot sale',
+      discount: slide.adminSettings?.discount?.value + ' %',
+      productCode: slide.manufacturerCode,
+      description: slide.description,
+      details: slide.variant,
+      originalPrice: `$ ${discoutPrice?.priceConfiguration.price.toFixed(2)} (${discoutPrice?.minimumOrderQuantityConfiguration.quantity}+)`,
+      salePrice: `$ ${discoutPrice?.currentConfigurationDiscountPrice.toFixed(2)}`,
+      quantity: `(${discoutPrice?.minimumOrderQuantityConfiguration.quantity}+)`,
+      addToCartText: 'Add to cart'
+    }
+  }) as unknown as ProductBannerInterface[];
+
 };
 
 const getDefaultCard = async () => {
