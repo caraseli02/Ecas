@@ -28,10 +28,6 @@
                             showDeactivatingModal = true;
                             showOptions = false;
                         "
-                        @trash-clicked="
-                            showOptions = false;
-                            deleteAccountAsAdmin(customerInformation.firebaseId);
-                        "
                     />
                 </Transition>
                 <Teleport to="body">
@@ -102,25 +98,25 @@
                     <template v-else>
                         <div class="flex flex-row gap-3">
                             <div class="text-sm font-semibold mb-4">Account Details</div>
-                            <Tooltip
-                                v-if="customerInformation.adminSettings?.discount"
-                                :position="index === 0 ? 'bottom' : 'top'"
-                                theme="black"
-                            >
-                                <div
-                                    class="border-[#007FFF] border-[1px] px-2 rounded-[50px] text-xs leading-[20px] font-semibold text-[#007FFF]"
-                                >
-                                    {{ customerInformation.adminSettings?.discount?.value }} %
-                                </div>
-                                <template #content>
-                                    <span
-                                        >Customer Discount:
-                                        <strong class="font-semibold">{{
-                                            `${customerInformation.adminSettings?.discount?.value}%`
-                                        }}</strong></span
-                                    >
-                                </template>
-                            </Tooltip>
+                            <!--              <Tooltip-->
+                            <!--                  v-if="customerInformation.adminSettings?.discount"-->
+                            <!--                  :position="index === 0 ? 'bottom' : 'top'"-->
+                            <!--                  theme="black"-->
+                            <!--              >-->
+                            <!--                <div-->
+                            <!--                    class="border-[#007FFF] border-[1px] px-2 rounded-[50px] text-xs leading-[20px] font-semibold text-[#007FFF]"-->
+                            <!--                >-->
+                            <!--                  {{ customerInformation.adminSettings?.discount?.value }} %-->
+                            <!--                </div>-->
+                            <!--                <template #content>-->
+                            <!--                                    <span-->
+                            <!--                                    >Customer Discount:-->
+                            <!--                                        <strong class="font-semibold">{{-->
+                            <!--                                            `${customerInformation.adminSettings?.discount?.value}%`-->
+                            <!--                                          }}</strong></span-->
+                            <!--                                    >-->
+                            <!--                </template>-->
+                            <!--              </Tooltip>-->
                         </div>
                         <div class="grid grid-cols-1 gap-2">
                             <div class="grid grid-cols-[140px,1fr] gap-3">
@@ -156,7 +152,7 @@
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-slate-500 leading-[1.75]">Mobile Number</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails.phone }}
+                                    {{ customerInformation?.contactDetails?.phone }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
@@ -201,7 +197,6 @@
 
 <script setup lang="ts">
 import Avatar from '@/assets/icons/dashboard/avatar.png';
-import { useNuxtApp } from '#app';
 import type { UserInterface } from '~/types/auth/user-interface';
 import { AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/types';
 import moment from 'moment';
@@ -223,75 +218,54 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    accountInformation: {
+        type: Object,
+        required: true,
+    },
 });
 const customerInformation = ref<UserInterface>({} as UserInterface);
 const customerDetails = ref<DashboardCustomerTableItem>({} as DashboardCustomerTableItem);
-const { $api } = useNuxtApp();
 
 const fetchInformation = async () => {
     error.value = false;
     isLoading.value = true;
 
-    if (!props.id) {
-        return;
-    }
-    const response = (await $api.customerProfile.fetchCustomerInformation(props.id)) as unknown as {
-        status: string;
-        data: UserInterface;
-    };
+    if (props.accountInformation && props.accountInformation.personalDetails) {
+        customerInformation.value = props.accountInformation;
+        address.value =
+            customerInformation.value.accountType === 0
+                ? customerInformation.value.personalDetails?.address
+                : customerInformation.value.companyDetails?.address;
 
-    if (response.status !== 'success') {
+        if (address.value && address.value.country) {
+            country.value = countries.find((country) => country.value === address.value.country);
+        }
+
+        Emitter.emit('customer-info', {
+            name: customerInformation.value.contactDetails?.firstName + ' ' + customerInformation.value.contactDetails?.lastName,
+        });
+
+        customerDetails.value = {
+            id: customerInformation.value?._id,
+            avatar: Avatar,
+            name: `${customerInformation.value?.contactDetails?.firstName} ${customerInformation.value?.contactDetails?.lastName} `,
+            email: customerInformation.value?.profileDetails?.email,
+            account: getAccountTypeById(customerInformation.value.accountType as number) || '-',
+            company: customerInformation.value?.companyDetails?.name || '-',
+            registered: new Date(customerInformation.value?.createdAt).toLocaleDateString('en-GB'),
+            spent: customerInformation.value?.spent,
+            ordersCount: customerInformation.value?.ordersCount,
+            firebaseId: customerInformation.value?.firebaseId,
+            active: customerInformation.value?.active,
+            address: address.value,
+            flag: country.value,
+        };
+
         isLoading.value = false;
-        error.value = true;
-
-        return;
+        error.value = false;
     } else {
         isLoading.value = false;
-    }
-
-    customerInformation.value = response.data;
-
-    address.value =
-        customerInformation.value.accountType === 0
-            ? customerInformation.value.personalDetails?.address
-            : customerInformation.value.companyDetails?.address;
-
-    if (address.value && address.value.country) {
-        country.value = countries.find((country) => country.value === address.value.country);
-    }
-
-    Emitter.emit('customer-info', {
-        name: customerInformation.value.contactDetails?.firstName + ' ' + customerInformation.value.contactDetails?.lastName,
-    });
-
-    customerDetails.value = {
-        id: response.data._id,
-        avatar: Avatar,
-        name: `${response.data?.contactDetails?.firstName} ${response.data?.contactDetails?.lastName} `,
-        email: response.data.profileDetails.email,
-        account: getAccountTypeById(response.data.accountType as number) || '-',
-        company: response.data.companyDetails?.name || '-',
-        registered: new Date(response.data.createdAt).toLocaleDateString('en-GB'),
-        spent: response.data.spent,
-        ordersCount: response.data.ordersCount,
-        firebaseId: response.data.firebaseId,
-        active: response.data.active,
-        address: address.value,
-        flag: country.value,
-    };
-};
-
-const deleteAccountAsAdmin = async (id: string) => {
-    const response = await $api.userDashboard.deleteUser(id);
-    if (response.status !== 'success') {
-        return;
-    }
-};
-
-const deactivateAccountAsAdmin = async (id: string) => {
-    const response = await $api.userDashboard.deactivateUser(id);
-    if (response.status !== 'success') {
-        return;
+        error.value = true;
     }
 };
 
