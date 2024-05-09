@@ -1,12 +1,12 @@
 <template>
   <div class="items-stretch shadow-xs bg-white flex w-full lg:max-w-[476px] xl:max-w-md flex-col p-6 rounded-xl">
     <section class="justify-between items-stretch flex gap-5">
-      <div class="text-neutral-800 text-sm font-medium leading-5 capitalize">{{ card?.type }}</div>
+      <div class="text-neutral-800 text-sm font-medium leading-5 capitalize">Card</div>
       <button>
         <SvgoEditGray24 class="text-slate-300 hover:text-blue-500"/>
       </button>
     </section>
-    <div class="items-stretch flex justify-between gap-3 mt-6 pr-7">
+    <div v-if="card && card.type" class="items-stretch flex justify-between gap-3 mt-6 pr-7">
       <component :is="cardImg[card?.card?.brand as keyof typeof cardImg]"/>
       <div class="justify-center items-stretch flex grow basis-[0%] flex-col">
         <div class="items-stretch flex gap-2">
@@ -42,17 +42,8 @@ import visaIcon from '@/assets/icons/visa58.svg';
 import {StripeCardInterface} from '~/types';
 
 defineProps<{
-  card: StripeCardInterface | undefined
+  card: StripeCardInterface
 }>()
-
-
-const cardData = ref({
-  title: 'Card',
-  type: 'Visa',
-  mask: '••••',
-  lastDigits: '2476',
-  expiryDate: '05/2026'
-});
 
 const cardImg = {
   mastercard: masterIcon,
