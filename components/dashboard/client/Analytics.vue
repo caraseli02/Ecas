@@ -18,9 +18,8 @@
 
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { ChevronRightIcon, ChevronLeftIcon } from 'lucide-vue-next';
-const viewport = useViewport()
+
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 const fullData = [23, 44, 35, 30, 49, 60, 70, 91, 85, 48, 60, 70];
 const currentIndex = ref(0);
