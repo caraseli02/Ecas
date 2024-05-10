@@ -47,6 +47,7 @@ export default defineNuxtConfig({
         'nuxt3-leaflet',
         'nuxt-viewport',
         'nuxt-headlessui',
+        '@vueuse/nuxt',
     ],
     shadcn: {
         /**
