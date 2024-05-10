@@ -3,7 +3,7 @@ import {PaginatedUserRequest} from '~/model/user/request/PaginatedUserRequest';
 import {useAuthStore} from '~/store/authStore';
 import {ProductResponse} from '~/model/products/response/ProductResponse';
 import {FirebaseError} from 'firebase/app';
-import {AccountAdminSettings} from '~/types/auth/account-settings';
+import {AccountAdminSettings, CardsResponse} from '~/types/auth/account-settings';
 
 class UserService extends HttpFactory {
     private RESOURCE = '/user';
@@ -61,8 +61,8 @@ class UserService extends HttpFactory {
 
     async userCards() {
         const token = this.authStore.getToken();
-        
-        return await this.call<AccountAdminSettings>('GET', `${this.RESOURCE}/cards`, null, {
+
+        return await this.call<CardsResponse>('GET', `${this.RESOURCE}/cards`, null, {
             headers: {Authorization: `Bearer ${token}`},
         });
     }
