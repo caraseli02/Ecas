@@ -8,7 +8,7 @@
     </div>
     <div class="flex flex-col gap-4 relative">
       <OrderSummaryPayByCard
-          v-if="card && !isNewCardSelected && availablePaymentMethods.includes(PaymentTypeEnum.Card)"
+          v-if="card && card?.brand && !isNewCardSelected && availablePaymentMethods.includes(PaymentTypeEnum.Card)"
           view="payment"
           :card-info="card"
           :card-type="card?.card?.brand"
@@ -154,7 +154,6 @@ const paymentMethods = async () => {
   getGeneralSettings.value.orderSettings?.paymentMethods.map((method: any) => {
     availablePaymentMethods.value.push(method.type)
   })
-  console.log(availablePaymentMethods.value)
 }
 
 await paymentMethods();
