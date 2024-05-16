@@ -200,6 +200,7 @@ const hotSalesFunction = async () => {
 
   hotSales.value = myMonthHotSale.value.map((slide) => {
     const discoutPrice = (parseProductPriceConfiguration(slide, getUserDetails.value, slide.stock))
+    console.log(discoutPrice);
     return {
       title: currMonthName + ' hot sale',
       discount: slide.adminSettings?.discount?.value + ' %',
@@ -208,7 +209,8 @@ const hotSalesFunction = async () => {
       details: slide.variant,
       originalPrice: `$ ${discoutPrice?.priceConfiguration.price.toFixed(2)} (${discoutPrice?.minimumOrderQuantityConfiguration.quantity}+)`,
       salePrice: `$ ${discoutPrice?.currentConfigurationDiscountPrice.toFixed(2)}`,
-      quantity: `(${discoutPrice?.minimumOrderQuantityConfiguration.quantity}+)`,
+      quantity: discoutPrice?.minimumOrderQuantityConfiguration.quantity,
+      id: slide._id,
       addToCartText: 'Add to cart'
     }
   }) as unknown as ProductBannerInterface[];

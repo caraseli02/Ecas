@@ -40,11 +40,12 @@
               <div class="text-zinc-800 text-sm leading-4 line-through">{{ item.originalPrice }}</div>
               <div class="items-stretch flex justify-between gap-1 text-red-500 mt-1">
                 <div class="text-base font-bold leading-5 grow">{{ item.salePrice }}</div>
-                <div class="text-sm leading-5 grow">{{ item.quantity }}</div>
+                <div class="text-sm leading-5 grow">{{ `(${item.quantity}+)` }}</div>
               </div>
             </section>
             <button
-                class="justify-between items-stretch bg-blue-500 flex gap-2 px-9 py-2 rounded-lg max-md:px-5 w-fit hover:bg-blue-400 hover:opacity-90">
+                class="justify-between items-stretch bg-blue-500 flex gap-2 px-9 py-2 rounded-lg max-md:px-5 w-fit hover:bg-blue-400 hover:opacity-90"
+                @click="addToCart(item)">
               <svg
                   class="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full" width="25"
                   height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -70,70 +71,27 @@
 <script setup lang="ts">
 import {A11y, Pagination} from 'swiper';
 import {ProductBannerInterface} from '~/model/dashboard/customer-information/customer-information';
+import {addToCartHelper} from '~/helpers/prices.helper';
+import {useCartStore} from '~/store/cartStore';
+
+const cartStore = useCartStore();
 
 defineProps<{
   slides: Array<ProductBannerInterface>
 }>()
 
 
-// const slides = [
-//   {
-//     title: 'October Hot Sale',
-//     discount: '20 %',
-//     productCode: 'ADGN2999BCPZ3577XKRT',
-//     description: 'Voltage Regulators',
-//     details: 'PHY 1-CH 1.1V/1.8V/2.5V/3.3V 48-Pin',
-//     originalPrice: '$ 0,15 (100+)',
-//     salePrice: '$ 0,095',
-//     quantity: '(100+)',
-//     addToCartText: 'Add to cart',
-//   },
-//   {
-//     title: 'October Hot Sale',
-//     discount: '20 %',
-//     productCode: 'ADGN2999BCPZ3577XKRT',
-//     description: 'Voltage Regulators',
-//     details: 'PHY 1-CH 1.1V/1.8V/2.5V/3.3V 48-Pin',
-//     originalPrice: '$ 0,15 (100+)',
-//     salePrice: '$ 0,095',
-//     quantity: '(100+)',
-//     addToCartText: 'Add to cart',
-//   },
-//   {
-//     title: 'October Hot Sale',
-//     discount: '20 %',
-//     productCode: 'ADGN2999BCPZ3577XKRT',
-//     description: 'Voltage Regulators',
-//     details: 'PHY 1-CH 1.1V/1.8V/2.5V/3.3V 48-Pin',
-//     originalPrice: '$ 0,15 (100+)',
-//     salePrice: '$ 0,095',
-//     quantity: '(100+)',
-//     addToCartText: 'Add to cart',
-//   },
-//   {
-//     title: 'October Hot Sale',
-//     discount: '20 %',
-//     productCode: 'ADGN2999BCPZ3577XKRT',
-//     description: 'Voltage Regulators',
-//     details: 'PHY 1-CH 1.1V/1.8V/2.5V/3.3V 48-Pin',
-//     originalPrice: '$ 0,15 (100+)',
-//     salePrice: '$ 0,095',
-//     quantity: '(100+)',
-//     addToCartText: 'Add to cart',
-//   },
-//   {
-//     title: 'October Hot Sale',
-//     discount: '20 %',
-//     productCode: 'ADGN2999BCPZ3577XKRT',
-//     description: 'Voltage Regulators',
-//     details: 'PHY 1-CH 1.1V/1.8V/2.5V/3.3V 48-Pin',
-//     originalPrice: '$ 0,15 (100+)',
-//     salePrice: '$ 0,095',
-//     quantity: '(100+)',
-//     addToCartText: 'Add to cart',
-//   },
-//   // ... other slides
-// ]
+const addToCart = async (product: ProductBannerInterface) => {
+
+  const stock = product.quantity
+
+  const response = (await addToCartHelper(product as any, stock)) as any;
+
+  if (response.status === 'success') {
+    await cartStore.updateAndReturnCart();
+  }
+};
+
 </script>
 
 <style lang="scss">
