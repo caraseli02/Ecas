@@ -204,8 +204,8 @@ const hotSalesFunction = async () => {
                 discoutPrice?.minimumOrderQuantityConfiguration.quantity
             }+)`,
             salePrice: `$ ${discoutPrice?.currentConfigurationDiscountPrice.toFixed(2)}`,
-            quantity: discoutPrice?.minimumOrderQuantityConfiguration.quantity,
             _id: slide._id,
+            quantity: discoutPrice?.minimumOrderQuantityConfiguration.quantity,
             addToCartText: 'Add to cart',
         };
     }) as unknown as ProductBannerInterface[];
