@@ -301,7 +301,7 @@ Emitter.on('remove-cart-and-notifications', async (isSignout: boolean) => {
 });
 
 Emitter.on('update-cart', async (data: CartInterface) => {
-    if (data) {
+    if (data && data.products) {
         items.value = data;
         cartItems.value = items.value.products.length;
         cart.value = items.value;
