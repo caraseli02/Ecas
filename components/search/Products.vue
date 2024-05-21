@@ -30,7 +30,7 @@
               <div
                   v-if="showShowOptions"
                   v-click-outside="() => (showShowOptions = false)"
-                  class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card py-1.5"
+                  class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] border overflow-y-auto scrollbar-thin shadow-card py-1.5"
               >
                 <label
                     v-for="option in showOptions"
@@ -84,7 +84,7 @@
               <div
                   v-if="showSortByOptions"
                   v-click-outside="() => (showSortByOptions = false)"
-                  class="absolute z-10 -bottom-1 border rounded left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card px-2.5 py-[15px]"
+                  class="absolute z-10 -bottom-1 border rounded left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin  shadow-card px-2.5 py-[15px]"
               >
                 <button
                     v-for="option in sortByOptions.filter((e) => e !== sortBy)"
@@ -141,7 +141,7 @@
               <div
                   v-if="showPerPageOptions"
                   v-click-outside="() => (showPerPageOptions = false)"
-                  class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card p-2.5"
+                  class="absolute z-10 -bottom-1 left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto border scrollbar-thin shadow-card p-2.5"
               >
                 <button
                     v-for="option in [5, 10, 20, 50, 100].filter((e) => e !== perPage)"
