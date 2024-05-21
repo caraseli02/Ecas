@@ -1,14 +1,20 @@
 <template>
   <div>
-    <NuxtLink
-v-for="(menuItem, index) in menuItems" :key="index" :to="menuItem.to"
+    <NuxtLink v-show="!route.path.includes('dashboard')" :to="isAdmin ? '/dashboard' : 'dashboard/client'"
+      class=" hover:bg-zinc-100 text-neutral-800 hover:text-blue-500 items-stretch flex justify-start gap-3 pl-3 pr-20 py-3 rounded-lg"
+      @click="emit('close')">
+      <component :is="IconApps" class="w-6 h-6" />
+      <div class="transition-all text-sm font-medium leading-6 whitespace-nowrap">
+        Dashboard
+      </div>
+    </NuxtLink>
+    <NuxtLink v-for="(menuItem, index) in menuItems" :key="index" :to="menuItem.to"
       class=" hover:bg-zinc-100 text-neutral-800 hover:text-blue-500 items-stretch flex justify-start gap-3 pl-3 pr-20 py-3 rounded-lg">
       <component :is="menuItem.icon" class="w-6 h-6" />
       <div class="transition-all text-sm font-medium leading-6 whitespace-nowrap">
         {{ menuItem.text }}
       </div>
-      <div
-v-if="menuItem.text === 'Notifications'"
+      <div v-if="menuItem.text === 'Notifications'"
         class="text-white text-center text-xs font-medium leading-5 whitespace-nowrap justify-start items-stretch bg-rose-500 aspect-[1.3333333333333333] my-auto px-1 rounded-[100px]">
         48
       </div>
@@ -26,14 +32,30 @@ import SvgoMenuHeart from '@/assets/icons/menu/heart.svg?component';
 import SvgoMenuPackagingLocation from '@/assets/icons/menu/packaging-location.svg?component';
 import SvgoMenuClock from '@/assets/icons/menu/Clock.svg?component';
 import SvgoMenuSetting from '@/assets/icons/menu/Setting.svg?component';
+import { useAuthStore } from '~/store/authStore';
+import { AccountRole } from '~/types/signup/form';
 
+const authStore = useAuthStore()
+
+const emit = defineEmits<{
+  (e: 'close'): void;
+}>();
+
+const route = useRoute()
+console.log(route);
+
+
+const isAdmin = computed(() => {
+  const role = AccountRole[authStore.userDetails?.role as number]
+  return role === 'SuperAdmin' || role === 'Admin'
+})
 
 const menuItems = [
-  {
-    icon: IconApps,
-    text: 'Dashboard',
-    to: '/dashboard',
-  },
+  // {
+  //   icon: IconApps,
+  //   text: 'Dashboard',
+  //   to: '/dashboard',
+  // },
   {
     icon: SvgoMenuNotification,
     text: 'Notifications',

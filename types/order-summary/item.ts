@@ -1,6 +1,6 @@
-import { DiscountInterface } from '~/types/auth/account-settings';
-import { ProductInterface } from '~/model/products/response/ProductResponse';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import {DiscountInterface} from '~/types/auth/account-settings';
+import {ProductInterface} from '~/model/products/response/ProductResponse';
+import {ShippingAddressInterface} from '~/types/auth/user-interface';
 import {
     BackorderShippingTypesInterface,
     DeliveryTypesInterface,
@@ -132,7 +132,8 @@ export interface StripeCardInterface {
     card: StripeCardInfoInterface;
     id: string;
     customer?: string;
-    type?: string;
+    type: string;
+    default?: boolean;
 }
 
 export interface StripeCardInfoInterface {
@@ -140,7 +141,7 @@ export interface StripeCardInfoInterface {
     checks?: object;
     country?: string;
     exp_month: number;
-    exo_year: number;
+    exp_year: number;
     fingerprint?: string;
     funding?: string;
     generated_from?: string | null;

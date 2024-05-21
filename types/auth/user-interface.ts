@@ -1,5 +1,5 @@
-import { AccountRole, AccountType } from '~/types';
-import { AccountAdminSettings } from '~/types/auth/account-settings';
+import {AccountRole, AccountType} from '~/types';
+import {AccountAdminSettings} from '~/types/auth/account-settings';
 
 export interface UserInterface {
     _id?: string;
@@ -51,6 +51,7 @@ export interface PersonalDetails {
     lastName: string;
     address: AddressInterface;
     shippingAddress: ShippingAddressInterface[];
+    billingAddress: any;
 }
 
 export interface ContactDetails {
@@ -75,6 +76,7 @@ export interface CompanyDetails {
     taxId?: string;
     address: AddressInterface;
     shippingAddress: ShippingAddressInterface[];
+    billingAddress: any;
     _id?: string;
 }
 
@@ -89,6 +91,18 @@ export interface AddressInterface {
 }
 
 export interface ShippingAddressInterface {
+    alias?: string;
+    name1: string;
+    name2?: string;
+    default: boolean;
+    country: string;
+    region: string;
+    city: string;
+    postcode: string;
+    phone?: string;
+}
+
+export interface BillingAddressInterface {
     alias?: string;
     name1: string;
     name2?: string;

@@ -1,6 +1,6 @@
 <template>
     <button
-        class="p-3 w-full min-w-[326px] md:min-w-[352px] flex flex-col gap-3 border rounded-lg hover:bg-blue-500/5 hover:border-blue-500 transition duration-300 group"
+        class="p-3 w-full min-w-[326px] flex flex-col gap-3 border rounded-lg hover:bg-blue-500/5 hover:border-blue-500 transition duration-300 group"
         :class="isSelected ? 'border-blue-500 bg-blue-500/5' : 'border-gray-300'"
         @click="paymentMethods(cardInfo)"
     >

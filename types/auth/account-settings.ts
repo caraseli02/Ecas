@@ -1,3 +1,5 @@
+import {StripeCardInterface} from '~/types';
+
 export interface AccountAdminSettings {
     discount?: DiscountInterface;
     customerCredit?: CustomerCreditInterface;
@@ -60,4 +62,9 @@ export enum MarketingPreferencesEnum {
     cookiesPolicy = 'Cookies Policy Consent',
     newsletter = 'Subscribed to Newsletter',
     eMailMarketing = 'E-mail marketing consent',
+}
+
+export interface CardsResponse {
+    status: string,
+    data: StripeCardInterface[]
 }

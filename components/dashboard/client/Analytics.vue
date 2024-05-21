@@ -1,27 +1,81 @@
 <template>
   <ClientOnly>
-    <div
-      class="relative items-stretch shadow-xs bg-white flex w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] h-[240px] flex-col rounded-xl overflow-y-scroll md:overflow-y-hidden pr-2">
-    <div class="min-w-[476px] md:min-w-fit mt-3 ml-1">
-      <apexchart height="215" type="bar" :options="chartOptions" :series="series"></apexchart>
-    </div>
+    <div class="relative items-stretch shadow-xs bg-white flex w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] h-[240px] flex-col rounded-xl overflow-hidden pr-2">
+      <div v-if="isMobile" class="flex justify-between items-center px-4 py-2 absolute right-0 z-10">
+        <UiButton size="xs" variant="ghost" class="text-lg rounded-full" @click="shiftMonths(-1)">
+          <ChevronLeftIcon class="w-4 h-4 stroke-1" />
+        </UiButton>
+        <UiButton size="xs" variant="ghost" class="text-lg rounded-full" @click="shiftMonths(1)">
+          <ChevronRightIcon class="w-4 h-4 stroke-1" />
+        </UiButton>
+      </div>
+      <div class="max-w-[358px] md:max-w-[476px] md:min-w-fit mt-4 ml-1">
+        <apexchart height="215" type="bar" :options="chartOptions" :series="computedSeries"></apexchart>
+      </div>
     </div>
   </ClientOnly>
 </template>
 
 <script setup lang="ts">
-const chartOptions = ref({
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import { ChevronRightIcon, ChevronLeftIcon } from 'lucide-vue-next';
+
+const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const fullData = [23, 44, 35, 30, 49, 60, 70, 91, 85, 48, 60, 70];
+const currentIndex = ref(0);
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+
+const smallerThanMd = breakpoints.smaller('md') // only smaller than lg
+
+const isMobile = ref(smallerThanMd)
+console.log(smallerThanMd.value);
+
+const resizeListener = () => {
+  isMobile.value = smallerThanMd
+};
+
+onMounted(() => {
+  window.addEventListener('resize', resizeListener);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', resizeListener);
+});
+
+const visibleMonths = computed(() => {
+  if (isMobile.value) {
+    const startIndex = currentIndex.value * 6 % months.length;
+    return months.slice(startIndex, startIndex + 6);
+  }
+  return months;
+});
+
+const computedSeries = computed(() => {
+  if (isMobile.value) {
+    return [{
+      name: 'Orders',
+      data: fullData.slice(currentIndex.value * 6 % months.length, currentIndex.value * 6 % months.length + 6)
+    }];
+  }
+  return [{
+    name: 'Orders',
+    data: fullData
+  }];
+});
+
+const chartOptions = computed(() => ({
   chart: {
     type: 'bar',
     toolbar: {
-      show: false // Hides the toolbar
+      show: false
     }
   },
   plotOptions: {
     bar: {
       borderRadius: 4,
       horizontal: false,
-      columnWidth: '45%', // Adjust as needed
+      columnWidth: '45%',
     }
   },
   dataLabels: {
@@ -33,18 +87,18 @@ const chartOptions = ref({
     colors: ['transparent']
   },
   xaxis: {
-    categories: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+    categories: visibleMonths.value,
     axisBorder: {
       show: false
     },
     axisTicks: {
-      show: false
+    show: false
     },
     labels: {
       style: {
         colors: '#777',
         fontSize: '12px',
-        fontFamily: 'Helvetica, Arial, sans-serif' // Match your font
+        fontFamily: 'Helvetica, Arial, sans-serif'
       }
     }
   },
@@ -53,7 +107,7 @@ const chartOptions = ref({
       style: {
         colors: '#777',
         fontSize: '14px',
-        fontFamily: 'Helvetica, Arial, sans-serif' // Match your font
+        fontFamily: 'Helvetica, Arial, sans-serif'
       }
     }
   },
@@ -63,11 +117,11 @@ const chartOptions = ref({
   tooltip: {
     y: {
       formatter: function (val) {
-        return val + " Orders"
+        return val + ' Orders'
       }
     }
   },
-  colors: ['#008FFB'], // Use your desired colors
+  colors: ['#008FFB'],
   grid: {
     show: false,
     borderColor: '#e7e7e7',
@@ -93,14 +147,26 @@ const chartOptions = ref({
       radius: 12
     }
   }
-});
+}));
 
-
-const series = ref([{
-  name: 'Orders',
-  data: [23, 44, 35, 30, 49, 60, 70, 91, 125, 48, 60, 70] // Replace with your actual data
-}]);
+function shiftMonths(direction) {
+  let newIdx = currentIndex.value + direction;
+  if (newIdx < 0) {
+    newIdx = Math.ceil(12 / 6) - 1; // wrap around to last period
+  } else if (newIdx >= Math.ceil(12 / 6)) {
+    newIdx = 0; // wrap around to first period
+  }
+  currentIndex.value = newIdx;
+}
 </script>
 
 <style scoped>
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  color: blue;
+}
 </style>
