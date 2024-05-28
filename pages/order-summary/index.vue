@@ -39,6 +39,7 @@
                             :general-settings="generalSettings"
                             :cards="cards"
                             :card="card"
+                            :is-new-card-selected="isNewCardSelected"
                             @update-payment-details="order.paymentDetails = $event"
                         />
                         <OrderSummaryNoteSection />
@@ -86,6 +87,7 @@ import {
 import { storeToRefs } from 'pinia';
 import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
 import _ from 'lodash';
+import { usePaymentStore } from '~/store/paymentStore';
 
 const router = useRouter();
 
@@ -112,7 +114,6 @@ const cartId = ref('' as string);
 
 const fetchList = async () => {
     const cart = (await cartStore.updateAndReturnCart()) as CartInterface;
-
     const products = cart.products;
     cartId.value = cart._id || '';
     mapCartItems(products);
@@ -163,6 +164,8 @@ const getGeneralSettingsFunction = () => {
 
 const card = ref<any | null>({});
 const cards = ref<StripeCardInfoInterface[]>([]);
+const paymentStore = usePaymentStore();
+const isNewCardSelected = ref<boolean>(false);
 
 const fetchCards = async () => {
     const response = (await $api.user.userCards()) as {
@@ -170,9 +173,13 @@ const fetchCards = async () => {
         data: StripeCardInfoInterface[];
     };
 
-    if (response.status === 'success' && response.data.length) {
-        cards.value = response.data;
-        card.value = _.cloneDeep(cards.value.find((card: any) => card.default));
+    if (response.status === 'success') {
+        if (response.data.length) {
+            cards.value = response.data;
+            card.value = _.cloneDeep(cards.value.find((card: any) => card.default));
+        } else {
+            isNewCardSelected.value = true;
+        }
     }
 };
 

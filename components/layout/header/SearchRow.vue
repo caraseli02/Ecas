@@ -87,7 +87,7 @@ defineProps({
 });
 
 Emitter.on('update-cart', async (data: CartInterface) => {
-    if (data) {
+    if (data && data.products) {
         items.value = data;
         cartItems.value = items.value.products.length;
         subtotal();
