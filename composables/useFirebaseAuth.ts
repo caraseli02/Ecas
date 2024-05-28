@@ -8,7 +8,7 @@ interface FirebaseResults {
 }
 
 export default function () {
-    const { $auth } = useNuxtApp();
+    const { $auth, $router } = useNuxtApp();
 
     const user = useState<User | null>('google.com', () => null);
 
@@ -47,6 +47,7 @@ export default function () {
 
     const logout = async (): Promise<boolean> => {
         await signOut($auth);
+        $router.push('/');
         return true;
     };
 

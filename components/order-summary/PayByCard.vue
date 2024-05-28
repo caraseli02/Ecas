@@ -42,7 +42,7 @@
                 <div class="text-red-500 text-sm leading-6">Card expired</div>
             </span>
             <span v-else class="text-neutral-700 text-sm font-normal leading-6 w-full text-start"
-                >Pay {{ isNewCardSelected ? 'with a new card' : 'by card' }}</span
+                >Pay {{ hasCard && isNewCardSelected ? 'with a new card' : 'by card' }}</span
             >
             <button v-if="cards" class="flex gap-2 items-center w-full justify-end hover:underline" @click="paymentStore.toggleCardModal()">
                 <SvgoChangeCard />
