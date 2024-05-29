@@ -13,7 +13,7 @@
                 <div>
                     <div class="text-sm font-semibold text-slate-500 mb-3">Last Order</div>
                     <SkeletonLoader v-if="isLoading.lastOrder" class="w-[160px] h-6 -mt-1" />
-                    <div v-else-if="emptyData || error.lastOrder" class="text-sm font-medium leading-[1.714] text-gray-500">
+                    <div v-else-if="emptyData || error.lastOrder || !lastOrder" class="text-sm font-medium leading-[1.714] text-gray-500">
                         No data available
                     </div>
                     <div v-else-if="!emptyData && !error.lastOrder" class="text-xl font-semibold text-blue-500 leading-[1.2]">
