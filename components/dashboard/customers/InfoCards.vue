@@ -165,16 +165,14 @@ const fetchTotalSpent = async () => {
         status: string;
         data: number;
     };
-
     if (response.status !== 'success') {
         isLoading.value.totalSpent = false;
         error.value.totalSpent = true;
-
         return;
     } else {
         isLoading.value.totalSpent = false;
+        totalSpent.value = Number(response.data);
     }
-    totalSpent.value = response.data;
 };
 
 const fetchAvgOrderValue = async () => {
