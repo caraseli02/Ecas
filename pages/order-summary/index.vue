@@ -404,8 +404,10 @@ Emitter.on('note', async (noteText: string) => {
 });
 
 Emitter.on('delete-product-item', async (object: { id: string }) => {
-    cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
-    mapCartItems(cartItems.value);
+    setTimeout(() => {
+        cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
+        mapCartItems(cartItems.value);
+    }, 1000);
 });
 
 Emitter.on('checkout', async () => {
