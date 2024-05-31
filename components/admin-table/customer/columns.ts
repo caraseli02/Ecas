@@ -4,7 +4,7 @@ import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/R
 import IdCell from '~/components/dataTable/IdCell.vue';
 import UserInfo from '~/components/dataTable/UserInfo.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
-import { CustomerTableColumns } from '~/types/auth/user-interface';
+import { AccountStatusEnum, CustomerTableColumns } from '~/types/auth/user-interface';
 import { CustomerTableColumnsEnum } from '~/components/admin-table/customer/columns.enum';
 import AccountType from '~/components/dataTable/AccountType.vue';
 import { $fetch, FetchOptions } from 'ohmyfetch';
@@ -71,6 +71,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                 row: row,
                 service: UserDashboardService,
                 discount: row.original?.adminSettings?.discount?.value,
+                lock: row.original.status === AccountStatusEnum.Inactive,
                 options: [
                     {
                         label: 'Profile',
@@ -84,12 +85,12 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                     },
                     {
                         label: 'Unlock account',
-                        enable: !row.original.active,
+                        enable: row.original.status === AccountStatusEnum.Inactive,
                         actionFn: 'activateUser',
                     },
                     {
                         label: 'Lock account',
-                        enable: row.original.active,
+                        enable: row.original.status === AccountStatusEnum.Active,
                         actionFn: 'deactivateUser',
                     },
                 ] as ActionOptionsConfiguration[],

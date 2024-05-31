@@ -67,7 +67,7 @@
                         </div>
                         <Tooltip theme="black" :position="'top'" class="self-start ml-3">
                             <LockIcon
-                                v-if="!customerInformation.active"
+                                v-if="customerInformation.status === AccountStatusEnum.Inactive"
                                 class="w-4 h-4 text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             />
                             <template #content>
@@ -205,7 +205,7 @@ import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
-import { UserInterface } from '~/types/auth/user-interface';
+import { AccountStatusEnum, UserInterface } from '~/types/auth/user-interface';
 import { AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
@@ -271,14 +271,14 @@ const fetchInformation = async () => {
         id: response.data._id,
         avatar: Avatar,
         name: `${response.data?.contactDetails?.firstName} ${response.data?.contactDetails?.lastName} `,
-        email: response.data.profileDetails.email,
+        email: response.data.profileDetails?.email || 'N/A',
         account: getAccountTypeById(response.data.accountType as number) || '-',
         company: response.data.companyDetails?.name || '-',
         registered: new Date(response.data.createdAt).toLocaleDateString('en-GB'),
-        spent: response.data.spent,
-        ordersCount: response.data.ordersCount,
-        firebaseId: response.data.firebaseId,
-        active: response.data.active,
+        spent: response.data.spent || 0,
+        ordersCount: response.data.ordersCount || 0,
+        firebaseId: response.data.firebaseId || 'N/A',
+        active: response.data.status === AccountStatusEnum.Inactive,
         address: address.value,
         flag: country.value,
     };

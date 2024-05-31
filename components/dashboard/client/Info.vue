@@ -63,7 +63,7 @@
                         </div>
                         <Tooltip theme="black" :position="'top'" class="self-start ml-3">
                             <LockIcon
-                                v-if="!customerInformation.active"
+                                v-if="customerInformation.status === AccountStatusEnum.Inactive"
                                 class="w-4 h-4 text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             />
                             <template #content>
@@ -197,7 +197,7 @@
 
 <script setup lang="ts">
 import Avatar from '@/assets/icons/dashboard/avatar.png';
-import type { UserInterface } from '~/types/auth/user-interface';
+import { AccountStatusEnum, UserInterface } from '~/types/auth/user-interface';
 import { AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
@@ -246,17 +246,17 @@ const fetchInformation = async () => {
         });
 
         customerDetails.value = {
-            id: customerInformation.value?._id,
+            id: customerInformation.value._id,
             avatar: Avatar,
             name: `${customerInformation.value?.contactDetails?.firstName} ${customerInformation.value?.contactDetails?.lastName} `,
-            email: customerInformation.value?.profileDetails?.email,
+            email: customerInformation.value?.profileDetails?.email || 'N/A',
             account: getAccountTypeById(customerInformation.value.accountType as number) || '-',
             company: customerInformation.value?.companyDetails?.name || '-',
-            registered: new Date(customerInformation.value?.createdAt).toLocaleDateString('en-GB'),
-            spent: customerInformation.value?.spent,
-            ordersCount: customerInformation.value?.ordersCount,
-            firebaseId: customerInformation.value?.firebaseId,
-            active: customerInformation.value?.active,
+            registered: new Date(String<customerInformation.value.createdAt>).toLocaleDateString('en-GB'),
+            spent: customerInformation.value?.spent || 0,
+            ordersCount: customerInformation.value?.ordersCount || 0,
+            firebaseId: customerInformation.value?.firebaseId || 'N/A',
+            active: customerInformation.value?.status === AccountStatusEnum.Active,
             address: address.value,
             flag: country.value,
         };
