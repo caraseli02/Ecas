@@ -1,5 +1,5 @@
-import {AccountRole, AccountType} from '~/types';
-import {AccountAdminSettings} from '~/types/auth/account-settings';
+import { AccountRole, AccountType } from '~/types';
+import { AccountAdminSettings } from '~/types/auth/account-settings';
 
 export interface UserInterface {
     _id?: string;
@@ -7,7 +7,9 @@ export interface UserInterface {
     role: AccountRole;
     firebaseId?: string;
     stripeId?: string;
-    active: boolean;
+    verified: boolean;
+    status: AccountStatusEnum;
+    erpId?: string;
     companyDetails?: CompanyDetails;
     contactDetails: ContactDetails;
     personalDetails?: PersonalDetails;
@@ -21,9 +23,15 @@ export interface UserInterface {
     createdAt?: string;
 }
 
+export enum AccountStatusEnum {
+    Inactive = 0,
+    Active = 1,
+    Pending = 2,
+}
+
 export type CustomerTableColumns = Pick<
     UserInterface,
-    'accountType' | 'firebaseId' | 'active' | 'spent' | 'ordersCount' | 'contactDetails' | 'companyDetails' | 'createdAt'
+    'accountType' | 'firebaseId' | 'verified' | 'status' | 'spent' | 'ordersCount' | 'contactDetails' | 'companyDetails' | 'createdAt'
 >;
 
 export interface ProductVisitedHistory {

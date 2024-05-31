@@ -80,7 +80,7 @@ import type { PropType } from 'vue';
 import ArrowUpIcon from '@/assets/icons/dashboard/arrow-up.svg';
 import ChevronIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import ArrowRightIcon from '@/assets/icons/dashboard/arrow-right.svg';
-import { UserInterface } from '~/types/auth/user-interface';
+import { AccountStatusEnum, UserInterface } from '~/types/auth/user-interface';
 import { useNuxtApp } from '#app';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
@@ -128,7 +128,7 @@ const fetchAndSetNewCustomers = async (time = 7) => {
         spent: user.spent,
         ordersCount: user.ordersCount,
         firebaseId: user.firebaseId,
-        active: user.active,
+        active: user.status === AccountStatusEnum.Active,
     }));
 };
 
