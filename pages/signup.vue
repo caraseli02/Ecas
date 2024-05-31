@@ -110,13 +110,15 @@ const handleBusinessDetailsContinue = () => {
     hasError = checkForInputErrors([
       businessDetails.value.fullCompanyName,
       businessDetails.value.companyRegistrationNumber,
-      businessDetails.value.vatNumber,
       businessDetails.value.country.value,
       businessDetails.value.region.value,
       businessDetails.value.city,
       businessDetails.value.postcode,
       businessDetails.value.addressLine1,
     ]);
+    if(selectedBusinessType.value !== 'agent'){
+      hasError = checkForInputErrors([businessDetails.value.vatNumber])
+    }
   } else if (selectedType.value === 'sole-trader') {
     hasError = checkForInputErrors([
       businessDetails.value.fullCompanyName,
