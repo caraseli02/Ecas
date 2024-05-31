@@ -99,6 +99,6 @@ export interface ProductBannerInterface {
     details: string,
     originalPrice: string,
     salePrice: string,
-    quantity: string,
+    quantity: number,
     addToCartText: string,
 }
