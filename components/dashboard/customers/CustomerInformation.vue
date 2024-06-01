@@ -66,7 +66,7 @@
                             {{ customerInformation.contactDetails?.firstName + ' ' + customerInformation.contactDetails?.lastName }}
                         </div>
                         <Tooltip theme="black" :position="'top'" class="self-start ml-3">
-                            <LockIcon
+                            <LockKeyholeIcon
                                 v-if="customerInformation.status === AccountStatusEnum.Inactive"
                                 class="w-4 h-4 text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             />
@@ -210,7 +210,7 @@ import { AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/t
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
-import LockIcon from '@/assets/icons/dashboard/orders/lock.svg';
+import { LockKeyholeIcon } from 'lucide-vue-next';
 import { countries } from '~/data/countries';
 
 const showOptions = ref(false);
