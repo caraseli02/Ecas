@@ -194,7 +194,7 @@
                                 <div class="leading-normal font-medium">
                                     {{ (user?.contactDetails?.firstName || '') + ' ' + (user?.contactDetails?.lastName || '') }}
                                 </div>
-                                <div class="text-xs leading-normal text-slate-500">{{ AccountType[user.role] }}</div>
+                                <div class="text-xs leading-normal text-slate-500">{{ user?.role && AccountType[user.role] }}</div>
                             </div>
                         </button>
                         <Transition name="fade-full">
@@ -307,7 +307,9 @@ const unreadNotifications = ref(0);
 const user = ref({} as UserInterface);
 
 onMounted(() => {
-    user.value = getUserDetails.value;
+    if (getUserDetails.value) {
+        user.value = getUserDetails.value;
+    }
 });
 
 Emitter.on('update-cart', async (login: boolean) => {
