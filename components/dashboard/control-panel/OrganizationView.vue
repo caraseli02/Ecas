@@ -164,7 +164,7 @@ import { FormSelectOption } from '~~/types';
 import { useNuxtApp } from '#app';
 import { AddressInterface, CompanyDetails, ContactDetails, UserInterface } from '~/types/auth/user-interface';
 import { PropType } from 'nuxt/dist/app/compat/capi';
-import { getRegionByCountry } from '~/helpers/form.helpers';
+import { getRegionByCountry } from '~/helpers/form.helper';
 
 const companyInformation = ref<CompanyDetails>({} as CompanyDetails);
 const { $api } = useNuxtApp();

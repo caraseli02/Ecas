@@ -84,7 +84,7 @@ import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import Emitter from 'tiny-emitter/instance.js';
 import { useNuxtApp } from '#app';
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
-import { customerCreditHelpers } from '~/helpers/customerCredit.helpers';
+import { customerCreditHelper } from '~/helpers/customer-credit.helper';
 
 const customerName = ref('');
 const updateBreadcrumbs = ref(false);
@@ -128,7 +128,7 @@ const getCustomerCredit = async () => {
         isLoading.value = false;
         error.value = false;
         emptyData.value = response.data === null;
-        credit.value = customerCreditHelpers(response.data);
+        credit.value = customerCreditHelper(response.data);
         console.log(credit.value);
     }
 };

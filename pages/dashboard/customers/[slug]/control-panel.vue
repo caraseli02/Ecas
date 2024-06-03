@@ -92,7 +92,7 @@ import { useNuxtApp } from '#app';
 import { ControlPanelLabels, ControlPanelTabsEnum } from '~/types/dashboard/control-panel';
 import { AccountType } from '~/types';
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
-import { customerCreditHelpers } from '~/helpers/customerCredit.helpers';
+import { customerCreditHelper } from '~/helpers/customer-credit.helper';
 
 const route = useRoute();
 const router = useRouter();
@@ -131,7 +131,7 @@ const getCustomerCredit = async () => {
         isLoading.value = false;
         error.value = false;
         emptyData.value = response.data === null;
-        credit.value = customerCreditHelpers(response.data);
+        credit.value = customerCreditHelper(response.data);
         console.log(credit.value);
     }
 };

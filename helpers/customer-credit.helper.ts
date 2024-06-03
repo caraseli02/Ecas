@@ -1,6 +1,6 @@
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
 
-export const customerCreditHelpers = (credit: CustomerCreditInterface) => {
+export const customerCreditHelper = (credit: CustomerCreditInterface) => {
     let spent = '';
     let limit = '';
     console.log(credit);
