@@ -16,29 +16,54 @@ const stockItems: ComputedRef<CartProductsInterface[]> = computed(() => {
   );
 });
 
-const payment = {
-  subtotal: 419.24,
-  discountRate: 10,
-  discountAmount: 41.924,
-  handlingCharge: 5.49,
-  shippingCost: 7.49,
-  taxRate: 19,
-  taxAmount: 38.68,
-  stockOrderTotal: 457.92
-}
+const payment = computed(() => {
+  let subtotal = 0;
+  let discountAmount = 0;
+  for (const item of stockItems.value) {
+    subtotal += item.stock * item.unitPriceAfterDiscounts;
+    discountAmount += (item.initialUnitPrice - item.unitPriceAfterDiscounts) * item.stock;
+  }
+  const taxRate = 19; // Consider moving to a dynamic setting or config
+  const taxAmount = subtotal * (taxRate / 100);
+  const discountRate = (discountAmount / subtotal) * 100;
+
+  return {
+    subtotal,
+    discountRate,
+    discountAmount,
+    handlingCharge: 5.49, // Consider making dynamic if applicable
+    shippingCost: 7.49, // Consider making dynamic if applicable
+    taxRate,
+    taxAmount,
+    stockOrderTotal: subtotal + taxAmount + 5.49 + 7.49 // Include other charges dynamically if needed
+  };
+});
 </script>
 
 <template>
   <div v-if="stockItems.length > 0" class="flex flex-col gap-4">
     <UiBadge class="bg-green-600 text-white w-fit rounded-md h-7">Stock Order</UiBadge>
     <section class="flex flex-col gap-10 px-4 py-6 md:p-6 border border-gray-300 rounded-xl">
-      <h2 class="text-sm font-semibold leading-6 text-neutral-700">Product Details</h2>
+      <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
+        <span class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 w-full max-w-[412px]">Product
+          Details</span>
+        <span class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Unit
+          Price</span>
+        <span
+          class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Quantity</span>
+        <span class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Tax
+          (19%)</span>
+        <span
+          class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Subtotal</span>
+      </div>
       <div class="flex flex-col gap-10">
-        <div v-for="item in stockItems" :key="'stock-' + item.id"
+        <div
+v-for="item in stockItems" :key="'stock-' + item.id"
           class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
           <div class="flex gap-3 mt-6 w-full lg:max-w-[412px]">
             <figure class="flex justify-center items-center rounded-lg border border-solid border-grey-300">
-              <img :src="item.productEntity.details.ProductImage.ProductImageSmall" alt="Product image"
+              <img
+:src="item.productEntity.details.ProductImage.ProductImageSmall" alt="Product image"
                 class="aspect-square min-w-[60px] lg:w-[72px] rounded-lg " />
             </figure>
             <div class="flex flex-col w-full max-w-[254px] md:max-w-none lg:max-w-[328px]">
@@ -93,27 +118,27 @@ const payment = {
                 <p class="my-auto leading-6 text-neutral-800">Unit Price</p>
                 <section class="flex flex-col leading-[143%]">
                   <p class="text-neutral-800 line-through">
-                    <span class="leading-5 text-neutral-800">$</span><span class="leading-5">16.35</span>
+                    <span class="leading-5 text-neutral-800">$</span><span class="leading-5">{{ item.initialUnitPrice.toFixed(2) }}</span>
                   </p>
                   <p class="font-medium text-red-500 ">
-                    <span class="text-red-500">$</span><span> 15.19</span>
+                    <span class="text-red-500">$</span><span> {{ item.unitPriceAfterDiscounts.toFixed(2) }}</span>
                   </p>
                 </section>
               </article>
               <article
                 class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full">
                 <p>Quantity</p>
-                <p>8</p>
+                <p>{{ item.stock }}</p>
               </article>
               <article
                 class="flex gap-5 justify-between mt-1 w-full leading-6 text-neutral-800 max-md:flex-wrap max-md:max-w-full">
                 <p>Tax (VAT 19%)</p>
-                <p>$14.8</p>
+                <p>${{ (item.stock * item.unitPriceAfterDiscounts * 0.19).toFixed(2) }}</p>
               </article>
               <article
                 class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full">
                 <p>Subtotal</p>
-                <p>$130.8</p>
+                <p>${{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
               </article>
             </section>
           </template>
@@ -127,14 +152,14 @@ const payment = {
         <section class="flex flex-col gap-2">
           <div class="flex gap-2 justify-between w-full text-sm font-medium leading-6">
             <div class="text-gray-500">Subtotal</div>
-            <div class="text-neutral-700">${{ payment.subtotal }}</div>
+            <div class="text-neutral-700">${{ payment.subtotal.toFixed(2) }}</div>
           </div>
           <div class="flex gap-2 justify-between w-full text-sm leading-6">
             <div class="flex gap-5 justify-between whitespace-nowrap">
               <div class="font-medium text-gray-500">Discount</div>
-              <div class="text-neutral-700">{{ payment.discountRate }}%</div>
+              <div class="text-neutral-700">{{ payment.discountRate.toFixed(2) }}%</div>
             </div>
-            <div class="font-medium text-neutral-700">${{ payment.discountAmount }}</div>
+            <div class="font-medium text-neutral-700">${{ payment.discountAmount.toFixed(2) }}</div>
           </div>
           <div class="flex gap-5 text-sm leading-6">
             <div
@@ -146,7 +171,7 @@ const payment = {
               <div>Small order charge</div>
             </div>
             <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
-              ${{ payment.handlingCharge }}
+              ${{ payment.handlingCharge.toFixed(2) }}
             </div>
           </div>
           <div class="flex gap-5 text-sm leading-6">
@@ -159,7 +184,7 @@ const payment = {
               <div>Standard Delivery (3-5 Days)</div>
             </div>
             <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
-              ${{ payment.shippingCost }}
+              ${{ payment.shippingCost.toFixed(2) }}
             </div>
           </div>
           <div class="flex gap-2 justify-between w-full text-sm leading-6">
@@ -170,12 +195,12 @@ const payment = {
               </div>
               <div class="text-neutral-700">({{ payment.taxRate }}%)</div>
             </div>
-            <div class="font-medium text-neutral-700">${{ payment.taxAmount }}</div>
+            <div class="font-medium text-neutral-700">${{ payment.taxAmount.toFixed(2) }}</div>
           </div>
           <UiSeparator class="bg-light-500" />
           <div class="flex gap-2 justify-between mt-2 w-full text-neutral-700">
             <div class="text-xl leading-9">Stock Order Total</div>
-            <div class="text-2xl font-semibold leading-9">${{ payment.stockOrderTotal }}</div>
+            <div class="text-2xl font-semibold leading-9">${{ payment.stockOrderTotal.toFixed(2) }}</div>
           </div>
         </section>
       </div>
