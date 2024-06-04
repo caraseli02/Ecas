@@ -379,17 +379,17 @@ placeholder="Please deliver after 4PM and call me (0742624425) prior to delivery
 
     <div class="flex flex-col gap-6">
       <h4 class="font-semibold text-sm">Need Help?</h4>
-      <section class="flex gap-6">
-        <UiButton size="xs" class="gap-2 pl-0" variant="ghost">
-          <TruckIcon class="ml-1 w-5 h-5 stroke-1.5" />
+      <section class="flex gap-6 flex-wrap">
+        <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+          <TruckIcon class="w-5 h-5 stroke-1.5" />
           Delivery Info
         </UiButton>
-        <UiButton size="xs" class="gap-2 pl-0" variant="ghost">
-          <Undo2Icon class="ml-1 w-5 h-5 stroke-1.5" />
+        <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+          <Undo2Icon class="w-5 h-5 stroke-1.5" />
           Returns
         </UiButton>
-        <UiButton size="xs" class="gap-2 pl-0" variant="ghost">
-          <PackageOpenIcon class="ml-1 w-5 h-5 stroke-1.5" />
+        <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+          <PackageOpenIcon class="w-5 h-5 stroke-1.5" />
           Order Issues
         </UiButton>
       </section>

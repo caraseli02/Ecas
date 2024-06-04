@@ -49,7 +49,7 @@ const payment = computed(() => {
     </span>
     </p>
     <section class="flex flex-col gap-10 px-4 py-6 md:p-6 border border-gray-300 rounded-xl">
-      <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
+      <div v-if="lgAndLarger" class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
         <span class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 w-full max-w-[412px]">Product
           Details</span>
         <span class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Unit
@@ -65,14 +65,14 @@ const payment = computed(() => {
         <div
           v-for="item in backOrderItems" :key="'stock-' + item.id"
           class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch border-b last:border-b-0 lg:border-b-0">
-          <div class="flex gap-3 mt-6 w-full lg:max-w-[412px]">
+          <div class="flex gap-3 lg:mt-6 w-full lg:max-w-[412px]">
             <figure class="flex justify-center items-center h-fit rounded-lg border border-solid border-grey-300">
               <img
                   :src="item.productEntity.details.ProductImage.ProductImageSmall" alt="Product image"
                   class="aspect-square max-h-[60px] min-w-[60px] lg:max-h-[72px] lg:w-[72px] rounded-lg " />
             </figure>
             <div class="flex flex-col w-full max-w-[254px] md:max-w-none lg:max-w-[328px]">
-              <div class="flex flex-col sm:flex-row gap-2">
+              <div class="flex flex-col sm:flex-row sm:gap-2">
                 <span class="text-sm font-medium leading-6 text-gray-500">Item:</span>
                 <div class="flex gap-5 justify-between">
                   <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity.alias }}</span>
@@ -82,13 +82,13 @@ const payment = computed(() => {
                   </span>
                 </div>
               </div>
-              <div class="flex gap-2 text-sm font-medium leading-6 whitespace-nowrap">
+              <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                 <span class="text-gray-500">Description:</span>
-                <span class="text-ellipsis text-neutral-700 w-full lg:max-w-[328px] truncate">
+                <span class="text-ellipsis text-neutral-700 w-full max-w-[235px] lg:max-w-[328px] truncate">
                   {{ item.productEntity.description }}
                 </span>
               </div>
-              <div class="flex gap-2 text-sm font-medium leading-6 whitespace-nowrap">
+              <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                 <span class="text-gray-500">Manufacturer:</span>
                 <span class="text-ellipsis text-neutral-700">{{ item.productEntity.manufacturer }}</span>
               </div>
