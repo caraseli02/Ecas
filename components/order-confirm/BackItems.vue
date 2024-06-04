@@ -10,7 +10,7 @@ const props = defineProps<{
   data: CartProductsInterface[]
 }>()
 
-const backOrderItems: ComputedRef<CartProductsInterface[]> = computed(() => {
+const backOrderItems = computed(() => {
   return props.data.filter(
     (item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock
   );
@@ -42,9 +42,9 @@ const payment = computed(() => {
 
 <template>
   <div v-if="backOrderItems.length > 0" class="flex flex-col gap-4">
-    <p>
-      <UiBadge class="bg-rose-500 text-white w-fit rounded-md h-7 text-sm">Back Order</UiBadge>
-    <span class="text-rose-500 ml-2">
+    <p class="flex flex-col gap-2 lg:flex-row">
+    <UiBadge class="bg-rose-500 text-white w-fit rounded-md h-7 text-sm">Back Order</UiBadge>
+    <span class="text-rose-500">
       {{ backOrderItems.length }} Items will pe placed on Backorder
     </span>
     </p>
@@ -61,15 +61,15 @@ const payment = computed(() => {
         <span
           class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Subtotal</span>
       </div>
-      <div class="flex flex-col gap-10">
+      <div class="flex flex-col gap-6">
         <div
           v-for="item in backOrderItems" :key="'stock-' + item.id"
-          class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
+          class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch border-b last:border-b-0 lg:border-b-0">
           <div class="flex gap-3 mt-6 w-full lg:max-w-[412px]">
-            <figure class="flex justify-center items-center rounded-lg border border-solid border-grey-300">
+            <figure class="flex justify-center items-center h-fit rounded-lg border border-solid border-grey-300">
               <img
                   :src="item.productEntity.details.ProductImage.ProductImageSmall" alt="Product image"
-                class="aspect-square min-w-[60px] lg:w-[72px] rounded-lg" />
+                  class="aspect-square max-h-[60px] min-w-[60px] lg:max-h-[72px] lg:w-[72px] rounded-lg " />
             </figure>
             <div class="flex flex-col w-full max-w-[254px] md:max-w-none lg:max-w-[328px]">
               <div class="flex flex-col sm:flex-row gap-2">
@@ -183,14 +183,14 @@ const payment = computed(() => {
           </div>
           <div class="flex gap-5 text-sm leading-6">
             <div
-              class="flex flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500">
+              class="flex flex-1 flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500">
               <div class="flex gap-2">
                 Shipping
                 <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
               </div>
               <div>Standard Delivery (3-5 Days)</div>
             </div>
-            <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
+            <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-fit">
               ${{ payment.shippingCost.toFixed(2) }}
             </div>
           </div>

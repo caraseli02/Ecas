@@ -309,10 +309,14 @@ const data: CartProductsInterface[] = [
   }
 ]
 
+const hasMixedItems = computed(() => {
+  return data.find((item) => Number(item.stock) === 0)
+})
+
 </script>
 
 <template>
-  <section class="container px-4 md:p-6 flex flex-col gap-10">
+  <section class="container px-4 py-6 md:p-6 flex flex-col gap-10">
     <div class="flex flex-col self-stretch">
       <div class="flex flex-wrap lg:gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
         <div class="flex gap-5 justify-between my-auto">
@@ -326,32 +330,33 @@ const data: CartProductsInterface[] = [
         <div
           class="md:w-full lg:w-fit flex gap-2 md:gap-4 order-2 lg:order-1 mt-5 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap">
           <UiButton
-variant="secondary"
-            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-gray-500 rounded-lg bg-zinc-100 max-md:px-5">
+            variant="secondary"
+            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5">
             <FileText class="shrink-0 w-6 aspect-square stroke-[1.5]" />
             <span class="hidden lg:inline">View</span> Invoices
           </UiButton>
           <UiButton
-variant="secondary"
-            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-gray-500 rounded-lg bg-zinc-100 max-md:px-5">
+            variant="secondary"
+            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5">
             <MapPin class="shrink-0 w-6 aspect-square stroke-[1.5]" />
             Track <span class="hidden lg:inline">Order</span>
           </UiButton>
           <UiButton
-variant="secondary"
-            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-gray-500 rounded-lg bg-zinc-100 max-md:px-5">
+            variant="secondary"
+            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5">
             <BoxIcon class="shrink-0 w-6 aspect-square stroke-[1.5]" />
             View All <span class="hidden lg:inline">Orders</span>
           </UiButton>
         </div>
         <div
-          class="flex flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5">
+          class="flex items-center flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5">
           <div class="flex gap-2">
-            <div class="text-gray-500">Order Date:</div>
+            <div class="text-slate-500">Order Date:</div>
             <div class="text-neutral-700">21 September 2023, 18:25</div>
           </div>
+          <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
           <div class="flex gap-2">
-            <div class="text-gray-500">Shipping Method:</div>
+            <div class="text-slate-500">Shipping Method:</div>
             <div class=" text-neutral-700">3-5 Business Days</div>
           </div>
         </div>
@@ -369,7 +374,7 @@ variant="secondary"
 placeholder="Please deliver after 4PM and call me (0742624425) prior to delivery."
           class="min-h-[336px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full" />
       </div>
-      <OrderConfirmPaySummary />
+      <OrderConfirmPaySummary v-if="hasMixedItems" />
     </section>
 
     <div class="flex flex-col gap-6">

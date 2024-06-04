@@ -10,7 +10,7 @@ const customerDetails = ref({
   phone: '+40 (742) 624 425'
 });
 
-const payType = 'Bank' as PayType
+const payType = 'Credit' as PayType
 const paymentMethod = ref({
   creditInfo: {
     creditLimit: '€ 10,000.00',

@@ -10,7 +10,7 @@ const props = defineProps<{
   data: CartProductsInterface[]
 }>()
 
-const stockItems: ComputedRef<CartProductsInterface[]> = computed(() => {
+const stockItems = computed(() => {
   return props.data.filter(
     (item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock >= item.stock
   );
@@ -44,27 +44,24 @@ const payment = computed(() => {
   <div v-if="stockItems.length > 0" class="flex flex-col gap-4">
     <UiBadge class="bg-green-600 text-white w-fit rounded-md h-7">Stock Order</UiBadge>
     <section class="flex flex-col gap-10 px-4 py-6 md:p-6 border border-gray-300 rounded-xl">
-      <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
-        <span class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 w-full max-w-[412px]">Product
+      <div v-if="lgAndLarger" class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
+        <span class="text-sm font-semibold leading-6 text-neutral-700 w-full max-w-[412px]">Product
           Details</span>
-        <span class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Unit
+        <span class="text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Unit
           Price</span>
-        <span
-          class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Quantity</span>
-        <span class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Tax
+        <span class="text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Quantity</span>
+        <span class="text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Tax
           (19%)</span>
-        <span
-          class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Subtotal</span>
+        <span class="text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Subtotal</span>
       </div>
-      <div class="flex flex-col gap-10">
-        <div
-v-for="item in stockItems" :key="'stock-' + item.id"
-          class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
-          <div class="flex gap-3 mt-6 w-full lg:max-w-[412px]">
-            <figure class="flex justify-center items-center rounded-lg border border-solid border-grey-300">
-              <img
-:src="item.productEntity.details.ProductImage.ProductImageSmall" alt="Product image"
-                class="aspect-square min-w-[60px] lg:w-[72px] rounded-lg " />
+      <div class="flex flex-col gap-6">
+        
+        <div v-for="item in stockItems" :key="'stock-' + item.id"
+          class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch border-b last:border-b-0 lg:border-b-0">
+          <div class="flex gap-3 lg:mt-6 w-full lg:max-w-[412px]">
+            <figure class="flex h-fit justify-center items-center rounded-lg border border-solid border-grey-300">
+              <img :src="item.productEntity.details.ProductImage.ProductImageSmall" alt="Product image"
+                class="aspect-square max-h-[60px] min-w-[60px] lg:max-h-[72px] lg:w-[72px] rounded-lg " />
             </figure>
             <div class="flex flex-col w-full max-w-[254px] md:max-w-none lg:max-w-[328px]">
               <div class="flex flex-col sm:flex-row gap-2">
@@ -118,7 +115,8 @@ v-for="item in stockItems" :key="'stock-' + item.id"
                 <p class="my-auto leading-6 text-neutral-800">Unit Price</p>
                 <section class="flex flex-col leading-[143%]">
                   <p class="text-neutral-800 line-through">
-                    <span class="leading-5 text-neutral-800">$</span><span class="leading-5">{{ item.initialUnitPrice.toFixed(2) }}</span>
+                    <span class="leading-5 text-neutral-800">$</span><span class="leading-5">{{
+                      item.initialUnitPrice.toFixed(2) }}</span>
                   </p>
                   <p class="font-medium text-red-500 ">
                     <span class="text-red-500">$</span><span> {{ item.unitPriceAfterDiscounts.toFixed(2) }}</span>
