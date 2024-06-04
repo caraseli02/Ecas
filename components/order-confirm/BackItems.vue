@@ -42,7 +42,12 @@ const payment = computed(() => {
 
 <template>
   <div v-if="backOrderItems.length > 0" class="flex flex-col gap-4">
-    <UiBadge class="bg-rose-500 text-white w-fit rounded-md h-7">Back Order</UiBadge>
+    <p>
+      <UiBadge class="bg-rose-500 text-white w-fit rounded-md h-7 text-sm">Back Order</UiBadge>
+    <span class="text-rose-500 ml-2">
+      {{ backOrderItems.length }} Items will pe placed on Backorder
+    </span>
+    </p>
     <section class="flex flex-col gap-10 px-4 py-6 md:p-6 border border-gray-300 rounded-xl">
       <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
         <span class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 w-full max-w-[412px]">Product
@@ -57,11 +62,13 @@ const payment = computed(() => {
           class="hidden lg:inline text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Subtotal</span>
       </div>
       <div class="flex flex-col gap-10">
-        <div v-for="item in backOrderItems" :key="'stock-' + item.id"
+        <div
+          v-for="item in backOrderItems" :key="'stock-' + item.id"
           class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
           <div class="flex gap-3 mt-6 w-full lg:max-w-[412px]">
             <figure class="flex justify-center items-center rounded-lg border border-solid border-grey-300">
-              <img :src="item.productEntity.details.ProductImage.ProductImageSmall" alt="Product image"
+              <img
+                  :src="item.productEntity.details.ProductImage.ProductImageSmall" alt="Product image"
                 class="aspect-square min-w-[60px] lg:w-[72px] rounded-lg" />
             </figure>
             <div class="flex flex-col w-full max-w-[254px] md:max-w-none lg:max-w-[328px]">
