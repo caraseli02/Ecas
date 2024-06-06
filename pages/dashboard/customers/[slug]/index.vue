@@ -6,9 +6,7 @@
                     <div class="flex flex-col">
                         <div class="text-sm leading-relaxed font-medium text-slate-500 mb-3">Credit Limit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight">
-                            <div v-if="emptyData || error || credit.limit === ''" class="text-sm font-medium leading-tight text-gray-500">
-                                No data available
-                            </div>
+                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
                             <div v-else>{{ '€' + credit.limit }}</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
@@ -18,10 +16,8 @@
                     >
                         <div class="text-sm leading-relaxed font-medium text-slate-500 mb-3">Available Credit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight text-blue-500">
-                            <div v-if="emptyData || error || credit.spent === ''" class="text-sm font-medium leading-tight text-gray-500">
-                                No data available
-                            </div>
-                            <div v-else>{{ '€' + credit.spent }}</div>
+                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
+                            <div v-else>{{ '€' + credit.available }}</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -39,9 +35,7 @@
                             <div>Credit Limit</div>
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
-                        <div v-if="emptyData || error || credit.limit" class="text-sm font-medium leading-tight text-gray-500">
-                            No data available
-                        </div>
+                        <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
                         <div v-else class="text-sm font-semibold leading-tight">{{ '€' + credit.limit }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
@@ -57,10 +51,8 @@
                             <div>Available Credit</div>
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
-                        <div v-if="emptyData || error || credit.spent" class="text-sm font-medium leading-tight text-gray-500">
-                            No data available
-                        </div>
-                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">{{ '€' + credit.spent }}</div>
+                        <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
+                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">{{ '€' + credit.available }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -104,11 +96,11 @@ definePageMeta({
 
 const error = ref(false);
 const emptyData = ref(false);
-const isLoading = ref(false);
+const isLoading = ref(true);
 const { $api } = useNuxtApp();
 
 const route = useRoute();
-const credit = ref({} as { limit: string; spent: string });
+const credit = ref({} as { limit: string; spent: string; available: string });
 
 const getCustomerCredit = async () => {
     if (!route.params.slug) {
@@ -118,18 +110,21 @@ const getCustomerCredit = async () => {
         status: string;
         data: CustomerCreditInterface;
     };
-
-    if (response.status !== 'success') {
-        isLoading.value = false;
+    if (response.status !== 'success' || !response.data) {
         error.value = true;
         emptyData.value = true;
+        setTimeout(() => {
+            isLoading.value = false;
+        }, 500);
         return;
     } else {
-        isLoading.value = false;
-        error.value = false;
-        emptyData.value = response.data === null;
         credit.value = customerCreditHelper(response.data);
         console.log(credit.value);
+        error.value = false;
+        emptyData.value = false;
+        setTimeout(() => {
+            isLoading.value = false;
+        }, 500);
     }
 };
 
