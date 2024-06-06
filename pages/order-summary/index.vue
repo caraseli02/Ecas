@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import {
+import type {
     AccountRole,
     CartProductsInterface,
     OrderRequestInterface,
