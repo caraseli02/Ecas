@@ -18,7 +18,11 @@
             @sort-by-change="sortBy = $event"
             @sort-order-change="order = $event"
         />
-        <ProductBlocks :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched']" />
+        <ProductBlocks
+            :rows-number="2"
+            class="mb-7 lg:mb-[38px] xl:mb-[58px]"
+            :filters="['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched']"
+        />
         <Banner />
         <div class="container mb-[30px] lg:mb-10 xl:mb-[60px]">
             <div class="grid grid-cols-1 gap-[15px] md:grid-cols-[40%,calc(60%-20px)] md:gap-5 xl:grid-cols-[41%,calc(59%-20px)]">
@@ -35,20 +39,22 @@
 <script setup lang="ts">
 import { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance.js';
-import { SortInterface } from '~/model/dashboard/table/filters';
 import _ from 'lodash-es';
-import { onMounted, onUpdated, watch } from 'vue';
+import { watch } from 'vue';
 import { useNuxtApp } from '#app';
 import { ProductParametricDataFeaturesInterface } from '~/model/products/response/ProductResponse';
+import { storeToRefs } from 'pinia';
+import { useProductStore } from '~/store/productStore';
+
 const { $api } = useNuxtApp();
 
 useHead({
     title: 'Search',
 });
 
+const productStore = useProductStore();
+const { similarProducts, similarProductFeatures } = storeToRefs(productStore);
 const route = useRoute();
-const router = useRouter();
-
 const keyword = ref<string>(route.query.keyword as string | undefined);
 
 const products = ref<SearchData | null>(null);
@@ -59,14 +65,49 @@ const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
 const order = ref<1 | 0>(1);
 const resetProductsFilters = ref(false);
 
-async function getProduct(keyword: string, atPage: number, perPage: number, sort = {}, filter = []) {
-    const { data } = (await $api.product.fetchSearchProduct(keyword, atPage, perPage, sort, filter)) as SearchData;
+watch(
+    [similarProducts, similarProductFeatures],
+    async (newValues) => {
+        console.log('similarProducts changed', newValues);
+
+        if (newValues[0] && newValues[1]) {
+            products.value = newValues[0];
+            console.log('if branch');
+            filters.value = newValues[1][0];
+            console.log('filters', filters.value, products.value);
+        } else {
+            console.log('else branch');
+
+            await getProduct(
+                keyword.value,
+                atPage.value,
+                perPage.value,
+                {
+                    sortBy: sortBy.value.name,
+                    sortOrder: order.value === 0 ? 'desc' : 'asc',
+                },
+                [],
+                true
+            );
+        }
+    },
+    { deep: true, immediate: true }
+);
+
+async function getProduct(
+    keyword: string,
+    atPage: number,
+    perPage: number,
+    sort = {},
+    filter: ProductParametricDataFeaturesInterface[] = [],
+    flag = false
+) {
+    const { data } = await $api.product.fetchSearchProduct(keyword, atPage, perPage, sort, filter);
 
     products.value = data;
     filters.value = data.filters;
+    console.log('products changed', flag, products.value, filters.value);
 }
-
-await getProduct(keyword.value, 1, 10, {}, []);
 
 const handleSortOrderChange = async () => {
     await getProduct(keyword.value, atPage.value, perPage.value, {
@@ -107,6 +148,7 @@ watch(route, (value) => {
 });
 
 Emitter.on('register-filter-option', async (filter: ProductParametricDataFeaturesInterface[]) => {
+    console.log('register-filter-option', filter);
     await getProduct(
         keyword.value,
         1,
@@ -150,9 +192,12 @@ Emitter.on('product-keyword-change', async (value: { keyword: string; products: 
 Emitter.on(
     'show-similar-products',
     async (data: { features: ProductParametricDataFeaturesInterface[]; products: SearchData; filters: ProductFilters }) => {
-        // products.value = data.products;
-        // filters.value = data.filters;
-        await getProduct('', 1, perPage.value, {}, data.features);
+        await nextTick(() => {
+            console.log('show-similar-products');
+            getProduct('', 1, perPage.value, {}, data.features);
+        });
+        // console.log('show-similar-products');
+        // await getProduct('', 1, perPage.value, {}, data.features);
     }
 );
 </script>

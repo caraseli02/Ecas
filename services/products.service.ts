@@ -1,7 +1,7 @@
 import HttpFactory from '@/composables/HttpFactory';
 import { SearchSimilarProductRequest } from '~/model/products/request/SearchSimilarProductRequest';
 import { NewProductResponse } from '~/model/products/response/NewProductResponse';
-import { ProductResponse } from '~/model/products/response/ProductResponse';
+import { ProductParametricDataFeaturesInterface, ProductResponse } from '~/model/products/response/ProductResponse';
 import { ProductSearchResponse } from '~/model/products/response/ProductSearchResponse';
 import { SearchSimilarProductResponse } from '~/model/products/response/SearchSimilarProductResponse';
 import { useAuthStore } from '~/store/authStore';
@@ -56,7 +56,13 @@ class ProductService extends HttpFactory {
         );
     }
 
-    async fetchSearchProduct(keyword: string, page = 1, perPage = 10, sort = {}, featuresFilters = []): Promise<ProductSearchResponse> {
+    async fetchSearchProduct(
+        keyword: string,
+        page = 1,
+        perPage = 10,
+        sort = {},
+        featuresFilters: ProductParametricDataFeaturesInterface[] = []
+    ): Promise<ProductSearchResponse> {
         const token = this.authStore.getToken();
         let filters = {};
 
