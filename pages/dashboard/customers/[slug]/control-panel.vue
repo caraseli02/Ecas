@@ -23,7 +23,7 @@
                         <div class="text-sm leading-relaxed font-medium text-slate-500 mb-3">Available Credit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight text-blue-500">
                             <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                            <div v-else>{{ '€' + credit.spent }}</div>
+                            <div v-else>{{ '€' + credit.available }}</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -58,7 +58,7 @@
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
                         <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">>{{ '€' + credit.spent }}</div>
+                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">>{{ '€' + credit.available }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -112,7 +112,7 @@ const activeView = computed(() => {
 const error = ref(false);
 const emptyData = ref(false);
 const isLoading = ref(false);
-const credit = ref({} as { limit: string; spent: string });
+const credit = ref({} as { limit: string; spent: string; available: string });
 const getCustomerCredit = async () => {
     if (!route.params.slug) {
         return;
