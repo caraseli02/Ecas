@@ -16,7 +16,7 @@ const filters = ref(['Specifications', 'Tab 2', 'Tab 3']);
 const activeFilter = ref('specifications');
 const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
-const checkedFeatures = ref([] as ProductParametricDataFeaturesInterface);
+const checkedFeatures = ref([] as ProductParametricDataFeaturesInterface[]);
 
 const props = defineProps<{
     features: ProductParametricDataFeaturesInterface[];
@@ -58,7 +58,7 @@ const searchSimilarProducts = async () => {
     isLoading.value = true;
 
     checkedFeatures.value = features.filter((item) => item.checked);
-    const { data } = (await $api.product.fetchSearchProduct('', 1, 10, {}, checkedFeatures.value)) as SearchData;
+    const { data } = await $api.product.fetchSearchProduct('', 1, 10, {}, checkedFeatures.value);
 
     totalSimilarProducts.value = !checkedFeatures.value.length ? 0 : data.items.total_items;
     similarProducts.value = data.items;

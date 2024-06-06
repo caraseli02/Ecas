@@ -71,10 +71,21 @@ watch(
         console.log('similarProducts changed', newValues);
 
         if (newValues[0] && newValues[1]) {
-            products.value = newValues[0];
+            // products.value = newValues[0];
             console.log('if branch');
-            filters.value = newValues[1][0];
-            console.log('filters', filters.value, products.value);
+            // filters.value = newValues[1][0];
+            // console.log('filters', filters.value, products.value);
+            await getProduct(
+                keyword.value,
+                atPage.value,
+                perPage.value,
+                {
+                    sortBy: sortBy.value.name,
+                    sortOrder: order.value === 0 ? 'desc' : 'asc',
+                },
+                newValues[1],
+                false
+            );
         } else {
             console.log('else branch');
 
