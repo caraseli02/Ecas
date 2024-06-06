@@ -12,7 +12,7 @@ const productStore = useProductStore();
 const elDOM = ref<HTMLElement | null>(null);
 const isLoading = ref<boolean>(false);
 
-const filters = ref(['Specifications', 'Tab 2', 'Tab 3']);
+const filters = ref(['Specifications']);
 const activeFilter = ref('specifications');
 const filterLineLeftPosition = ref(0);
 const filterLineWidth = ref(0);
@@ -71,6 +71,7 @@ const showSimilarProducts = async () => {
     productStore.showSimilarOnly = true
     await router.push({
         path: '/search',
+        query: { similar: true },
     });
 
     if (!similarProducts.value || !checkedFeatures.value) {
@@ -79,11 +80,6 @@ const showSimilarProducts = async () => {
 
     productStore.setSimilarProducts(similarProducts.value);
     productStore.setSimilarProductFeatures(checkedFeatures.value);
-    // Emitter.emit('show-similar-products', {
-    //     features: checkedFeatures.value,
-    //     products: similarProducts.value,
-    //     filters: similarFilters.value,
-    // });
 };
 
 onMounted(() => {

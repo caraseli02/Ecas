@@ -69,21 +69,26 @@ onMounted(async () => {
     watch(
         [similarProducts, similarProductFeatures],
         async (newValues) => {
-            console.log('similarProducts changed', newValues);
-
             if (newValues[0] && newValues[1]) {
-                products.value = newValues[0];
-                console.log('if branch');
-                filters.value = newValues[1][0];
-                console.log('filters', filters.value, products.value);
-                showSimilarOnly.value = false
+                await getProduct(
+                    keyword.value,
+                    atPage.value,
+                    perPage.value,
+                    {
+                        sortBy: sortBy.value.name,
+                        sortOrder: order.value === 0 ? 'desc' : 'asc',
+                    },
+                    newValues[1],
+                    true
+                );
+                showSimilarOnly.value = false;
             }
         },
         { deep: true }
     );
 
     if (!products.value && !showSimilarOnly.value) {
-        console.log('else branch');        
+        console.log('else branch');
         await getProduct(
             keyword.value,
             atPage.value,
@@ -96,7 +101,7 @@ onMounted(async () => {
             true
         );
     }
-})
+});
 
 async function getProduct(
     keyword: string,
@@ -192,16 +197,4 @@ Emitter.on('product-keyword-change', async (value: { keyword: string; products: 
 
     await getProduct(value.keyword, atPage.value, perPage.value, {});
 });
-
-Emitter.on(
-    'show-similar-products',
-    async (data: { features: ProductParametricDataFeaturesInterface[]; products: SearchData; filters: ProductFilters }) => {
-        await nextTick(() => {
-            console.log('show-similar-products');
-            getProduct('', 1, perPage.value, {}, data.features);
-        });
-        // console.log('show-similar-products');
-        // await getProduct('', 1, perPage.value, {}, data.features);
-    }
-);
 </script>
