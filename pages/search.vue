@@ -53,7 +53,7 @@ useHead({
 });
 
 const productStore = useProductStore();
-const { similarProducts, similarProductFeatures } = storeToRefs(productStore);
+const { similarProducts, similarProductFeatures, showSimilarOnly } = storeToRefs(productStore);
 const route = useRoute();
 const keyword = ref<string>(route.query.keyword as string | undefined);
 
@@ -65,45 +65,38 @@ const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
 const order = ref<1 | 0>(1);
 const resetProductsFilters = ref(false);
 
-watch(
-    [similarProducts, similarProductFeatures],
-    async (newValues) => {
-        console.log('similarProducts changed', newValues);
+onMounted(async () => {
+    watch(
+        [similarProducts, similarProductFeatures],
+        async (newValues) => {
+            console.log('similarProducts changed', newValues);
 
-        if (newValues[0] && newValues[1]) {
-            // products.value = newValues[0];
-            console.log('if branch');
-            // filters.value = newValues[1][0];
-            // console.log('filters', filters.value, products.value);
-            await getProduct(
-                keyword.value,
-                atPage.value,
-                perPage.value,
-                {
-                    sortBy: sortBy.value.name,
-                    sortOrder: order.value === 0 ? 'desc' : 'asc',
-                },
-                newValues[1],
-                false
-            );
-        } else {
-            console.log('else branch');
+            if (newValues[0] && newValues[1]) {
+                products.value = newValues[0];
+                console.log('if branch');
+                filters.value = newValues[1][0];
+                console.log('filters', filters.value, products.value);
+                showSimilarOnly.value = false
+            }
+        },
+        { deep: true }
+    );
 
-            await getProduct(
-                keyword.value,
-                atPage.value,
-                perPage.value,
-                {
-                    sortBy: sortBy.value.name,
-                    sortOrder: order.value === 0 ? 'desc' : 'asc',
-                },
-                [],
-                true
-            );
-        }
-    },
-    { deep: true, immediate: true }
-);
+    if (!products.value && !showSimilarOnly.value) {
+        console.log('else branch');        
+        await getProduct(
+            keyword.value,
+            atPage.value,
+            perPage.value,
+            {
+                sortBy: sortBy.value.name,
+                sortOrder: order.value === 0 ? 'desc' : 'asc',
+            },
+            [],
+            true
+        );
+    }
+})
 
 async function getProduct(
     keyword: string,

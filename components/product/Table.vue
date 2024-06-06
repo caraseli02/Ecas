@@ -68,6 +68,7 @@ const searchSimilarProducts = async () => {
 };
 
 const showSimilarProducts = async () => {
+    productStore.showSimilarOnly = true
     await router.push({
         path: '/search',
     });
