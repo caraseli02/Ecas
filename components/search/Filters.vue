@@ -99,13 +99,7 @@ import EyeIcon from '@/assets/icons/eye.svg';
 import EyeClosedIcon from '@/assets/icons/eye-closed.svg';
 import ResetIcon from '@/assets/icons/reset.svg';
 import PlusIcon from '@/assets/icons/plus.svg';
-import {
-    FilterOptions,
-    ProductFilters,
-    ProductFiltersWrapper,
-    SearchData,
-    SearchFiltersCategories,
-} from '~/model/products/response/ProductSearchResponse';
+import { FilterOptions, ProductFilters, ProductFiltersWrapper, SearchData } from '~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance.js';
 
 const props = defineProps<{

@@ -320,6 +320,7 @@ const emits = defineEmits(['at-page', 'per-page', 'sort-by-change', 'sort-order-
 watch(
     () => props.products,
     () => {
+        console.log('products changed');
         setProductsList();
     },
     { deep: true }
