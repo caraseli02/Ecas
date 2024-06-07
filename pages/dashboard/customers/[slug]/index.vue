@@ -7,7 +7,7 @@
                         <div class="text-sm leading-relaxed font-medium text-slate-500 mb-3">Credit Limit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight">
                             <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                            <div v-else>€ 100,000.00</div>
+                            <div v-else>{{ '€' + credit.limit }}</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -17,7 +17,7 @@
                         <div class="text-sm leading-relaxed font-medium text-slate-500 mb-3">Available Credit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight text-blue-500">
                             <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                            <div v-else>€ 45,328.63</div>
+                            <div v-else>{{ '€' + credit.available }}</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -36,7 +36,7 @@
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
                         <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                        <div v-else class="text-sm font-semibold leading-tight">€ 100,000.00</div>
+                        <div v-else class="text-sm font-semibold leading-tight">{{ '€' + credit.limit }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -51,8 +51,8 @@
                             <div>Available Credit</div>
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
-                        <div v-if="emptyData || error" v class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">€ 45,328.63</div>
+                        <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
+                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">{{ '€' + credit.available }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -74,6 +74,9 @@
 <script setup lang="ts">
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import Emitter from 'tiny-emitter/instance.js';
+import { useNuxtApp } from '#app';
+import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import { customerCreditHelper } from '~/helpers/customer-credit.helper';
 
 const customerName = ref('');
 const updateBreadcrumbs = ref(false);
@@ -93,9 +96,40 @@ definePageMeta({
 
 const error = ref(false);
 const emptyData = ref(false);
-const isLoading = ref(false);
+const isLoading = ref(true);
+const { $api } = useNuxtApp();
 
 const route = useRoute();
+const credit = ref({} as { limit: string; spent: string; available: string });
+
+const getCustomerCredit = async () => {
+    if (!route.params.slug) {
+        return;
+    }
+    const response = (await $api.controlPanel.fetchCustomerCredit(route.params.slug)) as {
+        status: string;
+        data: CustomerCreditInterface;
+    };
+    if (response.status !== 'success' || !response.data) {
+        error.value = true;
+        emptyData.value = true;
+        setTimeout(() => {
+            isLoading.value = false;
+        }, 500);
+        return;
+    } else {
+        credit.value = customerCreditHelper(response.data);
+        console.log(credit.value);
+        error.value = false;
+        emptyData.value = false;
+        setTimeout(() => {
+            isLoading.value = false;
+        }, 500);
+    }
+};
+
+await getCustomerCredit();
+
 onMounted(async () => {
     setTimeout(() => {
         isLoading.value = false;

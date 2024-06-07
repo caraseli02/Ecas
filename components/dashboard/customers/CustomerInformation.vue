@@ -278,7 +278,7 @@ const fetchInformation = async () => {
         spent: response.data.spent || 0,
         ordersCount: response.data.ordersCount || 0,
         firebaseId: response.data.firebaseId || 'N/A',
-        active: response.data.status === AccountStatusEnum.Inactive,
+        active: response.data.status === AccountStatusEnum.Active,
         address: address.value,
         flag: country.value,
     };
