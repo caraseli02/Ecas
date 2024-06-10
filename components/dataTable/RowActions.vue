@@ -34,8 +34,8 @@ if (props.service) {
 
 <template>
     <section class="flex justify-end items-center gap-3">
-        <UiBadge v-if="true" class="h-[22px] text-xs !pt-[3px]" variant="outline"> {{ discount }}%</UiBadge>
-        <LockKeyholeIcon v-if="true" class="w-5 h-5 text-slate-500 transition-colors duration-300 hover:text-blue-500" />
+        <UiBadge v-if="discount" class="h-[22px] text-xs !pt-[3px]" variant="outline"> {{ discount }}%</UiBadge>
+        <LockKeyholeIcon v-if="lock" class="w-5 h-5 text-slate-500 transition-colors duration-300 hover:text-blue-500" />
         <svg
             class="text-slate-500 hover:text-blue-500 cursor-pointer"
             width="20"
