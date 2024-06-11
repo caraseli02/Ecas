@@ -21,10 +21,10 @@
                         <OrderSummaryTable
                             :items="cartItems"
                             :loading="loading"
-                            @checkAll="checkAll"
-                            @addToFavs="addToFavsAll"
+                            @check-all="checkAll"
+                            @add-to-favs="addToFavsAll"
                             @update-subtotal="calculateSubtotal"
-                            @deleteSelected="deleteSelected"
+                            @delete-selected="deleteSelected"
                         />
                         <div class="hidden lg:flex flex-col">
                             <OrderSummarySimilarProducts :loading="loading" />
@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import type {
+import {
     AccountRole,
     CartProductsInterface,
     OrderRequestInterface,
@@ -88,6 +88,7 @@ import { storeToRefs } from 'pinia';
 import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
 import _ from 'lodash';
 import { usePaymentStore } from '~/store/paymentStore';
+import { useCheckoutStore } from '~/store/checkout';
 
 const router = useRouter();
 
@@ -410,9 +411,14 @@ Emitter.on('delete-product-item', async (object: { id: string }) => {
     }, 1000);
 });
 
-Emitter.on('checkout', async () => {
+
+const checkoutStore = useCheckoutStore()
+const { checkout } = storeToRefs(checkoutStore)
+
+async function makeCheckout() {
     if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !paymentDetails.value) {
         console.log('Cannot place order');
+        checkout.value = false; // Reset processing state on error
         return;
     }
 
@@ -452,43 +458,48 @@ Emitter.on('checkout', async () => {
     }
 
     if (typeof paymentDetails.value.type === 'undefined') {
+        isProcessing = false;
         return;
     }
 
-    const response = (await $api.orders.sendOrder(orderRequestObject.value)) as PlaceOrderInterface;
+    try {
+        const response = (await $api.orders.sendOrder(orderRequestObject.value)) as PlaceOrderInterface;
 
-    if (response.status !== 'success') {
-        await router.push({ path: '/checkout/fail' });
-
-        return;
-    }
-
-    if (paymentDetails.value.type === PaymentTypeEnum.Card) {
-        if (orderRequestObject.value.stripeCardId && response.data.useExistingPaymentMethod) {
-            const result = response.data.result;
-
-            if (result?.status === 'succeeded') {
-                console.log('order paid with a default card');
+        if (response.status !== 'success') {
+            await router.push({ path: '/checkout/fail' });
+        } else {
+            if (paymentDetails.value.type === PaymentTypeEnum.Card) {
+                const result = response.data.result;
+                if (result?.status === 'succeeded') {
+                    console.log('order paid with a default card');
+                    await router.push({ path: '/checkout/success' });
+                } else if (result?.status === 'canceled') {
+                    console.log('order canceled reason: ', result?.cancellation_reason);
+                    await router.push({ path: '/checkout/fail' });
+                } else {
+                    console.log('order pending', result?.status);
+                    await router.push({ path: '/checkout/pending' });
+                }
+            } else if (paymentDetails.value.type === PaymentTypeEnum.Credit) {
+                console.log('paid with credit');
                 await router.push({ path: '/checkout/success' });
-            } else if (result?.status === 'canceled') {
-                console.log('order canceled reason: ', result?.cancellation_reason);
-                await router.push({ path: '/checkout/fail' });
-            } else {
-                console.log('order pending', result?.status);
-                await router.push({ path: '/checkout/pending' });
             }
-        } else if (!response.data.useExistingPaymentMethod && response.data.clientSecret) {
-            cartStore.setOrderClientSecret(response.data.clientSecret);
-            await router.push({ path: '/checkout/session' });
         }
-    } else if (paymentDetails.value.type === PaymentTypeEnum.Credit) {
-        console.log('paid with credit');
-        await router.push({ path: '/checkout/success' });
+    } catch (error) {
+        console.error('Error sending order:', error);
+        await router.push({ path: '/checkout/fail' });
+    } finally {
+        await cartStore.updateAndReturnCart();
+        checkout.value = false; // Reset processing state when everything is done
     }
+}
 
-    await cartStore.updateAndReturnCart();
-    // await router.push({ path: '/' });
-});
+watch(() => checkout, (newVal) => {    
+    if(newVal) {
+      makeCheckout()  
+    } 
+}, {deep: true});
+
 
 await fetchList();
 
