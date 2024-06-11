@@ -1,6 +1,6 @@
 <template>
     <section
-        class="flex flex-col items-start justify-center w-full shadow-xs bg-white max-w-[358px] md:max-w-[400px] px-4 md:px-6 py-6 rounded-xl"
+        class="flex flex-col items-start 2xl:justify-center w-full shadow-xs bg-white max-w-[358px] md:max-w-[400px] px-4 md:px-6 py-6 rounded-xl min-h-svh overflow-auto"
     >
         <div class="justify-between items-center self-stretch flex gap-5">
             <div class="text-zinc-800 text-base font-semibold leading-7 my-auto">Payment Method</div>
