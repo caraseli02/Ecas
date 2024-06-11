@@ -81,7 +81,6 @@ export default defineNuxtConfig({
         '~/assets/css/resets.css',
         '~/assets/css/utils.css',
         '~/assets/css/animations.css',
-        'vue3-lottie/dist/style.css',
         'leaflet/dist/leaflet.css',
         'v-calendar/style.css',
     ],

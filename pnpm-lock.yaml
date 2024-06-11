@@ -116,9 +116,6 @@ dependencies:
   vue3-apexcharts:
     specifier: ^1.4.1
     version: 1.5.3(apexcharts@3.49.1)(vue@3.4.27)
-  vue3-lottie:
-    specifier: ^2.5.0
-    version: 2.7.4(vue@3.4.27)
   vuejs-paginate-next:
     specifier: ^1.0.2
     version: 1.0.2(typescript@5.4.5)
@@ -6798,10 +6795,6 @@ packages:
     resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
     dev: false
 
-  /lottie-web@5.12.2:
-    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
-    dev: false
-
   /lru-cache@10.2.2:
     resolution: {integrity: sha512-9hp3Vp2/hFQUiIwKo8XCeFVnrg8Pk3TYNPIR7tJADKi5YfcF7vEaK7avFHTlSy3kOKYaJQaalfEo6YuXdceBOQ==}
     engines: {node: 14 || >=16.14}
@@ -10210,17 +10203,6 @@ packages:
       vue: '> 3.0.0'
     dependencies:
       apexcharts: 3.49.1
-      vue: 3.4.27(typescript@5.4.5)
-    dev: false
-
-  /vue3-lottie@2.7.4(vue@3.4.27):
-    resolution: {integrity: sha512-EJATgpaWXyqdKxaSY2Q3lK4tTkxTSssKTqBmsIEG7Yj8jT75RGF6zhsoBc/kT10X41vt2HEpjPYmEQfKt6JfOw==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      vue: ^3.2
-    dependencies:
-      lodash-es: 4.17.21
-      lottie-web: 5.12.2
       vue: 3.4.27(typescript@5.4.5)
     dev: false
 
