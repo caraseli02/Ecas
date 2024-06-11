@@ -411,9 +411,8 @@ Emitter.on('delete-product-item', async (object: { id: string }) => {
     }, 1000);
 });
 
-
-const checkoutStore = useCheckoutStore()
-const { checkout } = storeToRefs(checkoutStore)
+const checkoutStore = useCheckoutStore();
+const { checkout } = storeToRefs(checkoutStore);
 
 async function makeCheckout() {
     if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !paymentDetails.value) {
@@ -458,7 +457,6 @@ async function makeCheckout() {
     }
 
     if (typeof paymentDetails.value.type === 'undefined') {
-        isProcessing = false;
         return;
     }
 
@@ -470,15 +468,27 @@ async function makeCheckout() {
         } else {
             if (paymentDetails.value.type === PaymentTypeEnum.Card) {
                 const result = response.data.result;
-                if (result?.status === 'succeeded') {
-                    console.log('order paid with a default card');
-                    await router.push({ path: '/checkout/success' });
-                } else if (result?.status === 'canceled') {
-                    console.log('order canceled reason: ', result?.cancellation_reason);
-                    await router.push({ path: '/checkout/fail' });
+
+                if (result) {
+                    if (result.status === 'succeeded') {
+                        console.log('order paid with a default card');
+                        await router.push({ path: '/checkout/success' });
+                    } else if (result.status === 'canceled') {
+                        console.log('order canceled reason: ', result.cancellation_reason);
+                        await router.push({ path: '/checkout/fail' });
+                    } else if (result.status === 'requires_payment_method') {
+                        console.log('order requires payment method');
+                        await router.push({ path: '/checkout/session' });
+                    } else {
+                        console.log('order pending', result.status);
+                        await router.push({ path: '/checkout/pending' });
+                    }
                 } else {
-                    console.log('order pending', result?.status);
-                    await router.push({ path: '/checkout/pending' });
+                    console.log('pay with a new card', response.data);
+                    if (response.data.clientSecret) {
+                        cartStore.setOrderClientSecret(response.data.clientSecret);
+                    }
+                    await router.push({ path: '/checkout/session' });
                 }
             } else if (paymentDetails.value.type === PaymentTypeEnum.Credit) {
                 console.log('paid with credit');
@@ -494,12 +504,15 @@ async function makeCheckout() {
     }
 }
 
-watch(() => checkout, (newVal) => {    
-    if(newVal) {
-      makeCheckout()  
-    } 
-}, {deep: true});
-
+watch(
+    () => checkout,
+    (newVal) => {
+        if (newVal) {
+            makeCheckout();
+        }
+    },
+    { deep: true }
+);
 
 await fetchList();
 
