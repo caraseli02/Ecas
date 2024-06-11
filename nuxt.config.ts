@@ -46,7 +46,6 @@ export default defineNuxtConfig({
         'nuxt-lodash',
         'nuxt3-leaflet',
         'nuxt-viewport',
-        'nuxt-headlessui',
         '@vueuse/nuxt',
     ],
     shadcn: {
@@ -115,9 +114,6 @@ export default defineNuxtConfig({
             ['kebabCase', 'stringToKebab'], // => stringToKebab
             ['isDate', 'isLodashDate'], // => _isLodashDate
         ],
-    },
-    headlessui: {
-        prefix: ''
     },
     vite: {
         vue: {
