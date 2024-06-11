@@ -55,7 +55,7 @@ useHead({
 const productStore = useProductStore();
 const { similarProducts, similarProductFeatures, showSimilarOnly } = storeToRefs(productStore);
 const route = useRoute();
-const keyword = ref<string>(route.query.keyword as string | undefined);
+const keyword = ref<string | undefined>(route.query.keyword as string | undefined);
 
 const products = ref<SearchData | null>(null);
 const filters = ref<ProductFilters | null>(null);
