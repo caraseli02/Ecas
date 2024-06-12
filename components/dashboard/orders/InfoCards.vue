@@ -256,7 +256,10 @@ const getProductsSold = async () => {
 
 }
 
-await Promise.all([getTotalOrders(), getGrossRevenue(), getAvgOrderValue(), getProductsSold()]);
+getTotalOrders()
+getGrossRevenue()
+getAvgOrderValue()
+getProductsSold()
 
 const cards = ref([
   {

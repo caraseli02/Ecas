@@ -132,5 +132,5 @@ const fetchAndSetNewCustomers = async (time = 7) => {
     }));
 };
 
-await fetchAndSetNewCustomers();
+fetchAndSetNewCustomers();
 </script>

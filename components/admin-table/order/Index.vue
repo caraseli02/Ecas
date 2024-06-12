@@ -147,8 +147,8 @@ const onTabChange = async (filter: TabFilter, table: Table<OrderTableColumns>) =
     table.getColumn(filter.value)?.setFilterValue(filter.key)
 }
 
-await loadTabFilters();
-await fetchAndSetOrdersList(1, 10);
+loadTabFilters();
+fetchAndSetOrdersList(1, 10);
 
 onMounted(() => {
     setTimeout(() => {

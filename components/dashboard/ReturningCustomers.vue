@@ -192,7 +192,7 @@ const fetchAndSetReturningCustomers = async (time = 7) => {
     }
 };
 
-await fetchAndSetReturningCustomers(selectedOption.value.time);
+fetchAndSetReturningCustomers(selectedOption.value.time);
 
 watch([selectedOption], async ([newSelectedOption]) => {
     await fetchAndSetReturningCustomers(newSelectedOption.time);

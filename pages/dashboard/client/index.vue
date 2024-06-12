@@ -216,16 +216,14 @@ const getDefaultCard = async () => {
     // return userCards?.filter((card) => card.default)[0] as StripeCardInterface
 };
 
-await Promise.all([
-    activeOrders(),
-    activityWidgets(),
-    customerInformation(),
-    recentlyBougth(),
-    addresses(),
-    viewHistory(),
-    monthHotSale(),
-    getDefaultCard(),
-]);
+    activeOrders()
+    activityWidgets()
+    customerInformation()
+    recentlyBougth()
+    addresses()
+    viewHistory()
+    monthHotSale()
+    getDefaultCard()
 </script>
 
 <style>
