@@ -10,6 +10,7 @@
     />
     <SignupBusinessDetails
         v-if="currentStep === 1 && (selectedType === 'business' || selectedType === 'sole-trader')"
+        v-model="vatPayer"
         :selected-type="selectedType === 'sole-trader' ? '' : selectedBusinessType"
         @back="backToSelectMenu()"
         @continue="handleBusinessDetailsContinue"
@@ -117,7 +118,9 @@ const handleBusinessDetailsContinue = () => {
       businessDetails.value.addressLine1,
     ]);
     if(selectedBusinessType.value !== 'agent'){
-      hasError = checkForInputErrors([businessDetails.value.vatNumber])
+      if(vatPayer.value) {
+        hasError = checkForInputErrors([businessDetails.value.vatNumber])
+      }
     }
   } else if (selectedType.value === 'sole-trader') {
     hasError = checkForInputErrors([
@@ -468,4 +471,6 @@ definePageMeta({
 useHead({
   title: 'Signup',
 });
+
+const vatPayer = ref(false)
 </script>
