@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { InfoIcon } from 'lucide-vue-next';
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import { CartProductsInterface, OrderType } from '~/model/cart/response/cart.interface';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
@@ -8,7 +8,10 @@ const lgAndLarger = breakpoints.greaterOrEqual('lg'); // sm and larger
 
 const props = defineProps<{
     data: CartProductsInterface[];
+    orderType: OrderType;
 }>();
+
+const type = props.orderType === OrderType.Stock ? '' : 'Stock';
 
 const stockItems = computed(() => {
     return props.data.filter(
@@ -150,7 +153,7 @@ const payment = computed(() => {
             </div>
             <UiSeparator class="bg-light-500" />
             <div class="flex flex-col gap-4 w-full">
-                <header class="w-full text-sm font-semibold leading-6 text-neutral-700">Stock Order Payment Summary</header>
+                <header class="w-full text-sm font-semibold leading-6 text-neutral-700">{{ type + ' Order Payment Summary' }}</header>
                 <section class="flex flex-col gap-2">
                     <div class="flex gap-2 justify-between w-full text-sm font-medium leading-6">
                         <div class="text-gray-500">Subtotal</div>
@@ -181,7 +184,7 @@ const payment = computed(() => {
                                 Shipping
                                 <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
                             </div>
-                            <div>Standard Delivery (3-5 Days)</div>
+                            <div>-</div>
                         </div>
                         <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
                             ${{ payment.shippingCost.toFixed(2) }}
@@ -199,7 +202,7 @@ const payment = computed(() => {
                     </div>
                     <UiSeparator class="bg-light-500" />
                     <div class="flex gap-2 justify-between mt-2 w-full text-neutral-700">
-                        <div class="text-xl leading-9">Stock Order Total</div>
+                        <div class="text-xl leading-9">{{ type + ' Order Total' }}</div>
                         <div class="text-2xl font-semibold leading-9">${{ payment.stockOrderTotal.toFixed(2) }}</div>
                     </div>
                 </section>

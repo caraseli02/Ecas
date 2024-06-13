@@ -310,8 +310,40 @@ const data: CartProductsInterface[] = [
 ];
 
 const hasMixedItems = computed(() => {
-    return data.find((item) => Number(item.stock) === 0);
+    return order.value.some((item: OrderRequestInterface) => Number(item.stock) === 0);
 });
+const order = ref<OrderRequestInterface[]>([] as OrderRequestInterface[]);
+const getOrderInformation = async () => {
+    // Fetch order information
+    const orderId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
+    const response = (await $api.orders.getOrderById(orderId)) as { data: any; status: string };
+    if (response.status === 'success' && response.data.products) {
+        order.value = response.data.products;
+        orderType.value = response.data.type;
+        addresses.value = {
+            shippingAddress: {
+                name1: response.data.shippingDetails.address.name1,
+                name2: response.data.shippingDetails.address.name2,
+                postcode: response.data.shippingDetails.address.postcode,
+                country: response.data.shippingDetails.address.country,
+            },
+            billingAddress: {
+                name1: response.data.shippingDetails.billingAddress.name1,
+                name2: response.data.shippingDetails.billingAddress.name2,
+                postcode: response.data.shippingDetails.billingAddress.postcode,
+                country: response.data.shippingDetails.billingAddress.country,
+            },
+        };
+        customerDetails.value = {
+            title: 'Customer Details',
+            name: response?.data?.userName,
+            email: response?.data?.userEmail,
+            phone: response.data.shippingDetails.phone,
+        };
+        date.value = moment(response.data.createdAt).format('DD MMMM YYYY, HH:mm');
+    }
+};
+await getOrderInformation();
 </script>
 
 <template>
@@ -361,7 +393,7 @@ const hasMixedItems = computed(() => {
                     <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
                     <div class="flex gap-2">
                         <div class="text-slate-500">Shipping Method:</div>
-                        <div class="text-neutral-700">3-5 Business Days</div>
+                        <div class="text-neutral-700">-</div>
                     </div>
                 </div>
             </div>
@@ -369,8 +401,8 @@ const hasMixedItems = computed(() => {
         <OrderConfirmDetails />
         <UiSeparator />
         <OrderConfirmAddress />
-        <OrderConfirmStackItems :data="data" />
-        <OrderConfirmBackItems :data="data" />
+        <OrderConfirmStackItems :data="data" :order-type="orderType" />
+        <OrderConfirmBackItems :data="data" :order-type="orderType" />
         <section class="flex flex-col lg:flex-row gap-9">
             <div class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
                 <h2 class="w-full font-semibold max-md:max-w-full">Customer Notes</h2>
