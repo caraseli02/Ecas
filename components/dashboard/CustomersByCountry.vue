@@ -118,5 +118,5 @@ const fetchAndSetCustomersByCountry = async () => {
     countryWithMostCustomers.value = countries?.value[0];
 };
 
-await fetchAndSetCustomersByCountry();
+fetchAndSetCustomersByCountry();
 </script>

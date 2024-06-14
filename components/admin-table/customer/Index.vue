@@ -14,6 +14,7 @@ const listItems = ref<CustomerTableColumns[]>([]);
 
 const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
     error.value = false;
+    loading.value = true;
 
     // FIX to use userID
 
@@ -34,7 +35,7 @@ const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number
     loading.value = false;
 }, 500);
 
-await fetchAndSetCustomersList(1, 10);
+fetchAndSetCustomersList(1, 10);
 </script>
 
 <template>
@@ -42,7 +43,7 @@ await fetchAndSetCustomersList(1, 10);
         class="h-full flex-1 flex-col space-y-8 flex w-[393px] md:w-[640px] lg:w-[896px] xl:w-[1312px] 2xl:w-[1444px] shadow-xs p-2 pt-6 md:p-6 rounded-xl"
     >
         <DataTable
-            v-if="!loading"
+            v-if="listItems.length > 0"
             :fetch-fn="fetchAndSetCustomersList"
             :page-count="pageCount"
             :data="listItems"

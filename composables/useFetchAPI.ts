@@ -36,3 +36,39 @@ export const useFetchAPI: useFetchType = async (url, params) => {
         execute,
     };
 };
+
+
+
+// type FetchAPIType = (url: string, params?: any) => Promise<{ data: any; pending: Ref<boolean>; error: Ref<any> }>;
+
+// export const useFetchAPI: FetchAPIType = async (url, params = {}) => {
+//   const cookie = useCookie('token');
+//   const runtimeConfig = useRuntimeConfig();
+
+//   let isPending = ref(true);
+//   let error = ref(null);
+
+//   const headers = params.headers || {};
+//   if (cookie.value) {
+//     headers['x-access-token'] = cookie.value;
+//   }
+
+//   try {
+//     const data = await $fetch(url, {
+//       baseURL: runtimeConfig.public.BASE_URL_API,
+//       headers,
+//       ...params,
+//       onResponseError({ response }) {
+//         console.error(response._data.message);
+//       },
+//     });
+
+//     isPending.value = false;
+//     return { data, pending: isPending, error };
+//   } catch (err) {
+//     error.value = err;
+//     isPending.value = false;
+//     console.error(err.message);
+//     return { data: null, pending: isPending, error };
+//   }
+// };

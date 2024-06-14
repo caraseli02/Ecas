@@ -78,7 +78,7 @@ watch(
 
 const refresh = ref(false);
 watch(refresh, async () => {
-    if (!refresh) return;
+    if (!refresh.value) return;
     const { pageIndex, pageSize } = table.getState().pagination;
     const rightIndex = pageIndex + 1;
     await props.fetchFn(
@@ -121,8 +121,10 @@ watchDebounced(
 //   table.reset()
 // }, {deep: true})
 
-const loadingSize = computed(() => {
+const loadingSize = computed(async () => {
+    // const size = 60 * 10;
     const size = 60 * Number(table.getState().pagination.pageSize);
+    await nextTick()
     return `${size}px`;
 });
 </script>
@@ -167,7 +169,7 @@ const loadingSize = computed(() => {
                     </div>
                 </UiTableBody>
             </UiTable>
-            <UiSkeleton v-if="refresh" :style="{ height: loadingSize }" class="w-full rounded absolute inset-0 top-[49px] z-10" />
+            <UiSkeleton v-if="refresh || loading" :style="{ height: loadingSize }" class="w-full rounded absolute inset-0 top-[49px] z-10" />
         </div>
         <DataTablePagination :total-items="totalItems" :page-count="props.pageCount" :table="table" />
     </div>
