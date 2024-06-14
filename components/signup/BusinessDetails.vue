@@ -20,13 +20,6 @@
                             label="Company Registration Number"
                             placeholder="Company Registration Number"
                         />
-                        <FormInput
-                            v-if="selectedType === 'executive'"
-                            v-model="details.vatNumber.value"
-                            :error="details.vatNumber.error"
-                            label="VAT Number"
-                            placeholder="VAT Number"
-                        />
                         <FormSelect
                             v-model="details.country.value.value"
                             :error="details.country.value.error"
@@ -64,6 +57,22 @@
                             :error="details.addressLine2.error"
                             label="Address Line 2"
                             placeholder="Address Line 2"
+                        />
+                        <div class="flex items-center space-x-2">
+                            <UiCheckbox id="vat show" :checked="vatPayer"  @update:checked="vatPayer = $event" />
+                            <label
+                            for="vat show"
+                            class="text-slate-500 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                            Is VAT payer
+                            </label>
+                        </div>
+                        <FormInput
+                            v-if="vatPayer"
+                            v-model="details.vatNumber.value"
+                            :error="details.vatNumber.error"
+                            label="VAT Number"
+                            placeholder="VAT Number"
                         />
                     </div>
                     <div class="flex items-center justify-between">
@@ -126,4 +135,6 @@ watch(details.value.country, (newVal) => {
                 }) || [];
     }
 });
+
+const vatPayer = defineModel()
 </script>

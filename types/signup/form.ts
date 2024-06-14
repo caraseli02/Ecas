@@ -29,7 +29,7 @@ export enum AccountRole {
 export interface SignupBusinessDetails {
     fullCompanyName: InputObject;
     companyRegistrationNumber: InputObject;
-    vatNumber: InputObject;
+    vatNumber?: InputObject;
     country: CountryType;
     region: CountryType;
     city: InputObject;

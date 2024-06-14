@@ -188,7 +188,7 @@ const fetchAndSetTotalCustomers = async (time = 7) => {
     }
 };
 
-await fetchAndSetTotalCustomers(selectedOption.value.time);
+fetchAndSetTotalCustomers(selectedOption.value.time);
 
 watch([selectedOption], async ([newSelectedOption]) => {
     await fetchAndSetTotalCustomers(newSelectedOption.time);
