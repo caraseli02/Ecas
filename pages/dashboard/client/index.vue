@@ -10,6 +10,7 @@
                 <DashboardClientTabBar v-model="activeOrderFilter" />
                 <ClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
                 <ClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
+                <ClientTableAgents v-if="activeOrderFilter.value === 'agents'"/>
                 <ClientOnly>
                     <DashboardClientActivity :data="myActivityData" />
                 </ClientOnly>
