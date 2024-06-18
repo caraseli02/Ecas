@@ -16,8 +16,7 @@
                                 : 'bg-white  border-border group-hover:border-gray-300',
                         ]"
                     >
-                        <CheckIcon
-v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
+                        <CheckIcon v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
                     </div>
                 </label>
                 <div class="max-w-[220px] lg:max-w-[245px] flex">
@@ -106,14 +105,13 @@ import WarningError from '@/assets/icons/warning-error.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
 import HeartOutline from '@/assets/icons/heart-outline.svg';
 import HeartSolid from '@/assets/icons/heart-solid.svg';
-import TrashOutline from '@/assets/icons/trash-outline.svg';
 import Tooltip from '~/components/global/Tooltip.vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import TrashIcon from 'assets/icons/trash-can.svg';
 import { PropType } from 'vue';
-import { CartProductsInterface } from '~/types';
+import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 export default defineComponent({
     name: 'TableItem',

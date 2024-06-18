@@ -62,21 +62,14 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import {
-    AccountRole,
-    CartProductsInterface,
-    OrderRequestInterface,
-    PaymentDetails,
-    PaymentTypeEnum,
-    StripeCardInfoInterface,
-} from '~/types';
+import { AccountRole, OrderRequestInterface, PaymentDetails, PaymentTypeEnum, StripeCardInfoInterface } from '~/types';
+import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
 import { useAuthStore } from '~/store/authStore';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 import { useCartStore } from '~/store/cartStore';
-import { CartInterface } from '~/model/cart/response/cart.interface';
 import {
     BackorderShippingTypesInterface,
     DeliveryTypesInterface,
@@ -169,7 +162,7 @@ const paymentStore = usePaymentStore();
 const isNewCardSelected = ref<boolean>(false);
 
 const fetchCards = async () => {
-    const response = (await $api.user.userCards()) as {
+    const response = (await $api.user.userCards()) as unknown as {
         status: string;
         data: StripeCardInfoInterface[];
     };

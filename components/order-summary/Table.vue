@@ -5,21 +5,33 @@
             <span class="text-neutral-700 text-base font-semibold leading-6">Stock Items: {{ stockItems.length }}</span>
         </div>
         <SkeletonLoader v-if="loading" />
-        <OrderSummaryTableItem v-for="item in stockItems" :key="`stock-${item.id}`" :item="item" :stock-item="true" @update-quantity="updateSubtotal" />
+        <OrderSummaryTableItem
+            v-for="item in stockItems"
+            :key="`stock-${item.id}`"
+            :item="item"
+            :stock-item="true"
+            @update-quantity="updateSubtotal"
+        />
         <div v-if="backOrderItems.length">
             <span class="text-neutral-700 text-base font-semibold leading-6">Backorder Items: {{ backOrderItems.length }}</span>
         </div>
         <SkeletonLoader v-if="loading" />
-        <OrderSummaryTableItem v-for="item in backOrderItems" :key="`back-${item.id}`" :item="item" :stock-item="false" @update-quantity="updateSubtotal" />
+        <OrderSummaryTableItem
+            v-for="item in backOrderItems"
+            :key="`back-${item.id}`"
+            :item="item"
+            :stock-item="false"
+            @update-quantity="updateSubtotal"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-import type { CartProductsInterface } from '~/types';
+import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 const props = defineProps<{
-    items: CartProductsInterface[],
-    loading: boolean
+    items: CartProductsInterface[];
+    loading: boolean;
 }>();
 
 const emits = defineEmits(['checkAll', 'addToFavs', 'updateSubtotal', 'deleteSelected']);

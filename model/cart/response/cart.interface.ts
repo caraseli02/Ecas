@@ -31,10 +31,11 @@ export interface CartProductsInterface {
      */
     id: string;
 
-    /**
-     * Number of pieces wanted for a specific product
-     */
+    /** Number of pieces wanted for a specific product */
     stock: number;
+
+    /** Number of pieces wanted for a specific product delivered in a back-order */
+    backorder_stock?: number;
 
     /** Either the sent product is a simple product or a folder ID */
     isFolder: boolean;

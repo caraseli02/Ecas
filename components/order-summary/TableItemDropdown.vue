@@ -97,8 +97,8 @@
                         <span class="text-neutral-700 text-center text-sm font-normal leading-6 xl:gap-4 px-0 xl:px-4">Quantity</span>
                         <div>
                             <QuantityButtons
-                                v-if="item.stock"
-                                v-model="item.stock"
+                                v-if="quantity"
+                                v-model="quantity"
                                 size="lg"
                                 :object="{action : ProductAction.Update, id: item.id, min: item?.productEntity?.priceConfiguration?.configuration[0].quantity} as any"
                             />
@@ -196,8 +196,7 @@ import DeliveryTruckSmall from '@/assets/icons/delivery-truck-small.svg';
 import HeartOutline from '@/assets/icons/heart-outline.svg';
 import HeartSolid from '@/assets/icons/heart-solid.svg';
 import TrashOutlineBig from '@/assets/icons/trash-outline-big.svg';
-import { ProductAction } from '~/model/cart/response/cart.interface';
-import { CartProductsInterface } from '~/types';
+import { CartProductsInterface, ProductAction } from '~/model/cart/response/cart.interface';
 import { PropType } from 'vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
@@ -254,12 +253,15 @@ export default defineComponent({
         taxPrice() {
             return (this.subtotal * 0.19).toFixed(2);
         },
+        quantity() {
+            return this.item.stock + this.item.backorder_stock;
+        },
         subtotal() {
             if (!this.discounts) {
                 return 0;
             }
 
-            return this.item.stock * this.discounts.currentConfigurationDiscountPrice || 0;
+            return this.quantity * this.discounts.currentConfigurationDiscountPrice || 0;
         },
         discounts() {
             if (!this.item.productEntity) {
@@ -269,7 +271,7 @@ export default defineComponent({
             const authStore = useAuthStore();
             const { getUserDetails } = storeToRefs(authStore);
 
-            const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value, this.item.stock);
+            const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value, this.quantity);
 
             return {
                 userDiscount: discountsHelper?.userDiscount || 0,

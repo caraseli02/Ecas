@@ -1,10 +1,9 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { CartInterface } from '~/model/cart/response/cart.interface';
 import { useNuxtApp } from '#app';
 import Emitter from 'tiny-emitter/instance.js';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
-import { CartProductsInterface } from '~/types';
+import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { StripeError } from '@stripe/stripe-js';
 
 export const useCartStore = defineStore({
