@@ -25,7 +25,7 @@ const statusName = {
 const statusColors = {
     Active : 'bg-green-800',
     Disabled: 'bg-pink-500',
-    Pending: 'bg- yellow-500'
+    Pending: 'bg-yellow-500'
 };
 
 export const columns: ColumnDef<CustomerTableColumns>[] = [

@@ -53,7 +53,7 @@ fetchAndSetCustomersList(1, 10);
             :total-items="totalItems"
         >
             <template #header="{ table, makeRefresh }">
-                <DataTableHeadControls :error="error" title="Customers List" :table="table" @refresh="makeRefresh()">
+                <DataTableHeadControls :error="error" title="Agents" :table="table" @refresh="makeRefresh()">
                     <!-- <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
                       <PlusIcon class="h-6 w-6" />
                       Create New
@@ -61,7 +61,7 @@ fetchAndSetCustomersList(1, 10);
                 </DataTableHeadControls>
             </template>
             <template #toolbar="{ table }">
-                <AdminTableCustomerToolbar :table="table" />
+                <ClientTableAgentsToolbar :table="table" />
             </template>
         </DataTable>
     </div>
