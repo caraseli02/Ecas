@@ -2,10 +2,8 @@
 import { columns } from './columns';
 import _ from 'lodash';
 import { CustomerTableColumns, UserInterface } from '~/types/auth/user-interface';
-import { dataMuck } from './muck-data.js'
 
 const { $api } = useNuxtApp();
-
 const totalItems = ref(0);
 const pageCount = ref(0);
 const loading = ref(true);
@@ -19,8 +17,8 @@ const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number
 
     // FIX to use userID
 
-    const data = dataMuck
-    
+    const data = await $api.userDashboard.fetchCustomersList(page, perPage, filters, sort);
+
     if (!data || data.status !== 'success') {
         loading.value = false;
         error.value = true;
@@ -41,7 +39,7 @@ fetchAndSetCustomersList(1, 10);
 
 <template>
     <div
-        class="h-full flex-1 flex-col space-y-8 flex w-[393px] md:w-[640px] lg:w-[896px] xl:w-[1312px] 2xl:w-[1444px] shadow-xs p-2 pt-6 md:p-6 rounded-xl"
+        class="h-full flex-1 flex-col space-y-8 flex min-h-[870px] w-[393px] md:w-[640px] lg:w-[896px] xl:w-[1392px] shadow-xs p-2 pt-6 md:p-6 rounded-xl"
     >
         <DataTable
             v-if="listItems.length > 0"
@@ -64,5 +62,6 @@ fetchAndSetCustomersList(1, 10);
                 <ClientTableAgentsToolbar :table="table" />
             </template>
         </DataTable>
+        <UiSkeleton v-else class="w-full h-full" />
     </div>
 </template>
