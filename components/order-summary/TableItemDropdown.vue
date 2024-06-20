@@ -244,6 +244,7 @@ export default defineComponent({
             showPackagingDetails: false,
             showDeliveryDetails: false,
             deleteItem: false,
+            quantity:  this.stockItem ? this.item.stock : this.item.backorder_stock
         };
     },
     computed: {
@@ -252,10 +253,6 @@ export default defineComponent({
         },
         taxPrice(): string {
             return (this.subtotal * 0.19).toFixed(2);
-        },
-        quantity() {
-            console.log(this.stockItem, this.item.stock, this.item.backorder_stock);
-            return this.stockItem ? this.item.stock : this.item.backorder_stock;
         },
         subtotal(): number {
             if (!this.discounts) {
