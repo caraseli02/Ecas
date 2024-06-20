@@ -185,6 +185,7 @@ const mapCartItems = (cart: CartProductsInterface[] = []) => {
     cartItems.value = cart?.map((product: CartProductsInterface) => ({
         id: product.id,
         stock: product.stock,
+        backorder_stock: product.backorder_stock || 0,
         isFolder: false,
         initialUnitPrice: product.initialUnitPrice,
         unitPriceAfterDiscounts: product.unitPriceAfterDiscounts,
@@ -377,10 +378,8 @@ const calculateDiscount = (orderItems: CartProductsInterface[]) => {
     let discount = 0;
 
     orderItems.forEach((item: CartProductsInterface) => {
-        console.log(item.productEntity?.alias, item.discount);
         discount += Number(item.initialUnitPrice) * item.stock - Number(item.unitPriceAfterDiscounts) * item.stock;
     });
-    console.log(discount);
     order.value.discount.total = discount;
 };
 
@@ -409,7 +408,6 @@ const { checkout } = storeToRefs(checkoutStore);
 
 async function makeCheckout() {
     if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !paymentDetails.value) {
-        console.log('Cannot place order');
         checkout.value = false; // Reset processing state on error
         return;
     }

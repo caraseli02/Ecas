@@ -78,7 +78,9 @@ const inputHandler = async (quantity: number) => {
             const object = await $api.cart.updateEntityFromCart(payload);
 
             if (object.status === 'success') {
+                console.log('product updated');
                 await cartStore.updateAndReturnCart();
+                // Emitter.emit('update-cart');
             }
         }
     }

@@ -250,18 +250,19 @@ export default defineComponent({
         ProductAction() {
             return ProductAction;
         },
-        taxPrice() {
+        taxPrice(): string {
             return (this.subtotal * 0.19).toFixed(2);
         },
         quantity() {
-            return this.item.stock + this.item.backorder_stock;
+            console.log(this.stockItem, this.item.stock, this.item.backorder_stock);
+            return this.stockItem ? this.item.stock : this.item.backorder_stock;
         },
-        subtotal() {
+        subtotal(): number {
             if (!this.discounts) {
                 return 0;
             }
 
-            return this.quantity * this.discounts.currentConfigurationDiscountPrice || 0;
+            return this.quantity * (this.discounts.currentConfigurationDiscountPrice || 0);
         },
         discounts() {
             if (!this.item.productEntity) {

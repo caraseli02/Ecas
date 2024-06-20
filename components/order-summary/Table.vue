@@ -37,15 +37,14 @@ const props = defineProps<{
 const emits = defineEmits(['checkAll', 'addToFavs', 'updateSubtotal', 'deleteSelected']);
 
 const stockItems: ComputedRef<CartProductsInterface[]> = computed(() => {
-    return props.items.filter(
-        (item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock >= item.stock
-    );
+    return props.items.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0);
 });
 
 const backOrderItems: ComputedRef<CartProductsInterface[]> = computed(() => {
-    return props.items.filter(
-        (item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock
-    );
+    return props.items.filter((item: CartProductsInterface) => {
+        console.log(item);
+        return item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock + item?.backorder_stock;
+    });
 });
 
 function checkAll(checked: boolean): void {

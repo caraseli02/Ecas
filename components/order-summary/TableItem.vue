@@ -43,7 +43,7 @@
                     <WarningErrorHuge class="hidden lg:block" />
                     <WarningError class="block lg:hidden" />
                     <span class="hidden sm:flex text-sm font-medium leading-6 text-rose-500 ml-2"
-                        >{{ item.stock - item.productEntity?.stock }} items will be on back order.</span
+                        >{{ item.backorder_stock }} items will be on back order.</span
                     >
                 </div>
                 <div
@@ -147,11 +147,14 @@ export default defineComponent({
         };
     },
     computed: {
+        ProductType() {
+            return ProductType;
+        },
         shortStock() {
             return Number(this.item.productEntity?.stock) <= this.thresholdStock && this.item.productEntity?.stock > 0 && this.stockItem;
         },
         itemQuantity() {
-            return Number(this.item.stock);
+            return this.stockItem ? Number(this.item.backorder_stock) : Number(this.item.stock);
         },
         discounts() {
             if (!this.item.productEntity) {
