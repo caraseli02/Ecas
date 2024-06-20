@@ -10,6 +10,7 @@
         </button>
         <label class="flex">
             <input
+                v-if="modelValue"
                 :value="Number(modelValue) < object.min ? Number(object.min) : Number(modelValue)"
                 type="number"
                 :min="1"
