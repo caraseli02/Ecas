@@ -100,7 +100,14 @@
                                 v-if="quantity"
                                 v-model="quantity"
                                 size="lg"
-                                :object="{action : ProductAction.Update, id: item.id, min: item?.productEntity?.priceConfiguration?.configuration[0].quantity} as any"
+                                :type="stockItem ? OrderType.Stock : OrderType.Back"
+                                :update-only-available-stock="true"
+                                :object="{
+                                    action : ProductAction.Update,
+                                     id: item.id,
+                                     min: item?.productEntity?.priceConfiguration?.configuration[0].quantity,
+                                     max: item.productEntity?.stock
+                                } as any"
                             />
                         </div>
                     </div>
@@ -205,6 +212,7 @@ import TrashIcon from 'assets/icons/trash-can.svg';
 import { useNuxtApp } from '#app';
 import { useCartStore } from '~/store/cartStore';
 import Emitter from 'tiny-emitter/instance.js';
+import { OrderType } from '~/types';
 
 export default defineComponent({
     name: 'TableItemDropdown',
@@ -244,10 +252,13 @@ export default defineComponent({
             showPackagingDetails: false,
             showDeliveryDetails: false,
             deleteItem: false,
-            quantity:  this.stockItem ? this.item.stock : this.item.backorder_stock
+            quantity: this.stockItem ? this.item.stock : this.item.backorder_stock,
         };
     },
     computed: {
+        OrderType() {
+            return OrderType;
+        },
         ProductAction() {
             return ProductAction;
         },
