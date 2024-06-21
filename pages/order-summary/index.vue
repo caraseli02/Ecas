@@ -15,7 +15,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="gap-6 lg:grid lg:grid-cols-[1fr,320px] lg:gap-5 lg:items-start lg:mb-10 xl:grid-cols-[1fr,392px]">
+                <div class="gap-6 xl:grid xl:grid-cols-[1fr,392px]">
                     <div class="flex flex-col gap-9 max-w-[992px]">
                         <OrderSummaryBackOrderWarning v-if="showWarning()" />
                         <OrderSummaryTable
