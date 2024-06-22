@@ -174,7 +174,7 @@ export default defineComponent({
     },
     watch: {
         itemQuantity() {
-            if (this.item.stock) {
+            if (this.item.stock || this.item.backorder_stock) {
                 this.$emit('updateQuantity');
             }
         },

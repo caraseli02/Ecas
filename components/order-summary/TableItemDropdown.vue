@@ -269,7 +269,7 @@ export default defineComponent({
             if (!this.discounts) {
                 return 0;
             }
-
+            console.log('quantity', this.quantity * (this.discounts.currentConfigurationDiscountPrice || 0));
             return this.quantity * (this.discounts.currentConfigurationDiscountPrice || 0);
         },
         discounts() {
@@ -315,8 +315,6 @@ export default defineComponent({
         },
     },
 });
-
-const numar = ref(10);
 </script>
 <style>
 .custom-shadow {
