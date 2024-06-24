@@ -280,7 +280,7 @@ export default defineComponent({
             const authStore = useAuthStore();
             const { getUserDetails } = storeToRefs(authStore);
 
-            const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value, this.quantity);
+            const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value, (this.item.stock + this.item.backorder_stock));
 
             return {
                 userDiscount: discountsHelper?.userDiscount || 0,
