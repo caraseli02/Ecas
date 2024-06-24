@@ -5,16 +5,9 @@ import UserInfo from '~/components/dataTable/UserInfo.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
 import { AccountStatusEnum, CustomerTableColumns } from '~/types/auth/user-interface';
 import { AgentsTableColumnsEnum } from '~/components/client-table/agents/columns.enum';
-import { $fetch, FetchOptions } from 'ohmyfetch';
 import UserDashboardService from '~/services/dashboard/user.service';
 import StatusWithColor from '~/components/dataTable/StatusWithColor.vue';
 
-const fetchOptions: FetchOptions = {
-    baseURL: process.env.NUXT_PUBLIC_BASE_URL_API,
-};
-
-/** create a new instance of $fetcher with custom option */
-const apiFetcher = $fetch.create(fetchOptions);
 
 const statusName = {
     1: 'Active',

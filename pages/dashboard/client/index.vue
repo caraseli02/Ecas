@@ -10,7 +10,7 @@
                 <DashboardClientTabBar v-model="activeOrderFilter" />
                 <ClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
                 <ClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
-                <ClientTableAgents v-if="activeOrderFilter.value === 'agents'"/>
+                <ClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event"/>
                 <ClientOnly>
                     <DashboardClientActivity :data="myActivityData" />
                 </ClientOnly>
@@ -72,6 +72,7 @@ const ordersIds = ref([] as any);
 const activeOrderFilter = ref({
     icon: 'dashboard',
     value: 'home',
+    total_items: 0
 });
 const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboardActivityData);
 const myAccountInformation = ref<UserInterface>({} as UserInterface);
