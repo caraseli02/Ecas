@@ -17,7 +17,7 @@ interface DataTableFacetedFilter {
         color?: string;
         badge?: {
             bg: string;
-            text: string;
+            text?: string;
         };
     }[];
     statusColors?: {
