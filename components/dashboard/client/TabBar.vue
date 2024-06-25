@@ -84,6 +84,10 @@ const orderFilters = ref<TabFilter[]>([
         total_items: 130, // Update this number as needed
     },
     {
+        label: 'Activity Logs',
+        value: 'activityLogs',
+    },
+    {
         label: 'Settings',
         value: 'settings',
     },
