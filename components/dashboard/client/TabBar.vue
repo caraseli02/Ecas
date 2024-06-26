@@ -72,7 +72,7 @@ const orderFilters = ref<TabFilter[]>([
     {
         label: 'Agents',
         value: 'agents',
-        total_items: 130, // Update this number as needed
+        total_items: 0, // Update this number as needed
     },
     {
         label: 'Transaction History',
@@ -82,6 +82,10 @@ const orderFilters = ref<TabFilter[]>([
         label: 'Docs',
         value: 'docs',
         total_items: 130, // Update this number as needed
+    },
+    {
+        label: 'Activity Logs',
+        value: 'activityLogs',
     },
     {
         label: 'Settings',
