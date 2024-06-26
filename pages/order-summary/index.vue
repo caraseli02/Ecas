@@ -364,7 +364,10 @@ const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
     let subtotal = 0;
 
     orderItems.forEach((item: CartProductsInterface) => {
-        subtotal += Number(item.unitPriceAfterDiscounts) * item.stock;
+        const stockTotal = Number(item.unitPriceAfterDiscounts) * item.stock
+        const backorderTotal = Number(item.unitPriceAfterDiscounts) * (item.backorder_stock || 0)
+        const allItemsTotal = stockTotal + backorderTotal;
+        subtotal += allItemsTotal
     });
 
     order.value.subtotal = subtotal.toFixed(2) as unknown as number;
