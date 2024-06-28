@@ -6,7 +6,7 @@
         <div class="flex flex-col gap-2 relative">
             <div class="flex flex-row justify-between w-full">
                 <span class="text-slate-500 text-sm font-normal leading-6">Subtotal</span>
-                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ order.subtotal }}</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ cartSubtotal.toFixed(2) }}</span>
             </div>
             <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-6">
