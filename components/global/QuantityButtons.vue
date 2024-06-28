@@ -10,7 +10,7 @@
         </button>
         <label class="flex">
             <input
-                v-if="modelValue"
+                v-if="modelValue > -1"
                 :value="Number(modelValue) < object.min && type === OrderType.Stock ? Number(object.min) : Number(modelValue)"
                 type="number"
                 :min="1"
@@ -74,34 +74,32 @@ const emits = defineEmits(['update:modelValue']);
 const inputHandler = async (quantity: number) => {
     emits('update:modelValue', quantity);
 
-    if (props.object) {
-        if (props.object.action === ProductAction.Update) {
-            const payload = {} as UpdateProductCartRequestInterface;
-            let product: CartProductsInterface = {} as CartProductsInterface;
-            payload.products = [];
+    if (props.object && props.object.action === ProductAction.Update) {
+        const payload = {} as UpdateProductCartRequestInterface;
+        let product: CartProductsInterface;
+        payload.products = [];
 
-            if (props.type === OrderType.Back) {
-                product = {
-                    id: props.object.id,
-                    isFolder: false,
-                    backorder_stock: quantity,
-                } as CartProductsInterface;
-            } else {
-                product = {
-                    id: props.object.id,
-                    isFolder: false,
-                    stock: quantity,
-                    updateOnlyAvailableStock: props.updateOnlyAvailableStock,
-                } as CartProductsInterface;
-            }
+        if (props.type === OrderType.Back) {
+            product = {
+                id: props.object.id,
+                isFolder: false,
+                backorder_stock: quantity,
+            } as CartProductsInterface;
+        } else {
+            product = {
+                id: props.object.id,
+                isFolder: false,
+                stock: quantity,
+                updateOnlyAvailableStock: props.updateOnlyAvailableStock,
+            } as CartProductsInterface;
+        }
 
-            payload.products.push(product);
+        payload.products.push(product);
 
-            const object = await $api.cart.updateEntityFromCart(payload);
+        const object = await $api.cart.updateEntityFromCart(payload);
 
-            if (object.status === 'success') {
-                await cartStore.updateAndReturnCart();
-            }
+        if (object.status === 'success') {
+            await cartStore.updateAndReturnCart();
         }
     }
 };

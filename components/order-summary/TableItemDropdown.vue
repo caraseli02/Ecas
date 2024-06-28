@@ -269,7 +269,6 @@ export default defineComponent({
             if (!this.discounts) {
                 return 0;
             }
-            console.log('quantity', this.quantity * (this.discounts.currentConfigurationDiscountPrice || 0));
             return this.quantity * (this.discounts.currentConfigurationDiscountPrice || 0);
         },
         discounts() {
@@ -280,7 +279,11 @@ export default defineComponent({
             const authStore = useAuthStore();
             const { getUserDetails } = storeToRefs(authStore);
 
-            const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value, (this.item.stock + this.item.backorder_stock));
+            const discountsHelper = parseProductPriceConfiguration(
+                this.item.productEntity,
+                getUserDetails.value,
+                this.item.stock + this.item.backorder_stock
+            );
 
             return {
                 userDiscount: discountsHelper?.userDiscount || 0,
@@ -301,6 +304,13 @@ export default defineComponent({
             const { $api } = useNuxtApp();
             const cartStore = useCartStore();
 
+            if (this.stockItem) {
+                console.log('stockItem');
+            } else {
+                console.log('backOrderItem');
+            }
+
+            return;
             const payload = {
                 products: [this.item.id],
             };
