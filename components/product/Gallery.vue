@@ -22,7 +22,7 @@
             }"
             class="productGallery--swiper w-full !pb-2"
         >
-            <SwiperSlide class="lg:!w-[56px] lg:!h-[48px] first:ml-2" v-for="(image, index) in images" :key="index">
+            <SwiperSlide v-for="(image, index) in images" :key="index" style="{width: 56px, height: 48px;}" class="lg:!w-[56px] lg:!h-[48px] lg:!max-w-[56px] lg:!max-h-[48px] first:ml-2">
                 <button class="flex" @click="handleSlideTo(index)">
                     <img
                         :src="image.ProductImageSmall"

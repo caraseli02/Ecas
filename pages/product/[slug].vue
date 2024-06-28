@@ -19,9 +19,9 @@
             <div
                 class="grid grid-cols-1 gap-[30px] mb-[30px] md:grid-cols-2 md:gap-5 lg:grid-rows-1 lg:items-start lg:mb-10 xl:grid-cols-[340px,590px,461px]"
             >
-                <ProductGallery class="" :images="images" :product="product" />
-                <ProductDetails class="" :product="product" />
-                <ProductQuantity class="" :product="product" />
+                <ProductGallery class="col-span-2 lg:col-span-1" :images="images" :product="product" />
+                <ProductDetails class="col-span-2 lg:col-span-1" :product="product" />
+                <ProductQuantity class="col-span-2 xl:col-span-1" :product="product" />
             </div>
             <ProductTable :features="product.details.ParametricData.Features" />
         </div>

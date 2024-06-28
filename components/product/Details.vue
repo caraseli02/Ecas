@@ -1,5 +1,5 @@
 <template>
-    <div class="h-[298px] relative bg-white rounded-md font-Inter pt-[15px] pb-2.5 shadow-m md:pb-[26px] lg:pb-4 lg:self-start">
+    <div class="h-[298px] col-span-2 lg:col-span-1 w-full relative bg-white rounded-md font-Inter pt-[15px] pb-2.5 shadow-m md:pb-[26px] lg:pb-4 lg:self-start">
         <div class="flex items-end justify-between px-2.5 mb-[18px] md:px-[15px]">
             <div class="flex items-center">
                 <div class="text-xl leading-tight font-semibold mr-2">{{ product.alias }}</div>
@@ -11,7 +11,7 @@
         </div>
         <div class="flex items-center justify-between gap-3 px-2.5 h-8 bg-light-100 md:px-[15px]">
             <div class="text-xs leading-tight font-medium flex-shrink-0 text-neutral-700">Description</div>
-            <div class="text-xs leading-tight text-slate-500">
+            <div class="text-xs leading-tight text-slate-500 text-end">
                 {{ product.description }}
             </div>
         </div>
