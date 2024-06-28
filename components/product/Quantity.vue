@@ -1,7 +1,7 @@
 <template>
-    <div class="relative bg-white rounded-md px-2.5 pt-2 pb-5 shadow-m md:px-[15px] lg:pt-[15px] lg:self-start">
+    <div class="h-[298px] flex flex-col justify-between relative bg-white rounded-md px-2.5 pt-2 pb-5 shadow-m md:px-[15px] lg:pt-[15px] lg:self-start">
         <div class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green-500">
-            <CheckIcon class="w-4 h-4 mr-1 text-white" />
+            <CheckCircle2 class="w-4 h-4 mr-1 text-white" />
             <span class="text-[11px] font-Inter leading-tight font-semibold text-white"> {{ product.stock }} in stock </span>
         </div>
         <div class="flex justify-end text-xs mb-[18px] lg:hidden">
@@ -75,7 +75,7 @@
                     </div>
                     <div
                         v-if="productDiscount"
-                        class="bg-rose-500 rounded-[25px] px-2.5 py-1 font-Inter text-sm leading-tight font-semibold text-white"
+                        class="flex items-center justify-center w-10 h-5 border border-rose-500 text-rose-500 rounded-full font-Inter text-sm leading-tight font-semibold"
                     >
                         {{ productDiscount }}%
                     </div>
@@ -103,7 +103,8 @@
 </template>
 
 <script setup lang="ts">
-import CheckIcon from '@/assets/icons/check-circle.svg';
+import { CheckCircle2 } from 'lucide-vue-next';
+
 import CartIcon from '@/assets/icons/cart.svg';
 import { CartInterface, ProductActionObject } from '~/model/cart/response/cart.interface';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';

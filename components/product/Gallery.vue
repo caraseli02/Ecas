@@ -1,11 +1,11 @@
 <template>
     <div
-        class="relative bg-white flex flex-col rounded-md pt-[30px] px-[15px] pb-5 shadow-m lg:pt-[70px] lg:pb-[15px] lg:self-stretch xl:pt-[45px]"
+        class="relative bg-white flex flex-col justify-between rounded-md shadow-m h-[298px]"
     >
         <img
             :src="props.images[activeImageIndex].ProductImageLarge"
             alt="Image"
-            class="w-[220px] h-[220px] object-contain mx-auto mb-[50px] lg:w-[330px] lg:h-[330px] lg:mb-[60px] xl:w-[350px] xl:h-[350px] xl:mb-[38px]"
+            class="w-[284px] h-[160px] object-contain mx-auto lg:w-[330px] xl:w-[350px]"
         />
         <Swiper
             :modules="[A11y]"
@@ -20,14 +20,14 @@
                     slidesPerView: 9.1,
                 },
             }"
-            class="productGallery--swiper w-full mt-auto"
+            class="productGallery--swiper w-full !pb-2"
         >
-            <SwiperSlide v-for="(image, index) in images" :key="index">
+            <SwiperSlide class="lg:!w-[56px] lg:!h-[48px] first:ml-2" v-for="(image, index) in images" :key="index">
                 <button class="flex" @click="handleSlideTo(index)">
                     <img
                         :src="image.ProductImageSmall"
                         alt="Image"
-                        class="w-[60px] h-[50x] object-contain transition-opacity duration-300 lg:w-[72px] lg:h-[60px]"
+                        class="w-[60px] h-[50x] object-contain transition-opacity duration-300 lg:w-[56px] lg:h-[48px] mb-2 ml-2"
                         :class="[index !== activeImageIndex ? 'opacity-50' : '']"
                     />
                 </button>
@@ -42,10 +42,10 @@
                     <HeartIcon class="w-6 h-6" />
                 </button>
                 <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
-                    <ShareIcon class="w-6 h-6" />
+                    <Share2Icon class="w-6 h-6" />
                 </button>
                 <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
-                    <D3Icon class="w-6 h-6" />
+                    <BoxIcon class="w-6 h-6" />
                 </button>
             </div>
         </div>
@@ -53,9 +53,8 @@
 </template>
 
 <script setup lang="ts">
-import HeartIcon from '@/assets/icons/heart.svg';
-import ShareIcon from '@/assets/icons/share.svg';
-import D3Icon from '@/assets/icons/3d.svg';
+import { HeartIcon, Share2Icon, BoxIcon } from 'lucide-vue-next';
+
 import { A11y } from 'swiper';
 import { ProductImage } from '~~/model/response/products/ProductResponse';
 import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
