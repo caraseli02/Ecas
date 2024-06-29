@@ -90,7 +90,7 @@
                 :object="{ id: product._id, min: minPriceConfiguration.quantity , action : 'add'} as ProductActionObject"
             />
             <button
-                class="flex items-center flex-1 justify-center bg-blue-500 rounded text-white px-5 py-[9px]"
+                class="flex items-center flex-1 justify-center bg-blue-500 rounded-lg text-white px-5 py-[9px]"
                 @click="addToCart(props.product)"
             >
                 <CartIcon class="w-6 h-6 mr-2" />

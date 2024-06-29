@@ -115,7 +115,7 @@ onMounted(() => {
             </div>
             <button
                 :disabled="isLoading"
-                class="flex bg-slate-500 px-[22px] py-[11px] rounded text-sm font-medium text-white flex-shrink-0 md:mb-[15px] w-[13.47rem] justify-center"
+                class="flex bg-slate-500 px-[22px] py-[11px] rounded-lg text-sm font-medium text-white flex-shrink-0 md:mb-[15px] w-[13.47rem] justify-center"
                 :class="{ 'bg-gray-400': isLoading }"
                 @click="searchSimilarProducts"
             >
@@ -151,7 +151,7 @@ onMounted(() => {
         <div class="flex justify-center px-[15px] md:justify-end lg:px-5">
             <button
                 :disabled="isLoading"
-                class="flex bg-slate-500 px-[22px] py-[11px] rounded text-sm font-medium text-white w-[13.47rem] justify-center"
+                class="flex bg-slate-500 px-[22px] py-[11px] rounded-lg text-sm font-medium text-white w-[13.47rem] justify-center"
                 :class="{ 'bg-gray-400': isLoading }"
                 @click="searchSimilarProducts"
             >

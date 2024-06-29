@@ -48,7 +48,7 @@
                 <span class="text-xs leading-tight text-slate-500 hover:underline"> {{ product.alias }}-DataSheet </span>
             </a>
         </div>
-        <div class="flex items-center gap-2 px-2.5 h-[34px] md:px-[15px]">
+        <div class="flex items-center gap-2 px-2.5 py-2 min-h-[34px] md:px-[15px]">
             <div class="text-xs leading-tight font-medium flex-shrink-0">Tags:</div>
             <button class="flex items-center flex-wrap gap-x-2 gap-y-0.5 text-xs leading-tight font-medium text-blue-500">
                 <span> #Diode </span>
