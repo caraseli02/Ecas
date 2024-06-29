@@ -10,6 +10,7 @@ export interface ProductActionObject {
     action: ProductAction;
     id: string;
     min: number;
+    max?: number;
 }
 
 export interface CartResponse {
@@ -31,10 +32,17 @@ export interface CartProductsInterface {
      */
     id: string;
 
-    /**
-     * Number of pieces wanted for a specific product
-     */
+    /** Number of pieces wanted for a specific product */
     stock: number;
+
+    /** Number of pieces wanted for a specific product delivered in a back-order */
+    backorder_stock?: number;
+
+    /** If set to true, update only the backorder_stock field */
+    updateOnlyBackorderStock?: boolean;
+
+    /** If set to true, update only the stock field */
+    updateOnlyAvailableStock?: boolean;
 
     /** Either the sent product is a simple product or a folder ID */
     isFolder: boolean;

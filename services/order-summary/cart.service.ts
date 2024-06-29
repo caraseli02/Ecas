@@ -1,6 +1,6 @@
 import HttpFactory from '~/composables/HttpFactory';
 import { useAuthStore } from '~/store/authStore';
-import { CartProductsInterface } from '~/types/order-summary/item';
+import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 class CartService extends HttpFactory {
     private RESOURCE = '/ecas/cart';

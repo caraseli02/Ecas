@@ -1,11 +1,11 @@
-import {DiscountInterface} from '~/types/auth/account-settings';
-import {ProductInterface} from '~/model/products/response/ProductResponse';
-import {ShippingAddressInterface} from '~/types/auth/user-interface';
+import { DiscountInterface } from '~/types/auth/account-settings';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import {
     BackorderShippingTypesInterface,
     DeliveryTypesInterface,
     StockorderShippingTypesInterface,
 } from '~/types/general-settings/general-settings';
+import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 export interface OrderSummaryItem {
     title: string;
@@ -195,49 +195,6 @@ export interface PaymentTypeOption {
     label: string | null;
     value: unknown;
     color?: string;
-}
-
-export interface CartProductsInterface {
-    /**
-     * Product id
-     */
-    id: string;
-
-    /**
-     * Number of pieces wanted for a specific product
-     */
-    stock: number;
-
-    /** Either the sent product is a simple product or a folder ID */
-    isFolder: boolean;
-
-    /**
-     * Price before any discount per unit
-     */
-    initialUnitPrice: number;
-
-    /**
-     * Price after any discount per unit
-     */
-    unitPriceAfterDiscounts: number;
-
-    /**
-     * Price after applying shipping and other taxes
-     */
-    total: number;
-
-    /**
-     * Price after applying discounts
-     */
-    subtotal: number;
-
-    /**
-     * Value of the applied discount
-     */
-    discount: DiscountInterface;
-
-    /** The entire product retrieved from database */
-    productEntity?: ProductInterface;
 }
 
 export interface PriceHistory {

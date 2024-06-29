@@ -8,17 +8,16 @@ import { AgentsTableColumnsEnum } from '~/components/client-table/agents/columns
 import UserDashboardService from '~/services/dashboard/user.service';
 import StatusWithColor from '~/components/dataTable/StatusWithColor.vue';
 
-
 const statusName = {
     1: 'Active',
     2: 'Disabled',
-    3: 'Pending'
-}
+    3: 'Pending',
+};
 
 const statusColors = {
-    Active : 'bg-green-800',
+    Active: 'bg-green-800',
     Disabled: 'bg-pink-500',
-    Pending: 'bg-yellow-500'
+    Pending: 'bg-yellow-500',
 };
 
 export const columns: ColumnDef<CustomerTableColumns>[] = [
@@ -32,7 +31,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                 navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
             }),
     },
-        {
+    {
         accessorKey: AgentsTableColumnsEnum.CREATED_AT,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Date' }),
         cell: ({ row }) => h(CellDate, { inputDateString: row.getValue(AgentsTableColumnsEnum.CREATED_AT) }),
@@ -41,11 +40,11 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
         accessorKey: AgentsTableColumnsEnum.STATUS,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Status' }),
         cell: ({ row }) => {
-            const val = row.getValue(AgentsTableColumnsEnum.STATUS)
+            const val = row.getValue(AgentsTableColumnsEnum.STATUS);
             return h(StatusWithColor, {
                 status: statusName[val],
                 options: statusColors,
-            })
+            });
         },
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id));
@@ -54,7 +53,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
     {
         accessorKey: AgentsTableColumnsEnum.ORDERS_COUNT,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Orders' }),
-        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas((row.original.ordersCount ?? 0) as number)),
+        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, (row.original.ordersCount ?? 0) as number),
     },
     {
         accessorKey: AgentsTableColumnsEnum.TOTAL,

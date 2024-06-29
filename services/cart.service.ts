@@ -5,8 +5,7 @@ import {
     DeleteProductCartRequestInterface,
     UpdateProductCartRequestInterface,
 } from '~/model/cart/request/cart.interface';
-import { CartResponse } from '~/model/cart/response/cart.interface';
-import { CartProductsInterface } from '~/types';
+import { CartProductsInterface, CartResponse } from '~/model/cart/response/cart.interface';
 
 class CartService extends HttpFactory {
     private RESOURCE = '/cart';

@@ -1,10 +1,9 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { CartInterface } from '~/model/cart/response/cart.interface';
 import { useNuxtApp } from '#app';
 import Emitter from 'tiny-emitter/instance.js';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
-import { CartProductsInterface } from '~/types';
+import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { StripeError } from '@stripe/stripe-js';
 
 export const useCartStore = defineStore({
@@ -81,13 +80,17 @@ export const useCartStore = defineStore({
                 const discountsHelper = parseProductPriceConfiguration(cartProduct.productEntity, getUserDetails.value, cartProduct.stock);
 
                 const discountPrice = discountsHelper?.currentConfigurationDiscountPrice || 0;
-                state.cartSubtotal += Number(discountPrice) * Number(cartProduct.stock);
+                const stockTotal = Number(discountPrice) * Number(cartProduct.stock);
+                const backorderTotal = Number(discountPrice) * Number(cartProduct.backorder_stock);
+                const allItemsTotal = stockTotal + backorderTotal;
+                state.cartSubtotal += allItemsTotal
             });
 
             return Number(state.cartSubtotal.toFixed(2));
         },
         getOrderClientSecret: (state): string => state.orderClientSecret as string,
         getPreviousCheckoutError: (state): StripeError => state.previousCheckoutError as StripeError,
+        itemsDiscount: (state) => state.cart?.products[0].discount.value
     },
     persist: {
         storage: persistedState.localStorage,
