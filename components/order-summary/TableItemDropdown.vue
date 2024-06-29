@@ -180,7 +180,7 @@
                     >Favourites</span
                 >
             </button>
-            <button class="flex flex-col gap-2 xl:hidden items-center group" @click="deleteFromCart">
+            <button class="flex flex-col gap-2 xl:hidden items-center group" @click="deleteItem = true">
                 <TrashOutlineBig class="text-[#5E6278] group-hover:text-rose-500 transition duration-150" />
                 <span class="text-[#5E6278] text-xs font-normal leading-5 group-hover:text-rose-500 transition duration-150">Delete</span>
             </button>
@@ -188,7 +188,14 @@
     </div>
     <Teleport to="body">
         <Transition name="slide-from-top">
-            <LayoutFavoritesModalsDelete v-if="deleteItem" :products="[item as any]" :delete-from-cart="true" @close="deleteItem = false" />
+            <LayoutFavoritesModalsDelete
+                v-if="deleteItem"
+                :remove-only-stock-quantity="stockItem && item.backorder_stock > 0"
+                :remove-only-backstock-quantity="!stockItem && item.stock > 0"
+                :products="[item as any]"
+                :delete-from-cart="true"
+                @close="deleteItem = false"
+            />
         </Transition>
     </Teleport>
 </template>
@@ -209,9 +216,6 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import TrashIcon from 'assets/icons/trash-can.svg';
-import { useNuxtApp } from '#app';
-import { useCartStore } from '~/store/cartStore';
-import Emitter from 'tiny-emitter/instance.js';
 import { OrderType } from '~/types';
 
 export default defineComponent({
@@ -300,29 +304,21 @@ export default defineComponent({
             this.$emit('like:item', this.item.id);
             this.item.liked = !this.item.liked;
         },
-        async deleteFromCart() {
-            const { $api } = useNuxtApp();
-            const cartStore = useCartStore();
-
-            if (this.stockItem) {
-                console.log('stockItem');
-            } else {
-                console.log('backOrderItem');
-            }
-
-            return;
-            const payload = {
-                products: [this.item.id],
-            };
-
-            await $api.cart.removeEntityFromCart(payload);
-
-            Emitter.emit('delete-product-item', {
-                id: this.item.id,
-            });
-
-            await cartStore.updateAndReturnCart();
-        },
+        // async deleteFromCart() {
+        //     const { $api } = useNuxtApp();
+        //     const cartStore = useCartStore();
+        //     const payload = {
+        //         products: [this.item.id],
+        //     };
+        //
+        //     await $api.cart.removeEntityFromCart(payload);
+        //
+        //     Emitter.emit('delete-product-item', {
+        //         id: this.item.id,
+        //     });
+        //
+        //     await cartStore.updateAndReturnCart();
+        // },
     },
 });
 </script>

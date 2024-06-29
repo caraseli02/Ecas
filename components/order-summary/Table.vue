@@ -42,7 +42,6 @@ const stockItems: ComputedRef<CartProductsInterface[]> = computed(() => {
 
 const backOrderItems: ComputedRef<CartProductsInterface[]> = computed(() => {
     return props.items.filter((item: CartProductsInterface) => {
-        console.log(item);
         return item.productEntity?.stock !== undefined && item?.backorder_stock > 0;
     });
 });

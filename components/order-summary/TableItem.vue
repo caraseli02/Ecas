@@ -66,7 +66,7 @@
                     </Tooltip>
                     <button
                         v-if="!inModal"
-                        class="flex items-center justify-center ml-auto text-gray-300 transition-colors duration-300 hover:text-rose-500"
+                        class="flex text-[#5E6278] items-center justify-center ml-auto transition-colors duration-300 hover:text-rose-500"
                         @click="deleteItem = true"
                     >
                         <TrashIcon class="w-5 h-5" />
@@ -92,7 +92,14 @@
     </div>
     <Teleport to="body">
         <Transition name="slide-from-top">
-            <LayoutFavoritesModalsDelete v-if="deleteItem" :products="[item]" :delete-from-cart="true" @close="deleteItem = false" />
+            <LayoutFavoritesModalsDelete
+                v-if="deleteItem"
+                :remove-only-stock-quantity="stockItem && item.backorder_stock > 0"
+                :remove-only-backstock-quantity="!stockItem && item.stock > 0"
+                :products="[item]"
+                :delete-from-cart="true"
+                @close="deleteItem = false"
+            />
         </Transition>
     </Teleport>
 </template>
