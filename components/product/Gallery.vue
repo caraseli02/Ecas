@@ -1,6 +1,6 @@
 <template>
     <div
-        class="relative bg-white flex flex-col justify-between rounded-md shadow-m h-[298px]"
+        class="relative bg-white flex flex-col justify-between rounded-md shadow-m h-[298px] p-4"
     >
         <img
             :src="props.images[activeImageIndex].ProductImageLarge"
@@ -8,10 +8,11 @@
             class="w-[284px] h-[160px] object-contain mx-auto lg:w-[330px] xl:w-[350px]"
         />
         <Swiper
-            :modules="[A11y]"
+            :modules="[A11y, Zoom]"
             :slides-per-view="4.5"
             :space-between="15"
             :grab-cursor="true"
+            :zoom="true"
             :breakpoints="{
                 1024: {
                     slidePerView: 5.1,
@@ -24,12 +25,15 @@
         >
             <SwiperSlide v-for="(image, index) in images" :key="index" style="{width: 56px, height: 48px;}" class="lg:!w-[56px] lg:!h-[48px] lg:!max-w-[56px] lg:!max-h-[48px] first:ml-2">
                 <button class="flex" @click="handleSlideTo(index)">
+                    <div class="swiper-zoom-container">
                     <img
                         :src="image.ProductImageSmall"
                         alt="Image"
                         class="w-[60px] h-[50x] object-contain transition-opacity duration-300 lg:w-[56px] lg:h-[48px] mb-2 ml-2"
                         :class="[index !== activeImageIndex ? 'opacity-50' : '']"
                     />
+                </div>
+
                 </button>
             </SwiperSlide>
         </Swiper>
@@ -55,7 +59,7 @@
 <script setup lang="ts">
 import { HeartIcon, Share2Icon, BoxIcon } from 'lucide-vue-next';
 
-import { A11y } from 'swiper';
+import { A11y, Zoom } from 'swiper';
 import { ProductImage } from '~~/model/response/products/ProductResponse';
 import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import { useNuxtApp } from '#app';

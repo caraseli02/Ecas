@@ -37,6 +37,7 @@
         <ProductBlocks :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" />
         <News />
         <Manufacturers />
+        <ProductZoomGallery :images="images" />
     </div>
 </template>
 
