@@ -6,6 +6,7 @@
             :src="props.images[activeImageIndex].ProductImageLarge"
             alt="Image"
             class="w-[284px] h-[160px] object-contain mx-auto lg:w-[330px] xl:w-[350px]"
+            @click="emit('showZoomModal')"
         />
         <Swiper
             :modules="[A11y, Zoom]"
@@ -72,7 +73,9 @@ const props = defineProps<{
     product: ProductDetail;
 }>();
 
-const activeImageIndex = ref(0);
+const emit = defineEmits(['showZoomModal']);
+
+const activeImageIndex = defineModel();
 
 const handleSlideTo = (index: number) => {
     activeImageIndex.value = index;
@@ -86,4 +89,5 @@ const addToFavourite = async (product: ProductDetail) => {
     };
     await $api.favouriteFolder.addEntityToFavouriteList(payload);
 };
+
 </script>

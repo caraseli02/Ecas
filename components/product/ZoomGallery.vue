@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { watchOnce } from '@vueuse/core'
-import { type CarouselApi } from '../ui/carousel'
+import { type CarouselApi } from '@/components/ui/carousel'
 
 defineProps<{
   images: {ProductImageLarge: string, ProductImageSmall: string}[];
@@ -9,7 +9,9 @@ defineProps<{
 
 const emblaMainApi = ref<CarouselApi>()
 const emblaThumbnailApi = ref<CarouselApi>()
-const selectedIndex = ref(0)
+
+const selectedIndex = defineModel<number>('selectedIndex')
+const isOpen = defineModel('open', { default: false })
 
 function onSelect() {
   if (!emblaMainApi.value || !emblaThumbnailApi.value)
@@ -28,15 +30,20 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
   if (!emblaMainApi)
     return
 
-  onSelect()
+  // onSelect()
   emblaMainApi.on('select', onSelect)
   emblaMainApi.on('reInit', onSelect)
 })
 
+onMounted(() => {
+  if(selectedIndex.value) {
+    emblaThumbnailApi.value?.scrollTo(selectedIndex.value)
+  }
+})
 </script>
 
 <template>
-  <UiDialog :open="true">
+  <UiDialog :open="isOpen" @update:open="isOpen = $event">
     <UiDialogContent class="w-full max-w-3xl">
       <UiDialogHeader>
         <UiDialogTitle>Gallery</UiDialogTitle>
@@ -53,7 +60,6 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
                         :url="images[selectedIndex].ProductImageLarge"
                         alt="Image"
                         class="w-[260px] h-[250x] object-contain transition-opacity duration-300 lg:w-[356px] lg:h-[348px]"
-                        :class="[index !== selectedIndex ? 'opacity-50' : '']"
                         />
                         </ClientOnly>
                   </CardContent>
