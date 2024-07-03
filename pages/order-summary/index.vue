@@ -62,21 +62,14 @@
 <script setup lang="ts">
 import TriangleIcon from '@/assets/icons/triangle.svg';
 import PrintIcon from '@/assets/icons/print.svg';
-import {
-    AccountRole,
-    CartProductsInterface,
-    OrderRequestInterface,
-    PaymentDetails,
-    PaymentTypeEnum,
-    StripeCardInfoInterface,
-} from '~/types';
+import { AccountRole, OrderRequestInterface, PaymentDetails, PaymentTypeEnum, StripeCardInfoInterface } from '~/types';
+import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
 import { useAuthStore } from '~/store/authStore';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 import { useCartStore } from '~/store/cartStore';
-import { CartInterface } from '~/model/cart/response/cart.interface';
 import {
     BackorderShippingTypesInterface,
     DeliveryTypesInterface,
@@ -169,7 +162,7 @@ const paymentStore = usePaymentStore();
 const isNewCardSelected = ref<boolean>(false);
 
 const fetchCards = async () => {
-    const response = (await $api.user.userCards()) as {
+    const response = (await $api.user.userCards()) as unknown as {
         status: string;
         data: StripeCardInfoInterface[];
     };
@@ -192,6 +185,7 @@ const mapCartItems = (cart: CartProductsInterface[] = []) => {
     cartItems.value = cart?.map((product: CartProductsInterface) => ({
         id: product.id,
         stock: product.stock,
+        backorder_stock: product.backorder_stock || 0,
         isFolder: false,
         initialUnitPrice: product.initialUnitPrice,
         unitPriceAfterDiscounts: product.unitPriceAfterDiscounts,
@@ -370,7 +364,10 @@ const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
     let subtotal = 0;
 
     orderItems.forEach((item: CartProductsInterface) => {
-        subtotal += Number(item.unitPriceAfterDiscounts) * item.stock;
+        const stockTotal = Number(item.unitPriceAfterDiscounts) * item.stock
+        const backorderTotal = Number(item.unitPriceAfterDiscounts) * (item.backorder_stock || 0)
+        const allItemsTotal = stockTotal + backorderTotal;
+        subtotal += allItemsTotal
     });
 
     order.value.subtotal = subtotal.toFixed(2) as unknown as number;
@@ -384,10 +381,8 @@ const calculateDiscount = (orderItems: CartProductsInterface[]) => {
     let discount = 0;
 
     orderItems.forEach((item: CartProductsInterface) => {
-        console.log(item.productEntity?.alias, item.discount);
         discount += Number(item.initialUnitPrice) * item.stock - Number(item.unitPriceAfterDiscounts) * item.stock;
     });
-    console.log(discount);
     order.value.discount.total = discount;
 };
 
@@ -416,7 +411,6 @@ const { checkout } = storeToRefs(checkoutStore);
 
 async function makeCheckout() {
     if (!user.value || !user.value?.personalDetails || !user.value?.contactDetails || !deliveryMethod.value || !paymentDetails.value) {
-        console.log('Cannot place order');
         checkout.value = false; // Reset processing state on error
         return;
     }

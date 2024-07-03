@@ -143,9 +143,10 @@ const getPricesConfiguration = () => {
 };
 
 const fetchCart = async () => {
+    console.log('fetching cart');
     const data = (await getCart.value) as CartInterface;
 
-    getPricesConfiguration();
+    // getPricesConfiguration();
     initializeQuantities(props.product, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
     getPricesConfiguration();
 };

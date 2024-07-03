@@ -10,8 +10,8 @@
         </button>
         <label class="flex">
             <input
-                v-if="modelValue"
-                :value="Number(modelValue) < object.min ? Number(object.min) : Number(modelValue)"
+                v-if="modelValue > -1"
+                :value="Number(modelValue) < object.min && type === OrderType.Stock ? Number(object.min) : Number(modelValue)"
                 type="number"
                 :min="1"
                 placeholder="Quantity"
@@ -23,6 +23,7 @@
         <button
             class="flex items-center justify-center bg-gray-100 px-2.5"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
+            :disabled="object.max ? Number(modelValue) >= object.max : false"
             @click="inputHandler(Number(modelValue) + 1)"
         >
             <PlusIcon class="w-6 h-6 flex-shrink-0 text-slate-500" />
@@ -38,6 +39,7 @@ import { CartProductsInterface, ProductAction, ProductActionObject } from '~/mod
 import { UpdateProductCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
 import { useCartStore } from '~/store/cartStore';
+import { OrderType } from '~/types';
 
 const { $api } = useNuxtApp();
 const cartStore = useCartStore();
@@ -57,30 +59,47 @@ const props = defineProps({
         required: false,
         default: {} as ProductActionObject,
     },
+    type: {
+        type: Number,
+        required: false,
+    },
+    updateOnlyAvailableStock: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
 });
 
 const emits = defineEmits(['update:modelValue']);
 const inputHandler = async (quantity: number) => {
     emits('update:modelValue', quantity);
 
-    if (props.object) {
-        if (props.object.action === ProductAction.Update) {
-            const payload = {} as UpdateProductCartRequestInterface;
-            payload.products = [];
+    if (props.object && props.object.action === ProductAction.Update) {
+        const payload = {} as UpdateProductCartRequestInterface;
+        let product: CartProductsInterface;
+        payload.products = [];
 
-            const product = {
+        if (props.type === OrderType.Back) {
+            product = {
+                id: props.object.id,
+                isFolder: false,
+                backorder_stock: quantity,
+            } as CartProductsInterface;
+        } else {
+            product = {
                 id: props.object.id,
                 isFolder: false,
                 stock: quantity,
+                updateOnlyAvailableStock: props.updateOnlyAvailableStock,
             } as CartProductsInterface;
+        }
 
-            payload.products.push(product);
+        payload.products.push(product);
 
-            const object = await $api.cart.updateEntityFromCart(payload);
+        const object = await $api.cart.updateEntityFromCart(payload);
 
-            if (object.status === 'success') {
-                await cartStore.updateAndReturnCart();
-            }
+        if (object.status === 'success') {
+            await cartStore.updateAndReturnCart();
         }
     }
 };

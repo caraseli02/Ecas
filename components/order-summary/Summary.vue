@@ -1,26 +1,25 @@
 <template>
-    <div class="p-4 xl:p-6 flex flex-col gap-4 bg-[#FFF] rounded-xl shadow-xs mb-9">
+    <div class="p-4 xl:p-6 flex flex-col gap-4 bg-white rounded-xl shadow-xs mb-9">
         <div class="flex flex-row w-full">
             <span class="text-neutral-700 text-base font-medium leading-6">Payment Summary</span>
         </div>
         <div class="flex flex-col gap-2 relative">
             <div class="flex flex-row justify-between w-full">
-                <span class="text-[#5E6278] text-sm font-normal leading-6">Subtotal</span>
-                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ order.subtotal }}</span>
+                <span class="text-slate-500 text-sm font-normal leading-6">Subtotal</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ cartSubtotal.toFixed(2) }}</span>
             </div>
             <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-6">
-                    <span class="text-[#5E6278] text-sm font-normal leading-6">Discount</span>
-                    <!--                    <span class="text-neutral-700 text-sm font-normal leading-6">({{ discountPercentage }}%)</span>-->
+                    <span class="text-slate-500 text-sm font-normal leading-6">Discount</span>
                 </div>
-                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ calculatedDiscount.toFixed(2) }}</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ itemsDiscount?.toFixed(2) }}</span>
             </div>
             <div v-if="smallOrder" class="flex flex-row justify-between w-full">
                 <div class="flex flex-col gap-1">
                     <div class="flex flex-row gap-2 items-center">
-                        <span class="text-[#5E6278] text-sm font-normal leading-6">Handling Charge</span>
+                        <span class="text-slate-500 text-sm font-normal leading-6">Handling Charge</span>
                         <button class="group" @click="showSmallOrderModal = true">
-                            <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
+                            <InformationIcon class="text-slate-500 group-hover:text-blue-500 transition duration-300" />
                         </button>
                     </div>
                     <span class="text-neutral-700 italic text-sm font-normal leading-6">Small order charge</span>
@@ -41,37 +40,28 @@
             <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-col gap-1">
                     <div v-if="shipping" class="flex flex-row gap-2 items-center">
-                        <span class="text-[#5E6278] text-sm font-normal leading-6">Shipping</span>
+                        <span class="text-slate-500 text-sm font-normal leading-6">Shipping</span>
                         <button class="group">
-                            <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
+                            <InformationIcon class="text-slate-500 group-hover:text-blue-500 transition duration-300" />
                         </button>
                     </div>
-                    <span v-if="shipping" class="text-neutral-700 italic text-sm font-normal leading-6">{{
-                        shipping?.title +
-                        ' (' +
-                        shipping?.min +
-                        '-' +
-                        shipping?.max +
-                        (shipping?.unit === 'day' ? '' : ' Business') +
-                        ' Days' +
-                        ')'
-                    }}</span>
+                    <span v-if="shipping" class="text-neutral-700 italic text-sm font-normal leading-6">{{ shippingText }}</span>
                 </div>
                 <div v-if="shipping" class="flex flex-col justify-end">
-                    <span class="text-neutral-700 text-sm font-medium leading-6">{{ '$ ' + shipping?.price }}</span>
+                    <span class="text-neutral-700 text-sm font-medium leading-6">{{ formattedShippingPrice }}</span>
                 </div>
             </div>
             <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row">
-                    <span class="text-[#5E6278] text-sm font-normal leading-6">Tax:</span>
+                    <span class="text-slate-500 text-sm font-normal leading-6">Tax:</span>
                     <button class="group ml-2">
-                        <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
+                        <InformationIcon class="text-slate-500 group-hover:text-blue-500 transition duration-300" />
                     </button>
                     <span class="text-neutral-700 text-sm font-normal leading-6 ml-6">(VAT 19%)</span>
                 </div>
                 <span class="text-neutral-700 text-sm font-medium leading-6">$ {{ calculatedVAT }}</span>
             </div>
-            <div class="w-full h-[1px] bg-[#EBEBEB] rounded-lg"></div>
+            <div class="w-full h-[1px] bg-light-500 rounded-lg"></div>
             <div class="flex flex-row justify-between w-full">
                 <span class="text-neutral-700 text-xl font-normal leading-9">Total</span>
                 <span class="text-neutral-700 text-2xl font-semibold leading-9">$ {{ calculatedTotal }}</span>
@@ -79,92 +69,54 @@
         </div>
     </div>
 </template>
-<script lang="ts">
-import InformationIcon from '~/assets/icons/information.svg';
-import { DeliveryMethodEnum, OrderInterface } from '~/types';
+
+<script setup lang="ts">
 import { useAuthStore } from '~/store/authStore';
-import { PropType } from 'vue';
-import { DeliveryTypesInterface, GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import InformationIcon from '~/assets/icons/information.svg';
+import type { OrderInterface } from '~/types';
+import OrderSummarySmallOrderModal from './SmallOrderModal.vue';
+import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import { storeToRefs } from 'pinia';
+import { useCartStore } from '~/store/cartStore';
 
-export default defineComponent({
-    name: 'Summary',
-    components: {
-        InformationIcon,
-    },
-    props: {
-        order: {
-            type: Object as PropType<OrderInterface>,
-            required: true,
-        },
-        generalSettings: {
-            type: Object as PropType<GeneralSettingsInterface>,
-            required: true,
-        },
-    },
-    data() {
-        return {
-            showSmallOrderModal: false,
-        };
-    },
-    computed: {
-        DeliveryMethodEnum() {
-            return DeliveryMethodEnum;
-        },
-        smallOrder(): number {
-            let smallOrderFee = 0;
+const cartStore = useCartStore();
+const { cartSubtotal, itemsDiscount } = storeToRefs(cartStore);
 
-            useAuthStore().generalSettings?.orderSettings?.smallOrderCharge?.forEach((charge) => {
-                if (Number(this.totalWithoutVAT) < charge.max && Number(this.totalWithoutVAT) >= charge.min) {
-                    smallOrderFee = charge.price;
-                    this.order.smallOrder = charge;
-                }
-            });
+const props = defineProps<{
+    order :OrderInterface
+    generalSettings: GeneralSettingsInterface
+}>();
 
-            return smallOrderFee;
-        },
-        totalWithoutVAT(): number {
-            if (this.order.subtotal) {
-                return parseFloat(Number(this.order.subtotal).toFixed(2));
-            }
-            return 0;
-        },
-        calculatedDiscount(): number {
-            console.log(this.order.discount);
-            return this.order.discount?.total || 0;
-        },
-        discountPercentage(): number {
-            if (this.order.discount) {
-                return this.order.discount.value;
-            }
+const showSmallOrderModal = ref(false);
 
-            return 0;
-        },
-        calculatedVAT(): number {
-            if (this.order.subtotal) {
-                return parseFloat((this.order.subtotal * 0.19).toFixed(2));
-            }
-            return 0;
-        },
-        calculatedTotal(): number {
-            if (!this.order.subtotal) {
-                return 0;
-            }
+const smallOrder = computed(() => {
+    let smallOrderFee = 0;
+    useAuthStore().generalSettings?.orderSettings?.smallOrderCharge?.forEach((charge) => {
+        if (Number(cartSubtotal.value) < charge.max && Number(cartSubtotal.value) >= charge.min) {
+            smallOrderFee = charge.price;
+            props.order.smallOrder = charge;
+        }
+    });
 
-            return parseFloat(
-                (
-                    Number(this.order.subtotal || 0) +
-                    Number(this.calculatedVAT) +
-                    Number(this.shippingFee) +
-                    Number(this.calculatedDiscount)
-                ).toFixed(2)
-            );
-        },
-        shippingFee(): number {
-            return this.order.deliveryMethod?.price || 0;
-        },
-        shipping(): DeliveryTypesInterface {
-            return this.order.deliveryMethod;
-        },
-    },
+    return smallOrderFee;
 });
+
+const calculatedVAT = computed(() => parseFloat((cartSubtotal.value * 0.19).toFixed(2)));
+const calculatedTotal = computed(() => {
+    const subtotal = Number(cartSubtotal.value || 0);
+    const VAT = calculatedVAT.value;
+    const shippingFee = shipping.value?.price || 0;
+    const discount = itemsDiscount.value || 0
+    return parseFloat((subtotal + VAT + shippingFee - discount).toFixed(2));
+});
+
+const shipping = computed(() => props.order.deliveryMethod);
+const shippingText = computed(() => {
+    if (!shipping.value) return '';
+    const { title, min, max, unit } = shipping.value;
+    const unitText = unit === 'day' ? '' : ' Business';
+    return `${title} (${min}-${max}${unitText} Days)`;
+});
+const formattedShippingPrice = computed(() => `$ ${shipping.value?.price.toFixed(2)}`);
+
 </script>
