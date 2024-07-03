@@ -22,8 +22,11 @@ onMounted(() => {
 
 <style>
 .imageContainer {
-  width: var(--imageContainerWidth);
-  height: var(--imageContainerHeight);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .image {

@@ -42,7 +42,7 @@
             </div>
             <div class="lg:order-1 lg:pt-[60px] xl:pt-[29px]">
                 <div
-                    class="flex items-center justify-center gap-3 bg-light-300 rounded px-[13px] py-1 text-xs leading-snug mb-[22px] lg:flex-col lg:items-start lg:justify-start lg:bg-transparent lg:gap-[5px] lg:p-0"
+                    class="lg:text-base flex items-center justify-center gap-3 bg-light-300 rounded px-[13px] py-1 text-xs leading-snug mb-[22px] lg:flex-col lg:items-start lg:justify-start lg:bg-transparent lg:gap-[5px] lg:p-0"
                 >
                     <div class="flex items-center">
                         <span class="text-slate-500 mr-[5px]">Price for:</span>
@@ -57,7 +57,7 @@
                         <span class="font-Inter lg:text-slate-500">{{ minPriceConfiguration ? minPriceConfiguration.quantity : 1 }}</span>
                     </div>
                 </div>
-                <div class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end lg:absolute xl:relative bottom-0">
+                <div class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end lg:absolute 2xl:relative bottom-0">
                     <div class="lg:mr-[15px]">
                         <div v-if="productDiscount" class="text-sm leading-tight line-through">
                             {{

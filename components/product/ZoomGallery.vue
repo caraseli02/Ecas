@@ -5,6 +5,7 @@ import { type CarouselApi } from '@/components/ui/carousel'
 
 defineProps<{
   images: {ProductImageLarge: string, ProductImageSmall: string}[];
+  alias: string
 }>()
 
 const emblaMainApi = ref<CarouselApi>()
@@ -44,27 +45,26 @@ onMounted(() => {
 
 <template>
   <UiDialog :open="isOpen" @update:open="isOpen = $event">
-    <UiDialogContent class="w-full max-w-3xl">
+    <UiDialogContent class="w-full max-w-sm md:max-w-3xl">
       <UiDialogHeader>
-        <UiDialogTitle>Gallery</UiDialogTitle>
+        <UiDialogTitle>{{ alias }}</UiDialogTitle>
       </UiDialogHeader>
       <div class="w-full mx-auto sm:w-auto">
         <UiCarousel class="relative w-full max-w-xl" @init-api="(val) => emblaMainApi = val">
           <UiCarouselContent>
             <UiCarouselItem v-for="(_, index) in 10" :key="index">
-              <div class="p-1 border">
                 <Card>
-                  <CardContent class="flex aspect-square items-center justify-center p-6">
+                  <CardContent class="flex aspect-square items-center justify-center">
                     <ClientOnly>
-                    <ProductZoomImg
+                      <ProductZoomImg
+                        :alias="alias"
                         :url="images[selectedIndex].ProductImageLarge"
                         alt="Image"
                         class="w-[260px] h-[250x] object-contain transition-opacity duration-300 lg:w-[356px] lg:h-[348px]"
                         />
-                        </ClientOnly>
+                    </ClientOnly>
                   </CardContent>
                 </Card>
-              </div>
             </UiCarouselItem>
           </UiCarouselContent>
           <UiCarouselPrevious />
@@ -74,7 +74,7 @@ onMounted(() => {
         <UiCarousel class="relative w-full max-w-xl mt-2" @init-api="(val) => emblaThumbnailApi = val">
           <UiCarouselContent class="flex gap-1 ml-0">
             <UiCarouselItem
-v-for="(img, index) in images.map(item => item.ProductImageSmall)" :key="index" class="pl-0 basis-1/4 cursor-pointer border flex justify-center items-center"
+v-for="(img, index) in images.map(item => item.ProductImageSmall)" :key="index" class="pl-0 basis-1/4 cursor-pointer rounded flex justify-center items-center"
               @click="onThumbClick(index)">
               <div class="p-1" :class="index === selectedIndex ? '' : 'opacity-50'">
                 <img
