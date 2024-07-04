@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { InfoIcon } from 'lucide-vue-next';
-import { CartProductsInterface, OrderType } from '~/model/cart/response/cart.interface';
+import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
+import { OrderType } from '~/types';
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const lgAndLarger = breakpoints.greaterOrEqual('lg'); // sm and larger
@@ -63,7 +64,7 @@ const payment = computed(() => {
                     <div class="flex gap-3 lg:mt-6 w-full lg:max-w-[412px]">
                         <figure class="flex h-fit justify-center items-center rounded-lg border border-solid border-grey-300">
                             <img
-                                :src="item.productEntity.details.ProductImage.ProductImageSmall"
+                                :src="item.productEntity?.details.ProductImage.ProductImageSmall"
                                 alt="Product image"
                                 class="aspect-square max-h-[60px] min-w-[60px] lg:max-h-[72px] lg:w-[72px] rounded-lg"
                             />
@@ -72,7 +73,7 @@ const payment = computed(() => {
                             <div class="flex flex-col sm:flex-row sm:gap-2">
                                 <span class="text-sm font-medium leading-6 text-gray-500">Item:</span>
                                 <div class="flex gap-5 justify-between">
-                                    <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity.alias }}</span>
+                                    <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity?.alias }}</span>
                                     <span
                                         class="justify-center px-2 my-auto text-xs font-semibold leading-5 text-red-500 bg-white rounded-3xl border border-red-500 border-solid"
                                     >
@@ -83,12 +84,12 @@ const payment = computed(() => {
                             <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Description:</span>
                                 <span class="text-ellipsis text-neutral-700 w-full max-w-[235px] lg:max-w-[328px] truncate">
-                                    {{ item.productEntity.description }}
+                                    {{ item.productEntity?.description }}
                                 </span>
                             </div>
                             <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Manufacturer:</span>
-                                <span class="text-ellipsis text-neutral-700">{{ item.productEntity.manufacturer }}</span>
+                                <span class="text-ellipsis text-neutral-700">{{ item.productEntity?.manufacturer }}</span>
                             </div>
                         </div>
                     </div>
@@ -153,7 +154,9 @@ const payment = computed(() => {
             </div>
             <UiSeparator class="bg-light-500" />
             <div class="flex flex-col gap-4 w-full">
-                <header class="w-full text-sm font-semibold leading-6 text-neutral-700">{{ type + ' Order Payment Summary' }}</header>
+                <header class="w-full text-sm font-semibold leading-6 text-neutral-700">
+                    {{ type + ' Order Payment Summary' }}
+                </header>
                 <section class="flex flex-col gap-2">
                     <div class="flex gap-2 justify-between w-full text-sm font-medium leading-6">
                         <div class="text-gray-500">Subtotal</div>
