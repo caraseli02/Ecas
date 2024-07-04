@@ -118,13 +118,12 @@
                     @update-payment-details="emits('update-payment-details', $event)"
                 />
             </Transition>
-            <AppModal v-model="showCardsModal">
+            <AppModal side="right" v-model="showCardsModal">
                 <OrderSummaryPaymentModal
                     :cards="cards"
                     :order="order"
                     :card="card"
                     :is-new-card-selected="isNewCardSelected"
-                    @change-is-new-card-selected="isNewCardSelected = $event"
                 />
             </AppModal>
         </div>

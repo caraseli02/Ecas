@@ -70,7 +70,7 @@
                         </div>
                         <div class="text-xl leading-tight font-semibold" :class="[productDiscount ? 'text-rose-500' : '']">
                             <span>
-                                {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : minPriceConfiguration?.price.toFixed(2) || '-' }}
+                                {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : `$ ${minPriceConfiguration?.price.toFixed(2)}` || '-' }}
                             </span>
                             {{ currentPriceConfiguration ? `(${currentPriceConfiguration.quantity}+)` : '-' }}
                         </div>
