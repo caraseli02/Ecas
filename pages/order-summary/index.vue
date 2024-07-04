@@ -364,10 +364,10 @@ const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
     let subtotal = 0;
 
     orderItems.forEach((item: CartProductsInterface) => {
-        const stockTotal = Number(item.unitPriceAfterDiscounts) * item.stock
-        const backorderTotal = Number(item.unitPriceAfterDiscounts) * (item.backorder_stock || 0)
+        const stockTotal = Number(item.unitPriceAfterDiscounts) * item.stock;
+        const backorderTotal = Number(item.unitPriceAfterDiscounts) * (item.backorder_stock || 0);
         const allItemsTotal = stockTotal + backorderTotal;
-        subtotal += allItemsTotal
+        subtotal += allItemsTotal;
     });
 
     order.value.subtotal = subtotal.toFixed(2) as unknown as number;
@@ -432,7 +432,7 @@ async function makeCheckout() {
                 deliveryTypeId: deliveryMethod.value._id,
                 backorderShippingTypeId: backOrderOption?.value?._id || undefined,
             },
-            smallOrderChargeId: smallOrder.value._id,
+            smallOrderChargeId: smallOrder.value?._id,
             paymentDetails: {
                 type: paymentDetails.value.type,
             },

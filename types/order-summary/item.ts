@@ -85,7 +85,7 @@ export interface OrderRequestInterface {
     shippingDetails: OrderShippingDetailsInterface;
     stripeCardId?: any;
     paymentDetails: PaymentDetails;
-    smallOrderChargeId: string;
+    smallOrderChargeId?: string;
     currency: string;
     type: OrderType;
     discount?: DiscountInterface;
