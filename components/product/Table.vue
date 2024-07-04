@@ -88,7 +88,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div ref="elDOM" class="max-w-[1392px] mx-auto relative bg-white rounded-md font-Inter pt-7 pb-[25px] shadow-m md:py-[15px]">
+    <div ref="elDOM" class="max-w-[1392px] mx-auto relative bg-white rounded-xl font-Inter pt-7 pb-[25px] shadow-m md:py-[15px]">
         <div
             class="flex flex-col items-center mb-[30px] md:flex-row md:justify-between md:items-end md:mb-10 md:border-b md:border-gray-200 md:px-[15px] lg:px-5"
         >
@@ -115,7 +115,7 @@ onMounted(() => {
             </div>
             <button
                 :disabled="isLoading"
-                class="flex bg-slate-500 px-[22px] py-[11px] rounded-lg text-sm font-medium text-white flex-shrink-0 md:mb-[15px] w-[13.47rem] justify-center"
+                class="min-w-[236px] flex bg-slate-500 px-6 py-3 rounded-lg text-sm font-medium text-white flex-shrink-0 md:mb-[15px] w-fit justify-center"
                 :class="{ 'bg-gray-400': isLoading }"
                 @click="searchSimilarProducts"
             >
@@ -151,7 +151,7 @@ onMounted(() => {
         <div class="flex justify-center px-[15px] md:justify-end lg:px-5">
             <button
                 :disabled="isLoading"
-                class="flex bg-slate-500 px-[22px] py-[11px] rounded-lg text-sm font-medium text-white w-[13.47rem] justify-center"
+                class="min-w-[236px] flex bg-slate-500 px-6 py-3 rounded-lg text-sm font-medium text-white flex-shrink-0 md:mb-[15px] justify-center"
                 :class="{ 'bg-gray-400': isLoading }"
                 @click="searchSimilarProducts"
             >

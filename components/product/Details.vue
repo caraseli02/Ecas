@@ -1,10 +1,10 @@
 <template>
-    <div class="h-[298px] col-span-2 lg:col-span-1 w-full relative bg-white rounded-md font-Inter pt-[15px] pb-2.5 shadow-m md:pb-[26px] lg:pb-4 lg:self-start">
+    <div class="h-[298px] col-span-2 lg:col-span-1 w-full relative bg-white rounded-xl font-Inter pt-[15px] pb-2.5 shadow-m md:pb-[26px] lg:pb-4 lg:self-start">
         <div class="flex items-end justify-between px-2.5 mb-[18px] md:px-[15px]">
             <div class="flex items-center">
                 <div class="text-xl leading-tight font-semibold mr-2">{{ product.alias }}</div>
                 <button class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500">
-                    <CopyIcon class="w-[22px] h-[22px]" />
+                    <CopyIcon class="w-5 h-5" />
                 </button>
             </div>
             <img :src="product.details.ProductImage.ProductImageLarge" alt="Microchip Logo" class="w-[82px] h-[50px] object-contain" />
@@ -26,13 +26,13 @@
                 @click="showCustomProductPartNumberModal = true"
             >
                 <span class="text-xs leading-tight mr-[5px] text-slate-500"> Your Custom Code </span>
-                <SquarePen class="w-[22px] h-[22px] stroke-1" />
+                <SquarePen class="w-4 h-4 stroke-1" />
             </button>
         </div>
         <div class="flex items-center justify-between gap-3 px-2.5 h-8 md:px-[15px]">
             <div class="text-xs leading-tight font-medium flex-shrink-0 ">EDA / CAD Models</div>
             <button class="flex items-center">
-                <CADModelsIcon class="w-[22px] h-[22px] mr-[5px]" />
+                <CADModelsIcon class="w-4 h-4 mr-[5px]" />
                 <span class="text-xs leading-tight text-slate-500"> ADIN2111BCPZ-ECAD-Model </span>
             </button>
         </div>
@@ -44,7 +44,7 @@
                 :download="`${product.alias} Datasheet`"
                 target="_blank"
             >
-                <PDFIcon class="w-[22px] h-[22px] mr-[5px]" />
+                <PDFIcon class="w-5 h-5 mr-[5px]" />
                 <span class="text-xs leading-tight text-slate-500 hover:underline"> {{ product.alias }}-DataSheet </span>
             </a>
         </div>

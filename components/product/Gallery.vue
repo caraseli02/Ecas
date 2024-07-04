@@ -1,11 +1,11 @@
 <template>
     <div
-        class="relative bg-white flex flex-col justify-between rounded-md shadow-m h-[298px] p-4"
+        class="relative bg-white flex flex-col justify-between rounded-xl shadow-m h-[298px] p-4 pt-7"
     >
         <img
             :src="props.images[activeImageIndex].ProductImageLarge"
             alt="Image"
-            class="w-[284px] h-[160px] object-contain mx-auto lg:w-[330px] xl:w-[350px]"
+            class="w-[284px] h-[160px] object-contain mx-auto lg:w-[330px] xl:w-[350px] cursor-pointer"
             @click="emit('showZoomModal')"
         />
         <Swiper
@@ -41,15 +41,15 @@
         <div class="absolute top-[15px] right-[15px]">
             <div class="flex flex-col gap-2.5">
                 <button
-                    class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500"
+                    class="flex justify-end text-slate-200 transition-colors duration-300 hover:text-blue-500"
                     @click="addToFavourite(product)"
                 >
                     <HeartIcon class="w-6 h-6" />
                 </button>
-                <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
+                <button class="flex justify-end text-slate-200 transition-colors duration-300 hover:text-blue-500">
                     <Share2Icon class="w-6 h-6" />
                 </button>
-                <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue-500">
+                <button class="flex justify-end text-slate-200 transition-colors duration-300 hover:text-blue-500">
                     <BoxIcon class="w-6 h-6" />
                 </button>
             </div>

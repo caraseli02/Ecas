@@ -2,16 +2,16 @@
     <div class="pt-5 md:pt-0">
         <ProductBreadcrumbs :product="product" />
         <div class="container mb-[30px] lg:mb-10">
-            <div class="hidden items-center justify-end gap-5 mb-2.5 md:flex">
-                <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
+            <div class="hidden items-center justify-end gap-5 mb-3 md:flex">
+                <button class="flex items-center text-slate-300 transition-colors duration-300 hover:text-blue-500">
                     <MessageCircleQuestion class="w-[22px] h-[22px] mr-[5px]" />
                     <span class="text-xs leading-tight">Ask about the product</span>
                 </button>
-                <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
+                <button class="flex items-center text-slate-300 transition-colors duration-300 hover:text-blue-500">
                     <AlertTriangle class="w-[22px] h-[22px] mr-[5px]" />
                     <span class="text-xs leading-tight">Report an error</span>
                 </button>
-                <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
+                <button class="flex items-center text-slate-300 transition-colors duration-300 hover:text-blue-500">
                     <PrinterIcon class="w-[22px] h-[22px] mr-[5px]" />
                     <span class="text-xs leading-tight">Print this page</span>
                 </button>
@@ -39,7 +39,7 @@ v-model="activeImageIndex" class="col-span-2 lg:col-span-1" :images="images"
         <ProductBlocks :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" />
         <News />
         <Manufacturers />
-        <ProductZoomGallery :alias="product.alias" v-model:selectedIndex="activeImageIndex" v-model:open="showZoomGallery" :images="images" />
+        <ProductZoomGallery v-model:selectedIndex="activeImageIndex" v-model:open="showZoomGallery" :alias="product.alias" :images="images" />
     </div>
 </template>
 
@@ -61,7 +61,7 @@ const route = useRoute();
 const { data } = await $api.product.fetchSingleProduct(route.params.slug);
 const product = data as ProductDetail;
 
-const images: ProductImage[] = Array(3).fill(product.details.ProductImage);
+const images: ProductImage[] = Array.isArray(product.details.ProductImage) ? product.details.ProductImage : [product.details.ProductImage];
 
 const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 
