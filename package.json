@@ -21,6 +21,7 @@
         "nuxt3-leaflet": "^1.0.12",
         "postcss": "^8.4.21",
         "sass": "^1.62.0",
+        "tailwind-scrollbar": "^3.1.0",
         "tailwindcss": "^3.2.4",
         "typescript": "^5.3.3",
         "uuid": "^9.0.0"

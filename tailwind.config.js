@@ -1,4 +1,5 @@
 const animate = require('tailwindcss-animate');
+const scrollbar = require('tailwind-scrollbar');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -316,7 +317,7 @@ module.exports = {
             },
         },
     },
-    plugins: [animate],
+    plugins: [animate, scrollbar],
     safelist: [
         'grid-cols-[359px,154px,254px,244px,129px,148px,104px]',
         'grid-cols-[154px,359px,254px,244px,129px,148px,104px]',
