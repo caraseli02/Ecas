@@ -1,6 +1,6 @@
 <template>
     <section
-        class="flex flex-col items-start justify-between min-h-screen w-full shadow-xs bg-white max-w-[358px] md:max-w-[400px] px-4 md:px-6 py-0 rounded-l-xl h-full overflow-auto">
+        class="flex flex-col items-center justify-between min-h-screen w-full shadow-xs bg-white max-w-[358px] md:max-w-[400px] px-4 md:px-6 py-0 rounded-l-xl h-full overflow-auto scroll-smooth">
         <div class="sticky top-0 justify-between items-center self-stretch flex gap-5 bg-white z-10 min-h-16 pt-6">
             <div class="text-zinc-800 text-base font-semibold leading-7 my-auto">Payment Method</div>
             <button
