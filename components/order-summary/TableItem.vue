@@ -16,8 +16,7 @@
                                 : 'bg-white  border-border group-hover:border-gray-300',
                         ]"
                     >
-                        <CheckIcon
-v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
+                        <CheckIcon v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
                     </div>
                 </label>
                 <div class="max-w-[220px] lg:max-w-[245px] flex">
@@ -44,7 +43,7 @@ v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-
                     <WarningErrorHuge class="hidden lg:block" />
                     <WarningError class="block lg:hidden" />
                     <span class="hidden sm:flex text-sm font-medium leading-6 text-rose-500 ml-2"
-                        >{{ item.stock - item.productEntity?.stock }} items will be on back order.</span
+                        >{{ item.backorder_stock }} items will be on back order.</span
                     >
                 </div>
                 <div
@@ -67,7 +66,7 @@ v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-
                     </Tooltip>
                     <button
                         v-if="!inModal"
-                        class="flex items-center justify-center ml-auto text-gray-300 transition-colors duration-300 hover:text-rose-500"
+                        class="flex text-[#5E6278] items-center justify-center ml-auto transition-colors duration-300 hover:text-rose-500"
                         @click="deleteItem = true"
                     >
                         <TrashIcon class="w-5 h-5" />
@@ -93,7 +92,14 @@ v-if="item.selected" class="w-4 text-white transition-colors duration-300 group-
     </div>
     <Teleport to="body">
         <Transition name="slide-from-top">
-            <LayoutFavoritesModalsDelete v-if="deleteItem" :products="[item]" :delete-from-cart="true" @close="deleteItem = false" />
+            <LayoutFavoritesModalsDelete
+                v-if="deleteItem"
+                :remove-only-stock-quantity="stockItem && item.backorder_stock > 0"
+                :remove-only-backstock-quantity="!stockItem && item.stock > 0"
+                :products="[item]"
+                :delete-from-cart="true"
+                @close="deleteItem = false"
+            />
         </Transition>
     </Teleport>
 </template>
@@ -106,14 +112,13 @@ import WarningError from '@/assets/icons/warning-error.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
 import HeartOutline from '@/assets/icons/heart-outline.svg';
 import HeartSolid from '@/assets/icons/heart-solid.svg';
-import TrashOutline from '@/assets/icons/trash-outline.svg';
 import Tooltip from '~/components/global/Tooltip.vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import TrashIcon from 'assets/icons/trash-can.svg';
 import { PropType } from 'vue';
-import { CartProductsInterface } from '~/types';
+import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 export default defineComponent({
     name: 'TableItem',
@@ -149,11 +154,14 @@ export default defineComponent({
         };
     },
     computed: {
+        ProductType() {
+            return ProductType;
+        },
         shortStock() {
             return Number(this.item.productEntity?.stock) <= this.thresholdStock && this.item.productEntity?.stock > 0 && this.stockItem;
         },
         itemQuantity() {
-            return Number(this.item.stock);
+            return this.stockItem ? Number(this.item.backorder_stock) : Number(this.item.stock);
         },
         discounts() {
             if (!this.item.productEntity) {
@@ -173,7 +181,7 @@ export default defineComponent({
     },
     watch: {
         itemQuantity() {
-            if (this.item.stock) {
+            if (this.item.stock || this.item.backorder_stock) {
                 this.$emit('updateQuantity');
             }
         },

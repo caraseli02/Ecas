@@ -4,8 +4,7 @@ import {
     ProductDiscountsHelperInterface,
     ProductInterface,
 } from '~/model/products/response/ProductResponse';
-import { CartInterface } from '~/model/cart/response/cart.interface';
-import { CartProductsInterface } from '~/types';
+import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
 
@@ -63,9 +62,10 @@ export const initializeQuantities = (
     }
 
     const cartProduct = data.products.find((item: CartProductsInterface) => item.id === product?._id);
-
-    quantity.value = cartProduct && cartProduct.stock > 0 ? cartProduct.stock : minPriceConfiguration?.quantity || 0;
-    initialRequestedQuantity.value = cartProduct && cartProduct.stock > 0 ? cartProduct.stock : 0;
+    const cartProductQuantity = cartProduct?.stock + cartProduct?.backorder_stock;
+    console.log(cartProduct?.stock, cartProduct?.backorder_stock, cartProductQuantity);
+    quantity.value = cartProduct && cartProductQuantity > 0 ? cartProductQuantity : minPriceConfiguration?.quantity || 0;
+    initialRequestedQuantity.value = cartProduct && cartProductQuantity > 0 ? cartProductQuantity : 0;
 };
 
 export const addToCartHelper = async (product: ProductInterface, stock: number) => {

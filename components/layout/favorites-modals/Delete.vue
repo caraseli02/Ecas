@@ -92,6 +92,16 @@ const props = defineProps({
         type: Boolean,
         required: false,
     },
+    removeOnlyStockQuantity: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+    removeOnlyBackstockQuantity: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
 });
 
 defineEmits(['close']);
@@ -110,6 +120,8 @@ const deleteItem = async (items: FavoriteItem[] = []) => {
     } else {
         const payload = {
             products: [items[0].id],
+            removeOnlyStockQuantity: props.removeOnlyStockQuantity ?? false,
+            removeOnlyBackstockQuantity: props.removeOnlyBackstockQuantity ?? false,
         };
 
         const removed = await $api.cart.removeEntityFromCart(payload);

@@ -97,10 +97,17 @@
                         <span class="text-neutral-700 text-center text-sm font-normal leading-6 xl:gap-4 px-0 xl:px-4">Quantity</span>
                         <div>
                             <QuantityButtons
-                                v-if="item.stock"
-                                v-model="item.stock"
+                                v-if="quantity"
+                                v-model="quantity"
                                 size="lg"
-                                :object="{action : ProductAction.Update, id: item.id, min: item?.productEntity?.priceConfiguration?.configuration[0].quantity} as any"
+                                :type="stockItem ? OrderType.Stock : OrderType.Back"
+                                :update-only-available-stock="true"
+                                :object="{
+                                    action : ProductAction.Update,
+                                     id: item.id,
+                                     min: item?.productEntity?.priceConfiguration?.configuration[0].quantity,
+                                     max: item.productEntity?.stock
+                                } as any"
                             />
                         </div>
                     </div>
@@ -173,7 +180,7 @@
                     >Favourites</span
                 >
             </button>
-            <button class="flex flex-col gap-2 xl:hidden items-center group" @click="deleteFromCart">
+            <button class="flex flex-col gap-2 xl:hidden items-center group" @click="deleteItem = true">
                 <TrashOutlineBig class="text-[#5E6278] group-hover:text-rose-500 transition duration-150" />
                 <span class="text-[#5E6278] text-xs font-normal leading-5 group-hover:text-rose-500 transition duration-150">Delete</span>
             </button>
@@ -181,7 +188,14 @@
     </div>
     <Teleport to="body">
         <Transition name="slide-from-top">
-            <LayoutFavoritesModalsDelete v-if="deleteItem" :products="[item as any]" :delete-from-cart="true" @close="deleteItem = false" />
+            <LayoutFavoritesModalsDelete
+                v-if="deleteItem"
+                :remove-only-stock-quantity="stockItem && item.backorder_stock > 0"
+                :remove-only-backstock-quantity="!stockItem && item.stock > 0"
+                :products="[item as any]"
+                :delete-from-cart="true"
+                @close="deleteItem = false"
+            />
         </Transition>
     </Teleport>
 </template>
@@ -196,16 +210,13 @@ import DeliveryTruckSmall from '@/assets/icons/delivery-truck-small.svg';
 import HeartOutline from '@/assets/icons/heart-outline.svg';
 import HeartSolid from '@/assets/icons/heart-solid.svg';
 import TrashOutlineBig from '@/assets/icons/trash-outline-big.svg';
-import { ProductAction } from '~/model/cart/response/cart.interface';
-import { CartProductsInterface } from '~/types';
+import { CartProductsInterface, ProductAction } from '~/model/cart/response/cart.interface';
 import { PropType } from 'vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import TrashIcon from 'assets/icons/trash-can.svg';
-import { useNuxtApp } from '#app';
-import { useCartStore } from '~/store/cartStore';
-import Emitter from 'tiny-emitter/instance.js';
+import { OrderType } from '~/types';
 
 export default defineComponent({
     name: 'TableItemDropdown',
@@ -245,21 +256,24 @@ export default defineComponent({
             showPackagingDetails: false,
             showDeliveryDetails: false,
             deleteItem: false,
+            quantity: this.stockItem ? this.item.stock : this.item.backorder_stock,
         };
     },
     computed: {
+        OrderType() {
+            return OrderType;
+        },
         ProductAction() {
             return ProductAction;
         },
-        taxPrice() {
+        taxPrice(): string {
             return (this.subtotal * 0.19).toFixed(2);
         },
-        subtotal() {
+        subtotal(): number {
             if (!this.discounts) {
                 return 0;
             }
-
-            return this.item.stock * this.discounts.currentConfigurationDiscountPrice || 0;
+            return this.quantity * (this.discounts.currentConfigurationDiscountPrice || 0);
         },
         discounts() {
             if (!this.item.productEntity) {
@@ -269,7 +283,11 @@ export default defineComponent({
             const authStore = useAuthStore();
             const { getUserDetails } = storeToRefs(authStore);
 
-            const discountsHelper = parseProductPriceConfiguration(this.item.productEntity, getUserDetails.value, this.item.stock);
+            const discountsHelper = parseProductPriceConfiguration(
+                this.item.productEntity,
+                getUserDetails.value,
+                this.item.stock + this.item.backorder_stock
+            );
 
             return {
                 userDiscount: discountsHelper?.userDiscount || 0,
@@ -286,26 +304,23 @@ export default defineComponent({
             this.$emit('like:item', this.item.id);
             this.item.liked = !this.item.liked;
         },
-        async deleteFromCart() {
-            const { $api } = useNuxtApp();
-            const cartStore = useCartStore();
-
-            const payload = {
-                products: [this.item.id],
-            };
-
-            await $api.cart.removeEntityFromCart(payload);
-
-            Emitter.emit('delete-product-item', {
-                id: this.item.id,
-            });
-
-            await cartStore.updateAndReturnCart();
-        },
+        // async deleteFromCart() {
+        //     const { $api } = useNuxtApp();
+        //     const cartStore = useCartStore();
+        //     const payload = {
+        //         products: [this.item.id],
+        //     };
+        //
+        //     await $api.cart.removeEntityFromCart(payload);
+        //
+        //     Emitter.emit('delete-product-item', {
+        //         id: this.item.id,
+        //     });
+        //
+        //     await cartStore.updateAndReturnCart();
+        // },
     },
 });
-
-const numar = ref(10);
 </script>
 <style>
 .custom-shadow {
