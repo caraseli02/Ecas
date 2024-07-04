@@ -1,5 +1,5 @@
 const animate = require('tailwindcss-animate');
-const scrollbar = require('tailwind-scrollbar');
+const scrollbar = require('tailwind-scrollbar')({ nocompatible: true });
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
