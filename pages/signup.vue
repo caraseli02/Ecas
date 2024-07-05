@@ -286,17 +286,24 @@ const profileDetails = useState<SignupProfileDetailsType>('signup-profile-detail
   };
 });
 
-function mapType(selected: string): AccountType {
+function mapType(selected: string,): AccountType {
   switch (selected) {
     case 'personal':
       return AccountType.Personal;
     case 'sole-trader':
       return AccountType.SoleTrader;
     case 'business':
-      return AccountType.Business;
+      if (selectedBusinessType.value === 'executive') {
+        return AccountType.Business;
+      } else if (selectedBusinessType.value === 'agent') {
+        return AccountType.Agent;
+      }
+      break;
     default:
-      return AccountType.Agent;
+      break;
   }
+  // Return a general default or handle error, if no cases match
+  throw new Error("Invalid account type selection");
 }
 
 const backToSelectMenu = async () => {
