@@ -59,7 +59,7 @@ export interface PersonalDetails {
     lastName: string;
     address: AddressInterface;
     shippingAddress: ShippingAddressInterface[];
-    billingAddress: any;
+    billingAddress: BillingAddressInterface[];
 }
 
 export interface ContactDetails {
@@ -84,7 +84,7 @@ export interface CompanyDetails {
     taxId?: string;
     address: AddressInterface;
     shippingAddress: ShippingAddressInterface[];
-    billingAddress: any;
+    billingAddress: BillingAddressInterface[];
     _id?: string;
 }
 

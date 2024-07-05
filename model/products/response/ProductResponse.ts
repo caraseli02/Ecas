@@ -1,22 +1,20 @@
-import { PriceHistory } from '~/types';
-
 export interface ProductResponse {
     data: [ProductInterface];
     status: string;
 }
 
 export interface ProductInterface {
-    _id: string;
-    class: string;
-    alias: string;
-    description: string;
-    variant: string;
-    manufacturer: string;
-    manufacturerCode: string;
+    erpItemId?: string;
+    active?: boolean;
+    class?: string;
+    name: string;
+    alias?: string;
+    description?: string;
+    code?: string;
+    manufacturer?: string;
+    manufacturerCode?: string;
     stock: number;
-    priceRon: number;
-    priceEur: number;
-    priceHistory: PriceHistory[];
+    priceHistory: PriceHistoryInterface[];
     priceConfiguration?: PriceConfigurationInterface;
     measure: string;
     details: ProductDetailsInterface;
@@ -29,6 +27,13 @@ export interface ProductInterface {
 export interface PriceConfigurationSettingsInterface {
     price: number;
     quantity: number;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface PriceHistoryInterface {
+    price: number;
+    active: boolean;
     createdAt?: string;
     updatedAt?: string;
 }
