@@ -17,6 +17,7 @@ const { $api } = useNuxtApp();
 const totalItems = ref(0);
 const pageCount = ref(0);
 const loading = ref(true);
+const loadingFilters = ref(true);
 const error = ref(false);
 const emptyData = ref(false);
 const listItems = ref<OrderTableColumns[]>([]);
@@ -100,6 +101,7 @@ const filterHighlightWidth = ref(0);
 const filterHightlightLeft = ref(0);
 
 const loadTabFilters = async () => {
+    loadingFilters.value = true;
     for (const filter of orderFilters.value) {
         const filterObj = {} as any;
 
@@ -110,6 +112,10 @@ const loadTabFilters = async () => {
         const data = await fetchAndSetOrdersList(pageCount.value, 10, filterObj, {});
         filter.total_items = data?.total_items ?? 0;
     }
+    setTimeout(() => {
+        loadingFilters.value = false;
+    }, 500);
+    fetchAndSetOrdersList(1, 10);
 };
 
 const setActiveFilterHighlight = () => {
@@ -148,7 +154,6 @@ const onTabChange = async (filter: TabFilter, table: Table<OrderTableColumns>) =
 }
 
 loadTabFilters();
-fetchAndSetOrdersList(1, 10);
 
 onMounted(() => {
     setTimeout(() => {
@@ -160,9 +165,9 @@ onMounted(() => {
 
 <template>
     <div
-        class="h-full flex-1 flex-col space-y-8 flex w-[393px] md:w-[640px] lg:w-[896px] xl:w-[1312px] 2xl:w-[1444px] shadow-xs p-2 pt-6 md:p-6 rounded-xl">
+        class="relative h-full flex-1 flex-col space-y-8 flex w-[393px] md:w-[640px] lg:w-[896px] xl:w-[1312px] 2xl:w-[1444px] shadow-xs p-2 pt-6 md:p-6 rounded-xl">
         <DataTable
-            v-if="!loading" :fetch-fn="fetchAndSetOrdersList" :page-count="pageCount" :data="listItems"
+         :fetch-fn="fetchAndSetOrdersList" :page-count="pageCount" :data="listItems"
             :columns="columns" :loading="loading" :total-items="totalItems">
             <template #header="{ table, makeRefresh }">
                 <DataTableHeadControls :error="error" title="Orders List" :table="table" @refresh="makeRefresh()">
@@ -199,5 +204,6 @@ class="absolute bottom-0 bg-blue-500 h-1 rounded-t-lg transition-all duration-30
                 </div>
             </template>
         </DataTable>
+        <UiSkeleton v-if="loadingFilters" class="w-full h-full absolute inset-0 top-24 z-20 animate-none"></UiSkeleton>
     </div>
 </template>

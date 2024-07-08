@@ -1,10 +1,11 @@
 <template>
-    <div class="relative bg-white rounded-md px-2.5 pt-2 pb-5 shadow-m md:px-[15px] lg:pt-[15px] lg:self-start">
-        <div class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green-500">
-            <CheckIcon class="w-4 h-4 mr-1 text-white" />
+    <div class="h-[368px] lg:h-[298px] w-full flex flex-col justify-between relative bg-white rounded-xl shadow-m md:px-[15px] lg:pt-[15px] lg:self-start">
+        <!-- <div class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green-600">
+            <CheckCircle2 class="w-4 h-4 mr-1 text-white" />
             <span class="text-[11px] font-Inter leading-tight font-semibold text-white"> {{ product.stock }} in stock </span>
-        </div>
-        <div class="flex justify-end text-xs mb-[18px] lg:hidden">
+        </div> -->
+        <ProductCardStock :stock="product.stock" />
+        <div class="flex justify-end text-xs my-3 pr-4 lg:hidden px-2.5">
             For larger quantities ask
             <NuxtLink
                 to="/"
@@ -14,20 +15,21 @@
             </NuxtLink>
         </div>
         <div class="lg:grid lg:grid-cols-2">
-            <div class="lg:order-2">
-                <div class="flex items-center justify-between gap-3 text-xs leading-tight text-slate-500 pl-[5px] mb-[5px]">
+            <div class="lg:order-2 px-4">
+                <div class="flex items-center justify-between gap-3 text-xs leading-tight text-slate-500 px-3 py-2">
                     <div class="flex-shrink-0">Quantity</div>
                     <div>Price ( Ex VAT )</div>
                 </div>
-                <div class="font-Inter mb-4 lg:mb-[9px]">
+                <div class="font-Inter mb-4 lg:mb-[25px]">
                     <div
-                        v-for="(quantity, index) in bulkQuantities"
+                        v-for="(bulkQuantity, index) in bulkQuantities"
                         :key="index"
-                        class="flex items-center justify-between gap-3 px-2.5 py-1 text-[13px] leading-tight rounded"
-                        :class="currentPriceConfiguration?.quantity === quantity[0] ? 'bg-[#F2F2F2]' : ''"
+                        class="flex items-center justify-between gap-3 px-3 py-1 text-xs leading-tight rounded cursor-pointer hover:bg-light-300"
+                        :class="currentPriceConfiguration?.quantity === bulkQuantity[0] ? 'bg-light-100' : ''"
+                        @click="quantity = bulkQuantity[0] + 1"
                     >
-                        <div>{{ quantity[0] }}+</div>
-                        <div :class="[productDiscount ? 'text-red' : '']">${{ quantity[1].toFixed(2) }}</div>
+                        <div class="text-slate-500">{{ bulkQuantity[0] }}+</div>
+                        <div :class="['text-neutral-700', productDiscount ? 'text-red' : '']">${{ bulkQuantity[1].toFixed(2) }}</div>
                     </div>
                 </div>
                 <div class="hidden justify-end text-slate-500 text-xs mb-[9px] lg:flex">
@@ -40,24 +42,24 @@
                     </NuxtLink>
                 </div>
             </div>
-            <div class="lg:order-1 lg:pt-[29px]">
+            <div class="lg:order-1 lg:pt-[60px] xl:pt-8 pl-4">
                 <div
-                    class="flex items-center justify-between bg-[#F2F2F2] rounded px-[13px] py-1 text-xs leading-snug mb-[22px] lg:flex-col lg:items-start lg:justify-start lg:bg-transparent lg:gap-[5px] lg:p-0"
+                    class="flex items-center justify-center bg-light-300 rounded px-[13px] py-1 text-xs leading-snug mb-[22px] lg:flex-col lg:items-start lg:justify-start lg:bg-transparent lg:p-0"
                 >
-                    <div class="flex items-center">
+                    <div class="flex items-center h-6">
                         <span class="text-slate-500 mr-[5px]">Price for:</span>
-                        <span class="lg:text-slate-500">Each</span>
+                        <span class="text-neutral-700 font-medium">Each</span>
                     </div>
-                    <div class="flex items-center">
+                    <div class="flex items-center h-6">
                         <span class="text-slate-500 mr-[5px]">Multiple:</span>
-                        <span class="font-Inter lg:text-slate-500">1</span>
+                        <span class="font-Inter text-neutral-700 font-medium">1</span>
                     </div>
-                    <div class="flex items-center">
+                    <div class="flex items-center h-6">
                         <span class="text-slate-500 mr-[5px]">Minimum Order:</span>
-                        <span class="font-Inter lg:text-slate-500">{{ minPriceConfiguration ? minPriceConfiguration.quantity : 1 }}</span>
+                        <span class="font-Inter text-neutral-700 font-medium">{{ minPriceConfiguration ? minPriceConfiguration.quantity : 1 }}</span>
                     </div>
                 </div>
-                <div class="flex items-center justify-between font-Inter mb-[22px] lg:justify-start lg:items-end">
+                <div class="flex items-center justify-between font-Inter mb-4 lg:justify-start lg:items-end lg:absolute 2xl:relative bottom-0">
                     <div class="lg:mr-[15px]">
                         <div v-if="productDiscount" class="text-sm leading-tight line-through">
                             {{
@@ -66,23 +68,23 @@
                                     : '-'
                             }}
                         </div>
-                        <div class="text-lg leading-tight" :class="[productDiscount ? 'text-rose-500' : '']">
-                            <strong>
-                                {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : minPriceConfiguration?.price.toFixed(2) || '-' }}
-                            </strong>
+                        <div class="text-xl leading-tight font-semibold" :class="[productDiscount ? 'text-rose-500' : '']">
+                            <span>
+                                {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : `$ ${minPriceConfiguration?.price.toFixed(2)}` || '-' }}
+                            </span>
                             {{ currentPriceConfiguration ? `(${currentPriceConfiguration.quantity}+)` : '-' }}
                         </div>
                     </div>
                     <div
                         v-if="productDiscount"
-                        class="bg-rose-500 rounded-[25px] px-2.5 py-1 font-Inter text-sm leading-tight font-semibold text-white"
+                        class="flex items-center justify-center w-10 h-5 border border-rose-500 text-rose-500 rounded-full font-Inter text-sm leading-tight font-semibold"
                     >
                         {{ productDiscount }}%
                     </div>
                 </div>
             </div>
         </div>
-        <div class="flex gap-2.5">
+        <div class="flex gap-2.5 w-full lg:w-[486px] xl:w-[430px] p-4 pt-3 self-end">
             <QuantityButtons
                 v-if="minPriceConfiguration"
                 v-model="quantity"
@@ -90,7 +92,7 @@
                 :object="{ id: product._id, min: minPriceConfiguration.quantity , action : 'add'} as ProductActionObject"
             />
             <button
-                class="flex items-center flex-1 justify-center bg-blue-500 rounded text-white px-5 py-[9px]"
+                class="flex items-center flex-1 justify-center bg-blue-500 rounded-lg text-white px-5 py-[9px]"
                 @click="addToCart(props.product)"
             >
                 <CartIcon class="w-6 h-6 mr-2" />
@@ -103,7 +105,8 @@
 </template>
 
 <script setup lang="ts">
-import CheckIcon from '@/assets/icons/check-circle.svg';
+import { CheckCircle2 } from 'lucide-vue-next';
+
 import CartIcon from '@/assets/icons/cart.svg';
 import { CartInterface, ProductActionObject } from '~/model/cart/response/cart.interface';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
