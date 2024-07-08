@@ -2,6 +2,8 @@
 import { columns } from './columns';
 import _ from 'lodash';
 import { CustomerTableColumns, UserInterface } from '~/types/auth/user-interface';
+import { useAuthStore } from '~/store/authStore';
+import { LogsApiResponse } from './columns.enum';
 
 const emit = defineEmits<{
     showTotalItems: [val: number]
@@ -15,22 +17,28 @@ const error = ref(false);
 const emptyData = ref(false);
 const listItems = ref<CustomerTableColumns[]>([]);
 
+const authStore = useAuthStore();
+const token = authStore.getToken();
+
 const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
     error.value = false;
     loading.value = true;
-
     // FIX to use userID
+    
+    const config = useRuntimeConfig()
 
     // const data = await $api.userDashboard.fetchCustomersList(page, perPage, filters, sort);
-    const data = {
-            status:'success',
-            data: {
-                total_items: 100,
-                page_count: 10,
-                items: eventData,
+    const data = await $fetch<LogsApiResponse>(`${config.public.BASE_URL_API}/audit?page=1&perPage=10`, {
+            headers: { Authorization: `Bearer ${token}` },
+            params: {
+                page: page,
+                perPage: perPage,
+                ...filters,
+                ...sort,
             },
-        }
-
+        })
+    console.log(data);
+    
     if (!data || data.status !== 'success') {
         loading.value = false;
         error.value = true;
@@ -49,17 +57,6 @@ const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number
 
 fetchAndSetCustomersList(1, 10);
 
-const eventData = [
-  { type: 'User Created', ip: '192.168.1.45', timestamp: '20 November 2023, 14:47' },
-  { type: 'Favorite Folder Created', ip: '192.168.1.45', timestamp: '20 November 2023, 14:47' },
-  { type: 'Customer Order Created', ip: '192.168.1.45', timestamp: '20 November 2023, 14:47' },
-  { type: 'Payment Intent Created', ip: '192.168.1.45', timestamp: '20 November 2023, 14:47' },
-  { type: 'Payment Intent Created', ip: '192.168.1.45', timestamp: '20 November 2023, 14:47' },
-  { type: 'Payment Intent Created', ip: '192.168.1.45', timestamp: '20 November 2023, 14:47' },
-  { type: 'Payment Intent Created', ip: '192.168.1.45', timestamp: '20 November 2023, 14:47' },
-  { type: 'Payment Intent Created', ip: '192.168.1.45', timestamp: '20 November 2023, 14:47' },
-  { type: 'Payment Intent Created', ip: '192.168.1.45', timestamp: '20 November 2023, 14:47' }
-];
 </script>
 
 <template>

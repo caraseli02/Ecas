@@ -1,22 +1,23 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
-import { LogsTableColumnsEnum } from '~/components/client-table/logs/columns.enum';
+import CellDate from '~/components/dataTable/CellDate.vue';
+import { EventType, LogsItem, LogsTableColumnsEnum } from '~/components/client-table/logs/columns.enum';
 
 
-export const columns: ColumnDef<{type: string, ip: string, timestamp: string}>[] = [
+export const columns: ColumnDef<LogsItem>[] = [
     {
-        accessorKey: LogsTableColumnsEnum.ACTIONS,
+        accessorKey: LogsTableColumnsEnum.TYPE,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Action' }),
-        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, row.original.type),
+        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, EventType[row.original.type as unknown as keyof typeof EventType]),
     },
     {
         accessorKey: LogsTableColumnsEnum.IP,
         header: ({ column }) => h(ColumnHeader, { column, title: 'IP' }),
-        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' },  row.original.ip),
+        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' },  row.original.ip || '-'),
     },
     {
-        accessorKey: LogsTableColumnsEnum.TIMESTAMP,
-        header: ({ column }) => h(ColumnHeader, { column, title: 'Time' }),
-        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' },  row.original.timestamp),
+        accessorKey: LogsTableColumnsEnum.CREATED_AT,
+        header: ({ column }) => h(ColumnHeader, { column, title: 'Date' }),
+        cell: ({ row }) => h(CellDate, { inputDateString: row.getValue(LogsTableColumnsEnum.CREATED_AT) }),
     },
 ];
