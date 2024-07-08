@@ -31,7 +31,7 @@
                             <OrderSummaryBannerImageCard class="hidden xl:flex" />
                         </div>
                     </div>
-                    <div class="lg:grid lg:grid-cols-1">
+                    <div class="flex flex-col justify-start">
                         <OrderStockType
                             :items="cartItems"
                             :account-credit="accountCredit"

@@ -88,7 +88,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div ref="elDOM" class="relative bg-white rounded-md font-Inter pt-7 pb-[25px] shadow-m md:py-[15px]">
+    <div ref="elDOM" class="max-w-[1392px] mx-auto relative bg-white rounded-xl font-Inter pt-7 pb-[25px] shadow-m md:py-[15px]">
         <div
             class="flex flex-col items-center mb-[30px] md:flex-row md:justify-between md:items-end md:mb-10 md:border-b md:border-gray-200 md:px-[15px] lg:px-5"
         >
@@ -115,7 +115,7 @@ onMounted(() => {
             </div>
             <button
                 :disabled="isLoading"
-                class="flex bg-slate-500 px-[22px] py-[11px] rounded text-sm font-medium text-white flex-shrink-0 md:mb-[15px] w-[13.47rem] justify-center"
+                class="min-w-[236px] flex bg-slate-500 px-6 py-3 rounded-lg text-sm font-medium text-white flex-shrink-0 md:mb-[15px] w-fit justify-center"
                 :class="{ 'bg-gray-400': isLoading }"
                 @click="searchSimilarProducts"
             >
@@ -131,10 +131,10 @@ onMounted(() => {
                     class="group w-full text-xs leading-tight font-medium font-Inter text-left cursor-pointer transition-colors duration-300 odd:bg-[#F2F2F2] hover:text-blue-500"
                     @click="item.checked = !item.checked"
                 >
-                    <td class="pl-[15px] py-1 lg:pl-5">
+                    <td class="pl-[15px] py-1 lg:pl-5 max-w-36 pr-2">
                         {{ item.FeatureName }}
                     </td>
-                    <td class="py-1">
+                    <td class="py-1 max-w-16 truncate">
                         {{ item.FeatureValue }}
                     </td>
                     <td class="flex justify-end pr-[15px] py-1 lg:pr-5">
@@ -151,7 +151,7 @@ onMounted(() => {
         <div class="flex justify-center px-[15px] md:justify-end lg:px-5">
             <button
                 :disabled="isLoading"
-                class="flex bg-slate-500 px-[22px] py-[11px] rounded text-sm font-medium text-white w-[13.47rem] justify-center"
+                class="min-w-[236px] flex bg-slate-500 px-6 py-3 rounded-lg text-sm font-medium text-white flex-shrink-0 md:mb-[15px] justify-center"
                 :class="{ 'bg-gray-400': isLoading }"
                 @click="searchSimilarProducts"
             >

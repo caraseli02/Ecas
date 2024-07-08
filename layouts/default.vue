@@ -53,24 +53,8 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style>
+<style lang="postcss">
 body {
-  scrollbar-width: thin;
-  scrollbar-color: #ebebeb #ddd;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom right, #ebebeb 0%, #d6d6d6 100%);
-  border-radius: 5px;
-}
-
-body::-webkit-scrollbar-track {
-  background-color: #ddd;
-  border: 1px solid #ccc;
-}
-
-body::-webkit-scrollbar-button {
-  background-color: #ebebeb;
-  border-radius: 5px;
+  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300
 }
 </style>
