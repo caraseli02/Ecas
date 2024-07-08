@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { InfoIcon } from 'lucide-vue-next';
-import {  OrderType } from '~/types';
+import { OrderType } from '~/types';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
@@ -36,7 +36,7 @@ const payment = computed(() => {
         discountRate,
         discountAmount,
         handlingCharge: 5.49, // Consider making dynamic if applicable
-        shippingCost: 7.49, // Consider making dynamic if applicable
+        shippingCost: 0, // Consider making dynamic if applicable
         taxRate,
         taxAmount,
         stockOrderTotal: subtotal + taxAmount + 5.49 + 7.49, // Include other charges dynamically if needed
@@ -67,7 +67,7 @@ const payment = computed(() => {
                     <div class="flex gap-3 lg:mt-6 w-full lg:max-w-[412px]">
                         <figure class="flex justify-center items-center h-fit rounded-lg border border-solid border-grey-300">
                             <img
-                                :src="item.productEntity.details.ProductImage.ProductImageSmall"
+                                :src="item?.productEntity?.details.ProductImage.ProductImageSmall"
                                 alt="Product image"
                                 class="aspect-square max-h-[60px] min-w-[60px] lg:max-h-[72px] lg:w-[72px] rounded-lg"
                             />
@@ -76,8 +76,9 @@ const payment = computed(() => {
                             <div class="flex flex-col sm:flex-row sm:gap-2">
                                 <span class="text-sm font-medium leading-6 text-gray-500">Item:</span>
                                 <div class="flex gap-5 justify-between">
-                                    <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity.alias }}</span>
+                                    <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity?.alias }}</span>
                                     <span
+                                        v-if="item.discount.value"
                                         class="justify-center px-2 my-auto text-xs font-semibold leading-5 text-red-500 bg-white rounded-3xl border border-red-500 border-solid"
                                     >
                                         {{ item.discount.value }} %
@@ -87,24 +88,27 @@ const payment = computed(() => {
                             <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Description:</span>
                                 <span class="text-ellipsis text-neutral-700 w-full max-w-[235px] lg:max-w-[328px] truncate">
-                                    {{ item.productEntity.description }}
+                                    {{ item.productEntity?.description }}
                                 </span>
                             </div>
                             <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Manufacturer:</span>
-                                <span class="text-ellipsis text-neutral-700">{{ item.productEntity.manufacturer }}</span>
+                                <span class="text-ellipsis text-neutral-700">{{ item.productEntity?.manufacturer }}</span>
                             </div>
                         </div>
                     </div>
                     <template v-if="lgAndLarger">
-                        <div class="flex flex-col justify-center text-sm self-stretch px-6 py-4 leading-5">
+                        <div
+                            class="flex flex-col p-6 text-sm"
+                            :class="item.discount.value ? 'justify-center self-stretch px-6 py-4 leading-5' : ''"
+                        >
                             <p class="text-neutral-700">
                                 <span class="font-semibold text-neutral-700">$</span
-                                ><span class="text-neutral-700 line-through">
+                                ><span class="text-neutral-700" :class="item.discount.value ? 'line-through' : ''">
                                     {{ item.initialUnitPrice.toFixed(2) }}
                                 </span>
                             </p>
-                            <p class="mt-1 text-red-500">
+                            <p v-if="item.discount.value" class="mt-1 text-red-500">
                                 <span class="font-semibold text-red-500">$</span
                                 ><span class="text-red-500"> {{ item.unitPriceAfterDiscounts.toFixed(2) }}</span>
                             </p>
@@ -113,12 +117,15 @@ const payment = computed(() => {
                             <p class="font-semibold">{{ item.stock }}</p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
-                            <p><span class="font-semibold">$</span> {{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
+                            <p>
+                                <span class="font-semibold">$</span>
+                                {{ ((item.stock * item.unitPriceAfterDiscounts * payment.taxRate) / 100).toFixed(2) }}
+                            </p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
                             <p>
                                 <span class="font-semibold">$</span>
-                                {{ ((item.stock * item.unitPriceAfterDiscounts * payment.taxRate) / 100).toFixed(2) }}
+                                {{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}
                             </p>
                         </div>
                     </template>
@@ -188,16 +195,14 @@ const payment = computed(() => {
                     <div class="flex gap-5 text-sm leading-6">
                         <div
                             class="flex flex-1 flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500"
-
-                            ><div class="flex gap-2">
+                        >
+                            <div class="flex gap-2">
                                 Shipping
                                 <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
                             </div>
-                            <div>Standard Delivery (3-5 Days)</div>
+                            <div>-</div>
                         </div>
-                        <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-fit">
-                            ${{ payment.shippingCost.toFixed(2) }}
-                        </div>
+                        <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-fit">${{ payment.shippingCost || 0 }}</div>
                     </div>
                     <div class="flex gap-2 justify-between w-full text-sm leading-6">
                         <div class="flex gap-5 justify-between whitespace-nowrap">

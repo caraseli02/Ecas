@@ -78,10 +78,11 @@ export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'userN
 
 export interface OrderRequestInterface {
     userId?: string;
-    userName?: string;
+    userName: string;
+    userEmail: string;
     businessId?: string;
     cartId?: string;
-    products?: CartProductsInterface[];
+    products: CartProductsInterface[];
     shippingDetails: OrderShippingDetailsInterface;
     stripeCardId?: any;
     paymentDetails: PaymentDetails;
@@ -92,7 +93,36 @@ export interface OrderRequestInterface {
     isDraft: boolean;
     note?: OrderNotesInterface;
     stock: string;
+    total?: number;
+    subtotal: string;
+    updatedAt?: string;
 }
+
+export interface OrderRequestInterfaceResponse {
+    status: string;
+    data: {
+        order: OrderRequestInterface;
+        children: any;
+    };
+}
+
+export type PaymentInfo =
+    | {
+          type: 'Credit';
+          info: {
+              limit: number;
+              spent: number;
+              available: number;
+              dueDate: string;
+              tillDue: string;
+              term: number;
+              freeze: boolean;
+              active: boolean;
+          };
+      }
+    | { type: 'Card'; info: { provider: string; last4: string } }
+    | { type: 'Bank'; info: { text: string } }
+    | null;
 
 export enum DeliveryMethodEnum {
     Free = 0,
@@ -181,6 +211,20 @@ export enum PaymentTypeEnum {
     Bank = 3,
 }
 
+export interface PaymentSummaryInterface {
+    subtotal?: number;
+    discountPercentage?: number;
+    discountAmount?: number;
+    handlingCharge?: number;
+    shippingCost?: number;
+    taxPercentage?: number;
+    taxAmount?: number;
+    backorderItemsTotal?: number;
+    stockItemsTotal?: number;
+    orderTotal?: number;
+    payableNow?: number;
+}
+
 export const getPaymentTypeById = <
     T extends {
         [index: string]: number;
@@ -203,6 +247,14 @@ export interface PriceHistory {
     createdAt: string;
     price: number;
     updatedAt: string;
+}
+
+export interface OrderConfirmationAddress {
+    name1: string;
+    name2: string;
+    postcode: string;
+    country: string;
+    city: string;
 }
 
 export enum OrderStatus {

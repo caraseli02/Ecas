@@ -460,10 +460,12 @@ async function makeCheckout() {
         if (response.status !== 'success') {
             await router.push({ path: '/checkout/fail' });
         } else {
+            const orderId = response.data.orderId;
             if (paymentDetails.value.type === PaymentTypeEnum.Card) {
                 const result = response.data.result;
 
                 if (result) {
+                    await router.push({ path: '/order-summary/' + orderId });
                     if (result.status === 'succeeded') {
                         console.log('order paid with a default card');
                         await router.push({ path: '/checkout/success' });
@@ -485,8 +487,10 @@ async function makeCheckout() {
                     await router.push({ path: '/checkout/session' });
                 }
             } else if (paymentDetails.value.type === PaymentTypeEnum.Credit) {
+                await router.push({ path: '/order-summary/' + orderId });
+
                 console.log('paid with credit');
-                await router.push({ path: '/checkout/success' });
+                // await router.push({ path: '/checkout/success' });
             }
         }
     } catch (error) {
