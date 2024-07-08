@@ -83,6 +83,9 @@ const eventData = [
                     </UiButton> -->
                 </DataTableHeadControls>
             </template>
+            <template #toolbar="{ table }">
+                <ClientTableLogsToolbar :table="table" />
+            </template>
         </DataTable>
         <UiSkeleton v-else class="w-full h-full" />
     </div>
