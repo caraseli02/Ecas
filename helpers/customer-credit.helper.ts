@@ -5,7 +5,6 @@ export const customerCreditHelper = (credit: CustomerCreditInterface) => {
     let spent = '';
     let limit = '';
     let available = '';
-    console.log(credit);
     let dueDate;
     let tillDue;
     let term;

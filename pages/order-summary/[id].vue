@@ -107,11 +107,9 @@ const getOrderInformation = async () => {
                 ? response.data.children.find((child: any) => child.type === OrderType.Back)
                 : response.data.order;
         backorderItems.value = backOrder.value.products || [];
-
         notes.value = response.data.order.note?.message || 'Add a note to your order...';
-
+        console.log(response.data);
         paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value);
-        console.log(orderType.value === OrderType.Mixed, 'orderType.value === OrderType.Mixed');
 
         addresses.value = {
             shippingAddress: {

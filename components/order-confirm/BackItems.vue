@@ -14,11 +14,7 @@ const props = defineProps<{
 
 const type = props.orderType === OrderType.Back ? '' : 'Back';
 
-const backOrderItems = computed(() => {
-    return props.data.filter(
-        (item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock
-    );
-});
+const backOrderItems = ref(props.data);
 
 const payment = computed(() => {
     let subtotal = 0;
@@ -30,7 +26,6 @@ const payment = computed(() => {
     const taxRate = 19; // Consider moving to a dynamic setting or config
     const taxAmount = subtotal * (taxRate / 100);
     const discountRate = (discountAmount / subtotal) * 100;
-
     return {
         subtotal,
         discountRate,
@@ -99,7 +94,7 @@ const payment = computed(() => {
                     </div>
                     <template v-if="lgAndLarger">
                         <div
-                            class="flex flex-col p-6 text-sm"
+                            class="flex flex-col p-6 text-sm w-[86px]"
                             :class="item.discount.value ? 'justify-center self-stretch px-6 py-4 leading-5' : ''"
                         >
                             <p class="text-neutral-700">
@@ -114,18 +109,18 @@ const payment = computed(() => {
                             </p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
-                            <p class="font-semibold">{{ item.stock }}</p>
+                            <p class="font-semibold">{{ item.backorder_stock }}</p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
-                            <p>
+                            <p v-if="item.backorder_stock">
                                 <span class="font-semibold">$</span>
-                                {{ ((item.stock * item.unitPriceAfterDiscounts * payment.taxRate) / 100).toFixed(2) }}
+                                {{ ((item?.backorder_stock * item.unitPriceAfterDiscounts * payment.taxRate) / 100).toFixed(2) }}
                             </p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
-                            <p>
+                            <p v-if="item.backorder_stock">
                                 <span class="font-semibold">$</span>
-                                {{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}
+                                {{ (item?.backorder_stock * item.unitPriceAfterDiscounts).toFixed(2) }}
                             </p>
                         </div>
                     </template>
@@ -153,13 +148,15 @@ const payment = computed(() => {
                                 class="flex gap-5 justify-between mt-1 w-full leading-6 text-neutral-800 max-md:flex-wrap max-md:max-w-full"
                             >
                                 <p>Tax (VAT 19%)</p>
-                                <p>${{ ((item.stock * item.unitPriceAfterDiscounts * payment.taxRate) / 100).toFixed(2) }}</p>
+                                <p v-if="item.backorder_stock">
+                                    ${{ ((item?.backorder_stock * item.unitPriceAfterDiscounts * payment.taxRate) / 100).toFixed(2) }}
+                                </p>
                             </article>
                             <article
                                 class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full"
                             >
                                 <p>Subtotal</p>
-                                <p>${{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
+                                <p v-if="item.backorder_stock">${{ (item.backorder_stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
                             </article>
                         </section>
                     </template>
