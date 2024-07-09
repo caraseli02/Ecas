@@ -75,6 +75,7 @@ const payment = computed(() => {
                                 <div class="flex gap-5 justify-between">
                                     <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity?.alias }}</span>
                                     <span
+                                        v-if="item.discount.value"
                                         class="justify-center px-2 my-auto text-xs font-semibold leading-5 text-red-500 bg-white rounded-3xl border border-red-500 border-solid"
                                     >
                                         {{ item.discount.value }} %
@@ -125,7 +126,7 @@ const payment = computed(() => {
                                         <span class="leading-5 text-neutral-800">$</span
                                         ><span class="leading-5">{{ item.initialUnitPrice.toFixed(2) }}</span>
                                     </p>
-                                    <p class="font-medium text-red-500">
+                                    <p v-if="item.discount.value" class="font-medium text-red-500">
                                         <span class="text-red-500">$</span><span> {{ item.unitPriceAfterDiscounts.toFixed(2) }}</span>
                                     </p>
                                 </section>
