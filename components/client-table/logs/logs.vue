@@ -3,7 +3,7 @@ import { columns } from './columns';
 import _ from 'lodash';
 import { CustomerTableColumns, UserInterface } from '~/types/auth/user-interface';
 import { useAuthStore } from '~/store/authStore';
-import { LogsApiResponse } from './columns.enum';
+import { PaginatedCustomersInterface } from "~/model/dashboard/response/CustomerInterfaceResponse";
 
 const emit = defineEmits<{
     showTotalItems: [val: number]
@@ -28,7 +28,7 @@ const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number
     const config = useRuntimeConfig()
 
     // const data = await $api.userDashboard.fetchCustomersList(page, perPage, filters, sort);
-    const data = await $fetch<LogsApiResponse>(`${config.public.BASE_URL_API}/audit?page=1&perPage=10`, {
+    const data = await $fetch<PaginatedCustomersInterface>(`${config.public.BASE_URL_API}/audit?page=1&perPage=10`, {
             headers: { Authorization: `Bearer ${token}` },
             params: {
                 page: page,
@@ -37,7 +37,6 @@ const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number
                 ...sort,
             },
         })
-    console.log(data);
     
     if (!data || data.status !== 'success') {
         loading.value = false;
