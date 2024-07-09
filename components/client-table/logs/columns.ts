@@ -8,7 +8,7 @@ export const columns: ColumnDef<LogsItem>[] = [
     {
         accessorKey: LogsTableColumnsEnum.TYPE,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Action' }),
-        cell: ({ row }) => h('div', { class: 'inline overflow-hidden capitalize' }, row.original.type.replace('_',' ')  ),
+        cell: ({ row }) => h('div', { class: 'inline overflow-hidden capitalize' }, row.original.type.replaceAll('_',' ')  ),
     },
     {
         accessorKey: LogsTableColumnsEnum.IP,
