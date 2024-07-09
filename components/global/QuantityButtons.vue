@@ -8,7 +8,7 @@
         >
             <MinusIcon class="w-6 h-6 flex-shrink-0" />
         </button>
-        <label class="flex">
+        <label :key="modelValue" class="flex">
             <input
                 v-if="modelValue > -1"
                 :value="Number(modelValue) < object.min && type === OrderType.Stock ? Number(object.min) : Number(modelValue)"
@@ -113,4 +113,10 @@ const inputHandlerModified = (event: Event) => {
         inputHandler(props.object.min);
     }
 };
+
+watch(() => props.modelValue, (newQuantity) => {
+    if(newQuantity < 10) {
+        emits('update:modelValue', props.object.min);
+    }
+}, { immediate: true });
 </script>

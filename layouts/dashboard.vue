@@ -31,3 +31,9 @@ import HeartIcon from '@/assets/icons/dashboard/heart.svg';
 const isSideNavCollapsedOnDesktop = ref(true);
 const showSideNav = ref(false);
 </script>
+
+<style lang="postcss">
+body {
+  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300
+}
+</style>
