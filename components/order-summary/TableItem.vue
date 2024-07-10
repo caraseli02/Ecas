@@ -81,6 +81,7 @@
         <Transition name="expand">
             <OrderSummaryTableItemDropdown
                 v-if="expanded"
+                :key="stockItem ? `${item.id} - ${item.stock}` : `${item.id} - ${item.backorder_stock}`"
                 ref="tab"
                 :item="item"
                 :short-stock="shortStock"
