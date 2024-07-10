@@ -38,6 +38,7 @@ const addresses = ref<{
         name2: string;
         postcode: string;
         country: string;
+        default: boolean;
     };
     billingAddress: {
         name1: string;
@@ -51,6 +52,7 @@ const addresses = ref<{
         name2: '',
         postcode: '',
         country: '',
+        default: false,
     },
     billingAddress: {
         name1: '',
@@ -110,13 +112,13 @@ const getOrderInformation = async () => {
         notes.value = response.data.order.note?.message || 'Add a note to your order...';
         console.log(response.data);
         paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value);
-
         addresses.value = {
             shippingAddress: {
                 name1: response.data.order.shippingDetails.address.name1,
                 name2: response.data.order.shippingDetails.address.name2 ? response.data.order.shippingDetails.address.name2 : '',
                 postcode: response.data.order.shippingDetails.address.postcode,
                 country: response.data.order.shippingDetails.address.country,
+                default: response.data.order.shippingDetails.address.default || false,
             },
             billingAddress: {
                 name1: response.data.order.shippingDetails.billingAddress.name1,
