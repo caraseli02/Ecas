@@ -110,10 +110,10 @@ const payment = computed(() => {
                             <p class="font-semibold">{{ item.stock }}</p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
-                            <p><span class="font-semibold">$</span> {{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
+                            <p><span class="font-semibold">$</span> {{ (item.stock * item.unitPriceAfterDiscounts * 0.19).toFixed(2) }}</p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
-                            <p><span class="font-semibold">$</span> {{ (item.stock * item.unitPriceAfterDiscounts * 0.19).toFixed(2) }}</p>
+                            <p><span class="font-semibold">$</span> {{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
                         </div>
                     </template>
                     <template v-else>
