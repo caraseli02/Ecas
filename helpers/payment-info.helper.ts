@@ -17,7 +17,6 @@ export const paymentInfoHelper = (order: OrderRequestInterface, userDetails: Use
         case PaymentTypeEnum.Credit: {
             if (creditInfo === undefined) return null;
             const credit = customerCreditHelper(creditInfo);
-            console.log(credit);
             return {
                 type: 'Credit',
                 info: {

@@ -14,11 +14,7 @@ const props = defineProps<{
 
 const type = props.orderType === OrderType.Stock ? '' : 'Stock';
 
-const stockItems = computed(() => {
-    return props.data.filter(
-        (item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.productEntity.stock >= item.stock
-    );
-});
+const stockItems = ref(props.data);
 
 const payment = computed(() => {
     let subtotal = 0;
@@ -95,14 +91,17 @@ const payment = computed(() => {
                         </div>
                     </div>
                     <template v-if="lgAndLarger">
-                        <div class="flex flex-col justify-center text-sm self-stretch px-6 py-4 leading-5">
+                        <div
+                            class="flex flex-col p-6 text-sm w-[86px]"
+                            :class="item.discount.value ? 'justify-center self-stretch px-6 py-4 leading-5' : ''"
+                        >
                             <p class="text-neutral-700">
                                 <span class="font-semibold text-neutral-700">$</span
-                                ><span class="text-neutral-700 line-through">
+                                ><span class="text-neutral-700" :class="item.discount.value ? 'line-through' : ''">
                                     {{ item.initialUnitPrice.toFixed(2) }}
                                 </span>
                             </p>
-                            <p class="mt-1 text-red-500">
+                            <p v-if="item.discount.value" class="mt-1 text-red-500">
                                 <span class="font-semibold text-red-500">$</span
                                 ><span class="text-red-500"> {{ item.unitPriceAfterDiscounts.toFixed(2) }}</span>
                             </p>
