@@ -2,6 +2,7 @@
 import { BoxIcon, FileText, MapPin, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
 import {
     CartProductsInterface,
+    OrderNotesInterface,
     OrderRequestInterface,
     OrderRequestInterfaceResponse,
     OrderType,
@@ -20,7 +21,7 @@ const { getUserDetails } = storeToRefs(authStore);
 const { $api } = useNuxtApp();
 
 const route = useRoute();
-
+const generalSettings = useAuthStore().generalSettings;
 const orderType = ref<OrderType | null>(null);
 const customerDetails = ref({
     title: 'Customer Details',
@@ -31,6 +32,9 @@ const customerDetails = ref({
 const date = ref<string>('' as string);
 const orderPaySum = ref<PaymentSummaryInterface>({} as PaymentSummaryInterface);
 const paymentMethod = ref<PaymentInfo>({} as PaymentInfo);
+const shippingMethod = computed(() =>
+    generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data.order.shippingDetails._id)
+);
 
 const addresses = ref<{
     shippingAddress: {
@@ -62,24 +66,34 @@ const addresses = ref<{
     },
 });
 
-const notes = ref<string>('' as string);
+const notes = ref<OrderNotesInterface[]>([] as OrderNotesInterface[]);
 
 const data = ref<OrderRequestInterfaceResponse>({} as OrderRequestInterfaceResponse);
 
 const hasMixedItems = computed(() => {
     if (data.value.data?.children?.length > 0) {
+        const shippingType = generalSettings?.orderSettings?.deliveryTypes.find(
+            (type) => type._id === data.value.data.order.shippingDetails._id
+        );
+        console.log(generalSettings);
         const orderInfo = data.value.data.order;
         orderPaySum.value.orderTotal = orderInfo.total;
         orderPaySum.value.subtotal = Number(orderInfo.subtotal);
-        orderPaySum.value.stockItemsTotal = stockOrder.value.total;
-        orderPaySum.value.backorderItemsTotal = backOrder.value.total;
-        orderPaySum.value.taxPercentage = 10;
-        orderPaySum.value.taxAmount = 0.1 * (orderPaySum.value.orderTotal || 0);
-        orderPaySum.value.payableNow = 0;
+        if (orderInfo.type === OrderType.Mixed) {
+            orderPaySum.value.stockItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Stock).total;
+            orderPaySum.value.backorderItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Back).total;
+            orderPaySum.value.payableNow = orderPaySum.value.stockItemsTotal;
+        }
+        orderPaySum.value.taxPercentage = 19;
+        orderPaySum.value.taxAmount = 0.19 * (orderPaySum.value.subtotal || 0);
         orderPaySum.value.discountPercentage = 10;
-        orderPaySum.value.discountAmount = 10;
+        orderPaySum.value.discountAmount = 0.1 * (orderPaySum.value.subtotal || 0);
         orderPaySum.value.handlingCharge = 0;
-        orderPaySum.value.shippingCost = 10;
+        orderPaySum.value.shippingCost = shippingType?.price || 0;
+        orderPaySum.value.shippingText = shippingType?.title || '';
+        orderPaySum.value.orderType = orderInfo.type;
+        orderPaySum.value.smallOrderCharge =
+            generalSettings?.orderSettings?.smallOrderCharge.find((type) => type._id === orderInfo.smallOrderChargeId)?.price || 0;
     }
     return orderType.value === 2;
 });
@@ -109,7 +123,7 @@ const getOrderInformation = async () => {
                 ? response.data.children.find((child: any) => child.type === OrderType.Back)
                 : response.data.order;
         backorderItems.value = backOrder.value.products || [];
-        notes.value = response.data.order.note?.message || 'Add a note to your order...';
+        notes.value = response.data.order.note || [];
         console.log(response.data);
         paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value);
         addresses.value = {
@@ -149,7 +163,10 @@ await getOrderInformation();
                     <h1 class="text-2xl font-semibold leading-8 text-neutral-700">
                         Order ID: <span class="text-blue-500">#{{ route.params.id }}</span>
                     </h1>
-                    <UiBadge class="justify-center px-2 py-1 my-auto text-sm font-medium leading-5 text-white bg-blue-500 rounded">
+                    <UiBadge
+                        v-if="orderType === OrderType.Mixed"
+                        class="justify-center px-2 py-1 my-auto text-sm font-medium leading-5 text-white bg-blue-500 rounded"
+                    >
                         Mixed Order
                     </UiBadge>
                 </div>
@@ -188,7 +205,7 @@ await getOrderInformation();
                     <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
                     <div class="flex gap-2">
                         <div class="text-slate-500">Shipping Method:</div>
-                        <div class="text-neutral-700">-</div>
+                        <div class="text-neutral-700">{{ shippingMethod?.title }}</div>
                     </div>
                 </div>
             </div>
@@ -207,7 +224,7 @@ await getOrderInformation();
             :order-type="orderType"
         />
         <section class="flex flex-col lg:flex-row gap-9">
-            <div class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
+            <div v-if="notes[0]" class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
                 <h2 class="w-full font-semibold max-md:max-w-full">Customer Notes</h2>
                 <textarea
                     placeholder="Please deliver after 4PM and call me (0742624425) prior to delivery."

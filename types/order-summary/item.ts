@@ -149,6 +149,7 @@ export interface OrderShippingDetailsInterface {
     deliveryTypeId: string;
     backorderShippingTypeId?: string;
     stockorderShippingTypeId?: string;
+    _id?: string;
 }
 
 export interface PaymentDetails {
@@ -223,6 +224,9 @@ export interface PaymentSummaryInterface {
     stockItemsTotal?: number;
     orderTotal?: number;
     payableNow?: number;
+    shippingText?: string;
+    orderType?: OrderType;
+    smallOrderCharge?: number;
 }
 
 export const getPaymentTypeById = <
