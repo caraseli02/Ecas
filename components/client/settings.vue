@@ -4,6 +4,7 @@
 
 <template>
   <ClientDetails />
+  <ClientShipping />
 </template>
 
 <style scoped lang="postcss">
