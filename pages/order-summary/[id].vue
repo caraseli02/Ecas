@@ -8,6 +8,7 @@ import {
     OrderType,
     PaymentInfo,
     PaymentSummaryInterface,
+    PaymentTypeEnum,
 } from '~/types';
 import moment from 'moment';
 import { paymentInfoHelper } from '~/helpers/payment-info.helper';
@@ -31,7 +32,12 @@ const customerDetails = ref({
 });
 const date = ref<string>('' as string);
 const orderPaySum = ref<PaymentSummaryInterface>({} as PaymentSummaryInterface);
-const paymentMethod = ref<PaymentInfo>({} as PaymentInfo);
+const paymentMethod = ref<{ type: PaymentTypeEnum; info: PaymentInfo }>(
+    {} as {
+        type: PaymentTypeEnum;
+        info: PaymentInfo;
+    }
+);
 const shippingMethod = computed(() =>
     generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data.order.shippingDetails._id)
 );
@@ -126,6 +132,7 @@ const getOrderInformation = async () => {
         notes.value = response.data.order.note || [];
         console.log(response.data);
         paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value);
+        console.log(paymentMethod.value);
         addresses.value = {
             shippingAddress: {
                 name1: response.data.order.shippingDetails.address.name1,

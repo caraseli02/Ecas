@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { InfoIcon, SettingsIcon } from 'lucide-vue-next';
-import { PaymentInfo } from '~/types';
+import { computed } from 'vue';
+import { BankInfo, CardInfo, CreditInfo, PaymentTypeEnum } from '~/types';
 
 const props = defineProps<{
     customerDetails: {
@@ -10,10 +11,20 @@ const props = defineProps<{
         phone: string;
     };
     paymentMethod: {
-        type: string;
-        info: PaymentInfo;
+        type: PaymentTypeEnum;
+        info: CardInfo | CreditInfo | BankInfo;
     };
 }>();
+
+const isCardInfo = computed(
+    () => props.paymentMethod.type === PaymentTypeEnum.Card && (props.paymentMethod.info as CardInfo).provider !== undefined
+);
+const isCreditInfo = computed(
+    () => props.paymentMethod.type === PaymentTypeEnum.Credit && (props.paymentMethod.info as CreditInfo).limit !== undefined
+);
+const isBankInfo = computed(
+    () => props.paymentMethod.type === PaymentTypeEnum.Bank && (props.paymentMethod.info as BankInfo).text !== undefined
+);
 </script>
 
 <template>
@@ -22,20 +33,19 @@ const props = defineProps<{
             <div class="flex flex-col grow text-sm font-semibold leading-5 text-neutral-700 max-md:mt-9 max-md:max-w-full">
                 <h2 class="text-base leading-7 max-md:max-w-full">{{ props.customerDetails.title }}</h2>
                 <p class="mt-9 leading-6 max-md:max-w-full">{{ props.customerDetails.name }}</p>
-                <p class="mt-2 font-medium text-gray-500 max-md:max-w-full">
-                    {{ props.customerDetails.email }}
-                </p>
-                <p class="mt-2 font-medium text-gray-500 max-md:max-w-full">
-                    {{ props.customerDetails.phone }}
-                </p>
+                <p class="mt-2 font-medium text-gray-500 max-md:max-w-full">{{ props.customerDetails.email }}</p>
+                <p class="mt-2 font-medium text-gray-500 max-md:max-w-full">{{ props.customerDetails.phone }}</p>
             </div>
         </div>
         <div class="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col max-md:mt-9 max-md:max-w-full">
                 <h2 class="text-base font-semibold leading-7 text-neutral-700 max-md:max-w-full">Payment Method</h2>
-                <div v-if="paymentMethod.type === 'Card'" class="flex gap-2 self-start pr-8 mt-9 max-md:pr-5">
-                    <p class="text-sm font-medium leading-6 text-gray-500">Visa</p>
-                    <p class="text-sm font-medium leading-6 text-gray-500">**73</p>
+
+                <div v-if="isCardInfo" class="flex gap-2 self-start pr-8 mt-9 max-md:pr-5">
+                    <p class="text-sm font-medium leading-6 text-gray-500">{{ (props.paymentMethod.info as CardInfo).provider }}</p>
+                    <p class="text-sm font-medium leading-6 text-gray-500">
+                        ** {{ (props.paymentMethod.info as CardInfo).last4.slice(-2) }}
+                    </p>
                     <div
                         class="flex justify-center items-center px-1 py-2 bg-violet-100 rounded border border-gray-300 border-solid shadow-xl"
                     >
@@ -47,9 +57,10 @@ const props = defineProps<{
                         />
                     </div>
                 </div>
-                <UiDropdownMenu v-if="paymentMethod.type === 'Credit'">
+
+                <UiDropdownMenu v-if="isCreditInfo">
                     <UiDropdownMenuTrigger class="w-fit flex items-center gap-2 mt-9">
-                        {{ paymentMethod.type }}
+                        Credit
                         <InfoIcon class="w-4 h-4 stroke-1" />
                     </UiDropdownMenuTrigger>
                     <UiDropdownMenuContent class="p-4">
@@ -61,32 +72,33 @@ const props = defineProps<{
                             <section class="flex gap-5 justify-between mt-4 text-xs leading-5 text-gray-500 rounded-lg">
                                 <div class="flex flex-col justify-center">
                                     <h3>Credit Limit</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ paymentMethod.info?.limit }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).limit }}</p>
                                     <h3 class="mt-4">Till Due</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ paymentMethod.info?.tillDue }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).tillDue }}</p>
                                 </div>
                                 <div class="flex flex-col justify-center">
                                     <h3>Credit Term</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ paymentMethod.info?.term }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).term }}</p>
                                     <h3 class="mt-4">Total Spent</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ paymentMethod.info?.spent }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).spent }}</p>
                                 </div>
                                 <div class="flex flex-col justify-center">
                                     <h3>Due Date</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ paymentMethod.info?.dueDate }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).dueDate }}</p>
                                     <h3 class="mt-4">Available</h3>
-                                    <p class="mt-1 font-medium text-red-500">{{ paymentMethod.info?.available }}</p>
+                                    <p class="mt-1 font-medium text-red-500">{{ (props.paymentMethod.info as CreditInfo).available }}</p>
                                 </div>
                             </section>
                         </article>
                     </UiDropdownMenuContent>
                 </UiDropdownMenu>
-                <UiDropdownMenu v-if="paymentMethod.type === 'Bank'">
+
+                <UiDropdownMenu v-if="isBankInfo">
                     <UiDropdownMenuTrigger class="w-fit flex items-center gap-2 mt-9">
                         Bank Transfer
                         <InfoIcon class="w-4 h-4 stroke-1" />
                     </UiDropdownMenuTrigger>
-                    <UiDropdownMenuContent class="p-4"> Bank Transfer </UiDropdownMenuContent>
+                    <UiDropdownMenuContent class="p-4"> Bank Transfer</UiDropdownMenuContent>
                 </UiDropdownMenu>
             </div>
         </div>

@@ -106,23 +106,28 @@ export interface OrderRequestInterfaceResponse {
     };
 }
 
-export type PaymentInfo =
-    | {
-          type: 'Credit';
-          info: {
-              limit: number;
-              spent: number;
-              available: number;
-              dueDate: string;
-              tillDue: string;
-              term: number;
-              freeze: boolean;
-              active: boolean;
-          };
-      }
-    | { type: 'Card'; info: { provider: string; last4: string } }
-    | { type: 'Bank'; info: { text: string } }
-    | null;
+export interface CardInfo {
+    provider: string;
+    last4: string;
+}
+
+export interface CreditInfo {
+    limit: number;
+    tillDue: string;
+    term: string;
+    spent: number;
+    available: number;
+    dueDate: string;
+}
+
+export interface BankInfo {
+    text: string;
+}
+
+export interface PaymentInfo {
+    type: PaymentTypeEnum;
+    info: CardInfo | CreditInfo | BankInfo;
+}
 
 export enum DeliveryMethodEnum {
     Free = 0,
