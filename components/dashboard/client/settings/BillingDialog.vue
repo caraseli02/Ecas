@@ -56,7 +56,7 @@ const isOpen = ref(false);
 <template>
   <UiDialog v-model:open="isOpen">
     <UiDialogTrigger as-child>
-      <UiButton size="icon" variant="ghost">
+      <UiButton class="rounded-full" size="icon" variant="ghost">
         <PlusCircleIcon class="aspect-square w-10 h-10 stroke-1 text-blue-500" />
       </UiButton>
     </UiDialogTrigger>
