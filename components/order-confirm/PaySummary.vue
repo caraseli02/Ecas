@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { InfoIcon } from 'lucide-vue-next';
-import { PaymentSummaryInterface } from '~/types';
+import { OrderType, PaymentSummaryInterface } from '~/types';
 import { PropType } from 'vue';
 
 const props = defineProps({
@@ -9,6 +9,12 @@ const props = defineProps({
         required: true,
     },
 });
+
+const shippingCost = computed(() => {
+    console.log(props.orderPaySum);
+    return props.orderPaySum.shippingCost;
+});
+const shippingText = computed(() => props.orderPaySum.shippingText);
 </script>
 
 <template>
@@ -48,11 +54,9 @@ const props = defineProps({
                         Shipping
                         <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
                     </div>
-                    <div>Standard Delivery (3-5 Days)</div>
+                    <div>{{ shippingText }}</div>
                 </div>
-                <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
-                    ${{ props.orderPaySum?.shippingCost?.toFixed(2) }}
-                </div>
+                <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">${{ shippingCost?.toFixed(2) }}</div>
             </div>
             <!-- Tax Information -->
             <div class="flex gap-2 justify-between w-full text-sm leading-6">
@@ -66,11 +70,11 @@ const props = defineProps({
                 <div class="font-medium text-neutral-700">${{ props.orderPaySum?.taxAmount?.toFixed(2) }}</div>
             </div>
             <!-- Totals for Backorder and Stock Items -->
-            <div class="flex gap-2 justify-between w-full text-neutral-700">
+            <div v-if="props.orderPaySum.orderType === OrderType.Mixed" class="flex gap-2 justify-between w-full text-neutral-700">
                 <div class="text-xl leading-9">Backorder Items Total</div>
                 <div class="text-2xl font-semibold leading-9">${{ props.orderPaySum?.backorderItemsTotal?.toFixed(2) }}</div>
             </div>
-            <div class="flex gap-2 justify-between w-full text-neutral-700">
+            <div v-if="props.orderPaySum.orderType === OrderType.Mixed" class="flex gap-2 justify-between w-full text-neutral-700">
                 <div class="text-xl leading-9">Stock Items Total</div>
                 <div class="text-2xl font-semibold leading-9">${{ props.orderPaySum?.stockItemsTotal?.toFixed(2) }}</div>
             </div>
@@ -80,7 +84,7 @@ const props = defineProps({
                 <div class="text-xl leading-9">Order Total</div>
                 <div class="text-2xl font-semibold leading-9">${{ props.orderPaySum?.orderTotal?.toFixed(2) }}</div>
             </div>
-            <div class="flex gap-2 justify-between w-full text-neutral-700">
+            <div v-if="props.orderPaySum.orderType === OrderType.Mixed" class="flex gap-2 justify-between w-full text-neutral-700">
                 <div class="text-xl leading-9">Payable now</div>
                 <div class="text-2xl font-semibold leading-9">${{ props.orderPaySum?.payableNow?.toFixed(2) }}</div>
             </div>

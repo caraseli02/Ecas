@@ -152,63 +152,65 @@ const payment = computed(() => {
                     </template>
                 </div>
             </div>
-            <UiSeparator class="bg-light-500" />
-            <div class="flex flex-col gap-4 w-full">
-                <header class="w-full text-sm font-semibold leading-6 text-neutral-700">
-                    {{ type + ' Order Payment Summary' }}
-                </header>
-                <section class="flex flex-col gap-2">
-                    <div class="flex gap-2 justify-between w-full text-sm font-medium leading-6">
-                        <div class="text-gray-500">Subtotal</div>
-                        <div class="text-neutral-700">${{ payment.subtotal.toFixed(2) }}</div>
-                    </div>
-                    <div class="flex gap-2 justify-between w-full text-sm leading-6">
-                        <div class="flex gap-5 justify-between whitespace-nowrap">
-                            <div class="font-medium text-gray-500">Discount</div>
-                            <div class="text-neutral-700">{{ payment.discountRate.toFixed(2) }}%</div>
+            <div v-if="orderType === OrderType.Mixed">
+                <UiSeparator class="bg-light-500" />
+                <div class="flex flex-col gap-4 w-full">
+                    <header class="w-full text-sm font-semibold leading-6 text-neutral-700">
+                        {{ type + ' Order Payment Summary' }}
+                    </header>
+                    <section class="flex flex-col gap-2">
+                        <div class="flex gap-2 justify-between w-full text-sm font-medium leading-6">
+                            <div class="text-gray-500">Subtotal</div>
+                            <div class="text-neutral-700">${{ payment.subtotal.toFixed(2) }}</div>
                         </div>
-                        <div class="font-medium text-neutral-700">${{ payment.discountAmount.toFixed(2) }}</div>
-                    </div>
-                    <div class="flex gap-5 text-sm leading-6">
-                        <div class="flex flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500">
-                            <div class="flex gap-2">
-                                Handling Charge
-                                <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
+                        <div v-if="payment.discountAmount" class="flex gap-2 justify-between w-full text-sm leading-6">
+                            <div class="flex gap-5 justify-between whitespace-nowrap">
+                                <div class="font-medium text-gray-500">Discount</div>
+                                <div class="text-neutral-700">{{ payment.discountRate.toFixed(2) }}%</div>
                             </div>
-                            <div>Small order charge</div>
+                            <div class="font-medium text-neutral-700">${{ payment.discountAmount.toFixed(2) }}</div>
                         </div>
-                        <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
-                            ${{ payment.handlingCharge.toFixed(2) }}
-                        </div>
-                    </div>
-                    <div class="flex gap-5 text-sm leading-6">
-                        <div class="flex flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500">
-                            <div class="flex gap-2">
-                                Shipping
-                                <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
+                        <div class="flex gap-5 text-sm leading-6">
+                            <div class="flex flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500">
+                                <div class="flex gap-2">
+                                    Handling Charge
+                                    <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
+                                </div>
+                                <div>Small order charge</div>
                             </div>
-                            <div>-</div>
-                        </div>
-                        <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
-                            ${{ payment.shippingCost.toFixed(2) }}
-                        </div>
-                    </div>
-                    <div class="flex gap-2 justify-between w-full text-sm leading-6">
-                        <div class="flex gap-5 justify-between whitespace-nowrap">
-                            <div class="flex gap-2 font-medium text-gray-500">
-                                <div>Tax:</div>
-                                <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
+                            <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
+                                ${{ payment.handlingCharge.toFixed(2) }}
                             </div>
-                            <div class="text-neutral-700">({{ payment.taxRate }}%)</div>
                         </div>
-                        <div class="font-medium text-neutral-700">${{ payment.taxAmount.toFixed(2) }}</div>
-                    </div>
-                    <UiSeparator class="bg-light-500" />
-                    <div class="flex gap-2 justify-between mt-2 w-full text-neutral-700">
-                        <div class="text-xl leading-9">{{ type + ' Order Total' }}</div>
-                        <div class="text-2xl font-semibold leading-9">${{ payment.stockOrderTotal.toFixed(2) }}</div>
-                    </div>
-                </section>
+                        <div class="flex gap-5 text-sm leading-6">
+                            <div class="flex flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500">
+                                <div class="flex gap-2">
+                                    Shipping
+                                    <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
+                                </div>
+                                <div>-</div>
+                            </div>
+                            <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
+                                ${{ payment.shippingCost.toFixed(2) }}
+                            </div>
+                        </div>
+                        <div class="flex gap-2 justify-between w-full text-sm leading-6">
+                            <div class="flex gap-5 justify-between whitespace-nowrap">
+                                <div class="flex gap-2 font-medium text-gray-500">
+                                    <div>Tax:</div>
+                                    <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
+                                </div>
+                                <div class="text-neutral-700">({{ payment.taxRate }}%)</div>
+                            </div>
+                            <div class="font-medium text-neutral-700">${{ payment.taxAmount.toFixed(2) }}</div>
+                        </div>
+                        <UiSeparator class="bg-light-500" />
+                        <div class="flex gap-2 justify-between mt-2 w-full text-neutral-700">
+                            <div class="text-xl leading-9">{{ type + ' Order Total' }}</div>
+                            <div class="text-2xl font-semibold leading-9">${{ payment.stockOrderTotal.toFixed(2) }}</div>
+                        </div>
+                    </section>
+                </div>
             </div>
         </section>
     </div>

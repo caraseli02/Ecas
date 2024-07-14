@@ -4,10 +4,11 @@ import { customerCreditHelper } from '~/helpers/customer-credit.helper';
 
 export const paymentInfoHelper = (order: OrderRequestInterface, userDetails: UserInterface) => {
     const creditInfo = userDetails.adminSettings?.customerCredit;
+    console.log(order);
     switch (order.paymentDetails.type) {
         case PaymentTypeEnum.Card: {
             return {
-                type: 'Card',
+                type: PaymentTypeEnum.Card,
                 info: {
                     provider: 'Visa',
                     last4: '0036',
@@ -18,7 +19,7 @@ export const paymentInfoHelper = (order: OrderRequestInterface, userDetails: Use
             if (creditInfo === undefined) return null;
             const credit = customerCreditHelper(creditInfo);
             return {
-                type: 'Credit',
+                type: PaymentTypeEnum.Credit,
                 info: {
                     limit: credit?.limit,
                     tillDue: credit?.tillDue,
@@ -33,14 +34,11 @@ export const paymentInfoHelper = (order: OrderRequestInterface, userDetails: Use
         }
         case PaymentTypeEnum.Bank: {
             return {
-                type: 'Bank',
+                type: PaymentTypeEnum.Bank,
                 info: {
                     text: 'Bank transfer',
                 },
             };
-        }
-        default: {
-            return null;
         }
     }
 };
