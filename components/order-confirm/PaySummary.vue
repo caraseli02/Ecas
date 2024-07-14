@@ -11,7 +11,6 @@ const props = defineProps({
 });
 
 const shippingCost = computed(() => {
-    console.log(props.orderPaySum);
     return props.orderPaySum.shippingCost;
 });
 const shippingText = computed(() => props.orderPaySum.shippingText);

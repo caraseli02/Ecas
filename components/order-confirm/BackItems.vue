@@ -1,42 +1,47 @@
 <script setup lang="ts">
 import { InfoIcon } from 'lucide-vue-next';
-import { OrderType } from '~/types';
+import { OrderRequestInterface, OrderType } from '~/types';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const lgAndLarger = breakpoints.greaterOrEqual('lg'); // sm and larger
 
+const authStore = useAuthStore();
+const { getUserDetails, userCards } = storeToRefs(authStore);
+const generalSettings = useAuthStore().generalSettings;
+
 const props = defineProps<{
-    data: CartProductsInterface[];
+    data: OrderRequestInterface;
     orderType: OrderType;
 }>();
 
 const type = props.orderType === OrderType.Back ? '' : 'Back';
 
-const backOrderItems = ref(props.data);
+const backOrderItems = ref(props.data.products || []);
+
+const backOrder = ref(props.data as OrderRequestInterface);
 
 const payment = computed(() => {
-    let subtotal = 0;
-    let discountAmount = 0;
-
-    for (const item of backOrderItems.value) {
-        subtotal += (item.backorder_stock || 0) * item.unitPriceAfterDiscounts;
-        discountAmount += (item.initialUnitPrice - item.unitPriceAfterDiscounts) * (item.backorder_stock || 0);
-    }
-
+    const subtotal = Number(backOrder.value.subtotal.toFixed(2));
+    const discountRate = backOrder.value.discount?.value || 0;
+    const discountAmount = (discountRate * subtotal).toFixed(2);
+    const smallOrderCharge =
+        generalSettings?.orderSettings?.smallOrderCharge.find((type) => type._id === backOrder.value.smallOrderChargeId)?.price || 0;
     const taxRate = 19; // Consider moving to a dynamic setting or config
     const taxAmount = subtotal * (taxRate / 100);
-    const discountRate = (discountAmount / subtotal) * 100;
+    const shippingType = generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === backOrder.value.shippingDetails._id);
+    const total = Number(backOrder.value.total?.toFixed(2));
     return {
         subtotal,
         discountRate,
         discountAmount,
-        handlingCharge: 5.49, // Consider making dynamic if applicable
-        shippingCost: 0, // Consider making dynamic if applicable
+        handlingCharge: smallOrderCharge, // Consider making dynamic if applicable
+        shippingCost: shippingType, // Consider making dynamic if applicable
         taxRate,
         taxAmount,
-        backOrderTotal: subtotal + taxAmount + 5.49 + 7.49, // Include other charges dynamically if needed
+        backOrderTotal: total, // Include other charges dynamically if needed
     };
 });
 </script>
@@ -122,7 +127,12 @@ const payment = computed(() => {
                         <div class="flex flex-col p-6 text-sm">
                             <p v-if="item.backorder_stock">
                                 <span class="font-semibold">$</span>
-                                {{ (item?.backorder_stock * item.unitPriceAfterDiscounts).toFixed(2) }}
+                                {{
+                                    (
+                                        item.backorder_stock * item.unitPriceAfterDiscounts +
+                                        Number(item.stock * item.unitPriceAfterDiscounts * 0.19)
+                                    ).toFixed(2)
+                                }}
                             </p>
                         </div>
                     </template>
@@ -158,7 +168,14 @@ const payment = computed(() => {
                                 class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full"
                             >
                                 <p>Subtotal</p>
-                                <p v-if="item.backorder_stock">${{ (item.backorder_stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
+                                <p v-if="item.backorder_stock">
+                                    ${{
+                                        (
+                                            item.backorder_stock * item.unitPriceAfterDiscounts +
+                                            Number(item.stock * item.unitPriceAfterDiscounts * 0.19)
+                                        ).toFixed(2)
+                                    }}
+                                </p>
                             </article>
                         </section>
                     </template>
@@ -180,7 +197,7 @@ const payment = computed(() => {
                                 <div class="font-medium text-gray-500">Discount</div>
                                 <div class="text-neutral-700">{{ payment.discountRate.toFixed(2) }}%</div>
                             </div>
-                            <div class="font-medium text-neutral-700">${{ payment.discountAmount.toFixed(2) }}</div>
+                            <div class="font-medium text-neutral-700">${{ payment.discountAmount }}</div>
                         </div>
                         <div class="flex gap-5 text-sm leading-6">
                             <div class="flex flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500">

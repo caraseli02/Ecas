@@ -17,12 +17,12 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore();
-const { getUserDetails } = storeToRefs(authStore);
-
+const { getUserDetails, userCards } = storeToRefs(authStore);
+const generalSettings = useAuthStore().generalSettings;
 const { $api } = useNuxtApp();
 
 const route = useRoute();
-const generalSettings = useAuthStore().generalSettings;
+
 const orderType = ref<OrderType | null>(null);
 const customerDetails = ref({
     title: 'Customer Details',
@@ -72,36 +72,42 @@ const addresses = ref<{
     },
 });
 
-const notes = ref<OrderNotesInterface[]>([] as OrderNotesInterface[]);
+const notes = ref<OrderNotesInterface[] | []>([] as OrderNotesInterface[] | []);
 
 const data = ref<OrderRequestInterfaceResponse>({} as OrderRequestInterfaceResponse);
 
 const hasMixedItems = computed(() => {
-    if (data.value.data?.children?.length > 0) {
-        const shippingType = generalSettings?.orderSettings?.deliveryTypes.find(
-            (type) => type._id === data.value.data.order.shippingDetails._id
-        );
-        console.log(generalSettings);
-        const orderInfo = data.value.data.order;
+    const key1Values = new Set(stockOrderItems.value.map((item) => item._id));
+
+    return backorderItems.value.some((item) => key1Values.has(item.key1));
+});
+
+const paymentSummary = computed(() => {
+    const shippingType = generalSettings?.orderSettings?.deliveryTypes.find(
+        (type) => type._id === data.value.data.order.shippingDetails._id
+    );
+    const orderInfo = data.value.data.order;
+    if (orderInfo) {
         orderPaySum.value.orderTotal = orderInfo.total;
         orderPaySum.value.subtotal = Number(orderInfo.subtotal);
-        if (orderInfo.type === OrderType.Mixed) {
-            orderPaySum.value.stockItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Stock).total;
-            orderPaySum.value.backorderItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Back).total;
-            orderPaySum.value.payableNow = orderPaySum.value.stockItemsTotal;
-        }
         orderPaySum.value.taxPercentage = 19;
         orderPaySum.value.taxAmount = 0.19 * (orderPaySum.value.subtotal || 0);
-        orderPaySum.value.discountPercentage = 10;
-        orderPaySum.value.discountAmount = 0.1 * (orderPaySum.value.subtotal || 0);
+        orderPaySum.value.discountPercentage = orderInfo.discount?.value || 0;
+        orderPaySum.value.discountAmount = orderPaySum.value.discountPercentage * (orderPaySum.value.subtotal || 0);
         orderPaySum.value.handlingCharge = 0;
         orderPaySum.value.shippingCost = shippingType?.price || 0;
         orderPaySum.value.shippingText = shippingType?.title || '';
         orderPaySum.value.orderType = orderInfo.type;
         orderPaySum.value.smallOrderCharge =
             generalSettings?.orderSettings?.smallOrderCharge.find((type) => type._id === orderInfo.smallOrderChargeId)?.price || 0;
+        if (data.value.data?.children?.length > 0) {
+            orderPaySum.value.stockItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Stock).total;
+            orderPaySum.value.backorderItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Back).total;
+            orderPaySum.value.payableNow = orderPaySum.value.stockItemsTotal;
+        }
+
+        return true;
     }
-    return orderType.value === 2;
 });
 
 const stockOrderItems = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
@@ -129,10 +135,10 @@ const getOrderInformation = async () => {
                 ? response.data.children.find((child: any) => child.type === OrderType.Back)
                 : response.data.order;
         backorderItems.value = backOrder.value.products || [];
-        notes.value = response.data.order.note || [];
-        console.log(response.data);
-        paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value);
-        console.log(paymentMethod.value);
+        if (response.data.order.note) {
+            notes.value = response.data.order.note || [];
+        }
+        paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value, userCards.value || []);
         addresses.value = {
             shippingAddress: {
                 name1: response.data.order.shippingDetails.address.name1,
@@ -217,17 +223,17 @@ await getOrderInformation();
                 </div>
             </div>
         </div>
-        <OrderConfirmDetails :customer-details="customerDetails" :payment-method="paymentMethod" />
+        <OrderConfirmDetails :customer-details="customerDetails" :payment-method="paymentMethod" :has-mixed-items="hasMixedItems" />
         <UiSeparator />
         <OrderConfirmAddress v-if="addresses" :shipping-address="addresses.shippingAddress" :billing-address="addresses.billingAddress" />
         <OrderConfirmStackItems
             v-if="stockOrder && (orderType === OrderType.Stock || orderType === OrderType.Mixed)"
-            :data="stockOrderItems"
+            :data="stockOrder"
             :order-type="orderType"
         />
         <OrderConfirmBackItems
             v-if="backOrder && (orderType === OrderType.Back || orderType === OrderType.Mixed)"
-            :data="backorderItems"
+            :data="backOrder"
             :order-type="orderType"
         />
         <section class="flex flex-col lg:flex-row gap-9">
@@ -238,10 +244,10 @@ await getOrderInformation();
                     class="min-h-[336px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full"
                 />
             </div>
-            <OrderConfirmPaySummary v-if="hasMixedItems" :order-pay-sum="orderPaySum" />
+            <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
         </section>
 
-        <div class="flex flex-col gap-6">
+        <div v-if="paymentSummary" class="flex flex-col gap-6">
             <h4 class="font-semibold text-sm">Need Help?</h4>
             <section class="flex gap-6 flex-wrap">
                 <UiButton size="xs" class="gap-2 px-0" variant="ghost">

@@ -456,7 +456,7 @@ async function makeCheckout() {
 
     try {
         const response = (await $api.orders.sendOrder(orderRequestObject.value)) as PlaceOrderInterface;
-
+        console.log(response.data);
         if (response.status !== 'success') {
             await router.push({ path: '/checkout/fail' });
         } else {
@@ -468,7 +468,8 @@ async function makeCheckout() {
                     await router.push({ path: '/order-summary/' + orderId });
                     if (result.status === 'succeeded') {
                         console.log('order paid with a default card');
-                        await router.push({ path: '/checkout/success' });
+                        // await router.push({ path: '/checkout/success' });
+                        await router.push({ path: '/order-summary/' + orderId });
                     } else if (result.status === 'canceled') {
                         console.log('order canceled reason: ', result.cancellation_reason);
                         await router.push({ path: '/checkout/fail' });
@@ -477,11 +478,15 @@ async function makeCheckout() {
                         await router.push({ path: '/checkout/session' });
                     } else {
                         console.log('order pending', result.status);
-                        await router.push({ path: '/checkout/pending' });
+                        await router.push({ path: '/order-summary/' + orderId });
+                        // await router.push({ path: '/checkout/pending' });
                     }
                 } else {
                     console.log('pay with a new card', response.data);
+
                     if (response.data.clientSecret) {
+                        await router.push({ path: '/order-summary/' + orderId });
+
                         cartStore.setOrderClientSecret(response.data.clientSecret);
                     }
                     await router.push({ path: '/checkout/session' });

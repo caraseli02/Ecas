@@ -1,41 +1,47 @@
 <script setup lang="ts">
 import { InfoIcon } from 'lucide-vue-next';
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
-import { OrderType } from '~/types';
+import { OrderRequestInterface, OrderType } from '~/types';
+
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
+
+const authStore = useAuthStore();
+const { getUserDetails, userCards } = storeToRefs(authStore);
+const generalSettings = useAuthStore().generalSettings;
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const lgAndLarger = breakpoints.greaterOrEqual('lg'); // sm and larger
 
 const props = defineProps<{
-    data: CartProductsInterface[];
+    data: OrderRequestInterface;
     orderType: OrderType;
 }>();
 
 const type = props.orderType === OrderType.Stock ? '' : 'Stock';
 
-const stockItems = ref(props.data);
+const stockItems = ref(props.data.products || []);
+const stockOrder = ref(props.data as OrderRequestInterface);
 
 const payment = computed(() => {
-    let subtotal = 0;
-    let discountAmount = 0;
-    for (const item of stockItems.value) {
-        subtotal += item.stock * item.unitPriceAfterDiscounts;
-        discountAmount += (item.initialUnitPrice - item.unitPriceAfterDiscounts) * item.stock;
-    }
+    const subtotal = Number(stockOrder.value.subtotal.toFixed(2));
+    const discountRate = stockOrder.value.discount?.value || 0;
+    const discountAmount = (discountRate * subtotal).toFixed(2);
+    const smallOrderCharge =
+        generalSettings?.orderSettings?.smallOrderCharge.find((type) => type._id === stockOrder.value.smallOrderChargeId)?.price || 0;
     const taxRate = 19; // Consider moving to a dynamic setting or config
     const taxAmount = subtotal * (taxRate / 100);
-    const discountRate = (discountAmount / subtotal) * 100;
-
+    const shippingType = generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === stockOrder.value.shippingDetails._id);
+    const total = Number(stockOrder.value.total?.toFixed(2));
     return {
         subtotal,
         discountRate,
         discountAmount,
-        handlingCharge: 5.49, // Consider making dynamic if applicable
-        shippingCost: 7.49, // Consider making dynamic if applicable
+        handlingCharge: smallOrderCharge, // Consider making dynamic if applicable
+        shippingCost: shippingType, // Consider making dynamic if applicable
         taxRate,
         taxAmount,
-        stockOrderTotal: subtotal + taxAmount + 5.49 + 7.49, // Include other charges dynamically if needed
+        stockOrderTotal: total, // Include other charges dynamically if needed
     };
 });
 </script>
@@ -113,7 +119,15 @@ const payment = computed(() => {
                             <p><span class="font-semibold">$</span> {{ (item.stock * item.unitPriceAfterDiscounts * 0.19).toFixed(2) }}</p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
-                            <p><span class="font-semibold">$</span> {{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
+                            <p>
+                                <span class="font-semibold">$</span>
+                                {{
+                                    (
+                                        item.stock * item.unitPriceAfterDiscounts +
+                                        Number(item.stock * item.unitPriceAfterDiscounts * 0.19)
+                                    ).toFixed(2)
+                                }}
+                            </p>
                         </div>
                     </template>
                     <template v-else>
@@ -146,7 +160,14 @@ const payment = computed(() => {
                                 class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full"
                             >
                                 <p>Subtotal</p>
-                                <p>${{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
+                                <p>
+                                    ${{
+                                        (
+                                            item.stock * item.unitPriceAfterDiscounts +
+                                            Number(item.stock * item.unitPriceAfterDiscounts * 0.19)
+                                        ).toFixed(2)
+                                    }}
+                                </p>
                             </article>
                         </section>
                     </template>
@@ -168,7 +189,7 @@ const payment = computed(() => {
                                 <div class="font-medium text-gray-500">Discount</div>
                                 <div class="text-neutral-700">{{ payment.discountRate.toFixed(2) }}%</div>
                             </div>
-                            <div class="font-medium text-neutral-700">${{ payment.discountAmount.toFixed(2) }}</div>
+                            <div class="font-medium text-neutral-700">${{ payment.discountAmount }}</div>
                         </div>
                         <div class="flex gap-5 text-sm leading-6">
                             <div class="flex flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500">
@@ -191,7 +212,7 @@ const payment = computed(() => {
                                 <div>-</div>
                             </div>
                             <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
-                                ${{ payment.shippingCost.toFixed(2) }}
+                                ${{ payment.shippingCost || 0 }}
                             </div>
                         </div>
                         <div class="flex gap-2 justify-between w-full text-sm leading-6">
