@@ -19,10 +19,12 @@ const backOrderItems = ref(props.data);
 const payment = computed(() => {
     let subtotal = 0;
     let discountAmount = 0;
+
     for (const item of backOrderItems.value) {
-        subtotal += item.stock * item.unitPriceAfterDiscounts;
-        discountAmount += (item.initialUnitPrice - item.unitPriceAfterDiscounts) * item.stock;
+        subtotal += (item.backorder_stock || 0) * item.unitPriceAfterDiscounts;
+        discountAmount += (item.initialUnitPrice - item.unitPriceAfterDiscounts) * (item.backorder_stock || 0);
     }
+
     const taxRate = 19; // Consider moving to a dynamic setting or config
     const taxAmount = subtotal * (taxRate / 100);
     const discountRate = (discountAmount / subtotal) * 100;
@@ -34,7 +36,7 @@ const payment = computed(() => {
         shippingCost: 0, // Consider making dynamic if applicable
         taxRate,
         taxAmount,
-        stockOrderTotal: subtotal + taxAmount + 5.49 + 7.49, // Include other charges dynamically if needed
+        backOrderTotal: subtotal + taxAmount + 5.49 + 7.49, // Include other charges dynamically if needed
     };
 });
 </script>
@@ -165,7 +167,9 @@ const payment = computed(() => {
             <div v-if="orderType === OrderType.Mixed">
                 <UiSeparator class="bg-light-500" />
                 <div class="flex flex-col gap-4 w-full">
-                    <header class="w-full text-sm font-semibold leading-6 text-neutral-700">{{ type + ' Order Payment Summary' }}</header>
+                    <header class="w-full text-sm font-semibold leading-6 text-neutral-700">
+                        {{ type + ' Order Payment Summary' }}
+                    </header>
                     <section class="flex flex-col gap-2">
                         <div class="flex gap-2 justify-between w-full text-sm font-medium leading-6">
                             <div class="text-gray-500">Subtotal</div>
@@ -215,7 +219,7 @@ const payment = computed(() => {
                         <UiSeparator class="bg-light-500" />
                         <div class="flex gap-2 justify-between mt-2 w-full text-neutral-700">
                             <div class="text-xl leading-9">{{ type + ' Order Total' }}</div>
-                            <div class="text-2xl font-semibold leading-9">${{ payment.stockOrderTotal.toFixed(2) }}</div>
+                            <div class="text-2xl font-semibold leading-9">${{ payment.backOrderTotal.toFixed(2) }}</div>
                         </div>
                     </section>
                 </div>
