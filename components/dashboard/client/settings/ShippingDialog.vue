@@ -4,7 +4,6 @@ import { PlusCircleIcon, Building2Icon } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
 import { countries } from '@/data/countries';
 import {
   FormControl,
@@ -13,7 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 
 interface Country {
   label: string;
@@ -53,14 +51,16 @@ const onSubmit = handleSubmit((values) => {
 });
 
 const country = ref<undefined | Country>(undefined);
+
+const isOpen = ref(false);
 </script>
 
 <template>
-  <UiDialog>
+  <UiDialog v-model:open="isOpen">
     <UiDialogTrigger as-child>
-      <Button size="icon" variant="ghost">
+      <UiButton size="icon" class="rounded-full" variant="ghost">
         <PlusCircleIcon class="aspect-square w-10 h-10 stroke-1 text-blue-500" />
-      </Button>
+      </UiButton>
     </UiDialogTrigger>
     <UiDialogContent class="sm:max-w-[640px]">
       <UiDialogHeader>
@@ -76,7 +76,7 @@ const country = ref<undefined | Country>(undefined);
                   <div class="flex items-center justify-center w-11 h-11 rounded-l-lg bg-stone-50 border border-grey-300">
                     <Building2Icon class="w-5 h-5" />
                   </div>
-                  <Input class="rounded-l-[0px] border-l-0" type="text" placeholder="Address Alias 1" v-bind="componentField" />
+                  <UiInput class="rounded-l-[0px] border-l-0" type="text" placeholder="Address Alias 1" v-bind="componentField" />
                 </section>
               </FormControl>
               <FormMessage />
@@ -104,7 +104,7 @@ const country = ref<undefined | Country>(undefined);
               <FormItem class="w-full">
                 <FormLabel>County/Region</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="County/Region" v-bind="componentField" />
+                  <UiInput type="text" placeholder="County/Region" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -114,7 +114,7 @@ const country = ref<undefined | Country>(undefined);
             <FormItem>
               <FormLabel>Address Line 1</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Address Line 1" v-bind="componentField" />
+                <UiInput type="text" placeholder="Address Line 1" v-bind="componentField" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -124,7 +124,7 @@ const country = ref<undefined | Country>(undefined);
             <FormItem>
               <FormLabel>Address Line 2</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Address Line 2" v-bind="componentField" />
+                <UiInput type="text" placeholder="Address Line 2" v-bind="componentField" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -134,7 +134,7 @@ const country = ref<undefined | Country>(undefined);
             <FormItem>
               <FormLabel>Postcode</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Postcode" v-bind="componentField" />
+                <UiInput type="text" placeholder="Postcode" v-bind="componentField" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -144,7 +144,7 @@ const country = ref<undefined | Country>(undefined);
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
               <FormControl>
-                <Input type="tel" placeholder="+1 (555) 867-5309" v-bind="componentField" />
+                <UiInput type="tel" placeholder="+1 (555) 867-5309" v-bind="componentField" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -154,7 +154,7 @@ const country = ref<undefined | Country>(undefined);
             <FormItem>
               <FormLabel>Company Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="youremail@company.com" v-bind="componentField" />
+                <UiInput type="email" placeholder="youremail@company.com" v-bind="componentField" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -164,7 +164,7 @@ const country = ref<undefined | Country>(undefined);
             <FormItem>
               <FormLabel>Contact Name</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Contact Name" v-bind="componentField" />
+                <UiInput type="text" placeholder="Contact Name" v-bind="componentField" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -174,19 +174,19 @@ const country = ref<undefined | Country>(undefined);
             <FormItem>
               <FormLabel>Contact Phone Number</FormLabel>
               <FormControl>
-                <Input type="tel" placeholder="+1 (555) 867-5309" v-bind="componentField" />
+                <UiInput type="tel" placeholder="+1 (555) 867-5309" v-bind="componentField" />
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
 
           <div class="flex justify-end gap-4 col-span-2 sticky bottom-0 bg-white pt-2">
-            <Button variant="secondary" type="reset">
+            <UiButton @click="isOpen = !isOpen" variant="secondary" type="reset">
               Cancel
-            </Button>
-            <Button type="submit" class="w-60">
+            </UiButton>
+            <UiButton type="submit" class="w-60">
               Save
-            </Button>
+            </UiButton>
           </div>
         </form>
       </section>
