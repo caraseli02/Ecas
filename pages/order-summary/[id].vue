@@ -87,6 +87,7 @@ const paymentSummary = computed(() => {
         (type) => type._id === data.value.data.order.shippingDetails._id
     );
     const orderInfo = data.value.data.order;
+    console.log(orderInfo);
     if (orderInfo) {
         orderPaySum.value.orderTotal = orderInfo.total;
         orderPaySum.value.subtotal = Number(orderInfo.subtotal);
@@ -120,9 +121,8 @@ const getOrderInformation = async () => {
     // Fetch order information
     const orderId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
     const response = (await $api.orders.getOrderById(orderId)) as OrderRequestInterfaceResponse;
-    data.value = response;
-
     if (response.status === 'success' && response.data.order) {
+        data.value = response;
         orderType.value = response.data.order.type;
         stockOrder.value =
             response.data.order.type === OrderType.Mixed
@@ -135,8 +135,8 @@ const getOrderInformation = async () => {
                 ? response.data.children.find((child: any) => child.type === OrderType.Back)
                 : response.data.order;
         backorderItems.value = backOrder.value.products || [];
-        if (response.data.order.note) {
-            notes.value = response.data.order.note || [];
+        if (response.data.order.notes) {
+            notes.value = response.data.order.notes || [];
         }
         paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value, userCards.value || []);
         addresses.value = {
@@ -240,7 +240,7 @@ await getOrderInformation();
             <div v-if="notes[0]" class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
                 <h2 class="w-full font-semibold max-md:max-w-full">Customer Notes</h2>
                 <textarea
-                    placeholder="Please deliver after 4PM and call me (0742624425) prior to delivery."
+                    :placeholder="notes[0] && notes[0].message ? notes[0].message : 'No message provided'"
                     class="min-h-[336px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full"
                 />
             </div>

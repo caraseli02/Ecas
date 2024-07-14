@@ -91,7 +91,7 @@ export interface OrderRequestInterface {
     type: OrderType;
     discount?: DiscountInterface;
     isDraft: boolean;
-    note?: OrderNotesInterface[];
+    notes?: OrderNotesInterface[];
     stock: string;
     total?: number;
     subtotal: number;
