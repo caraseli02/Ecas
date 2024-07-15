@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { InfoIcon, SettingsIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { BankInfo, CardInfo, CreditInfo, PaymentTypeEnum } from '~/types';
+import { BankInfo, CardInfo, PaymentTypeEnum } from '~/types';
+import { CustomerCreditInterface } from '~/types/auth/account-settings';
 
 const props = defineProps<{
     customerDetails: {
@@ -12,20 +13,16 @@ const props = defineProps<{
     };
     paymentMethod: {
         type: PaymentTypeEnum;
-        info: CardInfo | CreditInfo | BankInfo;
+        info: CardInfo | CustomerCreditInterface | BankInfo;
     };
     hasMixedItems: boolean;
 }>();
 
-const isCardInfo = computed(
-    () => props.paymentMethod.type === PaymentTypeEnum.Card && (props.paymentMethod.info as CardInfo).provider !== undefined
-);
+const isCardInfo = computed(() => props.paymentMethod.type === PaymentTypeEnum.Card && (props.paymentMethod.info as CardInfo).provider);
 const isCreditInfo = computed(
-    () => props.paymentMethod.type === PaymentTypeEnum.Credit && (props.paymentMethod.info as CreditInfo).limit !== undefined
+    () => props.paymentMethod.type === PaymentTypeEnum.Credit && (props.paymentMethod.info as CustomerCreditInterface).limit
 );
-const isBankInfo = computed(
-    () => props.paymentMethod.type === PaymentTypeEnum.Bank && (props.paymentMethod.info as BankInfo).text !== undefined
-);
+const isBankInfo = computed(() => props.paymentMethod.type === PaymentTypeEnum.Bank && (props.paymentMethod.info as BankInfo).text);
 </script>
 
 <template>
@@ -43,7 +40,9 @@ const isBankInfo = computed(
                 <h2 class="text-base font-semibold leading-7 text-neutral-700 max-md:max-w-full">Payment Method</h2>
 
                 <div v-if="isCardInfo" class="flex gap-2 self-start pr-8 mt-9 max-md:pr-5">
-                    <p class="text-sm font-medium leading-6 text-gray-500">{{ (props.paymentMethod.info as CardInfo).provider }}</p>
+                    <p class="text-sm font-medium leading-6 text-gray-500">
+                        {{ (props.paymentMethod.info as CardInfo).provider }}
+                    </p>
                     <p class="text-sm font-medium leading-6 text-gray-500">
                         ** {{ (props.paymentMethod.info as CardInfo).last4.slice(-2) }}
                     </p>
@@ -73,21 +72,33 @@ const isBankInfo = computed(
                             <section class="flex gap-5 justify-between mt-4 text-xs leading-5 text-gray-500 rounded-lg">
                                 <div class="flex flex-col justify-center">
                                     <h3>Credit Limit</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).limit }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">
+                                        {{ (props.paymentMethod.info as CustomerCreditInterface).limit }}
+                                    </p>
                                     <h3 class="mt-4">Till Due</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).tillDue }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">
+                                        {{ (props.paymentMethod.info as CustomerCreditInterface).tillDue }}
+                                    </p>
                                 </div>
                                 <div class="flex flex-col justify-center">
                                     <h3>Credit Term</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).term }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">
+                                        {{ (props.paymentMethod.info as CustomerCreditInterface).term }}
+                                    </p>
                                     <h3 class="mt-4">Total Spent</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).spent }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">
+                                        {{ (props.paymentMethod.info as CustomerCreditInterface).spent }}
+                                    </p>
                                 </div>
                                 <div class="flex flex-col justify-center">
                                     <h3>Due Date</h3>
-                                    <p class="mt-1 font-medium text-neutral-800">{{ (props.paymentMethod.info as CreditInfo).dueDate }}</p>
+                                    <p class="mt-1 font-medium text-neutral-800">
+                                        {{ (props.paymentMethod.info as CustomerCreditInterface).dueDate }}
+                                    </p>
                                     <h3 class="mt-4">Available</h3>
-                                    <p class="mt-1 font-medium text-red-500">{{ (props.paymentMethod.info as CreditInfo).available }}</p>
+                                    <p class="mt-1 font-medium text-red-500">
+                                        {{ (props.paymentMethod.info as CustomerCreditInterface).available }}
+                                    </p>
                                 </div>
                             </section>
                         </article>

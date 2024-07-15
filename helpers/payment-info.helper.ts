@@ -4,6 +4,7 @@ import { customerCreditHelper } from '~/helpers/customer-credit.helper';
 
 export const paymentInfoHelper = (order: OrderRequestInterface, userDetails: UserInterface, userCards: StripeCardInterface[]) => {
     const creditInfo = userDetails.adminSettings?.customerCredit;
+
     switch (order.paymentDetails.type) {
         case PaymentTypeEnum.Card: {
             return {
@@ -16,6 +17,7 @@ export const paymentInfoHelper = (order: OrderRequestInterface, userDetails: Use
         }
         case PaymentTypeEnum.Credit: {
             if (creditInfo === undefined) return null;
+
             const credit = customerCreditHelper(creditInfo);
             return {
                 type: PaymentTypeEnum.Credit,
@@ -39,5 +41,12 @@ export const paymentInfoHelper = (order: OrderRequestInterface, userDetails: Use
                 },
             };
         }
+        default:
+            return {
+                type: PaymentTypeEnum.Bank,
+                info: {
+                    text: 'N/A',
+                },
+            };
     }
 };

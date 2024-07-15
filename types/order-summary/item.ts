@@ -1,4 +1,4 @@
-import { DiscountInterface } from '~/types/auth/account-settings';
+import { CustomerCreditInterface, DiscountInterface } from '~/types/auth/account-settings';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import {
     BackorderShippingTypesInterface,
@@ -131,7 +131,7 @@ export interface BankInfo {
 
 export interface PaymentInfo {
     type: PaymentTypeEnum;
-    info: CardInfo | CreditInfo | BankInfo;
+    info: CardInfo | CustomerCreditInterface | BankInfo;
 }
 
 export enum DeliveryMethodEnum {

@@ -32,12 +32,7 @@ const customerDetails = ref({
 });
 const date = ref<string>('' as string);
 const orderPaySum = ref<PaymentSummaryInterface>({} as PaymentSummaryInterface);
-const paymentMethod = ref<{ type: PaymentTypeEnum; info: PaymentInfo }>(
-    {} as {
-        type: PaymentTypeEnum;
-        info: PaymentInfo;
-    }
-);
+const paymentMethod = ref<{ type: PaymentTypeEnum; info: PaymentInfo } | null>(null);
 
 const shippingMethod = computed(() =>
     generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data.order?.shippingDetails.deliveryTypeId)
@@ -141,7 +136,12 @@ const getOrderInformation = async () => {
             notes.value = response.data.order.notes || [];
         }
 
-        paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value, userCards.value || []);
+        if (orderType.value === OrderType.Mixed) {
+            paymentMethod.value = paymentInfoHelper(stockOrder.value, getUserDetails.value, userCards.value || []);
+        } else {
+            paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value, userCards.value || []);
+        }
+
         addresses.value = {
             shippingAddress: {
                 name1: response.data.order.shippingDetails.address.name1,
