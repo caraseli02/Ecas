@@ -12,6 +12,7 @@
                 <ClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
                 <ClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event"/>
                 <ClientTableLogs v-if="activeOrderFilter.value === 'activityLogs'" @show-total-items="activeOrderFilter.total_items = $event"/>
+                <ClientSettings v-if="activeOrderFilter.value === 'settings'" />
                 <ClientOnly>
                     <DashboardClientActivity :data="myActivityData" />
                 </ClientOnly>
@@ -71,9 +72,10 @@ const userCards = useAuthStore().userCards;
 // Remove after integration
 const ordersIds = ref([] as any);
 const activeOrderFilter = ref({
-    icon: 'dashboard',
-    value: 'home',
-    total_items: 0
+    // icon: 'dashboard',
+    // value: 'home',
+    // total_items: 0
+    value: 'settings'
 });
 const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboardActivityData);
 const myAccountInformation = ref<UserInterface>({} as UserInterface);
