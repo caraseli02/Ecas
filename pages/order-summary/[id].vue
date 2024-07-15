@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { BoxIcon, FileText, MapPin, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
 import {
-    CartProductsInterface,
     OrderNotesInterface,
     OrderRequestInterface,
     OrderRequestInterfaceResponse,
@@ -15,6 +14,7 @@ import { paymentInfoHelper } from '~/helpers/payment-info.helper';
 
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
+import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 const authStore = useAuthStore();
 const { getUserDetails, userCards } = storeToRefs(authStore);
@@ -38,9 +38,10 @@ const paymentMethod = ref<{ type: PaymentTypeEnum; info: PaymentInfo }>(
         info: PaymentInfo;
     }
 );
-const shippingMethod = computed(() =>
-    generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data.order.shippingDetails._id)
-);
+
+// const shippingMethod = computed(() =>
+//     generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data.order?.shippingDetails._id)
+// );
 
 const addresses = ref<{
     shippingAddress: {
@@ -73,7 +74,6 @@ const addresses = ref<{
 });
 
 const notes = ref<OrderNotesInterface[] | []>([] as OrderNotesInterface[] | []);
-
 const data = ref<OrderRequestInterfaceResponse>({} as OrderRequestInterfaceResponse);
 
 const hasMixedItems = computed(() => {
@@ -84,10 +84,10 @@ const hasMixedItems = computed(() => {
 
 const paymentSummary = computed(() => {
     const shippingType = generalSettings?.orderSettings?.deliveryTypes.find(
-        (type) => type._id === data.value.data.order.shippingDetails._id
+        (type) => type._id === data.value.data?.order.shippingDetails._id
     );
-    const orderInfo = data.value.data.order;
-    console.log(orderInfo);
+    const orderInfo = data.value.data?.order;
+
     if (orderInfo) {
         orderPaySum.value.orderTotal = orderInfo.total;
         orderPaySum.value.subtotal = Number(orderInfo.subtotal);
@@ -96,11 +96,11 @@ const paymentSummary = computed(() => {
         orderPaySum.value.discountPercentage = orderInfo.discount?.value || 0;
         orderPaySum.value.discountAmount = orderPaySum.value.discountPercentage * (orderPaySum.value.subtotal || 0);
         orderPaySum.value.handlingCharge = 0;
-        orderPaySum.value.shippingCost = shippingType?.price || 0;
+        orderPaySum.value.shippingCost = orderInfo.shippingCost || 0;
         orderPaySum.value.shippingText = shippingType?.title || '';
         orderPaySum.value.orderType = orderInfo.type;
-        orderPaySum.value.smallOrderCharge =
-            generalSettings?.orderSettings?.smallOrderCharge.find((type) => type._id === orderInfo.smallOrderChargeId)?.price || 0;
+        orderPaySum.value.smallOrderCharge = orderInfo.smallOrderCost || 0;
+
         if (data.value.data?.children?.length > 0) {
             orderPaySum.value.stockItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Stock).total;
             orderPaySum.value.backorderItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Back).total;
@@ -121,6 +121,7 @@ const getOrderInformation = async () => {
     // Fetch order information
     const orderId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
     const response = (await $api.orders.getOrderById(orderId)) as OrderRequestInterfaceResponse;
+
     if (response.status === 'success' && response.data.order) {
         data.value = response;
         orderType.value = response.data.order.type;
@@ -135,9 +136,11 @@ const getOrderInformation = async () => {
                 ? response.data.children.find((child: any) => child.type === OrderType.Back)
                 : response.data.order;
         backorderItems.value = backOrder.value.products || [];
+
         if (response.data.order.notes) {
             notes.value = response.data.order.notes || [];
         }
+
         paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value, userCards.value || []);
         addresses.value = {
             shippingAddress: {

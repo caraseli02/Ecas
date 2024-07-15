@@ -57,6 +57,8 @@ export interface OrderInterface {
     currency: string;
     status: OrderStatus;
     type: OrderType;
+    shippingCost?: number;
+    smallOrderCost?: number;
     discount?: DiscountInterface;
     notes: OrderNotesInterface[];
     createdAt?: string;
@@ -87,6 +89,8 @@ export interface OrderRequestInterface {
     stripeCardId?: any;
     paymentDetails: PaymentDetails;
     smallOrderChargeId?: string;
+    shippingCost?: number;
+    smallOrderCost?: number;
     currency: string;
     type: OrderType;
     discount?: DiscountInterface;
