@@ -39,9 +39,9 @@ const paymentMethod = ref<{ type: PaymentTypeEnum; info: PaymentInfo }>(
     }
 );
 
-// const shippingMethod = computed(() =>
-//     generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data.order?.shippingDetails._id)
-// );
+const shippingMethod = computed(() =>
+    generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data.order?.shippingDetails.deliveryTypeId)
+);
 
 const addresses = ref<{
     shippingAddress: {

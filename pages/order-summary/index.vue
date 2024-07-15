@@ -456,7 +456,7 @@ async function makeCheckout() {
 
     try {
         const response = (await $api.orders.sendOrder(orderRequestObject.value)) as PlaceOrderInterface;
-        console.log(response.data);
+
         if (response.status !== 'success') {
             await router.push({ path: '/checkout/fail' });
         } else {

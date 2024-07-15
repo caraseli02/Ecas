@@ -9,8 +9,8 @@ export const paymentInfoHelper = (order: OrderRequestInterface, userDetails: Use
             return {
                 type: PaymentTypeEnum.Card,
                 info: {
-                    provider: 'Visa',
-                    last4: '0036',
+                    provider: order.paymentDetails.card?.brand,
+                    last4: order.paymentDetails.card?.last4,
                 },
             };
         }

@@ -6,6 +6,7 @@ import {
     StockorderShippingTypesInterface,
 } from '~/types/general-settings/general-settings';
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import { PaymentMethod } from '@stripe/stripe-js';
 
 export interface OrderSummaryItem {
     title: string;
@@ -165,7 +166,8 @@ export interface PaymentDetails {
     type: PaymentTypeEnum;
     status?: PaymentStatusEnum;
     paymentIntentId?: string;
-    card?: StripeCardInterface;
+    // card?: StripeCardInterface;
+    card?: Pick<PaymentMethod.Card, 'last4' | 'exp_year' | 'exp_month' | 'brand'>;
 }
 
 export interface StripeCardInterface {

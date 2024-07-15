@@ -3,13 +3,11 @@ import { InfoIcon } from 'lucide-vue-next';
 import { OrderRequestInterface, OrderType } from '~/types';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { useAuthStore } from '~/store/authStore';
-import { storeToRefs } from 'pinia';
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const lgAndLarger = breakpoints.greaterOrEqual('lg'); // sm and larger
 
 const authStore = useAuthStore();
-const { getUserDetails, userCards } = storeToRefs(authStore);
 const generalSettings = useAuthStore().generalSettings;
 
 const props = defineProps<{
@@ -17,21 +15,21 @@ const props = defineProps<{
     orderType: OrderType;
 }>();
 
+const shippingMethod = computed(() =>
+    generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === backOrder.value.shippingDetails.deliveryTypeId)
+);
 const type = props.orderType === OrderType.Back ? '' : 'Back';
-
 const backOrderItems = ref(props.data.products || []);
-
 const backOrder = ref(props.data as OrderRequestInterface);
 
 const payment = computed(() => {
     const subtotal = Number(backOrder.value.subtotal.toFixed(2));
     const discountRate = backOrder.value.discount?.value || 0;
     const discountAmount = (discountRate * subtotal).toFixed(2);
-    const smallOrderCharge =
-        generalSettings?.orderSettings?.smallOrderCharge.find((type) => type._id === backOrder.value.smallOrderChargeId)?.price || 0;
+    const smallOrderCharge = backOrder.value.smallOrderCost || 0;
     const taxRate = 19; // Consider moving to a dynamic setting or config
     const taxAmount = subtotal * (taxRate / 100);
-    const shippingType = generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === backOrder.value.shippingDetails._id);
+    const shippingType = backOrder.value.shippingCost || 0;
     const total = Number(backOrder.value.total?.toFixed(2));
     return {
         subtotal,
@@ -127,12 +125,7 @@ const payment = computed(() => {
                         <div class="flex flex-col p-6 text-sm">
                             <p v-if="item.backorder_stock">
                                 <span class="font-semibold">$</span>
-                                {{
-                                    (
-                                        item.backorder_stock * item.unitPriceAfterDiscounts +
-                                        Number(item.stock * item.unitPriceAfterDiscounts * 0.19)
-                                    ).toFixed(2)
-                                }}
+                                {{ (item.backorder_stock * item.unitPriceAfterDiscounts).toFixed(2) }}
                             </p>
                         </div>
                     </template>
@@ -168,14 +161,7 @@ const payment = computed(() => {
                                 class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full"
                             >
                                 <p>Subtotal</p>
-                                <p v-if="item.backorder_stock">
-                                    ${{
-                                        (
-                                            item.backorder_stock * item.unitPriceAfterDiscounts +
-                                            Number(item.stock * item.unitPriceAfterDiscounts * 0.19)
-                                        ).toFixed(2)
-                                    }}
-                                </p>
+                                <p v-if="item.backorder_stock">${{ (item.backorder_stock * item.unitPriceAfterDiscounts).toFixed(2) }}</p>
                             </article>
                         </section>
                     </template>
@@ -219,7 +205,7 @@ const payment = computed(() => {
                                     Shipping
                                     <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
                                 </div>
-                                <div>-</div>
+                                <div>{{ shippingMethod?.title }}</div>
                             </div>
                             <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-fit">${{ payment.shippingCost || 0 }}</div>
                         </div>

@@ -23,7 +23,7 @@
         <button
             class="flex items-center justify-center bg-gray-100 px-2.5"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
-            :disabled="object.max ? Number(modelValue) >= object.max : false"
+            :disabled="object.max && props.type !== OrderType.Back ? Number(modelValue) >= object.max : false"
             @click="inputHandler(Number(modelValue) + 1)"
         >
             <PlusIcon class="w-6 h-6 flex-shrink-0 text-slate-500" />

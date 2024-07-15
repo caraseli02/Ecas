@@ -2,16 +2,11 @@
 import { InfoIcon } from 'lucide-vue-next';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { OrderRequestInterface, OrderType } from '~/types';
-
 import { useAuthStore } from '~/store/authStore';
-import { storeToRefs } from 'pinia';
-
-const authStore = useAuthStore();
-const { getUserDetails, userCards } = storeToRefs(authStore);
-const generalSettings = useAuthStore().generalSettings;
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const lgAndLarger = breakpoints.greaterOrEqual('lg'); // sm and larger
+const generalSettings = useAuthStore().generalSettings;
 
 const props = defineProps<{
     data: OrderRequestInterface;
@@ -19,20 +14,23 @@ const props = defineProps<{
 }>();
 
 const type = props.orderType === OrderType.Stock ? '' : 'Stock';
-
 const stockItems = ref(props.data.products || []);
 const stockOrder = ref(props.data as OrderRequestInterface);
+
+const shippingMethod = computed(() =>
+    generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === stockOrder.value.shippingDetails.deliveryTypeId)
+);
 
 const payment = computed(() => {
     const subtotal = Number(stockOrder.value.subtotal.toFixed(2));
     const discountRate = stockOrder.value.discount?.value || 0;
     const discountAmount = (discountRate * subtotal).toFixed(2);
-    const smallOrderCharge =
-        generalSettings?.orderSettings?.smallOrderCharge.find((type) => type._id === stockOrder.value.smallOrderChargeId)?.price || 0;
+    const smallOrderCharge = stockOrder.value.smallOrderCost || 0;
     const taxRate = 19; // Consider moving to a dynamic setting or config
     const taxAmount = subtotal * (taxRate / 100);
-    const shippingType = generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === stockOrder.value.shippingDetails._id);
+    const shippingType = stockOrder.value.shippingCost || 0;
     const total = Number(stockOrder.value.total?.toFixed(2));
+
     return {
         subtotal,
         discountRate,
@@ -116,17 +114,15 @@ const payment = computed(() => {
                             <p class="font-semibold">{{ item.stock }}</p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
-                            <p><span class="font-semibold">$</span> {{ (item.stock * item.unitPriceAfterDiscounts * 0.19).toFixed(2) }}</p>
+                            <p>
+                                <span class="font-semibold">$</span>
+                                {{ (item.stock * item.unitPriceAfterDiscounts * payment.taxRate).toFixed(2) }}
+                            </p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
                             <p>
                                 <span class="font-semibold">$</span>
-                                {{
-                                    (
-                                        item.stock * item.unitPriceAfterDiscounts +
-                                        Number(item.stock * item.unitPriceAfterDiscounts * 0.19)
-                                    ).toFixed(2)
-                                }}
+                                {{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}
                             </p>
                         </div>
                     </template>
@@ -209,7 +205,7 @@ const payment = computed(() => {
                                     Shipping
                                     <InfoIcon class="shrink-0 my-auto w-4 aspect-square text-slate-500" />
                                 </div>
-                                <div>-</div>
+                                <div>{{ shippingMethod?.title }}</div>
                             </div>
                             <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
                                 ${{ payment.shippingCost || 0 }}
