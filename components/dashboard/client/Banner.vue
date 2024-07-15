@@ -26,7 +26,7 @@
                 <SvgoCardPlaceholderSmall class="w-[100px] h-[100px]"/>
               </div>
               <div class="flex flex-col items-stretch w-[78%] ml-5 max-md:w-full max-md:ml-0">
-                <div class="items-stretch flex flex-col text-xs text-zinc-800 font-medium mt-2.5 ">
+                <div class="items-stretch flex flex-col text-xs text-zinc-800 font-medium mt-2.5 min-w-[200px] md:min-w-[352px] lg:min-w-[592px] xl:min-w-0">
                   <div class="text-base leading-6">{{ item.productCode }}</div>
                   <div class="leading-[20px] mt-1">{{ item.description }}</div>
                   <div class="overflow-hidden text-slate-500 text-ellipsis leading-[16px] mt-1">{{ item.details }}</div>
