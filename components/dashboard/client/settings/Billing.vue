@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PlusCircleIcon } from 'lucide-vue-next';
 import AddressList from './AddressList.vue'
-import ShippingDialog from './ShippingDialog.vue'
+import BillingDialog from './BillingDialog.vue'
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import ShippingDialog from './ShippingDialog.vue'
     <AddressList />
     <section
       class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
-        <ShippingDialog />
+        <BillingDialog />
     </section>
   </section>
 </template>

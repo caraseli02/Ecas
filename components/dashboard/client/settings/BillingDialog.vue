@@ -60,9 +60,9 @@ const isOpen = ref(false);
         <PlusCircleIcon class="aspect-square w-10 h-10 stroke-1 text-blue-500" />
       </UiButton>
     </UiDialogTrigger>
-    <UiDialogContent class="sm:max-w-[640px]">
+    <UiDialogContent class="max-w-[350px] sm:max-w-[640px] rounded-xl">
       <UiDialogHeader>
-        <UiDialogTitle>Add Shipping Address</UiDialogTitle>
+        <UiDialogTitle>Add Billing Address</UiDialogTitle>
       </UiDialogHeader>
       <section class="flex flex-col self-stretch bg-white rounded-xl shadow-sm max-md:px-5 max-h-[85vh] overflow-y-auto">
         <form class="mt-5 flex flex-col gap-y-6 gap-x-9" @submit="onSubmit">
@@ -70,34 +70,27 @@ const isOpen = ref(false);
             <FormItem>
               <FormLabel>Address Alias</FormLabel>
               <FormControl>
-                <section class="flex items-center">
+                <section class="flex items-center pr-[1px]">
                   <div class="flex items-center justify-center w-11 h-11 rounded-l-lg bg-stone-50 border border-grey-300">
                     <Building2Icon class="w-5 h-5" />
                   </div>
-                  <UiInput class="rounded-l-[0px] border-l-0" type="text" placeholder="Address Alias 1" v-bind="componentField" />
+                  <UiInput class="rounded-l-[0px] border-l-0" type="text" placeholder="Address Alias 1"
+                    v-bind="componentField" />
                 </section>
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
-          <section class="flex  justify-between gap-6">
+          <section class="flex flex-col md:flex-row justify-between gap-6">
             <FormField name="country">
-          <FormItem class="flex flex-col w-full">
-            <FormControl>
-              <FormSelect
-                v-model="country"
-                :options="countries"
-                :show-disabled-styles="false"
-                label="Country"
-                placeholder="United States"
-                search
-                size="lg"
-                class="relative z-20"
-            />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        </FormField>
+              <FormItem class="flex flex-col w-full">
+                <FormControl>
+                  <FormSelect v-model="country" :options="countries" :show-disabled-styles="false" label="Country"
+                    placeholder="United States" search size="lg" class="relative z-20" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
             <FormField v-slot="{ componentField }" name="county">
               <FormItem class="w-full">
                 <FormLabel>County/Region</FormLabel>

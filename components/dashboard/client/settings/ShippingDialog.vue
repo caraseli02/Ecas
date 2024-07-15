@@ -62,7 +62,7 @@ const isOpen = ref(false);
         <PlusCircleIcon class="aspect-square w-10 h-10 stroke-1 text-blue-500" />
       </UiButton>
     </UiDialogTrigger>
-    <UiDialogContent class="sm:max-w-[640px]">
+    <UiDialogContent class="max-w-[350px] sm:max-w-[640px] rounded-xl">
       <UiDialogHeader>
         <UiDialogTitle>Add Shipping Address</UiDialogTitle>
       </UiDialogHeader>
@@ -82,7 +82,7 @@ const isOpen = ref(false);
               <FormMessage />
             </FormItem>
           </FormField>
-          <section class="flex  justify-between gap-6">
+          <section class="flex flex-col md:flex-row justify-between gap-6">
             <FormField name="country">
           <FormItem class="flex flex-col w-full">
             <FormControl>

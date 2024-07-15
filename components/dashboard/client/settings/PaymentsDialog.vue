@@ -53,7 +53,7 @@ const isOpen = ref(false);
         <PlusCircleIcon class="aspect-square w-10 h-10 stroke-1 text-blue-500" />
       </UiButton>
     </UiDialogTrigger>
-    <UiDialogContent class="sm:max-w-[480px]">
+    <UiDialogContent class="max-w-[350px] sm:max-w-[480px] rounded-xl">
       <UiDialogHeader>
         <UiDialogTitle>Add New Card</UiDialogTitle>
       </UiDialogHeader>
@@ -84,7 +84,7 @@ const isOpen = ref(false);
               <FormMessage />
             </FormItem>
           </FormField>
-          <div class="flex space-x-4 mb-4">
+          <div class="flex flex-col md:flex-row gap-4 mb-4">
             <FormField v-slot="{ componentField }" name="expiryDate">
               <FormItem>
                 <FormLabel>Expiry Date</FormLabel>
