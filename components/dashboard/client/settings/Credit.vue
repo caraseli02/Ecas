@@ -14,7 +14,7 @@ const handlePayNow = () => {
 </script>
 
 <template>
-  <section class="flex flex-col self-stretch p-6 bg-white rounded-xl shadow-l max-md:px-5">
+  <section class="flex flex-col self-stretch p-4 md:p-6 bg-white rounded-xl shadow-l">
     <h2 class="text-xl font-semibold leading-7 text-neutral-800 max-md:max-w-full">
       Account Credit
     </h2>
@@ -32,9 +32,9 @@ const handlePayNow = () => {
         class="text-slate-300 shrink-0 self-start w-6 aspect-square lucide lucide-ellipsis-vertical"
         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
       </div>
-      <div class="flex flex-col justify-center mt-6 bg-gray-200 rounded-[100px] max-md:max-w-full">
+      <div class="flex flex-col justify-center mt-6 bg-gray-200 rounded-full max-md:max-w-full">
         <div
-          class="shrink-0 h-3 bg-emerald-500 rounded-[100px] max-md:max-w-full"
+          class="shrink-0 h-3 bg-emerald-500 rounded-full max-md:max-w-full"
           :style="{ width: `${creditUsagePercentage}%` }"
         ></div>
       </div>

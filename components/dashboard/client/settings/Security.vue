@@ -3,17 +3,17 @@
 </script>
 
 <template>
-  <section class="flex flex-col items-start self-stretch p-6 bg-white rounded-xl shadow-l max-md:px-5">
+  <section class="flex flex-col items-start self-stretch p-4 md:p-6 bg-white rounded-xl shadow-l">
     <h2 class="text-xl font-semibold leading-7 text-neutral-800">Security</h2>
     <p class="mt-4 text-sm leading-5 text-neutral-800">
       Send a password reset link.
     </p>
-    <div class="flex items-end gap-4 self-stretch mt-8 max-md:flex-wrap">
-      <div class="flex flex-col gap-1 flex-1 justify-between text-sm leading-5 max-md:max-w-full">
+    <div class="flex flex-col md:flex-row items-end gap-4 self-stretch mt-8 max-md:flex-wrap">
+      <div class="flex flex-col gap-1 flex-1 justify-between text-sm leading-5 w-full">
         <UiLabel for="accountEmail" class="text-slate-500 max-md:max-w-full">Account Email</UiLabel>
         <UiInput id="accountEmail" placeholder="madalina.dobrovolski@company.com" />
       </div>
-      <UiButton size="lg">
+      <UiButton class="w-full md:w-fit" size="lg">
         <svg class="shrink-0 my-auto w-6 aspect-square" width="24" height="25" viewBox="0 0 24 25" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <path
@@ -27,7 +27,7 @@
             stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
 
-        <span>Send Password Reset</span>
+        <span class="ml-2">Send Password Reset</span>
       </UiButton>
     </div>
     <hr
@@ -61,11 +61,15 @@
               <rect width="20" height="20" fill="white" transform="translate(2.5 2.5)" />
             </clipPath>
           </defs>
-      </svg>
-      <span>Link Google</span>
-    </div>
-  </UiButton>
-</section></template>
+        </svg>
+        <span>Link Google</span>
+      </div>
+    </UiButton>
+    <p class="mt-4 text-sm leading-5 text-grey-600">
+      <span class="text-neutral-800">Linked account:</span>
+      madalina.dobrovolski@gmail.com</p>
+  </section>
+</template>
 
 <style scoped>
 </style>

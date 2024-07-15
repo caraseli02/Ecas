@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <OrderSummaryPayByCard 
         v-for="(card, index) in cards" 
         :key="card.id"
@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import _ from 'lodash';
+import { StripeCardInfoInterface } from '~/types';
 
 const card = ref<any | null>({});
 const cards = ref<StripeCardInfoInterface[]>([]);
