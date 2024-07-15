@@ -14,6 +14,7 @@ const props = defineProps<{
         type: PaymentTypeEnum;
         info: CardInfo | CreditInfo | BankInfo;
     };
+    hasMixedItems: boolean;
 }>();
 
 const isCardInfo = computed(
