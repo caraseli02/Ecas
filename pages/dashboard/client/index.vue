@@ -8,11 +8,11 @@
                     <DashboardClientBanner :slides="hotSales" />
                 </section>
                 <DashboardClientTabBar v-model="activeOrderFilter" />
-                <ClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
-                <ClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
-                <ClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event"/>
-                <ClientTableLogs v-if="activeOrderFilter.value === 'activityLogs'" @show-total-items="activeOrderFilter.total_items = $event"/>
-                <DashboardClientSettings v-if="activeOrderFilter.value === 'settings'" />
+                <LazyClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
+                <LazyClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
+                <LazyClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event"/>
+                <LazyClientTableLogs v-if="activeOrderFilter.value === 'activityLogs'" @show-total-items="activeOrderFilter.total_items = $event"/>
+                <LazyDashboardClientSettings v-if="activeOrderFilter.value === 'settings'" />
                 <template v-if="activeOrderFilter.value === 'home'">
                     <ClientOnly>
                         <DashboardClientActivity :data="myActivityData" />
@@ -74,10 +74,9 @@ const userCards = useAuthStore().userCards;
 // Remove after integration
 const ordersIds = ref([] as any);
 const activeOrderFilter = ref({
-    // icon: 'dashboard',
-    // value: 'home',
-    // total_items: 0
-    value: 'settings'
+    icon: 'dashboard',
+    value: 'home',
+    total_items: 0
 });
 const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboardActivityData);
 const myAccountInformation = ref<UserInterface>({} as UserInterface);

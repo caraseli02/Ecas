@@ -30,20 +30,25 @@ const formSchema = toTypedSchema(z.object({
   cvv: z.string().min(3, 'CVV is required').max(4, 'CVV should be 3 or 4 digits'),
 }));
 
-const { handleSubmit, values } = useForm({
+const { handleSubmit, values, setErrors } = useForm({
   validationSchema: formSchema,
+  validateOnMount: true,
 });
 
 const onSubmit = handleSubmit((values) => {
+  showErrorMsg.value = true;
   console.log({
     title: 'You submitted the following values:',
     description: JSON.stringify(values, null, 2),
   });
 });
 
-const country = ref<undefined | Country>(undefined);
-
 const isOpen = ref(false);
+const showErrorMsg = ref(true);
+function onCloseDialog() {
+  showErrorMsg.value = false;
+  isOpen.value = false;
+}
 </script>
 
 <template>
@@ -67,7 +72,7 @@ const isOpen = ref(false);
                   <input v-model="values.phoneNumber" type="tel" placeholder="+1 (555) 867-5309" class="mt-1 block w-full pr-10 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" v-bind="componentField"/>
                 </div>
               </FormControl>
-              <FormMessage />
+              <FormMessage v-if="showErrorMsg" />
             </FormItem>
           </FormField>
           <FormField v-slot="{ componentField }" name="cardNumber">
@@ -81,7 +86,7 @@ const isOpen = ref(false);
                   </div>
                 </div>
               </FormControl>
-              <FormMessage />
+              <FormMessage v-if="showErrorMsg" />
             </FormItem>
           </FormField>
           <div class="flex flex-col md:flex-row gap-4 mb-4">
@@ -96,7 +101,7 @@ const isOpen = ref(false);
                     </div>
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage v-if="showErrorMsg" />
               </FormItem>
             </FormField>
             <FormField v-slot="{ componentField }" name="cvv">
@@ -110,12 +115,12 @@ const isOpen = ref(false);
                     </div>
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage v-if="showErrorMsg" />
               </FormItem>
             </FormField>
           </div>
           <div class="flex justify-end gap-4 col-span-2 sticky bottom-0 bg-white pt-2">
-            <UiButton @click="isOpen = !isOpen" variant="secondary" type="reset">
+            <UiButton variant="secondary" type="reset" @click="onCloseDialog()">
               Cancel
             </UiButton>
             <UiButton type="submit" class="w-60">

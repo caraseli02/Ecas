@@ -51,6 +51,12 @@ const onSubmit = handleSubmit((values) => {
 const country = ref<undefined | Country>(undefined);
 
 const isOpen = ref(false);
+
+const showErrorMsg = ref(true);
+function onCloseDialog() {
+  showErrorMsg.value = false;
+  isOpen.value = false;
+}
 </script>
 
 <template>
@@ -78,7 +84,7 @@ const isOpen = ref(false);
                     v-bind="componentField" />
                 </section>
               </FormControl>
-              <FormMessage />
+              <FormMessage v-if="showErrorMsg" />
             </FormItem>
           </FormField>
           <section class="flex flex-col md:flex-row justify-between gap-6">
@@ -88,7 +94,7 @@ const isOpen = ref(false);
                   <FormSelect v-model="country" :options="countries" :show-disabled-styles="false" label="Country"
                     placeholder="United States" search size="lg" class="relative z-20" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage v-if="showErrorMsg" />
               </FormItem>
             </FormField>
             <FormField v-slot="{ componentField }" name="county">
@@ -97,7 +103,7 @@ const isOpen = ref(false);
                 <FormControl>
                   <UiInput type="text" placeholder="County/Region" v-bind="componentField" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage v-if="showErrorMsg" />
               </FormItem>
             </FormField>
           </section>
@@ -107,7 +113,7 @@ const isOpen = ref(false);
               <FormControl>
                 <UiInput type="text" placeholder="Address Line 1" v-bind="componentField" />
               </FormControl>
-              <FormMessage />
+              <FormMessage v-if="showErrorMsg" />
             </FormItem>
           </FormField>
 
@@ -117,7 +123,7 @@ const isOpen = ref(false);
               <FormControl>
                 <UiInput type="text" placeholder="Address Line 2" v-bind="componentField" />
               </FormControl>
-              <FormMessage />
+              <FormMessage v-if="showErrorMsg" />
             </FormItem>
           </FormField>
 
@@ -127,7 +133,7 @@ const isOpen = ref(false);
               <FormControl>
                 <UiInput type="text" placeholder="Postcode" v-bind="componentField" />
               </FormControl>
-              <FormMessage />
+              <FormMessage v-if="showErrorMsg" />
             </FormItem>
           </FormField>
 
@@ -137,7 +143,7 @@ const isOpen = ref(false);
               <FormControl>
                 <UiInput type="tel" placeholder="+1 (555) 867-5309" v-bind="componentField" />
               </FormControl>
-              <FormMessage />
+              <FormMessage v-if="showErrorMsg" />
             </FormItem>
           </FormField>
 
@@ -147,12 +153,12 @@ const isOpen = ref(false);
               <FormControl>
                 <UiInput type="email" placeholder="youremail@company.com" v-bind="componentField" />
               </FormControl>
-              <FormMessage />
+              <FormMessage v-if="showErrorMsg" />
             </FormItem>
           </FormField>
 
           <div class="flex justify-end gap-4 col-span-2 sticky bottom-0 bg-white pt-2">
-            <UiButton @click="isOpen = !isOpen" variant="secondary" type="reset">
+            <UiButton @click="onCloseDialog()" variant="secondary" type="reset">
               Cancel
             </UiButton>
             <UiButton type="submit" class="w-60">
