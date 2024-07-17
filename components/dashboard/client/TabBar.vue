@@ -60,11 +60,11 @@ const orderFilters = ref<TabFilter[]>([
         value: 'favorites',
         total_items: 130, // Update this number as needed
     },
-    {
-        label: 'Messages',
-        value: 'messages',
-        total_items: 130, // Update this number as needed
-    },
+    // {
+    //     label: 'Messages',
+    //     value: 'messages',
+    //     total_items: 130, // Update this number as needed
+    // },
     {
         label: 'Organization',
         value: 'organization',
@@ -78,11 +78,11 @@ const orderFilters = ref<TabFilter[]>([
         label: 'Transaction History',
         value: 'transaction_history',
     },
-    {
-        label: 'Docs',
-        value: 'docs',
-        total_items: 130, // Update this number as needed
-    },
+    // {
+    //     label: 'Docs',
+    //     value: 'docs',
+    //     total_items: 130, // Update this number as needed
+    // },
     {
         label: 'Activity Logs',
         value: 'activityLogs',
