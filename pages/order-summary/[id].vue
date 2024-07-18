@@ -34,7 +34,7 @@ const orderPaySum = ref<PaymentSummaryInterface>({} as PaymentSummaryInterface);
 const paymentMethod = ref<PaymentInfo>();
 
 const shippingMethod = computed(() =>
-    generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data.order?.shippingDetails.deliveryTypeId)
+    generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data?.order?.shippingDetails.deliveryTypeId)
 );
 
 const addresses = ref<{
@@ -51,21 +51,7 @@ const addresses = ref<{
         postcode: string;
         country: string;
     };
-}>({
-    shippingAddress: {
-        name1: '',
-        name2: '',
-        postcode: '',
-        country: '',
-        default: false,
-    },
-    billingAddress: {
-        name1: '',
-        name2: '',
-        postcode: '',
-        country: '',
-    },
-});
+}>();
 
 const notes = ref<OrderNotesInterface[] | []>([] as OrderNotesInterface[] | []);
 const data = ref<OrderRequestInterfaceResponse>({} as OrderRequestInterfaceResponse);
@@ -167,7 +153,10 @@ const getOrderInformation = async () => {
         date.value = moment(response.data.order.updatedAt).format('DD MMMM YYYY, HH:mm');
     }
 };
-await getOrderInformation();
+
+onMounted(() => {
+    getOrderInformation();
+});
 </script>
 
 <template>
@@ -232,7 +221,11 @@ await getOrderInformation();
             :has-mixed-items="hasMixedItems"
         />
         <UiSeparator />
-        <OrderConfirmAddress v-if="addresses" :shipping-address="addresses.shippingAddress" :billing-address="addresses.billingAddress" />
+        <OrderConfirmAddress
+            v-if="addresses?.billingAddress && addresses.shippingAddress"
+            :shipping-address="addresses.shippingAddress"
+            :billing-address="addresses.billingAddress"
+        />
         <OrderConfirmStackItems
             v-if="stockOrder && (orderType === OrderType.Stock || orderType === OrderType.Mixed)"
             :data="stockOrder"
