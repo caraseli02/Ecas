@@ -465,8 +465,7 @@ async function makeCheckout() {
                 const result = response.data.result;
 
                 if (result) {
-                    await router.push({ path: '/order-summary/' + orderId });
-                    if (result.status === 'succeeded') {
+                    if (result.status === 'succeeded' && orderId) {
                         console.log('order paid with a default card');
                         // await router.push({ path: '/checkout/success' });
                         await router.push({ path: '/order-summary/' + orderId });
@@ -507,11 +506,13 @@ async function makeCheckout() {
     }
 }
 
+const stopButtonTrigger = ref(true);
 watch(
     () => checkout,
     (newVal) => {
-        if (newVal) {
+        if (newVal && stopButtonTrigger.value) {
             makeCheckout();
+            stopButtonTrigger.value = false;
         }
     },
     { deep: true }
