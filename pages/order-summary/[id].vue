@@ -7,7 +7,6 @@ import {
     OrderType,
     PaymentInfo,
     PaymentSummaryInterface,
-    PaymentTypeEnum,
 } from '~/types';
 import moment from 'moment';
 import { paymentInfoHelper } from '~/helpers/payment-info.helper';
@@ -32,7 +31,7 @@ const customerDetails = ref({
 });
 const date = ref<string>('' as string);
 const orderPaySum = ref<PaymentSummaryInterface>({} as PaymentSummaryInterface);
-const paymentMethod = ref<{ type: PaymentTypeEnum; info: PaymentInfo } | null>(null);
+const paymentMethod = ref<PaymentInfo>();
 
 const shippingMethod = computed(() =>
     generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data.order?.shippingDetails.deliveryTypeId)
@@ -226,7 +225,12 @@ await getOrderInformation();
                 </div>
             </div>
         </div>
-        <OrderConfirmDetails :customer-details="customerDetails" :payment-method="paymentMethod" :has-mixed-items="hasMixedItems" />
+        <OrderConfirmDetails
+            v-if="paymentMethod"
+            :customer-details="customerDetails"
+            :payment-method="paymentMethod"
+            :has-mixed-items="hasMixedItems"
+        />
         <UiSeparator />
         <OrderConfirmAddress v-if="addresses" :shipping-address="addresses.shippingAddress" :billing-address="addresses.billingAddress" />
         <OrderConfirmStackItems
