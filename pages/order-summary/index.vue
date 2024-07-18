@@ -484,11 +484,9 @@ async function makeCheckout() {
                     console.log('pay with a new card', response.data);
 
                     if (response.data.clientSecret) {
-                        await router.push({ path: '/order-summary/' + orderId });
-
                         cartStore.setOrderClientSecret(response.data.clientSecret);
                     }
-                    await router.push({ path: '/checkout/session' });
+                    await router.push({ path: '/checkout/session?id=' + orderId });
                 }
             } else if (paymentDetails.value.type === PaymentTypeEnum.Credit) {
                 await router.push({ path: '/order-summary/' + orderId });

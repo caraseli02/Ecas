@@ -80,6 +80,7 @@ export interface OrderInterface {
 export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'userName' | 'createdAt' | 'status' | 'total'>;
 
 export interface OrderRequestInterface {
+    shortId: string;
     userId?: string;
     userName: string;
     userEmail: string;

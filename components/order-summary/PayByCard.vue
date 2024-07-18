@@ -105,7 +105,7 @@ const props = defineProps<{
     isNewCardSelected?: boolean;
     cardType?: 'visa' | 'mastercard' | 'amex';
 }>();
-
+console.log(props.cards);
 const emits = defineEmits(['selectPaymentOption']);
 const paymentMethods = async (cardInfo: any) => {
     emits('selectPaymentOption', cardInfo);
