@@ -221,11 +221,7 @@ onMounted(() => {
             :has-mixed-items="hasMixedItems"
         />
         <UiSeparator />
-        <OrderConfirmAddress
-            v-if="addresses?.billingAddress && addresses.shippingAddress"
-            :shipping-address="addresses.shippingAddress"
-            :billing-address="addresses.billingAddress"
-        />
+        <OrderConfirmAddress v-if="addresses" :shipping-address="addresses.shippingAddress" :billing-address="addresses.billingAddress" />
         <OrderConfirmStackItems
             v-if="stockOrder && (orderType === OrderType.Stock || orderType === OrderType.Mixed)"
             :data="stockOrder"
