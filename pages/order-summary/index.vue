@@ -486,7 +486,7 @@ async function makeCheckout() {
                     if (response.data.clientSecret) {
                         cartStore.setOrderClientSecret(response.data.clientSecret);
                     }
-                    await router.push({ path: '/checkout/session?id=' + orderId });
+                    await router.push({ path: '/checkout/session?', query: { id: orderId } });
                 }
             } else if (paymentDetails.value.type === PaymentTypeEnum.Credit) {
                 await router.push({ path: '/order-summary/' + orderId });

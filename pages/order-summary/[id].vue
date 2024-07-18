@@ -165,7 +165,7 @@ onMounted(() => {
             <div class="flex flex-wrap lg:gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
                 <div class="flex gap-5 justify-between my-auto">
                     <h1 class="text-2xl font-semibold leading-8 text-neutral-700">
-                        Order ID: <span class="text-blue-500">#{{ data.data.order.shortId }}</span>
+                        Order ID: <span class="text-blue-500">#{{ data.data?.order?.shortId }}</span>
                     </h1>
                     <UiBadge
                         v-if="orderType === OrderType.Mixed"
