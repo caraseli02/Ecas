@@ -108,7 +108,7 @@ const cartId = ref('' as string);
 
 const fetchList = async () => {
     const cart = (await cartStore.updateAndReturnCart()) as CartInterface;
-    const products = cart.products;
+    const products = cart?.products;
     cartId.value = cart._id || '';
     mapCartItems(products);
 };

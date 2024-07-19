@@ -22,7 +22,6 @@ let elements: StripeElements;
 let paymentIntent: PaymentIntentResult;
 
 onMounted(async () => {
-    console.log(route);
     orderId.value = <string>route.query.id;
 
     stripe = await loadStripe(
@@ -41,7 +40,7 @@ onMounted(async () => {
         setup_future_usage: paymentIntent.paymentIntent?.setup_future_usage,
         payment_method_types: paymentIntent.paymentIntent?.payment_method_types,
     });
-    console.log(paymentIntent);
+
     const card = elements.create('payment', {
         layout: {
             type: 'accordion',
@@ -72,22 +71,19 @@ const handleSubmit = async () => {
     cartStore.emptyOrderClientSecret();
     cartStore.emptyPreviousCheckoutError();
 
-    const { error } = await stripe.confirmPayment({
+    const result = await stripe.confirmPayment({
+        redirect: 'if_required',
         clientSecret: tempClientSecret,
         elements,
-        confirmParams: {
-            return_url: `${window.location.origin}/order-summary/${orderId.value}`,
-        },
     });
 
-    if (error.type === 'card_error' || error.type === 'validation_error') {
-        console.log(error.message);
-        cartStore.setPreviousCheckoutError(error);
+    if (result.error) {
+        cartStore.setPreviousCheckoutError(result.error);
         await router.push({ path: '/checkout/fail', query: {} });
     } else {
-        await router.push({ path: '/checkout/success', query: {} });
+        await router.push({ path: `/order-summary/${orderId.value}` });
     }
-    console.log(error);
+
     isLoading.value = false;
 };
 </script>
