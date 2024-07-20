@@ -17,9 +17,9 @@
                 </div>
                 <div class="gap-6 xl:grid xl:grid-cols-[1fr,392px]">
                     <div class="flex flex-col gap-9 max-w-[992px]">
-                        <OrderSummaryBackOrderWarning v-if="showWarning()" />
+                        <OrderSummaryBackOrderWarning v-if="showWarning" />
                         <OrderSummaryTable
-                            :items="cartItems"
+                            :items="cartStore.mappedCartItems"
                             :loading="loading"
                             @check-all="checkAll"
                             @add-to-favs="addToFavsAll"
@@ -110,10 +110,10 @@ const fetchList = async () => {
     const cart = (await cartStore.updateAndReturnCart()) as CartInterface;
     const products = cart.products;
     cartId.value = cart._id || '';
-    mapCartItems(products);
+    // mapCartItems(products);
 };
 
-const showWarning = ref(() => {
+const showWarning = computed(() => {
     return cartItems.value.some((item: any) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
 });
 
@@ -181,26 +181,26 @@ await fetchCards();
 
 getGeneralSettingsFunction();
 
-const mapCartItems = (cart: CartProductsInterface[] = []) => {
-    cartItems.value = cart?.map((product: CartProductsInterface) => ({
-        id: product.id,
-        stock: product.stock,
-        backorder_stock: product.backorder_stock || 0,
-        isFolder: false,
-        initialUnitPrice: product.initialUnitPrice,
-        unitPriceAfterDiscounts: product.unitPriceAfterDiscounts,
-        subtotal: product.subtotal || 0,
-        total: product.total || 0,
-        discount: product.discount || {
-            value: 0,
-            startDate: '',
-            endDate: '',
-        },
-        productEntity: product.productEntity,
-        liked: false,
-        selected: false,
-    }));
-};
+// const mapCartItems = (cart: CartProductsInterface[] = []) => {
+//     cartItems.value = cart?.map((product: CartProductsInterface) => ({
+//         id: product.id,
+//         stock: product.stock,
+//         backorder_stock: product.backorder_stock || 0,
+//         isFolder: false,
+//         initialUnitPrice: product.initialUnitPrice,
+//         unitPriceAfterDiscounts: product.unitPriceAfterDiscounts,
+//         subtotal: product.subtotal || 0,
+//         total: product.total || 0,
+//         discount: product.discount || {
+//             value: 0,
+//             startDate: '',
+//             endDate: '',
+//         },
+//         productEntity: product.productEntity,
+//         liked: false,
+//         selected: false,
+//     }));
+// };
 
 const addToFavsAll = (liked: boolean) => {
     cartItems.value.forEach((item: any) => {
@@ -402,7 +402,7 @@ Emitter.on('note', async (noteText: string) => {
 Emitter.on('delete-product-item', async (object: { id: string }) => {
     setTimeout(() => {
         cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
-        mapCartItems(cartItems.value);
+        // mapCartItems(cartItems.value);
     }, 1000);
 });
 

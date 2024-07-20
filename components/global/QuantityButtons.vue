@@ -18,6 +18,7 @@
                 class="bg-transparent w-[56px] px-1 text-sm leading-normal text-neutral-700 text-center placeholder:text-[12px] focus:outline-none"
                 :class="[size === 'sm' ? 'h-9' : 'h-[42px]']"
                 @focusout="($event) => inputHandlerModified($event)"
+                @mouseleave="($event) => inputHandlerModified($event)"
             />
         </label>
         <button
