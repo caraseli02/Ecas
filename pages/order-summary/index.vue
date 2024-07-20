@@ -19,7 +19,6 @@
                     <div class="flex flex-col gap-9 max-w-[992px]">
                         <OrderSummaryBackOrderWarning v-if="showWarning" />
                         <OrderSummaryTable
-                            :items="cartStore.mappedCartItems"
                             :loading="loading"
                             @check-all="checkAll"
                             @add-to-favs="addToFavsAll"

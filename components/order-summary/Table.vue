@@ -1,5 +1,5 @@
 <template>
-    <div v-if="items.length" class="flex flex-col gap-6 mb-6">
+    <div v-if="cartStore.mappedCartItems.length" class="flex flex-col gap-6 mb-6">
         <OrderSummaryTableHead @checkAll="checkAll" @addToFavs="addToFavs" @deleteSelected="deleteSelected" />
         <div v-if="stockItems.length">
             <span class="text-neutral-700 text-base font-semibold leading-6">Stock Items: {{ stockItems.length }}</span>
@@ -28,20 +28,22 @@
 
 <script setup lang="ts">
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import { useCartStore } from '~/store/cartStore';
 
 const props = defineProps<{
-    items: CartProductsInterface[];
     loading: boolean;
 }>();
 
 const emits = defineEmits(['checkAll', 'addToFavs', 'updateSubtotal', 'deleteSelected']);
 
+const cartStore = useCartStore();
+
 const stockItems: ComputedRef<CartProductsInterface[]> = computed(() => {
-    return props.items.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0);
+    return cartStore.mappedCartItems.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0);
 });
 
 const backOrderItems: ComputedRef<CartProductsInterface[]> = computed(() => {
-    return props.items.filter((item: CartProductsInterface) => {
+    return cartStore.mappedCartItems.filter((item: CartProductsInterface) => {
         return item.productEntity?.stock !== undefined && item?.backorder_stock > 0;
     });
 });
