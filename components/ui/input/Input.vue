@@ -20,5 +20,5 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 </script>
 
 <template>
-  <input v-model="modelValue" :class="cn('focus-visible:!outline-[0.5px] focus-visible:outline-blue-500 pl-2 flex h-10 w-full rounded-md border border-gray-300', props.class)">
+  <input v-model="modelValue" :class="cn('focus-visible:!outline-[0.5px] focus-visible:outline-blue-500 pl-2 flex h-11 w-full rounded-md border border-gray-300', props.class)">
 </template>

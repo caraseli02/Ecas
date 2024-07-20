@@ -100,10 +100,10 @@ watch(country, (newCountry) => {
 
 <template>
   <div class="bg-white shadow-l rounded-xl">
-    <section class="flex flex-col self-stretch p-6 bg-white rounded-xl shadow-sm max-md:px-5">
-      <header class="flex gap-2.5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
+    <section class="flex flex-col self-stretch p-4 md:p-6 bg-white rounded-xl shadow-sm">
+      <header class="flex flex-col md:flex-row gap-2.5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
         <h2 class="self-start text-xl font-semibold leading-7 text-neutral-700">Company Details</h2>
-        <div class="flex gap-3 text-sm font-medium leading-6 text-gray-500">
+        <div class="flex flex-col md:flex-row gap-3 text-sm font-medium leading-6 text-gray-500">
           <UiButton
 :class="openEdit ? 'text-white' : 'text-slate-500'" :variant="openEdit ? 'default' : 'secondary'"
             @click="openEdit = !openEdit">
@@ -114,7 +114,7 @@ watch(country, (newCountry) => {
           </UiButton>
         </div>
       </header>
-      <form class="mt-9 grid grid-cols-2 gap-y-6 gap-x-9" @submit="onSubmit">
+      <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9" @submit="onSubmit">
         <FormField v-slot="{ componentField }" name="companyName">
           <FormItem>
             <FormLabel>Company Name</FormLabel>
@@ -305,11 +305,11 @@ v-for="country in countries" :key="country.value" :value="country.label" @select
             <FormMessage />
           </FormItem>
         </FormField>
-        <div v-if="openEdit" class="flex justify-end gap-4 col-span-2">
+        <div v-if="openEdit" class="flex flex-col md:flex-row justify-end gap-4 md:col-span-2">
           <Button variant="secondary" type="reset" @click="openEdit = !openEdit">
             Cancel
           </Button>
-          <Button type="submit" class="w-60">
+          <Button type="submit" class="md:w-60">
             Save
           </Button>
         </div>
