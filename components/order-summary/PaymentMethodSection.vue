@@ -3,7 +3,7 @@
         <div class="flex flex-row justify-between items-center">
             <span class="text-neutral-700 text-sm font-medium leading-6">Select Payment</span>
             <button class="group">
-                <SettingCog class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-300" />
+                <SettingCog class="text-slate-500 group-hover:text-blue-500 transition duration-300" />
             </button>
         </div>
         <div class="flex flex-col gap-4 relative">
@@ -19,7 +19,6 @@
                 :is-expired="cardExpired(card)"
                 @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: $event })"
             />
-
             <OrderSummaryPayByCard
                 v-else-if="card && isNewCardSelected && availablePaymentMethods.includes(PaymentTypeEnum.Card)"
                 view="payment"
@@ -39,16 +38,16 @@
 
             <button
                 v-if="availablePaymentMethods.includes(PaymentTypeEnum.Bank)"
-                class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
-                :class="order.paymentDetails?.type === 3 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
+                class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-blue-500 transition duration-300 group"
+                :class="order.paymentDetails?.type === 3 ? 'border-blue-500 bg-[#007FFF0D]' : 'border-grey-300 bg-white'"
                 @click="selectPaymentOption({ type: PaymentTypeEnum.Bank })"
             >
                 <div class="flex flex-row justify-between w-full">
                     <RadioButtonChecked
                         v-if="order.paymentDetails?.type === 3"
-                        class="w-5 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300"
+                        class="w-5 h-5 my-[3px] text-blue-500 group-hover:text-blue-500 transition duration-300"
                     />
-                    <RadioButton v-else class="w-5 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300" />
+                    <RadioButton v-else class="w-5 h-5 my-[3px] text-grey-300 group-hover:text-slate-500 transition duration-300" />
                     <BankIcon />
                 </div>
                 <div>
@@ -57,17 +56,17 @@
             </button>
             <button
                 v-if="availablePaymentMethods.includes(PaymentTypeEnum.Credit)"
-                class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
-                :class="order.paymentDetails?.type === 1 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
+                class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-blue-500 transition duration-300 group"
+                :class="order.paymentDetails?.type === 1 ? 'border-blue-500 bg-[#007FFF0D]' : 'border-grey-300 bg-white'"
                 :disabled="accountCredit.active"
                 @click="selectPaymentOption({ type: PaymentTypeEnum.Credit })"
             >
                 <div class="flex flex-row justify-between w-full">
                     <RadioButtonChecked
                         v-if="order.paymentDetails?.type === 1"
-                        class="w-5 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300"
+                        class="w-5 h-5 my-[3px] text-blue-500 group-hover:text-blue-500 transition duration-300"
                     />
-                    <RadioButton v-else class="w-5 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300" />
+                    <RadioButton v-else class="w-5 h-5 my-[3px] text-grey-300 group-hover:text-slate-500 transition duration-300" />
                     <PieChart />
                 </div>
                 <div class="flex flex-row justify-between w-full">
@@ -75,8 +74,8 @@
                     <div class="flex flex-row gap-2">
                         <span class="text-neutral-700 text-sm font-normal leading-6">Available:</span>
                         <button @click="showCreditInfoModal = true">
-                            <!-- <span class="text-[#007FFF] text-sm font-semibold leading-6">$ {{ accountCredit.available }}</span> -->
-                            <span class="text-[#007FFF] text-sm font-semibold leading-6">{{
+                            <!-- <span class="text-blue-500 text-sm font-semibold leading-6">$ {{ accountCredit.available }}</span> -->
+                            <span class="text-blue-500 text-sm font-semibold leading-6">{{
                                 accountCredit?.available?.toFixed(2) || 0
                             }}</span>
                             <!-- placeholder (uncomment the above line) -->
@@ -95,16 +94,16 @@
             </Transition>
             <button
                 v-if="availablePaymentMethods.includes(PaymentTypeEnum.Cash)"
-                class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-[#007FFF] transition duration-300 group"
-                :class="order.paymentDetails?.type === 2 ? 'border-[#007FFF] bg-[#007FFF0D]' : 'border-[#D4D4D4] bg-[#FFF]'"
+                class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-blue-500 transition duration-300 group"
+                :class="order.paymentDetails?.type === 2 ? 'border-blue-500 bg-[#007FFF0D]' : 'border-grey-300 bg-white'"
                 @click="selectPaymentOption({ type: PaymentTypeEnum.Cash })"
             >
                 <div class="flex flex-row justify-between w-full">
                     <RadioButtonChecked
                         v-if="order.paymentDetails?.type === 2"
-                        class="w-5 h-5 my-[3px] text-[#007FFF] group-hover:text-[#007FFF] transition duration-300"
+                        class="w-5 h-5 my-[3px] text-blue-500 group-hover:text-blue-500 transition duration-300"
                     />
-                    <RadioButton v-else class="w-5 h-5 my-[3px] text-[#D4D4D4] group-hover:text-[#5E6278] transition duration-300" />
+                    <RadioButton v-else class="w-5 h-5 my-[3px] text-grey-300 group-hover:text-slate-500 transition duration-300" />
                     <MoneyIcon />
                 </div>
                 <div>

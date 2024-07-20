@@ -1,5 +1,5 @@
 <template>
-    <div class="flex bg-[#F5F5F5] bg-opacity-95 rounded-lg max-w-max overflow-hidden">
+    <div class="flex bg-stone-50 bg-opacity-95 rounded-lg max-w-max overflow-hidden">
         <button
             :disabled="Number(modelValue) === object.min"
             class="flex items-center justify-center bg-gray-100 text-slate-500 px-2.5 transition-colors duration-300 disabled:text-border"
