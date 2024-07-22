@@ -8,41 +8,43 @@
                     <DashboardClientBanner :slides="hotSales" />
                 </section>
                 <DashboardClientTabBar v-model="activeOrderFilter" />
-                <ClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
-                <ClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
-                <ClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event" />
-                <ClientTableLogs v-if="activeOrderFilter.value === 'activityLogs'" @show-total-items="activeOrderFilter.total_items = $event"/>
-                <ClientSettings v-if="activeOrderFilter.value === 'settings'" />
-                <ClientOnly>
-                    <DashboardClientActivity :data="myActivityData" />
-                </ClientOnly>
-                <!-- <DashboardClientInfoCards :id="route.params.slug" /> -->
-                <div class="flex flex-wrap gap-4 xl:grid-cols-3 xl:grid-rows-[repeat(2,auto)] md:gap-6">
-                    <DashboardClientInfo
-                        :id="myAccountInformation?._id"
-                        :account-information="myAccountInformation"
-                        class="xl:col-start-1 xl:row-start-1 xl:row-span-2"
-                    />
-                    <DashboardClientRecentlyBought :data="myRecentlyBougth" />
-                    <DashboardClientRecentlyBoughtSlider />
-                    <section class="hidden xl:flex flex-col gap-6 min-w-[330px]">
-                        <DashboardClientCredit
-                            :available-credit="myAccountInformation.adminSettings?.customerCredit?.spent || 0"
-                            :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                <LazyClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
+                <LazyClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
+                <LazyClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event" />
+                <LazyClientTableLogs v-if="activeOrderFilter.value === 'activityLogs'" @show-total-items="activeOrderFilter.total_items = $event"/>
+                <LazyDashboardClientSettings v-if="activeOrderFilter.value === 'settings'" />
+                <template v-if="activeOrderFilter.value === 'home'">
+                    <ClientOnly>
+                        <DashboardClientActivity :data="myActivityData" />
+                    </ClientOnly>
+                    <!-- <DashboardClientInfoCards :id="route.params.slug" /> -->
+                    <div class="flex flex-wrap gap-4 xl:grid-cols-3 xl:grid-rows-[repeat(2,auto)] md:gap-6">
+                        <DashboardClientInfo
+                            :id="myAccountInformation?._id"
+                            :account-information="myAccountInformation"
+                            class="xl:col-start-1 xl:row-start-1 xl:row-span-2"
                         />
-                        <DashboardClientSupport />
-                    </section>
-                    <div class="flex gap-6 w-full flex-wrap">
-                        <DashboardClientCredit
-                            :available-credit="myAccountInformation.adminSettings?.customerCredit?.available || 0"
-                            :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"
-                            class="xl:hidden"
-                        />
-                        <DashboardClientAddressCards :addresses="myAddresses" />
-                        <DashboardClientPaymentCard :card="myCard" />
-                        <DashboardClientSupport class="xl:hidden" />
+                        <DashboardClientRecentlyBought :data="myRecentlyBougth" />
+                        <DashboardClientRecentlyBoughtSlider />
+                        <section class="hidden xl:flex flex-col gap-6 min-w-[330px]">
+                            <DashboardClientCredit
+                                :available-credit="myAccountInformation.adminSettings?.customerCredit?.spent || 0"
+                                :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                            />
+                            <DashboardClientSupport />
+                        </section>
+                        <div class="flex gap-6 w-full flex-wrap">
+                            <DashboardClientCredit
+                                :available-credit="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                                :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                                class="xl:hidden"
+                            />
+                            <DashboardClientAddressCards :addresses="myAddresses" />
+                            <DashboardClientPaymentCard :card="myCard" />
+                            <DashboardClientSupport class="xl:hidden" />
+                        </div>
                     </div>
-                </div>
+                </template>
             </div>
         </div>
         <DashboardClientViewHistory :view-history="myViewHistory" />
@@ -72,10 +74,9 @@ const userCards = useAuthStore().userCards;
 // Remove after integration
 const ordersIds = ref([] as any);
 const activeOrderFilter = ref({
-    // icon: 'dashboard',
-    // value: 'home',
-    // total_items: 0
-    value: 'settings'
+    icon: 'dashboard',
+    value: 'home',
+    total_items: 0
 });
 const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboardActivityData);
 const myAccountInformation = ref<UserInterface>({} as UserInterface);

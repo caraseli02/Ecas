@@ -4,7 +4,7 @@
             v-for="(filter, index) in orderFilters"
             :key="index"
             class="ordersFilter flex items-center gap-3 relative z-10 text-sm font-medium leading-[1.71] py-5 flex-shrink-0 transition-colors duration-300 md:py-8"
-            :class="[filter.label === activeOrderFilter.label ? 'text-blue-500' : 'hover:text-blue-500']"
+            :class="[filter.label === activeOrderFilter?.label ? 'text-blue-500' : 'hover:text-blue-500']"
             @click="activeOrderFilter = filter"
         >
             <span v-if="filter.label">
@@ -13,7 +13,7 @@
             <span
                 v-if="filter.total_items"
                 class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium min-w-[32px] transition-colors duration-300"
-                :class="filter.label === activeOrderFilter.label ? 'text-white bg-blue-500' : 'text-slate-500 bg-gray-100'"
+                :class="filter.label === activeOrderFilter?.label ? 'text-white bg-blue-500' : 'text-slate-500 bg-gray-100'"
             >
                 {{ filter.total_items }}
             </span>
@@ -60,11 +60,11 @@ const orderFilters = ref<TabFilter[]>([
         value: 'favorites',
         total_items: 130, // Update this number as needed
     },
-    {
-        label: 'Messages',
-        value: 'messages',
-        total_items: 130, // Update this number as needed
-    },
+    // {
+    //     label: 'Messages',
+    //     value: 'messages',
+    //     total_items: 130, // Update this number as needed
+    // },
     {
         label: 'Organization',
         value: 'organization',
@@ -78,11 +78,11 @@ const orderFilters = ref<TabFilter[]>([
         label: 'Transaction History',
         value: 'transaction_history',
     },
-    {
-        label: 'Docs',
-        value: 'docs',
-        total_items: 130, // Update this number as needed
-    },
+    // {
+    //     label: 'Docs',
+    //     value: 'docs',
+    //     total_items: 130, // Update this number as needed
+    // },
     {
         label: 'Activity Logs',
         value: 'activityLogs',
