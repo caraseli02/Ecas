@@ -181,7 +181,7 @@ export interface StripeCardInterface {
 }
 
 export interface StripeCardInfoInterface {
-    brand?: string;
+    display_brand?: string;
     checks?: object;
     country?: string;
     exp_month: number;
