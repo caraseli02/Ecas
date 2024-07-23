@@ -10,7 +10,7 @@
                 <DashboardClientTabBar v-model="activeOrderFilter" />
                 <LazyClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
                 <LazyClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
-                <LazyClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event"/>
+                <LazyClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event" />
                 <LazyClientTableLogs v-if="activeOrderFilter.value === 'activityLogs'" @show-total-items="activeOrderFilter.total_items = $event"/>
                 <LazyDashboardClientSettings v-if="activeOrderFilter.value === 'settings'" />
                 <template v-if="activeOrderFilter.value === 'home'">
@@ -219,17 +219,16 @@ const hotSalesFunction = async () => {
 
 const getDefaultCard = async () => {
     myCard.value = userCards?.filter((card) => card.default)[0] as StripeCardInterface;
-    // return userCards?.filter((card) => card.default)[0] as StripeCardInterface
 };
 
-    activeOrders()
-    activityWidgets()
-    customerInformation()
-    recentlyBougth()
-    addresses()
-    viewHistory()
-    monthHotSale()
-    getDefaultCard()
+activeOrders();
+activityWidgets();
+customerInformation();
+recentlyBougth();
+addresses();
+viewHistory();
+monthHotSale();
+getDefaultCard();
 </script>
 
 <style>

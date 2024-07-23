@@ -51,6 +51,22 @@ class OrdersService extends HttpFactory {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
+
+    async getOrderById(id: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<any>('GET', `${this.ORDERS_RESOURCE}/${id}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async getCustomerOrders() {
+        const token = this.authStore.getToken();
+
+        return await this.call<any>('GET', `${this.ORDERS_RESOURCE}?page=1&perPage=0`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 }
 
 export default OrdersService;

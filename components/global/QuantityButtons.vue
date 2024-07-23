@@ -1,7 +1,7 @@
 <template>
     <div class="flex bg-stone-50 bg-opacity-95 rounded-lg max-w-max overflow-hidden">
         <button
-            :disabled="Number(modelValue) === object.min"
+            :disabled="Number(modelValue) === object.min || modelValue === 1"
             class="flex items-center justify-center bg-gray-100 text-slate-500 px-2.5 transition-colors duration-300 disabled:text-border"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
             @click="inputHandler(Number(modelValue) - 1)"
@@ -23,7 +23,7 @@
         <button
             class="flex items-center justify-center bg-gray-100 px-2.5"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
-            :disabled="object.max ? Number(modelValue) >= object.max : false"
+            :disabled="object.max && props.type !== OrderType.Back ? Number(modelValue) >= object.max : false"
             @click="inputHandler(Number(modelValue) + 1)"
         >
             <PlusIcon class="w-6 h-6 flex-shrink-0 text-slate-500" />
@@ -114,9 +114,13 @@ const inputHandlerModified = (event: Event) => {
     }
 };
 
-watch(() => props.modelValue, (newQuantity) => {
-    if(newQuantity < 10) {
-        emits('update:modelValue', props.object.min);
-    }
-}, { immediate: true });
+watch(
+    () => props.modelValue,
+    (newQuantity) => {
+        if (newQuantity < props.object.min && props.type === OrderType.Stock) {
+            emits('update:modelValue', props.object.min);
+        }
+    },
+    { immediate: true }
+);
 </script>
