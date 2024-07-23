@@ -88,6 +88,7 @@
                 :stock-item="stockItem"
                 :liked="liked"
                 class="item"
+                @like-item="liked = !liked"
             />
         </Transition>
     </div>
