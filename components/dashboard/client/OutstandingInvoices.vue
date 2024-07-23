@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Clock, BoxIcon, MapPinIcon } from 'lucide-vue-next';
+import { Clock, FileText } from 'lucide-vue-next';
 defineProps<{
   items: string[]
 }>()
@@ -7,15 +7,15 @@ defineProps<{
 
 <template>
   <div
-      class="justify-between items-stretch shadow-xs bg-white flex w-full lg:w-fit lg:max-w-[476px] xl:min-w-[358px] h-[240px] flex-col p-4 md:p-6 rounded-xl"
+      class="justify-between items-stretch shadow-xs bg-white flex w-full lg:w-fit md:min-w-[476px] xl:min-w-[472px] h-[240px] flex-col p-4 md:p-6 rounded-xl"
   >
     <div class="items-stretch flex justify-between gap-4">
       <div class="justify-center items-stretch flex grow basis-[0%] flex-col">
         <div class="text-neutral-800 text-base font-semibold leading-6 flex justify-between">
-          Active Orders
+          Outstanding Invoices
           <Clock  class="stroke-1 w-5 h-5 text-slate-500"/>
         </div>
-        <div class="flex gap-1.5 mt-4 mb-1 flex-wrap">
+        <div class="flex gap-1.5 mt-4 mb-1 flex-wrap lg:max-w-[424px]">
           <button
               v-for="item in items"
               :key="item"
@@ -27,14 +27,14 @@ defineProps<{
 
       </div>
     </div>
-    <div class="items-stretch flex justify-between gap-3">
-      <UiButton class="w-full bg-green-600">
-        <BoxIcon class="w-4 h-4 mr-2 text-white" />
-          All Active
-      </UiButton>
-      <UiButton class="w-full">
-        <MapPinIcon class="w-4 h-4 mr-2 text-white" />
-          Track Order
+    <div class="items-stretch flex justify-end gap-3">
+      <UiButton>
+        <FileText class="w-4 h-4 mr-2 text-white" />
+        <div
+            class="text-white text-sm font-medium leading-6 grow whitespace-nowrap"
+        >
+          View All Invoices
+        </div>
       </UiButton>
     </div>
   </div>

@@ -4,7 +4,7 @@
             <div class="grid grid-cols-1 gap-4 md:gap-6 w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px]">
                 <section class="flex justify-between gap-6 flex-wrap xl:flex-nowrap">
                     <DashboardClientActiveOrders :items="ordersIds" />
-                    <DashboardClientAnalytics />
+                    <DashboardClientOutstandingInvoices :items="ordersIds" />
                     <DashboardClientBanner :slides="hotSales" />
                 </section>
                 <DashboardClientTabBar v-model="activeOrderFilter" />
