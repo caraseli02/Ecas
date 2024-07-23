@@ -7,25 +7,24 @@
                     <span class="text-blue-500 text-sm font-medium leading-5">Mixed Order</span>
                 </div>
                 <template v-else>
-                <div v-if="stockOrder" class="px-3 py-[3px] justify-center flex rounded bg-green-50">
-                    <span class="text-green-500 text-sm font-medium leading-5">Stock Order</span>
-                </div>
-                <div v-if="backOrder" class="px-3 py-[3px] justify-center flex rounded bg-orange-50">
-                    <span class="text-orange-500 text-sm font-medium leading-5">Back Order</span>
-                </div>
-            </template>
+                    <div v-if="stockOrder" class="px-3 py-[3px] justify-center flex rounded bg-green-50">
+                        <span class="text-green-500 text-sm font-medium leading-5">Stock Order</span>
+                    </div>
+                    <div v-if="backOrder" class="px-3 py-[3px] justify-center flex rounded bg-orange-50">
+                        <span class="text-orange-500 text-sm font-medium leading-5">Back Order</span>
+                    </div>
+                </template>
             </div>
         </div>
         <div class="gap-2 flex flex-col w-full">
             <div class="h-[1px] rounded-lg bg-neutral-100 block"></div>
             <div class="flex flex-col">
-                <button
-class="flex flex-row justify-between py-2 group header-transition"
-                    @click="expandShippingAndBilling">
+                <button class="flex flex-row justify-between py-2 group header-transition" @click="expandShippingAndBilling">
                     <span
-class="text-base font-medium leading-6 transition duration-300 group-hover:text-blue-500"
-                        :class="shippingAndBillingExpanded ? 'text-blue-500' : 'text-neutral-700'">Shipping and
-                        Billing</span>
+                        class="text-base font-medium leading-6 transition duration-300 group-hover:text-blue-500"
+                        :class="shippingAndBillingExpanded ? 'text-blue-500' : 'text-neutral-700'"
+                        >Shipping and Billing</span
+                    >
                     <div class="flex flex-row gap-6">
                         <div v-if="shippingAndBillingMissingInfoWarning" class="flex flex-row gap-2 items-center">
                             <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
@@ -35,12 +34,12 @@ class="text-base font-medium leading-6 transition duration-300 group-hover:text-
                                 </template>
                             </Tooltip>
                             <WarningErrorYellow class="hidden sm:flex lg:hidden" />
-                            <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Missing
-                                Info</span>
+                            <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Missing Info</span>
                         </div>
                         <ChevronDownIcon
-class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                            :class="[shippingAndBillingExpanded ? 'rotate-180 text-blue-500' : 'text-slate-500']" />
+                            class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
+                            :class="[shippingAndBillingExpanded ? 'rotate-180 text-blue-500' : 'text-slate-500']"
+                        />
                     </div>
                 </button>
                 <Transition name="expand">
@@ -51,13 +50,15 @@ class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
             <div class="flex flex-col">
                 <button class="flex flex-row justify-between py-2 group" @click="expandShippingPreferences">
                     <span
-class="text-base font-medium leading-6 transition duration-300 group-hover:text-blue-500"
-                        :class="shippingPreferencesExpanded ? 'text-blue-500' : 'text-neutral-700'">Shipping
-                        Preferences</span>
+                        class="text-base font-medium leading-6 transition duration-300 group-hover:text-blue-500"
+                        :class="shippingPreferencesExpanded ? 'text-blue-500' : 'text-neutral-700'"
+                        >Shipping Preferences</span
+                    >
                     <div class="flex flex-row gap-6">
                         <div
-v-if="!shippingPreferencesExpanded && ((mixedOrBackOrder && !order.backorderOption) || !order.deliveryMethod)"
-                            class="flex flex-row gap-2 items-center">
+                            v-if="!shippingPreferencesExpanded && ((mixedOrBackOrder && !order.backorderOption) || !order.deliveryMethod)"
+                            class="flex flex-row gap-2 items-center"
+                        >
                             <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
                                 <WarningErrorHuge />
                                 <template #content>
@@ -65,25 +66,31 @@ v-if="!shippingPreferencesExpanded && ((mixedOrBackOrder && !order.backorderOpti
                                 </template>
                             </Tooltip>
                             <WarningErrorHuge class="hidden sm:flex lg:hidden" />
-                            <span
-                                class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
+                            <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
                         </div>
                         <ChevronDownIcon
-class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                            :class="[shippingPreferencesExpanded ? 'rotate-180 text-blue-500' : 'text-slate-500']" />
+                            class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
+                            :class="[shippingPreferencesExpanded ? 'rotate-180 text-blue-500' : 'text-slate-500']"
+                        />
                     </div>
                 </button>
                 <Transition name="expand">
                     <OrderSummaryShippingPreferencesSection
-v-if="shippingPreferencesExpanded" :order="order" class="item"
-                        :general-settings="generalSettings" @select-backorder-preference="selectBackorderPreference" />
+                        v-if="shippingPreferencesExpanded"
+                        :order="order"
+                        class="item"
+                        :general-settings="generalSettings"
+                        @select-backorder-preference="selectBackorderPreference"
+                    />
                 </Transition>
             </div>
             <div class="h-[1px] rounded-lg bg-neutral-100 block"></div>
             <button class="flex flex-row justify-between py-2 group" @click="expandPaymentMethod">
                 <span
-class="text-base font-medium leading-6 transition duration-300 group-hover:text-blue-500"
-                    :class="paymentMethodExpanded ? 'text-blue-500' : 'text-neutral-700'">Payment Method</span>
+                    class="text-base font-medium leading-6 transition duration-300 group-hover:text-blue-500"
+                    :class="paymentMethodExpanded ? 'text-blue-500' : 'text-neutral-700'"
+                    >Payment Method</span
+                >
                 <div class="flex flex-row gap-6">
                     <div v-if="paymentMethodWarning" class="flex flex-row gap-2 items-center">
                         <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
@@ -96,25 +103,29 @@ class="text-base font-medium leading-6 transition duration-300 group-hover:text-
                         <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
                     </div>
                     <ChevronDownIcon
-class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
-                        :class="[paymentMethodExpanded ? 'rotate-180 text-blue-500' : 'text-slate-500']" />
+                        class="w-5 h-5 flex-shrink-0 rounded-full transition duration-300 flex"
+                        :class="[paymentMethodExpanded ? 'rotate-180 text-blue-500' : 'text-slate-500']"
+                    />
                 </div>
             </button>
             <Transition name="expand">
                 <OrderSummaryPaymentMethodSection
-v-if="paymentMethodExpanded" :order="order"
-                    :account-credit="accountCredit" :card="card" :cards="cards" :is-new-card-selected="isNewCardSelected"
-                    class="item" @update-payment-details="emits('update-payment-details', $event)" />
+                    v-if="paymentMethodExpanded"
+                    :order="order"
+                    :account-credit="accountCredit"
+                    :card="card"
+                    :cards="cards"
+                    :is-new-card-selected="isNewCardSelected"
+                    class="item"
+                    @update-payment-details="emits('update-payment-details', $event)"
+                />
             </Transition>
             <AppModal v-model="showCardsModal" side="right">
-                <OrderSummaryPaymentModal
-:cards="cards" :order="order" :card="card"
-                    :is-new-card-selected="isNewCardSelected" />
+                <OrderSummaryPaymentModal :cards="cards" :order="order" :card="card" :is-new-card-selected="isNewCardSelected" />
             </AppModal>
         </div>
     </div>
 </template>
-
 
 <script setup lang="ts">
 import { OrderInterface, OrderType } from '~/types';
@@ -150,21 +161,23 @@ const stockOrder = computed(() => {
 });
 
 const backOrder = computed(() => {
-    return props.items.filter((item: CartProductsInterface) => {
-        return item.productEntity?.stock !== undefined && item?.backorder_stock > 0;
-    }).length > 0;
+    return (
+        props.items.filter((item: CartProductsInterface) => {
+            return item.productEntity?.stock !== undefined && item?.backorder_stock > 0;
+        }).length > 0
+    );
 });
 
 const orderType = computed(() => {
-    if (stockOrder.value) {
+    if (stockOrder.value && backOrder.value) {
+        Emitter.emit('order-type', OrderType.Mixed);
+        return 2;
+    } else if (stockOrder.value) {
         Emitter.emit('order-type', OrderType.Stock);
         return 0;
     } else if (backOrder.value) {
         Emitter.emit('order-type', OrderType.Back);
         return 1;
-    } else {
-        Emitter.emit('order-type', OrderType.Mixed);
-        return 2;
     }
 });
 
@@ -196,6 +209,7 @@ watch(orderType, (newOrderType) => {
 
 onMounted(() => {
     props.order.type = orderType.value;
+    console.log(props.order.type, orderType.value);
 });
 
 onBeforeUnmount(() => {
