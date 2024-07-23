@@ -15,6 +15,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
+  (e: 'setDefault', address: AddressData): void;
   (e: 'edit', address: AddressData): void;
   (e: 'delete', address: AddressData): void;
 }>();
@@ -25,6 +26,10 @@ const editAddress = () => {
 
 const deleteAddress = () => {
   emit('delete', props.addressData);
+};
+
+const setDefault = () => {
+  emit('setDefault', props.addressData);
 };
 </script>
 
@@ -67,7 +72,7 @@ const deleteAddress = () => {
           class="rounded-full"
           aria-label="Edit address"
           variant="secondary"
-          @click="editAddress"
+          @click="setDefault"
         >
           <CheckCircle class="w-5 aspect-square" />
         </UiButton>

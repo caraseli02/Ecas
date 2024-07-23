@@ -1,4 +1,4 @@
-import { DiscountInterface } from '~/types/auth/account-settings';
+import { CustomerCreditInterface, DiscountInterface } from '~/types/auth/account-settings';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import {
     BackorderShippingTypesInterface,
@@ -6,6 +6,7 @@ import {
     StockorderShippingTypesInterface,
 } from '~/types/general-settings/general-settings';
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import { PaymentMethod } from '@stripe/stripe-js';
 
 export interface OrderSummaryItem {
     title: string;
@@ -57,6 +58,8 @@ export interface OrderInterface {
     currency: string;
     status: OrderStatus;
     type: OrderType;
+    shippingCost?: number;
+    smallOrderCost?: number;
     discount?: DiscountInterface;
     notes: OrderNotesInterface[];
     createdAt?: string;
@@ -77,20 +80,59 @@ export interface OrderInterface {
 export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'userName' | 'createdAt' | 'status' | 'total'>;
 
 export interface OrderRequestInterface {
+    shortId: string;
     userId?: string;
-    userName?: string;
+    userName: string;
+    userEmail: string;
     businessId?: string;
     cartId?: string;
-    products?: CartProductsInterface[];
+    products: CartProductsInterface[];
     shippingDetails: OrderShippingDetailsInterface;
     stripeCardId?: any;
     paymentDetails: PaymentDetails;
-    smallOrderChargeId: string;
+    smallOrderChargeId?: string;
+    shippingCost?: number;
+    smallOrderCost?: number;
     currency: string;
     type: OrderType;
     discount?: DiscountInterface;
     isDraft: boolean;
-    note?: OrderNotesInterface;
+    notes?: OrderNotesInterface[];
+    stock: string;
+    total?: number;
+    subtotal: number;
+    updatedAt?: string;
+}
+
+export interface OrderRequestInterfaceResponse {
+    status: string;
+    data: {
+        order: OrderRequestInterface;
+        children: any;
+    };
+}
+
+export interface CardInfo {
+    provider: string;
+    last4: string;
+}
+
+export interface CreditInfo {
+    limit: number;
+    tillDue: string;
+    term: string;
+    spent: number;
+    available: number;
+    dueDate: string;
+}
+
+export interface BankInfo {
+    text: string;
+}
+
+export interface PaymentInfo {
+    type: PaymentTypeEnum;
+    info: CardInfo | CustomerCreditInterface | BankInfo;
 }
 
 export enum DeliveryMethodEnum {
@@ -118,13 +160,15 @@ export interface OrderShippingDetailsInterface {
     deliveryTypeId: string;
     backorderShippingTypeId?: string;
     stockorderShippingTypeId?: string;
+    _id?: string;
 }
 
 export interface PaymentDetails {
     type: PaymentTypeEnum;
     status?: PaymentStatusEnum;
     paymentIntentId?: string;
-    card?: StripeCardInterface;
+    // card?: StripeCardInterface;
+    card?: Pick<PaymentMethod.Card, 'last4' | 'exp_year' | 'exp_month' | 'brand'>;
 }
 
 export interface StripeCardInterface {
@@ -137,7 +181,7 @@ export interface StripeCardInterface {
 }
 
 export interface StripeCardInfoInterface {
-    brand?: string;
+    display_brand?: string;
     checks?: object;
     country?: string;
     exp_month: number;
@@ -180,6 +224,23 @@ export enum PaymentTypeEnum {
     Bank = 3,
 }
 
+export interface PaymentSummaryInterface {
+    subtotal?: number;
+    discountPercentage?: number;
+    discountAmount?: number;
+    handlingCharge?: number;
+    shippingCost?: number;
+    taxPercentage?: number;
+    taxAmount?: number;
+    backorderItemsTotal?: number;
+    stockItemsTotal?: number;
+    orderTotal?: number;
+    payableNow?: number;
+    shippingText?: string;
+    orderType?: OrderType;
+    smallOrderCharge?: number;
+}
+
 export const getPaymentTypeById = <
     T extends {
         [index: string]: number;
@@ -202,6 +263,14 @@ export interface PriceHistory {
     createdAt: string;
     price: number;
     updatedAt: string;
+}
+
+export interface OrderConfirmationAddress {
+    name1: string;
+    name2: string;
+    postcode: string;
+    country: string;
+    city: string;
 }
 
 export enum OrderStatus {
