@@ -1,8 +1,8 @@
 <template>
     <section
-        class="flex flex-col items-center justify-between min-h-screen w-full shadow-xs bg-white max-w-[358px] md:max-w-[400px] px-4 md:px-6 py-0 rounded-l-xl h-full overflow-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300"
+        class="flex flex-col items-center justify-between min-h-screen w-full shadow-xs bg-white max-w-[358px] md:max-w-[400px] px-4 md:px-6 py-0 rounded-l-xl h-full overflow-hidden scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300"
     >
-        <div class="sticky top-0 justify-between items-center self-stretch flex gap-5 bg-white z-10 min-h-16 pt-6">
+        <div class="sticky top-0 justify-between items-start self-stretch flex gap-5 bg-white z-10 min-h-16 pt-6">
             <div class="text-zinc-800 text-base font-semibold leading-7 my-auto">Payment Method</div>
             <button
                 class="justify-center items-center bg-zinc-100 self-stretch flex aspect-square flex-col w-8 h-8 px-1 rounded-lg"
@@ -14,15 +14,15 @@
                 <SvgoX class="aspect-square object-contain object-center w-full justify-center items-center overflow-hidden" />
             </button>
         </div>
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3 h-full overflow-y-auto relative">
             <OrderSummaryNewCard
-                class="mt-8"
+                class="mt-8 sticky top-0 bg-white"
                 :is-selected="isNewCardSelectedModal"
                 @click="isNewCardSelectedModal = true"
                 @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: null })"
             />
-            <h4 class="text-zinc-800 text-sm font-medium leading-6 self-stretch mt-2">Saved cards</h4>
-            <div v-for="card in cards" :key="card.id" class="">
+            <h4 v-if="cards.length > 1" class="text-zinc-800 text-sm font-medium leading-6 self-stretch mt-2">Saved cards</h4>
+            <div v-for="card in cards" :key="card.id" class="pt-4">
                 <OrderSummaryPayByCard
                     view="payment"
                     :card-info="card"
