@@ -51,6 +51,22 @@ export const useCartStore = defineStore({
             this.cart = null;
             this.orderClientSecret = null;
         },
+        checkCartItem(itemId: string) {
+            const item = this.cart?.products.find((product: CartProductsInterface) => product.id === itemId);
+            if(item) {
+                item.selected = !item.selected;
+            }
+        },
+        makeCartItemFavorite(itemId: string) {
+            const item = this.cart?.products.find((product: CartProductsInterface) => product.id === itemId);
+            console.log(item, itemId);
+            
+            if(item?.liked) {
+                item.liked = false
+            } else if(item && !item?.liked) {
+                item.liked = true
+            }
+        }
     },
     getters: {
         mappedCartItems: (state) => {

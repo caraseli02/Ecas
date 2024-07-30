@@ -127,9 +127,9 @@ const deleteItem = async (items: FavoriteItem[] = []) => {
         const removed = await $api.cart.removeEntityFromCart(payload);
 
         if (removed.status === 'success') {
-            Emitter.emit('delete-product-item', {
-                id: items[0].id,
-            });
+            // Emitter.emit('delete-product-item', {
+            //     id: items[0].id,
+            // });
             await cartStore.updateAndReturnCart();
         }
     }

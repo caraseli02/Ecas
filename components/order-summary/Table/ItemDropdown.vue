@@ -16,7 +16,7 @@
                             >Unit Price</span
                         >
                         <div v-if="stockItem && item.discount.value" class="flex lg:hidden">
-                            <div class="px-2 border-[1px] rounded-[25px] border-[#FA4B4B] bg-white ml-4 flex items-center lg:hidden">
+                            <div class="px-2 border-[1px] rounded-[25px] border-rose-500 bg-white ml-4 flex items-center lg:hidden">
                                 <span class="text-xs font-semibold leading-5 text-rose-500">{{ item.discount.value }} %</span>
                             </div>
                         </div>
@@ -25,12 +25,12 @@
                                 >$ {{ item.initialUnitPrice.toFixed(2) }}</span
                             >
                             <span class="text-sm font-normal leading-5" :class="discounts?.productDiscount ? 'text-rose-500' : ''"
-                                >$ {{ discounts.currentConfigurationDiscountPrice.toFixed(2) }}</span
+                                >$ {{ discounts?.currentConfigurationDiscountPrice.toFixed(2) }}</span
                             >
                         </div>
                         <div v-else class="flex flex-col text-center h-[36px] justify-center">
                             <span class="text-neutral-700 text-sm font-normal leading-5"
-                                >$ {{ discounts.currentConfigurationDiscountPrice.toFixed(2) }}</span
+                                >$ {{ discounts?.currentConfigurationDiscountPrice.toFixed(2) }}</span
                             >
                         </div>
                     </div>
@@ -67,15 +67,13 @@
                 </div>
             </div>
         </div>
-        <div class="h-[1px] -mt-2 bg-[#EBEBEB] mx-4 rounded-lg xl:hidden block"></div>
+        <div class="h-[1px] -mt-2 bg-light-500 mx-4 rounded-lg xl:hidden block"></div>
         <AdditionalDetails
             :item="item"
-            :liked="liked"
             :show-packaging-details="showPackagingDetails"
             :show-delivery-details="showDeliveryDetails"
             @toggle-packaging-details="togglePackagingDetails"
             @toggle-delivery-details="toggleDeliveryDetails"
-            @like-item="emits('likeItem')"
             @delete-item="deleteItem = true"
         />
     </div>
@@ -83,7 +81,7 @@
         <Transition name="slide-from-top">
             <LayoutFavoritesModalsDelete
                 v-if="deleteItem"
-                :remove-only-stock-quantity="stockItem && item.backorder_stock > 0"
+                :remove-only-stock-quantity="stockItem && !!item.backorder_stock && item.backorder_stock > 0"
                 :remove-only-backstock-quantity="!stockItem && item.stock > 0"
                 :products="[item as any]"
                 :delete-from-cart="true"
@@ -99,7 +97,6 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { CartProductsInterface, ProductAction } from '~/model/cart/response/cart.interface';
-import { defineProps, defineEmits } from 'vue';
 
 import ProductDetails from './ProductDetails.vue';
 import AdditionalDetails from './AdditionalDetails.vue';
@@ -110,10 +107,8 @@ const props = defineProps<{
   item: CartProductsInterface,
   shortStock: boolean,
   stockItem: boolean,
-  liked: boolean
 }>();
 
-const emits = defineEmits(['likeItem']);
 
 const showPackagingDetails = ref(false);
 const showDeliveryDetails = ref(false);
@@ -127,14 +122,16 @@ const discounts = computed(() => {
   if (!props.item.productEntity) {
     return null;
   }
+  const backorder_stock = props.item.backorder_stock || 0;
   return parseProductPriceConfiguration(
     props.item.productEntity,
     getUserDetails.value,
-    props.item.stock + props.item.backorder_stock
+    props.item.stock + backorder_stock
   );
 });
 
 const taxPrice = computed(() => {
+  if(!quantity.value) return 0
   const subtotalValue = quantity.value * (discounts.value?.currentConfigurationDiscountPrice || 0);
   return (subtotalValue * 0.19).toFixed(2);
 });
@@ -143,6 +140,7 @@ const subtotal = computed(() => {
   if (!discounts.value) {
     return 0;
   }
+  if(!quantity.value) return 0
   return quantity.value * (discounts.value.currentConfigurationDiscountPrice || 0);
 });
 
