@@ -26,9 +26,9 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
     error.value = false;
 
     // FIX to use userID
-    const data = await $api.orders.fetchOrders(page, perPage, filters, sort);
+    const result = await $api.orders.fetchOrders(page, perPage, filters, sort);
 
-    if (!data || data.status !== 'success') {
+    if (!result || result.status !== 'success') {
         loading.value = false;
         error.value = true;
         totalItems.value = 0;
@@ -37,12 +37,12 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
         return;
     }
 
-    totalItems.value = data.data.total_items;
-    pageCount.value = data.data.page_count;
-    listItems.value = data.data.items as unknown as OrderInterface[];
+    totalItems.value = result.data.total_items;
+    pageCount.value = result.data.page_count;
+    listItems.value = result.data.items as unknown as OrderInterface[];
     loading.value = false;
-    console.log(totalItems.value);
-    return data.data;
+    activeOrderFilter.value.total_items = totalItems.value;
+    return result.data;
 };
 
 const orderFilters = ref<TabFilter[]>([
