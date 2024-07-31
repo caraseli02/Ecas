@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col min-h-screen bg-[#f9f9f9]">
+    <div class="flex flex-col min-h-screen bg-[#f9f9f9] app-scroll">
         <DashboardHeader :is-collapsed-on-desktop="isSideNavCollapsedOnDesktop" @show-side-nav="showSideNav = true" />
         <transition name="slide-from-left">
             <DashboardAside v-if="showSideNav" class="w-full md:hidden" @close="showSideNav = false" />
@@ -33,7 +33,7 @@ const showSideNav = ref(false);
 </script>
 
 <style lang="postcss">
-body {
+.app-scroll {
   @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300
 }
 </style>
