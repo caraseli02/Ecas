@@ -1,7 +1,7 @@
 <template>
     <div class="relative flex items-center gap-8 bg-white rounded-xl px-6 shadow-xs overflow-x-auto hide-scrollbar">
         <button
-            v-for="(filter, index) in orderFilters"
+            v-for="(filter, index) in computedOrderFilters"
             :key="index"
             class="ordersFilter flex items-center gap-3 relative z-10 text-sm font-medium leading-[1.71] py-5 flex-shrink-0 transition-colors duration-300 md:py-8"
             :class="[filter.label === activeOrderFilter?.label ? 'text-blue-500' : 'hover:text-blue-500']"
@@ -35,6 +35,8 @@
 import { OrderInterface } from '~~/types';
 import DashboardIcon from '@/assets/icons/dashboard/dashboard.svg';
 import Emitter from 'tiny-emitter/instance.js';
+import { useAuthStore } from '@/store/authStore';
+import { storeToRefs } from 'pinia';
 
 interface TabFilter {
     label?: string;
@@ -43,8 +45,11 @@ interface TabFilter {
     total_items?: number;
     items?: OrderInterface[];
     icon?: string;
+    requiredPermission?: string;
 }
 
+const authStore = useAuthStore();
+const { loggedInUser } = storeToRefs(authStore);
 const orderFilters = ref<TabFilter[]>([
     {
         icon: 'dashboard',
@@ -53,45 +58,50 @@ const orderFilters = ref<TabFilter[]>([
     {
         label: 'Orders',
         value: 'orders',
-        total_items: 130, // Assuming the number in the image represents the total_items
+        requiredPermission: 'read:orders'
     },
     {
         label: 'Favorites',
         value: 'favorites',
-        total_items: 130, // Update this number as needed
+        requiredPermission: 'read:favourite'
     },
-    // {
-    //     label: 'Messages',
-    //     value: 'messages',
-    //     total_items: 130, // Update this number as needed
-    // },
+    {
+        label: 'Messages',
+        value: 'messages',
+        requiredPermission: 'read:message'
+    },
     {
         label: 'Organization',
         value: 'organization',
+        requiredPermission: 'read:organization'
+
     },
     {
         label: 'Agents',
         value: 'agents',
-        total_items: 0, // Update this number as needed
+        requiredPermission: 'read:agents'
     },
     {
         label: 'Transaction History',
         value: 'transaction_history',
+        requiredPermission: 'read:payment'
     },
-    // {
-    //     label: 'Docs',
-    //     value: 'docs',
-    //     total_items: 130, // Update this number as needed
-    // },
     {
         label: 'Activity Logs',
         value: 'activityLogs',
+        requiredPermission: 'read:audit'
     },
     {
         label: 'Settings',
         value: 'settings',
     },
 ]);
+
+const computedOrderFilters = computed(() => {
+    return orderFilters.value.filter(filter => 
+        !filter.requiredPermission || loggedInUser.value?.permissions.includes(filter.requiredPermission)
+    );
+});
 
 const activeOrderFilter = defineModel<TabFilter>();
 
@@ -106,9 +116,10 @@ Emitter.on('customer-dashboard-nav-tab', async (tab: { label: string; value: str
 
 const setActiveFilterHighlight = () => {
     const activeFilter = activeOrderFilter.value;
-    const index = orderFilters.value.findIndex((filter) => filter.label === activeFilter.label);
+    const index = computedOrderFilters.value.findIndex((filter) => filter.label === activeFilter?.label);
 
-    if (index !== -1) {
+    nextTick(() => {
+        if (index !== -1) {
         const filterElement = document.querySelectorAll('.ordersFilter')[index] as HTMLElement;
 
         if (filterElement) {
@@ -116,6 +127,8 @@ const setActiveFilterHighlight = () => {
             filterHightlightLeft.value = filterElement.offsetLeft;
         }
     }
+    });
+
 };
 
 watch(

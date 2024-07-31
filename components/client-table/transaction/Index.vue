@@ -11,6 +11,10 @@ const props = defineProps({
     },
 });
 
+const emit = defineEmits<{
+    showTotalItems: [val: number]
+}>()
+
 const totalItems = ref(0);
 const pageCount = ref(0);
 const loading = ref(true);
@@ -39,6 +43,8 @@ const fetchAndSetTransactionList = _.debounce(async (page: number, perPage: numb
 
     listItems.value = data.data.items as TransactionInterface[];
     pageCount.value = data.data.page_count;
+    emit('showTotalItems', data.data.total_items)
+    
     loading.value = false;
     // listItems.value.forEach((item: TransactionInterface) => {
     //   item.createdAt = moment(item.createdAt).format('DD/MM/YYYY');
