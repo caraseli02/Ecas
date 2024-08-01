@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CopyIcon, FilePenLineIcon } from 'lucide-vue-next';
-import { ComputedRef, h, Ref, ref, watch } from 'vue';
+import { ComputedRef, Ref, ref, watch } from 'vue';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
@@ -215,29 +215,26 @@ const businessFields = {
 };
 
 interface Fields {
-    [key: string]: Ref<string>;
+    [key: string]: Ref<string | number>;
 }
 
 const usedFields = ref<Fields>(getUserDetails.value.accountType === AccountType.Personal ? personalFields : businessFields);
 const isFieldNotEmpty: { [key: string]: ComputedRef<boolean> } = {};
 for (const key in personalFields) {
-    isFieldNotEmpty[key] = computed(() => usedFields.value[key].value.trim().length > 0);
+    isFieldNotEmpty[key] = computed(() => usedFields.value[key].value.toString().trim().length > 0);
 }
 
 const { handleSubmit, setFieldValue } = useForm({
     validationSchema: getUserDetails.value.accountType === AccountType.Personal ? formSchemaPersonal : formSchemaBusiness,
 });
 
-const onSubmit = handleSubmit((values) => {
-    console.log({
-        title: 'You submitted the following values:',
-        description: h(
-            'pre',
-            { class: 'mt-2 w-[340px] rounded-md bg-slate-950 p-4' },
-            h('code', { class: 'text-white' }, JSON.stringify(values, null, 2))
-        ),
-    });
-});
+const onSubmit = async () => {
+    if (getUserDetails.value.accountType === AccountType.Personal) {
+        console.log(personalFields);
+    } else {
+        console.log(businessFields);
+    }
+};
 
 const openEdit = ref(false);
 const country = ref<undefined | Country>(
@@ -328,7 +325,7 @@ watch(region, (newRegion) => {
                     </UiButton>
                 </div>
             </header>
-            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9" @submit="onSubmit">
+            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9" @submit="onSubmit()">
                 <FormField v-slot="{ componentField }" name="firstName">
                     <FormItem>
                         <FormLabel>First Name</FormLabel>

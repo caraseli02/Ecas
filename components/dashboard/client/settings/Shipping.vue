@@ -1,20 +1,58 @@
 <script setup lang="ts">
-import AddressList from './AddressList'
-import ShippingDialog from './ShippingDialog'
+import AddressList from './AddressList';
+import ShippingDialog from './ShippingDialog';
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
+import { AccountType } from '~/types';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import { ref } from 'vue';
+
+interface AddressData {
+    icon: string;
+    alias: string;
+    isDefault: boolean;
+    name: string;
+    address: string;
+    phone: string;
+}
+
+const authStore = useAuthStore();
+const { getUserDetails } = storeToRefs(authStore);
+
+const formatAddresses = async () => {
+    const addresses =
+        getUserDetails.value.accountType === AccountType.Personal
+            ? getUserDetails.value.personalDetails?.shippingAddress
+            : getUserDetails.value.companyDetails?.shippingAddress;
+
+    return addresses?.map((address: ShippingAddressInterface, index: number) => {
+        return {
+            alias: address.alias || `Shipping Address Alias ${index + 1}`,
+            isDefault: address.default || false,
+            name:
+                getUserDetails.value.accountType === AccountType.Personal
+                    ? `${getUserDetails.value.personalDetails?.firstName} ${getUserDetails.value.personalDetails?.lastName}`
+                    : getUserDetails.value.companyDetails?.name,
+            address: address.name1 + ' ' + address.name2 + ', ' + address.city + ', ' + address.postcode + ', ' + address.country,
+            phone: address.phone || '',
+            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cd8b9b1c0d2b925f29e818d6e49d9d83c8bd553c0416b56bcae00e809eb1cd1b?apiKey=20497529553648aab918fa2d322ece87&',
+        };
+    }) as AddressData[];
+};
+
+const addresses = ref<AddressData[]>(await formatAddresses());
 </script>
 
 <template>
-  <section class="flex flex-col gap-9 self-stretch p-4 md:p-6 bg-white rounded-xl shadow-l">
-    <div class="flex gap-2.5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-      <h2 class="self-start text-xl font-semibold leading-7 text-neutral-700">Shipping</h2>
-    </div>
-    <AddressList />
-    <section
-      class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
-      <ShippingDialog />
+    <section class="flex flex-col gap-9 self-stretch p-4 md:p-6 bg-white rounded-xl shadow-l">
+        <div class="flex gap-2.5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
+            <h2 class="self-start text-xl font-semibold leading-7 text-neutral-700">Shipping</h2>
+        </div>
+        <AddressList :addresses="addresses" />
+        <section class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
+            <ShippingDialog />
+        </section>
     </section>
-  </section>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
