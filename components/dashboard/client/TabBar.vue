@@ -34,19 +34,44 @@
 <script setup lang="ts">
 import { OrderInterface } from '~~/types';
 import DashboardIcon from '@/assets/icons/dashboard/dashboard.svg';
-import Emitter from 'tiny-emitter/instance.js';
+// import Emitter from 'tiny-emitter/instance.js';
 import { useAuthStore } from '@/store/authStore';
 import { storeToRefs } from 'pinia';
+
+type ApiKeysMap = {
+    [key: string]: string;
+};
+
+const apiKeysMap: ApiKeysMap = {
+    orders: 'ordersCount',
+    favorites: 'favoritesCount',
+    messages: 'messagesCount',
+    organization: 'organizationCount',
+    agents: 'agentsCount',
+    transaction_history: 'transactionsCount',
+    activity_logs: 'auditLogsCount',
+};
+
+        // "ordersCount": 615,
+        // "transactionsCount": 0,
+        // "favoritesCount": 7,
+        // "auditLogsCount": 37771,
+        // "agentsCount": null
 
 interface TabFilter {
     label?: string;
     value: string;
     key?: any;
-    total_items?: number;
+    total_items?: number | null;  // Adjusted to accept null
     items?: OrderInterface[];
     icon?: string;
     requiredPermission?: string;
 }
+
+type ApiResponse = {
+    status: 'success' | 'error';
+    data: Record<string, number | null>;
+};
 
 const authStore = useAuthStore();
 const { loggedInUser } = storeToRefs(authStore);
@@ -88,7 +113,7 @@ const orderFilters = ref<TabFilter[]>([
     },
     {
         label: 'Activity Logs',
-        value: 'activityLogs',
+        value: 'activity_logs',
         requiredPermission: 'read:audit'
     },
     {
@@ -108,11 +133,11 @@ const activeOrderFilter = defineModel<TabFilter>();
 const filterHighlightWidth = ref(0);
 const filterHightlightLeft = ref(0);
 
-Emitter.on('customer-dashboard-nav-tab', async (tab: { label: string; value: string }) => {
-    if (tab) {
-        activeOrderFilter.value = tab;
-    }
-});
+// Emitter.on('customer-dashboard-nav-tab', async (tab: { label: string; value: string }) => {
+//     if (tab) {
+//         activeOrderFilter.value = tab;
+//     }
+// });
 
 const setActiveFilterHighlight = () => {
     const activeFilter = activeOrderFilter.value;
@@ -139,7 +164,29 @@ watch(
     { deep: true }
 );
 
-onMounted(() => {
+const updateOrderFiltersWithCounts = async () => {
+    const token = useAuthStore().getToken();
+    const config = useRuntimeConfig();
+    try {
+        const response = await $fetch<ApiResponse>(`${config.public.BASE_URL_API}/dashboard/client/general/metadata`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        const counts = response.data;
+        
+        orderFilters.value.forEach(filter => {
+            const apiResponseKey: string = apiKeysMap[filter.value] || '';
+            const count = counts[apiResponseKey];
+            if (apiResponseKey && count !== undefined) {
+                filter.total_items = count;
+            }
+        });
+    } catch (error) {
+        console.error('Failed to fetch counts from API:', error);
+    }
+};
+
+onMounted(async () => {
+    updateOrderFiltersWithCounts()
     setActiveFilterHighlight();
 });
 </script>
