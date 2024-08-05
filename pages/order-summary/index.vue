@@ -20,8 +20,6 @@
                         <OrderSummaryBackOrderWarning v-if="showWarning" />
                         <OrderSummaryTable
                             :loading="loading"
-                            @check-all="checkAll"
-                            @add-to-favs="addToFavsAll"
                             @update-subtotal="calculateSubtotal"
                             @delete-selected="deleteSelected"
                         />
@@ -118,27 +116,6 @@ const showWarning = computed(() => {
 
 const loading = ref(true);
 
-const checkAll = (checked: boolean) => {
-    cartItems.value.forEach((item: any) => {
-        item.selected = checked;
-    });
-};
-
-const deleteSelected = async (deletedItems: string) => {
-    const itemsToDelete = cartItems.value.filter((product: any) => product.selected)?.map((object) => object.id);
-    cartItems.value = cartItems.value.filter((product: any) => !product.selected);
-
-    const payload = {
-        products: itemsToDelete,
-    };
-
-    const removed = await $api.cart.removeEntityFromCart(payload);
-
-    if (removed.status === 'success') {
-        await cartStore.updateAndReturnCart();
-    }
-};
-
 watch(
     [cartItems],
     ([_items]) => {
@@ -200,14 +177,6 @@ getGeneralSettingsFunction();
 //         selected: false,
 //     }));
 // };
-
-const addToFavsAll = (liked: boolean) => {
-    cartItems.value.forEach((item: any) => {
-        if (item.selected) {
-            item.liked = liked;
-        }
-    });
-};
 
 const shippingFee = (shippingType: number) => {
     console.log(shippingType);

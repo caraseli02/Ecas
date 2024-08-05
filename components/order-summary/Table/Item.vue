@@ -1,41 +1,22 @@
 <template>
     <div class="rounded-lg" :class="expanded ? 'custom-shadow' : ''">
-        <OrderSummaryTableItemHeader 
-        :short-stock="shortStock" 
-        :stock-item="stockItem" 
-        :expanded="expanded" 
-        :item="item" 
-        :item-quantity="itemQuantity"
-        @toggleExpanded="expanded = $event" 
-        @check="emits('check', $event);"
-        @addToFavs="emits('addToFavs', $event);"
-        @deleteItem="deleteItem = $event;"
-        />
+        <OrderSummaryTableItemHeader
+:short-stock="shortStock" :stock-item="stockItem" :expanded="expanded" :item="item"
+            :item-quantity="itemQuantity" @toggleExpanded="expanded = $event" @check="emits('check', $event);"
+            @deleteItem="deleteItem = $event;" />
         <Transition name="expand">
             <OrderSummaryTableItemDropdown
-                v-if="expanded"
-                :key="stockItem ? `${item.id} - ${item.stock}` : `${item.id} - ${item.backorder_stock}`"
-                ref="tab"
-                :item="item"
-                :short-stock="(shortStock as boolean)"
-                :stock-item="stockItem"
-                class="item"
-                @like-item="liked = !liked"
-            />
+v-if="expanded"
+                :key="stockItem ? `${item.id} - ${item.stock}` : `${item.id} - ${item.backorder_stock}`" ref="tab"
+                :item="item" :short-stock="(shortStock as boolean)" :stock-item="stockItem" class="item"
+                @like-item="liked = !liked" />
         </Transition>
     </div>
-    <Teleport to="body">
-        <Transition name="slide-from-top">
-            <LayoutFavoritesModalsDelete
-                v-if="deleteItem"
-                :remove-only-stock-quantity="stockItem && !!item.backorder_stock && item.backorder_stock > 0"
-                :remove-only-backstock-quantity="!stockItem && item.stock > 0"
-                :products="[item]"
-                :delete-from-cart="true"
-                @close="deleteItem = false"
-            />
-        </Transition>
-    </Teleport>
+    <LayoutFavoritesModalsDelete
+        v-model="deleteItem"
+        :remove-only-stock-quantity="stockItem && !!item.backorder_stock && item.backorder_stock > 0"
+        :remove-only-backstock-quantity="!stockItem && item.stock > 0" :products="[item]" :delete-from-cart="true"
+        @close="deleteItem = false" />
 </template>
 
 <script setup lang="ts">
@@ -46,7 +27,7 @@ const props = defineProps<{
     stockItem: boolean;
 }>();
 
-const emits = defineEmits(['updateQuantity', 'check', 'deleteCurrent', 'addToFavs']);
+const emits = defineEmits(['updateQuantity', 'check', 'deleteCurrent']);
 
 const expanded = ref(false);
 const thresholdStock = 10;
@@ -57,8 +38,8 @@ const itemQuantity = computed(() => {
 });
 
 const shortStock = computed(() => {
-    if(props.item.productEntity?.stock)
-    return Number(props.item.productEntity?.stock) <= thresholdStock && props.item.productEntity?.stock > 0 && props.stockItem;
+    if (props.item.productEntity?.stock)
+        return Number(props.item.productEntity?.stock) <= thresholdStock && props.item.productEntity?.stock > 0 && props.stockItem;
 });
 
 watch(itemQuantity, () => {
@@ -95,7 +76,8 @@ onMounted(setupMediaQuery);
 .expand-enter-to,
 .expand-leave-from {
     opacity: 1;
-    max-height: 1000px; /* Adjust this value as needed */
+    max-height: 1000px;
+    /* Adjust this value as needed */
 }
 
 .expand-enter-active,

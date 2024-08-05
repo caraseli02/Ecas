@@ -1,62 +1,85 @@
 <template>
-    <div class="bg-[#EBEBEB] p-4 rounded-lg flex sm:flex-row gap-6 sm:gap-0 flex-col justify-between">
+    <div class="bg-light-500 p-4 rounded-lg flex sm:flex-row gap-6 sm:gap-0 flex-col justify-between">
         <div class="flex flex-row justify-between">
             <div class="flex justify-center items-center gap-2">
-                <SharedTablesMicroCheckBoxAll :check-all="checkAllBox" @checkAll="checkAll()" />
-                <span class="text-sm font-normal text-[#5E6278]">Select All</span>
+                <SharedTablesMicroCheckBoxAll :check-all="checkAllBox" @checkAll="toggleCheckAll" />
+                <span class="text-sm font-normal text-slate-500">Select All</span>
             </div>
             <div class="ml-9 flex gap-2 items-center">
                 <span class="text-neutral-700 text-sm font-medium"></span>
-                <span class="text-sm font-normal text-[#5E6278]">Items selected</span>
+                <span class="text-sm font-normal text-slate-500">Items selected</span>
             </div>
         </div>
         <div class="flex flex-row gap-9">
-            <button class="relative flex group" @click="addToFavs">
-                <HeartSolid v-show="liked" class="absolute r-0 top-[1px] text-[#007FFF]" />
-                <HeartOutline class="w-5 h-5 text-[#5E6278] group-hover:text-[#007FFF] transition duration-150" />
-                <span class="text-sm font-normal text-[#5E6278] ml-2 group-hover:text-[#007FFF] transition duration-150"
-                    >Add to Favourites</span
-                >
+            <button class="relative flex group" @click="toggleFavs">
+                <HeartSolid v-show="liked" class="absolute r-0 top-[1px] text-blue-500" />
+                <HeartOutline class="w-5 h-5 text-slate-500 group-hover:text-blue-500 transition duration-150" />
+                <span class="text-sm font-normal text-slate-500 ml-2 group-hover:text-blue-500 transition duration-150">
+                    Add to Favourites
+                </span>
             </button>
-            <button class="flex group" @click="deleteSelected">
-                <TrashOutline class="text-[#5E6278] group-hover:text-rose-500 transition duration-150" />
-                <span class="text-sm font-normal text-[#5E6278] ml-2 group-hover:text-rose-500 transition duration-150"
-                    >Delete Selected</span
-                >
-            </button>
+               
+                <UiDialog :open="isOpen" @update:open="isOpen = $event">
+                    <UiDialogTrigger class="flex">
+                <TrashOutline class="text-slate-500 group-hover:text-rose-500 transition duration-150" />
+                        <span class="text-sm font-normal text-slate-500 ml-2 group-hover:text-rose-500 transition duration-150">
+                    Delete Selected
+                </span>
+                    </UiDialogTrigger>
+                    <UiDialogContent>
+                        <p class="text-xl mb-4">Delete all selected items?</p>
+                        <div class="flex gap-4 items-center">
+                        <UiButton class="w-full" @click="deleteSelected">Confirm</UiButton>
+                        <UiButton class="w-full" variant="outline" @click="isOpen = !isOpen" >Cancel</UiButton>
+                        </div>
+                    </UiDialogContent>
+                </UiDialog>
         </div>
     </div>
 </template>
-<script lang="ts">
+
+<script setup lang="ts">
 import HeartOutline from '@/assets/icons/heart-outline.svg';
 import HeartSolid from '@/assets/icons/heart-solid.svg';
 import TrashOutline from '@/assets/icons/trash-outline.svg';
+import { useCartStore } from '~/store/cartStore';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
-export default defineComponent({
-    name: 'TableHead',
-    components: {
-        HeartOutline,
-        HeartSolid,
-        TrashOutline,
-    },
-    data() {
-        return {
-            checkAllBox: false,
-            liked: false,
-        };
-    },
-    methods: {
-        checkAll() {
-            this.checkAllBox = !this.checkAllBox;
-            this.$emit('checkAll', this.checkAllBox);
-        },
-        addToFavs() {
-            this.liked = !this.liked;
-            this.$emit('addToFavs', this.liked);
-        },
-        deleteSelected() {
-            this.$emit('deleteSelected');
-        },
-    },
-});
+// Reactive properties
+const checkAllBox = ref(false);
+const liked = ref(false);
+const isOpen = ref(false);
+
+const cartStore = useCartStore();
+
+// Methods to toggle states and emit events
+const toggleCheckAll = () => {
+    checkAllBox.value = !checkAllBox.value
+    cartStore.cart?.products.forEach((product: CartProductsInterface) => product.selected = checkAllBox.value)
+}
+
+const toggleFavs = () => {
+    liked.value = !liked.value;
+    cartStore.cart?.products.forEach((product: CartProductsInterface) => {
+        if (product.selected) {
+            product.liked = liked.value;
+        }
+    })
+
+};
+
+const { $api } = useNuxtApp();
+const deleteSelected = async () => {
+    const itemsToDelete = cartStore.cart?.products.filter((product: any) => product.selected)?.map((object) => object.id);
+
+    const payload = {
+        products: itemsToDelete,
+    };
+
+    const removed = await $api.cart.removeEntityFromCart(payload);
+
+    if (removed.status === 'success') {
+        await cartStore.updateAndReturnCart();
+    }
+};
 </script>

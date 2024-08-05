@@ -51,16 +51,8 @@ export const useCartStore = defineStore({
             this.cart = null;
             this.orderClientSecret = null;
         },
-        checkCartItem(itemId: string) {
-            const item = this.cart?.products.find((product: CartProductsInterface) => product.id === itemId);
-            if(item) {
-                item.selected = !item.selected;
-            }
-        },
         makeCartItemFavorite(itemId: string) {
-            const item = this.cart?.products.find((product: CartProductsInterface) => product.id === itemId);
-            console.log(item, itemId);
-            
+            const item = this.cart?.products.find((product: CartProductsInterface) => product.id === itemId);            
             if(item?.liked) {
                 item.liked = false
             } else if(item && !item?.liked) {
@@ -109,7 +101,7 @@ export const useCartStore = defineStore({
         },
         getOrderClientSecret: (state): string => state.orderClientSecret as string,
         getPreviousCheckoutError: (state): StripeError => state.previousCheckoutError as StripeError,
-        itemsDiscount: (state) => state.cart?.products[0].discount.value,
+        itemsDiscount: (state) => state.cart?.products[0]?.discount.value,
     },
     persist: {
         storage: persistedState.localStorage,

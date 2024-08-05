@@ -1,6 +1,6 @@
 <template>
     <div v-if="cartStore.mappedCartItems.length" class="flex flex-col gap-6 mb-6">
-        <OrderSummaryTableHead @checkAll="checkAll" @addToFavs="addToFavs" @deleteSelected="deleteSelected" />
+        <OrderSummaryTableHead @checkAll="checkAll" @deleteSelected="deleteSelected" />
         <div v-if="stockItems && stockItems.length">
             <span class="text-neutral-700 text-base font-semibold leading-6">Stock Items: {{ stockItems.length }}</span>
         </div>
@@ -11,7 +11,6 @@
             :item="item"
             :stock-item="true"
             @update-quantity="updateSubtotal"
-            @addToFavs="addToFavs($event.liked)"
         />
         <div v-if="backOrderItems && backOrderItems.length">
             <span class="text-neutral-700 text-base font-semibold leading-6">Backorder Items: {{ backOrderItems.length }}</span>
@@ -23,7 +22,6 @@
             :item="item"
             :stock-item="false"
             @update-quantity="updateSubtotal"
-            @addToFavs="addToFavs($event.liked)"
         />
     </div>
 </template>
@@ -36,7 +34,7 @@ const props = defineProps<{
     loading: boolean;
 }>();
 
-const emits = defineEmits(['checkAll', 'addToFavs', 'updateSubtotal', 'deleteSelected']);
+const emits = defineEmits(['checkAll', 'updateSubtotal', 'deleteSelected']);
 
 const cartStore = useCartStore();
 onMounted(() => {
@@ -57,10 +55,6 @@ const backOrderItems = computed(() => {
 
 function checkAll(checked: boolean): void {
     emits('checkAll', checked);
-}
-
-function addToFavs(liked: boolean): void {    
-    emits('addToFavs', liked);
 }
 
 function updateSubtotal(): void {
