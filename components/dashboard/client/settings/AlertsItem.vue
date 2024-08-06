@@ -8,18 +8,26 @@ const { getUserDetails } = storeToRefs(authStore);
 
 const props = defineProps<{
     title: string;
-    key: string;
+    alertKey: string;
 }>();
+
 const { $api } = useNuxtApp();
 const emailModel = defineModel<boolean>('email');
 const appModel = defineModel<boolean>('app');
 
-async function handleChange(title: string, type: string, value: boolean | undefined) {
-    if (!type || !title || !getUserDetails.value.firebaseId) {
+async function handleChange(title: string, type: string, value: boolean) {
+    if (!type || !title || !props.alertKey || !getUserDetails?.value.firebaseId) {
         return;
     }
-
-    await $api.controlPanel.markSettingsAsRead({ key: props.key }, type, getUserDetails.value.firebaseId);
+    console.log({ key: props.alertKey, type: value }, type, getUserDetails?.value.firebaseId);
+    await $api.controlPanel.markSettingsAsRead(
+        {
+            key: props.alertKey,
+            [type]: value,
+        },
+        type,
+        getUserDetails?.value.firebaseId
+    );
 }
 </script>
 

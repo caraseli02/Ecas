@@ -1,14 +1,41 @@
 <script setup lang="ts">
 import AlertsItem from './AlertsItem.vue';
+import { AlertAndNotificationType } from '~/types/dashboard/control-panel';
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
+
+const authStore = useAuthStore();
+
+const { getUserDetails } = storeToRefs(authStore);
+
+const userSettings = ref(getUserDetails.value.adminSettings?.alertsAndNotifications);
 
 const settings = reactive({
-    passwordChange: { email: true, app: false },
-    newProducts: { email: true, app: false },
-    hotDeals: { email: true, app: false },
-    cartItemsOutOfStock: { email: false, app: false },
-    cartItemsPriceUpdate: { email: false, app: false },
-    orderShippingUpdates: { email: false, app: false },
-    pendingAgents: { email: false, app: false },
+    passwordChange: {
+        email: userSettings.value?.passwordChange?.email || false,
+        app: userSettings.value?.passwordChange?.app || false,
+    },
+    newProducts: {
+        email: userSettings.value?.newProducts?.email || false,
+        app: userSettings.value?.newProducts?.app || false,
+    },
+    hotDeals: { email: userSettings.value?.hotDeals?.email || false, app: userSettings.value?.hotDeals?.app || false },
+    cartItemsOutOfStock: {
+        email: userSettings.value?.cartItemsOutOfStock?.email || false,
+        app: userSettings.value?.cartItemsOutOfStock?.app || false,
+    },
+    cartItemsPriceUpdate: {
+        email: userSettings.value?.cartItemsPriceUpdate?.email || false,
+        app: userSettings.value?.cartItemsPriceUpdate?.app || false,
+    },
+    orderShippingUpdates: {
+        email: userSettings.value?.orderShippingUpdates?.email || false,
+        app: userSettings.value?.orderShippingUpdates?.app || false,
+    },
+    pendingAgents: {
+        email: userSettings.value?.pendingAgents?.email || false,
+        app: userSettings.value?.pendingAgents?.app || false,
+    },
 });
 </script>
 
@@ -21,29 +48,42 @@ const settings = reactive({
             <span class="text-center">App</span>
         </div>
         <AlertsItem
-            :key="'newProducts'"
             v-model:email="settings.passwordChange.email"
             v-model:app="settings.passwordChange.app"
-            title="Password Change"
+            :alert-key="'passwordChange'"
+            :title="AlertAndNotificationType.passwordChange"
         />
-        <AlertsItem v-model:email="settings.newProducts.email" v-model:app="settings.newProducts.app" title="New Products" />
-        <AlertsItem v-model:email="settings.hotDeals.email" v-model:app="settings.hotDeals.app" title="HOT Deals" />
+        <AlertsItem
+            v-model:email="settings.newProducts.email"
+            v-model:app="settings.newProducts.app"
+            :alert-key="'newProducts'"
+            title="New Products"
+        />
+        <AlertsItem v-model:email="settings.hotDeals.email" v-model:app="settings.hotDeals.app" :alert-key="'hotDeals'" title="HOT Deals" />
         <AlertsItem
             v-model:email="settings.cartItemsOutOfStock.email"
             v-model:app="settings.cartItemsOutOfStock.app"
+            :alert-key="'cartItemsOutOfStock'"
             title="Cart Items - Out of Stock"
         />
         <AlertsItem
             v-model:email="settings.cartItemsPriceUpdate.email"
             v-model:app="settings.cartItemsPriceUpdate.app"
+            :alert-key="'cartItemsPriceUpdate'"
             title="Cart Items - Price Update"
         />
         <AlertsItem
             v-model:email="settings.orderShippingUpdates.email"
             v-model:app="settings.orderShippingUpdates.app"
+            :alert-key="'orderShippingUpdates'"
             title="Order Shipping Updates"
         />
-        <AlertsItem v-model:email="settings.pendingAgents.email" v-model:app="settings.pendingAgents.app" title="Pending Agents" />
+        <AlertsItem
+            v-model:email="settings.pendingAgents.email"
+            v-model:app="settings.pendingAgents.app"
+            :alert-key="'pendingAgents'"
+            title="Pending Agents"
+        />
     </section>
 </template>
 
