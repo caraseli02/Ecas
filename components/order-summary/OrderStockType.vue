@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col p-4 xl:p-6 rounded-xl bg-white items-start shadow-xs gap-4 mb-6 h-fit">
-        <div class="flex flex-col gap-6">
+        <div v-if="stockOrder || backOrder" class="flex flex-col gap-6">
             <h2 class="text-neutral-500 text-base font-medium leading-6">Order Type</h2>
             <div class="flex flex-row gap-3">
                 <div v-if="stockOrder && backOrder" class="px-3 py-[3px] justify-center flex rounded bg-blue-50">
@@ -138,6 +138,7 @@ import Emitter from 'tiny-emitter/instance.js';
 import { useAuthStore } from '~/store/authStore';
 import { usePaymentStore } from '~/store/paymentStore';
 import { storeToRefs } from 'pinia';
+import { useCartStore } from '~/store/cartStore';
 
 const props = defineProps<{
     items: CartProductsInterface[];
@@ -156,13 +157,15 @@ const paymentMethodExpanded = ref(false);
 
 const generalSettings = useAuthStore().generalSettings;
 
+const cartStore = useCartStore();
+
 const stockOrder = computed(() => {
-    return props.items.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0).length > 0;
+    return cartStore.cart?.products.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0).length > 0;
 });
 
 const backOrder = computed(() => {
     return (
-        props.items.filter((item: CartProductsInterface) => {
+        cartStore.cart?.products.filter((item: CartProductsInterface) => {
             return item.productEntity?.stock !== undefined && item?.backorder_stock > 0;
         }).length > 0
     );

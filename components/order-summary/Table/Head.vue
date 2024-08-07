@@ -8,6 +8,9 @@
             <div class="ml-9 flex gap-2 items-center">
                 <span class="text-neutral-700 text-sm font-medium"></span>
                 <span class="text-sm font-normal text-slate-500">Items selected</span>
+                <span class="text-sm" v-if="selectedItems && selectedItems > 1">
+                    {{ selectedItems }}
+                </span>
             </div>
         </div>
         <div class="flex flex-row gap-9">
@@ -82,4 +85,6 @@ const deleteSelected = async () => {
         await cartStore.updateAndReturnCart();
     }
 };
+
+const selectedItems = computed(() => cartStore.cart?.products.filter((product: CartProductsInterface) => product.selected).length);
 </script>

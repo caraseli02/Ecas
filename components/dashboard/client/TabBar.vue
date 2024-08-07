@@ -104,7 +104,7 @@ const orderFilters = ref<TabFilter[]>([
     {
         label: 'Agents',
         value: 'agents',
-        requiredPermission: 'read:agents'
+        requiredPermission: 'read:agent'
     },
     {
         label: 'Transaction History',
