@@ -62,14 +62,16 @@ const isDialogVisible = ref(false);
 const addresses = ref<AddressData[]>(await formatAddresses());
 const addressToBeEdited = ref<AddressData | null>(null);
 
-const handleEdit = (editedAddress: AddressData) => {
+const handleEdit = async (editedAddress: AddressData) => {
     addresses.value = addresses.value.map((address) => (address._id === editedAddress._id ? { ...address, ...editedAddress } : address));
     isDialogVisible.value = true;
     addressToBeEdited.value = editedAddress;
+    await handleChange(addresses.value);
 };
 
-const handleDelete = (deletedAddress: AddressData) => {
+const handleDelete = async (deletedAddress: AddressData) => {
     addresses.value = addresses.value.filter((address) => address._id !== deletedAddress._id);
+    await handleChange(addresses.value);
 };
 
 const handleSetDefault = async (changedAddress: AddressData) => {
@@ -77,7 +79,11 @@ const handleSetDefault = async (changedAddress: AddressData) => {
         ...address,
         isDefault: address._id === changedAddress._id,
     }));
-    const newAddresses = addresses.value.map((address) => {
+    await handleChange(addresses.value);
+};
+
+const handleChange = async (addresses: AddressData[]) => {
+    const newAddresses = addresses.map((address) => {
         return {
             default: address.isDefault,
             _id: address._id,
@@ -109,7 +115,7 @@ const handleSetDefault = async (changedAddress: AddressData) => {
         </div>
         <AddressList :addresses="addresses" @edit="handleEdit" @delete="handleDelete" @set-default="handleSetDefault" />
         <section class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
-            <ShippingDialog v-if="isDialogVisible" :address="addressToBeEdited" />
+            <ShippingDialog />
         </section>
     </section>
 </template>

@@ -6,14 +6,6 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import { countries } from '@/data/countries';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
-
-defineProps({
-    address: {
-        type: Object as PropType<ShippingAddressInterface>,
-        required: true,
-    },
-});
 
 interface Country {
     label: string;
@@ -203,8 +195,8 @@ function onCloseDialog() {
                     </FormField>
 
                     <div class="flex justify-end gap-4 col-span-2 sticky bottom-0 bg-white pt-2">
-                        <UiButton variant="secondary" type="reset" @click="onCloseDialog()"> Cancel </UiButton>
-                        <UiButton type="submit" class="w-60"> Save </UiButton>
+                        <UiButton variant="secondary" type="reset" @click="onCloseDialog()"> Cancel</UiButton>
+                        <UiButton type="submit" class="w-60"> Save</UiButton>
                     </div>
                 </form>
             </section>
