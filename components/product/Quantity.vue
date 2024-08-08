@@ -85,12 +85,15 @@
             </div>
         </div>
         <div class="flex gap-2.5 w-full lg:w-[486px] xl:w-[430px] p-4 pt-3 self-end">
-            <QuantityButtons
-                v-if="minPriceConfiguration"
-                v-model="quantity"
-                size="lg"
-                :object="{ id: product._id, min: minPriceConfiguration.quantity , action : 'add'} as ProductActionObject"
-            />
+            <div v-if="quantity > 0" class="min-w-[140px] min-h-[42px]">
+                <QuantityButtons
+                    v-if="minPriceConfiguration"
+                    v-model="quantity"
+                    size="lg"
+                    :object="{ id: product._id, min: minPriceConfiguration.quantity , action : 'add'} as ProductActionObject"
+                />
+            </div>
+            <UiSkeleton v-if="quantity === 0" class="w-[140px] h-[42px]" />
             <button
                 class="flex items-center flex-1 justify-center bg-blue-500 rounded-lg text-white px-5 py-[9px]"
                 @click="addToCart(props.product)"

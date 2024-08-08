@@ -67,13 +67,17 @@
                 <SvgoChangeCard />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Edit</span>
             </div>
+            <div class="flex gap-2 items-center">
+                <Trash2Icon class="w-4 h-4" />
+                <span class="text-neutral-700 text-sm font-normal leading-6">Delete</span>
+            </div>
         </div>
     </button>
 </template>
 
 <script setup lang="ts">
 import { usePaymentStore } from '~/store/paymentStore';
-import { AlertTriangle } from 'lucide-vue-next';
+import { AlertTriangle, Trash2Icon } from 'lucide-vue-next';
 
 const paymentStore = usePaymentStore();
 

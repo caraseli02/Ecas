@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col min-h-screen app-scroll">
     <LayoutHeader :is-scrolled="isScrolled"/>
     <main
 class="flex flex-col pt-[96px] flex-1 lg:pt-[180px] xl:pt-[176px]"
@@ -54,7 +54,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="postcss">
-body {
+.app-scroll {
   @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300
 }
 </style>

@@ -8,10 +8,16 @@
                     <DashboardClientBanner :slides="hotSales" />
                 </section>
                 <DashboardClientTabBar v-model="activeOrderFilter" />
-                <LazyClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
-                <LazyClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
-                <LazyClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event" />
-                <LazyClientTableLogs v-if="activeOrderFilter.value === 'activityLogs'" @show-total-items="activeOrderFilter.total_items = $event"/>
+                <LazyClientTableOrder v-if="activeOrderFilter.value === 'orders'" @show-total-items="activeOrderFilter.total_items = $event" />
+                <LazyClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" @show-total-items="activeOrderFilter.total_items = $event" />
+                <LazyClientTableAgents
+                    v-if="activeOrderFilter.value === 'agents'"
+                    @show-total-items="activeOrderFilter.total_items = $event"
+                />
+                <LazyClientTableLogs
+                    v-if="activeOrderFilter.value === 'activityLogs'"
+                    @show-total-items="activeOrderFilter.total_items = $event"
+                />
                 <LazyDashboardClientSettings v-if="activeOrderFilter.value === 'settings'" />
                 <template v-if="activeOrderFilter.value === 'home'">
                     <ClientOnly>
@@ -76,7 +82,7 @@ const ordersIds = ref([] as any);
 const activeOrderFilter = ref({
     icon: 'dashboard',
     value: 'home',
-    total_items: 0
+    total_items: 0,
 });
 const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboardActivityData);
 const myAccountInformation = ref<UserInterface>({} as UserInterface);
@@ -167,7 +173,7 @@ const viewHistory = async () => {
     const history = await $api.customerDashboard.fetchViewHistory();
     if (history.status === 'success') {
         myViewHistory.value = history.data.map((item: ViewHistoryProductInterface) => ({
-            _id: item._id,
+            _id: item.productInfo._id,
             class: item.productInfo.class,
             alias: item.productInfo.alias,
             description: item.productInfo.description,
