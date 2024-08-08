@@ -51,8 +51,19 @@ export const useCartStore = defineStore({
             this.cart = null;
             this.orderClientSecret = null;
         },
+        makeCartItemFavorite(itemId: string) {
+            const item = this.cart?.products.find((product: CartProductsInterface) => product.id === itemId);            
+            if(item?.liked) {
+                item.liked = false
+            } else if(item && !item?.liked) {
+                item.liked = true
+            }
+        }
     },
     getters: {
+        mappedCartItems: (state) => {
+            return mapCartItems(state.cart?.products);
+        },
         getCart: async (state) => {
             const { $api } = useNuxtApp();
 
@@ -90,7 +101,7 @@ export const useCartStore = defineStore({
         },
         getOrderClientSecret: (state): string => state.orderClientSecret as string,
         getPreviousCheckoutError: (state): StripeError => state.previousCheckoutError as StripeError,
-        itemsDiscount: (state) => state.cart?.products[0].discount.value,
+        itemsDiscount: (state) => state.cart?.products[0]?.discount.value,
     },
     persist: {
         storage: persistedState.localStorage,

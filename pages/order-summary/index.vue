@@ -17,12 +17,9 @@
                 </div>
                 <div class="gap-6 xl:grid xl:grid-cols-[1fr,392px]">
                     <div class="flex flex-col gap-9 max-w-[992px]">
-                        <OrderSummaryBackOrderWarning v-if="showWarning()" />
+                        <OrderSummaryBackOrderWarning v-if="showWarning" />
                         <OrderSummaryTable
-                            :items="cartItems"
                             :loading="loading"
-                            @check-all="checkAll"
-                            @add-to-favs="addToFavsAll"
                             @update-subtotal="calculateSubtotal"
                             @delete-selected="deleteSelected"
                         />
@@ -110,35 +107,14 @@ const fetchList = async () => {
     const cart = (await cartStore.updateAndReturnCart()) as CartInterface;
     const products = cart?.products;
     cartId.value = cart._id || '';
-    mapCartItems(products);
+    // mapCartItems(products);
 };
 
-const showWarning = ref(() => {
+const showWarning = computed(() => {
     return cartItems.value.some((item: any) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
 });
 
 const loading = ref(true);
-
-const checkAll = (checked: boolean) => {
-    cartItems.value.forEach((item: any) => {
-        item.selected = checked;
-    });
-};
-
-const deleteSelected = async (deletedItems: string) => {
-    const itemsToDelete = cartItems.value.filter((product: any) => product.selected)?.map((object) => object.id);
-    cartItems.value = cartItems.value.filter((product: any) => !product.selected);
-
-    const payload = {
-        products: itemsToDelete,
-    };
-
-    const removed = await $api.cart.removeEntityFromCart(payload);
-
-    if (removed.status === 'success') {
-        await cartStore.updateAndReturnCart();
-    }
-};
 
 watch(
     [cartItems],
@@ -181,34 +157,26 @@ await fetchCards();
 
 getGeneralSettingsFunction();
 
-const mapCartItems = (cart: CartProductsInterface[] = []) => {
-    cartItems.value = cart?.map((product: CartProductsInterface) => ({
-        id: product.id,
-        stock: product.stock,
-        backorder_stock: product.backorder_stock || 0,
-        isFolder: false,
-        initialUnitPrice: product.initialUnitPrice,
-        unitPriceAfterDiscounts: product.unitPriceAfterDiscounts,
-        subtotal: product.subtotal || 0,
-        total: product.total || 0,
-        discount: product.discount || {
-            value: 0,
-            startDate: '',
-            endDate: '',
-        },
-        productEntity: product.productEntity,
-        liked: false,
-        selected: false,
-    }));
-};
-
-const addToFavsAll = (liked: boolean) => {
-    cartItems.value.forEach((item: any) => {
-        if (item.selected) {
-            item.liked = liked;
-        }
-    });
-};
+// const mapCartItems = (cart: CartProductsInterface[] = []) => {
+//     cartItems.value = cart?.map((product: CartProductsInterface) => ({
+//         id: product.id,
+//         stock: product.stock,
+//         backorder_stock: product.backorder_stock || 0,
+//         isFolder: false,
+//         initialUnitPrice: product.initialUnitPrice,
+//         unitPriceAfterDiscounts: product.unitPriceAfterDiscounts,
+//         subtotal: product.subtotal || 0,
+//         total: product.total || 0,
+//         discount: product.discount || {
+//             value: 0,
+//             startDate: '',
+//             endDate: '',
+//         },
+//         productEntity: product.productEntity,
+//         liked: false,
+//         selected: false,
+//     }));
+// };
 
 const shippingFee = (shippingType: number) => {
     console.log(shippingType);
@@ -402,7 +370,7 @@ Emitter.on('note', async (noteText: string) => {
 Emitter.on('delete-product-item', async (object: { id: string }) => {
     setTimeout(() => {
         cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
-        mapCartItems(cartItems.value);
+        // mapCartItems(cartItems.value);
     }, 1000);
 });
 

@@ -74,4 +74,10 @@ export interface CartProductsInterface {
 
     /** The entire product retrieved from database */
     productEntity?: ProductInterface;
+
+    /** If the product is liked by the user */
+    liked?: boolean;
+
+    /** If the product is selected in the UI */
+    selected?: boolean;
 }

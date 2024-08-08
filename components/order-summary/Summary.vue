@@ -107,7 +107,7 @@ const calculatedTotal = computed(() => {
     const VAT = calculatedVAT.value;
     const shippingFee = shipping.value?.price || 0;
     const discount = itemsDiscount.value || 0
-    return parseFloat((subtotal + VAT + shippingFee - discount).toFixed(2));
+    return parseFloat((subtotal + VAT + shippingFee + smallOrder.value - discount).toFixed(2));
 });
 
 const shipping = computed(() => props.order.deliveryMethod);
