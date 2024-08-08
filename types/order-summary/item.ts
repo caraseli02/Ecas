@@ -77,7 +77,7 @@ export interface OrderInterface {
     parent?: string;
 }
 
-export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'userName' | 'createdAt' | 'status' | 'total'>;
+export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'userName' | 'createdAt' | 'status' | 'total' | 'userEmail'>;
 
 export interface OrderRequestInterface {
     shortId: string;

@@ -7,4 +7,5 @@ export enum OrderTableColumnsEnum {
     STATUS = 'status',
     TOTAL = 'total',
     ACTIONS = 'actions',
+    USER_EMAIL = 'userEmail',
 }
