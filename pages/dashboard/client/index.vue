@@ -8,8 +8,8 @@
                     <DashboardClientBanner :slides="hotSales" />
                 </section>
                 <DashboardClientTabBar v-model="activeOrderFilter" />
-                <LazyClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
-                <LazyClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
+                <LazyClientTableOrder v-if="activeOrderFilter.value === 'orders'" @show-total-items="activeOrderFilter.total_items = $event" />
+                <LazyClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" @show-total-items="activeOrderFilter.total_items = $event" />
                 <LazyClientTableAgents
                     v-if="activeOrderFilter.value === 'agents'"
                     @show-total-items="activeOrderFilter.total_items = $event"
