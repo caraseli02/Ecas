@@ -9,21 +9,38 @@ interface AddressData {
     name: string;
     address: string;
     phone: string;
+    _id: string;
+    name1: string;
+    name2: string;
+    city: string;
+    country: string;
+    postcode: string;
+    region: string;
 }
 
 const props = defineProps({
     addresses: {
-        type: Object as PropType<AddressData[]>,
+        type: Array as PropType<AddressData[]>,
         required: true,
     },
 });
 
-const handleEdit = (address: AddressData) => {
-    console.log('Edit address:', address);
+const emit = defineEmits<{
+    (e: 'edit', address: AddressData): void;
+    (e: 'delete', address: AddressData): void;
+    (e: 'set-default', address: AddressData): void;
+}>();
+
+const handleEdit = (editedAddress: AddressData) => {
+    emit('edit', editedAddress);
 };
 
-const handleDelete = (address: AddressData) => {
-    console.log('Delete address:', address);
+const handleDelete = (deletedAddress: AddressData) => {
+    emit('delete', deletedAddress);
+};
+
+const handleSetDefault = (changedAddress: AddressData) => {
+    emit('set-default', changedAddress);
 };
 </script>
 
@@ -35,6 +52,7 @@ const handleDelete = (address: AddressData) => {
             :address-data="address"
             @edit="handleEdit"
             @delete="handleDelete"
+            @set-default="handleSetDefault"
         />
     </div>
 </template>
