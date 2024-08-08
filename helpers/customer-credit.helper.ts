@@ -1,10 +1,13 @@
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import moment from 'moment/moment';
 
 export const customerCreditHelper = (credit: CustomerCreditInterface) => {
     let spent = '';
     let limit = '';
     let available = '';
-    console.log(credit);
+    let dueDate;
+    let tillDue;
+    let term;
     if (credit) {
         limit = new Intl.NumberFormat('en-US', {
             style: 'decimal',
@@ -23,7 +26,21 @@ export const customerCreditHelper = (credit: CustomerCreditInterface) => {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         }).format(credit.available);
+
+        dueDate = moment(credit.dueDate).format('DD MMMM YYYY');
+
+        tillDue = credit.tillDue;
+
+        term = credit.term;
     }
-    console.log({ limit: limit, spent: spent, available: available });
-    return { limit: limit, spent: spent, available: available };
+    return {
+        limit: limit,
+        spent: spent,
+        available: available,
+        dueDate: dueDate,
+        tillDue: tillDue,
+        term: term,
+        freeze: credit.freeze,
+        active: credit.active,
+    };
 };

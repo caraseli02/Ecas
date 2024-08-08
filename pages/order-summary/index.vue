@@ -108,7 +108,7 @@ const cartId = ref('' as string);
 
 const fetchList = async () => {
     const cart = (await cartStore.updateAndReturnCart()) as CartInterface;
-    const products = cart.products;
+    const products = cart?.products;
     cartId.value = cart._id || '';
     mapCartItems(products);
 };
@@ -364,10 +364,10 @@ const calculateSubtotal = (orderItems: CartProductsInterface[]) => {
     let subtotal = 0;
 
     orderItems.forEach((item: CartProductsInterface) => {
-        const stockTotal = Number(item.unitPriceAfterDiscounts) * item.stock
-        const backorderTotal = Number(item.unitPriceAfterDiscounts) * (item.backorder_stock || 0)
+        const stockTotal = Number(item.unitPriceAfterDiscounts) * item.stock;
+        const backorderTotal = Number(item.unitPriceAfterDiscounts) * (item.backorder_stock || 0);
         const allItemsTotal = stockTotal + backorderTotal;
-        subtotal += allItemsTotal
+        subtotal += allItemsTotal;
     });
 
     order.value.subtotal = subtotal.toFixed(2) as unknown as number;
@@ -432,7 +432,7 @@ async function makeCheckout() {
                 deliveryTypeId: deliveryMethod.value._id,
                 backorderShippingTypeId: backOrderOption?.value?._id || undefined,
             },
-            smallOrderChargeId: smallOrder.value._id,
+            smallOrderChargeId: smallOrder.value?._id,
             paymentDetails: {
                 type: paymentDetails.value.type,
             },
@@ -460,13 +460,15 @@ async function makeCheckout() {
         if (response.status !== 'success') {
             await router.push({ path: '/checkout/fail' });
         } else {
+            const orderId = response.data.orderId;
             if (paymentDetails.value.type === PaymentTypeEnum.Card) {
                 const result = response.data.result;
 
                 if (result) {
-                    if (result.status === 'succeeded') {
+                    if (result.status === 'succeeded' && orderId) {
                         console.log('order paid with a default card');
-                        await router.push({ path: '/checkout/success' });
+                        // await router.push({ path: '/checkout/success' });
+                        await router.push({ path: '/order-summary/' + orderId });
                     } else if (result.status === 'canceled') {
                         console.log('order canceled reason: ', result.cancellation_reason);
                         await router.push({ path: '/checkout/fail' });
@@ -475,18 +477,22 @@ async function makeCheckout() {
                         await router.push({ path: '/checkout/session' });
                     } else {
                         console.log('order pending', result.status);
-                        await router.push({ path: '/checkout/pending' });
+                        await router.push({ path: '/order-summary/' + orderId });
+                        // await router.push({ path: '/checkout/pending' });
                     }
                 } else {
                     console.log('pay with a new card', response.data);
+
                     if (response.data.clientSecret) {
                         cartStore.setOrderClientSecret(response.data.clientSecret);
                     }
-                    await router.push({ path: '/checkout/session' });
+                    await router.push({ path: '/checkout/session?', query: { id: orderId } });
                 }
             } else if (paymentDetails.value.type === PaymentTypeEnum.Credit) {
+                await router.push({ path: '/order-summary/' + orderId });
+
                 console.log('paid with credit');
-                await router.push({ path: '/checkout/success' });
+                // await router.push({ path: '/checkout/success' });
             }
         }
     } catch (error) {
@@ -498,11 +504,13 @@ async function makeCheckout() {
     }
 }
 
+const stopButtonTrigger = ref(true);
 watch(
     () => checkout,
     (newVal) => {
-        if (newVal) {
+        if (newVal && stopButtonTrigger.value) {
             makeCheckout();
+            stopButtonTrigger.value = false;
         }
     },
     { deep: true }

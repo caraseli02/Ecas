@@ -6,6 +6,7 @@ export interface OrderCreateResponse {
     useExistingPaymentMethod: boolean;
     clientSecret?: string;
     status: PaymentStatusEnum;
+    orderId: string;
 }
 
 export interface PlaceOrderInterface {

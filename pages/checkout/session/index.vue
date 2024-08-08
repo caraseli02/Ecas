@@ -11,15 +11,19 @@ import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 
 const router = useRouter();
+const route = useRoute();
 const cartStore = useCartStore();
 const { getOrderClientSecret } = storeToRefs(cartStore);
 const isLoading = ref(false);
+const orderId = ref<string>();
 
 let stripe: Stripe | null;
 let elements: StripeElements;
 let paymentIntent: PaymentIntentResult;
 
 onMounted(async () => {
+    orderId.value = <string>route.query.id;
+
     stripe = await loadStripe(
         'pk_test_51MovuoHH6OAXXqHTJaUf46KvhzKeTRHqN0iohnBKiazdOoYorFeHSYTMtq1Tdd9zK8uNf1BPed3mMbxighKBSDTl002ysjwmrw'
     );
@@ -62,25 +66,24 @@ const handleSubmit = async () => {
     isLoading.value = true;
 
     await elements.submit();
-    const { error } = await stripe.confirmPayment({
-        clientSecret: getOrderClientSecret.value,
-        elements,
-        confirmParams: {
-            return_url: `${window.location.origin}/checkout/success`,
-        },
-    });
+    const tempClientSecret = getOrderClientSecret.value;
 
     cartStore.emptyOrderClientSecret();
     cartStore.emptyPreviousCheckoutError();
 
-    if (error.type === 'card_error' || error.type === 'validation_error') {
-        console.log(error.message);
-        cartStore.setPreviousCheckoutError(error);
+    const result = await stripe.confirmPayment({
+        redirect: 'if_required',
+        clientSecret: tempClientSecret,
+        elements,
+    });
+
+    if (result.error) {
+        cartStore.setPreviousCheckoutError(result.error);
         await router.push({ path: '/checkout/fail', query: {} });
     } else {
-        await router.push({ path: '/checkout/success', query: {} });
+        await router.push({ path: `/order-summary/${orderId.value}` });
     }
-    console.log(error);
+
     isLoading.value = false;
 };
 </script>
