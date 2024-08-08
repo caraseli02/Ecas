@@ -11,6 +11,7 @@ export interface UserInfoJWT {
     picture: string;
     sub: string;
     user_id: string;
+    permissions: string[];
 }
 
 interface Firebase {

@@ -4,43 +4,47 @@
             <div class="grid grid-cols-1 gap-4 md:gap-6 w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px]">
                 <section class="flex justify-between gap-6 flex-wrap xl:flex-nowrap">
                     <DashboardClientActiveOrders :items="ordersIds" />
-                    <DashboardClientAnalytics />
+                    <DashboardClientOutstandingInvoices :items="ordersIds" />
                     <DashboardClientBanner :slides="hotSales" />
                 </section>
                 <DashboardClientTabBar v-model="activeOrderFilter" />
-                <ClientTableOrder v-if="activeOrderFilter.value === 'orders'" />
-                <ClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" />
-                <ClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event"/>
-                <ClientOnly>
-                    <DashboardClientActivity :data="myActivityData" />
-                </ClientOnly>
-                <!-- <DashboardClientInfoCards :id="route.params.slug" /> -->
-                <div class="flex flex-wrap gap-4 xl:grid-cols-3 xl:grid-rows-[repeat(2,auto)] md:gap-6">
-                    <DashboardClientInfo
-                        :id="myAccountInformation?._id"
-                        :account-information="myAccountInformation"
-                        class="xl:col-start-1 xl:row-start-1 xl:row-span-2"
-                    />
-                    <DashboardClientRecentlyBought :data="myRecentlyBougth" />
-                    <DashboardClientRecentlyBoughtSlider />
-                    <section class="hidden xl:flex flex-col gap-6 min-w-[330px]">
-                        <DashboardClientCredit
-                            :available-credit="myAccountInformation.adminSettings?.customerCredit?.spent || 0"
-                            :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                <LazyClientTableOrder v-if="activeOrderFilter.value === 'orders'" @show-total-items="activeOrderFilter.total_items = $event" />
+                <LazyClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" @show-total-items="activeOrderFilter.total_items = $event" />
+                <LazyClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event" />
+                <LazyClientTableLogs v-if="activeOrderFilter.value === 'activityLogs'" @show-total-items="activeOrderFilter.total_items = $event"/>
+                <LazyDashboardClientSettings v-if="activeOrderFilter.value === 'settings'" />
+                <template v-if="activeOrderFilter.value === 'home'">
+                    <ClientOnly>
+                        <DashboardClientActivity :data="myActivityData" />
+                    </ClientOnly>
+                    <!-- <DashboardClientInfoCards :id="route.params.slug" /> -->
+                    <div class="flex flex-wrap gap-4 xl:grid-cols-3 xl:grid-rows-[repeat(2,auto)] md:gap-6">
+                        <DashboardClientInfo
+                            :id="myAccountInformation?._id"
+                            :account-information="myAccountInformation"
+                            class="xl:col-start-1 xl:row-start-1 xl:row-span-2"
                         />
-                        <DashboardClientSupport />
-                    </section>
-                    <div class="flex gap-6 w-full flex-wrap">
-                        <DashboardClientCredit
-                            :available-credit="myAccountInformation.adminSettings?.customerCredit?.available || 0"
-                            :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"
-                            class="xl:hidden"
-                        />
-                        <DashboardClientAddressCards :addresses="myAddresses" />
-                        <DashboardClientPaymentCard :card="myCard" />
-                        <DashboardClientSupport class="xl:hidden" />
+                        <DashboardClientRecentlyBought :data="myRecentlyBougth" />
+                        <DashboardClientRecentlyBoughtSlider />
+                        <section class="hidden xl:flex flex-col gap-6 min-w-[330px]">
+                            <DashboardClientCredit
+                                :available-credit="myAccountInformation.adminSettings?.customerCredit?.spent || 0"
+                                :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                            />
+                            <DashboardClientSupport />
+                        </section>
+                        <div class="flex gap-6 w-full flex-wrap">
+                            <DashboardClientCredit
+                                :available-credit="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                                :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                                class="xl:hidden"
+                            />
+                            <DashboardClientAddressCards :addresses="myAddresses" />
+                            <DashboardClientPaymentCard :card="myCard" />
+                            <DashboardClientSupport class="xl:hidden" />
+                        </div>
                     </div>
-                </div>
+                </template>
             </div>
         </div>
         <DashboardClientViewHistory :view-history="myViewHistory" />
@@ -215,17 +219,16 @@ const hotSalesFunction = async () => {
 
 const getDefaultCard = async () => {
     myCard.value = userCards?.filter((card) => card.default)[0] as StripeCardInterface;
-    // return userCards?.filter((card) => card.default)[0] as StripeCardInterface
 };
 
-    activeOrders()
-    activityWidgets()
-    customerInformation()
-    recentlyBougth()
-    addresses()
-    viewHistory()
-    monthHotSale()
-    getDefaultCard()
+activeOrders();
+activityWidgets();
+customerInformation();
+recentlyBougth();
+addresses();
+viewHistory();
+monthHotSale();
+getDefaultCard();
 </script>
 
 <style>

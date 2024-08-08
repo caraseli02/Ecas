@@ -29,16 +29,7 @@
         </div>
         <div v-if="view === 'payment'" class="flex justify-between w-full">
             <span v-if="isExpired" class="items-center flex justify-start gap-2 w-full">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse cx="9.99984" cy="14.1666" rx="0.833333" ry="0.833333" fill="#FA4B4B" />
-                    <path
-                        d="M9.99979 7.49997V11.6666M3.60641 17.5H16.3933C17.8703 17.5 18.8039 15.9527 18.0866 14.6937L11.6932 3.4716C10.9551 2.17613 9.04454 2.17613 8.30649 3.4716L1.91306 14.6937C1.19576 15.9527 2.12939 17.5 3.60641 17.5Z"
-                        stroke="#FA4B4B"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
+                <AlertTriangle class="w-5 h-5 text-rose-500" />
                 <div class="text-red-500 text-sm leading-6">Card expired</div>
             </span>
             <span v-else class="text-neutral-700 text-sm font-normal leading-6 w-full text-start"
@@ -51,17 +42,7 @@
         </div>
         <div v-if="view === 'modal'" class="flex justify-end w-full gap-6">
             <span v-if="isExpired" class="items-center flex justify-start gap-2 w-full">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse cx="9.99984" cy="14.1666" rx="0.833333" ry="0.833333" fill="#FA4B4B" />
-                    <path
-                        d="M9.99979 7.49997V11.6666M3.60641 17.5H16.3933C17.8703 17.5 18.8039 15.9527 18.0866 14.6937L11.6932 3.4716C10.9551 2.17613 9.04454 2.17613 8.30649 3.4716L1.91306 14.6937C1.19576 15.9527 2.12939 17.5 3.60641 17.5Z"
-                        stroke="#FA4B4B"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
-
+                <AlertTriangle class="w-5 h-5 text-rose-500" />
                 <div class="text-red-500 text-sm leading-6">Card expired</div>
             </span>
             <div v-if="!isSelected && !isExpired" class="flex gap-2 items-center">
@@ -86,12 +67,17 @@
                 <SvgoChangeCard />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Edit</span>
             </div>
+            <div class="flex gap-2 items-center">
+                <Trash2Icon class="w-4 h-4" />
+                <span class="text-neutral-700 text-sm font-normal leading-6">Delete</span>
+            </div>
         </div>
     </button>
 </template>
 
 <script setup lang="ts">
 import { usePaymentStore } from '~/store/paymentStore';
+import { AlertTriangle, Trash2Icon } from 'lucide-vue-next';
 
 const paymentStore = usePaymentStore();
 
@@ -105,7 +91,7 @@ const props = defineProps<{
     isNewCardSelected?: boolean;
     cardType?: 'visa' | 'mastercard' | 'amex';
 }>();
-
+console.log(props.cards);
 const emits = defineEmits(['selectPaymentOption']);
 const paymentMethods = async (cardInfo: any) => {
     emits('selectPaymentOption', cardInfo);
