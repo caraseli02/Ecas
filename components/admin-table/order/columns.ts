@@ -35,8 +35,8 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
         header: ({ column }) => h(ColumnHeader, { column, title: 'Name' }),
         cell: ({ row }) =>
             h(UserInfo, {
-                name: row.getValue(OrderTableColumnsEnum.USER_NAME) ?? 'add userName',
-                email: row.original.userEmail ?? 'add userEmail',
+                name: row.getValue(OrderTableColumnsEnum.USER_NAME) ?? 'N/A',
+                email: row.original.userEmail ?? 'N/A',
             }),
     },
     {
