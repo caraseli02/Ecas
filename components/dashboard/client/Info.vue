@@ -204,6 +204,7 @@ import Emitter from 'tiny-emitter/instance.js';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 import { LockKeyholeIcon } from 'lucide-vue-next';
 import { countries } from '~/data/countries';
+import { CountryInterface } from '~/types/dashboard/control-panel';
 
 const showOptions = ref(false);
 const showDeactivatingModal = ref(false);
@@ -211,7 +212,7 @@ const showDeactivatingModal = ref(false);
 const error = ref(false);
 const emptyData = ref(false);
 const isLoading = ref(false);
-const country = ref({} as any);
+const country = ref<CountryInterface>({} as CountryInterface);
 const address = ref({} as any);
 const props = defineProps({
     id: {
@@ -229,8 +230,8 @@ const customerDetails = ref<DashboardCustomerTableItem>({} as DashboardCustomerT
 const fetchInformation = async () => {
     error.value = false;
     isLoading.value = true;
-
-    if (props.accountInformation && props.accountInformation.personalDetails) {
+    console.log(props.accountInformation);
+    if (props.accountInformation && props.accountInformation.contactDetails) {
         customerInformation.value = props.accountInformation;
         address.value =
             customerInformation.value.accountType === 0
@@ -246,7 +247,7 @@ const fetchInformation = async () => {
         });
 
         customerDetails.value = {
-            id: customerInformation.value._id,
+            id: customerInformation.value?._id || '',
             avatar: Avatar,
             name: `${customerInformation.value?.contactDetails?.firstName} ${customerInformation.value?.contactDetails?.lastName} `,
             email: customerInformation.value?.profileDetails?.email || 'N/A',

@@ -22,6 +22,7 @@ export interface ProductInterface {
     adminSettings?: AdminSettings;
     additionalInfo?: AdditionalInfoInterface;
     favourite?: boolean;
+    _id: string;
 }
 
 export interface PriceConfigurationSettingsInterface {
