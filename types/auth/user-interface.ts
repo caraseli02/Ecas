@@ -108,6 +108,7 @@ export interface ShippingAddressInterface {
     city: string;
     postcode: string;
     phone?: string;
+    _id?: string;
 }
 
 export interface BillingAddressInterface {
