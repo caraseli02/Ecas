@@ -6,6 +6,27 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import { countries } from '@/data/countries';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { AddressInterface } from '~/types/auth/user-interface';
+import { ref, watch } from 'vue';
+import { AccountType } from '~/types';
+
+const props = defineProps<{
+    address?: AddressInterface;
+    isOpen?: boolean;
+    accountType?: AccountType;
+    dialogType: string;
+}>();
+
+const emit = defineEmits<{
+    (e: 'add', address: null): void;
+}>();
+
+watch(
+    () => props.dialogType,
+    (newVal) => {
+        console.log('Dialog type changed to:', newVal);
+    }
+);
 
 interface Country {
     label: string;
@@ -15,6 +36,11 @@ interface Country {
         name: string;
         shortCode: string;
     }[];
+}
+
+interface Region {
+    label: string;
+    value: string;
 }
 
 const formSchema = toTypedSchema(
@@ -38,12 +64,66 @@ const formSchema = toTypedSchema(
     })
 );
 
+const isOpen = ref(props.isOpen || false);
+
+watch(
+    () => props.isOpen,
+    (newVal) => {
+        isOpen.value = newVal;
+    }
+);
+
 const { handleSubmit, values } = useForm({
     validationSchema: formSchema,
     initialValues: {
         country: '',
     },
 });
+
+const personalFields = ref({
+    addressAlias: '',
+    country: '',
+    county: '',
+    name1: '',
+    name2: '',
+    postcode: '',
+    phoneNumber: '',
+    email: '',
+    mobileNumber: '',
+});
+const businessFields = ref({
+    addressAlias: '',
+    country: '',
+    county: '',
+    name1: '',
+    name2: '',
+    postcode: '',
+    companyPhoneNumber: '',
+    companyEmail: '',
+    companyMobileNumber: '',
+});
+
+watch(
+    () => props.address,
+    (newVal) => {
+        console.log(newVal);
+        if (props.accountType === AccountType.Personal) {
+            personalFields.value.addressAlias = newVal?.alias || '';
+            personalFields.value.country = newVal?.country || '';
+            personalFields.value.county = newVal?.region || '';
+            personalFields.value.name1 = newVal?.name1 || '';
+            personalFields.value.name2 = newVal?.name2 || '';
+            personalFields.value.postcode = newVal?.postcode || '';
+        } else if (props.accountType === AccountType.Business) {
+            businessFields.value.addressAlias = newVal?.alias || '';
+            businessFields.value.country = newVal?.country || '';
+            businessFields.value.county = newVal?.region || '';
+            businessFields.value.name1 = newVal?.name1 || '';
+            businessFields.value.name2 = newVal?.name2 || '';
+            businessFields.value.postcode = newVal?.postcode || '';
+        }
+    }
+);
 
 const onSubmit = handleSubmit((values) => {
     console.log({
@@ -52,9 +132,22 @@ const onSubmit = handleSubmit((values) => {
     });
 });
 
-const country = ref<undefined | Country>(undefined);
+const findRegionByName = (regions: Country['regions'] | undefined, name: string | undefined) => {
+    const region = regions?.find((region) => region.name === name);
+    if (region) {
+        return {
+            label: region.name,
+            value: region.shortCode,
+        };
+    }
+    return undefined;
+};
 
-const isOpen = ref(false);
+const country = ref<undefined | Country>(countries.find((c) => c.value === (props.address?.country || 'US')) as Country);
+
+const region = ref<undefined | Region>(findRegionByName(country.value?.regions, props.address?.region));
+
+const regions = ref<Region[]>(country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || []);
 
 const showErrorMsg = ref(true);
 
@@ -62,22 +155,50 @@ function onCloseDialog() {
     showErrorMsg.value = false;
     isOpen.value = false;
 }
+
+watch(country, (newCountry) => {
+    if (newCountry) {
+        country.value = countries.find((c) => c.value === newCountry.value) as Country;
+        regions.value =
+            newCountry.regions.map((e) => {
+                return {
+                    label: e.name,
+                    value: e.name,
+                };
+            }) || [];
+        region.value = { label: country.value.regions[0].name, value: country.value.regions[0].shortCode };
+    } else {
+        region.value = undefined;
+    }
+});
+
+watch(region, (newRegion) => {
+    if (newRegion) {
+        region.value = regions.value.find((c) => c.value === newRegion.value) as any;
+    } else {
+        region.value = undefined;
+    }
+});
+
+const handleAdd = () => {
+    emit('add', null);
+};
 </script>
 
 <template>
     <UiDialog v-model:open="isOpen">
         <UiDialogTrigger as-child>
-            <UiButton size="icon" class="rounded-full" variant="ghost">
+            <UiButton size="icon" class="rounded-full" variant="ghost" @click="handleAdd">
                 <PlusCircleIcon class="aspect-square w-10 h-10 stroke-1 text-blue-500" />
             </UiButton>
         </UiDialogTrigger>
         <UiDialogContent ref="dialog" class="max-w-[350px] sm:max-w-[640px] rounded-xl">
             <UiDialogHeader>
-                <UiDialogTitle>Add Shipping Address</UiDialogTitle>
+                <UiDialogTitle>{{ (props.dialogType === 'edit' ? 'Edit ' : 'Add ') + 'Shipping Address' }}</UiDialogTitle>
             </UiDialogHeader>
             <section class="flex flex-col self-stretch bg-white rounded-xl shadow-sm max-md:px-5 max-h-[85vh] overflow-y-auto">
                 <form class="mt-5 flex flex-col gap-y-6 gap-x-9" @submit="onSubmit">
-                    <FormField v-slot="{ componentField }" name="addressAlias">
+                    <FormField name="addressAlias">
                         <FormItem>
                             <FormLabel>Address Alias</FormLabel>
                             <FormControl>
@@ -89,7 +210,8 @@ function onCloseDialog() {
                                         class="rounded-l-[0px] border-l-0"
                                         type="text"
                                         placeholder="Address Alias 1"
-                                        v-bind="componentField"
+                                        :v-model="personalFields.addressAlias"
+                                        :default-value="personalFields.addressAlias"
                                     />
                                 </section>
                             </FormControl>
@@ -114,11 +236,19 @@ function onCloseDialog() {
                                 <FormMessage v-if="showErrorMsg" />
                             </FormItem>
                         </FormField>
-                        <FormField v-slot="{ componentField }" name="county">
-                            <FormItem class="w-full">
-                                <FormLabel>County/Region</FormLabel>
+                        <FormField name="county">
+                            <FormItem class="flex flex-col w-full">
                                 <FormControl>
-                                    <UiInput type="text" placeholder="County/Region" v-bind="componentField" />
+                                    <FormSelect
+                                        v-model="region"
+                                        :options="regions"
+                                        :show-disabled-styles="false"
+                                        label="Region"
+                                        placeholder="Select Region"
+                                        search
+                                        size="lg"
+                                        class="relative z-20"
+                                    />
                                 </FormControl>
                                 <FormMessage v-if="showErrorMsg" />
                             </FormItem>
@@ -128,7 +258,13 @@ function onCloseDialog() {
                         <FormItem>
                             <FormLabel>Address Line 1</FormLabel>
                             <FormControl>
-                                <UiInput type="text" placeholder="Address Line 1" v-bind="componentField" />
+                                <UiInput
+                                    type="text"
+                                    placeholder="Address Line 1"
+                                    v-bind="componentField"
+                                    :v-model="personalFields.name1"
+                                    :default-value="personalFields.name1"
+                                />
                             </FormControl>
                             <FormMessage v-if="showErrorMsg" />
                         </FormItem>
@@ -138,27 +274,43 @@ function onCloseDialog() {
                         <FormItem>
                             <FormLabel>Address Line 2</FormLabel>
                             <FormControl>
-                                <UiInput type="text" placeholder="Address Line 2" v-bind="componentField" />
+                                <UiInput
+                                    type="text"
+                                    placeholder="Address Line 2"
+                                    v-bind="componentField"
+                                    :v-model="personalFields.name1"
+                                    :default-value="personalFields.name2"
+                                />
                             </FormControl>
                             <FormMessage v-if="showErrorMsg" />
                         </FormItem>
                     </FormField>
 
-                    <FormField v-slot="{ componentField }" name="postcode">
+                    <FormField name="postcode">
                         <FormItem>
                             <FormLabel>Postcode</FormLabel>
                             <FormControl>
-                                <UiInput type="text" placeholder="Postcode" v-bind="componentField" />
+                                <UiInput
+                                    type="text"
+                                    placeholder="Postcode"
+                                    :v-model="personalFields.postcode"
+                                    :default-value="personalFields.postcode"
+                                />
                             </FormControl>
                             <FormMessage v-if="showErrorMsg" />
                         </FormItem>
                     </FormField>
 
-                    <FormField v-slot="{ componentField }" name="phoneNumber">
+                    <FormField name="phoneNumber">
                         <FormItem>
                             <FormLabel>Phone Number</FormLabel>
                             <FormControl>
-                                <UiInput type="tel" placeholder="+1 (555) 867-5309" v-bind="componentField" />
+                                <UiInput
+                                    type="tel"
+                                    placeholder="+1 (555) 867-5309"
+                                    :v-model="personalFields.phoneNumber"
+                                    :default-value="personalFields.phoneNumber"
+                                />
                             </FormControl>
                             <FormMessage v-if="showErrorMsg" />
                         </FormItem>
@@ -166,9 +318,9 @@ function onCloseDialog() {
 
                     <FormField v-slot="{ componentField }" name="companyEmail">
                         <FormItem>
-                            <FormLabel>Company Email</FormLabel>
+                            <FormLabel>Email</FormLabel>
                             <FormControl>
-                                <UiInput type="email" placeholder="youremail@company.com" v-bind="componentField" />
+                                <UiInput type="email" placeholder="youremail@gmail.com" v-bind="componentField" />
                             </FormControl>
                             <FormMessage v-if="showErrorMsg" />
                         </FormItem>

@@ -7,6 +7,7 @@ import { AccountType } from '~/types';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { ref } from 'vue';
 import { useNuxtApp } from '#app';
+import { accountType } from '~/components/admin-table/customer/options';
 
 const { $api } = useNuxtApp();
 
@@ -25,6 +26,8 @@ interface AddressData {
     postcode: string;
     region: string;
 }
+
+const dialogType = ref('');
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
@@ -64,9 +67,10 @@ const addressToBeEdited = ref<AddressData | null>(null);
 
 const handleEdit = async (editedAddress: AddressData) => {
     addresses.value = addresses.value.map((address) => (address._id === editedAddress._id ? { ...address, ...editedAddress } : address));
+    dialogType.value = 'edit';
     isDialogVisible.value = true;
     addressToBeEdited.value = editedAddress;
-    await handleChange(addresses.value);
+    // await handleChange(addresses.value);
 };
 
 const handleDelete = async (deletedAddress: AddressData) => {
@@ -80,6 +84,12 @@ const handleSetDefault = async (changedAddress: AddressData) => {
         isDefault: address._id === changedAddress._id,
     }));
     await handleChange(addresses.value);
+};
+
+const handleAdd = async () => {
+    dialogType.value = 'add';
+    isDialogVisible.value = true;
+    addressToBeEdited.value = null;
 };
 
 const handleChange = async (addresses: AddressData[]) => {
@@ -97,13 +107,8 @@ const handleChange = async (addresses: AddressData[]) => {
             phone: address.phone,
         };
     });
-    if (
-        getUserDetails.value.firebaseId &&
-        newAddresses &&
-        (getUserDetails.value.accountType === AccountType.Personal || getUserDetails.value.accountType === AccountType.Business)
-    ) {
-        console.log(getUserDetails.value.firebaseId, newAddresses, getUserDetails.value.accountType);
-        await $api.controlPanel.updateShipping(getUserDetails.value.firebaseId, newAddresses, getUserDetails.value.accountType);
+    if (getUserDetails.value.firebaseId && newAddresses) {
+        await $api.settingsClient.updateShipping(newAddresses);
     }
 };
 </script>
@@ -115,7 +120,14 @@ const handleChange = async (addresses: AddressData[]) => {
         </div>
         <AddressList :addresses="addresses" @edit="handleEdit" @delete="handleDelete" @set-default="handleSetDefault" />
         <section class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
-            <ShippingDialog />
+            <ShippingDialog
+                v-model:open="isDialogVisible"
+                v-model:address="addressToBeEdited"
+                :dialog-type="dialogType"
+                :is-open="isDialogVisible"
+                :account-type="accountType"
+                @add="handleAdd"
+            />
         </section>
     </section>
 </template>

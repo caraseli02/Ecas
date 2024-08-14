@@ -18,7 +18,7 @@
                     <div class="flex items-center gap-2 text-zinc-800 text-sm font-medium leading-6 grow whitespace-nowrap">
                         <span class="font-extrabold">••••</span>
                         <span class="">{{ cardInfo?.card.last4 }}</span>
-                        <SvgoGreenCheckCircleSmall v-if="cardInfo.hasOwnProperty('default')" />
+                        <SvgoGreenCheckCircleSmall v-if="cardInfo?.hasOwnProperty('default')" />
                     </div>
                 </span>
                 <SvgoCardVisa v-if="hasCard && cardType === 'visa'" />
@@ -45,7 +45,7 @@
                 <AlertTriangle class="w-5 h-5 text-rose-500" />
                 <div class="text-red-500 text-sm leading-6">Card expired</div>
             </span>
-            <div v-if="!isSelected && !isExpired" class="flex gap-2 items-center">
+            <button v-if="!isDefault && !isExpired" class="flex gap-2 items-center" @click="setDefault(cardInfo)">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_397_5131)">
                         <path
@@ -62,7 +62,7 @@
                     </defs>
                 </svg>
                 <span class="text-neutral-700 text-sm font-normal leading-6">Set as default</span>
-            </div>
+            </button>
             <div class="flex gap-2 items-center">
                 <SvgoChangeCard />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Edit</span>
@@ -78,23 +78,29 @@
 <script setup lang="ts">
 import { usePaymentStore } from '~/store/paymentStore';
 import { AlertTriangle, Trash2Icon } from 'lucide-vue-next';
+import { StripeCardInterface } from '~/types';
 
 const paymentStore = usePaymentStore();
 
 const props = defineProps<{
-    cardInfo?: any;
+    cardInfo: StripeCardInterface;
     isSelected?: boolean;
     hasCard?: boolean;
     cards: boolean;
     view: 'modal' | 'payment';
     isExpired?: boolean;
+    isDefault?: boolean;
     isNewCardSelected?: boolean;
     cardType?: 'visa' | 'mastercard' | 'amex';
 }>();
 console.log(props.cards);
-const emits = defineEmits(['selectPaymentOption']);
-const paymentMethods = async (cardInfo: any) => {
+const emits = defineEmits(['selectPaymentOption', 'setDefault']);
+const paymentMethods = async (cardInfo: StripeCardInterface) => {
     emits('selectPaymentOption', cardInfo);
+};
+
+const setDefault = async (cardInfo: StripeCardInterface) => {
+    emits('setDefault', cardInfo);
 };
 </script>
 

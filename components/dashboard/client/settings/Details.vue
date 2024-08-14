@@ -325,7 +325,7 @@ watch(region, (newRegion) => {
                     </UiButton>
                 </div>
             </header>
-            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9" @submit="onSubmit()">
+            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9">
                 <FormField v-slot="{ componentField }" name="firstName">
                     <FormItem>
                         <FormLabel>First Name</FormLabel>
@@ -552,7 +552,15 @@ watch(region, (newRegion) => {
                 </FormField>
                 <div v-if="openEdit" class="flex flex-col md:flex-row justify-end gap-4 md:col-span-2">
                     <Button variant="secondary" type="reset" @click="openEdit = !openEdit"> Cancel</Button>
-                    <Button type="submit" class="md:w-60"> Save</Button>
+                    <Button
+                        class="md:w-60"
+                        @click="
+                            onSubmit();
+                            openEdit = !openEdit;
+                        "
+                    >
+                        Save
+                    </Button>
                 </div>
             </form>
         </section>
@@ -575,7 +583,7 @@ watch(region, (newRegion) => {
                     </UiButton>
                 </div>
             </header>
-            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9" @submit="onSubmit">
+            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9">
                 <FormField v-slot="{ componentField }" name="companyName">
                     <FormItem>
                         <FormLabel>Company Name</FormLabel>
@@ -839,7 +847,15 @@ watch(region, (newRegion) => {
                 </FormField>
                 <div v-if="openEdit" class="flex flex-col md:flex-row justify-end gap-4 md:col-span-2">
                     <Button variant="secondary" type="reset" @click="openEdit = !openEdit"> Cancel</Button>
-                    <Button type="submit" class="md:w-60"> Save</Button>
+                    <Button
+                        class="md:w-60"
+                        @click="
+                            onSubmit();
+                            openEdit = !openEdit;
+                        "
+                    >
+                        Save
+                    </Button>
                 </div>
             </form>
         </section>
