@@ -1,6 +1,6 @@
-import {AddressInterface} from '~/types/auth/user-details';
-import {AccountRole} from '~/types';
-import {ProductInterface} from '~/model/products/response/ProductResponse';
+import { AddressInterface } from '~/types/auth/user-details';
+import { AccountRole } from '~/types';
+import { ProductInterface } from '~/model/products/response/ProductResponse';
 
 export interface CustomersProfileInformation {
     email: string;
@@ -28,77 +28,81 @@ export interface ActiveOrder {
 }
 
 export interface FavoritesResponse {
-    status: string,
-    data: FavoritesItems
+    status: string;
+    data: FavoritesItems;
 }
 
 export interface FavoritesItems {
-    folders_number: number,
-    products_number: number
+    folders_number: number;
+    products_number: number;
 }
 
-
 export interface TotalOrdersResponse {
-    status: string,
-    data: TotalOrders
+    status: string;
+    data: TotalOrders;
 }
 
 export interface TotalOrders {
-    total_orders: number,
-    total_orders_current_month: number
+    total_orders: number;
+    total_orders_current_month: number;
 }
 
 export interface TotalReturnsResponse {
-    status: string,
-    data: TotalReturns
+    status: string;
+    data: TotalReturns;
 }
 
 export interface TotalReturns {
-    total: number
+    total: number;
 }
 
 export interface CustomerDashboardActivityData {
-    returns: number,
-    totalOrders: number,
-    monthOrder: number,
+    returns: number;
+    totalOrders: number;
+    monthOrder: number;
     favorites: {
-        products: number,
-        folders: number
-    }
+        products: number;
+        folders: number;
+    };
+}
+
+export interface DetailsResponse {
+    status: string;
+    data: any;
 }
 
 export interface RecentlyBoughtResponse {
-    status: string,
+    status: string;
     data: any;
 }
 
 export interface ViewHistoryResponse {
-    status: string,
-    data: ViewHistoryProductInterface[]
+    status: string;
+    data: ViewHistoryProductInterface[];
 }
 
 export interface ViewHistoryProductInterface {
-    productId: string,
-    count: number
-    _id: string,
-    createdAt: string,
-    updatedAt: string,
-    productInfo: ProductInterface,
+    productId: string;
+    count: number;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    productInfo: ProductInterface;
 }
 
 export interface MonthHotSaleResponse {
-    status: string,
-    data: ProductInterface[]
+    status: string;
+    data: ProductInterface[];
 }
 
 export interface ProductBannerInterface {
-    title: string,
-    discount: string,
-    productCode: string,
-    description: string,
-    details: string,
-    originalPrice: string,
-    salePrice: string,
-    quantity: number,
-    addToCartText: string,
+    title: string;
+    discount: string;
+    productCode: string;
+    description: string;
+    details: string;
+    originalPrice: string;
+    salePrice: string;
+    quantity: number;
+    addToCartText: string;
 }

@@ -32,13 +32,16 @@ const selectNewCard = async (cardInfo: StripeCardInterface) => {
 
 const setCardAsDefault = async (cardInfo: StripeCardInterface) => {
     cards.value = cards.value.map((card: StripeCardInterface) => {
-        console.log(cardInfo.id, card.id, card.card.last4, card.default);
         return {
             ...card,
             default: card.id === cardInfo.id,
         };
     });
-    console.log(card.value);
+    selectedCard.value = cardInfo;
+    const response = await $api.settingsClient.updateCardAsDefault(cardInfo.id);
+    if (response.status === 'success') {
+        console.log('Card set as default');
+    }
 };
 
 const { $api } = useNuxtApp();

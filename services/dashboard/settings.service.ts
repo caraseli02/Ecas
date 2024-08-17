@@ -2,9 +2,14 @@ import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import { AccountAdminSettings } from '~/types/auth/account-settings';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import { AccountType } from '~/types';
+import { DetailsResponse } from '~/model/dashboard/customer-information/customer-information';
 
 class SettingsClientService extends HttpFactory {
-    private MAIN = '/user';
+    private MAIN = '/';
+    private USER_PATH = '/user';
+    private DASHBOARD_PATH = '/dashboard';
+    private CONTROL_PANEL_PATH = '/control-panel';
 
     private authStore = useAuthStore();
 
@@ -13,12 +18,37 @@ class SettingsClientService extends HttpFactory {
 
         return await this.call<AccountAdminSettings>(
             'PATCH',
-            `${this.MAIN}/shipping-address`,
+            `${this.USER_PATH}/shipping-address`,
             { address: address },
             {
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
+    }
+
+    async updateDetails(payload: any) {
+        const token = this.authStore.getToken();
+        const userId = this.authStore.getUserDetails.firebaseId;
+        const accountType = this.authStore.getUserDetails.accountType;
+
+        return await this.call<DetailsResponse>(
+            'POST',
+            `${this.DASHBOARD_PATH}${this.CONTROL_PANEL_PATH}/${userId}/${
+                accountType === AccountType.Personal ? 'personal' : 'organization'
+            }`,
+            payload,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+    }
+
+    async updateCardAsDefault(cardId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<any>('POST', `${this.USER_PATH}/card/default/${cardId}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
     }
 }
 

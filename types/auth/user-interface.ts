@@ -96,6 +96,7 @@ export interface AddressInterface {
     region: string;
     city: string;
     postcode: string;
+    _id: string;
 }
 
 export interface ShippingAddressInterface {

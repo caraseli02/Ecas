@@ -11,6 +11,9 @@ import { Input } from '@/components/ui/input';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountType } from '~/types';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
@@ -231,8 +234,57 @@ const { handleSubmit, setFieldValue } = useForm({
 const onSubmit = async () => {
     if (getUserDetails.value.accountType === AccountType.Personal) {
         console.log(personalFields);
+        const payloadPersonal = {
+            personalDetails: {
+                firstName: personalFields.firstName.value,
+                lastName: personalFields.lastName.value,
+                address: {
+                    country: personalFields.country.value,
+                    region: personalFields.county.value,
+                    city: personalFields.city.value,
+                    name1: personalFields.addressLine1.value,
+                    name2: personalFields.addressLine2.value,
+                    postcode: personalFields.postcode.value,
+                    _id: getUserDetails.value.personalDetails?.address._id,
+                },
+            },
+            contactDetails: {
+                phone: personalFields.phoneNumber.value,
+                mobile: personalFields.mobileNumber.value,
+                email: personalFields.email.value,
+            },
+        };
+        const response = await $api.settingsClient.updateDetails(payloadPersonal);
+        if (response.status === 'success') {
+            console.log('success');
+        }
     } else {
-        console.log(businessFields);
+        const payloadBusiness = {
+            companyDetails: {
+                name: businessFields.companyName.value,
+                registrationNumber: businessFields.registrationNumber.value,
+                taxId: businessFields.taxId.value,
+                vat: businessFields.vatNumber.value,
+                address: {
+                    country: businessFields.country.value,
+                    region: businessFields.county.value,
+                    city: businessFields.city.value,
+                    name1: businessFields.addressLine1.value,
+                    name2: businessFields.addressLine2.value,
+                    postcode: businessFields.postcode.value,
+                    _id: getUserDetails.value.companyDetails?.address._id,
+                },
+            },
+            contactDetails: {
+                phone: businessFields.phoneNumber.value,
+                mobile: businessFields.mobileNumber.value,
+                email: businessFields.companyEmail.value,
+            },
+        };
+        const response = await $api.settingsClient.updateDetails(payloadBusiness);
+        if (response.status === 'success') {
+            console.log('success');
+        }
     }
 };
 
