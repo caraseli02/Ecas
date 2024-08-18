@@ -18,7 +18,7 @@
                     <div class="flex items-center gap-2 text-zinc-800 text-sm font-medium leading-6 grow whitespace-nowrap">
                         <span class="font-extrabold">••••</span>
                         <span class="">{{ cardInfo?.card.last4 }}</span>
-                        <SvgoGreenCheckCircleSmall v-if="cardInfo?.hasOwnProperty('default')" />
+                        <SvgoGreenCheckCircleSmall v-if="cardInfo?.hasOwnProperty('default') && cardInfo?.default" />
                     </div>
                 </span>
                 <SvgoCardVisa v-if="hasCard && cardType === 'visa'" />
@@ -63,14 +63,14 @@
                 </svg>
                 <span class="text-neutral-700 text-sm font-normal leading-6">Set as default</span>
             </button>
-            <div class="flex gap-2 items-center">
+            <button class="flex gap-2 items-center" @click.stop="editCard(cardInfo)">
                 <SvgoChangeCard />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Edit</span>
-            </div>
-            <div class="flex gap-2 items-center">
+            </button>
+            <button class="flex gap-2 items-center" @click="deleteCard(cardInfo)">
                 <Trash2Icon class="w-4 h-4" />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Delete</span>
-            </div>
+            </button>
         </div>
     </button>
 </template>
@@ -93,14 +93,23 @@ const props = defineProps<{
     isNewCardSelected?: boolean;
     cardType?: 'visa' | 'mastercard' | 'amex';
 }>();
-console.log(props.cards);
-const emits = defineEmits(['selectPaymentOption', 'setDefault']);
+
+const deleteCard = async (cardInfo: StripeCardInterface) => {
+    console.log(cardInfo);
+    emits('deleteCard', cardInfo);
+};
+
+const emits = defineEmits(['selectPaymentOption', 'setDefault', 'deleteCard', 'editCard']);
 const paymentMethods = async (cardInfo: StripeCardInterface) => {
     emits('selectPaymentOption', cardInfo);
 };
 
 const setDefault = async (cardInfo: StripeCardInterface) => {
     emits('setDefault', cardInfo);
+};
+
+const editCard = async (cardInfo: StripeCardInterface) => {
+    emits('editCard', cardInfo);
 };
 </script>
 

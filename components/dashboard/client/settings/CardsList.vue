@@ -12,6 +12,8 @@
             :is-expired="item.card.is_expired"
             @select-payment-option="selectNewCard"
             @set-default="setCardAsDefault"
+            @delete-card="selectedCardToDelete"
+            @edit-card="handleEditCard"
         />
     </div>
 </template>
@@ -24,10 +26,16 @@ const card = ref<any | null>({});
 const cards = ref<StripeCardInterface[]>([]);
 const isNewCardSelected = ref<boolean>(false);
 
+const emits = defineEmits(['editCard']);
+
 const selectedCard = ref(cards.value.find((card: StripeCardInterface) => card.default));
 
 const selectNewCard = async (cardInfo: StripeCardInterface) => {
     selectedCard.value = cardInfo;
+};
+
+const handleEditCard = (cardInfo: StripeCardInterface) => {
+    emits('editCard', cardInfo); // Emit the editCard event up to Payment.vue
 };
 
 const setCardAsDefault = async (cardInfo: StripeCardInterface) => {
@@ -41,6 +49,14 @@ const setCardAsDefault = async (cardInfo: StripeCardInterface) => {
     const response = await $api.settingsClient.updateCardAsDefault(cardInfo.id);
     if (response.status === 'success') {
         console.log('Card set as default');
+    }
+};
+
+const selectedCardToDelete = async (cardInfo: StripeCardInterface) => {
+    const response = await $api.settingsClient.deleteCard(cardInfo.id);
+    if (response.status === 'success') {
+        console.log('Card deleted');
+        cards.value = cards.value.filter((card: StripeCardInterface) => card.id !== cardInfo.id);
     }
 };
 

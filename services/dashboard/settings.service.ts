@@ -50,6 +50,14 @@ class SettingsClientService extends HttpFactory {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
+
+    async deleteCard(cardId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{ status: string; data: any }>('DELETE', `${this.USER_PATH}/card/${cardId}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 }
 
 export default SettingsClientService;
