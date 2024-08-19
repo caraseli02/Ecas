@@ -7,7 +7,6 @@ import { AccountType } from '~/types';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { ref } from 'vue';
 import { useNuxtApp } from '#app';
-import { accountType } from '~/components/admin-table/customer/options';
 
 const { $api } = useNuxtApp();
 
@@ -26,8 +25,6 @@ interface AddressData {
     postcode: string;
     region: string;
 }
-
-const dialogType = ref('');
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
@@ -60,17 +57,19 @@ const formatAddresses = async () => {
     }) as AddressData[];
 };
 
-const isDialogVisible = ref(false);
+const isDialogOpen = ref(false);
+const accountType = ref(null as AccountType | null);
 
 const addresses = ref<AddressData[]>(await formatAddresses());
 const addressToBeEdited = ref<AddressData | null>(null);
 
 const handleEdit = async (editedAddress: AddressData) => {
-    addresses.value = addresses.value.map((address) => (address._id === editedAddress._id ? { ...address, ...editedAddress } : address));
-    dialogType.value = 'edit';
-    isDialogVisible.value = true;
+    isDialogOpen.value = true;
     addressToBeEdited.value = editedAddress;
-    // await handleChange(addresses.value);
+    accountType.value = getUserDetails.value.accountType || null;
+    console.log(accountType.value);
+
+    console.log(addressToBeEdited.value);
 };
 
 const handleDelete = async (deletedAddress: AddressData) => {
@@ -84,12 +83,6 @@ const handleSetDefault = async (changedAddress: AddressData) => {
         isDefault: address._id === changedAddress._id,
     }));
     await handleChange(addresses.value);
-};
-
-const handleAdd = async () => {
-    dialogType.value = 'add';
-    isDialogVisible.value = true;
-    addressToBeEdited.value = null;
 };
 
 const handleChange = async (addresses: AddressData[]) => {
@@ -121,12 +114,10 @@ const handleChange = async (addresses: AddressData[]) => {
         <AddressList :addresses="addresses" @edit="handleEdit" @delete="handleDelete" @set-default="handleSetDefault" />
         <section class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
             <ShippingDialog
-                v-model:open="isDialogVisible"
-                v-model:address="addressToBeEdited"
-                :dialog-type="dialogType"
-                :is-open="isDialogVisible"
+                :is-open="isDialogOpen"
+                :address="addressToBeEdited"
                 :account-type="accountType"
-                @add="handleAdd"
+                @update:is-open="isDialogOpen = $event"
             />
         </section>
     </section>

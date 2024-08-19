@@ -7,16 +7,6 @@ import { z } from 'zod';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { StripeCardInterface } from '~/types';
 
-interface Country {
-    label: string;
-    value: string;
-    icon: string;
-    regions: {
-        name: string;
-        shortCode: string;
-    }[];
-}
-
 const formSchema = toTypedSchema(
     z.object({
         phoneNumber: z
@@ -69,7 +59,7 @@ watch(
     () => localIsOpen.value,
     () => {
         cardFields.value.cardNumber = '';
-        cardFields.value.phoneNumber = '';
+        cardFields.value.phoneNumber = '  ';
         cardFields.value.expiryDate = '';
         cardFields.value.cvv = '';
     }
@@ -78,12 +68,13 @@ watch(
 watch(
     () => props.cardInfo,
     (newCardInfo) => {
+        console.log(newCardInfo);
         cardFields.value.cardNumber = '';
-        cardFields.value.phoneNumber = newCardInfo.billing_details.phone || '';
+        cardFields.value.phoneNumber = newCardInfo?.billing_details?.phone || '';
         cardFields.value.expiryDate =
-            (newCardInfo.card.exp_month < 10 ? '0' + newCardInfo.card.exp_month : newCardInfo.card.exp_month) +
+            (newCardInfo?.card?.exp_month < 10 ? '0' + newCardInfo?.card?.exp_month : newCardInfo?.card?.exp_month) +
             '/' +
-            String(newCardInfo.card.exp_year).slice(-2);
+            String(newCardInfo?.card?.exp_year).slice(-2);
         cardFields.value.cvv = '';
     },
     { immediate: true } // Log immediately on mount if cardInfo is already available
