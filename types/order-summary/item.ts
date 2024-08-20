@@ -191,6 +191,7 @@ export interface StripeCardInfoInterface {
     generated_from?: string | null;
     last4: string;
     type: string;
+    is_expired: boolean;
 }
 
 export enum PaymentStatusEnum {

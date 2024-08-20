@@ -11,6 +11,9 @@ import { Input } from '@/components/ui/input';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountType } from '~/types';
+import { useNuxtApp } from '#app';
+
+const { $api } = useNuxtApp();
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
@@ -231,8 +234,57 @@ const { handleSubmit, setFieldValue } = useForm({
 const onSubmit = async () => {
     if (getUserDetails.value.accountType === AccountType.Personal) {
         console.log(personalFields);
+        const payloadPersonal = {
+            personalDetails: {
+                firstName: personalFields.firstName.value,
+                lastName: personalFields.lastName.value,
+                address: {
+                    country: personalFields.country.value,
+                    region: personalFields.county.value,
+                    city: personalFields.city.value,
+                    name1: personalFields.addressLine1.value,
+                    name2: personalFields.addressLine2.value,
+                    postcode: personalFields.postcode.value,
+                    _id: getUserDetails.value.personalDetails?.address._id,
+                },
+            },
+            contactDetails: {
+                phone: personalFields.phoneNumber.value,
+                mobile: personalFields.mobileNumber.value,
+                email: personalFields.email.value,
+            },
+        };
+        const response = await $api.settingsClient.updateDetails(payloadPersonal);
+        if (response.status === 'success') {
+            console.log('success');
+        }
     } else {
-        console.log(businessFields);
+        const payloadBusiness = {
+            companyDetails: {
+                name: businessFields.companyName.value,
+                registrationNumber: businessFields.registrationNumber.value,
+                taxId: businessFields.taxId.value,
+                vat: businessFields.vatNumber.value,
+                address: {
+                    country: businessFields.country.value,
+                    region: businessFields.county.value,
+                    city: businessFields.city.value,
+                    name1: businessFields.addressLine1.value,
+                    name2: businessFields.addressLine2.value,
+                    postcode: businessFields.postcode.value,
+                    _id: getUserDetails.value.companyDetails?.address._id,
+                },
+            },
+            contactDetails: {
+                phone: businessFields.phoneNumber.value,
+                mobile: businessFields.mobileNumber.value,
+                email: businessFields.companyEmail.value,
+            },
+        };
+        const response = await $api.settingsClient.updateDetails(payloadBusiness);
+        if (response.status === 'success') {
+            console.log('success');
+        }
     }
 };
 
@@ -325,7 +377,7 @@ watch(region, (newRegion) => {
                     </UiButton>
                 </div>
             </header>
-            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9" @submit="onSubmit()">
+            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9">
                 <FormField v-slot="{ componentField }" name="firstName">
                     <FormItem>
                         <FormLabel>First Name</FormLabel>
@@ -552,7 +604,15 @@ watch(region, (newRegion) => {
                 </FormField>
                 <div v-if="openEdit" class="flex flex-col md:flex-row justify-end gap-4 md:col-span-2">
                     <Button variant="secondary" type="reset" @click="openEdit = !openEdit"> Cancel</Button>
-                    <Button type="submit" class="md:w-60"> Save</Button>
+                    <Button
+                        class="md:w-60"
+                        @click="
+                            onSubmit();
+                            openEdit = !openEdit;
+                        "
+                    >
+                        Save
+                    </Button>
                 </div>
             </form>
         </section>
@@ -575,7 +635,7 @@ watch(region, (newRegion) => {
                     </UiButton>
                 </div>
             </header>
-            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9" @submit="onSubmit">
+            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9">
                 <FormField v-slot="{ componentField }" name="companyName">
                     <FormItem>
                         <FormLabel>Company Name</FormLabel>
@@ -839,7 +899,15 @@ watch(region, (newRegion) => {
                 </FormField>
                 <div v-if="openEdit" class="flex flex-col md:flex-row justify-end gap-4 md:col-span-2">
                     <Button variant="secondary" type="reset" @click="openEdit = !openEdit"> Cancel</Button>
-                    <Button type="submit" class="md:w-60"> Save</Button>
+                    <Button
+                        class="md:w-60"
+                        @click="
+                            onSubmit();
+                            openEdit = !openEdit;
+                        "
+                    >
+                        Save
+                    </Button>
                 </div>
             </form>
         </section>

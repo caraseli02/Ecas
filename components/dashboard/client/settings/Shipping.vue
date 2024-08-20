@@ -57,16 +57,19 @@ const formatAddresses = async () => {
     }) as AddressData[];
 };
 
-const isDialogVisible = ref(false);
+const isDialogOpen = ref(false);
+const accountType = ref(null as AccountType | null);
 
 const addresses = ref<AddressData[]>(await formatAddresses());
 const addressToBeEdited = ref<AddressData | null>(null);
 
 const handleEdit = async (editedAddress: AddressData) => {
-    addresses.value = addresses.value.map((address) => (address._id === editedAddress._id ? { ...address, ...editedAddress } : address));
-    isDialogVisible.value = true;
+    isDialogOpen.value = true;
     addressToBeEdited.value = editedAddress;
-    await handleChange(addresses.value);
+    accountType.value = getUserDetails.value.accountType || null;
+    console.log(accountType.value);
+
+    console.log(addressToBeEdited.value);
 };
 
 const handleDelete = async (deletedAddress: AddressData) => {
@@ -97,13 +100,8 @@ const handleChange = async (addresses: AddressData[]) => {
             phone: address.phone,
         };
     });
-    if (
-        getUserDetails.value.firebaseId &&
-        newAddresses &&
-        (getUserDetails.value.accountType === AccountType.Personal || getUserDetails.value.accountType === AccountType.Business)
-    ) {
-        console.log(getUserDetails.value.firebaseId, newAddresses, getUserDetails.value.accountType);
-        await $api.controlPanel.updateShipping(getUserDetails.value.firebaseId, newAddresses, getUserDetails.value.accountType);
+    if (getUserDetails.value.firebaseId && newAddresses) {
+        await $api.settingsClient.updateShipping(newAddresses);
     }
 };
 </script>
@@ -115,7 +113,12 @@ const handleChange = async (addresses: AddressData[]) => {
         </div>
         <AddressList :addresses="addresses" @edit="handleEdit" @delete="handleDelete" @set-default="handleSetDefault" />
         <section class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
-            <ShippingDialog />
+            <ShippingDialog
+                :is-open="isDialogOpen"
+                :address="addressToBeEdited"
+                :account-type="accountType"
+                @update:is-open="isDialogOpen = $event"
+            />
         </section>
     </section>
 </template>
