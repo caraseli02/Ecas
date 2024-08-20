@@ -52,12 +52,6 @@ const apiKeysMap: ApiKeysMap = {
     activity_logs: 'auditLogsCount',
 };
 
-        // "ordersCount": 615,
-        // "transactionsCount": 0,
-        // "favoritesCount": 7,
-        // "auditLogsCount": 37771,
-        // "agentsCount": null
-
 interface TabFilter {
     label?: string;
     value: string;
