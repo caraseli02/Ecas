@@ -260,7 +260,7 @@ const onSubmit = handleSubmit(async (values) => {
             console.log('success');
         }
     }
-});
+})();
 
 // Watch for changes to the country and update values.country
 watch(country, (newCountry) => {
@@ -315,7 +315,7 @@ watch(region, (newRegion) => {
                     </UiButton>
                 </div>
             </header>
-            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9">
+            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9" @submit="onSubmit">
                 <FormField v-if="getUserDetails.accountType !== AccountType.Personal" v-slot="{ componentField }" name="companyName">
                     <FormItem>
                         <FormLabel>Company Name</FormLabel>
@@ -376,7 +376,7 @@ watch(region, (newRegion) => {
                     </FormItem>
                 </FormField>
 
-                <FormField name="country" @submit.prevent>
+                <FormField name="country">
                     <FormItem class="flex flex-col">
                         <FormControl>
                             <FormSelect
@@ -503,8 +503,8 @@ watch(region, (newRegion) => {
                     </FormItem>
                 </FormField>
                 <div v-if="openEdit" class="flex flex-col md:flex-row justify-end gap-4 md:col-span-2">
-                    <Button variant="secondary" type="reset" @click="openEdit = !openEdit"> Cancel</Button>
-                    <Button type="submit" class="md:w-60" @click="openEdit = !openEdit"> Save</Button>
+                    <Button variant="secondary" type="reset" @click="openEdit = !openEdit">Cancel</Button>
+                    <Button type="submit" class="md:w-60" @click="openEdit = !openEdit">Save</Button>
                 </div>
             </form>
         </section>
