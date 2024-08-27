@@ -28,13 +28,14 @@ interface AddressData {
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
+const accountType = ref(getUserDetails.value.accountType);
 
 const formatAddresses = async () => {
     const addresses =
         getUserDetails.value.accountType === AccountType.Personal
             ? getUserDetails.value.personalDetails?.shippingAddress
             : getUserDetails.value.companyDetails?.shippingAddress;
-    console.log(addresses);
+
     return addresses?.map((address: ShippingAddressInterface, index: number) => {
         return {
             alias: address.alias || `Shipping Address Alias ${index + 1}`,
@@ -58,7 +59,6 @@ const formatAddresses = async () => {
 };
 
 const isDialogOpen = ref(false);
-const accountType = ref(null as AccountType | null);
 
 const addresses = ref<AddressData[]>(await formatAddresses());
 const addressToBeEdited = ref<AddressData | null>(null);
@@ -66,9 +66,6 @@ const addressToBeEdited = ref<AddressData | null>(null);
 const handleEdit = async (editedAddress: AddressData) => {
     isDialogOpen.value = true;
     addressToBeEdited.value = editedAddress;
-    accountType.value = getUserDetails.value.accountType || null;
-    console.log(accountType.value);
-
     console.log(addressToBeEdited.value);
 };
 
