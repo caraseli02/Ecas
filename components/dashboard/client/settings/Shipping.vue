@@ -101,6 +101,10 @@ const handleChange = async (addresses: AddressData[]) => {
         await $api.settingsClient.updateShipping(newAddresses);
     }
 };
+
+const handleAdd = async (address: AddressData) => {
+    addresses.value = [...addresses.value, address];
+};
 </script>
 
 <template>
@@ -115,6 +119,7 @@ const handleChange = async (addresses: AddressData[]) => {
                 :address="addressToBeEdited"
                 :account-type="accountType"
                 @update:is-open="isDialogOpen = $event"
+                @add-shipping-address="handleAdd"
             />
         </section>
     </section>
