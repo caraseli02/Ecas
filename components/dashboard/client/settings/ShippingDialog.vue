@@ -14,24 +14,13 @@ import { AddressInterface } from '~/types/auth/user-interface';
 const { $api } = useNuxtApp();
 
 const props = defineProps<{
-    isOpen: boolean;
     address: any;
     accountType: AccountType;
 }>();
 
-const emit = defineEmits(['update:isOpen']);
-
-const localIsOpen = ref(props.isOpen);
+const isOpen = defineModel<boolean>()
 
 const typeOfDialog = ref('');
-
-watch(
-    () => props.isOpen,
-    (newVal) => {
-        console.log(newVal);
-        localIsOpen.value = newVal;
-    }
-);
 
 interface Country {
     label: string;
@@ -47,8 +36,6 @@ interface Region {
     label: string;
     value: string;
 }
-
-console.log(props.address);
 
 const formSchema = toTypedSchema(
     z.object({
@@ -158,12 +145,13 @@ watch(region, (newRegion) => {
 
 const onCloseDialog = () => {
     console.log('close');
-    emit('update:isOpen', false);
+    showErrorMsg.value = false;
+    isOpen.value = false;
 };
 </script>
 
 <template>
-    <UiDialog v-model:open="localIsOpen">
+    <UiDialog v-model:open="isOpen">
         <UiDialogTrigger as-child>
             <UiButton size="icon" class="rounded-full" variant="ghost">
                 <PlusCircleIcon class="aspect-square w-10 h-10 stroke-1 text-blue-500" />
