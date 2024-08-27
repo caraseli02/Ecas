@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CopyIcon, FilePenLineIcon } from 'lucide-vue-next';
-import { ComputedRef, Ref, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
@@ -18,8 +18,6 @@ const { $api } = useNuxtApp();
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
-console.log(getUserDetails.value);
-
 interface Country {
     label: string;
     value: string;
@@ -34,259 +32,6 @@ interface Region {
     label: string;
     value: string;
 }
-
-const formSchemaPersonal = toTypedSchema(
-    z.object({
-        firstName: z
-            .string({
-                required_error: 'First name is required',
-            })
-            .min(1),
-        lastName: z
-            .string({
-                required_error: 'Last name is required',
-            })
-            .min(1),
-        country: z
-            .string({
-                required_error: 'Country is required',
-            })
-            .min(1),
-        county: z
-            .string({
-                required_error: 'County/Region is required',
-            })
-            .min(1),
-        city: z
-            .string({
-                required_error: 'City is required',
-            })
-            .min(1),
-        addressLine1: z
-            .string({
-                required_error: 'Address Line 1 is required',
-            })
-            .min(1),
-        addressLine2: z.string().optional(),
-        postcode: z
-            .string({
-                required_error: 'Postcode is required',
-            })
-            .min(1),
-        phoneNumber: z
-            .string({
-                required_error: 'Phone Number is required',
-            })
-            .min(1)
-            .regex(/^\+?\d{1,4}?\s?-?\(?\d{1,3}?\)?\s?-?\d{1,4}\s?-?\d{1,4}\s?-?\d{1,9}$/, 'Invalid phone number'),
-        mobileNumber: z
-            .string({
-                required_error: 'Mobile Number is required',
-            })
-            .min(1)
-            .regex(/^\+?\d{1,4}?\s?-?\(?\d{1,3}?\)?\s?-?\d{1,4}\s?-?\d{1,4}\s?-?\d{1,9}$/, 'Invalid mobile number'),
-        bankName: z
-            .string({
-                required_error: 'Bank Name is required',
-            })
-            .min(1),
-        iban: z
-            .string({
-                required_error: 'IBAN is required',
-            })
-            .min(1)
-            .regex(/^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/, 'Invalid IBAN'),
-        email: z
-            .string({
-                required_error: 'Email is required',
-            })
-            .min(1)
-            .regex(/^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/, 'Invalid email'),
-    })
-);
-
-const formSchemaBusiness = toTypedSchema(
-    z.object({
-        companyName: z
-            .string({
-                required_error: 'Company Name is required',
-            })
-            .min(1),
-        registrationNumber: z
-            .string({
-                required_error: 'Company Registration Number is required',
-            })
-            .min(1),
-        taxId: z
-            .string({
-                required_error: 'Tax ID is required',
-            })
-            .min(1),
-        vatNumber: z
-            .string({
-                required_error: 'V.A.T Number is required',
-            })
-            .min(1),
-        country: z
-            .string({
-                required_error: 'Country is required',
-            })
-            .min(1),
-        county: z
-            .string({
-                required_error: 'County/Region is required',
-            })
-            .min(1),
-        city: z
-            .string({
-                required_error: 'City is required',
-            })
-            .min(1),
-        addressLine1: z
-            .string({
-                required_error: 'Address Line 1 is required',
-            })
-            .min(1),
-        addressLine2: z.string().optional(),
-        postcode: z
-            .string({
-                required_error: 'Postcode is required',
-            })
-            .min(1),
-        phoneNumber: z
-            .string({
-                required_error: 'Phone Number is required',
-            })
-            .min(1)
-            .regex(/^\+?\d{1,4}?\s?-?\(?\d{1,3}?\)?\s?-?\d{1,4}\s?-?\d{1,4}\s?-?\d{1,9}$/, 'Invalid phone number'),
-        mobileNumber: z
-            .string({
-                required_error: 'Mobile Number is required',
-            })
-            .min(1)
-            .regex(/^\+?\d{1,4}?\s?-?\(?\d{1,3}?\)?\s?-?\d{1,4}\s?-?\d{1,4}\s?-?\d{1,9}$/, 'Invalid mobile number'),
-        bankName: z
-            .string({
-                required_error: 'Bank Name is required',
-            })
-            .min(1),
-        iban: z
-            .string({
-                required_error: 'IBAN is required',
-            })
-            .min(1)
-            .regex(/^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/, 'Invalid IBAN'),
-        companyEmail: z
-            .string({
-                required_error: 'Company Email is required',
-            })
-            .email('Invalid email address'),
-    })
-);
-
-const personalFields = {
-    firstName: ref(getUserDetails.value.personalDetails?.firstName || ''),
-    lastName: ref(getUserDetails.value.personalDetails?.lastName || ''),
-    country: ref(getUserDetails.value.personalDetails?.address.country || ''),
-    county: ref(getUserDetails.value.personalDetails?.address.region || ''),
-    city: ref(getUserDetails.value.personalDetails?.address.city || ''),
-    addressLine1: ref(getUserDetails.value.personalDetails?.address.name1 || '-'),
-    addressLine2: ref(getUserDetails.value.personalDetails?.address.name2 || '-'),
-    postcode: ref(getUserDetails.value.personalDetails?.address.postcode || '-'),
-    phoneNumber: ref(getUserDetails.value.contactDetails?.phone || ''),
-    mobileNumber: ref(getUserDetails.value.contactDetails?.mobile || ''),
-    bankName: ref(''),
-    iban: ref(''),
-    email: ref(getUserDetails.value.contactDetails?.email || ''),
-};
-const businessFields = {
-    companyName: ref(getUserDetails.value.companyDetails?.name || ''),
-    registrationNumber: ref(getUserDetails.value.companyDetails?.registrationNumber || ''),
-    taxId: ref(getUserDetails.value.companyDetails?.taxId || ''),
-    vatNumber: ref(getUserDetails.value.companyDetails?.vat || ''),
-    country: ref(getUserDetails.value.companyDetails?.address.country || ''),
-    county: ref(getUserDetails.value.companyDetails?.address.region || ''),
-    city: ref(getUserDetails.value.companyDetails?.address.city || ''),
-    addressLine1: ref(getUserDetails.value.companyDetails?.address.name1 || ''),
-    addressLine2: ref(getUserDetails.value.companyDetails?.address.name2 || ''),
-    postcode: ref(getUserDetails.value.companyDetails?.address.postcode || ''),
-    phoneNumber: ref(getUserDetails.value.contactDetails?.phone || ''),
-    mobileNumber: ref(getUserDetails.value.contactDetails?.mobile || ''),
-    bankName: ref(''),
-    iban: ref(''),
-    companyEmail: ref(getUserDetails.value.contactDetails?.email || ''),
-};
-
-interface Fields {
-    [key: string]: Ref<string | number>;
-}
-
-const usedFields = ref<Fields>(getUserDetails.value.accountType === AccountType.Personal ? personalFields : businessFields);
-const isFieldNotEmpty: { [key: string]: ComputedRef<boolean> } = {};
-for (const key in personalFields) {
-    isFieldNotEmpty[key] = computed(() => usedFields.value[key].value.toString().trim().length > 0);
-}
-
-const { handleSubmit, setFieldValue } = useForm({
-    validationSchema: getUserDetails.value.accountType === AccountType.Personal ? formSchemaPersonal : formSchemaBusiness,
-});
-
-const onSubmit = async () => {
-    if (getUserDetails.value.accountType === AccountType.Personal) {
-        console.log(personalFields);
-        const payloadPersonal = {
-            personalDetails: {
-                firstName: personalFields.firstName.value,
-                lastName: personalFields.lastName.value,
-                address: {
-                    country: personalFields.country.value,
-                    region: personalFields.county.value,
-                    city: personalFields.city.value,
-                    name1: personalFields.addressLine1.value,
-                    name2: personalFields.addressLine2.value,
-                    postcode: personalFields.postcode.value,
-                    _id: getUserDetails.value.personalDetails?.address._id,
-                },
-            },
-            contactDetails: {
-                phone: personalFields.phoneNumber.value,
-                mobile: personalFields.mobileNumber.value,
-                email: personalFields.email.value,
-            },
-        };
-        const response = await $api.settingsClient.updateDetails(payloadPersonal);
-        if (response.status === 'success') {
-            console.log('success');
-        }
-    } else {
-        const payloadBusiness = {
-            companyDetails: {
-                name: businessFields.companyName.value,
-                registrationNumber: businessFields.registrationNumber.value,
-                taxId: businessFields.taxId.value,
-                vat: businessFields.vatNumber.value,
-                address: {
-                    country: businessFields.country.value,
-                    region: businessFields.county.value,
-                    city: businessFields.city.value,
-                    name1: businessFields.addressLine1.value,
-                    name2: businessFields.addressLine2.value,
-                    postcode: businessFields.postcode.value,
-                    _id: getUserDetails.value.companyDetails?.address._id,
-                },
-            },
-            contactDetails: {
-                phone: businessFields.phoneNumber.value,
-                mobile: businessFields.mobileNumber.value,
-                email: businessFields.companyEmail.value,
-            },
-        };
-        const response = await $api.settingsClient.updateDetails(payloadBusiness);
-        if (response.status === 'success') {
-            console.log('success');
-        }
-    }
-};
 
 const openEdit = ref(false);
 const country = ref<undefined | Country>(
@@ -320,6 +65,202 @@ const region = ref<undefined | Region>(
 );
 
 const regions = ref<Region[]>(country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || []);
+
+const baseSchema = z.object({
+    country: z
+        .string({
+            required_error: 'Country is required',
+        })
+        .min(1)
+        .default(
+            getUserDetails.value.accountType === AccountType.Personal
+                ? getUserDetails.value.personalDetails?.address.country || ''
+                : getUserDetails.value.companyDetails?.address.country || ''
+        ),
+    county: z
+        .string({
+            required_error: 'County/Region is required',
+        })
+        .min(1)
+        .default(
+            getUserDetails.value.accountType === AccountType.Personal
+                ? getUserDetails.value.personalDetails?.address.region || ''
+                : getUserDetails.value.companyDetails?.address.region || ''
+        ),
+    city: z
+        .string({
+            required_error: 'City is required',
+        })
+        .min(1)
+        .default(
+            getUserDetails.value.accountType === AccountType.Personal
+                ? getUserDetails.value.personalDetails?.address.city || ''
+                : getUserDetails.value.companyDetails?.address.city || ''
+        ),
+    addressLine1: z
+        .string({
+            required_error: 'Address Line 1 is required',
+        })
+        .min(1)
+        .default(
+            getUserDetails.value.accountType === AccountType.Personal
+                ? getUserDetails.value.personalDetails?.address.name1 || ''
+                : getUserDetails.value.companyDetails?.address.name1 || ''
+        ),
+    addressLine2: z
+        .string()
+        .optional()
+        .default(
+            getUserDetails.value.accountType === AccountType.Personal
+                ? getUserDetails.value.personalDetails?.address.name2 || ''
+                : getUserDetails.value.companyDetails?.address.name2 || ''
+        ),
+    postcode: z
+        .string({
+            required_error: 'Postcode is required',
+        })
+        .min(1)
+        .default(
+            getUserDetails.value.accountType === AccountType.Personal
+                ? getUserDetails.value.personalDetails?.address.postcode || ''
+                : getUserDetails.value.companyDetails?.address.postcode || ''
+        ),
+    phoneNumber: z
+        .number({
+            required_error: 'Phone Number is required',
+        })
+        .min(1)
+        .default(getUserDetails.value.contactDetails?.phone || ''),
+    mobile: z
+        .string({
+            required_error: 'Mobile is required',
+        })
+        .min(1)
+        .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid mobile')
+        .default(getUserDetails.value.contactDetails.mobile),
+    email: z
+        .string({
+            required_error: 'Email is required',
+        })
+        .min(1)
+        .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email')
+        .default(getUserDetails.value.contactDetails.email),
+});
+
+const formSchema = toTypedSchema(
+    baseSchema.extend({
+        firstName: z
+            .string({
+                required_error: 'First name is required',
+            })
+            .min(1)
+            .default(getUserDetails.value.personalDetails?.firstName || ''),
+        lastName: z
+            .string({
+                required_error: 'Last name is required',
+            })
+            .min(1)
+            .default(getUserDetails.value.personalDetails?.lastName || ''),
+    })
+);
+
+const formBusinessSchema = toTypedSchema(
+    baseSchema.extend({
+        companyName: z
+            .string({
+                required_error: 'Company Name is required',
+            })
+            .min(1)
+            .default(getUserDetails.value.companyDetails?.name || ''),
+        registrationNumber: z
+            .string({
+                required_error: 'Company Registration Number is required',
+            })
+            .min(1)
+            .default(getUserDetails.value.companyDetails?.registrationNumber || ''),
+        taxId: z
+            .string({
+                required_error: 'Tax ID is required',
+            })
+            .min(1)
+            .default(getUserDetails.value.companyDetails?.taxId || ''),
+        vatNumber: z
+            .string({
+                required_error: 'V.A.T Number is required',
+            })
+            .min(1)
+            .default(getUserDetails.value.companyDetails?.vat || ''),
+        bankName: z
+            .string()
+            .optional()
+            .default(getUserDetails.value.companyDetails?.bank_name || '')
+            .or(z.literal('')),
+        iban: z
+            .union([z.string().length(0), z.string().regex(/^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/, 'Invalid IBAN')])
+            .optional()
+            .default(getUserDetails.value.companyDetails?.bank_iban || '')
+            .transform((e: string) => (e === '' ? undefined : e)),
+    })
+);
+
+const { handleSubmit, setFieldValue } = useForm({
+    validationSchema: getUserDetails.value.accountType === AccountType.Personal ? formSchema : formBusinessSchema,
+});
+
+const onSubmit = handleSubmit(async (values) => {
+    console.log(values);
+
+    if (getUserDetails.value.accountType === AccountType.Personal) {
+        const payloadPersonal = {
+            personalDetails: {
+                firstName: values.firstName,
+                lastName: values.lastName,
+                address: {
+                    country: values.country,
+                    region: values.county,
+                    city: values.city,
+                    name1: values.addressLine1,
+                    name2: values.addressLine2,
+                    postcode: values.postcode,
+                    _id: getUserDetails.value.personalDetails?.address._id,
+                },
+            },
+            contactDetails: {
+                phone: values.phoneNumber,
+                email: values.email,
+            },
+        };
+        const response = await $api.settingsClient.updateDetails(payloadPersonal);
+        if (response.status === 'success') {
+            console.log('success');
+        }
+    } else {
+        const payloadBusiness = {
+            companyDetails: {
+                name: values.companyName,
+                registrationNumber: values.registrationNumber,
+                vat: values.vatNumber,
+                address: {
+                    country: values.country,
+                    region: values.county,
+                    city: values.city,
+                    name1: values.addressLine1,
+                    name2: values.addressLine2,
+                    postcode: values.postcode,
+                    _id: getUserDetails.value.companyDetails?.address._id,
+                },
+            },
+            contactDetails: {
+                phone: values.phoneNumber,
+                email: values.companyEmail,
+            },
+        };
+        const response = await $api.settingsClient.updateDetails(payloadBusiness);
+        if (response.status === 'success') {
+            console.log('success');
+        }
+    }
+});
 
 // Watch for changes to the country and update values.country
 watch(country, (newCountry) => {
@@ -356,10 +297,7 @@ watch(region, (newRegion) => {
 
 <template>
     <div class="bg-white shadow-l rounded-xl">
-        <section
-            v-if="getUserDetails.accountType === AccountType.Personal"
-            class="flex flex-col self-stretch p-4 md:p-6 bg-white rounded-xl shadow-sm"
-        >
+        <section class="flex flex-col self-stretch p-4 md:p-6 bg-white rounded-xl shadow-sm">
             <header class="flex flex-col md:flex-row gap-2.5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
                 <h2 class="self-start text-xl font-semibold leading-7 text-neutral-700">Account Details</h2>
                 <div class="flex flex-col md:flex-row gap-3 text-sm font-medium leading-6 text-gray-500">
@@ -378,49 +316,73 @@ watch(region, (newRegion) => {
                 </div>
             </header>
             <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9">
-                <FormField v-slot="{ componentField }" name="firstName">
+                <FormField v-if="getUserDetails.accountType !== AccountType.Personal" v-slot="{ componentField }" name="companyName">
+                    <FormItem>
+                        <FormLabel>Company Name</FormLabel>
+                        <FormControl>
+                            <Input type="text" placeholder="Company Name" v-bind="componentField" :disabled="!openEdit" />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
+
+                <FormField v-if="getUserDetails.accountType !== AccountType.Personal" v-slot="{ componentField }" name="registrationNumber">
+                    <FormItem>
+                        <FormLabel>Company Registration Number</FormLabel>
+                        <FormControl>
+                            <Input type="text" placeholder="ABC123456" v-bind="componentField" :disabled="!openEdit" />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
+
+                <FormField v-if="getUserDetails.accountType !== AccountType.Personal" v-slot="{ componentField }" name="taxId">
+                    <FormItem>
+                        <FormLabel>Tax ID</FormLabel>
+                        <FormControl>
+                            <Input type="text" placeholder="ABC123456" v-bind="componentField" :disabled="!openEdit" />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
+
+                <FormField v-if="getUserDetails.accountType !== AccountType.Personal" v-slot="{ componentField }" name="vatNumber">
+                    <FormItem>
+                        <FormLabel>V.A.T Number</FormLabel>
+                        <FormControl>
+                            <Input type="text" placeholder="ABC123456" v-bind="componentField" :disabled="!openEdit" />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
+
+                <FormField v-if="getUserDetails.accountType === AccountType.Personal" v-slot="{ componentField }" name="firstName">
                     <FormItem>
                         <FormLabel>First Name</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="First Name"
-                                v-bind="componentField"
-                                :v-model="personalFields.firstName"
-                                :default-value="getUserDetails.personalDetails?.firstName"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" placeholder="First Name" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
-                        <FormMessage v-if="!isFieldNotEmpty.firstName" />
+                        <FormMessage />
                     </FormItem>
                 </FormField>
 
-                <FormField v-slot="{ componentField }" name="lastName">
+                <FormField v-if="getUserDetails.accountType === AccountType.Personal" v-slot="{ componentField }" name="lastName">
                     <FormItem>
                         <FormLabel>Last Name</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Last Name"
-                                v-bind="componentField"
-                                :v-model="personalFields.lastName"
-                                :default-value="getUserDetails.personalDetails?.lastName"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" placeholder="Last Name" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
-                        <FormMessage v-if="!isFieldNotEmpty.lastName" />
+                        <FormMessage />
                     </FormItem>
                 </FormField>
 
-                <FormField name="country">
+                <FormField name="country" @submit.prevent>
                     <FormItem class="flex flex-col">
                         <FormControl>
                             <FormSelect
-                                v-if="country?.label"
                                 v-model="country"
                                 :disabled="!openEdit"
                                 :options="countries"
-                                :default-value="getUserDetails.personalDetails?.address.country"
                                 :show-disabled-styles="false"
                                 label="Country"
                                 placeholder="United States"
@@ -437,14 +399,13 @@ watch(region, (newRegion) => {
                     <FormItem class="flex flex-col">
                         <FormControl>
                             <FormSelect
-                                v-if="regions"
                                 v-model="region"
+                                type="button"
                                 :disabled="!openEdit"
                                 :options="regions"
-                                :default-value="getUserDetails.personalDetails?.address.region"
                                 :show-disabled-styles="false"
                                 label="County"
-                                :placeholder="country?.regions[0].name"
+                                placeholder="New York"
                                 search
                                 size="lg"
                                 class="relative z-20"
@@ -458,14 +419,7 @@ watch(region, (newRegion) => {
                     <FormItem>
                         <FormLabel>City</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="City"
-                                v-bind="componentField"
-                                :v-model="personalFields.city"
-                                :default-value="getUserDetails.personalDetails?.address.city"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" placeholder="City" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -475,14 +429,7 @@ watch(region, (newRegion) => {
                     <FormItem>
                         <FormLabel>Address Line 1</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Address Line 1"
-                                v-bind="componentField"
-                                :v-model="personalFields.addressLine1"
-                                :default-value="getUserDetails.personalDetails?.address?.name1"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" placeholder="Address Line 1" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -492,14 +439,7 @@ watch(region, (newRegion) => {
                     <FormItem>
                         <FormLabel>Address Line 2</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Address Line 2"
-                                v-bind="componentField"
-                                :v-model="personalFields.addressLine2"
-                                :default-value="getUserDetails.personalDetails?.address?.name2"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" placeholder="Address Line 2" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -509,14 +449,7 @@ watch(region, (newRegion) => {
                     <FormItem>
                         <FormLabel>Postcode</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Postcode"
-                                v-bind="componentField"
-                                :v-model="personalFields.postcode"
-                                :default-value="getUserDetails.personalDetails?.address?.postcode"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" placeholder="Postcode" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -526,14 +459,7 @@ watch(region, (newRegion) => {
                     <FormItem>
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="+1 (555) 867-5309"
-                                v-bind="componentField"
-                                :v-model="personalFields.phoneNumber"
-                                :default-value="getUserDetails.contactDetails?.phone"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" placeholder="+1 (555) 867-5309" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -542,45 +468,26 @@ watch(region, (newRegion) => {
                     <FormItem>
                         <FormLabel>Mobile Number</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="+1 (555) 867-5309"
-                                v-bind="componentField"
-                                :v-model="personalFields.phoneNumber"
-                                :default-value="getUserDetails.contactDetails?.mobile"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" placeholder="+1 (555) 867-5309" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
                 </FormField>
-                <FormField v-slot="{ componentField }" name="bankName">
+                <FormField v-if="getUserDetails.accountType !== AccountType.Personal" v-slot="{ componentField }" name="bankName">
                     <FormItem>
                         <FormLabel>Bank Name</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Bank Name"
-                                v-bind="componentField"
-                                :v-model="personalFields.bankName"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" v-bind="componentField" placeholder="Bank Name" :disabled="!openEdit" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
                 </FormField>
 
-                <FormField v-slot="{ componentField }" name="iban">
+                <FormField v-if="getUserDetails.accountType !== AccountType.Personal" v-slot="{ componentField }" name="iban">
                     <FormItem>
                         <FormLabel>IBAN</FormLabel>
                         <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="ABCD 1234 5678 9012 3456 78"
-                                v-bind="componentField"
-                                :v-model="personalFields.iban"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="text" placeholder="ABCD 1234 5678 9012 3456 78" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -588,326 +495,16 @@ watch(region, (newRegion) => {
 
                 <FormField v-slot="{ componentField }" name="email">
                     <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>{{ getUserDetails.accountType !== AccountType.Personal ? 'Company Email' : 'Email' }} </FormLabel>
                         <FormControl>
-                            <Input
-                                type="email"
-                                placeholder="youremail@gmail.com"
-                                v-bind="componentField"
-                                :v-model="personalFields.email"
-                                :default-value="getUserDetails.contactDetails?.email"
-                                :disabled="!openEdit"
-                            />
+                            <Input type="email" placeholder="youremail@gmail.com" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
                 </FormField>
                 <div v-if="openEdit" class="flex flex-col md:flex-row justify-end gap-4 md:col-span-2">
                     <Button variant="secondary" type="reset" @click="openEdit = !openEdit"> Cancel</Button>
-                    <Button
-                        class="md:w-60"
-                        @click="
-                            onSubmit();
-                            openEdit = !openEdit;
-                        "
-                    >
-                        Save
-                    </Button>
-                </div>
-            </form>
-        </section>
-
-        <section v-else class="flex flex-col self-stretch p-4 md:p-6 bg-white rounded-xl shadow-sm">
-            <header class="flex flex-col md:flex-row gap-2.5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-                <h2 class="self-start text-xl font-semibold leading-7 text-neutral-700">Company Details</h2>
-                <div class="flex flex-col md:flex-row gap-3 text-sm font-medium leading-6 text-gray-500">
-                    <UiButton
-                        :class="openEdit ? 'text-white' : 'text-slate-500'"
-                        :variant="openEdit ? 'default' : 'secondary'"
-                        @click="openEdit = !openEdit"
-                    >
-                        <FilePenLineIcon class="w-5 h-5 stroke-1.5 mr-2" />
-                        <span>Edit</span>
-                    </UiButton>
-                    <UiButton class="text-slate-500" variant="secondary">
-                        <CopyIcon class="w-5 h-5 stroke-1.5 mr-2" />
-                        <span>Copy Details</span>
-                    </UiButton>
-                </div>
-            </header>
-            <form class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-9">
-                <FormField v-slot="{ componentField }" name="companyName">
-                    <FormItem>
-                        <FormLabel>Company Name</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Company Name"
-                                v-bind="componentField"
-                                :v-model="businessFields.companyName"
-                                :default-value="getUserDetails.companyDetails?.name"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="registrationNumber">
-                    <FormItem>
-                        <FormLabel>Company Registration Number</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="ABC123456"
-                                v-bind="componentField"
-                                :v-model="businessFields.registrationNumber"
-                                :default-value="getUserDetails.companyDetails?.registrationNumber"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="taxId">
-                    <FormItem>
-                        <FormLabel>Tax ID</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="ABC123456"
-                                v-bind="componentField"
-                                :v-model="businessFields.taxId"
-                                :default-value="getUserDetails.companyDetails?.taxId"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="vatNumber">
-                    <FormItem>
-                        <FormLabel>V.A.T Number</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="ABC123456"
-                                v-bind="componentField"
-                                :v-model="businessFields.vatNumber"
-                                :default-value="getUserDetails.companyDetails?.vat"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField name="country">
-                    <FormItem class="flex flex-col">
-                        <FormControl>
-                            <FormSelect
-                                v-if="country?.label"
-                                v-model="country"
-                                :disabled="!openEdit"
-                                :options="countries"
-                                :default-value="getUserDetails.companyDetails?.address.country"
-                                :show-disabled-styles="false"
-                                label="Country"
-                                placeholder="United States"
-                                search
-                                size="lg"
-                                class="relative z-20"
-                            />
-                        </FormControl>
-
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField name="county">
-                    <FormItem class="flex flex-col">
-                        <FormControl>
-                            <FormSelect
-                                v-if="regions"
-                                v-model="region"
-                                :disabled="!openEdit"
-                                :options="regions"
-                                :default-value="getUserDetails.companyDetails?.address.region"
-                                :show-disabled-styles="false"
-                                label="County/Region"
-                                :placeholder="country?.regions[0].name"
-                                search
-                                size="lg"
-                                class="relative z-20"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="city">
-                    <FormItem>
-                        <FormLabel>City</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="City"
-                                v-bind="componentField"
-                                :v-model="businessFields.city"
-                                :default-value="getUserDetails.companyDetails?.address.city"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="addressLine1">
-                    <FormItem>
-                        <FormLabel>Address Line 1</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Address Line 1"
-                                v-bind="componentField"
-                                :v-model="businessFields.addressLine1"
-                                :default-value="getUserDetails.companyDetails?.address?.name1"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="addressLine2">
-                    <FormItem>
-                        <FormLabel>Address Line 2</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Address Line 2"
-                                v-bind="componentField"
-                                :v-model="businessFields.addressLine2"
-                                :default-value="getUserDetails.companyDetails?.address?.name2"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="postcode">
-                    <FormItem>
-                        <FormLabel>Postcode</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Postcode"
-                                v-bind="componentField"
-                                :v-model="businessFields.postcode"
-                                :default-value="getUserDetails.companyDetails?.address?.postcode"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="phoneNumber">
-                    <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="+1 (555) 867-5309"
-                                v-bind="componentField"
-                                :v-model="businessFields.phoneNumber"
-                                :default-value="getUserDetails.contactDetails?.phone"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="mobileNumber">
-                    <FormItem>
-                        <FormLabel>Mobile Number</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="+1 (555) 867-5309"
-                                v-bind="componentField"
-                                :v-model="businessFields.mobileNumber"
-                                :default-value="getUserDetails.contactDetails?.mobile"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="bankName">
-                    <FormItem>
-                        <FormLabel>Bank Name</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="Bank Name"
-                                v-bind="componentField"
-                                :v-model="businessFields.bankName"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="iban">
-                    <FormItem>
-                        <FormLabel>IBAN</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="text"
-                                placeholder="ABCD 1234 5678 9012 3456 78"
-                                v-bind="componentField"
-                                :v-model="businessFields.iban"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="companyEmail">
-                    <FormItem>
-                        <FormLabel>Company Email</FormLabel>
-                        <FormControl>
-                            <Input
-                                type="email"
-                                placeholder="youremail@company.com"
-                                v-bind="componentField"
-                                :v-model="businessFields.companyEmail"
-                                :default-value="getUserDetails.contactDetails?.email"
-                                :disabled="!openEdit"
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-                <div v-if="openEdit" class="flex flex-col md:flex-row justify-end gap-4 md:col-span-2">
-                    <Button variant="secondary" type="reset" @click="openEdit = !openEdit"> Cancel</Button>
-                    <Button
-                        class="md:w-60"
-                        @click="
-                            onSubmit();
-                            openEdit = !openEdit;
-                        "
-                    >
-                        Save
-                    </Button>
+                    <Button type="submit" class="md:w-60" @click="openEdit = !openEdit"> Save</Button>
                 </div>
             </form>
         </section>

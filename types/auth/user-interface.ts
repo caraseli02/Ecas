@@ -80,6 +80,8 @@ export interface ProfileDetails {
 export interface CompanyDetails {
     name: string;
     registrationNumber: string;
+    bank_name?: string;
+    bank_iban?: string;
     vat?: string;
     taxId?: string;
     address: AddressInterface;
