@@ -71,7 +71,7 @@ class UserService extends HttpFactory {
     async addShippingAsCustomer(address: ShippingAddressInterface[]) {
         const token = this.authStore.getToken();
 
-        return await this.call<AccountAdminSettings>(
+        return await this.call<{ status: string; data: string }>(
             'POST',
             `${this.RESOURCE}/shipping-address/`,
             { address: address },
@@ -84,7 +84,7 @@ class UserService extends HttpFactory {
     async updateShippingAsCustomer(address: ShippingAddressInterface[]) {
         const token = this.authStore.getToken();
 
-        return await this.call<AccountAdminSettings>(
+        return await this.call<{ status: string; data: string }>(
             'PATCH',
             `${this.RESOURCE}/shipping-address/`,
             { address: address },
@@ -97,7 +97,7 @@ class UserService extends HttpFactory {
     async addBillingAsCustomer(address: ShippingAddressInterface[]) {
         const token = this.authStore.getToken();
 
-        return await this.call<AccountAdminSettings>(
+        return await this.call<{ status: string; data: string }>(
             'POST',
             `${this.RESOURCE}/billing-address/`,
             { address: address },
@@ -110,7 +110,7 @@ class UserService extends HttpFactory {
     async updateBillingAsCustomer(address: ShippingAddressInterface[]) {
         const token = this.authStore.getToken();
 
-        return await this.call<AccountAdminSettings>(
+        return await this.call<{ status: string; data: string }>(
             'PATCH',
             `${this.RESOURCE}/billing-address/`,
             { address: address },

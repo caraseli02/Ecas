@@ -136,7 +136,7 @@ const baseSchema = z.object({
             required_error: 'Mobile is required',
         })
         .min(1)
-        .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid mobile')
+        .regex(/^\+?\d{1,4}[\s-]?\(?\d{1,3}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$/, 'Invalid mobile number')
         .default(getUserDetails.value.contactDetails.mobile),
     email: z
         .string({
@@ -203,7 +203,7 @@ const formBusinessSchema = toTypedSchema(
     })
 );
 
-const { handleSubmit, setFieldValue } = useForm({
+const { handleSubmit, setFieldValue, errors } = useForm({
     validationSchema: getUserDetails.value.accountType === AccountType.Personal ? formSchema : formBusinessSchema,
 });
 
@@ -260,7 +260,8 @@ const onSubmit = handleSubmit(async (values) => {
             console.log('success');
         }
     }
-})();
+    openEdit.value = !openEdit.value
+});
 
 // Watch for changes to the country and update values.country
 watch(country, (newCountry) => {
@@ -464,7 +465,7 @@ watch(region, (newRegion) => {
                         <FormMessage />
                     </FormItem>
                 </FormField>
-                <FormField v-slot="{ componentField }" name="mobileNumber">
+                <FormField v-slot="{ componentField }" name="mobile">
                     <FormItem>
                         <FormLabel>Mobile Number</FormLabel>
                         <FormControl>
@@ -504,7 +505,7 @@ watch(region, (newRegion) => {
                 </FormField>
                 <div v-if="openEdit" class="flex flex-col md:flex-row justify-end gap-4 md:col-span-2">
                     <Button variant="secondary" type="reset" @click="openEdit = !openEdit">Cancel</Button>
-                    <Button type="submit" class="md:w-60" @click="openEdit = !openEdit">Save</Button>
+                    <Button type="submit" class="md:w-60">Save</Button>
                 </div>
             </form>
         </section>

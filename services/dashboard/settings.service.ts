@@ -1,7 +1,7 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import { AccountAdminSettings } from '~/types/auth/account-settings';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
 import { AccountType } from '~/types';
 import { DetailsResponse } from '~/model/dashboard/customer-information/customer-information';
 
@@ -19,6 +19,19 @@ class SettingsClientService extends HttpFactory {
         return await this.call<AccountAdminSettings>(
             'PATCH',
             `${this.USER_PATH}/shipping-address`,
+            { address: address },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+    }
+
+    async updateBilling(address: BillingAddressInterface[]) {
+        const token = this.authStore.getToken();
+
+        return await this.call<AccountAdminSettings>(
+            'PATCH',
+            `${this.USER_PATH}/billing-address`,
             { address: address },
             {
                 headers: { Authorization: `Bearer ${token}` },

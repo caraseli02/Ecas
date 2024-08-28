@@ -99,6 +99,7 @@ export interface AddressInterface {
     city: string;
     postcode: string;
     _id: string;
+    icon?: string;
 }
 
 export interface ShippingAddressInterface {
@@ -124,6 +125,7 @@ export interface BillingAddressInterface {
     city: string;
     postcode: string;
     phone?: string;
+    _id?: string;
 }
 
 export interface MarketingPreferences {

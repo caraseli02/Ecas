@@ -14,24 +14,15 @@ import { AddressInterface } from '~/types/auth/user-interface';
 const { $api } = useNuxtApp();
 
 const props = defineProps<{
-    isOpen: boolean;
     address: any;
     accountType: AccountType;
 }>();
 
-const emit = defineEmits(['update:isOpen']);
+const isOpen = defineModel<boolean>();
 
-const localIsOpen = ref(props.isOpen);
+const emit = defineEmits(['addShippingAddress']);
 
 const typeOfDialog = ref('');
-
-watch(
-    () => props.isOpen,
-    (newVal) => {
-        console.log(newVal);
-        localIsOpen.value = newVal;
-    }
-);
 
 interface Country {
     label: string;
@@ -47,8 +38,6 @@ interface Region {
     label: string;
     value: string;
 }
-
-console.log(props.address);
 
 const formSchema = toTypedSchema(
     z.object({
@@ -101,13 +90,16 @@ const onSubmit = handleSubmit(async (values) => {
         country: values.country,
         postcode: values.postcode,
         region: values.county,
+        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cd8b9b1c0d2b925f29e818d6e49d9d83c8bd553c0416b56bcae00e809eb1cd1b?apiKey=20497529553648aab918fa2d322ece87&',
     };
 
-    const response = props.address.value
+    const response = props.address?.value
         ? await $api.user.updateShippingAsCustomer(payload)
         : await $api.user.addShippingAsCustomer(payload);
     if (response.status === 'success') {
         console.log('success');
+        emit('addShippingAddress', payload);
+        onCloseDialog();
     }
 });
 
@@ -158,12 +150,13 @@ watch(region, (newRegion) => {
 
 const onCloseDialog = () => {
     console.log('close');
-    emit('update:isOpen', false);
+    showErrorMsg.value = false;
+    isOpen.value = false;
 };
 </script>
 
 <template>
-    <UiDialog v-model:open="localIsOpen">
+    <UiDialog v-model:open="isOpen">
         <UiDialogTrigger as-child>
             <UiButton size="icon" class="rounded-full" variant="ghost">
                 <PlusCircleIcon class="aspect-square w-10 h-10 stroke-1 text-blue-500" />
