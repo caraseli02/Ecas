@@ -9,7 +9,7 @@
         <div class="justify-center items-stretch self-stretch flex grow basis-[0%] flex-col">
             <div class="items-stretch flex justify-start gap-3 pr-5 relative">
                 <div class="text-neutral-700 text-sm font-medium leading-5 whitespace-nowrap">
-                    {{ getUserDetails?.contactDetails.firstName }} {{ getUserDetails?.contactDetails.lastName }}
+                    {{ fullname }}
                 </div>
                 <Tooltip theme="black" position="top">
                     <component :is="IconTypes[3]" class="w-5 h-5 hover:text-blue-500" />
@@ -24,7 +24,7 @@
             <div class="items-center flex gap-2 mt-1 pr-20">
                 <div class="text-stone-500 text-xs font-medium leading-5 self-stretch whitespace-nowrap">ID:</div>
                 <div class="text-stone-500 text-xs font-medium leading-5">
-                    {{ getUserDetails?.contactDetails._id }}
+                    {{ getUserDetails?._id }}
                 </div>
                 <CopyIcon
                     class="aspect-square object-contain object-center w-4 h-4 overflow-hidden shrink-0 max-w-full my-auto text-[#9A9A9A]"
@@ -42,9 +42,22 @@ import briefcaseIcon from '@/assets/icons/menu/briefcase.svg';
 import CopyIcon from '@/assets/icons/copy.svg';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
+import { AccountRole, AccountType } from '~/types';
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
+const fullname = ref('');
+
+onMounted(() => {
+    if (
+        (getUserDetails.value.role === AccountRole.Client && getUserDetails.value.accountType === AccountType.Personal) ||
+        getUserDetails.value.role !== AccountRole.Client
+    ) {
+        fullname.value = `${getUserDetails.value.personalDetails.firstName} ${getUserDetails.value.personalDetails.lastName}`;
+    } else {
+        fullname.value = `${getUserDetails.value.contactDetails.firstName} ${getUserDetails.value.contactDetails.lastName}`;
+    }
+});
 
 const IconTypes = [PersonalCardIcon, UserIcon, BuildingIcon, briefcaseIcon];
 </script>
