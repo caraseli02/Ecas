@@ -116,7 +116,7 @@ const payment = computed(() => {
                         <div class="flex flex-col p-6 text-sm">
                             <p>
                                 <span class="font-semibold">$</span>
-                                {{ (item.stock * item.unitPriceAfterDiscounts * payment.taxRate).toFixed(2) }}
+                                {{ (item.stock * item.unitPriceAfterDiscounts * 0.19).toFixed(2) }}
                             </p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
