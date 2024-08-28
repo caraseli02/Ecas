@@ -1,11 +1,11 @@
-import {defineStore} from 'pinia';
-import {StripeCardInterface, UserInfoJWT} from '~~/types';
-import {UserInterface} from '~/types/auth/user-interface';
+import { defineStore } from 'pinia';
+import { StripeCardInterface, UserInfoJWT } from '~~/types';
+import { UserInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import useFirebaseAuth from '~/composables/useFirebaseAuth';
 import moment from 'moment';
-import {GeneralSettingsInterface} from '~/types/general-settings/general-settings';
-import {useNuxtApp} from '#app';
+import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import { useNuxtApp } from '#app';
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
@@ -28,10 +28,11 @@ export const useAuthStore = defineStore({
             this.loggedInUser = user;
         },
         addUserDetail(user: UserInterface) {
+            console.log('setting user details', user);
             this.userDetails = user;
         },
         async addUserCards() {
-            const {$api} = useNuxtApp();
+            const { $api } = useNuxtApp();
             const cardsResponse = await $api.user.userCards();
 
             if (!cardsResponse) {
@@ -53,7 +54,7 @@ export const useAuthStore = defineStore({
         signOut() {
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = {value: '', createdAt: ''};
+            this.token = { value: '', createdAt: '' };
             this.generalSettings = null;
 
             Emitter.emit('remove-cart-and-notifications', true);
@@ -66,9 +67,10 @@ export const useAuthStore = defineStore({
             const firebaseAuth = useFirebaseAuth();
             await firebaseAuth.logout();
 
+            console.log('Signing out');
             this.loggedInUser = null;
             this.userDetails = null;
-            this.token = {value: '', createdAt: ''};
+            this.token = { value: '', createdAt: '' };
             this.generalSettings = null;
         },
         getToken() {

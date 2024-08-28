@@ -9,7 +9,7 @@
         <div class="justify-center items-stretch self-stretch flex grow basis-[0%] flex-col">
             <div class="items-stretch flex justify-start gap-3 pr-5 relative">
                 <div class="text-neutral-700 text-sm font-medium leading-5 whitespace-nowrap">
-                    {{ fullname }}
+                    {{ fullname || 'Loading...' }}
                 </div>
                 <Tooltip theme="black" position="top">
                     <component :is="IconTypes[3]" class="w-5 h-5 hover:text-blue-500" />
@@ -19,7 +19,7 @@
                 </Tooltip>
             </div>
             <div class="text-slate-500 text-xs leading-4 whitespace-nowrap mt-1">
-                {{ getUserDetails?.contactDetails.email }}
+                {{ getUserDetails?.contactDetails.email || 'Loading...' }}
             </div>
             <div class="items-center flex gap-2 mt-1 pr-20">
                 <div class="text-stone-500 text-xs font-medium leading-5 self-stretch whitespace-nowrap">ID:</div>
@@ -45,14 +45,13 @@ import { storeToRefs } from 'pinia';
 import { AccountRole, AccountType } from '~/types';
 
 const authStore = useAuthStore();
-const { getUserDetails } = storeToRefs(authStore);
 const fullname = ref('');
+const { getUserDetails } = storeToRefs(authStore);
 
 onMounted(() => {
-    if (
-        (getUserDetails.value.role === AccountRole.Client && getUserDetails.value.accountType === AccountType.Personal) ||
-        getUserDetails.value.role !== AccountRole.Client
-    ) {
+    if (!getUserDetails.value) return;
+
+    if (getUserDetails.value.role === AccountRole.Client && getUserDetails.value.accountType === AccountType.Personal) {
         fullname.value = `${getUserDetails.value.personalDetails.firstName} ${getUserDetails.value.personalDetails.lastName}`;
     } else {
         fullname.value = `${getUserDetails.value.contactDetails.firstName} ${getUserDetails.value.contactDetails.lastName}`;
