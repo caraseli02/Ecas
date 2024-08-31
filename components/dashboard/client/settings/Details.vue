@@ -12,6 +12,7 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
+import { updateStoreDetails } from '~/helpers/auth-store.helper';
 
 const { $api } = useNuxtApp();
 
@@ -208,8 +209,6 @@ const { handleSubmit, setFieldValue, errors } = useForm({
 });
 
 const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
-
     if (getUserDetails.value.accountType === AccountType.Personal) {
         const payloadPersonal = {
             personalDetails: {
@@ -228,6 +227,7 @@ const onSubmit = handleSubmit(async (values) => {
             contactDetails: {
                 phone: values.phoneNumber,
                 email: values.email,
+                mobile: values.mobile,
             },
         };
         const response = await $api.settingsClient.updateDetails(payloadPersonal);
@@ -253,6 +253,7 @@ const onSubmit = handleSubmit(async (values) => {
             contactDetails: {
                 phone: values.phoneNumber,
                 email: values.companyEmail,
+                mobile: values.mobile,
             },
         };
         const response = await $api.settingsClient.updateDetails(payloadBusiness);
@@ -260,7 +261,9 @@ const onSubmit = handleSubmit(async (values) => {
             console.log('success');
         }
     }
-    openEdit.value = !openEdit.value
+
+    await updateStoreDetails();
+    openEdit.value = !openEdit.value;
 });
 
 // Watch for changes to the country and update values.country

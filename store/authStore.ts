@@ -79,7 +79,7 @@ export const useAuthStore = defineStore({
                 this.signOut();
             }
 
-            return this.token?.value;
+            return this.token?.value as UserInfoJWT;
         },
     },
     getters: {

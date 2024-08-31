@@ -10,6 +10,7 @@ import { ref, watch } from 'vue';
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
 import { AddressInterface } from '~/types/auth/user-interface';
+import { updateStoreDetails } from '~/helpers/auth-store.helper';
 
 const { $api } = useNuxtApp();
 
@@ -38,8 +39,6 @@ interface Region {
     label: string;
     value: string;
 }
-
-console.log(props.address);
 
 const formSchema = toTypedSchema(
     z.object({
@@ -98,9 +97,10 @@ const onSubmit = handleSubmit(async (values) => {
     const response = props.address?.value
         ? await $api.user.updateBillingAsCustomer(payload)
         : await $api.user.addBillingAsCustomer(payload);
+
     if (response.status === 'success') {
-        console.log('success');
         emit('addBillingAddress', payload);
+        await updateStoreDetails();
         onCloseDialog();
     }
 });

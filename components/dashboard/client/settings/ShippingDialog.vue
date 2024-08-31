@@ -9,6 +9,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
 import { AddressInterface } from '~/types/auth/user-interface';
+import { updateStoreDetails } from '~/helpers/auth-store.helper';
 
 const { $api } = useNuxtApp();
 
@@ -74,19 +75,22 @@ const { handleSubmit, values, setFieldValue, errors } = useForm({
     validationSchema: formSchema,
 });
 
-watch(() => props.address, (newAddress) => {
-  setFieldValue('addressAlias', newAddress?.alias || '');
-  setFieldValue('city', newAddress?.city || '');
-  setFieldValue('country', newAddress?.country || '');
-  setFieldValue('county', newAddress?.region || '');
-  setFieldValue('addressLine1', newAddress?.name1 || '');
-  setFieldValue('addressLine2', newAddress?.name2 || '');
-  setFieldValue('postcode', newAddress?.postcode || '');
-})
+watch(
+    () => props.address,
+    (newAddress) => {
+        setFieldValue('addressAlias', newAddress?.alias || '');
+        setFieldValue('city', newAddress?.city || '');
+        setFieldValue('country', newAddress?.country || '');
+        setFieldValue('county', newAddress?.region || '');
+        setFieldValue('addressLine1', newAddress?.name1 || '');
+        setFieldValue('addressLine2', newAddress?.name2 || '');
+        setFieldValue('postcode', newAddress?.postcode || '');
+    }
+);
 
 const onSubmit = handleSubmit(async (values) => {
     console.log(errors);
-    
+
     console.log({
         title: 'You submitted the following values:',
         description: JSON.stringify(values, null, 2),
@@ -103,12 +107,11 @@ const onSubmit = handleSubmit(async (values) => {
         icon: '',
     };
 
-    const response = props.address
-        ? await $api.user.updateShippingAsCustomer(payload)
-        : await $api.user.addShippingAsCustomer(payload);
+    const response = props.address ? await $api.user.updateShippingAsCustomer(payload) : await $api.user.addShippingAsCustomer(payload);
+
     if (response.status === 'success') {
-        console.log('success');
         emit('addShippingAddress', payload);
+        await updateStoreDetails();
         onCloseDialog();
     }
 });

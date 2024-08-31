@@ -7,6 +7,7 @@ import { AccountType } from '~/types';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { ref } from 'vue';
 import { useNuxtApp } from '#app';
+
 const { $api } = useNuxtApp();
 
 interface AddressData {
@@ -66,12 +67,11 @@ watch(isDialogOpen, async (isOpen) => {
     if (!isOpen) {
         addressToBeEdited.value = null;
     }
-})
+});
 
 const handleEdit = async (editedAddress: AddressData) => {
     isDialogOpen.value = true;
     addressToBeEdited.value = editedAddress;
-    console.log(addressToBeEdited.value);
 };
 
 const handleDelete = async (deletedAddress: AddressData) => {
@@ -102,9 +102,9 @@ const handleChange = async (addresses: AddressData[]) => {
             phone: address.phone,
         };
     });
-    if (getUserDetails.value.firebaseId && newAddresses) {
-        await $api.settingsClient.updateShipping(newAddresses);
-    }
+    // if (getUserDetails.value.firebaseId && newAddresses) {
+    //     await $api.settingsClient.updateShipping(newAddresses);
+    // }
 };
 
 const handleAdd = async (address: AddressData) => {

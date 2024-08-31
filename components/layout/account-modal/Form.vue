@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import SignINIcon from '@/assets/icons/menu/in.svg';
 import CheckIcon from '@/assets/icons/check.svg';
-import { SigninResponse, UserDetailsResponse, UserInfoJWT } from '~~/types';
+import { SigninResponse, UserInfoJWT } from '~~/types';
 import { useAuthStore } from '~~/store/authStore';
 import { UserInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
@@ -160,38 +160,15 @@ const handleSignIn = async () => {
 };
 
 const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
-    const { data, error } = await useFetchAPI<UserDetailsResponse>(`user/${parsedToken.user_id}/details`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        method: 'GET',
-    });
+    const detailsResponse = await $api.auth.fetchUserDetails(parsedToken.user_id);
 
-    if (error.value) {
-        switch (error.value.response?.status) {
-            case 404:
-                errorResponse.code = error.value.response.status as number;
-                errorResponse.description = '404 - Something invalid just happened.';
-                errorResponse.show = true;
-                break;
-            case 500:
-                errorResponse.code = error.value.response.status as number;
-                errorResponse.description = '500 - Server error';
-                errorResponse.show = true;
-                break;
-            case 401:
-                errorResponse.code = error.value.response.status as number;
-                errorResponse.description = '401 - Unauthorized';
-                errorResponse.show = true;
-                break;
-            default:
-                break;
-        }
+    if (detailsResponse.status !== 'success') {
+        errorResponse.show = true;
         return;
     }
 
-    const userDetails = data.value?.data;
-    authStore.addUserDetail(userDetails as UserInterface);
+    const userDetails = detailsResponse.data;
+    await authStore.addUserDetail(userDetails as UserInterface);
 
     if (userDetails) {
         const response = (await $api.generalSettings.fetchSettings()) as {

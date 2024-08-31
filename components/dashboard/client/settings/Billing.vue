@@ -97,9 +97,9 @@ const handleChange = async (addresses: AddressData[]) => {
             phone: address.phone,
         };
     });
-    if (getUserDetails.value.firebaseId && newAddresses) {
-        await $api.settingsClient.updateBilling(newAddresses);
-    }
+    // if (getUserDetails.value.firebaseId && newAddresses) {
+    //     await $api.settingsClient.updateBilling(newAddresses);
+    // }
 };
 
 const handleAdd = async (address: AddressData) => {
