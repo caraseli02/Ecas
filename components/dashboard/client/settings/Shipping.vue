@@ -7,7 +7,6 @@ import { AccountType } from '~/types';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { ref } from 'vue';
 import { useNuxtApp } from '#app';
-
 const { $api } = useNuxtApp();
 
 interface AddressData {
@@ -62,6 +61,12 @@ const isDialogOpen = ref(false);
 
 const addresses = ref<AddressData[]>(await formatAddresses());
 const addressToBeEdited = ref<AddressData | null>(null);
+
+watch(isDialogOpen, async (isOpen) => {
+    if (!isOpen) {
+        addressToBeEdited.value = null;
+    }
+})
 
 const handleEdit = async (editedAddress: AddressData) => {
     isDialogOpen.value = true;
@@ -118,7 +123,6 @@ const handleAdd = async (address: AddressData) => {
                 v-model="isDialogOpen"
                 :address="addressToBeEdited"
                 :account-type="accountType"
-                @update:is-open="isDialogOpen = $event"
                 @add-shipping-address="handleAdd"
             />
         </section>

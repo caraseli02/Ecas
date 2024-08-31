@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CheckCircle, FilePenLineIcon, Trash2Icon } from 'lucide-vue-next';
+import { CheckCircle, FilePenLineIcon, Trash2Icon, Building2 } from 'lucide-vue-next';
 
 interface AddressData {
     icon: string;
@@ -44,7 +44,8 @@ const setDefault = () => {
     <article class="flex flex-col justify-center self-stretch p-4 rounded-xl border border-dashed border-neutral-300">
         <div class="flex gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
             <div class="flex gap-4 max-md:flex-wrap">
-                <img :src="addressData.icon" :alt="addressData.alias" class="shrink-0 my-auto w-8 aspect-square" />
+                <Building2 class="shrink-0 my-auto w-8 aspect-square stroke-1" />
+                <!-- <img :src="addressData.icon" :alt="addressData.alias" class="shrink-0 my-auto w-8 aspect-square" /> -->
                 <div class="flex flex-col max-md:max-w-full">
                     <div class="flex gap-5 max-md:flex-wrap">
                         <h2 class="text-base font-semibold leading-6 text-neutral-800">
