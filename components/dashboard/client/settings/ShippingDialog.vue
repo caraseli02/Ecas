@@ -6,7 +6,6 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import { countries } from '@/data/countries';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { ref, watch } from 'vue';
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
 import { AddressInterface } from '~/types/auth/user-interface';
@@ -14,15 +13,13 @@ import { AddressInterface } from '~/types/auth/user-interface';
 const { $api } = useNuxtApp();
 
 const props = defineProps<{
-    address: any;
+    address: AddressInterface;
     accountType: AccountType;
 }>();
 
 const isOpen = defineModel<boolean>();
 
 const emit = defineEmits(['addShippingAddress']);
-
-const typeOfDialog = ref('');
 
 interface Country {
     label: string;
@@ -44,39 +41,52 @@ const formSchema = toTypedSchema(
         addressAlias: z
             .string()
             .min(1, 'Address Alias is required')
-            .default(props.address?.value.alias || ''),
+            .default(props.address?.alias || ''),
         city: z
             .string()
             .min(1, 'City is required')
-            .default(props.address?.value.city || ''),
+            .default(props.address?.city || ''),
         country: z
             .string()
             .min(1, 'Country is required')
-            .default(props.address?.value.country || ''),
+            .default(props.address?.country || ''),
         county: z
             .string()
             .min(1, 'Region is required')
-            .default(props.address?.value.region || ''),
+            .default(props.address?.region || ''),
         addressLine1: z
             .string()
             .min(1, 'Address Line 1 is required')
-            .default(props.address?.value.name1 || ''),
+            .default(props.address?.name1 || ''),
         addressLine2: z
             .string()
             .optional()
-            .default(props.address?.value.name2 || ''),
+            .default(props.address?.name2 || ''),
         postcode: z
             .string()
             .min(1, 'Postcode is required')
-            .default(props.address?.value.postcode || ''),
+            .default(props.address?.postcode || ''),
     })
 );
+console.log(formSchema);
 
-const { handleSubmit, values, setFieldValue } = useForm({
+const { handleSubmit, values, setFieldValue, errors } = useForm({
     validationSchema: formSchema,
 });
 
+watch(() => props.address, (newAddress) => {
+  setFieldValue('addressAlias', newAddress?.alias || '');
+  setFieldValue('city', newAddress?.city || '');
+  setFieldValue('country', newAddress?.country || '');
+  setFieldValue('county', newAddress?.region || '');
+  setFieldValue('addressLine1', newAddress?.name1 || '');
+  setFieldValue('addressLine2', newAddress?.name2 || '');
+  setFieldValue('postcode', newAddress?.postcode || '');
+})
+
 const onSubmit = handleSubmit(async (values) => {
+    console.log(errors);
+    
     console.log({
         title: 'You submitted the following values:',
         description: JSON.stringify(values, null, 2),
@@ -90,10 +100,10 @@ const onSubmit = handleSubmit(async (values) => {
         country: values.country,
         postcode: values.postcode,
         region: values.county,
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cd8b9b1c0d2b925f29e818d6e49d9d83c8bd553c0416b56bcae00e809eb1cd1b?apiKey=20497529553648aab918fa2d322ece87&',
+        icon: '',
     };
 
-    const response = props.address?.value
+    const response = props.address
         ? await $api.user.updateShippingAsCustomer(payload)
         : await $api.user.addShippingAsCustomer(payload);
     if (response.status === 'success') {
@@ -114,9 +124,9 @@ const findRegionByName = (regions: Country['regions'] | undefined, name: string 
     return undefined;
 };
 
-const country = ref<undefined | Country>(countries.find((c) => c.value === (props.address?.value.country || 'US')) as Country);
+const country = ref<undefined | Country>(countries.find((c) => c.value === (props.address?.country || 'US')) as Country);
 
-const region = ref<undefined | Region>(findRegionByName(country.value?.regions, props.address?.value.region));
+const region = ref<undefined | Region>(findRegionByName(country.value?.regions, props.address?.region));
 
 const regions = ref<Region[]>(country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || []);
 
@@ -164,7 +174,7 @@ const onCloseDialog = () => {
         </UiDialogTrigger>
         <UiDialogContent ref="dialog" class="max-w-[350px] sm:max-w-[640px] rounded-xl">
             <UiDialogHeader>
-                <UiDialogTitle>{{ (typeOfDialog === 'edit' ? 'Edit ' : 'Add ') + 'Shipping Address' }}</UiDialogTitle>
+                <UiDialogTitle>{{ (address?._id ? 'Edit ' : 'Add ') + 'Shipping Address' }}</UiDialogTitle>
             </UiDialogHeader>
             <section class="flex flex-col self-stretch bg-white rounded-xl shadow-sm max-md:px-5 max-h-[85vh] overflow-y-auto">
                 <form class="mt-5 flex flex-col gap-y-6 gap-x-9" @submit="onSubmit">
