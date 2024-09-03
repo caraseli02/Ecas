@@ -52,12 +52,6 @@ const apiKeysMap: ApiKeysMap = {
     activity_logs: 'auditLogsCount',
 };
 
-        // "ordersCount": 615,
-        // "transactionsCount": 0,
-        // "favoritesCount": 7,
-        // "auditLogsCount": 37771,
-        // "agentsCount": null
-
 interface TabFilter {
     label?: string;
     value: string;
@@ -185,9 +179,22 @@ const updateOrderFiltersWithCounts = async () => {
     }
 };
 
+const route = useRoute();
+const checkForActiveTab = () => {
+    const tabLabel = route.query.tab;
+    const tab = orderFilters.value.find((filter) => filter.value === tabLabel);
+    if (tab) {
+        activeOrderFilter.value = tab;
+        setTimeout(() => {
+            setActiveFilterHighlight()
+        }, 2000);
+    }
+}
+
 onMounted(async () => {
     updateOrderFiltersWithCounts()
     setActiveFilterHighlight();
+    checkForActiveTab()
 });
 </script>
 

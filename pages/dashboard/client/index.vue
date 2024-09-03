@@ -15,7 +15,7 @@
                     @show-total-items="activeOrderFilter.total_items = $event"
                 />
                 <LazyClientTableLogs
-                    v-if="activeOrderFilter.value === 'activityLogs'"
+                    v-if="activeOrderFilter.value === 'activity_logs'"
                     @show-total-items="activeOrderFilter.total_items = $event"
                 />
                 <LazyDashboardClientSettings v-if="activeOrderFilter.value === 'settings'" />
