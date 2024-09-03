@@ -8,13 +8,13 @@ import { countries } from '@/data/countries';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
-import { AddressInterface } from '~/types/auth/user-interface';
+import { AddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';
 
 const { $api } = useNuxtApp();
 
 const props = defineProps<{
-    address: AddressInterface;
+    address: ShippingAddressInterface;
     accountType: AccountType;
 }>();
 
@@ -97,6 +97,7 @@ const onSubmit = handleSubmit(async (values) => {
     });
 
     const payload: AddressInterface = {
+        _id: props.address?._id,
         alias: values.addressAlias,
         name1: values.addressLine1,
         name2: values.addressLine2,
@@ -110,14 +111,14 @@ const onSubmit = handleSubmit(async (values) => {
     const response = props.address ? await $api.user.updateShippingAsCustomer(payload) : await $api.user.addShippingAsCustomer(payload);
 
     if (response.status === 'success') {
-        emit('addShippingAddress', payload);
+        !props.address && emit('addShippingAddress', payload);
         await updateStoreDetails();
         onCloseDialog();
     }
 });
 
-const findRegionByName = (regions: Country['regions'] | undefined, name: string | undefined) => {
-    const region = regions?.find((region) => region.name === name);
+const findRegionByName = (regions: Country['regions'], name: string) => {
+    const region = regions.find((region) => region.name === name);
     if (region) {
         return {
             label: region.name,
@@ -127,11 +128,11 @@ const findRegionByName = (regions: Country['regions'] | undefined, name: string 
     return undefined;
 };
 
-const country = ref<undefined | Country>(countries.find((c) => c.value === (props.address?.country || 'US')) as Country);
+const country = ref<undefined | Country>(undefined);
 
-const region = ref<undefined | Region>(findRegionByName(country.value?.regions, props.address?.region));
+const region = ref<undefined | Region>(undefined);
 
-const regions = ref<Region[]>(country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || []);
+const regions = ref<Region[]>([]);
 
 const showErrorMsg = ref(true);
 
@@ -155,7 +156,6 @@ watch(country, (newCountry) => {
 watch(region, (newRegion) => {
     if (newRegion) {
         setFieldValue('county', newRegion.value);
-        region.value = regions.value.find((c) => c.value === newRegion.value) as any;
     } else {
         region.value = undefined;
     }
@@ -166,6 +166,12 @@ const onCloseDialog = () => {
     showErrorMsg.value = false;
     isOpen.value = false;
 };
+
+onMounted(() => {
+    country.value = countries.find((c) => c.value === (props.address?.country || 'US')) as Country;
+    region.value = findRegionByName(country.value?.regions, props.address?.region);
+    regions.value = country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || [];
+});
 </script>
 
 <template>

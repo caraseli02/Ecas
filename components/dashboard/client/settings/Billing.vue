@@ -4,9 +4,10 @@ import BillingDialog from './BillingDialog.vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountType } from '~/types';
-import { BillingAddressInterface } from '~/types/auth/user-interface';
+import { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
 import { ref } from 'vue';
 import { useNuxtApp } from '#app';
+import { updateStoreDetails } from '~/helpers/auth-store.helper';
 
 const { $api } = useNuxtApp();
 
@@ -66,7 +67,6 @@ const addressToBeEdited = ref<AddressData | null>(null);
 const handleEdit = async (editedAddress: AddressData) => {
     isDialogOpen.value = true;
     addressToBeEdited.value = editedAddress;
-    console.log(addressToBeEdited.value);
 };
 
 const handleDelete = async (deletedAddress: AddressData) => {
@@ -75,31 +75,15 @@ const handleDelete = async (deletedAddress: AddressData) => {
 };
 
 const handleSetDefault = async (changedAddress: AddressData) => {
-    addresses.value = addresses.value.map((address) => ({
-        ...address,
-        isDefault: address._id === changedAddress._id,
-    }));
+    changedAddress.isDefault = true;
     await handleChange(addresses.value);
 };
 
-const handleChange = async (addresses: AddressData[]) => {
-    const newAddresses = addresses.map((address) => {
-        return {
-            default: address.isDefault,
-            _id: address._id,
-            alias: address.alias,
-            name1: address.name1,
-            name2: address.name2,
-            country: address.country,
-            region: address.region,
-            city: address.city,
-            postcode: address.postcode,
-            phone: address.phone,
-        };
-    });
-    // if (getUserDetails.value.firebaseId && newAddresses) {
-    //     await $api.settingsClient.updateBilling(newAddresses);
-    // }
+const handleChange = async (address: ShippingAddressInterface) => {
+    if (getUserDetails.value.firebaseId) {
+        await $api.user.updateBillingAsCustomer(address);
+        await updateStoreDetails();
+    }
 };
 
 const handleAdd = async (address: AddressData) => {

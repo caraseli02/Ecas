@@ -7,13 +7,14 @@ import { AccountType } from '~/types';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { ref } from 'vue';
 import { useNuxtApp } from '#app';
+import { updateStoreDetails } from '~/helpers/auth-store.helper';
 
 const { $api } = useNuxtApp();
 
 interface AddressData {
     icon: string;
     alias: string;
-    isDefault: boolean;
+    default: boolean;
     name: string;
     address: string;
     phone: string;
@@ -76,35 +77,19 @@ const handleEdit = async (editedAddress: AddressData) => {
 
 const handleDelete = async (deletedAddress: AddressData) => {
     addresses.value = addresses.value.filter((address) => address._id !== deletedAddress._id);
-    await handleChange(addresses.value);
+    await handleChange();
 };
 
 const handleSetDefault = async (changedAddress: AddressData) => {
-    addresses.value = addresses.value.map((address) => ({
-        ...address,
-        isDefault: address._id === changedAddress._id,
-    }));
-    await handleChange(addresses.value);
+    changedAddress.default = true;
+    await handleChange(changedAddress);
 };
 
-const handleChange = async (addresses: AddressData[]) => {
-    const newAddresses = addresses.map((address) => {
-        return {
-            default: address.isDefault,
-            _id: address._id,
-            alias: address.alias,
-            name1: address.name1,
-            name2: address.name2,
-            country: address.country,
-            region: address.region,
-            city: address.city,
-            postcode: address.postcode,
-            phone: address.phone,
-        };
-    });
-    // if (getUserDetails.value.firebaseId && newAddresses) {
-    //     await $api.settingsClient.updateShipping(newAddresses);
-    // }
+const handleChange = async (address: ShippingAddressInterface) => {
+    if (getUserDetails.value.firebaseId) {
+        await $api.user.updateShippingAsCustomer(address);
+        await updateStoreDetails();
+    }
 };
 
 const handleAdd = async (address: AddressData) => {
