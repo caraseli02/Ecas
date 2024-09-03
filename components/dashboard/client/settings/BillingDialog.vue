@@ -144,14 +144,12 @@ watch(country, (newCountry) => {
 watch(region, (newRegion) => {
     if (newRegion) {
         setFieldValue('county', newRegion.value);
-        region.value = regions.value.find((c) => c.value === newRegion.value) as any;
     } else {
         region.value = undefined;
     }
 });
 
 const onCloseDialog = () => {
-    console.log('close');
     showErrorMsg.value = false;
     isOpen.value = false;
 };
