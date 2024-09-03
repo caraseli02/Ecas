@@ -18,6 +18,7 @@
                 :is-new-card-selected="isNewCardSelected"
                 :is-expired="cardExpired(card)"
                 @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: $event })"
+                showPayWithLabel
             />
             <OrderSummaryPayByCard
                 v-else-if="card && isNewCardSelected && availablePaymentMethods.includes(PaymentTypeEnum.Card)"
