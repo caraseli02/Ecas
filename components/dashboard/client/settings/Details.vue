@@ -138,7 +138,7 @@ const baseSchema = z.object({
         })
         .min(1)
         .regex(/^\+?\d{1,4}[\s-]?\(?\d{1,3}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$/, 'Invalid mobile number')
-        .default(getUserDetails.value.contactDetails.mobile),
+        .default(String(getUserDetails.value.contactDetails.mobile)),
     email: z
         .string({
             required_error: 'Email is required',
@@ -204,11 +204,15 @@ const formBusinessSchema = toTypedSchema(
     })
 );
 
-const { handleSubmit, setFieldValue, errors } = useForm({
+const { handleSubmit, setFieldValue, meta } = useForm({
     validationSchema: getUserDetails.value.accountType === AccountType.Personal ? formSchema : formBusinessSchema,
 });
 
 const onSubmit = handleSubmit(async (values) => {
+    if(!meta.value.dirty) {
+        return openEdit.value = !openEdit.value;
+    }
+    
     if (getUserDetails.value.accountType === AccountType.Personal) {
         const payloadPersonal = {
             personalDetails: {
