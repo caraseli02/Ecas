@@ -118,7 +118,7 @@ const onSubmit = handleSubmit(async (values) => {
 });
 
 const findRegionByName = (regions: Country['regions'], name: string) => {
-    const region = regions.find((region) => region.name === name);
+    const region = regions?.find((region) => region?.name === name);
     if (region) {
         return {
             label: region.name,
@@ -167,10 +167,12 @@ const onCloseDialog = () => {
     isOpen.value = false;
 };
 
-onMounted(() => {
-    country.value = countries.find((c) => c.value === (props.address?.country || 'US')) as Country;
-    region.value = findRegionByName(country.value?.regions, props.address?.region);
-    regions.value = country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || [];
+watch(isOpen, (newVla) => {
+    if(newVla) {
+        country.value = countries.find((c) => c.value === (props.address?.country || 'US')) as Country;
+        region.value = findRegionByName(country.value?.regions, props.address?.region);
+        regions.value = country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || [];
+    }
 });
 </script>
 
