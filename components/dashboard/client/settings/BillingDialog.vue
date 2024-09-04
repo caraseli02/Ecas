@@ -9,13 +9,13 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { ref, watch } from 'vue';
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
-import { AddressInterface } from '~/types/auth/user-interface';
+import { AddressInterface, BillingAddressInterface } from '~/types/auth/user-interface';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';
 
 const { $api } = useNuxtApp();
 
 const props = defineProps<{
-    address: any;
+    address: BillingAddressInterface;
     accountType: AccountType;
 }>();
 
@@ -77,13 +77,22 @@ const { handleSubmit, values, setFieldValue } = useForm({
     validationSchema: formSchema,
 });
 
-const onSubmit = handleSubmit(async (values) => {
-    console.log({
-        title: 'You submitted the following values:',
-        description: JSON.stringify(values, null, 2),
-    });
+watch(
+    () => props.address,
+    (newAddress) => {
+        setFieldValue('addressAlias', newAddress?.alias || '');
+        setFieldValue('city', newAddress?.city || '');
+        setFieldValue('country', newAddress?.country || '');
+        setFieldValue('county', newAddress?.region || '');
+        setFieldValue('addressLine1', newAddress?.name1 || '');
+        setFieldValue('addressLine2', newAddress?.name2 || '');
+        setFieldValue('postcode', newAddress?.postcode || '');
+    }
+);
 
+const onSubmit = handleSubmit(async (values) => {
     const payload: AddressInterface = {
+        _id: props.address?._id,
         alias: values.addressAlias,
         name1: values.addressLine1,
         name2: values.addressLine2,
@@ -94,9 +103,7 @@ const onSubmit = handleSubmit(async (values) => {
         icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cd8b9b1c0d2b925f29e818d6e49d9d83c8bd553c0416b56bcae00e809eb1cd1b?apiKey=20497529553648aab918fa2d322ece87&',
     };
 
-    const response = props.address?.value
-        ? await $api.user.updateBillingAsCustomer(payload)
-        : await $api.user.addBillingAsCustomer(payload);
+    const response = props.address ? await $api.user.updateBillingAsCustomer(payload) : await $api.user.addBillingAsCustomer(payload);
 
     if (response.status === 'success') {
         emit('addBillingAddress', payload);
@@ -116,11 +123,11 @@ const findRegionByName = (regions: Country['regions'] | undefined, name: string 
     return undefined;
 };
 
-const country = ref<undefined | Country>(countries.find((c) => c.value === (props.address?.value.country || 'US')) as Country);
+const country = ref<undefined | Country>(undefined);
 
-const region = ref<undefined | Region>(findRegionByName(country.value?.regions, props.address?.value.region));
+const region = ref<undefined | Region>(undefined);
 
-const regions = ref<Region[]>(country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || []);
+const regions = ref<Region[]>([]);
 
 const showErrorMsg = ref(true);
 
@@ -153,6 +160,14 @@ const onCloseDialog = () => {
     showErrorMsg.value = false;
     isOpen.value = false;
 };
+
+watch(isOpen, (newVla) => {
+    if (newVla) {
+        country.value = countries.find((c) => c.value === (props.address?.country || 'US')) as Country;
+        region.value = findRegionByName(country.value?.regions, props.address?.region);
+        regions.value = country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || [];
+    }
+});
 </script>
 
 <template>

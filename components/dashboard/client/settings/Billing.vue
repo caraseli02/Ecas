@@ -4,7 +4,7 @@ import BillingDialog from './BillingDialog.vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountType } from '~/types';
-import { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { ref } from 'vue';
 import { useNuxtApp } from '#app';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';
@@ -14,7 +14,7 @@ const { $api } = useNuxtApp();
 interface AddressData {
     icon: string;
     alias: string;
-    isDefault: boolean;
+    default: boolean;
     name: string;
     address: string;
     phone: string;
@@ -31,23 +31,23 @@ const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 const accountType = ref(getUserDetails.value.accountType);
 
-const formatAddresses = async () => {
-    const addresses =
-        getUserDetails.value.accountType === AccountType.Personal
-            ? getUserDetails.value.personalDetails?.billingAddress
-            : getUserDetails.value.companyDetails?.billingAddress;
+const formatAddresses = () => {
+    const { accountType, personalDetails, companyDetails } = getUserDetails.value;
+    const addresses = accountType === AccountType.Personal ? personalDetails?.billingAddress : companyDetails?.billingAddress;
 
-    return addresses?.map((address: BillingAddressInterface, index: number) => {
+    return addresses?.map((address, index) => {
+        const name =
+            accountType === AccountType.Personal ? `${personalDetails?.firstName} ${personalDetails?.lastName}` : companyDetails?.name;
+
+        const formattedAddress = [address.name1, address.name2, address.city, address.postcode, address.country].filter(Boolean).join(', ');
+
         return {
             alias: address.alias || `Billing Address Alias ${index + 1}`,
             isDefault: address.default || false,
-            name:
-                getUserDetails.value.accountType === AccountType.Personal
-                    ? `${getUserDetails.value.personalDetails?.firstName} ${getUserDetails.value.personalDetails?.lastName}`
-                    : getUserDetails.value.companyDetails?.name,
-            address: address.name1 + ' ' + address.name2 + ', ' + address.city + ', ' + address.postcode + ', ' + address.country,
+            name,
+            address: formattedAddress,
             phone: address.phone || '',
-            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cd8b9b1c0d2b925f29e818d6e49d9d83c8bd553c0416b56bcae00e809eb1cd1b?apiKey=20497529553648aab918fa2d322ece87&',
+            icon: '',
             _id: address._id,
             name1: address.name1,
             name2: address.name2,
@@ -56,12 +56,13 @@ const formatAddresses = async () => {
             postcode: address.postcode,
             region: address.region,
         };
-    }) as AddressData[];
+    }) as unknown as AddressData[];
 };
 
 const isDialogOpen = ref(false);
 
-const addresses = ref<AddressData[]>(await formatAddresses());
+const addresses = computed(formatAddresses);
+
 const addressToBeEdited = ref<AddressData | null>(null);
 
 const handleEdit = async (editedAddress: AddressData) => {
@@ -75,8 +76,8 @@ const handleDelete = async (deletedAddress: AddressData) => {
 };
 
 const handleSetDefault = async (changedAddress: AddressData) => {
-    changedAddress.isDefault = true;
-    await handleChange(addresses.value);
+    changedAddress.default = true;
+    await handleChange(changedAddress);
 };
 
 const handleChange = async (address: ShippingAddressInterface) => {
@@ -84,10 +85,6 @@ const handleChange = async (address: ShippingAddressInterface) => {
         await $api.user.updateBillingAsCustomer(address);
         await updateStoreDetails();
     }
-};
-
-const handleAdd = async (address: AddressData) => {
-    addresses.value = [...addresses.value, address];
 };
 </script>
 

@@ -89,13 +89,6 @@ watch(
 );
 
 const onSubmit = handleSubmit(async (values) => {
-    console.log(errors);
-
-    console.log({
-        title: 'You submitted the following values:',
-        description: JSON.stringify(values, null, 2),
-    });
-
     const payload: AddressInterface = {
         _id: props.address?._id,
         alias: values.addressAlias,
@@ -162,13 +155,12 @@ watch(region, (newRegion) => {
 });
 
 const onCloseDialog = () => {
-    console.log('close');
     showErrorMsg.value = false;
     isOpen.value = false;
 };
 
 watch(isOpen, (newVla) => {
-    if(newVla) {
+    if (newVla) {
         country.value = countries.find((c) => c.value === (props.address?.country || 'US')) as Country;
         region.value = findRegionByName(country.value?.regions, props.address?.region);
         regions.value = country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || [];
