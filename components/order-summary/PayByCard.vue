@@ -42,9 +42,11 @@ const onEditClick = () => {
         class="p-3 w-full min-w-[326px] flex flex-col gap-3 border rounded-lg hover:bg-blue-500/5 hover:border-blue-500 transition duration-300 group"
         :class="isSelected ? 'border-blue-500 bg-blue-500/5' : 'border-gray-300'" @click="paymentMethods(cardInfo)">
         <div class="flex flex-row justify-between w-full gap-3">
-            <SvgoRadioButtonChecked v-if="isSelected"
+            <SvgoRadioButtonChecked
+v-if="isSelected"
                 class="w-5 h-5 my-[3px] text-blue-500 group-hover:text-blue-500 transition duration-300" />
-            <SvgoRadioButton v-else
+            <SvgoRadioButton
+v-else
                 class="w-5 h-5 my-[3px] text-gray-300 group-hover:text-neutral-700 transition duration-300" />
             <div v-if="hasCard" class="justify-between items-center self-stretch flex gap-5 w-full">
                 <span class="items-stretch flex gap-2 my-auto">
@@ -86,7 +88,8 @@ const onEditClick = () => {
                     </svg>
                     <span class="text-neutral-700 text-sm font-normal leading-6">Set as default</span>
                 </div>
-                <UiButton size="xs" variant="link" class="flex gap-2 items-center justify-end hover:underline"
+                <UiButton
+size="xs" variant="link" class="flex gap-2 items-center justify-end hover:underline"
                     @click="onEditClick()">
                     <SvgoChangeCard />
                     <span class="text-neutral-700 text-sm font-normal leading-6">Edit</span>
@@ -125,43 +128,5 @@ const onEditClick = () => {
         </div>
     </button>
 </template>
-
-<script setup lang="ts">
-import { usePaymentStore } from '~/store/paymentStore';
-import { AlertTriangle, Trash2Icon } from 'lucide-vue-next';
-import { StripeCardInterface } from '~/types';
-
-const paymentStore = usePaymentStore();
-
-const props = defineProps<{
-    cardInfo: StripeCardInterface;
-    isSelected?: boolean;
-    hasCard?: boolean;
-    cards: boolean;
-    view: 'modal' | 'payment';
-    isExpired?: boolean;
-    isDefault?: boolean;
-    isNewCardSelected?: boolean;
-    cardType?: 'visa' | 'mastercard' | 'amex';
-}>();
-
-const deleteCard = async (cardInfo: StripeCardInterface) => {
-    console.log(cardInfo);
-    emits('deleteCard', cardInfo);
-};
-
-const emits = defineEmits(['selectPaymentOption', 'setDefault', 'deleteCard', 'editCard']);
-const paymentMethods = async (cardInfo: StripeCardInterface) => {
-    emits('selectPaymentOption', cardInfo);
-};
-
-const setDefault = async (cardInfo: StripeCardInterface) => {
-    emits('setDefault', cardInfo);
-};
-
-const editCard = async (cardInfo: StripeCardInterface) => {
-    emits('editCard', cardInfo);
-};
-</script>
 
 <style scoped></style>

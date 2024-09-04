@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import CardsList from './CardsList.vue';
+import CardsList from './CardsList.vue';
 import PaymentsDialog from './PaymentsDialog.vue';
 import { StripeCardInterface } from '~/types';
 
