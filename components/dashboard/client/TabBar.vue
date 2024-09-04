@@ -179,9 +179,22 @@ const updateOrderFiltersWithCounts = async () => {
     }
 };
 
+const route = useRoute();
+const checkForActiveTab = () => {
+    const tabLabel = route.query.tab;
+    const tab = orderFilters.value.find((filter) => filter.value === tabLabel);
+    if (tab) {
+        activeOrderFilter.value = tab;
+        setTimeout(() => {
+            setActiveFilterHighlight()
+        }, 2000);
+    }
+}
+
 onMounted(async () => {
     updateOrderFiltersWithCounts()
     setActiveFilterHighlight();
+    checkForActiveTab()
 });
 </script>
 
