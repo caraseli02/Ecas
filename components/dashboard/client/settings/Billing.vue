@@ -61,6 +61,11 @@ const formatAddresses = () => {
 
 const isDialogOpen = ref(false);
 
+watch(isDialogOpen, async (isOpen) => {
+    if (!isOpen) {
+        addressToBeEdited.value = null;
+    }
+});
 const addresses = computed(formatAddresses);
 
 const addressToBeEdited = ref<AddressData | null>(null);
