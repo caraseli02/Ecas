@@ -70,7 +70,7 @@ const setDefault = () => {
                     </p>
                 </div>
             </div>
-            <div class="flex gap-4 my-auto w-full">
+            <div class="flex gap-4 my-auto">
                 <div class="flex-1 my-auto">
                     <div
                         v-if="addressData.isDefault"
