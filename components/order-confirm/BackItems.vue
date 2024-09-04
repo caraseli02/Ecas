@@ -119,7 +119,7 @@ const payment = computed(() => {
                         <div class="flex flex-col p-6 text-sm">
                             <p v-if="item.backorder_stock">
                                 <span class="font-semibold">$</span>
-                                {{ ((item?.backorder_stock * item.unitPriceAfterDiscounts * payment.taxRate) / 100).toFixed(2) }}
+                                {{ ((item?.backorder_stock * item.unitPriceAfterDiscounts * 0.19) / 100).toFixed(2) }}
                             </p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
@@ -154,7 +154,7 @@ const payment = computed(() => {
                             >
                                 <p>Tax (VAT 19%)</p>
                                 <p v-if="item.backorder_stock">
-                                    ${{ ((item?.backorder_stock * item.unitPriceAfterDiscounts * payment.taxRate) / 100).toFixed(2) }}
+                                    ${{ ((item?.backorder_stock * item.unitPriceAfterDiscounts * 0.19) / 100).toFixed(2) }}
                                 </p>
                             </article>
                             <article
