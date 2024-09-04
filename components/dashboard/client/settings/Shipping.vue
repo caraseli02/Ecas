@@ -31,23 +31,35 @@ const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 const accountType = ref(getUserDetails.value.accountType);
 
-const formatAddresses = async () => {
-    const addresses =
-        getUserDetails.value.accountType === AccountType.Personal
-            ? getUserDetails.value.personalDetails?.shippingAddress
-            : getUserDetails.value.companyDetails?.shippingAddress;
 
-    return addresses?.map((address: ShippingAddressInterface, index: number) => {
+const isDialogOpen = ref(false);
+
+const formatAddresses = () => {
+    const { accountType, personalDetails, companyDetails } = getUserDetails.value;
+    const addresses = accountType === AccountType.Personal
+        ? personalDetails?.shippingAddress
+        : companyDetails?.shippingAddress;
+
+    return addresses?.map((address, index) => {
+        const name = accountType === AccountType.Personal
+            ? `${personalDetails?.firstName} ${personalDetails?.lastName}`
+            : companyDetails?.name;
+
+        const formattedAddress = [
+            address.name1,
+            address.name2,
+            address.city,
+            address.postcode,
+            address.country
+        ].filter(Boolean).join(', ');
+
         return {
             alias: address.alias || `Shipping Address Alias ${index + 1}`,
             isDefault: address.default || false,
-            name:
-                getUserDetails.value.accountType === AccountType.Personal
-                    ? `${getUserDetails.value.personalDetails?.firstName} ${getUserDetails.value.personalDetails?.lastName}`
-                    : getUserDetails.value.companyDetails?.name,
-            address: address.name1 + ' ' + address.name2 + ', ' + address.city + ', ' + address.postcode + ', ' + address.country,
+            name,
+            address: formattedAddress,
             phone: address.phone || '',
-            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cd8b9b1c0d2b925f29e818d6e49d9d83c8bd553c0416b56bcae00e809eb1cd1b?apiKey=20497529553648aab918fa2d322ece87&',
+            icon: '',
             _id: address._id,
             name1: address.name1,
             name2: address.name2,
@@ -56,12 +68,11 @@ const formatAddresses = async () => {
             postcode: address.postcode,
             region: address.region,
         };
-    }) as AddressData[];
+    }) as unknown as AddressData[];
 };
 
-const isDialogOpen = ref(false);
+const addresses = computed(formatAddresses);
 
-const addresses = ref<AddressData[]>(await formatAddresses());
 const addressToBeEdited = ref<AddressData | null>(null);
 
 watch(isDialogOpen, async (isOpen) => {
@@ -92,9 +103,6 @@ const handleChange = async (address: ShippingAddressInterface) => {
     }
 };
 
-const handleAdd = async (address: AddressData) => {
-    addresses.value = [...addresses.value, address];
-};
 </script>
 
 <template>
@@ -103,15 +111,12 @@ const handleAdd = async (address: AddressData) => {
             <h2 class="self-start text-xl font-semibold leading-7 text-neutral-700">Shipping</h2>
         </div>
         <AddressList :addresses="addresses" @edit="handleEdit" @delete="handleDelete" @set-default="handleSetDefault" />
-        <section class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
-            <ShippingDialog
-                v-model="isDialogOpen"
-                :address="addressToBeEdited"
-                :account-type="accountType"
-                @add-shipping-address="handleAdd"
-            />
+        <section
+            class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
+            <ShippingDialog v-model="isDialogOpen" :address="addressToBeEdited" :account-type="accountType" />
         </section>
     </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
