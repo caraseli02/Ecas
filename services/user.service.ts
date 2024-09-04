@@ -94,6 +94,14 @@ class UserService extends HttpFactory {
         );
     }
 
+    async deleteShippingAsCustomer(id: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{ status: string; data: string }>('DELETE', `${this.RESOURCE}/shipping-address/${id}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
     async addBillingAsCustomer(address: ShippingAddressInterface[]) {
         const token = this.authStore.getToken();
 
@@ -118,6 +126,14 @@ class UserService extends HttpFactory {
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
+    }
+
+    async deleteBillingAsCustomer(id: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{ status: string; data: string }>('DELETE', `${this.RESOURCE}/billing-address/${id}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
     }
 }
 

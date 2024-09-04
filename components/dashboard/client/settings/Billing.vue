@@ -70,8 +70,8 @@ const handleEdit = async (editedAddress: AddressData) => {
 };
 
 const handleDelete = async (deletedAddress: AddressData) => {
-    addresses.value = addresses.value.filter((address) => address._id !== deletedAddress._id);
-    await handleChange(addresses.value);
+    await $api.user.deleteBillingAsCustomer(deletedAddress._id);
+    await updateStoreDetails();
 };
 
 const handleSetDefault = async (changedAddress: AddressData) => {
