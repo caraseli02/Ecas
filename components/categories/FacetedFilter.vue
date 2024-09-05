@@ -9,6 +9,7 @@ interface DataTableFacetedFilter {
     options: {
         label: string;
         value: string;
+        color?: string;
         icon?: Component;
     }[];
 }
@@ -35,7 +36,7 @@ function setFilterValue(value: string[] | undefined) {
 <template>
     <UiPopover>
         <UiPopoverTrigger as-child>
-            <UiButton variant="outline" size="sm" class="h-8 border-dashed font-normal">
+            <UiButton variant="outline" size="sm" class="h-9 border-dashed font-normal">
                 <PlusCircleIcon class="mr-2 h-4 w-4 stroke-1" />
                 {{ title }}
                 <template v-if="selectedValues.size > 0">
@@ -55,6 +56,11 @@ function setFilterValue(value: string[] | undefined) {
                                 variant="secondary"
                                 class="rounded-sm px-1 font-normal"
                             >
+                            <span
+                                v-if="option.color"
+                                :class="option.color"
+                                class="h-4 w-4 mr-2 rounded-full text-xs flex justify-center items-center"
+                            />
                                 {{ option.label }}
                             </UiBadge>
                         </template>
@@ -103,6 +109,11 @@ function setFilterValue(value: string[] | undefined) {
                                 <CheckIcon :class="cn('h-4 w-4')" />
                             </div>
                             <component :is="option.icon" v-if="option.icon" class="mr-2 h-4 w-4 text-muted-foreground" />
+                            <span
+                                v-if="option.color"
+                                :class="option.color"
+                                class="h-4 w-4 mr-2 rounded-full text-xs flex justify-center items-center"
+                            />
                             <span>{{ option.label }}</span>
                             <!-- <span
                                 v-if="facets?.get(option.value)"
@@ -117,11 +128,11 @@ function setFilterValue(value: string[] | undefined) {
                         <UiSeparator />
                         <UiCommandGroup>
                             <UiCommandItem
-                                :value="{ label: $t('clearFilters') }"
+                                :value="{ label: 'remove' }"
                                 class="justify-center text-center"
                                 @select="setFilterValue(undefined)"
                             >
-                                {{ $t('clearFilters') }}
+                                {{ 'remove' }}
                             </UiCommandItem>
                         </UiCommandGroup>
                     </template>
