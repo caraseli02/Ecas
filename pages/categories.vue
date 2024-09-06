@@ -79,8 +79,8 @@ const deleteCategories = () => {
             <UiButton>+ Create New Category</UiButton>
         </section>
 
-        <section class="flex gap-5 self-stretch py-2 bg-white max-md:flex-wrap max-md:pl-5">
-            <div class="relative w-full max-w-[220px] items-center">
+        <section class="flex gap-4 self-stretch py-4 bg-white flex-wrap">
+            <div class="relative w-full md:max-w-[220px] items-center">
                 <UiInput id="search" type="text" placeholder="Filter category name..." class="pr-10 h-9" />
                 <span class="absolute end-0 inset-y-0 flex items-center justify-center px-2">
                     <SearchIcon class="size-6 text-muted-foreground" />
@@ -97,7 +97,7 @@ const deleteCategories = () => {
         <section
             ref="scrollRef"
             class="flex flex-col rounded-lg max-h-[calc(100vh-250px)] overflow-y-auto relative border border-grey-200">
-            <div class="bg-light-200 flex justify-between items-center h-14">
+            <div class="bg-light-200 flex justify-between items-center h-14 min-w-[700px]">
                 <template v-if="selectedCategories.length === 0">
                     <section class="flex">
                         <div class="w-[374px]">
@@ -146,15 +146,15 @@ const deleteCategories = () => {
 
             <UiAccordion
 v-for="category in categories" ref="target" :key="category._id" type="single"
-                class="w-full border-b flex flex-col gap-1 bg-white first:rounded-t-lg last:rounded-b-lg" collapsible>
+                class="w-full border-b flex flex-col gap-1 bg-white first:rounded-t-lg last:rounded-b-lg min-w-[700px]" collapsible>
                 <UiAccordionItem :value="category.name" class="relative border-none">
                     <div class="flex items-center gap-1 px-3">
                         <UiCheckbox @update:checked="selectCategory(category.name)" />
                         <UiAccordionTrigger
                             class="flex-row-reverse justify-center gap-2.5 py-1 truncate w-10 max-w-[50px] h-7" />
-                        <section class="w-full flex gap-2 items-center py-2 max-md:flex-wrap">
+                        <section class="w-full flex gap-2 items-center py-2 ">
                             <article
-                                class="flex flex-1 gap-2 self-stretch rounded-lg bg-white bg-opacity-0 max-md:flex-wrap">
+                                class="flex flex-1 gap-2 self-stretch rounded-lg bg-white bg-opacity-0 ">
                                 <figure class="flex justify-center items-center px-2.5 w-10 h-10 rounded-lg bg-light-300">
                                     <PlugIcon class="w-5 aspect-square stroke-1" />
                                 </figure>
