@@ -73,12 +73,10 @@ const deleteCategories = () => {
 </script>
 
 <template>
-    <div class="flex flex-col w-full relative p-6">
-        <section class="flex justify-between">
-            <h4 class="text-xl font-semibold">Categories</h4>
+    <div class="flex flex-col w-full relative py-6 container">
+    <CategoriesBreadcrumbs title="Categories">
             <UiButton>+ Create New Category</UiButton>
-        </section>
-
+    </CategoriesBreadcrumbs>
         <section class="flex gap-4 self-stretch py-4 bg-white flex-wrap">
             <div class="relative w-full md:max-w-[220px] items-center">
                 <UiInput id="search" type="text" placeholder="Filter category name..." class="pr-10 h-9" />
