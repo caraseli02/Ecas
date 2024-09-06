@@ -42,9 +42,11 @@ const onEditClick = () => {
         class="p-3 w-full min-w-[326px] flex flex-col gap-3 border rounded-lg hover:bg-blue-500/5 hover:border-blue-500 transition duration-300 group"
         :class="isSelected ? 'border-blue-500 bg-blue-500/5' : 'border-gray-300'" @click="paymentMethods(cardInfo)">
         <div class="flex flex-row justify-between w-full gap-3">
-            <SvgoRadioButtonChecked v-if="isSelected"
+            <SvgoRadioButtonChecked
+v-if="isSelected"
                 class="w-5 h-5 my-[3px] text-blue-500 group-hover:text-blue-500 transition duration-300" />
-            <SvgoRadioButton v-else
+            <SvgoRadioButton
+v-else
                 class="w-5 h-5 my-[3px] text-gray-300 group-hover:text-neutral-700 transition duration-300" />
             <div v-if="hasCard" class="justify-between items-center self-stretch flex gap-5 w-full">
                 <span class="items-stretch flex gap-2 my-auto">
@@ -54,7 +56,7 @@ const onEditClick = () => {
                     <div class="flex items-center gap-2 text-zinc-800 text-sm font-medium leading-6 grow whitespace-nowrap">
                         <span class="font-extrabold">••••</span>
                         <span class="">{{ cardInfo?.card.last4 }}</span>
-                        <SvgoGreenCheckCircleSmall v-if="cardInfo.hasOwnProperty('default')" />
+                        <SvgoGreenCheckCircleSmall v-if="cardInfo?.hasOwnProperty('default') && cardInfo?.default" />
                     </div>
                 </span>
                 <SvgoCardVisa v-if="hasCard && cardType === 'visa'" />
@@ -86,7 +88,8 @@ const onEditClick = () => {
                     </svg>
                     <span class="text-neutral-700 text-sm font-normal leading-6">Set as default</span>
                 </div>
-                <UiButton size="xs" variant="link" class="flex gap-2 items-center justify-end hover:underline"
+                <UiButton
+size="xs" variant="link" class="flex gap-2 items-center justify-end hover:underline"
                     @click="onEditClick()">
                     <SvgoChangeCard />
                     <span class="text-neutral-700 text-sm font-normal leading-6">Edit</span>
@@ -99,7 +102,7 @@ const onEditClick = () => {
                 <AlertTriangle class="w-5 h-5 text-rose-500" />
                 <div class="text-red-500 text-sm leading-6">Card expired</div>
             </span>
-            <div v-if="!isSelected && !isExpired" class="flex gap-2 items-center">
+            <button v-if="!isDefault && !isExpired" class="flex gap-2 items-center" @click="setDefault(cardInfo)">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_397_5131)">
                         <path
@@ -113,18 +116,17 @@ const onEditClick = () => {
                     </defs>
                 </svg>
                 <span class="text-neutral-700 text-sm font-normal leading-6">Set as default</span>
-            </div>
-            <div class="flex gap-2 items-center">
+            </button>
+            <button class="flex gap-2 items-center" @click.stop="editCard(cardInfo)">
                 <SvgoChangeCard />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Edit</span>
-            </div>
-            <div class="flex gap-2 items-center">
+            </button>
+            <button class="flex gap-2 items-center" @click="deleteCard(cardInfo)">
                 <Trash2Icon class="w-4 h-4" />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Delete</span>
-            </div>
+            </button>
         </div>
     </button>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

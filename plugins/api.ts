@@ -1,5 +1,5 @@
-import { $fetch, FetchOptions } from 'ohmyfetch';
-import { defineNuxtPlugin } from '#app';
+import {$fetch, FetchOptions} from 'ohmyfetch';
+import {defineNuxtPlugin} from '#app';
 import ProductService from '~/services/products.service';
 import AuthService from '~/services/auth.service';
 import UserService from '~/services/user.service';
@@ -8,6 +8,7 @@ import FavouriteFolderService from '~/services/favourite-folder.service';
 import CustomerProfileService from '~/services/dashboard/customer-profile.service';
 import NotificationsService from '~/services/notifications.service';
 import ControlPanelService from '~/services/dashboard/control-panel.service';
+import SettingsClientService from '~/services/dashboard/settings.service';
 import OrdersService from '~/services/dashboard/orders.service';
 import CartService from '~/services/cart.service';
 import GeneralSettings from '~/services/general-settings.service';
@@ -26,7 +27,8 @@ export interface IApiInstance {
     controlPanel: ControlPanelService;
     orders: OrdersService;
     generalSettings: GeneralSettings;
-    customerDashboard: CustomerDashboard
+    customerDashboard: CustomerDashboard;
+    settingsClient: SettingsClientService;
 }
 
 declare module '#app' {
@@ -57,6 +59,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         orders: new OrdersService(apiFetcher),
         generalSettings: new GeneralSettings(apiFetcher),
         customerDashboard: new CustomerDashboard(apiFetcher),
+        settingsClient: new SettingsClientService(apiFetcher),
     };
 
     return {

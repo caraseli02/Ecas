@@ -80,6 +80,8 @@ export interface ProfileDetails {
 export interface CompanyDetails {
     name: string;
     registrationNumber: string;
+    bank_name?: string;
+    bank_iban?: string;
     vat?: string;
     taxId?: string;
     address: AddressInterface;
@@ -96,6 +98,8 @@ export interface AddressInterface {
     region: string;
     city: string;
     postcode: string;
+    _id: string;
+    icon?: string;
 }
 
 export interface ShippingAddressInterface {
@@ -108,6 +112,7 @@ export interface ShippingAddressInterface {
     city: string;
     postcode: string;
     phone?: string;
+    _id?: string;
 }
 
 export interface BillingAddressInterface {
@@ -120,6 +125,7 @@ export interface BillingAddressInterface {
     city: string;
     postcode: string;
     phone?: string;
+    _id?: string;
 }
 
 export interface MarketingPreferences {

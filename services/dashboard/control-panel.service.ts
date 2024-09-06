@@ -20,6 +20,7 @@ class ControlPanelService extends HttpFactory {
 
     async markSettingsAsRead(setting: object, type: string, id: string) {
         const token = this.authStore.getToken();
+
         const data = {
             setting: {
                 name: (setting as object as any).key,
@@ -27,6 +28,7 @@ class ControlPanelService extends HttpFactory {
                 option: type,
             },
         };
+        console.log(data);
         return await this.call<AccountAdminSettings>('POST', `${this.SETTINGS_RESOURCE}/${id}`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });

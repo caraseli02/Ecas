@@ -37,6 +37,11 @@ export enum AlertAndNotificationType {
     outOfStock = 'Out of stock',
     princeChange = 'Prince Change',
     shippingUpdates = 'Shipping Updates',
+    passwordChange = 'Password Change',
+    cartItemsOutOfStock = 'Cart Items - Out of Stock',
+    cartItemsPriceChange = 'Cart Items - Price Change',
+    orderShippingUpdates = 'Order Shipping Updates',
+    pendingAgents = 'Pending Agents',
 }
 
 export enum ControlPanelTabsEnum {

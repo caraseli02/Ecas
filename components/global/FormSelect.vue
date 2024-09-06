@@ -4,6 +4,7 @@
             {{ label }}
         </div>
         <button
+            type="button"
             class="flex items-center justify-between px-3 text-sm w-full border transition-colors duration-300 focus:outline-none"
             :class="[
                 error ? 'border-red' : showOptions ? 'border-blue-500' : 'border-border',
@@ -110,6 +111,7 @@
                     <button
                         v-for="option in filteredOptions"
                         :key="option.value"
+                        type="button"
                         class="flex w-full px-2.5 py-[9px] text-left rounded-[5px] text-slate-500 transition-colors duration-300 hover:bg-[#F2F2F2] hover:text-neutral-700"
                         :class="[option.value === modelValue?.value ? 'text-blue-500' : '']"
                         @click="inputHandler(option)"
