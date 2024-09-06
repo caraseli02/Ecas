@@ -12,8 +12,7 @@
                 <span class="text-xs leading-[1.33] flex-shrink-0 mx-1">/</span>
                 <NuxtLink
                     :to="`/dashboard/${title.toLowerCase()}`"
-                    class="text-xs leading-[1.33] flex-shrink-0 font-medium transition-colors duration-300 hover:text-blue-500"
-                    :class="[customer ? 'text-slate-500' : 'text-blue-500']"
+                    class="text-xs leading-[1.33] flex-shrink-0 font-medium transition-colors duration-300 hover:text-blue-500 text-blue-500"
                 >
                     {{ title }}
                 </NuxtLink>
@@ -29,22 +28,6 @@ import HomeIcon from '@/assets/icons/dashboard/home.svg';
 
 const props = defineProps({
     title: {
-        type: String,
-        required: true,
-    },
-    customer: {
-        type: String,
-        required: false,
-    },
-    panelView: {
-        type: String,
-        required: false,
-    },
-    accountType: {
-        type: Number,
-        required: true,
-    },
-    customerName: {
         type: String,
         required: true,
     },

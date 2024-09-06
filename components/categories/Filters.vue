@@ -1,0 +1,30 @@
+<script setup lang="ts">
+import { SearchIcon, XIcon } from 'lucide-vue-next';
+// Define status options
+const statusOptions = [
+    { label: 'Published', value: 'published', color: 'bg-green-600' },
+    { label: 'Unpublished', value: 'unpublished', color: 'bg-rose-600' },
+];
+</script>
+
+<!-- CategoriesFilters.vue -->
+<template>
+  <section class="flex gap-4 self-stretch py-4 bg-white flex-wrap">
+    <div class="relative w-full md:max-w-[220px] items-center">
+      <UiInput id="search" type="text" placeholder="Filter category name..." class="pr-10 h-9" />
+      <span class="absolute end-0 inset-y-0 flex items-center justify-center px-2">
+        <SearchIcon class="size-6 text-muted-foreground" />
+      </span>
+    </div>
+    <CategoriesRange title="Items Total" />
+    <CategoriesFacetedFilter title="Status" :options="statusOptions" />
+    <UiButton v-if="true" variant="ghost" class="h-9 px-2 lg:px-3 flex items-center text-neutral-700">
+      Reset
+      <XIcon class="ml-2 h-4 w-4" />
+    </UiButton>
+  </section>
+</template>
+
+<style scoped>
+
+</style>
