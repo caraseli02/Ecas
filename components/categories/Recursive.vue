@@ -8,6 +8,11 @@ defineProps<{
 }>();
 
 const router = useRouter();
+
+const {
+  deleteCategories,
+  showMergeModal
+} = useCategories();
 </script>
 
 <template>
@@ -32,8 +37,8 @@ const router = useRouter();
                                 </div>
                 </article>
 
-                <div class="flex items-center gap-4 self-stretch px-3 my-auto">
-                    <MergeIcon class="w-5 h-5 text-slate-500" />
+                <div class="flex items-center gap-1 self-stretch px-3 my-auto">
+                    <UiButton variant="ghost"><MergeIcon @click="showMergeModal = true" class="w-5 h-5 text-slate-500 cursor-pointer" /></UiButton>
                     <PencilLine class="w-5 h-5  text-slate-500" />
                 </div>
                 <UiPopover>
@@ -66,7 +71,7 @@ const router = useRouter();
                                         <MoveIcon class="w-4 h-4" />
                                         Move
                                     </UiButton>
-                                    <UiButton class="gap-1" size="xs" variant="ghost" @click="router.push('/')">
+                                    <UiButton class="gap-1" size="xs" variant="ghost" @click="deleteCategories">
                                         <Trash2Icon class="w-4 h-4" />
                                         Delete
                                     </UiButton>
@@ -91,8 +96,8 @@ const router = useRouter();
                                 </div>
                             </article>
                             <aside class="flex items-center gap-2 self-stretch my-auto">
-                                <div class="flex items-center gap-4 self-stretch px-3 my-auto">
-                                    <MergeIcon class="w-5 h-5 text-slate-500" />
+                                <div class="flex items-center gap-1 self-stretch px-3 my-auto">
+                                    <UiButton variant="ghost"><MergeIcon @click="showMergeModal = true" class="w-5 h-5 text-slate-500 cursor-pointer" /></UiButton>
                                     <PencilLine class="w-5 h-5  text-slate-500" />
                                 </div>
                             </aside>
@@ -126,7 +131,7 @@ const router = useRouter();
                                         <MoveIcon class="w-4 h-4" />
                                         Move
                                     </UiButton>
-                                    <UiButton class="gap-1" size="xs" variant="ghost" @click="router.push('/')">
+                                    <UiButton class="gap-1" size="xs" variant="ghost" @click="deleteCategories">
                                         <Trash2Icon class="w-4 h-4" />
                                         Delete
                                     </UiButton>
@@ -155,8 +160,8 @@ const router = useRouter();
                                     {{ item.status === 'published' ? 'Published' : 'Unpublished' }}
                                 </div>
                                     </article>
-                                        <div class="flex items-center gap-4 self-stretch px-3 my-auto">
-                                            <MergeIcon class="w-5 h-5 text-slate-500" />
+                                        <div class="flex items-center gap-1 self-stretch px-3 my-auto">
+                                            <UiButton variant="ghost"><MergeIcon @click="showMergeModal = true" class="w-5 h-5 text-slate-500 cursor-pointer" /></UiButton>
                                             <PencilLine class="w-5 h-5  text-slate-500" />
                                         </div>
                                     <UiPopover>
@@ -189,7 +194,7 @@ const router = useRouter();
                                         <MoveIcon class="w-4 h-4" />
                                         Move
                                     </UiButton>
-                                    <UiButton class="gap-1" size="xs" variant="ghost" @click="router.push('/')">
+                                    <UiButton class="gap-1" size="xs" variant="ghost" @click="deleteCategories">
                                         <Trash2Icon class="w-4 h-4" />
                                         Delete
                                     </UiButton>

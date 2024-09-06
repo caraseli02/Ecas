@@ -3,20 +3,18 @@ import { ref } from 'vue';
 import { categories } from '@/data/categories';
 
 const selectedCategories = ref<string[]>([]);
+const showDeleteAlert = ref(false);
+const showMergeModal = ref(false);
 
 export const useCategories = () => {
   const mergedCategoryName = ref('');
 
-  const selectCategory = (categoryId: string) => {
-    console.log(categoryId);
-    
+  const selectCategory = (categoryId: string) => {    
     if (selectedCategories.value.includes(categoryId)) {
       selectedCategories.value = selectedCategories.value.filter(id => id !== categoryId);
     } else {
       selectedCategories.value.push(categoryId);
-    }
-    console.log(selectedCategories.value);
-    
+    }    
   };
 
   const mergeCategories = () => {
@@ -61,8 +59,11 @@ export const useCategories = () => {
   };
 
   const deleteCategories = () => {
-    categories = categories.filter(cat => !selectedCategories.value.includes(cat._id));
-    selectedCategories.value = [];
+    console.log('click');
+    
+    showDeleteAlert.value = true;
+    // categories = categories.filter(cat => !selectedCategories.value.includes(cat._id));
+    // selectedCategories.value = [];
   };
 
   return {
@@ -73,5 +74,7 @@ export const useCategories = () => {
     moveCategories,
     duplicateCategory,
     deleteCategories,
+    showDeleteAlert,
+    showMergeModal
   };
 };

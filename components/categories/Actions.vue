@@ -4,7 +4,7 @@ import { useCategories } from '@/composables/useCategories';
 
 const {
   selectedCategories,
-  mergeCategories,
+  showMergeModal,
   moveCategories,
   duplicateCategory,
   deleteCategories
@@ -39,7 +39,7 @@ const {
       <section class="pl-3 text-sm">{{ selectedCategories.length }} items selected</section>
       <section class="pr-3 flex gap-3">
         <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length < 2"
-          @click="mergeCategories">
+          @click="showMergeModal = true">
           <MergeIcon class="w-4 h-4 text-slate-500" />
           Merge
         </UiButton>

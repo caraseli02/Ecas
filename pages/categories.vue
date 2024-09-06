@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCategories } from '@/composables/useCategories';
 
-const { selectedCategories, mergeCategories, moveCategories, duplicateCategory, deleteCategories } = useCategories();
+
 </script>
 
 <template>
@@ -11,10 +11,13 @@ const { selectedCategories, mergeCategories, moveCategories, duplicateCategory, 
         </CategoriesBreadcrumbs>
         <CategoriesFilters />
 
-        <section ref="scrollRef"
+        <section
+ref="scrollRef"
             class="flex flex-col rounded-lg max-h-[calc(100vh-250px)] overflow-y-auto relative border border-grey-200">
             <CategoriesActions />
             <CategoriesRows />
         </section>
+        <CategoriesDeleteAlert />
+        <CategoriesMergeDialog />
     </div>
 </template>

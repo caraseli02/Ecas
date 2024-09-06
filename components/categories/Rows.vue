@@ -7,6 +7,8 @@ import { useCategories } from '@/composables/useCategories';
 
 const {
   selectCategory,
+  deleteCategories,
+  showMergeModal
 } = useCategories();
 
 const router = useRouter();
@@ -34,10 +36,10 @@ const router = useRouter();
               {{ category.status === 'published' ? 'Published' : 'Unpublished' }}
             </div>
           </article>
-          <div class="flex items-center gap-4 self-stretch px-3 my-auto">
-            <MergeIcon class="w-5 h-5 text-slate-500" />
-            <PencilLine class="w-5 h-5  text-slate-500" />
-          </div>
+          <div class="flex items-center gap-1 self-stretch px-3 my-auto">
+                    <UiButton variant="ghost"><MergeIcon @click="showMergeModal = true" class="w-5 h-5 text-slate-500 cursor-pointer" /></UiButton>
+                    <PencilLine class="w-5 h-5  text-slate-500" />
+                </div>
           <UiPopover>
             <UiPopoverTrigger as-child>
               <UiButton variant="secondary" class="bg-dark-50" size="icon">
@@ -60,7 +62,8 @@ const router = useRouter();
                 Move
               </UiButton>
               <UiButton class="gap-1 w-full justify-start" size="sm" variant="ghost"
-                @click="router.push('/categories/create-file')">
+                @click="deleteCategories"
+              >
                 <Trash2Icon class="w-4 h-4" />
                 Delete
               </UiButton>
