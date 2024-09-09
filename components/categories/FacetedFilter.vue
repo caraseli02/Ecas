@@ -36,8 +36,8 @@ function setFilterValue(value: string[] | undefined) {
 <template>
     <UiPopover>
         <UiPopoverTrigger as-child>
-            <UiButton variant="outline" size="sm" class="h-9 border-dashed font-normal">
-                <PlusCircleIcon class="mr-2 h-4 w-4 stroke-1" />
+            <UiButton variant="outline" size="sm" class="h-9 border-dashed font-medium">
+                <PlusCircleIcon class="mr-2 h-4 w-4 stroke-1 " />
                 {{ title }}
                 <template v-if="selectedValues.size > 0">
                     <UiSeparator orientation="vertical" class="mx-2 h-4" />

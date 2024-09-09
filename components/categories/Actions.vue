@@ -12,8 +12,8 @@ const {
 </script>
 
 <template>
-  <div class="bg-light-200 flex justify-between items-center h-14 min-w-[700px]">
-    <template v-if="false">
+  <div class="bg-light-200 flex justify-between items-center h-14 min-w-[700px] sticky top-0 z-10">
+    <template v-if="selectedCategories.length === 0">
       <section class="flex">
         <div class="w-[374px]">
           <UiButton variant="ghost" class="w-fit justify-start ml-16">
