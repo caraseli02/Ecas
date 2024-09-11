@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { CopyIcon, MoveIcon, Trash2Icon, MergeIcon, PencilLine, FileCheck, FileMinus } from 'lucide-vue-next';
 
+defineProps<
+  {category: { _id: string; name: string; icon: string; children?: category[] }}
+>()
+
 const {
   deleteCategories,
-  showMergeModal
+  showMergeModal,
+  deleteCategory
 } = useCategories();
 </script>
 
@@ -44,7 +49,7 @@ xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fi
         <FileMinus class="w-4 h-4" />
         Unpublish
       </UiButton>
-      <UiButton class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="deleteCategories">
+      <UiButton class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="deleteCategory(category.id)">
         <Trash2Icon class="w-4 h-4" />
         Delete
       </UiButton>

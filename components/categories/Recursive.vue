@@ -26,8 +26,9 @@ defineProps<{
                     <figure class="ml-10 flex justify-center items-center w-10 h-10 rounded-lg bg-light-300">
                         <PlugIcon class="w-5 aspect-square stroke-1" />
                     </figure>
-                    <p class="w-[260px] my-auto text-sm font-medium leading-4 text-zinc-700 max-md:max-w-full">
+                    <p class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full">
                         {{ item.name }}
+                        <span v-if="item.productCount" class="text-xs text-slate-500">{{ item.productCount }} items</span>
                     </p>
                     <div class="flex items-center text-sm">
                         <span
@@ -51,9 +52,10 @@ class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
                                     class="flex justify-center items-center px-2.5 w-10 h-10 rounded-lg bg-light-300">
                                     <PlugIcon class="w-5 aspect-square stroke-1" />
                                 </figure>
-                                <p
-                                    class="w-[260px] my-auto text-sm font-medium leading-4 text-zinc-700 max-md:max-w-full">
-                                    {{ item.name }}</p>
+                                <p class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full">
+                                    {{ item.name }}
+                                    <span v-if="item.productCount" class="text-xs">{{ item.productCount }} items</span>
+                                </p>
                                 <div class="flex items-center text-sm">
                                     <span
 class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
@@ -78,9 +80,9 @@ class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
                                             class="flex justify-center items-center px-2.5 w-10 h-10 rounded-lg bg-light-300">
                                             <PlugIcon class="w-5 aspect-square stroke-1" />
                                         </figure>
-                                        <p
-                                            class="w-[260px] my-auto text-sm font-medium leading-4 text-zinc-700 max-md:max-w-full">
+                                        <p class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full">
                                             {{ child.name }}
+                                            <span v-if="child.productCount" class="text-xs">{{ child.productCount }} items</span>
                                         </p>
                                         <div class="flex items-center text-sm">
                                             <span

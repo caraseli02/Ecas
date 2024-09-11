@@ -2,42 +2,38 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
+import { useCategories } from '@/composables/useCategories';
+
+interface IPayload {
+  name: string;
+  icon: string;
+  parentId?: string;
+  averageWeight?: string;
+}
 
 const router = useRouter();
 const title = ref('');
 const icon = ref('PlugIcon');
 const smartPricing = ref(false);
 
-const createCategory = async () => {
-  const token = useAuthStore().getToken();
-const config = useRuntimeConfig();
+const { createCategory } = useCategories();
 
-  try {
-    const payload = {
-      title: title.value,
-      icon: icon.value,
-      // smartPricing: smartPricing.value
-    };
-    console.log(payload);
-    
-    // Replace the endpoint with your actual API URL
-    const response = await $fetch(`${config.public.BASE_URL_API}/taxonomy`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: payload
-    });
-    console.log(response);
-    
-    // Redirect or do something after successful POST request
-    // router.push('/categories');
-  } catch (error) {
-    console.error('Error creating category:', error);
+const isOpen = ref(false);
+
+function makeCreate(){
+  const response = createCategory({
+          name: title.value,
+          icon: icon.value,
+        })
+  if(response){
+    title.value = '';
+    isOpen.value = false;
   }
-};
+}
 </script>
 
 <template>
-  <UiDialog>
+  <UiDialog v-model:open="isOpen">
     <UiDialogTrigger as-child>
       <UiButton>+ Create New</UiButton>
     </UiDialogTrigger>
@@ -61,10 +57,10 @@ const config = useRuntimeConfig();
         </div>
       </div>
       <UiDialogFooter>
-        <UiButton variant="secondary" @click="() => router.push('/categories')">
+        <UiButton variant="secondary" @click="isOpen = false">
           Cancel
         </UiButton>
-        <UiButton @click="createCategory">
+        <UiButton @click="makeCreate()">
           Create
         </UiButton>
       </UiDialogFooter>

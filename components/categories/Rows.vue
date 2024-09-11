@@ -1,38 +1,13 @@
 <script setup lang="ts">
 import { PlugIcon } from 'lucide-vue-next';
 import CategoriesRecursive from '@/components/categories/Recursive.vue';
-import { useAuthStore } from '@/store/authStore';
 
 import { useCategories } from '@/composables/useCategories';
 
-export interface TaxonomyInterface {
-  id?: any;
-  name: string;
-  averageWeight?: number;
-  productCount?: number;
-  subcategory?: TaxonomyInterface[];
-  path: string;
-  isPublished: boolean
-
-}
-
-const { selectCategory } = useCategories();
+const { selectCategory, categories, getCategories } = useCategories();
+getCategories()
 
 const router = useRouter();
-
-const categories = ref<TaxonomyInterface[]>([]);
-
-const token = useAuthStore().getToken();
-const config = useRuntimeConfig();
-try {
-  const response = await $fetch<{ status: string, data: TaxonomyInterface[] }>(`${config.public.BASE_URL_API}/taxonomy`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  categories.value = response.data;
-
-} catch (error) {
-  console.error('Failed to fetch counts from API:', error);
-}
 
 </script>
 
@@ -49,16 +24,18 @@ try {
             <figure class="flex justify-center items-center px-2.5 w-10 h-10 rounded-lg bg-light-300">
               <PlugIcon class="w-5 aspect-square stroke-1" />
             </figure>
-            <p class="my-auto text-sm font-medium leading-4 text-zinc-700 max-md:max-w-full min-w-[260px]">
-              {{
-                category.name }}</p>
+            <p
+              class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full">
+              {{ category.name }}
+              <span v-if="category.productCount" class="text-xs text-slate-500">{{ category.productCount }} items</span>
+            </p>
             <div class="flex items-center text-sm">
               <span class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
                 :class="category.isPublished ? 'bg-green-600' : 'bg-rose-600'" />
               {{ category.isPublished ? 'Published' : 'Unpublished' }}
             </div>
           </article>
-          <CategoriesRowActions />
+          <CategoriesRowActions :category="category" />
         </section>
       </div>
       <UiAccordionContent class="pt-0 ml-0 pb-0 border-none px-3">
