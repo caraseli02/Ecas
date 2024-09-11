@@ -1,35 +1,21 @@
 // useCategories.ts
 import { ref } from 'vue';
 import { useAuthStore } from '@/store/authStore';
-
-export interface TaxonomyInterface {
-  id?: any;
-  name: string;
-  averageWeight?: number;
-  productCount?: number;
-  subcategory?: TaxonomyInterface[];
-  path: string;
-  isPublished: boolean
-}
-
-interface ICreatePayload  {
-  name: string;
-  icon: string;
-  parentId?: string; 
-  averageWeight?: string;
-}
+import type { ICreatePayload, TaxonomyInterface } from '~/types/dashboard/categories';
 
 const selectedCategories = ref<string[]>([]);
 const showDeleteAlert = ref(false);
 const showMergeModal = ref(false);
 const categories = ref<TaxonomyInterface[]>([]);
 const taxonomyId = ref('');
+const isLoading = ref(false);
 
 export const useCategories = () => {
   const token = useAuthStore().getToken();
   const config = useRuntimeConfig();
 
   const getCategories = async () => {
+    isLoading.value = true;
     try {
       const response = await $fetch<{ status: string, data: { _id: string, data: TaxonomyInterface[] } }>(`${config.public.BASE_URL_API}/taxonomy`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -39,6 +25,8 @@ export const useCategories = () => {
       
     } catch (error) {
       console.error('Failed to fetch counts from API:', error);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -155,6 +143,7 @@ export const useCategories = () => {
     getCategories,
     taxonomyId,
     createCategory,
-    deleteCategory
+    deleteCategory,
+    isLoading
   };
 };

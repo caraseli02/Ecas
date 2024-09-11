@@ -37,7 +37,7 @@ class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
                         {{ item.isPublished ? 'Published' : 'Unpublished' }}
                     </div>
                 </article>
-                <CategoriesRowActions />
+                <CategoriesRowActions :category="item" />
             </section>
             <UiAccordion v-else type="multiple" class="w-full border-none flex flex-col gap-1" collapsible>
                 <UiAccordionItem :value="item.name">
@@ -63,7 +63,7 @@ class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
                                     {{ item.isPublished ? 'Published' : 'Unpublished' }}
                                 </div>
                             </article>
-                            <CategoriesRowActions />
+                            <CategoriesRowActions :category="item" />
                         </section>
                     </div>
                     <UiAccordionContent class="pt-1 ml-0 pb-0 flex flex-col gap-1">
@@ -91,7 +91,7 @@ class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
                                             {{ item.isPublished ? 'Published' : 'Unpublished' }}
                                         </div>
                                     </article>
-                                    <CategoriesRowActions />
+                                    <CategoriesRowActions :category="item" />
                                 </section>
                             </template>
                         </div>

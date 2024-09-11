@@ -1,30 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/store/authStore';
 import { useCategories } from '@/composables/useCategories';
+import type { ICreatePayload } from '~/types/dashboard/categories';
 
-interface IPayload {
-  name: string;
-  icon: string;
-  parentId?: string;
-  averageWeight?: string;
-}
 
-const router = useRouter();
 const title = ref('');
 const icon = ref('PlugIcon');
 const smartPricing = ref(false);
 
-const { createCategory } = useCategories();
+const { createCategory, selectedCategories } = useCategories();
 
 const isOpen = ref(false);
 
-function makeCreate(){
-  const response = createCategory({
+async function makeCreate(){
+  const payload: ICreatePayload = {
           name: title.value,
           icon: icon.value,
-        })
+        }
+  if(selectedCategories.value[0]) {
+    payload.parentId = selectedCategories.value[0];
+  }
+  const response = await createCategory(payload)
   if(response){
     title.value = '';
     isOpen.value = false;
@@ -35,7 +31,7 @@ function makeCreate(){
 <template>
   <UiDialog v-model:open="isOpen">
     <UiDialogTrigger as-child>
-      <UiButton>+ Create New</UiButton>
+      <UiButton :disabled="selectedCategories.length > 1">+ Create New</UiButton>
     </UiDialogTrigger>
     <UiDialogContent class="sm:max-w-[640px]">
       <UiDialogHeader>
