@@ -38,7 +38,7 @@ const {
     <template v-else>
       <section class="pl-3 text-sm">{{ selectedCategories.length }} items selected</section>
       <section class="pr-3 flex gap-3">
-        <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length < 2"
+        <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length > 0"
           @click="showMergeModal = true">
           <MergeIcon class="w-4 h-4 text-slate-500" />
           Merge

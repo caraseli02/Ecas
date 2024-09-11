@@ -6,6 +6,7 @@ export interface TaxonomyInterface {
   subcategory?: TaxonomyInterface[];
   path: string;
   isPublished: boolean
+  icon?: string;
 }
 
 export interface ICreatePayload  {

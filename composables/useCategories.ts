@@ -5,7 +5,6 @@ import type { ICreatePayload, TaxonomyInterface } from '~/types/dashboard/catego
 
 const selectedCategories = ref<string[]>([]);
 const showDeleteAlert = ref(false);
-const showMergeModal = ref(false);
 const categories = ref<TaxonomyInterface[]>([]);
 const taxonomyId = ref('');
 const isLoading = ref(false);
@@ -16,6 +15,7 @@ export const useCategories = () => {
 
   const getCategories = async () => {
     isLoading.value = true;
+    selectedCategories.value = [];
     try {
       const response = await $fetch<{ status: string, data: { _id: string, data: TaxonomyInterface[] } }>(`${config.public.BASE_URL_API}/taxonomy`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -70,6 +70,65 @@ export const useCategories = () => {
     }
   };
 
+  const updateCategory = async (categoryId: string, payload: ICreatePayload) => {
+    try {
+      // Replace the endpoint with your actual API URL
+      const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/${categoryId}`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}` },
+        body: payload
+      });
+
+      if(response.status ==='success'){
+        getCategories();
+      }
+      
+      // Redirect or do something after successful PUT request
+      // router.push('/categories');
+    } catch (error) {
+      console.error('Error updating category:', error);
+    }
+  };
+
+  const toggleCategoryStatus = async (categoryId: string) => { 
+    try {
+      // Replace the endpoint with your actual API URL
+      const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/${categoryId}/toggle-status`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if(response.status ==='success'){
+        getCategories();
+      }
+      
+      // Redirect or do something after successful PUT request
+      // router.push('/categories');
+    } catch (error) {
+      console.error('Error toggling category status:', error);
+    }
+  };
+
+  const mergeCategories = async (sourceId: string, targetID: string, body: {name: string, parentId:string}) => {
+    try {
+      // Replace the endpoint with your actual API URL
+      const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/${sourceId}/merge/${targetID}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body
+      });
+
+      if(response.status ==='success'){
+        getCategories();
+      }
+      
+      // Redirect or do something after successful PUT request
+      // router.push('/categories');
+    } catch (error) {
+      console.error('Error toggling category status:', error);
+    }
+  };
+
   const mergedCategoryName = ref('');
 
   const selectCategory = (categoryId: string) => {
@@ -78,26 +137,6 @@ export const useCategories = () => {
     } else {
       selectedCategories.value.push(categoryId);
     }
-  };
-
-  const mergeCategories = () => {
-    if (selectedCategories.value.length < 2) {
-      alert('Please select at least two categories to merge.');
-      return;
-    }
-
-    const mergedItems = selectedCategories.value.map(id =>
-      categories.value.find(cat => cat._id === id)
-    ).flat();
-
-    categories.value.push({
-      _id: Date.now().toString(), // Generate a new ID
-      name: mergedCategoryName.value || 'Merged Category',
-      items: mergedItems,
-      status: 'unpublished',
-    });
-
-    selectedCategories.value = [];
   };
 
   const moveCategories = (newParentId: string) => {
@@ -121,14 +160,6 @@ export const useCategories = () => {
     }
   };
 
-  const deleteCategories = () => {
-    console.log('click');
-
-    showDeleteAlert.value = true;
-    // categories = categories.filter(cat => !selectedCategories.value.includes(cat._id));
-    // selectedCategories.value = [];
-  };
-
   return {
     selectedCategories,
     mergedCategoryName,
@@ -136,14 +167,14 @@ export const useCategories = () => {
     mergeCategories,
     moveCategories,
     duplicateCategory,
-    deleteCategories,
     showDeleteAlert,
-    showMergeModal,
     categories,
     getCategories,
     taxonomyId,
     createCategory,
     deleteCategory,
+    updateCategory,
+    toggleCategoryStatus,
     isLoading
   };
 };

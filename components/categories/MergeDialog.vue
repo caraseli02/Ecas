@@ -1,10 +1,29 @@
 <script setup lang="ts">
-const { showMergeModal } = useCategories();
+import { TaxonomyInterface } from '~/types/dashboard/categories';
+import { MergeIcon } from 'lucide-vue-next';
 
+const { categories, mergeCategories, taxonomyId } = useCategories();
+
+const props = defineProps<
+  { category: TaxonomyInterface }
+>()
+
+const isOpen = ref(false);
+const selected = ref<string>('');
+
+const handleMerge = async () => {
+  await mergeCategories(props.category.id, selected.value, {name: props.category.name, parentId: taxonomyId.value});
+  isOpen.value = false;
+};
 </script>
 
 <template>
-  <UiDialog v-model:open="showMergeModal">
+  <UiDialog v-model:open="isOpen">
+    <UiDialogTrigger>
+      <UiButton variant="ghost">
+      <MergeIcon class="w-5 h-5 text-slate-500 cursor-pointer" />
+    </UiButton>
+    </UiDialogTrigger>
     <UiDialogContent class="sm:max-w-[640px]">
       <UiDialogHeader>
         <UiDialogTitle>Merge Selected</UiDialogTitle>
@@ -14,18 +33,15 @@ const { showMergeModal } = useCategories();
           <UiLabel for="destination" class="text-right">
             Destination Category
           </UiLabel>
-          <UiSelect>
+          <UiSelect v-model="selected">
             <UiSelectTrigger>
               <UiSelectValue placeholder="Select a Category" />
             </UiSelectTrigger>
             <UiSelectContent>
               <UiSelectGroup>
                 <UiSelectLabel>Category</UiSelectLabel>
-                <UiSelectItem value="category1">
-                  Category 1
-                </UiSelectItem>
-                <UiSelectItem value="category2">
-                  Category 2
+                <UiSelectItem v-for="item in categories" :key="item.id" :value="item.id">
+                  {{ item.name }}
                 </UiSelectItem>
               </UiSelectGroup>
             </UiSelectContent>
@@ -33,11 +49,11 @@ const { showMergeModal } = useCategories();
         </div>
       </div>
       <UiDialogFooter>
-        <UiButton variant="secondary" type="submit">
+        <UiButton variant="secondary" type="submit" @click="isOpen = false">
           Cancel
         </UiButton>
-        <UiButton type="submit">
-          Create
+        <UiButton @click="handleMerge" type="submit">
+          Merge
         </UiButton>
       </UiDialogFooter>
     </UiDialogContent>

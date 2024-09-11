@@ -7,8 +7,6 @@ import { useCategories } from '@/composables/useCategories';
 const { selectCategory, categories, getCategories, isLoading } = useCategories();
 getCategories()
 
-const router = useRouter();
-
 </script>
 
 <!-- CategoryRow.vue -->
@@ -27,7 +25,8 @@ v-for="category in categories" v-else ref="target" :key="category.id" type="sing
         <section class="w-full flex gap-2 items-center py-2 ">
           <article class="flex flex-1 gap-2 self-stretch rounded-lg bg-white bg-opacity-0 ">
             <figure class="flex justify-center items-center px-2.5 w-10 h-10 rounded-lg bg-light-300">
-              <PlugIcon class="w-5 aspect-square stroke-1" />
+              <IconAsync v-if="category.icon" :name="category.icon" class="h-5 w-5 stroke-1" />
+              <PlugIcon v-else class="w-5 aspect-square stroke-1" />
             </figure>
             <p
               class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full py-0.5">
