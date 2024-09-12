@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { CopyIcon, MoveIcon, Trash2Icon, MergeIcon, ArrowDownNarrowWide, RefreshCcw } from 'lucide-vue-next';
-import { useCategories } from '@/composables/useCategories';
+import { CopyIcon, Trash2Icon, MergeIcon, ArrowDownNarrowWide, RefreshCcw } from 'lucide-vue-next';
 
 const {
   selectedCategories,
-  showMergeModal,
-  moveCategories,
   duplicateCategory,
-  deleteCategories
+  deleteCategories,
+  getCategories
 } = useCategories();
+
+
 </script>
 
 <template>
@@ -30,7 +30,7 @@ const {
         <UiButton variant="ghost" class="justify-start">
           Actions
         </UiButton>
-        <UiButton size="icon" variant="ghost">
+        <UiButton @click="getCategories" size="icon" variant="ghost">
           <RefreshCcw class="w-5 h-5" />
         </UiButton>
       </section>
@@ -38,16 +38,8 @@ const {
     <template v-else>
       <section class="pl-3 text-sm">{{ selectedCategories.length }} items selected</section>
       <section class="pr-3 flex gap-3 py-1">
-        <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length > 0"
-          @click="showMergeModal = true">
-          <MergeIcon class="w-4 h-4 text-slate-500" />
-          Merge
-        </UiButton>
-        <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length === 0"
-          @click="moveCategories('newParentId')">
-          <MoveIcon class="w-4 h-4" />
-          Move
-        </UiButton>
+        <LazyCategoriesMergeDialog :categoryIds="selectedCategories" />
+        <CategoriesMoveDialog :categoryIds="selectedCategories" />
         <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length !== 1"
           @click="duplicateCategory(selectedCategoryId)">
           <CopyIcon class="w-4 h-4" />

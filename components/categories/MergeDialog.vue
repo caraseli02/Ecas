@@ -1,20 +1,26 @@
 <script setup lang="ts">
-import { TaxonomyInterface } from '~/types/dashboard/categories';
 import { MergeIcon } from 'lucide-vue-next';
 
 const { categories, mergeCategories } = useCategories();
 
 const props = defineProps<
-  { category: TaxonomyInterface }
+  { categoryIds: string[] }
 >()
 
 const isOpen = ref(false);
 const selected = ref<string>('');
 
 const handleMerge = async () => {
-  await mergeCategories(props.category, selected.value);
+  await mergeCategories(props.categoryIds, selected.value);
   isOpen.value = false;
 };
+
+const options = computed(() =>{
+  if(categories.value && categories.value.length > 0) {
+    return extractIdAndName(categories.value, props.categoryIds);
+  }
+  return [];
+})
 </script>
 
 <template>
@@ -40,7 +46,7 @@ const handleMerge = async () => {
             <UiSelectContent>
               <UiSelectGroup>
                 <UiSelectLabel>Category</UiSelectLabel>
-                <UiSelectItem v-for="item in categories" :key="item.id" :value="item.id">
+                <UiSelectItem v-for="item in options" :key="item.id" :value="item.id">
                   {{ item.name }}
                 </UiSelectItem>
               </UiSelectGroup>

@@ -1,20 +1,26 @@
 <script setup lang="ts">
-import { TaxonomyInterface } from '~/types/dashboard/categories';
 import { MoveIcon } from 'lucide-vue-next';
 
 const { categories, moveCategories } = useCategories();
 
 const props = defineProps<
-  { category: TaxonomyInterface }
+  { categoryIds: string[] }
 >()
 
 const isOpen = ref(false);
 const selected = ref<string>('');
 
 const handleMove = async () => {
-  await moveCategories([props.category.id], selected.value);
+  await moveCategories(props.categoryIds, selected.value);
   isOpen.value = false;
 };
+
+const options = computed(() =>{
+  if(categories.value && categories.value.length > 0) {
+    return extractIdAndName(categories.value, props.categoryIds);
+  }
+  return [];
+})
 </script>
 
 <template>
@@ -41,7 +47,7 @@ const handleMove = async () => {
             <UiSelectContent>
               <UiSelectGroup>
                 <UiSelectLabel>Category</UiSelectLabel>
-                <UiSelectItem v-for="item in categories" :key="item.id" :value="item.id">
+                <UiSelectItem v-for="item in options" :key="item.id" :value="item.id">
                   {{ item.name }}
                 </UiSelectItem>
               </UiSelectGroup>
@@ -53,7 +59,7 @@ const handleMove = async () => {
         <UiButton variant="secondary" type="submit" @click="isOpen = false">
           Cancel
         </UiButton>
-        <UiButton @click="handleMove" type="submit">
+        <UiButton type="submit" @click="handleMove">
           Move
         </UiButton>
       </UiDialogFooter>

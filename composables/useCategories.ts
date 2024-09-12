@@ -44,8 +44,6 @@ export const useCategories = () => {
         getCategories();
         return true;
       }
-      // Redirect or do something after successful POST request
-      // router.push('/categories');
     } catch (error) {
       console.error('Error creating category:', error);
     }
@@ -63,9 +61,6 @@ export const useCategories = () => {
       if(response.status === 'success'){
         getCategories();
       }
-      
-      // Redirect or do something wafter successful DELETE request
-      // router.push('/categories');
     } catch (error) {
       console.error('Error deleting category:', error);
     }
@@ -83,9 +78,6 @@ export const useCategories = () => {
       if(response.status ==='success'){
         getCategories();
       }
-      
-      // Redirect or do something after successful PUT request
-      // router.push('/categories');
     } catch (error) {
       console.error('Error updating category:', error);
     }
@@ -103,15 +95,12 @@ export const useCategories = () => {
         getCategories();
       }
       
-      // Redirect or do something after successful PUT request
-      // router.push('/categories');
     } catch (error) {
       console.error('Error toggling category status:', error);
     }
   };
 
-  const mergeCategories = async (source: TaxonomyInterface, targetID: string) => {
-    const sourceIds = extractIds(source)
+  const mergeCategories = async (sourceIds: string[], targetID: string) => {
     try {
       // Replace the endpoint with your actual API URL
       const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/merge/${targetID}`, {
@@ -124,8 +113,6 @@ export const useCategories = () => {
         getCategories();
       }
       
-      // Redirect or do something after successful PUT request
-      // router.push('/categories');
     } catch (error) {
       console.error('Error toggling category status:', error);
     }
@@ -153,9 +140,6 @@ export const useCategories = () => {
       if(response.status ==='success'){
         getCategories();
       }
-      
-      // Redirect or do something after successful PUT request
-      // router.push('/categories');
     } catch (error) {
       console.error('Error moving category:', error);
     }

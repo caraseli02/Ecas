@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CopyIcon, MoveIcon, Trash2Icon, FileCheck, FileMinus } from 'lucide-vue-next';
+import { CopyIcon, Trash2Icon, FileCheck, FileMinus } from 'lucide-vue-next';
 import { TaxonomyInterface } from '~/types/dashboard/categories';
 
 defineProps<
@@ -16,7 +16,7 @@ const {
 
 <template>
   <div class="flex items-center gap-1 self-stretch px-3 my-auto">
-    <LazyCategoriesMergeDialog :category="category" />
+    <LazyCategoriesMergeDialog :categoryIds="[category.id]" />
     <LazyCategoriesUpdateCategory :category="category" />
   </div>
   <UiPopover>
@@ -37,7 +37,7 @@ xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fi
         <CopyIcon class="w-4 h-4" />
         Duplicate
       </UiButton>
-      <CategoriesMoveDialog :category="category" />
+      <CategoriesMoveDialog :categoryIds="[category.id]" />
       <UiButton  class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="toggleCategoryStatus(category.id)">
         <template v-if="category.isPublished">
         <FileMinus class="w-4 h-4" />

@@ -1,5 +1,5 @@
 export interface TaxonomyInterface {
-  id?: any;
+  id: string;
   name: string;
   averageWeight?: number;
   productCount?: number;
