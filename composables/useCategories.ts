@@ -51,19 +51,20 @@ export const useCategories = () => {
     }
   };
 
-  const deleteCategory = async (categoryId: string) => {
+  const deleteCategories = async (categoryIds: string[]) => {
     try {
       // Replace the endpoint with your actual API URL
-      const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/${categoryId}`, {
+      const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
+        body: {categoryIds}
       });
 
       if(response.status === 'success'){
         getCategories();
       }
       
-      // Redirect or do something after successful DELETE request
+      // Redirect or do something wafter successful DELETE request
       // router.push('/categories');
     } catch (error) {
       console.error('Error deleting category:', error);
@@ -109,13 +110,14 @@ export const useCategories = () => {
     }
   };
 
-  const mergeCategories = async (sourceId: string, targetID: string, body: {name: string, parentId:string}) => {
+  const mergeCategories = async (source: TaxonomyInterface, targetID: string) => {
+    const sourceIds = extractIds(source)
     try {
       // Replace the endpoint with your actual API URL
-      const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/${sourceId}/merge/${targetID}`, {
+      const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/merge/${targetID}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
-        body
+        body: { sourceIds }
       });
 
       if(response.status ==='success'){
@@ -139,26 +141,44 @@ export const useCategories = () => {
     }
   };
 
-  const moveCategories = (newParentId: string) => {
-    const newParentCategory = categories.value.find(cat => cat._id === newParentId);
-    if (newParentCategory) {
-      selectedCategories.value.forEach(id => {
-        const category = categories.value.find(cat => cat._id === id);
-        if (category) {
-          newParentCategory.items.push(category);
-        }
+  const moveCategories = async (categoryIds: string[], parentId: string) => {
+    try {
+      // Replace the endpoint with your actual API URL
+      const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/move/${parentId}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: { categoryIds }
       });
-      selectedCategories.value = [];
-    }
-  };
 
-  const duplicateCategory = (categoryId: string) => {
-    const category = categories.value.find(cat => cat._id === categoryId);
-    if (category) {
-      const duplicatedCategory = { ...category, _id: Date.now().toString(), name: `${category.name} (Copy)` };
-      categories.value.push(duplicatedCategory);
+      if(response.status ==='success'){
+        getCategories();
+      }
+      
+      // Redirect or do something after successful PUT request
+      // router.push('/categories');
+    } catch (error) {
+      console.error('Error moving category:', error);
     }
-  };
+  }
+
+  const duplicateCategory = async (sourceId: string, targetId: string) => {
+    try {
+      // Replace the endpoint with your actual API URL
+      const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/${sourceId}/copy/${targetId}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if(response.status ==='success'){
+        getCategories();
+      }
+      
+      // Redirect or do something after successful POST request
+      // router.push('/categories');
+    } catch (error) {
+      console.error('Error duplicating category:', error);
+    }
+  }
 
   return {
     selectedCategories,
@@ -172,7 +192,7 @@ export const useCategories = () => {
     getCategories,
     taxonomyId,
     createCategory,
-    deleteCategory,
+    deleteCategories,
     updateCategory,
     toggleCategoryStatus,
     isLoading

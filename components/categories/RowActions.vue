@@ -8,15 +8,16 @@ defineProps<
 
 const {
   toggleCategoryStatus,
-  showMergeModal,
-  deleteCategory
+  deleteCategories,
+  duplicateCategory,
+  taxonomyId
 } = useCategories();
 </script>
 
 <template>
   <div class="flex items-center gap-1 self-stretch px-3 my-auto">
-    <CategoriesMergeDialog :category="category" />
-    <CategoriesUpdateCategory :category="category" />
+    <LazyCategoriesMergeDialog :category="category" />
+    <LazyCategoriesUpdateCategory :category="category" />
   </div>
   <UiPopover>
     <UiPopoverTrigger as-child>
@@ -32,14 +33,11 @@ xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fi
       </UiButton>
     </UiPopoverTrigger>
     <UiPopoverContent side="left" :collision-padding="10" class="flex gap-1 flex-col items-start p-2 w-40">
-      <UiButton class="gap-1 w-full justify-start" size="sm" variant="ghost">
+      <UiButton @click="duplicateCategory(category.id, taxonomyId)" class="gap-1 w-full justify-start" size="sm" variant="ghost">
         <CopyIcon class="w-4 h-4" />
         Duplicate
       </UiButton>
-      <UiButton class="gap-1 w-full justify-start" size="sm" variant="ghost">
-        <MoveIcon class="w-4 h-4" />
-        Move
-      </UiButton>
+      <CategoriesMoveDialog :category="category" />
       <UiButton  class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="toggleCategoryStatus(category.id)">
         <template v-if="category.isPublished">
         <FileMinus class="w-4 h-4" />
@@ -66,7 +64,7 @@ xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fi
           </UiAlertDialogHeader>
           <UiAlertDialogFooter>
             <UiAlertDialogCancel>Cancel</UiAlertDialogCancel>
-            <UiAlertDialogAction @click="deleteCategory(category.id)">Continue</UiAlertDialogAction>
+            <UiAlertDialogAction @click="deleteCategories([category.id])">Continue</UiAlertDialogAction>
           </UiAlertDialogFooter>
         </UiAlertDialogContent>
       </UiAlertDialog>

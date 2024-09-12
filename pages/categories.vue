@@ -18,6 +18,5 @@ ref="scrollRef"
             <CategoriesRows />
         </section>
         <CategoriesDeleteAlert />
-        <CategoriesMergeDialog />
     </div>
 </template>

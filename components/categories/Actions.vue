@@ -37,7 +37,7 @@ const {
     </template>
     <template v-else>
       <section class="pl-3 text-sm">{{ selectedCategories.length }} items selected</section>
-      <section class="pr-3 flex gap-3">
+      <section class="pr-3 flex gap-3 py-1">
         <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length > 0"
           @click="showMergeModal = true">
           <MergeIcon class="w-4 h-4 text-slate-500" />
@@ -53,11 +53,26 @@ const {
           <CopyIcon class="w-4 h-4" />
           Duplicate
         </UiButton>
-        <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length === 0"
-          @click="deleteCategories">
-          <Trash2Icon class="w-4 h-4" />
-          Delete
-        </UiButton>
+        <UiAlertDialog>
+          <UiAlertDialogTrigger as-child>
+            <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length === 0">
+              <Trash2Icon class="w-4 h-4" />
+              Delete
+            </UiButton>
+          </UiAlertDialogTrigger>
+          <UiAlertDialogContent>
+            <UiAlertDialogHeader>
+              <UiAlertDialogTitle>Are you absolutely sure?</UiAlertDialogTitle>
+              <UiAlertDialogDescription>
+                This action cannot be undone. This will permanently delete and remove categories from our servers.
+              </UiAlertDialogDescription>
+            </UiAlertDialogHeader>
+            <UiAlertDialogFooter>
+              <UiAlertDialogCancel>Cancel</UiAlertDialogCancel>
+              <UiAlertDialogAction @click="deleteCategories(selectedCategories)">Continue</UiAlertDialogAction>
+            </UiAlertDialogFooter>
+          </UiAlertDialogContent>
+        </UiAlertDialog>
       </section>
     </template>
   </div>

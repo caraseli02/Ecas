@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { TaxonomyInterface } from '~/types/dashboard/categories';
-import { MergeIcon } from 'lucide-vue-next';
+import { MoveIcon } from 'lucide-vue-next';
 
-const { categories, mergeCategories } = useCategories();
+const { categories, moveCategories } = useCategories();
 
 const props = defineProps<
   { category: TaxonomyInterface }
@@ -11,18 +11,19 @@ const props = defineProps<
 const isOpen = ref(false);
 const selected = ref<string>('');
 
-const handleMerge = async () => {
-  await mergeCategories(props.category, selected.value);
+const handleMove = async () => {
+  await moveCategories([props.category.id], selected.value);
   isOpen.value = false;
 };
 </script>
 
 <template>
   <UiDialog v-model:open="isOpen">
-    <UiDialogTrigger>
-      <UiButton variant="ghost">
-      <MergeIcon class="w-5 h-5 text-slate-500 cursor-pointer" />
-    </UiButton>
+    <UiDialogTrigger class="w-full">
+      <UiButton class="gap-1 w-full justify-start" size="sm" variant="ghost">
+        <MoveIcon class="w-4 h-4" />
+        Move
+      </UiButton>
     </UiDialogTrigger>
     <UiDialogContent class="sm:max-w-[640px]">
       <UiDialogHeader>
@@ -52,8 +53,8 @@ const handleMerge = async () => {
         <UiButton variant="secondary" type="submit" @click="isOpen = false">
           Cancel
         </UiButton>
-        <UiButton @click="handleMerge" type="submit">
-          Merge
+        <UiButton @click="handleMove" type="submit">
+          Move
         </UiButton>
       </UiDialogFooter>
     </UiDialogContent>
