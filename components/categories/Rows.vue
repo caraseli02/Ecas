@@ -4,16 +4,16 @@ import CategoriesRecursive from '@/components/categories/Recursive.vue';
 
 import { useCategories } from '@/composables/useCategories';
 
-const { selectCategory, categories, getCategories, isLoading } = useCategories();
-getCategories()
+const { selectCategory, filteredAndSortedData, getCategories, isLoading } = useCategories();
 
+getCategories()
 </script>
 
 <!-- CategoryRow.vue -->
 <template>
   <UiSkeleton v-if="isLoading" class="w-full h-[calc(100vh-450px)] 2xl:max-h-[calc(100vh-450px)]" />
   <UiAccordion
-v-for="category in categories" v-else ref="target" :key="category.id" type="single"
+v-for="category in filteredAndSortedData" v-else ref="target" :key="category.id" type="single"
     class="w-full border-b flex flex-col gap-1 bg-white first:rounded-t-lg last:rounded-b-lg min-w-[700px]" collapsible>
     <UiAccordionItem v-slot="{open}" :value="category.name" class="relative border-none">
       <div class="flex items-center gap-1 px-3 hover:bg-light-200" :class="{'bg-light-200 border-t': open}">
@@ -44,7 +44,7 @@ class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
         </section>
       </div>
       <UiAccordionContent :class="{'last:border-b': open}" class="pt-0 ml-0 pb-0 border-none">
-        <CategoriesRecursive v-if="category.subcategory" :items="category.subcategory" />
+        <CategoriesRecursive v-if="category.subcategory" :parentId="category.id" :items="category.subcategory" />
       </UiAccordionContent>
     </UiAccordionItem>
   </UiAccordion>

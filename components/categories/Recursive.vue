@@ -5,6 +5,7 @@ import type { TaxonomyInterface } from '~/types/dashboard/categories';
 
 const props = defineProps<{
     items: TaxonomyInterface[];
+    parentId: string;
     depth?: number;
 }>();
 
@@ -41,7 +42,7 @@ const computedPadding = computed(() => {
                         {{ item.isPublished ? 'Published' : 'Unpublished' }}
                     </div>
                 </article>
-                <CategoriesRowActions :category="item" />
+                <CategoriesRowActions :parentId="parentId" :category="item" />
             </section>
             <UiAccordion v-else type="multiple" class="w-full border-none flex flex-col gap-1" collapsible>
                 <UiAccordionItem v-slot="{ open }" :value="item.name">
@@ -72,11 +73,11 @@ const computedPadding = computed(() => {
                                     {{ item.isPublished ? 'Published' : 'Unpublished' }}
                                 </div>
                             </article>
-                            <CategoriesRowActions :category="item" />
+                            <CategoriesRowActions :parentId="parentId" :category="item" />
                         </section>
                     </div>
                     <UiAccordionContent :class="{ 'last:border-b': open }" class="pt-1 ml-0 pb-0 flex flex-col gap-1">
-                        <component :is="DomainsRecursive" v-if="item.subcategory.length > 0" :items="item.subcategory"
+                        <component :is="DomainsRecursive" v-if="item.subcategory.length > 0" :items="item.subcategory" :parentId="parentId"
                             :depth="16" />
                         <div v-else class="flex flex-col px-3">
                             <template v-for="child in item.subcategory" :key="child.uuid">
@@ -104,7 +105,7 @@ const computedPadding = computed(() => {
                                             {{ item.isPublished ? 'Published' : 'Unpublished' }}
                                         </div>
                                     </article>
-                                    <CategoriesRowActions :category="item" />
+                                    <CategoriesRowActions :parentId="item.id" :category="item" />
                                 </section>
                             </template>
                         </div>

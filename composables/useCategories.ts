@@ -9,6 +9,11 @@ const categories = ref<TaxonomyInterface[]>([]);
 const taxonomyId = ref('');
 const isLoading = ref(false);
 
+// Search, filter and sort
+const searchQuery = ref('');
+const sortBy = ref('name');
+const sortOrder = ref('asc');
+
 export const useCategories = () => {
   const token = useAuthStore().getToken();
   const config = useRuntimeConfig();
@@ -151,6 +156,9 @@ export const useCategories = () => {
       const response = await $fetch<{status : string}>(`${config.public.BASE_URL_API}/taxonomy/${taxonomyId.value}/category/${sourceId}/copy/${targetId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
+        body: {
+          "parentId": targetId
+      }
       });
 
       if(response.status ==='success'){
@@ -163,7 +171,43 @@ export const useCategories = () => {
       console.error('Error duplicating category:', error);
     }
   }
-
+  
+  // Filter logic
+  const filteredData = computed(() => {
+    const query = searchQuery.value.toLowerCase();
+    
+    function filterItems(items: TaxonomyInterface[]): TaxonomyInterface[] {
+      return items.filter(item => {
+        const matchesQuery = item.name.toLowerCase().includes(query);
+        if (item.subcategory && item.subcategory.length > 0) {
+          return matchesQuery || filterItems(item.subcategory).length > 0;
+        }
+        return matchesQuery;
+      });
+    }
+    
+    return filterItems(categories.value);
+  });
+  
+  const sortedData = computed(() => {
+    const key = sortBy.value as keyof TaxonomyInterface;
+    const order = sortOrder.value === 'asc' ? 1 : -1;
+    
+    return [...filteredData.value].sort((a, b) => {
+      if (key === 'name') {
+        return a.name.localeCompare(b.name) * order;
+      }
+      if (key === 'averageWeight' && a.averageWeight !== undefined && b.averageWeight !== undefined) {
+        return (a.averageWeight - b.averageWeight) * order;
+      }
+      if (key === 'productCount' && a.productCount !== undefined && b.productCount !== undefined) {
+        return (a.productCount - b.productCount) * order;
+      }
+      return 0;
+    });
+  });
+  
+  const filteredAndSortedData = computed(() => sortedData.value);
   return {
     selectedCategories,
     mergedCategoryName,
@@ -172,13 +216,16 @@ export const useCategories = () => {
     moveCategories,
     duplicateCategory,
     showDeleteAlert,
-    categories,
     getCategories,
     taxonomyId,
     createCategory,
     deleteCategories,
     updateCategory,
     toggleCategoryStatus,
-    isLoading
+    isLoading,
+    filteredAndSortedData,
+    searchQuery,
+    sortOrder,
+    categories
   };
 };

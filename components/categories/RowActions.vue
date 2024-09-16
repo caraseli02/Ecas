@@ -3,7 +3,10 @@ import { CopyIcon, Trash2Icon, FileCheck, FileMinus } from 'lucide-vue-next';
 import { TaxonomyInterface } from '~/types/dashboard/categories';
 
 defineProps<
-  { category: TaxonomyInterface }
+  { 
+    category: TaxonomyInterface
+    parentId?: string
+  }
 >()
 
 const {
@@ -12,11 +15,12 @@ const {
   duplicateCategory,
   taxonomyId
 } = useCategories();
+
 </script>
 
 <template>
   <div class="flex items-center gap-1 self-stretch px-3 my-auto">
-    <LazyCategoriesMergeDialog :categoryIds="[category.id]" />
+    <LazyCategoriesMergeDialog :category-ids="[category.id]" />
     <LazyCategoriesUpdateCategory :category="category" />
   </div>
   <UiPopover>
@@ -33,11 +37,11 @@ xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fi
       </UiButton>
     </UiPopoverTrigger>
     <UiPopoverContent side="left" :collision-padding="10" class="flex gap-1 flex-col items-start p-2 w-40">
-      <UiButton @click="duplicateCategory(category.id, taxonomyId)" class="gap-1 w-full justify-start" size="sm" variant="ghost">
+      <UiButton class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="duplicateCategory(category.id, parentId || taxonomyId)">
         <CopyIcon class="w-4 h-4" />
         Duplicate
       </UiButton>
-      <CategoriesMoveDialog :categoryIds="[category.id]" />
+      <CategoriesMoveDialog :category-ids="[category.id]" />
       <UiButton  class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="toggleCategoryStatus(category.id)">
         <template v-if="category.isPublished">
         <FileMinus class="w-4 h-4" />

@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { CopyIcon, Trash2Icon, MergeIcon, ArrowDownNarrowWide, RefreshCcw } from 'lucide-vue-next';
+import { CopyIcon, Trash2Icon, ArrowDownNarrowWide, ArrowUpNarrowWide, RefreshCcw } from 'lucide-vue-next';
 
 const {
   selectedCategories,
   duplicateCategory,
   deleteCategories,
-  getCategories
+  getCategories,
+  sortOrder
 } = useCategories();
 
-
+const toggleSortOrder = () => {
+  sortOrder.value = sortOrder.value === 'asc'? 'desc' : 'asc';
+}
 </script>
 
 <template>
@@ -16,9 +19,10 @@ const {
     <template v-if="selectedCategories.length === 0">
       <section class="flex">
         <div class="w-[374px]">
-          <UiButton variant="ghost" class="w-fit justify-start ml-16">
+          <UiButton variant="ghost" class="w-fit justify-start ml-16" @click="toggleSortOrder">
             Name
-            <ArrowDownNarrowWide class="ml-2 h-4 w-4" />
+            <ArrowDownNarrowWide v-if="sortOrder === 'desc'" class="ml-2 h-4 w-4" />
+            <ArrowUpNarrowWide v-if="sortOrder === 'asc'" class="ml-2 h-4 w-4" />
           </UiButton>
         </div>
         <UiButton variant="ghost" class="w-fit">
@@ -30,7 +34,7 @@ const {
         <UiButton variant="ghost" class="justify-start">
           Actions
         </UiButton>
-        <UiButton @click="getCategories" size="icon" variant="ghost">
+        <UiButton size="icon" variant="ghost" @click="getCategories">
           <RefreshCcw class="w-5 h-5" />
         </UiButton>
       </section>
@@ -38,9 +42,10 @@ const {
     <template v-else>
       <section class="pl-3 text-sm">{{ selectedCategories.length }} items selected</section>
       <section class="pr-3 flex gap-3 py-1">
-        <LazyCategoriesMergeDialog :categoryIds="selectedCategories" />
-        <CategoriesMoveDialog :categoryIds="selectedCategories" />
-        <UiButton class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length !== 1"
+        <LazyCategoriesMergeDialog :category-ids="selectedCategories" />
+        <CategoriesMoveDialog :category-ids="selectedCategories" />
+        <UiButton
+class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length !== 1"
           @click="duplicateCategory(selectedCategoryId)">
           <CopyIcon class="w-4 h-4" />
           Duplicate
