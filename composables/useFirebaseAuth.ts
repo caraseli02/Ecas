@@ -42,7 +42,7 @@ export default function () {
     const getUserToken = async (): Promise<string> => {
         const { currentUser } = $auth;
 
-        return await getIdToken(currentUser);
+        return (await getIdToken(currentUser)) as UserInfoJWT;
     };
 
     const logout = async (): Promise<boolean> => {
