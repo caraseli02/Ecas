@@ -16,6 +16,12 @@ const {
   taxonomyId
 } = useCategories();
 
+const isOpen = ref(false);
+
+const toggleAndClose = (id: string) => {
+  isOpen.value =!isOpen.value;
+  toggleCategoryStatus(id);
+}
 </script>
 
 <template>
@@ -23,7 +29,7 @@ const {
     <LazyCategoriesMergeDialog :category-ids="[category.id]" />
     <LazyCategoriesUpdateCategory :category="category" />
   </div>
-  <UiPopover>
+  <UiPopover v-model:open="isOpen">
     <UiPopoverTrigger as-child>
       <UiButton variant="secondary" class="bg-dark-50" size="icon">
         <svg
@@ -42,7 +48,7 @@ xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fi
         Duplicate
       </UiButton>
       <CategoriesMoveDialog :category-ids="[category.id]" />
-      <UiButton  class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="toggleCategoryStatus(category.id)">
+      <UiButton  class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="toggleAndClose(category.id)">
         <template v-if="category.isPublished">
         <FileMinus class="w-4 h-4" />
         Unpublish

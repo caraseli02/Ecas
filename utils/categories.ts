@@ -1,4 +1,7 @@
 import { TaxonomyInterface } from '~/types/dashboard/categories';
+import { useToast } from '@/components/ui/toast/use-toast'
+
+type IMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
 
 export function extractIds(data: TaxonomyInterface) {
   console.log(data);
@@ -43,4 +46,46 @@ export function extractIdAndName(dataArray: TaxonomyInterface[], excludeIds: str
   return result;
 }
 
+export const filterByQuery = <T extends { name: string }>(items: T[], query: string): T[] => {
+  const lowerCaseQuery = query.toLowerCase();
+  return items.filter(item => item.name.toLowerCase().includes(lowerCaseQuery));
+};
 
+
+export const sortByField = <T>(items: T[], field: keyof T, order: 'asc' | 'desc') => {
+  const multiplier = order === 'asc' ? 1 : -1;
+  return items.sort((a, b) => {
+    if (typeof a[field] === 'string') {
+      return (a[field] as string).localeCompare(b[field] as string) * multiplier;
+    }
+    if (typeof a[field] === 'number' && typeof b[field] === 'number') {
+      return (a[field] as number - b[field] as number) * multiplier;
+    }
+    return 0;
+  });
+};
+
+export const apiRequest = async (url: string, method: IMethod, token: string, body?: any) => {
+  const { toast } = useToast()
+  const config = useRuntimeConfig();
+  try {
+    const response = await $fetch<{ status: string, description: string }>(`${config.public.BASE_URL_API}${url}`, {
+      method,
+      headers: { Authorization: `Bearer ${token}` },
+      body,
+    });
+    toast({
+      title: response.status,
+      description: response.description,
+    });
+    return response;
+  } catch (error) {
+    toast({
+      title: 'Error',
+      description: error.description || 'An error occurred during the request.',
+      variant: 'destructive',
+    });
+    console.error(`Error during API request: ${method} ${url}`, error);
+    throw error;
+  }
+};
