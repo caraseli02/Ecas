@@ -6,20 +6,20 @@
             <Transition name="slide-from-right">
                 <DashboardControlPanelSettingsViewCustomerCreditEdit
                     v-if="creditEditing"
-                    :id="route.params.slug"
+                    :id="route.params.slug as string"
                     @toggle-editing="creditEditing = !creditEditing"
                     @cancel="creditEditing = false"
                     @close="updateCreditComponent = !updateCreditComponent"
                 />
             </Transition>
             <DashboardControlPanelSettingsViewCustomerCredit
-                :id="route.params.slug"
-                :key="updateCreditComponent"
+                :id="route.params.slug as string"
+                :key="Number(updateCreditComponent)"
                 @toggle-editing="creditEditing = !creditEditing"
             />
-            <DashboardControlPanelSettingsViewCustomerDiscount :id="route.params.slug" />
+            <DashboardControlPanelSettingsViewCustomerDiscount :id="route.params.slug as string" />
         </div>
-        <DashboardControlPanelSettingsViewSettings :id="route.params.slug" />
+        <DashboardControlPanelSettingsViewSettings :id="route.params.slug as string" />
     </div>
 </template>
 
