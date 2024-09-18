@@ -17,8 +17,6 @@
                         :profile="customerDetails"
                         :dropdown-top="30"
                         :dropdown-left="25"
-                        :settings-button="true"
-                        :settings-text="'Control Panel'"
                         :deactivate-button="true"
                         :deactivate-text="customerDetails.active ? 'Lock Account' : 'Unlock Account'"
                         :trash-button="true"
@@ -59,7 +57,7 @@
                     <SkeletonLoader v-if="isLoading" class="w-[140px] h-5 mb-2" />
                     <div v-else class="flex md:flex-row-reverse">
                         <div class="font-semibold leading-tight mb-2 md:order-1">
-                            {{ customerInformation.contactDetails?.firstName + ' ' + customerInformation.contactDetails?.lastName }}
+                            {{ firstName + ' ' + lastName }}
                         </div>
                         <Tooltip theme="black" :position="'top'" class="self-start ml-3">
                             <LockKeyholeIcon
@@ -198,7 +196,7 @@
 <script setup lang="ts">
 import Avatar from '@/assets/icons/dashboard/avatar.png';
 import { AccountStatusEnum, UserInterface } from '~/types/auth/user-interface';
-import { AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/types';
+import { AccountRole, AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
@@ -275,4 +273,18 @@ const getCurrentDate = (date: string) => {
 };
 
 await fetchInformation();
+
+const firstName = computed(() => {
+    if(customerInformation.value.role === AccountRole.Client) {
+        return customerInformation.value?.personalDetails?.firstName;
+    }
+    return customerInformation.value?.contactDetails?.firstName;
+});
+
+const lastName = computed(() => {
+    if(customerInformation.value.role === AccountRole.Client) {
+        return customerInformation.value?.personalDetails?.lastName;
+    }
+    return customerInformation.value?.contactDetails?.lastName;
+});
 </script>
