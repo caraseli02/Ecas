@@ -1,20 +1,23 @@
 <template>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-h-[240px] overflow-y-auto">
-        <OrderSummaryPayByCard
-            v-for="item in cards"
-            :key="item.id"
-            view="modal"
-            :card-info="item"
-            :card-type="item?.card?.display_brand"
-            :is-selected="item.id === selectedCard?.id"
-            :is-default="item.default"
-            :has-card="true"
-            :is-expired="item.card.is_expired"
-            @select-payment-option="selectNewCard"
-            @set-default="setCardAsDefault"
-            @delete-card="selectedCardToDelete"
-            @edit-card="handleEditCard"
-        />
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-h-[480px] h-fit overflow-y-auto">
+        <template v-if="cards.length > 0">
+            <OrderSummaryPayByCard
+                v-for="item in cards"
+                :key="item.id"
+                view="modal"
+                :card-info="item"
+                :card-type="item?.card?.display_brand"
+                :is-selected="item.id === selectedCard?.id"
+                :is-default="item.default"
+                :has-card="true"
+                :is-expired="item.card.is_expired"
+                @select-payment-option="selectNewCard"
+                @set-default="setCardAsDefault"
+                @delete-card="selectedCardToDelete"
+                @edit-card="handleEditCard"
+            />
+        </template>
+        <UiSkeleton class="w-[432px] h-[92px]" v-for="i in 3" :key="i" v-else />
     </div>
 </template>
 
