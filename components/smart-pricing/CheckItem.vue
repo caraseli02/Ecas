@@ -10,7 +10,8 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  updateSelected: [val: boolean]
+  updateSelected: [val: boolean],
+  deleteItem: [];
 }>()
 </script>
 
@@ -39,9 +40,13 @@ const emit = defineEmits<{
         </div>
       </div>
     </section>
-    <div class="flex gap-6">
-      <SquarePenIcon class="w-5 h-5 text-slate-500" />
-      <Trash2Icon class="w-5 h-5  text-slate-500" />
+    <div class="flex gap-2">
+      <UiButton variant="ghost" size="icon">
+        <SquarePenIcon class="w-5 h-5 text-slate-500" />
+      </UiButton>
+      <UiButton variant="ghost" size="icon">
+        <Trash2Icon @click="emit('deleteItem')" class="w-5 h-5  text-slate-500" />
+      </UiButton>
     </div>
   </div>
 </template>
