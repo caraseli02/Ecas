@@ -1,15 +1,32 @@
 <script setup lang="ts">
-import { ChevronDown, SearchIcon, SquarePenIcon, Trash2Icon } from 'lucide-vue-next';
+import { ChevronDown, SearchIcon } from 'lucide-vue-next';
 
 const selectedTab = ref('entryPrice');
 
-const entryPriceList = [
+const entryPriceList = ref([
   { label: 'EP-1', value: '$0.5 - $0.99', selected: true },
   { label: 'EP-2', value: '$1.00 - $4.99', selected: true },
   { label: 'EP-3', value: '$5.00 - $9.99', selected: false },
   { label: 'EP-4', value: '$10.00 - $24.99', selected: false },
   { label: 'EP-5', value: '$24.00 - $44.99', selected: false },
-]
+])
+
+const quantityList = ref([
+  { label: 'QTY-1', value: ['1 - 10'], selected: true },
+  { label: 'QTY-2', value: ['1 - 10', '11 - 49'], selected: true },
+  { label: 'QTY-3', value: ['1 - 10', '11 - 49', '50 - 99'], selected: false },
+  { label: 'QTY-4', value: ['1 - 10', '11 - 49', '50 - 99', '100 - 149'], selected: false },
+  { label: 'QTY-5', value: ['1 - 10', '11 - 49', '50 - 99', '100 - 149', '150 - 449'], selected: false },
+])
+
+const marginList = ref([
+  { label: 'NM-1', value: ['1000%', '800%'], selected: true },
+  { label: 'NM-2', value: ['1000%', '800%', '500%'], selected: true },
+  { label: 'NM-3', value: ['1000%', '800%', '500%', '250%'], selected: false },
+  { label: 'NM-4', value: ['1000%', '800%', '500%', '250%', '200%'], selected: false },
+  { label: 'NM-5', value: ['1000%', '800%', '500%', '250%', '200%', '150%'], selected: false },
+])
+
 </script>
 
 <template>
@@ -25,15 +42,15 @@ const entryPriceList = [
         </UiPopoverTrigger>
         <UiPopoverContent align="end" class="w-[220px] flex flex-col">
           <SmartPricingEntryModal />
-          <UiButton class="justify-start" variant="ghost">Quantity</UiButton>
-          <UiButton class="justify-start" variant="ghost">Margin</UiButton>
+          <SmartPricingQuantityModal />
+          <LazySmartPricingMarginModal />
         </UiPopoverContent>
       </UiPopover>
     </section>
     <UiTabs v-model="selectedTab">
-      <UiTabsList class="bg-white mb-12 w-full justify-start overflow-x-scroll overflow-y-hidden">
+      <UiTabsList class="bg-white mb-12 w-full justify-start overflow-x-scroll overflow-y-hidden h-12">
         <UiTabsTrigger
-          class="data-[state=active]:shadow-none border-b-4 rounded-b border-transparent data-[state=active]:border-blue-600"
+          class="pb-5 data-[state=active]:shadow-none border-b-4 rounded-b border-transparent data-[state=active]:border-blue-600"
           value="entryPrice">
           Entry Price
           <UiBadge
@@ -41,7 +58,7 @@ const entryPriceList = [
             class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1">7</UiBadge>
         </UiTabsTrigger>
         <UiTabsTrigger
-          class="data-[state=active]:shadow-none border-b-4 rounded-b border-transparent data-[state=active]:border-blue-600"
+          class="pb-5 data-[state=active]:shadow-none border-b-4 rounded-b border-transparent data-[state=active]:border-blue-600"
           value="quantity">
           Quantity
           <UiBadge
@@ -49,7 +66,7 @@ const entryPriceList = [
             class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1 ">27</UiBadge>
         </UiTabsTrigger>
         <UiTabsTrigger
-          class="data-[state=active]:shadow-none border-b-4 rounded-b border-transparent data-[state=active]:border-blue-600"
+          class="pb-5 data-[state=active]:shadow-none border-b-4 rounded-b border-transparent data-[state=active]:border-blue-600"
           value="margin">
           Gross/Net Margin
           <UiBadge
@@ -67,27 +84,34 @@ const entryPriceList = [
           </div>
         </div>
         <section class="flex flex-wrap gap-4">
-          <div v-for="item in entryPriceList" :key="item.value" class="w-full md:w-fit h-16 bg-light-200 flex gap-10 items-center p-3 rounded-xl">
-            <section class="flex gap-2 items-center">
-            <UiCheckbox :checked="item.selected" class="border-grey-600 w-5 h-5" />
-            <div class="flex items-center justify-between gap-2 bg-white border border-grey-300 px-3 py-1 min-w-[148px] w-full h-9 rounded-lg">
-              <span class="font-medium">{{ item.label }}</span>
-              <UiSeparator class="w-[1px] h-5" />
-              <UiBadge variant="secondary" class="text-xs rounded bg-light-300 px-1">{{ item.value }}</UiBadge>
-            </div>
-            </section>
-            <div class="flex gap-6">
-              <SquarePenIcon class="w-5 h-5 text-slate-500" />
-              <Trash2Icon class="w-5 h-5  text-slate-500" />
-            </div>  
-          </div>
+          <SmartPricingCheckItem @updateSelected="item.selected = $event" v-for="item in entryPriceList" :key="item.value" :item="item" />
         </section>
       </UiTabsContent>
-      <UiTabsContent value="quantity">
-        quantity
+      <UiTabsContent class="flex flex-col gap-8" value="quantity">
+        <div class="w-full h-16 bg-light-200 flex items-center p-3">
+          <div class="relative w-full max-w-sm items-center">
+            <UiInput id="search" type="text" placeholder="Search..." class="pr-10" />
+            <span class="absolute end-0 inset-y-0 flex items-center justify-center px-2">
+              <SearchIcon class="size-6 text-muted-foreground" />
+            </span>
+          </div>
+        </div>
+        <section class="flex flex-wrap gap-4">
+          <SmartPricingCheckItem @updateSelected="item.selected = $event" v-for="item in quantityList" :key="item.label" :item="item" />
+        </section>
       </UiTabsContent>
-      <UiTabsContent value="margin">
-        margin
+      <UiTabsContent class="flex flex-col gap-8" value="margin">
+        <div class="w-full h-16 bg-light-200 flex items-center p-3">
+          <div class="relative w-full max-w-sm items-center">
+            <UiInput id="search" type="text" placeholder="Search..." class="pr-10" />
+            <span class="absolute end-0 inset-y-0 flex items-center justify-center px-2">
+              <SearchIcon class="size-6 text-muted-foreground" />
+            </span>
+          </div>
+        </div>
+        <section class="flex flex-wrap gap-4">
+          <SmartPricingCheckItem @updateSelected="item.selected = $event" v-for="item in marginList" :key="item.label" :item="item" />
+        </section>
       </UiTabsContent>
     </UiTabs>
   </div>
