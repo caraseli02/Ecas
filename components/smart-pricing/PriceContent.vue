@@ -20,14 +20,14 @@ const selectedCount = computed(() => entryPriceList.value.filter((i) => i.select
 </script>
 
 <template>
-  <div class="w-full h-16 bg-light-200 flex justify-between items-center p-3">
+  <div class="w-full h-30 bg-light-200 flex flex-col sm:flex-row justify-between items-center p-3 gap-2">
     <div class="relative w-full max-w-sm items-center">
       <UiInput id="search" type="text" placeholder="Search..." class="pr-10" />
       <span class="absolute end-0 inset-y-0 flex items-center justify-center px-2">
         <SearchIcon class="size-6 text-muted-foreground" />
       </span>
     </div>
-    <div v-if="selectedCount > 0">
+    <div class="self-end flex items-center" v-if="selectedCount > 0">
       <span class="text-gray-500 mr-2 text-sm">{{ selectedCount }} {{ selectedCount > 1 ? 'items' : 'item' }}
         selected</span>
       <UiButton class="gap-1" variant="secondary" @click="deleteAllSelected">
