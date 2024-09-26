@@ -79,16 +79,16 @@ const orderFilters = ref<TabFilter[]>([
         value: 'orders',
         requiredPermission: 'read:orders'
     },
-    {
-        label: 'Favorites',
-        value: 'favorites',
-        requiredPermission: 'read:favourite'
-    },
-    {
-        label: 'Messages',
-        value: 'messages',
-        requiredPermission: 'read:message'
-    },
+    // {
+    //     label: 'Favorites',
+    //     value: 'favorites',
+    //     requiredPermission: 'read:favourite'
+    // },
+    // {
+    //     label: 'Messages',
+    //     value: 'messages',
+    //     requiredPermission: 'read:message'
+    // },
     {
         label: 'Organization',
         value: 'organization',
@@ -135,7 +135,7 @@ const filterHightlightLeft = ref(0);
 
 const setActiveFilterHighlight = () => {
     const activeFilter = activeOrderFilter.value;
-    const index = computedOrderFilters.value.findIndex((filter) => filter.label === activeFilter?.label);
+    const index = computedOrderFilters.value.findIndex((filter) => filter.value === activeFilter?.value);
 
     nextTick(() => {
         if (index !== -1) {
@@ -152,10 +152,12 @@ const setActiveFilterHighlight = () => {
 
 watch(
     activeOrderFilter,
-    () => {
+    (newVlad) => {
+        console.log(newVlad);
+        
         setActiveFilterHighlight();
     },
-    { deep: true }
+    { deep: true, immediate: true }
 );
 
 const updateOrderFiltersWithCounts = async () => {

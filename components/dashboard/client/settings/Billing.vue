@@ -94,7 +94,7 @@ const handleChange = async (address: ShippingAddressInterface) => {
 </script>
 
 <template>
-    <section class="flex flex-col gap-9 self-stretch p-4 md:p-6 bg-white rounded-xl shadow-l">
+    <section id="Billing" class="flex flex-col gap-9 self-stretch p-4 md:p-6 bg-white rounded-xl shadow-l">
         <div class="flex gap-2.5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
             <h2 class="self-start text-xl font-semibold leading-7 text-neutral-700">Billing</h2>
         </div>

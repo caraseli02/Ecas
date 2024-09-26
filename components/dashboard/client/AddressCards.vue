@@ -1,12 +1,12 @@
 <template>
   <div
-      v-for="(address, index) in addresses" :key="index" aria-label="Shipping" role="group"
+      v-for="(address, index) in addresses" :key="index" :aria-label="index === 0 ? 'Shipping' : 'Billing'" role="group"
       class="items-stretch shadow-xs bg-white flex w-full lg:max-w-[476px] xl:max-w-md flex-col p-6 rounded-xl">
     <section class="justify-between items-stretch flex gap-5">
       <div class="text-neutral-800 text-sm font-medium leading-5">{{ index === 0 ? 'Shipping' : 'Billing' }}</div>
-      <button>
+      <UiButton variant="ghost" class="p-1 w-10 h-10" @click="openSettingTab(index === 0 ? 'Shipping' : 'Billing')">
         <SvgoEditGray24 class="text-slate-300 hover:text-blue-500"/>
-      </button>
+      </UiButton>
     </section>
     <div aria-label="Address Details" role="group" class="items-stretch flex justify-between gap-3 mt-6">
       <SvgoAddressBuilding/>
@@ -21,6 +21,20 @@
 
 <script setup lang="ts">
 import {ShippingAddressInterface} from '~/types/auth/user-interface';
+
+import { useCustomerDashboard } from '@/composables/useCustomerDashboard';
+
+const {
+    activeOrderFilter
+} = useCustomerDashboard();
+
+const route = useRoute()
+const openSettingTab = (scrollTo: string) => {
+  route.query.scrollTo = scrollTo
+  activeOrderFilter.value = {
+        value: 'settings',
+    }
+}
 
 defineProps<{
   addresses: Array<ShippingAddressInterface>
