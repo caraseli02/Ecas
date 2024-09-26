@@ -3,22 +3,22 @@ import { ref } from 'vue';
 import { useCategories } from '@/composables/useCategories';
 import type { ICreatePayload } from '~/types/dashboard/categories';
 
-
 const title = ref('');
 const icon = ref('PlugIcon');
 const smartPricing = ref(false);
 
-const { createCategory, selectedCategories } = useCategories();
+const { createCategory, selectedCategories, categories } = useCategories();
 
 const isOpen = ref(false);
+const selected = ref<string>('');
 
 async function makeCreate(){
   const payload: ICreatePayload = {
           name: title.value,
           icon: icon.value,
         }
-  if(selectedCategories.value[0]) {
-    payload.parentId = selectedCategories.value[0];
+  if(selected.value) {
+    payload.parentId = selected.value;
   }
   const response = await createCategory(payload)
   if(response){
@@ -26,6 +26,16 @@ async function makeCreate(){
     isOpen.value = false;
   }
 }
+
+watch(isOpen, () => {
+  if(isOpen.value) {
+    console.log(categories.value.find(c => c.id === selectedCategories.value[0]));
+    
+    selected.value = categories.value.find(c => c.id === selectedCategories.value[0])?.id || '';
+    title.value = ''
+  }
+})
+
 </script>
 
 <template>
@@ -43,6 +53,24 @@ async function makeCreate(){
             Title
           </UiLabel>
           <UiInput id="title" v-model="title" class="col-span-3" />
+        </div>
+        <div class="flex flex-col items-start gap-4">
+          <UiLabel for="destination" class="text-right">
+            Destination Category
+          </UiLabel>
+          <UiSelect v-model="selected">
+            <UiSelectTrigger>
+              <UiSelectValue placeholder="Select a Category" />
+            </UiSelectTrigger>
+            <UiSelectContent>
+              <UiSelectGroup>
+                <UiSelectLabel>Category</UiSelectLabel>
+                <UiSelectItem v-for="item in categories" :key="item.id" :value="item.id">
+                  {{ item.name }}
+                </UiSelectItem>
+              </UiSelectGroup>
+            </UiSelectContent>
+          </UiSelect>
         </div>
         <div class="flex flex-col items-start gap-4">
           <IconSelect v-model="icon" title="Select Icon" />
