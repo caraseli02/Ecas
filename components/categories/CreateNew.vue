@@ -5,7 +5,6 @@ import type { ICreatePayload } from '~/types/dashboard/categories';
 
 const title = ref('');
 const icon = ref('PlugIcon');
-const smartPricing = ref(false);
 
 const { createCategory, selectedCategories, categories } = useCategories();
 
@@ -75,10 +74,7 @@ watch(isOpen, () => {
         <div class="flex flex-col items-start gap-4">
           <IconSelect v-model="icon" title="Select Icon" />
         </div>
-        <div class="flex items-center justify-between space-x-2">
-          <UiLabel for="airplane-mode">Smart Pricing</UiLabel>
-          <UiSwitch id="airplane-mode" v-model="smartPricing" />
-        </div>
+        <CategoriesSmartPricing />
       </div>
       <UiDialogFooter>
         <UiButton variant="secondary" @click="isOpen = false">

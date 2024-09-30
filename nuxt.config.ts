@@ -47,6 +47,7 @@ export default defineNuxtConfig({
         'nuxt3-leaflet',
         'nuxt-viewport',
         '@vueuse/nuxt',
+        '@formkit/auto-animate/nuxt'
     ],
     shadcn: {
         /**
