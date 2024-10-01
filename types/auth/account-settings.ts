@@ -1,4 +1,4 @@
-import {StripeCardInterface} from '~/types';
+import { StripeCardInterface } from '~/types';
 
 export interface AccountAdminSettings {
     discount?: DiscountInterface;
@@ -19,6 +19,11 @@ export interface AlertsAndNotificationsInterface {
     securityAlerts?: AlertsAndNotificationsTypes;
     shippingUpdates?: AlertsAndNotificationsTypes;
     priceChange?: AlertsAndNotificationsTypes;
+    passwordChange?: AlertsAndNotificationsTypes;
+    pendingAgents?: AlertsAndNotificationsTypes;
+    cartItemsPriceUpdate?: AlertsAndNotificationsTypes;
+    cartItemsOutOfStock?: AlertsAndNotificationsTypes;
+    orderShippingUpdates?: AlertsAndNotificationsTypes;
 }
 
 export interface MarketingPreferencesInterface {
@@ -56,6 +61,12 @@ export enum AlertAndNotificationLabelsEnum {
     outOfStock = 'Out of stock',
     priceChange = 'Prince Change',
     shippingUpdates = 'Shipping Updates',
+    princeChange = 'Prince Change',
+    passwordChange = 'Password Change',
+    cartItemsOutOfStock = 'Cart Items - Out of Stock',
+    cartItemsPriceChange = 'Cart Items - Price Change',
+    orderShippingUpdates = 'Order Shipping Updates',
+    pendingAgents = 'Pending Agents',
 }
 
 export enum MarketingPreferencesEnum {
@@ -65,6 +76,6 @@ export enum MarketingPreferencesEnum {
 }
 
 export interface CardsResponse {
-    status: string,
-    data: StripeCardInterface[]
+    status: string;
+    data: StripeCardInterface[];
 }

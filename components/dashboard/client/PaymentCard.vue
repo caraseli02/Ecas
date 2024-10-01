@@ -2,9 +2,9 @@
     <div class="items-stretch shadow-xs bg-white flex w-full lg:max-w-[476px] xl:max-w-md flex-col p-6 rounded-xl">
         <section class="justify-between items-stretch flex gap-5">
             <div class="text-neutral-800 text-sm font-medium leading-5 capitalize">Card</div>
-            <button>
+           <UiButton @click="openSettingTab" variant="ghost" class="p-1 w-10 h-10">
                 <SvgoEditGray24 class="text-slate-300 hover:text-blue-500" />
-            </button>
+            </UiButton>
         </section>
         <div v-if="card && card.type" class="items-stretch flex justify-between gap-3 mt-6 pr-7">
             <component :is="cardImg[card?.card?.brand as keyof typeof cardImg]" />
@@ -59,6 +59,18 @@ const cardImg = {
     amex: amexIcon,
     visa: visaIcon,
 };
+
+const {
+    activeOrderFilter
+} = useCustomerDashboard();
+
+const route = useRoute()
+const openSettingTab = () => {
+  route.query.scrollTo = 'payments'
+  activeOrderFilter.value = {
+        value: 'settings',
+    }
+}
 </script>
 
 <style scoped></style>

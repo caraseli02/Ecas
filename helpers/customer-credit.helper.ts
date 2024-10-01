@@ -40,7 +40,7 @@ export const customerCreditHelper = (credit: CustomerCreditInterface) => {
         dueDate: dueDate,
         tillDue: tillDue,
         term: term,
-        freeze: credit.freeze,
-        active: credit.active,
+        freeze: credit?.freeze || false,
+        active: credit?.active || false,
     };
 };

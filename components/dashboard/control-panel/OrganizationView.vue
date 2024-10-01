@@ -135,6 +135,26 @@
                 type="email"
                 size="lg"
             />
+            <!-- New IBAN input -->
+            <FormInput
+                v-model="form.bank_iban.value"
+                :error="form.bank_iban.error"
+                :disabled="!isEditing"
+                :show-disabled-styles="false"
+                label="IBAN"
+                size="lg"
+                placeholder="RO49AAAA1B31007593840000"
+            />
+            <!-- New Bank Details input -->
+            <FormInput
+                v-model="form.bank_name.value"
+                :error="form.bank_name.error"
+                :disabled="!isEditing"
+                :show-disabled-styles="false"
+                label="Bank Details"
+                size="lg"
+                placeholder="Bank Name"
+            />
         </div>
         <div v-if="isEditing" class="grid grid-cols-[auto,1fr] gap-4 mt-9 xl:w-1/2 xl:ml-auto xl:pl-4">
             <button
@@ -234,6 +254,14 @@ const form = ref({
         value: '',
         error: '',
     },
+    bank_iban: {  // New IBAN field
+        value: '',
+        error: '',
+    },
+    bank_name: {  // New Bank Details field
+        value: '',
+        error: '',
+    },
 });
 const regions = ref<FormSelectOption[]>([]);
 
@@ -264,6 +292,8 @@ const getAccountDetails = async () => {
     form.value.postcode.value = props.account.companyDetails?.address.postcode || '';
     form.value.phone.value = props.account.contactDetails.phone;
     form.value.companyEmail.value = props.account.contactDetails.email;
+    form.value.bank_iban.value = props.account.companyDetails?.bank_iban || '';
+    form.value.bank_name.value = props.account.companyDetails?.bank_name || '';
 
     getCountryRegion(props.account.companyDetails?.address.country, props.account.companyDetails?.address.region);
 };
@@ -307,6 +337,8 @@ const updateAccountDetails = async () => {
     payload.companyDetails.registrationNumber = form.value.companyRegistrationNumber.value;
     payload.companyDetails.taxId = '-';
     payload.companyDetails.vat = form.value.vatNumber.value;
+    payload.companyDetails.bank_iban = form.value.bank_iban.value;  // Add IBAN to payload
+    payload.companyDetails.bank_name = form.value.bank_name.value;  // Add Bank Details to payload
 
     payload.contactDetails = { ...props.account?.contactDetails };
     payload.contactDetails.email = form.value.companyEmail.value;

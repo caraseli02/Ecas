@@ -2,7 +2,11 @@ import HttpFactory from '@/composables/HttpFactory';
 import { FirebaseError } from 'firebase/app';
 import { LoginRequest } from '~/model/auth/request/LoginRequest';
 import { ProductResponse } from '~/model/products/response/ProductResponse';
-import { FirebaseBusinessAccount as SignupBusinessPayload, FirebasePersonalAccount as SignupPersonalPayload } from '~~/types';
+import {
+    FirebaseBusinessAccount as SignupBusinessPayload,
+    FirebasePersonalAccount as SignupPersonalPayload,
+    UserDetailsResponse,
+} from '~~/types';
 import { useAuthStore } from '~/store/authStore';
 import useFirebaseAuth from '~/composables/useFirebaseAuth';
 
@@ -42,6 +46,15 @@ class AuthService extends HttpFactory {
 
     async verifyEmail(code: string) {
         return await this.call('POST', 'user/email/verify', { code: code });
+    }
+
+    async fetchUserDetails(userId: string) {
+        const authStore = useAuthStore();
+        const token = authStore.getToken();
+
+        return await this.call<UserDetailsResponse>('GET', `user/${userId}/details`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
     }
 }
 

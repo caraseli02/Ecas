@@ -147,7 +147,7 @@
           />
         </div>
       </div>
-      <div class="grid grid-cols-[auto,1fr] gap-4 mt-auto">
+      <div class="grid grid-cols-[auto,1fr] gap-4">
         <button
             class="flex px-8 py-2 rounded-lg bg-gray-100 leading-[1.75] text-slate-500 font-medium"
             @click="$emit('cancel')">
