@@ -21,7 +21,7 @@ defineProps<{
 </script>
 
 <template>
-  <section class="flex flex-col gap-1">
+  <section class="flex flex-col gap-1 entry-price">
     <span class="text-grey-600 text-sm">{{ title }}</span>
     <UiPopover v-model:open="open" class="w-full">
       <UiPopoverTrigger as-child>
@@ -65,18 +65,18 @@ v-for="framework in frameworks" :key="framework.value" class="flex justify-betwe
 
 <style>
 /* Apply the change here */
-[data-radix-popper-content-wrapper] {
+.entry-price > [data-radix-popper-content-wrapper] {
   width: 100% !important;
   padding: 0 24px;
 }
 
 /* Ensure the content inside also takes full width */
-[data-radix-popper-content-wrapper]>div {
+.entry-price > [data-radix-popper-content-wrapper]>div {
   width: 100% !important;
 }
 
 /* If needed, adjust the max-width as well */
-[data-radix-popper-content-wrapper] {
+.entry-price > [data-radix-popper-content-wrapper] {
   max-width: 100% !important;
 }
 </style>

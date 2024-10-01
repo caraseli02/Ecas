@@ -76,7 +76,7 @@ const computedPadding = computed(() => {
                             <CategoriesRowActions :parentId="parentId" :category="item" />
                         </section>
                     </div>
-                    <UiAccordionContent :class="{ 'last:border-b': open }" class="pt-1 ml-0 pb-0 flex flex-col gap-1">
+                    <UiAccordionContent :class="{ 'last:border-b-[0.5px]': open }" class="ml-0 pb-0 flex flex-col gap-1">
                         <component :is="DomainsRecursive" v-if="item.subcategory.length > 0" :items="item.subcategory" :parentId="parentId"
                             :depth="16" />
                         <div v-else class="flex flex-col px-3">
