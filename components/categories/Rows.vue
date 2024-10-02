@@ -44,7 +44,7 @@ class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
         </section>
       </div>
       <UiAccordionContent :class="{'last:border-b': open}" class="pt-0 ml-0 pb-0 border-none">
-        <CategoriesRecursive v-if="category.subcategory" :parentId="category.id" :items="category.subcategory" />
+        <CategoriesRecursive v-if="category.subcategory" :parentId="category.id" :items="category.subcategory" :depth="1"/>
       </UiAccordionContent>
     </UiAccordionItem>
   </UiAccordion>
