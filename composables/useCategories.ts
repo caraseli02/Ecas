@@ -13,6 +13,13 @@ const searchQuery = ref('');
 const sortBy = ref<'name' | 'averageWeight' | 'productCount'>('name');
 const sortOrder = ref<'asc' | 'desc'>('asc');
 
+const categoriesOptions = computed(() =>{
+  if(categories.value && categories.value.length > 0) {
+    return extractIdAndName(categories.value);
+  }
+  return [];
+})
+
 export const useCategories = () => {
   const token = useAuthStore().getToken();
 
@@ -108,5 +115,6 @@ export const useCategories = () => {
     duplicateCategory,
     selectCategory,
     filteredAndSortedData: sortedData,
+    categoriesOptions,
   };
 };

@@ -22,12 +22,12 @@ export function extractIds(data: TaxonomyInterface) {
 }
 
 
-export function extractIdAndName(dataArray: TaxonomyInterface[], excludeIds: string[]) {
+export function extractIdAndName(dataArray: TaxonomyInterface[], excludeIds?: string[]) {
   const result: { id: string, name: string }[] = [];
 
   function recurse(item: TaxonomyInterface) {
     // If the current item or any of its children are excluded, skip the recursion
-    if (excludeIds.includes(item.id)) {
+    if (excludeIds && excludeIds.includes(item.id)) {
       return; // Skip this item and all its subcategories
     }
 

@@ -6,7 +6,7 @@ import type { ICreatePayload } from '~/types/dashboard/categories';
 const title = ref('');
 const icon = ref('PlugIcon');
 
-const { createCategory, selectedCategories, categories } = useCategories();
+const { createCategory, selectedCategories, categories, categoriesOptions } = useCategories();
 
 const isOpen = ref(false);
 const selected = ref<string>('');
@@ -27,10 +27,8 @@ async function makeCreate(){
 }
 
 watch(isOpen, () => {
-  if(isOpen.value) {
-    console.log(categories.value.find(c => c.id === selectedCategories.value[0]));
-    
-    selected.value = categories.value.find(c => c.id === selectedCategories.value[0])?.id || '';
+  if(isOpen.value) {    
+    selected.value = categoriesOptions.value.find(c => c.id === selectedCategories.value[0])?.id || '';
     title.value = ''
   }
 })
@@ -64,7 +62,7 @@ watch(isOpen, () => {
             <UiSelectContent>
               <UiSelectGroup>
                 <UiSelectLabel>Category</UiSelectLabel>
-                <UiSelectItem v-for="item in categories" :key="item.id" :value="item.id">
+                <UiSelectItem v-for="item in categoriesOptions" :key="item.id" :value="item.id">
                   {{ item.name }}
                 </UiSelectItem>
               </UiSelectGroup>
