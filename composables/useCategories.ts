@@ -81,6 +81,8 @@ export const useCategories = () => {
   };
 
   const duplicateCategory = async (sourceId: string, targetId: string) => {
+    console.log(sourceId, targetId);
+    
     const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category/${sourceId}/copy/${targetId}`, 'POST', token, { parentId: targetId });
     if (response.status === 'success') getCategories();
   };

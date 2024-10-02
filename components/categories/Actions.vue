@@ -6,7 +6,8 @@ const {
   duplicateCategory,
   deleteCategories,
   getCategories,
-  sortOrder
+  sortOrder,
+  taxonomyId
 } = useCategories();
 
 const toggleSortOrder = () => {
@@ -46,7 +47,7 @@ const toggleSortOrder = () => {
         <CategoriesMoveDialog :category-ids="selectedCategories" />
         <UiButton
 class="gap-1" variant="secondary" size="sm" :disabled="selectedCategories.length !== 1"
-          @click="duplicateCategory(selectedCategoryId)">
+          @click="duplicateCategory(selectedCategories[0], taxonomyId)">
           <CopyIcon class="w-4 h-4" />
           Duplicate
         </UiButton>
