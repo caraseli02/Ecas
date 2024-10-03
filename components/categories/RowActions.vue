@@ -43,7 +43,7 @@ xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fi
       </UiButton>
     </UiPopoverTrigger>
     <UiPopoverContent side="left" :collision-padding="10" class="flex gap-1 flex-col items-start p-2 w-40">
-      <UiButton class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="duplicateCategory(category.id, parentId || taxonomyId)">
+      <UiButton class="gap-1 w-full justify-start" size="sm" variant="ghost" @click="duplicateCategory(category.id, parentId)">
         <CopyIcon class="w-4 h-4" />
         Duplicate
       </UiButton>

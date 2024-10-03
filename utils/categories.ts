@@ -3,6 +3,46 @@ import { useToast } from '@/components/ui/toast/use-toast'
 
 type IMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
 
+
+// Define the structure for a category
+interface Category {
+  id: string;
+  name: string;
+}
+
+/**
+ * Finds the parent ID for a given category ID in a recursive category structure.
+ * @param categories - An array of category objects to search through
+ * @param targetId - The ID of the category whose parent we want to find
+ * @returns The ID of the parent category, or undefined if the target is a top-level category or not found
+ */
+export function findParentId(categories: Category[], targetId: string): string | undefined {
+  /**
+   * Recursive helper function to search through the category tree
+   * @param items - Current array of categories to search through
+   * @returns The parent ID if found, undefined otherwise
+   */
+  function search(items: Category[]): string | undefined {
+    for (const item of items) {
+      // Check if the current item has subcategories
+      if (item.subcategory.length > 0) {
+        // Check each subcategory
+        for (const subItem of item.subcategory) {
+          if (subItem.id === targetId) {
+            // If we found the target ID in subcategories, return current item's ID as parent
+            return item.id;
+          }
+        }
+        // Recursively search in subcategories
+        const result = search(item.subcategory);
+        if (result) return result;
+      }
+    }
+    return undefined;
+  }
+
+  return search(categories);
+}
 export function extractIds(data: TaxonomyInterface) {
   console.log(data);
   
