@@ -40,7 +40,7 @@ fetchAndSetCustomersList(1, 10);
 
 <template>
     <div
-        class="h-full flex-1 flex-col space-y-8 flex w-[393px] md:w-full 2xl:w-[1444px] shadow-xs p-2 pt-6 md:p-6 rounded-xl"
+        class="h-full flex-1 flex-col space-y-8 flex w-[393px] md:w-full 2xl:w-[1444px] shadow-xs p-2 pt-6 md:p-6 rounded-xl bg-white"
     >
         <DataTable
             v-if="listItems.length > 0"
