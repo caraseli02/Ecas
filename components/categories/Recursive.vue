@@ -9,7 +9,7 @@ const props = defineProps<{
     depth?: number;
 }>();
 
-const { selectCategory } = useCategories();
+const { selectCategory, selectedCategories } = useCategories();
 
 // Adjust padding to be dynamic based on depth
 const computedPadding = computed(() => {
@@ -24,7 +24,7 @@ const computedPadding = computed(() => {
                 class="w-full flex items-center gap-2 py-2 max-md:flex-wrap px-3">
                 <article
                     class="flex items-center flex-1 gap-2 self-stretch rounded-lg bg-white bg-opacity-0 max-md:flex-wrap">
-                    <UiCheckbox @update:checked="selectCategory(item.id)" />
+                    <UiCheckbox :checked="selectedCategories.includes(item.id)" @update:checked="selectCategory(item.id)" />
                     <div :style="{ 'padding-left': computedPadding + 'px' }" class="flex gap-2 max-w-[348px]">
                         <figure class="ml-10 flex justify-center items-center min-w-10 h-10 rounded-lg bg-light-300">
                             <IconAsync v-if="item.icon" :name="item.icon" class="h-5 w-5 stroke-1" />
@@ -49,7 +49,7 @@ const computedPadding = computed(() => {
                 <UiAccordionItem v-slot="{ open }" :value="item.name">
                     <div class="flex items-center gap-1 hover:bg-light-200 px-3"
                         :class="{ 'bg-light-200 border-t': open }">
-                        <UiCheckbox @update:checked="selectCategory(item.id)" />
+                        <UiCheckbox :checked="selectedCategories.includes(item.id)" @update:checked="selectCategory(item.id)" />
                         <UiAccordionTrigger
                             class="flex-row-reverse justify-center gap-2.5 py-1 truncate min-w-10 max-w-[50px] h-7" />
                         <section class="w-full flex gap-2 items-center py-2  max-md:flex-wrap">
@@ -84,7 +84,7 @@ const computedPadding = computed(() => {
                         <div v-else class="flex flex-col px-3">
                             <template v-for="child in item.subcategory" :key="child.uuid">
                                 <section class="w-full flex gap-2 items-center py-2  max-md:flex-wrap">
-                                    <UiCheckbox @update:checked="selectCategory(item.id)" />
+                                    <UiCheckbox :checked="selectedCategories.includes(item.id)" @update:checked="selectCategory(item.id)" />
                                     <article
                                         class="flex items-center flex-1 gap-2 self-stretch ml-5 px-5 rounded-lg bg-white bg-opacity-0 max-md:flex-wrap">
                                         <div :style="{ 'padding-left': computedPadding + 'px' }" class="flex gap-2 max-w-[348px]">

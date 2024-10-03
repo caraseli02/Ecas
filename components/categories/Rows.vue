@@ -4,7 +4,7 @@ import CategoriesRecursive from '@/components/categories/Recursive.vue';
 
 import { useCategories } from '@/composables/useCategories';
 
-const { selectCategory, filteredAndSortedData, getCategories, isLoading } = useCategories();
+const { selectCategory, filteredAndSortedData, getCategories, isLoading, selectedCategories } = useCategories();
 
 getCategories()
 </script>
@@ -17,7 +17,7 @@ v-for="category in filteredAndSortedData" v-else ref="target" :key="category.id"
     class="w-full border-b flex flex-col gap-1 bg-white first:rounded-t-lg last:rounded-b-lg min-w-[700px]" collapsible>
     <UiAccordionItem v-slot="{open}" :value="category.name" class="relative border-none">
       <div class="flex items-center gap-1 px-3 hover:bg-light-200" :class="{'bg-light-200 border-t': open}">
-        <UiCheckbox @update:checked="selectCategory(category.id)" />
+        <UiCheckbox :checked="selectedCategories.includes(category.id)" @update:checked="selectCategory(category.id)" />
         <UiAccordionTrigger 
           class="flex-row-reverse justify-center gap-2.5 py-1 truncate w-10 max-w-[50px] h-7"
           :class="{'opacity-0': category.subcategory?.length === 0}" 
@@ -44,7 +44,7 @@ class="h-4 w-4 mr-2 rounded-full flex justify-center items-center"
         </section>
       </div>
       <UiAccordionContent :class="{'last:border-b': open}" class="pt-0 ml-0 pb-0 border-none">
-        <CategoriesRecursive v-if="category.subcategory" :parentId="category.id" :items="category.subcategory" :depth="1"/>
+        <CategoriesRecursive v-if="category.subcategory" :parent-id="category.id" :items="category.subcategory" :depth="1"/>
       </UiAccordionContent>
     </UiAccordionItem>
   </UiAccordion>
