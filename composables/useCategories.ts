@@ -124,5 +124,6 @@ export const useCategories = () => {
     selectCategory,
     filteredAndSortedData: sortedData,
     categoriesOptions,
+    isLoading
   };
 };

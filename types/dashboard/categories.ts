@@ -1,3 +1,5 @@
+import { type IconName } from '@/types/Icons';
+
 export interface TaxonomyInterface {
   id: string;
   name: string;
@@ -6,7 +8,7 @@ export interface TaxonomyInterface {
   subcategory?: TaxonomyInterface[];
   path: string;
   isPublished: boolean
-  icon?: string;
+  icon?: IconName;
 }
 
 export interface ICreatePayload  {

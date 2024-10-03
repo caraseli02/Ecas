@@ -3,13 +3,14 @@ import { ref } from 'vue';
 import { useCategories } from '@/composables/useCategories';
 import type { ICreatePayload, TaxonomyInterface } from '~/types/dashboard/categories';
 import { PencilLine } from 'lucide-vue-next';
+import { type IconName } from '@/types/Icons';
 
 const props = defineProps<
   { category: TaxonomyInterface }
 >()
 
 const title = ref('');
-const icon = ref('PlugIcon');
+const icon = ref<IconName>('PlugIcon');
 const smartPricing = ref(false);
 
 onMounted(() => {

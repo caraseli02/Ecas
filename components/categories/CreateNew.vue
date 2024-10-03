@@ -2,11 +2,12 @@
 import { ref } from 'vue';
 import { useCategories } from '@/composables/useCategories';
 import type { ICreatePayload } from '~/types/dashboard/categories';
+import { type IconName } from '@/types/Icons';
 
 const title = ref('');
-const icon = ref('PlugIcon');
+const icon = ref<IconName>('PlugIcon');
 
-const { createCategory, selectedCategories, categories, categoriesOptions } = useCategories();
+const { createCategory, selectedCategories, categoriesOptions } = useCategories();
 
 const isOpen = ref(false);
 const selected = ref<string>('');

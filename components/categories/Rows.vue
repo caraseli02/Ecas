@@ -4,7 +4,7 @@ import CategoriesRecursive from '@/components/categories/Recursive.vue';
 
 import { useCategories } from '@/composables/useCategories';
 
-const { selectCategory, filteredAndSortedData, getCategories, isLoading, selectedCategories } = useCategories();
+const { selectCategory, filteredAndSortedData, getCategories, selectedCategories, isLoading } = useCategories();
 
 getCategories()
 </script>

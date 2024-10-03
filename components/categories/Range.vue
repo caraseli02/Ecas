@@ -1,5 +1,4 @@
 <script setup lang="ts" generic="TData">
-import type { Column } from '@tanstack/vue-table';
 import { PlusCircleIcon } from 'lucide-vue-next';
 
 import { PopoverClose } from 'radix-vue';

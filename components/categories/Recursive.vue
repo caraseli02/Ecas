@@ -79,7 +79,7 @@ const computedPadding = computed(() => {
                     </div>
                     <UiAccordionContent :class="{ 'last:border-b-[0.5px]': open }" class="ml-0 pb-0 flex flex-col gap-1">
                         <!-- Recursively pass the increased depth -->
-                        <component :is="DomainsRecursive" v-if="item.subcategory.length > 0" :items="item.subcategory" 
+                        <component :is="DomainsRecursive" v-if="item.subcategory && item.subcategory.length > 0" :items="item.subcategory" 
                             :parentId="parentId" :depth="(props.depth || 0) + 1" />
                         <div v-else class="flex flex-col px-3">
                             <template v-for="child in item.subcategory" :key="child.uuid">

@@ -13,7 +13,6 @@ const {
   toggleCategoryStatus,
   deleteCategories,
   duplicateCategory,
-  taxonomyId
 } = useCategories();
 
 const isOpen = ref(false);
