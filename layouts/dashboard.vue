@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col min-h-screen bg-[#f9f9f9] app-scroll">
+    <div class="flex flex-col min-h-screen bg-light-100 app-scroll">
         <DashboardHeader :is-collapsed-on-desktop="isSideNavCollapsedOnDesktop" @show-side-nav="showSideNav = true" />
         <transition name="slide-from-left">
             <DashboardAside v-if="showSideNav" class="w-full md:hidden" @close="showSideNav = false" />
@@ -22,12 +22,13 @@
                 </a>
             </div>
         </main>
+        <Toaster />
     </div>
 </template>
 
 <script setup lang="ts">
 import HeartIcon from '@/assets/icons/dashboard/heart.svg';
-
+import { Toaster } from '@/components/ui/toast'
 const isSideNavCollapsedOnDesktop = ref(true);
 const showSideNav = ref(false);
 </script>

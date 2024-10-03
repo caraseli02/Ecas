@@ -7,12 +7,13 @@ class="flex flex-col pt-[96px] flex-1 lg:pt-[180px] xl:pt-[176px]"
       <slot/>
     </main>
     <LayoutFooter/>
+    <Toaster />
   </div>
 </template>
 
 <script setup lang="ts">
 import _ from 'lodash';
-
+import { Toaster } from '@/components/ui/toast'
 const isScrolled = ref(false);
 
 const handleScroll = () => {

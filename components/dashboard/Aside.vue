@@ -275,7 +275,7 @@ const nav = ref([
         },
         {
           label: 'Categories',
-          to: '/',
+          to: '/dashboard/products/categories',
           icon: CategoriesIcon,
           count: '28',
         },
