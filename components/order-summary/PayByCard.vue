@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePaymentStore } from '~/store/paymentStore';
-import { AlertTriangle, Trash2Icon } from 'lucide-vue-next';
+import { AlertTriangle, Trash2Icon, CheckCircle2 } from 'lucide-vue-next';
 
 const paymentStore = usePaymentStore();
 
@@ -12,11 +12,11 @@ const props = defineProps<{
     view: 'modal' | 'payment';
     isExpired?: boolean;
     isNewCardSelected?: boolean;
-    cardType?: 'visa' | 'mastercard' | 'amex';
+    cardType?: string;
     showPayWithLabel?: boolean;
 }>();
 
-const emits = defineEmits(['selectPaymentOption']);
+const emits = defineEmits(['selectPaymentOption', 'delete-card', 'set-default', 'edit-card']);
 const paymentMethods = async (cardInfo: any) => {
     emits('selectPaymentOption', cardInfo);
 };
@@ -24,6 +24,8 @@ const paymentMethods = async (cardInfo: any) => {
 const router = useRouter();
 
 const onEditClick = () => {
+    console.log('click');
+    
     if (paymentStore.showCardsModal) {
         paymentStore.toggleCardModal();
         router.push({
@@ -97,34 +99,23 @@ size="xs" variant="link" class="flex gap-2 items-center justify-end hover:underl
             </div>
 
         </div>
-        <div v-if="view === 'modal'" class="flex justify-end w-full gap-6">
+        <div v-if="view === 'modal'" class="flex justify-end w-full gap-2">
             <span v-if="isExpired" class="items-center flex justify-start gap-2 w-full">
                 <AlertTriangle class="w-5 h-5 text-rose-500" />
                 <div class="text-red-500 text-sm leading-6">Card expired</div>
             </span>
-            <button v-if="!isDefault && !isExpired" class="flex gap-2 items-center" @click="setDefault(cardInfo)">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_397_5131)">
-                        <path
-                            d="M5.3335 7.99992L7.02328 9.52073C7.31095 9.77963 7.75789 9.73998 7.9955 9.43449L10.6668 5.99992M8.00016 14.6666C11.6821 14.6666 14.6668 11.6818 14.6668 7.99992C14.6668 4.31802 11.6821 1.33325 8.00016 1.33325C4.31827 1.33325 1.3335 4.31802 1.3335 7.99992C1.3335 11.6818 4.31827 14.6666 8.00016 14.6666Z"
-                            stroke="#2D2D2D" stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-                    <defs>
-                        <clipPath id="clip0_397_5131">
-                            <rect width="16" height="16" fill="white" />
-                        </clipPath>
-                    </defs>
-                </svg>
+            <UiButton v-if="!isDefault && !isExpired" class="gap-1.5" variant="ghost" size="xs" @click.stop="emits('set-default', cardInfo)">
+                <CheckCircle2 class="w-4 h-4" />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Set as default</span>
-            </button>
-            <button class="flex gap-2 items-center" @click.stop="editCard(cardInfo)">
+            </UiButton>
+            <UiButton class="gap-1.5" variant="ghost" size="xs" @click.stop="emits('edit-card', cardInfo)">
                 <SvgoChangeCard />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Edit</span>
-            </button>
-            <button class="flex gap-2 items-center" @click="deleteCard(cardInfo)">
+            </UiButton>
+            <UiButton class="gap-1.5" variant="ghost" size="xs" @click.stop="emits( 'delete-card',cardInfo)">
                 <Trash2Icon class="w-4 h-4" />
                 <span class="text-neutral-700 text-sm font-normal leading-6">Delete</span>
-            </button>
+            </UiButton>
         </div>
     </button>
 </template>

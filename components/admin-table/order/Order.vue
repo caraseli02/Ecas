@@ -165,7 +165,7 @@ onMounted(() => {
 
 <template>
     <div
-        class="relative h-full flex-1 flex-col space-y-8 flex w-[393px] md:w-[640px] lg:w-[896px] xl:w-[1312px] 2xl:w-[1444px] shadow-xs p-2 pt-6 md:p-6 rounded-xl">
+        class="relative h-full flex-1 flex-col space-y-8 flex w-[393px] md:w-[640px] lg:w-[896px] xl:w-[1312px] 2xl:w-[1444px] shadow-xs p-2 pt-6 md:p-6 rounded-xl bg-white">
         <DataTable
          :fetch-fn="fetchAndSetOrdersList" :page-count="pageCount" :data="listItems"
             :columns="columns" :loading="loading" :total-items="totalItems">
