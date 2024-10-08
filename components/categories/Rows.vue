@@ -17,7 +17,7 @@ getCategories()
     <UiAccordionItem v-slot="{ open }" :value="category.name" class="relative border-none">
       <div 
       class="flex items-center gap-1 px-3 hover:bg-light-200" 
-      :class="{ 'bg-light-200 border-t': open || selectedCategories.includes(category.id) }">
+      :class="{ 'bg-light-200 border-b': open || selectedCategories.includes(category.id) }">
         <UiCheckbox :checked="selectedCategories.includes(category.id)" @update:checked="selectCategory(category.id)" />
         <UiAccordionTrigger class="flex-row-reverse justify-center gap-2.5 py-1 truncate w-10 max-w-[50px] h-7"
           :class="{ 'opacity-0': category.subcategory?.length === 0 }" />
