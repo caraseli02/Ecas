@@ -17,7 +17,6 @@
                     {{ title }}
                 </NuxtLink>
             </div>
-            <h2 class="text-xl leading-[1.4] text-neutral-700 font-semibold">{{ title }}</h2>
         </div>
         <slot />
     </div>
