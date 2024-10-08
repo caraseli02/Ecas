@@ -19,7 +19,7 @@ const computedPadding = computed(() => {
 
 <template>
     <template v-for="item in items" :key="item.uuid ?? item.localId">
-        <section class="w-full border-b flex flex-col gap-1">
+        <section class="w-full flex flex-col gap-1">
             <section v-if="item.subcategory?.length === 0"
                 class="w-full flex items-center gap-2 py-2 max-md:flex-wrap px-3 border-b">
                 <article
