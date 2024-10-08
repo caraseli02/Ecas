@@ -2,11 +2,16 @@
 import { ChevronDown } from 'lucide-vue-next';
 
 definePageMeta({
-    layout: 'dashboard',
+  layout: 'dashboard',
 });
 
 const selectedTab = ref('entryPrice');
 
+const tabs = [
+  { value: 'entryPrice', label: 'Entry Price', badge: 7 },
+  { value: 'quantity', label: 'Quantity', badge: 27 },
+  { value: 'margin', label: 'Gross/Net Margin', badge: 27 },
+];
 </script>
 
 <template>
@@ -31,33 +36,19 @@ const selectedTab = ref('entryPrice');
       </section>
       <UiTabs v-model="selectedTab">
         <UiTabsList class="bg-white mb-12 p-0 w-full justify-start overflow-x-scroll overflow-y-hidden min-h-[50px]">
-          <UiTabsTrigger
-            class="pb-5 data-[state=active]:shadow-none border-b-4 rounded border-transparent data-[state=active]:text-blue-500 data-[state=active]:border-blue-600"
-            value="entryPrice">
-            Entry Price
-            <UiBadge
-            variant="secondary"
-  :class="{ 'bg-blue-500 text-white': selectedTab === 'entryPrice' }"
-              class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1">7</UiBadge>
-          </UiTabsTrigger>
-          <UiTabsTrigger
-            class="pb-5 data-[state=active]:shadow-none border-b-4 rounded-b border-transparent data-[state=active]:text-blue-500 data-[state=active]:border-blue-600"
-            value="quantity">
-            Quantity
-            <UiBadge
-            variant="secondary"
-  :class="{ 'bg-blue-500 text-white': selectedTab === 'quantity' }"
-              class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1 ">27</UiBadge>
-          </UiTabsTrigger>
-          <UiTabsTrigger
-            class="pb-5 data-[state=active]:shadow-none border-b-4 rounded-b border-transparent data-[state=active]:text-blue-500 data-[state=active]:border-blue-600"
-            value="margin">
-            Gross/Net Margin
-            <UiBadge
-            variant="secondary"
-  :class="{ 'bg-blue-500 text-white': selectedTab === 'margin' }"
-              class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1">27</UiBadge>
-          </UiTabsTrigger>
+          <template v-for="tab in tabs" :key="tab.value">
+            <UiTabsTrigger
+              class="pb-5 data-[state=active]:shadow-none data-[state=active]:text-blue-500 relative"
+              :value="tab.value">
+              {{ tab.label }}
+              <UiBadge
+                variant="secondary"
+                :class="{ 'bg-blue-500 text-white': selectedTab === tab.value }"
+                class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1">{{ tab.badge }}
+              </UiBadge>
+              <div v-if="selectedTab === tab.value" class="w-full h-1 bg-blue-500 absolute bottom-0 rounded-full"></div>
+            </UiTabsTrigger>
+          </template>
         </UiTabsList>
         <UiTabsContent class="flex flex-col gap-8 m-0" value="entryPrice">
           <SmartPricingContentPrice />
