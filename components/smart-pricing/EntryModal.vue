@@ -7,16 +7,16 @@ const isOpen = ref(false)
 <template>
   <UiDialog v-model:open="isOpen">
     <UiDialogTrigger as-child>
-      <UiButton class="justify-start" variant="ghost">Entry Price</UiButton>
+      <UiButton class="justify-start hover:text-blue-500" variant="ghost">Entry Price</UiButton>
     </UiDialogTrigger>
-    <UiDialogContent class="sm:max-w-md gap-10">
+    <UiDialogContent class="max-w-sm p-4 sm:max-w-[480px] gap-10 border-none rounded-xl shadow-s">
       <UiDialogHeader>
         <UiDialogTitle>Create Entry Price Template</UiDialogTitle>
       </UiDialogHeader>
       <div class="flex items-center space-x-2">
         <PriceRange />
       </div>
-      <UiDialogFooter class="sm:justify-start">
+      <UiDialogFooter class="gap-4 sm:justify-start">
         <UiDialogClose as-child>
           <UiButton type="button" variant="secondary">
             Cancel

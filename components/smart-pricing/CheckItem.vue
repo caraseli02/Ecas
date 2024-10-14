@@ -16,7 +16,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="w-full max-w-[358px] md:max-w-none md:w-fit h-16 bg-light-200 flex justify-between gap-10 items-center p-3 rounded-xl"
+  <div class="w-full max-w-[358px] md:max-w-none md:w-fit h-16 bg-light-200 flex justify-between md:gap-10 items-center p-3 rounded-xl"
     :class="{ 'ring-2 ring-blue-500': item.selected }">
     <section class="flex gap-2 items-center">
       <UiCheckbox @update:checked="emit('updateSelected', $event)" :checked="item.selected" class="border-grey-600 w-5 h-5" />
@@ -32,7 +32,7 @@ const emit = defineEmits<{
               variant="secondary"
               class="text-xs rounded bg-light-300 px-1 font-normal min-w-[60px] max-h-[22px]"
             >
-              {{ badge }}
+              <span class="w-full text-center">{{ badge }}</span>
             </UiBadge>
           </template>
           <UiBadge v-else variant="secondary" class="text-xs rounded bg-light-300 px-1 font-normal">{{ item.value }}

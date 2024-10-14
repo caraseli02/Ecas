@@ -28,9 +28,9 @@ function removeQuantity(id: number) {
 <template>
   <UiDialog v-model:open="isOpen">
     <UiDialogTrigger as-child>
-      <UiButton class="justify-start" variant="ghost">Quantity</UiButton>
+      <UiButton class="justify-start hover:text-blue-500" variant="ghost">Quantity</UiButton>
     </UiDialogTrigger>
-    <UiDialogContent class="sm:max-w-md gap-10">
+    <UiDialogContent class="max-w-sm p-4 sm:max-w-[480px] gap-10 border-none rounded-xl shadow-s">
       <UiDialogHeader>
         <UiDialogTitle>Create Quantity Template</UiDialogTitle>
       </UiDialogHeader>
