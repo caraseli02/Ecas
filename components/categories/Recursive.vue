@@ -32,7 +32,7 @@ const computedPadding = computed(() => {
                             class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full"
                         >
                             {{ item.name }}
-                            <span v-if="item.products?.length" class="text-xs text-slate-500">{{ item.products.length }} items</span>
+                            <span v-if="item.productCount" class="text-xs text-slate-500">{{ item.productCount }} items</span>
                         </p>
                     </div>
                     <div class="flex items-center text-sm">
@@ -61,7 +61,7 @@ const computedPadding = computed(() => {
                                         class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full"
                                     >
                                         {{ item.name }}
-                                        <span v-if="item.products?.length" class="text-xs">{{ item.products.length }} items</span>
+                                        <span v-if="item.productCount" class="text-xs">{{ item.productCount }} items</span>
                                     </p>
                                 </div>
                                 <div class="flex items-center text-sm">
@@ -102,7 +102,7 @@ const computedPadding = computed(() => {
                                                 class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full"
                                             >
                                                 {{ child.name }}
-                                                <span v-if="child.products?.length" class="text-xs">{{ child.products.length }} items</span>
+                                                <span v-if="child.productCount" class="text-xs">{{ child.productCount }} items</span>
                                             </p>
                                         </div>
                                         <div class="flex items-center text-sm">

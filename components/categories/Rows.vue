@@ -41,9 +41,7 @@ getCategories();
                             class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full py-0.5"
                         >
                             {{ category.name }}
-                            <span v-if="category.products?.length" class="text-xs text-slate-500"
-                                >{{ category.products.length }} items</span
-                            >
+                            <span v-if="category.productCount" class="text-xs text-slate-500">{{ category.productCount }} items</span>
                         </p>
                         <div class="flex items-center text-sm">
                             <span
