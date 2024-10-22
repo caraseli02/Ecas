@@ -15,6 +15,12 @@ export interface PriceSettingsInterface {
     range?: RangeInterface;
     values?: number[];
     linked: boolean;
+    label: string;
+}
+
+export interface PriceSettingsResponseInterface {
+    data: PriceSettingsInterface[];
+    status: string;
 }
 
 export interface PriceSmartLinkingInterface {

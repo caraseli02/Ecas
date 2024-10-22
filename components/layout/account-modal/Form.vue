@@ -98,10 +98,12 @@ import { UserInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import { useCartStore } from '~/store/cartStore';
 import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import { usePricingStore } from '~/store/pricingStore';
 
 const { checkForInputErrors } = useError();
 const { $api } = useNuxtApp();
 const cartStore = useCartStore();
+const pricingStore = usePricingStore();
 
 const email = ref({
     value: '',
@@ -180,6 +182,7 @@ const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
 
     await cartStore.updateAndReturnCart();
     await authStore.addUserCards();
+    await pricingStore.updateAndReturnPricing();
 
     Emitter.emit('notifications', true);
 };
