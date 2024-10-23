@@ -1,17 +1,46 @@
 <script setup lang="ts">
 import PriceRange from './PriceRange.vue';
+import { useNuxtApp } from '#app';
+import { usePricingStore } from '~/store/pricingStore';
+
+const pricingStore = usePricingStore();
+
+const { $api } = useNuxtApp();
 
 type PriceRangeType = {
     min: number | null;
     max: number | null;
+    label: string | null;
 };
 const isOpen = ref(false);
-const priceRange = ref<PriceRangeType>({ min: null, max: null });
+const priceRange = ref<PriceRangeType>({ min: null, max: null, label: null });
 // Handle the "Create" button click
-const handleCreate = () => {
-    console.log('Min Price:', priceRange.value.min);
-    console.log('Max Price:', priceRange.value.max);
-    console.log(priceRange.value);
+const handleCreate = async () => {
+    if (priceRange.value.min === null || priceRange.value.max === null) {
+        // Add your logic here to handle the creation without the price range values
+        return;
+    }
+    console.log({
+        min: priceRange.value.min,
+        max: priceRange.value.max,
+        label: priceRange.value.label || `${pricingStore.range?.length + 1}`,
+    });
+    const response = await $api.smartPricing.setNewPriceRange({
+        min: priceRange.value.min,
+        max: priceRange.value.max,
+        label: priceRange.value.label || `EP-${pricingStore.range?.length + 1}`,
+    });
+    if (response.status !== 'success') {
+        // Add your logic here to handle the creation error
+        return;
+    }
+    pricingStore.addPriceRange(
+        {
+            min: priceRange.value.min,
+            max: priceRange.value.max,
+        },
+        priceRange.value.label || `EP-${pricingStore.range?.length + 1}`
+    );
     // Add your logic here to handle the creation with the price range values
 };
 </script>

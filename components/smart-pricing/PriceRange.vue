@@ -46,15 +46,16 @@
 
 <script setup lang="ts">
 const emit = defineEmits<{
-    (e: 'update:priceRange', priceRange: { min: number | null; max: number | null }): void;
+    (e: 'update:priceRange', priceRange: { min: number | null; max: number | null; label: string | null }): void;
 }>();
 
 const minPrice = ref<number | null>(null);
 const maxPrice = ref<number | null>(null);
+const label = ref<string>('');
 
-watch([minPrice, maxPrice], ([newMin, newMax]) => {
+watch([minPrice, maxPrice, label], ([newMin, newMax, newLabel]) => {
     if (minPrice && maxPrice) {
-        emit('update:priceRange', { min: newMin, max: newMax });
+        emit('update:priceRange', { min: newMin, max: newMax, label: newLabel });
     }
 });
 </script>

@@ -8,7 +8,7 @@ export const usePricingStore = defineStore({
     state: () => {
         return {
             pricing: null as PriceSettingsInterface[] | null,
-            range: [] as any | [],
+            range: null as any | null,
             quantity: null as any | null,
             margin: null as any | null,
         };
@@ -39,6 +39,15 @@ export const usePricingStore = defineStore({
         },
         emptyPricing() {
             this.pricing = null;
+        },
+        addPriceRange(range: { min: number | null; max: number | null }, label: string | null) {
+            this.range.push({ value: [`$${range.min} - $${range.max}`], label: label, selected: false });
+        },
+        addQuantity(quantity: { values: number[]; label: string | null }) {
+            this.quantity.push(quantity);
+        },
+        addMargin(margin: { values: number[]; label: string | null }) {
+            this.margin.push(margin);
         },
     },
     getters: {
