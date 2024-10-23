@@ -4,18 +4,7 @@ import { usePricingStore } from '~/store/pricingStore';
 
 const pricingStore = usePricingStore();
 
-const entryPriceList = ref(
-    pricingStore.pricing
-        ? pricingStore.pricing
-              .filter((smartPricing) => smartPricing.type === 0)
-              .map((item, index) => ({
-                  ...item,
-                  selected: false,
-                  value: item.range && [`$${item.range.min} - $${item.range.max}`],
-                  label: item.label || `EP-${index}`,
-              }))
-        : []
-);
+const entryPriceList = ref(pricingStore.range);
 
 const deleteItem = (itemValue: string) => {
     entryPriceList.value = entryPriceList.value.filter((i) => i.value !== itemValue);

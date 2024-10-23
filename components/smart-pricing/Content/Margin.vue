@@ -4,18 +4,7 @@ import { usePricingStore } from '~/store/pricingStore';
 
 const pricingStore = usePricingStore();
 
-const marginList = ref(
-    pricingStore.pricing
-        ? pricingStore.pricing
-              .filter((smartPricing) => smartPricing.type === 2)
-              .map((item, index) => ({
-                  ...item,
-                  selected: false,
-                  value: item.values && item.values.map((value) => `${value}%`),
-                  label: item.label || `NM-${index}`,
-              }))
-        : []
-);
+const marginList = ref(pricingStore.margin);
 
 const deleteItem = (itemLabel: string) => {
     marginList.value = marginList.value.filter((i) => i.label !== itemLabel);

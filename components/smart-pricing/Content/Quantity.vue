@@ -3,25 +3,8 @@ import { SearchIcon, Trash2Icon } from 'lucide-vue-next';
 import { usePricingStore } from '~/store/pricingStore';
 
 const pricingStore = usePricingStore();
-const quantityList = ref(
-    pricingStore.pricing
-        ? pricingStore.pricing
-              .filter((smartPricing) => smartPricing.type === 1)
-              .map((item, index) => ({
-                  ...item,
-                  selected: false,
-                  value: item.values
-                      ? item.values.reduce<string[]>((acc, curr, index) => {
-                            const prevMax = index === 0 ? '0' : acc[index - 1].split(' - ')[1];
-                            acc.push(`${parseInt(prevMax) + 1} - ${curr}`);
-                            return acc;
-                        }, [])
-                      : [],
-                  label: item.label || `QTY-${index}`,
-              }))
-        : []
-);
-console.log(quantityList.value);
+const quantityList = ref(pricingStore.quantity);
+
 const deleteItem = (itemLabel: string) => {
     quantityList.value = quantityList.value.filter((i) => i.label !== itemLabel);
 };
