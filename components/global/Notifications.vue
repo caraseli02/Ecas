@@ -1,5 +1,5 @@
 <template>
-    <UiSheet>
+    <UiSheet v-model:open="isOpen">
         <UiSheetTrigger>
             <button class="flex items-center -mr-2.5 xl:-mr-4">
                 <div class="flex items-center">
@@ -19,34 +19,43 @@
                 </div>
             </button>
         </UiSheetTrigger>
-        <UiSheetContent class="max-h-[calc(100vh-48px)] p-0 m-6 overflow-hidden rounded-xl">
-            <div class="relative flex items-center justify-between py-4 px-3 shadow-s">
-                <p class="text-2xl font-medium">
-                    Notifications
-                </p>
-                <UiButton class="z-10" size="icon" variant="secondary">
-                    <XIcon />
-                </UiButton>
+        <UiSheetContent class="max-h-[calc(100vh-48px)] min-w-[440px] p-0 m-6 overflow-hidden rounded-xl">
+            <div class="relative flex flex-col gap-[60px] pt-4 px-3 shadow-s">
+                <div class="flex items-center justify-between">
+                    <p class="text-2xl font-medium">
+                        Notifications
+                    </p>
+                    <UiButton class="z-10 hover:z-10 hover:bg-slate-200 w-8 h-8" size="icon" variant="secondary"
+                        @click="isOpen = false">
+                        <XIcon />
+                    </UiButton>
+                </div>
+
+                <UiTabs v-model="selectedTab">
+                    <UiTabsList class="bg-white ml-2 p-0 w-full justify-start overflow-x-scroll overflow-y-hidden rounded-none">
+                        <template v-for="tab in tabs" :key="tab.value">
+                            <UiTabsTrigger
+                                class="pb-3 data-[state=active]:shadow-none data-[state=active]:text-blue-500 relative"
+                                :value="tab.value">
+                                {{ tab.label }}
+                                <UiBadge :key="tab.badge" variant="secondary"
+                                    :class="{ 'bg-blue-500 text-white': selectedTab === tab.value }"
+                                    class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1">{{ tab.badge }}
+                                </UiBadge>
+                                <div v-if="selectedTab === tab.value"
+                                    class="w-full h-1 bg-blue-500 absolute bottom-0 rounded-t-full"></div>
+                            </UiTabsTrigger>
+                        </template>
+                    </UiTabsList>
+                </UiTabs>
             </div>
-            <div class="flex-1 overflow-y-auto h-full max-h-[calc(100vh-168px)] notifications-scroll">
+            <div class="flex-1 overflow-y-auto h-full max-h-[calc(100vh-246px)] notifications-scroll">
                 <NuxtLink v-for="(notification, index) in notifications" :key="index" :to="`${route.path}`" event=""
-                    class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
+                    class="flex flex-col w-full bg-white pt-2 pb-1 py-3 px-2 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
                     @click.prevent="markNotificationAsRead(notification, index)">
-                    <div class="flex items-center justify-between w-full mb-2">
+                    <div class="flex items-center justify-between w-full py-3 px-2">
                         <div class="flex items-center">
-                            <NotificationIcon class="w-5 h-5 mr-2" :class="[
-                                notification.title === 'Others'
-                                    ? 'text-slate-500'
-                                    : notification.title === 'Password change' || notification.title === 'Reset password'
-                                        ? 'text-blue-500'
-                                        : notification.title === 'Removed'
-                                            ? 'text-rose-500'
-                                            : notification.title === 'Completed'
-                                                ? 'text-[#00D395]'
-                                                : notification.title === 'Pending'
-                                                    ? 'text-[#FFB100]'
-                                                    : 'text-[#A460BC]',
-                            ]" />
+                            <NotificationIcon class="w-5 h-5 mr-2" :class="getNotificationClass(notification.title)" />
                             <span v-if="!notification.seen"
                                 class="flex w-2 h-2 flex-shrink-0 bg-blue-500 rounded-full mr-2" />
                             <span class="capitalize text-sm leading-[1.43] font-medium">
@@ -57,30 +66,27 @@
                             <span class="text-xs leading-[1.67] text-slate-500 mr-4">
                                 {{ getCurrentDate(notification.date) }}
                             </span>
-                            <button class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500"
+                            <button
+                                class="flex items-center justify-center text-slate-500 transition-colors duration-300 hover:text-blue-500"
                                 @click.stop.prevent="deleteNotification(notification, index)">
                                 <XIcon class="w-4 h-4" />
                             </button>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between pl-3 pr-2 pb-2 min-h-12">
                         <div class="text-sm leading-[1.43] text-slate-500 mr-1">
                             {{ notification.description }}
                         </div>
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            class="w-[18px] h-[18px] flex-shrink-0">
-                            <path d="M7.5 12.75L10.5 9L7.5 5.25" stroke="#5E6278" stroke-width="1.5"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
+                        <ChevronRight class="w-[18px] h-[18px] flex-shrink-0" />
                     </div>
                 </NuxtLink>
             </div>
-            <div class="flex justify-between py-4 shadow-s z-10 sticky bottom-0 px-4">
+            <div class="flex justify-between py-4 shadow-s z-10 sticky bg-white bottom-0 px-4">
                 <NuxtLink to="/" class="flex items-center text-blue-500">
                     <span class="text-sm leading-[1.43] font-medium mr-2"> View all </span>
-                    <ArrowRight class="w-5 h-5 text-blue-500"/>
+                    <ArrowRight class="w-5 h-5 text-blue-500" />
                 </NuxtLink>
-                <Settings class="w-5 h-5 text-blue-500"/>
+                <Settings class="w-5 h-5 text-slate-500" />
             </div>
         </UiSheetContent>
     </UiSheet>
@@ -91,7 +97,7 @@ import BellIcon from '@/assets/icons/header/bell.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
 import type { Notification } from '~/types';
 import moment from 'moment';
-import { XIcon, ArrowRight, Settings } from 'lucide-vue-next';
+import { XIcon, ArrowRight, Settings, ChevronRight } from 'lucide-vue-next';
 
 const route = useRoute();
 
@@ -101,6 +107,8 @@ defineProps<{
     unreadNotifications: number,
     notifications: Notification[],
 }>();
+
+const isOpen = ref(false);
 
 const getCurrentDate = (date: string) => {
     const currentDate = moment();
@@ -116,4 +124,32 @@ const markNotificationAsRead = async (notification: Notification, index: number)
 const deleteNotification = async (notification: Notification, index: number) => {
     emits('delete', notification, index);
 };
+
+const selectedTab = ref('all');
+const tabs = [
+    { value: 'all', label: 'All', badge: 7 },
+    { value: 'orders', label: 'Orders', badge: 27 },
+    { value: 'users', label: 'Users', badge: 27 },
+    { value: 'system', label: 'System', badge: 270 },
+];
+
+function getNotificationClass(notificationTitle: string): string {
+    switch (notificationTitle) {
+        case 'Others':
+            return 'text-slate-500';
+        case 'Processing':
+            return 'text-purple-500';
+        case 'Failed':
+        case 'New':
+            return 'text-blue-500';
+        case 'Removed':
+            return 'text-rose-500';
+        case 'Completed':
+            return 'text-green-500';
+        case 'Pending':
+            return 'text-amber-500';
+        default:
+            return 'text-blue-500';
+    }
+}
 </script>
