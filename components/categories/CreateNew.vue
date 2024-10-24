@@ -71,7 +71,7 @@ watch(isOpen, () => {
           </UiSelect>
         </div>
         <div class="flex flex-col items-start gap-4">
-          <IconSelect v-model="icon" title="Select Icon" />
+          <IconUpload />
         </div>
         <CategoriesSmartPricing />
       </div>
