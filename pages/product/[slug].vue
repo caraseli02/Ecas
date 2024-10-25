@@ -19,12 +19,13 @@
             <div
                 class="grid grid-cols-1 gap-[30px] mb-[30px] md:grid-cols-2 md:gap-6 lg:grid-rows-1 lg:items-start lg:mb-10 2xl:grid-cols-[340px,542px,460px]">
                 <ProductGallery
+                    v-if="product && images"
 v-model="activeImageIndex" class="col-span-2 lg:col-span-1" :images="images"
                     :product="product" @show-zoom-modal="showZoomGallery = true" />
-                <ProductDetails class="col-span-2 lg:col-span-1" :product="product" />
-                <ProductQuantity class="col-span-2 2xl:col-span-1" :product="product" />
+                <ProductDetails v-if="product" class="col-span-2 lg:col-span-1" :product="product" />
+                <ProductQuantity v-if="product" class="col-span-2 2xl:col-span-1" :product="product" />
             </div>
-            <ProductTable :features="product.details.ParametricData.Features" />
+            <LazyProductTable v-if="product" :features="product?.details?.ParametricData?.Features" />
         </div>
         <ProductBanners />
         <NewProducts> Similar Products </NewProducts>
@@ -58,10 +59,13 @@ useHead({
 
 const route = useRoute();
 
+const product = ref<ProductDetail | null>(null);
 const { data } = await $api.product.fetchSingleProduct(route.params.slug);
-const product = data as ProductDetail;
+product.value = data;
 
-const images: ProductImage[] = Array.isArray(product.details.ProductImage) ? product.details.ProductImage : [product.details.ProductImage];
+const images = computed(() => {
+    return Array.isArray(product.value?.details?.ProductImage) ? product.value?.details?.ProductImage : [product.value?.details?.ProductImage];
+});
 
 const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 

@@ -9,7 +9,7 @@ const props = defineProps<{
 const product = toRefs(props.product);
 
 const taxonomyPath = computed(() => {
-    const pathArray = product.details.value.SummaryData.TaxonomyPath.split('>');
+    const pathArray = product.details?.value?.SummaryData?.TaxonomyPath?.split('>');
     return pathArray;
 });
 </script>
