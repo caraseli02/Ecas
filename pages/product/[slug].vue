@@ -11,7 +11,7 @@
                     <AlertTriangle class="w-[22px] h-[22px] mr-[5px]" />
                     <span class="text-xs leading-tight">Report an error</span>
                 </button>
-                <button class="flex items-center text-slate-300 transition-colors duration-300 hover:text-blue-500">
+                <button @click="printPage" class="flex items-center text-slate-300 transition-colors duration-300 hover:text-blue-500">
                     <PrinterIcon class="w-[22px] h-[22px] mr-[5px]" />
                     <span class="text-xs leading-tight">Print this page</span>
                 </button>
@@ -71,4 +71,10 @@ const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 
 const activeImageIndex = ref(0)
 const showZoomGallery = ref(false);
+
+const printPage = () => {
+    if (process.client) {
+        window.print();
+    }
+};
 </script>
