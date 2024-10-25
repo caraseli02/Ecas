@@ -11,7 +11,7 @@ export interface TaxonomyInterface {
     smartPricingSettings?: PriceSmartLinkingInterface;
     path: string;
     isPublished: boolean;
-    icon?: IconName;
+    icon?: string;
 }
 
 export interface ICreatePayload {

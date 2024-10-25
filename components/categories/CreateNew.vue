@@ -2,10 +2,9 @@
 import { ref } from 'vue';
 import { useCategories } from '@/composables/useCategories';
 import type { ICreatePayload } from '~/types/dashboard/categories';
-import { type IconName } from '@/types/Icons';
 
 const title = ref('');
-const icon = ref<IconName>('PlugIcon');
+const icon = ref('');
 
 const { createCategory, selectedCategories, categoriesOptions } = useCategories();
 
@@ -66,7 +65,7 @@ watch(isOpen, () => {
                     </UiSelect>
                 </div>
                 <div class="flex flex-col items-start gap-4">
-                    <IconSelect v-model="icon" title="Select Icon" />
+                    <IconUpload @update:svgPreview="icon = $event" />
                 </div>
                 <CategoriesSmartPricing />
             </div>
