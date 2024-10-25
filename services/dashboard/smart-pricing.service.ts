@@ -29,6 +29,19 @@ class SmartPricingService extends HttpFactory {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
+
+    async setNewQuantityRange(quantity: { values: number[]; label: string | null }) {
+        const token = this.authStore.getToken();
+        const data = {
+            type: PriceSettingsTypeEnum.Quantity,
+            values: quantity.values,
+            label: quantity.label,
+        };
+        console.log(data);
+        return await this.call<{ status: string; data: string }>('POST', `${this.MAIN}/quantity`, data, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 }
 
 export default SmartPricingService;
