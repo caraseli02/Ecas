@@ -12,13 +12,13 @@ const { searchQuery } = useCategories();
 
 <!-- CategoriesFilters.vue -->
 <template>
-  <section class="flex gap-4 self-stretch py-4 bg-white flex-wrap">
+  <section class="flex gap-4 self-stretch pb-4 bg-white flex-wrap">
     <div class="relative w-full md:max-w-[220px] items-center">
-      <UiInput id="search" v-model="searchQuery" type="text" placeholder="Filter category name..." class="pr-10 h-9" />
-      <span class="absolute end-0 inset-y-0 flex items-center justify-center px-1">
+      <UiInput id="search" v-model="searchQuery" type="text" placeholder="Filter category name..." class="pr-10 h-9 border-blue-500" />
+      <span class="absolute end-1 inset-y-0 flex items-center justify-center px-1">
         <SearchIcon v-if="searchQuery === ''" class="w-6 h-6 text-muted-foreground" />
         <UiButton @click="searchQuery = ''" v-else size="icon" variant="link" class="h-8">
-          <XIcon  class="size-6 text-muted-foreground" />
+          <XIcon  class="size-5 text-muted-foreground" />
         </UiButton>
       </span>
     </div>
