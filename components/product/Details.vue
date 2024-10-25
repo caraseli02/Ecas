@@ -7,7 +7,7 @@
                     <CopyIcon class="w-5 h-5" />
                 </button>
             </div>
-            <img :src="product.details.ProductImage.ProductImageLarge" alt="Microchip Logo" class="w-[82px] h-[50px] object-contain" />
+            <img :src="product.details?.ProductImage.ProductImageLarge" alt="Microchip Logo" class="w-[82px] h-[50px] object-contain" />
         </div>
         <div class="flex items-center justify-between gap-3 px-2.5 h-8 bg-light-100 md:px-[15px]">
             <div class="text-xs leading-tight font-medium flex-shrink-0 text-neutral-700">Description</div>
@@ -40,7 +40,7 @@
             <div class="text-xs leading-tight font-medium flex-shrink-0">Technical Datasheet</div>
             <a
                 class="flex items-center"
-                :href="product.details.SummaryData.Datasheet"
+                :href="product.details?.SummaryData.Datasheet"
                 :download="`${product.alias} Datasheet`"
                 target="_blank"
             >
