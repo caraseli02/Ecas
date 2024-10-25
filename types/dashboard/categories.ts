@@ -8,7 +8,7 @@ export interface TaxonomyInterface {
   subcategory?: TaxonomyInterface[];
   path: string;
   isPublished: boolean
-  icon?: IconName;
+  icon?: string;
 }
 
 export interface ICreatePayload  {

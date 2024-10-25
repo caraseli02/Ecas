@@ -57,7 +57,7 @@ async function makeUpdate(){
           <UiInput id="title" v-model="title" class="col-span-3" />
         </div>
         <div class="flex flex-col items-start gap-4">
-          <IconUpload />
+          <IconUpload @update:svgPreview="icon = $event" />
         </div>
         <div class="flex items-center justify-between space-x-2">
           <UiLabel for="airplane-mode">Smart Pricing</UiLabel>

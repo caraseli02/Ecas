@@ -17,6 +17,9 @@
 </template>
 
 <script setup>
+
+const emit = defineEmits(['update:svgPreview'])
+
 const fileInput = ref(null)
 const svgPreview = ref('')
 const errorMessage = ref('')
@@ -48,6 +51,7 @@ const handleFileUpload = (event) => {
       svgContent = adjustSvgDimensions(svgContent)
 
       svgPreview.value = svgContent // Set the preview to the SVG content
+      emit('update:svgPreview', svgPreview.value);
     }
 
     reader.readAsText(file)
@@ -64,8 +68,8 @@ const adjustSvgDimensions = (svgContent) => {
   const svgElement = doc.querySelector('svg')
 
   // Set a max width/height to scale down large SVGs (adjust as needed)
-  svgElement.setAttribute('width', '40')
-  svgElement.setAttribute('height', '40')
+  svgElement.setAttribute('width', '20')
+  svgElement.setAttribute('height', '20')
 
   // Serialize the updated SVG back to string
   return new XMLSerializer().serializeToString(doc)
