@@ -107,7 +107,7 @@ const fetchRecentTransactions = async () => {
         data: OrderInterface[];
     };
 
-    if (response.status !== 'success') {
+    if (response.status !== 'success' || !Array.isArray(response.data)) {
         isLoading.value = false;
         error.value = true;
 
@@ -120,7 +120,7 @@ const fetchRecentTransactions = async () => {
 
     const transactionInfo = {} as OrderInfo;
 
-    recentTransactions.value.map((transaction, index) => {
+    recentTransactions.value?.map((transaction, index) => {
         transactionInfo.amount = `${Currency[transaction.currency as unknown as keyof typeof Currency]} ${transaction.total
             .toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
