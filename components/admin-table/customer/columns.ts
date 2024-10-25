@@ -9,6 +9,7 @@ import { CustomerTableColumnsEnum } from '~/components/admin-table/customer/colu
 import AccountType from '~/components/dataTable/AccountType.vue';
 import { $fetch, FetchOptions } from 'ohmyfetch';
 import UserDashboardService from '~/services/dashboard/user.service';
+import { AccountType as AccountTypeEnum } from '~/types';
 
 const fetchOptions: FetchOptions = {
     baseURL: process.env.NUXT_PUBLIC_BASE_URL_API,
@@ -33,7 +34,10 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
         header: ({ column }) => h(ColumnHeader, { column, title: 'Name' }),
         cell: ({ row }) =>
             h(UserInfo, {
-                name: `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'add userName',
+                name:
+                    row.original.accountType === AccountTypeEnum.Personal
+                        ? `${row.original.personalDetails?.firstName} ${row.original.personalDetails?.lastName}`
+                        : `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'N/A',
                 email: row.original.contactDetails?.email,
                 navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
             }),
