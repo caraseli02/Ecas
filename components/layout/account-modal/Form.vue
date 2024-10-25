@@ -1,7 +1,13 @@
 <template>
     <div class="mx-auto">
         <div class="grid grid-cols-1 gap-4 mb-[15px]">
-            <FormInput v-model="email.value" size="lg" label="E-mail" :error="email.error" type="email" placeholder="you@company.com" />
+            <FormInput
+                v-model="email.value"
+                size="lg"
+                label="E-mail or client code"
+                type="email"
+                placeholder="you@company.com OR P-XXXXXX"
+            />
             <FormPassword v-model="password.value" size="lg" label="Password" :error="password.error" placeholder="Your Password" />
         </div>
         <div class="flex items-center justify-between mb-[36px]">
@@ -128,14 +134,24 @@ const errorResponse = reactive({
 const authStore = useAuthStore();
 const { registerUser, getParsedFirebaseJWTToken, getUserToken } = useFirebaseAuth();
 
+const isClientCodeFormat = (value: string) => {
+    const regex = /^[PBAS]-\d{6}$/;
+    return regex.test(value);
+};
+
 const handleSignIn = async () => {
     const hasError = checkForInputErrors([email.value, password.value]);
 
     if (!hasError) {
         const payload = {
-            email: email.value.value,
             password: password.value.value,
-        };
+        } as { password: string; email?: string; clientCode?: string };
+
+        if (isClientCodeFormat(email.value.value)) {
+            payload['clientCode'] = email.value.value;
+        } else {
+            payload['email'] = email.value.value;
+        }
 
         isLoading.value = true;
 
@@ -192,7 +208,7 @@ const loginWithGoogle = async () => {
     const parsedToken = await getParsedFirebaseJWTToken();
     const token = await getUserToken();
     authStore.addUser(parsedToken);
-    
+
     if (!parsedToken.hasOwnProperty('permissions')) {
         authStore.addFirebaseToken(token);
         return navigateTo('/signup');

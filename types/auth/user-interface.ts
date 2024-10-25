@@ -21,6 +21,7 @@ export interface UserInterface {
     messages?: AccountMessageInterface[];
     productVisitedHistory?: ProductVisitedHistory[];
     createdAt?: string;
+    clientCode?: string;
 }
 
 export enum AccountStatusEnum {

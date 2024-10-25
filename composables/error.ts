@@ -7,9 +7,10 @@ export const useError = () => {
         obj.forEach((e) => {
             if (e.type === 'email') {
                 const emailRegex = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm;
+                const clientCodeRegex = /^[PBAS]-\d{6}$/;
 
-                if (!emailRegex.test(e.value)) {
-                    e.error = 'Please provide a valid email address';
+                if (!emailRegex.test(e.value) && !clientCodeRegex.test(e.value)) {
+                    e.error = 'Please provide a valid email address or a valid client code';
                 } else {
                     e.error = '';
                 }
