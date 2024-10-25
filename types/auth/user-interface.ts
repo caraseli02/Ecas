@@ -31,7 +31,16 @@ export enum AccountStatusEnum {
 
 export type CustomerTableColumns = Pick<
     UserInterface,
-    'accountType' | 'firebaseId' | 'verified' | 'status' | 'spent' | 'ordersCount' | 'contactDetails' | 'companyDetails' | 'createdAt'
+    | 'accountType'
+    | 'firebaseId'
+    | 'verified'
+    | 'status'
+    | 'spent'
+    | 'ordersCount'
+    | 'contactDetails'
+    | 'personalDetails'
+    | 'companyDetails'
+    | 'createdAt'
 >;
 
 export interface ProductVisitedHistory {
