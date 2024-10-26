@@ -4,14 +4,14 @@
             <button class="flex items-center -mr-2.5 xl:-mr-4">
                 <div class="flex items-center">
                     <div class="flex items-center flex-col">
-                        <BellIcon class="w-6 h-6 text-white xl:mb-1" />
-                        <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block">
+                        <BellIcon :class="adminView ? 'text-slate-500' : 'text-white'" class="w-6 h-6 xl:mb-1" />
+                        <span v-if="!adminView" class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block">
                             Notifications
                         </span>
                     </div>
                     <span v-if="unreadNotifications > 0"
-                        class="flex items-center justify-center -translate-y-2 -translate-x-2.5 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5] xl:-translate-x-[38px] xl:-translate-y-[18px]"
-                        :class="[unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]']">
+                        class="flex items-center justify-center -translate-y-2 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5] xl:-translate-y-[18px]"
+                        :class="[unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]', adminView ? 'xl:-translate-x-[8px] -translate-x-1' : 'xl:-translate-x-[38px] -translate-x-2.5']">
                         <span>
                             {{ unreadNotifications }}
                         </span>
@@ -19,7 +19,7 @@
                 </div>
             </button>
         </UiSheetTrigger>
-        <UiSheetContent class="max-h-[calc(100vh-48px)] min-w-[440px] p-0 m-6 overflow-hidden rounded-xl">
+        <UiSheetContent class="max-h-[calc(100vh-48px)] md:min-w-[440px] p-0 m-6 overflow-hidden rounded-xl">
             <div class="relative flex flex-col gap-[60px] pt-4 px-3 shadow-s">
                 <div class="flex items-center justify-between">
                     <p class="text-2xl font-medium">
@@ -106,6 +106,7 @@ const emits = defineEmits(['close', 'markAsRead', 'delete']);
 defineProps<{
     unreadNotifications: number,
     notifications: Notification[],
+    adminView?: boolean,
 }>();
 
 const isOpen = ref(false);
