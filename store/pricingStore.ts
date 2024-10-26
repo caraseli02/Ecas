@@ -46,8 +46,8 @@ export const usePricingStore = defineStore({
         addQuantityRange(quantity: { values: string[]; label: string }) {
             this.quantity.push({ value: quantity.values, label: quantity.label, selected: false });
         },
-        addMarginRange(margin: { values: [string][]; label: string | null }) {
-            this.margin.push(margin);
+        addMarginRange(margin: { values: string[]; label: string | null }) {
+            this.margin.push({ value: margin.values, label: margin.label, selected: false });
         },
     },
     getters: {

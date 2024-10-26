@@ -42,6 +42,19 @@ class SmartPricingService extends HttpFactory {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
+
+    async setNewMarginRange(margin: { values: number[]; label: string | null }) {
+        const token = this.authStore.getToken();
+        const data = {
+            type: PriceSettingsTypeEnum.Margins,
+            values: margin.values,
+            label: margin.label,
+        };
+        console.log(data);
+        return await this.call<{ status: string; data: string }>('POST', `${this.MAIN}/margin`, data, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 }
 
 export default SmartPricingService;
