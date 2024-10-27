@@ -207,6 +207,7 @@ const loginWithGoogle = async () => {
     await registerUser();
     const parsedToken = await getParsedFirebaseJWTToken();
     const token = await getUserToken();
+    authStore.addToken(token);
     authStore.addUser(parsedToken);
 
     if (!parsedToken.hasOwnProperty('permissions')) {
@@ -214,7 +215,6 @@ const loginWithGoogle = async () => {
         return navigateTo('/signup');
     } else {
         await fetchUserDetails(parsedToken, token);
-        authStore.addToken(token);
     }
 };
 </script>
