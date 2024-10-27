@@ -9,7 +9,7 @@
                             <TriangleIcon class="w-[22px] h-[22px]" />
                             <span class="text-xs leading-tight ml-[5px] max-md:hidden"> Report an error </span>
                         </button>
-                        <button class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
+                        <button @click="printPage" class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
                             <PrintIcon class="w-[22px] h-[22px]" />
                             <span class="text-xs leading-tight ml-[5px] max-md:hidden"> Print this page </span>
                         </button>
@@ -488,4 +488,10 @@ await fetchList();
 
 calculateSubtotal(cartItems.value);
 calculateDiscount(cartItems.value);
+
+const printPage = () => {
+    if (process.client) {
+        window.print();
+    }
+};
 </script>

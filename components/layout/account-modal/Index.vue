@@ -27,7 +27,7 @@
             </div>
             <section v-else class="flex flex-col justify-between h-full">
                 <div class="flex-1 flex flex-col gap-6">
-                    <LayoutAccountModalMessage />
+                    <!-- <LayoutAccountModalMessage /> -->
                     <LayoutAccountModalCredits class="mx-2" />
                     <LayoutAccountModalLinks class="mx-2" @close="emit('close')" />
                 </div>

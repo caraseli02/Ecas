@@ -1,5 +1,5 @@
 <template>
-    <div v-if="modelValue > 0" class="flex bg-stone-50 bg-opacity-95 rounded-lg max-w-max overflow-hidden">
+    <div v-if="modelValue > 0" class="flex bg-stone-50 bg-opacity-95 rounded-lg max-w-max">
         <button
             :disabled="Number(modelValue) === object.min || modelValue === 1"
             class="flex items-center justify-center bg-gray-100 text-slate-500 px-2.5 transition-colors duration-300 disabled:text-border"
