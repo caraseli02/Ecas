@@ -39,12 +39,15 @@ const createNewQuantityTemplate = async () => {
         return;
     }
 
-    pricingStore.addQuantityRange({
-        values: quantityList.value.map((item) => {
-            return `${item.min} - ${item.max}`;
-        }),
-        label: `QTY-${pricingStore.quantity?.length + 1}`,
-    });
+    pricingStore.addQuantityRange(
+        {
+            values: quantityList.value.map((item) => {
+                return `${item.min} - ${item.max}`;
+            }),
+            label: `QTY-${pricingStore.quantity?.length + 1}`,
+        },
+        response.data.id
+    );
 };
 </script>
 

@@ -2,12 +2,22 @@
 import { SearchIcon, Trash2Icon } from 'lucide-vue-next';
 import { usePricingStore } from '~/store/pricingStore';
 
+import { useNuxtApp } from '#app';
+
 const pricingStore = usePricingStore();
+
+const { $api } = useNuxtApp();
 
 const entryPriceList = ref(pricingStore.range);
 
-const deleteItem = (itemValue: string) => {
-    entryPriceList.value = entryPriceList.value.filter((i) => i.value !== itemValue);
+const deleteItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
+    // console.log(itemValue);
+    const response = await $api.smartPricing.deletePriceRange(itemValue._id);
+    if (response.status !== 'success') {
+        // Add your logic here to handle the deletion error
+        return;
+    }
+    entryPriceList.value = entryPriceList.value.filter((i) => i._id !== itemValue._id);
 };
 
 function deleteAllSelected() {
@@ -38,8 +48,8 @@ const selectedCount = computed(() => entryPriceList.value.filter((i) => i.select
             v-for="item in entryPriceList"
             :key="item.value"
             :item="item"
-            @deleteItem="deleteItem(item.value)"
-            @updateSelected="item.selected = $event"
+            @delete-item="deleteItem(item)"
+            @update-selected="item.selected = $event"
         />
     </section>
 </template>

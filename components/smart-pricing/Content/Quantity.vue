@@ -37,8 +37,8 @@ const selectedCount = computed(() => quantityList.value.filter((i) => i.selected
             v-for="item in quantityList"
             :key="item.label"
             :item="item"
-            @updateSelected="item.selected = $event"
-            @deleteItem="deleteItem(item.label)"
+            @update-selected="item.selected = $event"
+            @delete-item="deleteItem(item.label)"
         />
     </section>
 </template>

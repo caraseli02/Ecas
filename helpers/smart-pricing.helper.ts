@@ -8,6 +8,7 @@ export const smartPricingRange = (pricing: PriceSettingsInterface[] | []) => {
                   selected: false,
                   value: item.range && [`$${item.range.min} - $${item.range.max}`],
                   label: item.label || `EP-${index}`,
+                  _id: item._id,
               }))
         : [];
 };
@@ -27,6 +28,7 @@ export const smartPricingQuantity = (pricing: PriceSettingsInterface[] | []) => 
                   }, [])
                 : [],
             label: item.label || `QTY-${index}`,
+            _id: item._id,
         }));
 };
 
@@ -37,5 +39,6 @@ export const smartPricingMargin = (pricing: PriceSettingsInterface[] | []) => {
             selected: false,
             value: item.values && item.values.map((value) => `${value}%`),
             label: item.label || `NM-${index}`,
+            _id: item._id,
         }));
 };

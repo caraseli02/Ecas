@@ -28,12 +28,15 @@ const createNewMarginTemplate = async () => {
         // Add your logic here to handle the creation error
         return;
     }
-    pricingStore.addMarginRange({
-        values: marginList.value.map((item) => {
-            return `${item.value}%`;
-        }),
-        label: `NM-${pricingStore.quantity?.length}`,
-    });
+    pricingStore.addMarginRange(
+        {
+            values: marginList.value.map((item) => {
+                return `${item.value}%`;
+            }),
+            label: `NM-${pricingStore.quantity?.length}`,
+        },
+        response.data.id
+    );
 };
 </script>
 
