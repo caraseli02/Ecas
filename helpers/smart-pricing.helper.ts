@@ -18,9 +18,11 @@ export const smartPricingQuantity = (pricing: PriceSettingsInterface[] | []) => 
         .map((item, index) => ({
             selected: false,
             value: item.values
-                ? item.values.reduce<string[]>((acc, curr, index) => {
-                      const prevMax = index === 0 ? '0' : acc[index - 1].split(' - ')[1];
-                      acc.push(`${parseInt(prevMax) + 1} - ${curr}`);
+                ? item.values.reduce<string[]>((acc, curr, i) => {
+                      // Calculate the start of the range
+                      const prevMax = i === 0 ? 0 : parseInt(acc[i - 1].split(' - ')[1]) + 1;
+                      const range = `${prevMax} - ${curr}`;
+                      acc.push(range);
                       return acc;
                   }, [])
                 : [],

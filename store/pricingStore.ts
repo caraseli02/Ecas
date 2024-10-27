@@ -43,11 +43,11 @@ export const usePricingStore = defineStore({
         addPriceRange(range: { min: number | null; max: number | null }, label: string | null) {
             this.range.push({ value: [`$${range.min} - $${range.max}`], label: label, selected: false });
         },
-        addQuantity(quantity: { values: number[]; label: string | null }) {
-            this.quantity.push(quantity);
+        addQuantityRange(quantity: { values: string[]; label: string }) {
+            this.quantity.push({ value: quantity.values, label: quantity.label, selected: false });
         },
-        addMargin(margin: { values: number[]; label: string | null }) {
-            this.margin.push(margin);
+        addMarginRange(margin: { values: string[]; label: string | null }) {
+            this.margin.push({ value: margin.values, label: margin.label, selected: false });
         },
     },
     getters: {
