@@ -50,7 +50,7 @@ const authStore = useAuthStore();
 
 const { logout } = useFirebaseAuth();
 
-const firebaseToken = authStore.firebaseTempToken;
+const firebaseToken = authStore.token.value;
 const userInfo = authStore.loggedInUser;
 
 const selectedType = useState<SignupAccountType | ''>('signup-account-type', () => '');
@@ -479,14 +479,14 @@ const handleSubmit = async () => {
         }
 
         try {
-            const request = firebaseToken ? await registerFirebaseSignup(payload) : await registerClassicSignup(payload);
-
+            firebaseToken ? await registerFirebaseSignup(payload) : await registerClassicSignup(payload);
             await logout();
-            clearFormData();
             // TODO: Notification banner
         } catch (error) {
             console.log(error);
             return;
+        } finally {
+            clearFormData();
         }
 
         currentStep.value++;
