@@ -40,7 +40,6 @@ import BuildingIcon from '@/assets/icons/menu/busines-buildings.svg';
 import UserIcon from '@/assets/icons/menu/user.svg';
 import PersonalCardIcon from '@/assets/icons/menu/personalcard.svg';
 import briefcaseIcon from '@/assets/icons/menu/briefcase.svg';
-import CopyIcon from '@/assets/icons/copy.svg';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountRole, AccountType } from '~/types';
