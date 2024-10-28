@@ -45,19 +45,12 @@ import { storeToRefs } from 'pinia';
 import { AccountRole, AccountType } from '~/types';
 
 const authStore = useAuthStore();
-const fullname = ref('');
+
 const { getUserDetails } = storeToRefs(authStore);
 const accountTypeIcon = ref('');
 
 onMounted(() => {
     if (!getUserDetails.value) return;
-
-    if (getUserDetails.value.role === AccountRole.Client && getUserDetails.value.accountType === AccountType.Personal) {
-        fullname.value = `${getUserDetails.value.personalDetails.firstName} ${getUserDetails.value.personalDetails.lastName}`;
-        accountTypeIcon.value = UserIcon;
-    } else {
-        fullname.value = `${getUserDetails.value.contactDetails.firstName} ${getUserDetails.value.contactDetails.lastName}`;
-    }
 
     if (getUserDetails.value.role === AccountRole.Client && getUserDetails.value.accountType === AccountType.Business) {
         accountTypeIcon.value = BuildingIcon;
@@ -74,6 +67,15 @@ onMounted(() => {
 });
 
 const IconTypes = [PersonalCardIcon, UserIcon, BuildingIcon, briefcaseIcon];
+
+const fullname = computed(() => {
+    if (getUserDetails.value?.role === AccountRole.Client && getUserDetails.value?.accountType === AccountType.Personal) {
+        accountTypeIcon.value = UserIcon;
+        return `${getUserDetails.value?.personalDetails?.firstName} ${getUserDetails.value?.personalDetails?.lastName}`;
+    } else {
+        return `${getUserDetails.value?.contactDetails?.firstName} ${getUserDetails.value?.contactDetails?.lastName}`;
+    }
+});
 </script>
 
 <style scoped></style>

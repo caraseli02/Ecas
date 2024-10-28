@@ -24,8 +24,7 @@ class SmartPricingService extends HttpFactory {
             },
             label: range.label,
         };
-        console.log(data);
-        return await this.call<{ status: string; data: string }>('POST', `${this.MAIN}/price-range`, data, {
+        return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/price-range`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -38,7 +37,7 @@ class SmartPricingService extends HttpFactory {
             label: quantity.label,
         };
         console.log(data);
-        return await this.call<{ status: string; data: string }>('POST', `${this.MAIN}/quantity`, data, {
+        return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/quantity`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -51,7 +50,17 @@ class SmartPricingService extends HttpFactory {
             label: margin.label,
         };
         console.log(data);
-        return await this.call<{ status: string; data: string }>('POST', `${this.MAIN}/margin`, data, {
+        return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/margin`, data, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async deletePriceRange(id: string) {
+        const token = this.authStore.getToken();
+        const data = {
+            type: PriceSettingsTypeEnum.Range,
+        };
+        return await this.call<{ status: string; data: string }>('DELETE', `${this.MAIN}/price-setting/${id}`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }

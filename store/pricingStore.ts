@@ -40,14 +40,14 @@ export const usePricingStore = defineStore({
         emptyPricing() {
             this.pricing = null;
         },
-        addPriceRange(range: { min: number | null; max: number | null }, label: string | null) {
-            this.range.push({ value: [`$${range.min} - $${range.max}`], label: label, selected: false });
+        addPriceRange(range: { min: number | null; max: number | null }, label: string | null, _id: string) {
+            this.range.push({ value: [`$${range.min} - $${range.max}`], label: label, selected: false, _id: _id });
         },
-        addQuantityRange(quantity: { values: string[]; label: string }) {
-            this.quantity.push({ value: quantity.values, label: quantity.label, selected: false });
+        addQuantityRange(quantity: { values: string[]; label: string }, _id: string) {
+            this.quantity.push({ value: quantity.values, label: quantity.label, selected: false, _id: _id });
         },
-        addMarginRange(margin: { values: string[]; label: string | null }) {
-            this.margin.push({ value: margin.values, label: margin.label, selected: false });
+        addMarginRange(margin: { values: string[]; label: string | null }, _id: string) {
+            this.margin.push({ value: margin.values, label: margin.label, selected: false, _id: _id });
         },
     },
     getters: {

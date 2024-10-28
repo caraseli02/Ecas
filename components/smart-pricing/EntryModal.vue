@@ -30,7 +30,7 @@ const handleCreate = async () => {
         max: priceRange.value.max,
         label: priceRange.value.label || `EP-${pricingStore.range?.length + 1}`,
     });
-    if (response.status !== 'success') {
+    if (response.status !== 'success' || !response.data.id) {
         // Add your logic here to handle the creation error
         return;
     }
@@ -39,7 +39,8 @@ const handleCreate = async () => {
             min: priceRange.value.min,
             max: priceRange.value.max,
         },
-        priceRange.value.label || `EP-${pricingStore.range?.length + 1}`
+        priceRange.value.label || `EP-${pricingStore.range?.length + 1}`,
+        response.data.id
     );
     // Add your logic here to handle the creation with the price range values
 };
