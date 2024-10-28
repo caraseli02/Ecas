@@ -20,7 +20,7 @@ watch(newsletterSubscription, async (newValue) => {
     }
     await $api.controlPanel.markSettingsAsRead(
         {
-            key: 'newsLetter',
+            key: 'newsletter',
             ['app']: newValue,
         },
         'app',
