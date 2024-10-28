@@ -416,9 +416,7 @@ Promise.all([fetchNofications(), fetchList()]);
 const authStore = useAuthStore();
 
 watch(() => authStore.token.value, async (newVal) => {
-    if (newVal) {
-        console.log('test123');
-        
+    if (newVal) {        
         await fetchNofications();
         await fetchList();
     } else {
