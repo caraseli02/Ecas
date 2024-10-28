@@ -22,13 +22,13 @@
                     <div class="mr-3 mt-1 max-md:relative md:mr-10">
                         <div class="relative">
                             <Notifications
-                                    :notifications="notifications"
-                                    :unreadNotifications="unreadNotifications"
-                                    @delete="deleteNotification"
-                                    @mark-as-read="markNotificationAsRead"
-                                    @close="showNotifications = false"
-                                    adminView
-                                />
+                                :notifications="notifications"
+                                :unread-notifications="unreadNotifications"
+                                admin-view
+                                @delete="deleteNotification"
+                                @mark-as-read="markNotificationAsRead"
+                                @close="showNotifications = false"
+                            />
                         </div>
                         <Transition name="slide-fast-from-bottom">
                             <div
@@ -193,7 +193,9 @@
                                 <div class="leading-normal font-medium">
                                     {{ (user?.contactDetails?.firstName || '') + ' ' + (user?.contactDetails?.lastName || '') }}
                                 </div>
-                                <div class="text-xs leading-normal text-slate-500">{{ user?.role && AccountType[user.role] }}</div>
+                                <div class="text-xs leading-normal text-slate-500">
+                                    {{ user?.role !== AccountRole.Client ? AccountRole[user.role] : AccountType[user.role] }}
+                                </div>
                             </div>
                         </button>
                         <Transition name="fade-full">
@@ -263,7 +265,6 @@
 <script setup lang="ts">
 import BurgerIcon from '@/assets/icons/dashboard/burger.svg';
 import SearchIcon from '@/assets/icons/dashboard/search.svg';
-import BellIcon from '@/assets/icons/dashboard/bell.svg';
 import PlusIcon from '@/assets/icons/dashboard/plus.svg';
 import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
@@ -273,7 +274,7 @@ import XIcon from '@/assets/icons/dashboard/x.svg';
 import { Notification } from '~/types/dashboard/notification';
 import moment from 'moment';
 import { useAuthStore } from '~/store/authStore';
-import { AccountType } from '../../types';
+import { AccountRole, AccountType } from '../../types';
 import { UserInterface } from '~/types/auth/user-interface';
 import { storeToRefs } from 'pinia';
 import Emitter from 'tiny-emitter/instance.js';
