@@ -31,10 +31,19 @@ import HeartIcon from '@/assets/icons/dashboard/heart.svg';
 import { Toaster } from '@/components/ui/toast'
 const isSideNavCollapsedOnDesktop = ref(true);
 const showSideNav = ref(false);
+
+onMounted(() => {
+    // add scrollbar class to html tab
+    document.documentElement.classList.add('app-scroll');
+})
 </script>
 
 <style lang="postcss">
+html {
+  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-600 scrollbar-track-slate-300
+}
+
 .app-scroll {
-  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300
+  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-600 scrollbar-track-slate-300
 }
 </style>
