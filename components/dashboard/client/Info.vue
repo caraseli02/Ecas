@@ -126,13 +126,13 @@
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-slate-500 leading-[1.75]">Name</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails?.firstName }}
+                                    {{ firstName }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-slate-500 leading-[1.75]">Surname</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails?.lastName }}
+                                    {{ lastName }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">
@@ -275,14 +275,14 @@ const getCurrentDate = (date: string) => {
 await fetchInformation();
 
 const firstName = computed(() => {
-    if(customerInformation.value.role === AccountRole.Client) {
+    if (customerInformation.value.role === AccountRole.Client && customerInformation.value.accountType === AccountType.Personal) {
         return customerInformation.value?.personalDetails?.firstName;
     }
     return customerInformation.value?.contactDetails?.firstName;
 });
 
 const lastName = computed(() => {
-    if(customerInformation.value.role === AccountRole.Client) {
+    if (customerInformation.value.role === AccountRole.Client && customerInformation.value.accountType === AccountType.Personal) {
         return customerInformation.value?.personalDetails?.lastName;
     }
     return customerInformation.value?.contactDetails?.lastName;

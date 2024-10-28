@@ -67,35 +67,14 @@
                             <HeartIcon class="w-6 h-6 text-white xl:mb-1" />
                             <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block"> Favorites </span>
                         </button>
-                        <div class="relative" :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex') : 'xl:flex']">
-                            <button class="flex items-center -mr-2.5 xl:-mr-4" @click="showNotifications = true">
-                                <div class="flex items-center">
-                                    <div class="flex items-center flex-col">
-                                        <BellIcon class="w-6 h-6 text-white xl:mb-1" />
-                                        <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block">
-                                            Notifications
-                                        </span>
-                                    </div>
-                                    <span
-                                        v-if="unreadNotifications > 0"
-                                        class="flex items-center justify-center -translate-y-2 -translate-x-2.5 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5] xl:-translate-x-[38px] xl:-translate-y-[18px]"
-                                        :class="[unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]']"
-                                    >
-                                        <span>
-                                            {{ unreadNotifications }}
-                                        </span>
-                                    </span>
-                                </div>
-                            </button>
-                            <Transition name="slide-fast-from-bottom">
-                                <Notifications
-                                    v-if="showNotifications"
+                        <div class="relative" :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex') : 'flex items-center']">
+                                <LazyNotifications
                                     :notifications="notifications"
+                                    :unread-notifications="unreadNotifications"
                                     @delete="deleteNotification"
                                     @mark-as-read="markNotificationAsRead"
                                     @close="showNotifications = false"
                                 />
-                            </Transition>
                         </div>
                         <button class="flex items-center md:hidden" @click="showAccountModal = true">
                             <UserIcon class="w-6 h-6 text-white" />
@@ -218,7 +197,6 @@ import SearchIcon from '@/assets/icons/search.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
 import UserIcon from '@/assets/icons/user.svg';
 import CartIcon from '@/assets/icons/cart.svg';
-import BellIcon from '@/assets/icons/header/bell.svg';
 import XIcon from '@/assets/icons/x.svg';
 import Notifications from '@/components/global/Notifications.vue';
 import CartModal from '@/components/layout/favorites-cart-modal/Index.vue';
@@ -230,6 +208,7 @@ import { ProductSearchItems, SearchData } from '~/model/products/response/Produc
 import { CartInterface } from '~/model/cart/response/cart.interface';
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
+import { useAuthStore } from '~/store/authStore';
 
 const { $api } = useNuxtApp();
 const cartStore = useCartStore();
@@ -309,11 +288,11 @@ Emitter.on('update-cart', async (data: CartInterface) => {
     }
 });
 
-Emitter.on('notifications', async (notifications: boolean) => {
-    if (notifications) {
-        await fetchNofications();
-    }
-});
+// Emitter.on('notifications', async (notifications: boolean) => {
+//     if (notifications) {
+//         await fetchNofications();
+//     }
+// });
 
 const fetchList = async () => {
     const data = await getCart.value;
@@ -361,6 +340,8 @@ const showNotifications = ref(false);
 const fetchNofications = async () => {
     error.value = false;
     isLoading.value = true;
+    unreadNotifications.value = 0;
+    notifications.value = [];
 
     const response = await $api.notifications.fetchGetNotifications();
     if (response.status !== 'success') {
@@ -431,4 +412,16 @@ onMounted(() => {
 });
 
 Promise.all([fetchNofications(), fetchList()]);
+
+const authStore = useAuthStore();
+
+watch(() => authStore.token.value, async (newVal) => {
+    if (newVal) {        
+        await fetchNofications();
+        await fetchList();
+    } else {
+        notifications.value = [];
+        unreadNotifications.value = 0;
+    }
+}, {deep: true});
 </script>
