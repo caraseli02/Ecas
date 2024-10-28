@@ -26,7 +26,8 @@
                 <div class="text-stone-500 text-xs font-medium leading-5">
                     {{ getUserDetails?.clientCode || 'N/A' }}
                 </div>
-                <CopyIcon
+                <CopyClipboard
+                    :text="getUserDetails?._id as string"
                     class="aspect-square object-contain object-center w-4 h-4 overflow-hidden shrink-0 max-w-full my-auto text-[#9A9A9A]"
                 />
             </div>
@@ -39,7 +40,6 @@ import BuildingIcon from '@/assets/icons/menu/busines-buildings.svg';
 import UserIcon from '@/assets/icons/menu/user.svg';
 import PersonalCardIcon from '@/assets/icons/menu/personalcard.svg';
 import briefcaseIcon from '@/assets/icons/menu/briefcase.svg';
-import CopyIcon from '@/assets/icons/copy.svg';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountRole, AccountType } from '~/types';
