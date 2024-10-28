@@ -126,7 +126,7 @@ onMounted(() => {
         <div class="mb-[25px]">
             <table class="w-full">
                 <tr
-                    v-for="(item, index) in features.filter((feature) => feature.FeatureValue !== '')"
+                    v-for="(item, index) in features?.filter((feature) => feature?.FeatureValue !== '')"
                     :key="index"
                     class="group w-full text-xs leading-tight font-medium font-Inter text-left cursor-pointer transition-colors duration-300 odd:bg-[#F2F2F2] hover:text-blue-500"
                     @click="item.checked = !item.checked"

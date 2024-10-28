@@ -188,8 +188,9 @@ const loginWithGoogle = async () => {
     await registerUser();
     const parsedToken = await getParsedFirebaseJWTToken();
     const token = await getUserToken();
+    authStore.addToken(token);
     authStore.addUser(parsedToken);
-
+    
     if (!parsedToken.hasOwnProperty('permissions')) {
         authStore.addFirebaseToken(token);
         return navigateTo('/signup');

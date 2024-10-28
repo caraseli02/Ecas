@@ -50,7 +50,7 @@ const authStore = useAuthStore();
 
 const { logout } = useFirebaseAuth();
 
-const firebaseToken = authStore.firebaseTempToken;
+const firebaseToken = authStore.token.value;
 const userInfo = authStore.loggedInUser;
 
 const selectedType = useState<SignupAccountType | ''>('signup-account-type', () => '');
@@ -303,7 +303,7 @@ function mapType(selected: string,): AccountType {
       break;
   }
   // Return a general default or handle error, if no cases match
-  throw new Error("Invalid account type selection");
+  throw new Error('Invalid account type selection');
 }
 
 const backToSelectMenu = async () => {
@@ -479,13 +479,14 @@ const handleSubmit = async () => {
         }
 
         try {
-            const request = firebaseToken ? await registerFirebaseSignup(payload) : await registerClassicSignup(payload);
-
+            firebaseToken ? await registerFirebaseSignup(payload) : await registerClassicSignup(payload);
             await logout();
             // TODO: Notification banner
         } catch (error) {
             console.log(error);
             return;
+        } finally {
+            clearFormData();
         }
 
         currentStep.value++;
@@ -501,4 +502,29 @@ useHead({
 });
 
 const vatPayer = ref(false);
+
+const clearFormData = () => {
+    // Clear personal details
+    for (const key in personalDetails.value) {
+        personalDetails.value[key].value = '';
+        personalDetails.value[key].error = '';
+    }
+    // Clear business details
+    for (const key in businessDetails.value) {
+        businessDetails.value[key].value = '';
+        businessDetails.value[key].error = '';
+    }
+    // Clear contact details
+    for (const key in contactDetails.value) {
+        contactDetails.value[key].value = '';
+        contactDetails.value[key].error = '';
+    }
+    // Clear profile details
+    for (const key in profileDetails.value) {
+        profileDetails.value[key].value = '';
+        profileDetails.value[key].error = '';
+    }
+};
+
+const isSubmitDisabled = computed(() => !profileDetails.value.agreeToTerms);
 </script>

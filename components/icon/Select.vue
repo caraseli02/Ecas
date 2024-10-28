@@ -42,7 +42,7 @@ function selectIcon(icon: IconName): void {
                         <IconAsync :key="selectedIcon" :name="selectedIcon" class="aspect-square stroke-1 w-7 h-7" />
                     </div>
                     <UiButton size="lg">
-                        Select SVG icon
+                        Upload SVG icon
                     </UiButton>
                 </section>
             </section>

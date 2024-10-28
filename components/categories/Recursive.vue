@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { PlugIcon } from 'lucide-vue-next';
 import DomainsRecursive from './Recursive.vue';
 import type { TaxonomyInterface } from '~/types/dashboard/categories';
+import CardPlaceholderSmall from '@/assets/icons/card-placeholder-small.svg';
 
 const props = defineProps<{
     items: TaxonomyInterface[];
@@ -24,11 +24,14 @@ const computedPadding = computed(() => {
                 class="w-full flex items-center gap-2 py-2 max-md:flex-wrap px-3">
                 <article
                     class="flex items-center flex-1 gap-2 self-stretch rounded-lg bg-white bg-opacity-0 max-md:flex-wrap">
-                    <UiCheckbox :checked="selectedCategories.includes(item.id)" @update:checked="selectCategory(item.id)" />
+                    <UiCheckbox :checked="selectedCategories.includes(item.id)"
+                        @update:checked="selectCategory(item.id)" />
                     <div :style="{ 'padding-left': computedPadding + 'px' }" class="flex gap-2 max-w-[348px]">
                         <figure class="ml-10 flex justify-center items-center min-w-10 h-10 rounded-lg bg-light-300">
-                            <IconAsync v-if="item.icon" :name="item.icon" class="h-5 w-5 stroke-1" />
-                            <PlugIcon v-else class="w-5 aspect-square stroke-1" />
+                            <div v-if="item.icon && item.icon !== 'N/A' && item.icon.includes('.svg')"
+                                class="h-5 w-5 stroke-1" v-html="item.icon" />
+                            <CardPlaceholderSmall v-else-if="item.icon === 'N/A'" class="w-5 aspect-square stroke-1" />
+                            <CardPlaceholderSmall v-else class="w-5 aspect-square stroke-1" />
                         </figure>
                         <p
                             class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full">
@@ -43,23 +46,29 @@ const computedPadding = computed(() => {
                         {{ item.isPublished ? 'Published' : 'Unpublished' }}
                     </div>
                 </article>
-                <CategoriesRowActions :parentId="parentId" :category="item" />
+                <CategoriesRowActions :parent-id="parentId" :category="item" />
             </section>
             <UiAccordion v-else type="multiple" class="w-full border-none flex flex-col gap-1" collapsible>
                 <UiAccordionItem v-slot="{ open }" :value="item.name">
                     <div class="flex items-center gap-1 hover:bg-light-200 px-3"
                         :class="{ 'bg-light-200 border-t': open }">
-                        <UiCheckbox :checked="selectedCategories.includes(item.id)" @update:checked="selectCategory(item.id)" />
+                        <UiCheckbox :checked="selectedCategories.includes(item.id)"
+                            @update:checked="selectCategory(item.id)" />
                         <UiAccordionTrigger
                             class="flex-row-reverse justify-center gap-2.5 py-1 truncate min-w-10 max-w-[50px] h-7" />
                         <section class="w-full flex gap-2 items-center py-2  max-md:flex-wrap">
                             <article
                                 class="flex flex-1 gap-2 self-stretch rounded-lg bg-white bg-opacity-0 max-md:flex-wrap">
-                                <div :style="{ 'padding-left': computedPadding + 'px' }" class="flex gap-2 max-w-[308px]">
+                                <div :style="{ 'padding-left': computedPadding + 'px' }"
+                                    class="flex gap-2 max-w-[308px]">
                                     <figure
                                         class="flex justify-center items-center px-2.5 min-w-10 h-10 rounded-lg bg-light-300">
-                                        <IconAsync v-if="item.icon" :name="item.icon" class="h-5 w-5 stroke-1" />
-                                        <PlugIcon v-else class="w-5 aspect-square stroke-1" />
+                                        <div v-if="item.icon && item.icon !== 'N/A' && item.icon.includes('.svg')"
+                                            class="h-5 w-5 stroke-1" v-html="item.icon" />
+                                        <CardPlaceholderSmall v-else-if="item.icon === 'N/A'"
+                                            class="w-5 aspect-square stroke-1" />
+                                        <CardPlaceholderSmall v-else
+                                            class="w-5 aspect-square stroke-1" />
                                     </figure>
                                     <p
                                         class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full">
@@ -74,25 +83,31 @@ const computedPadding = computed(() => {
                                     {{ item.isPublished ? 'Published' : 'Unpublished' }}
                                 </div>
                             </article>
-                            <CategoriesRowActions :parentId="parentId" :category="item" />
+                            <CategoriesRowActions :parent-id="parentId" :category="item" />
                         </section>
                     </div>
-                    <UiAccordionContent :class="{ 'last:border-b-[0.5px]': open }" class="ml-0 pb-0 flex flex-col gap-1">
+                    <UiAccordionContent :class="{ 'last:border-b-[0.5px]': open }"
+                        class="ml-0 pb-0 flex flex-col gap-1">
                         <!-- Recursively pass the increased depth -->
-                        <component :is="DomainsRecursive" v-if="item.subcategory && item.subcategory.length > 0" :items="item.subcategory" 
-                            :parentId="parentId" :depth="(props.depth || 0) + 1" />
+                        <component :is="DomainsRecursive" v-if="item.subcategory && item.subcategory.length > 0"
+                            :items="item.subcategory" :parent-id="parentId" :depth="(props.depth || 0) + 1" />
                         <div v-else class="flex flex-col px-3">
                             <template v-for="child in item.subcategory" :key="child.uuid">
                                 <section class="w-full flex gap-2 items-center py-2  max-md:flex-wrap">
-                                    <UiCheckbox :checked="selectedCategories.includes(item.id)" @update:checked="selectCategory(item.id)" />
+                                    <UiCheckbox :checked="selectedCategories.includes(item.id)"
+                                        @update:checked="selectCategory(item.id)" />
                                     <article
                                         class="flex items-center flex-1 gap-2 self-stretch ml-5 px-5 rounded-lg bg-white bg-opacity-0 max-md:flex-wrap">
-                                        <div :style="{ 'padding-left': computedPadding + 'px' }" class="flex gap-2 max-w-[348px]">
+                                        <div :style="{ 'padding-left': computedPadding + 'px' }"
+                                            class="flex gap-2 max-w-[348px]">
                                             <figure
                                                 class="flex ml-4 justify-center items-center px-2.5 min-w-10 h-10 rounded-lg bg-light-300">
-                                                <IconAsync v-if="item.icon" :name="item.icon"
-                                                    class="h-5 w-5 stroke-1" />
-                                                <PlugIcon v-else class="w-5 aspect-square stroke-1" />
+                                                <div v-if="child.icon && child.icon !== 'N/A' && child.icon.includes('.svg')"
+                                                    class="h-5 w-5 stroke-1" v-html="child.icon" />
+                                                <CardPlaceholderSmall v-else-if="child.icon === 'N/A'"
+                                                    class="w-5 aspect-square stroke-1" />
+                                                <CardPlaceholderSmall v-else
+                                                    class="w-5 aspect-square stroke-1" />
                                             </figure>
                                             <p
                                                 class="my-auto text-sm font-medium leading-4 text-neutral-700 max-md:max-w-full min-w-[260px] flex flex-col justify-between h-full">
@@ -107,7 +122,7 @@ const computedPadding = computed(() => {
                                             {{ item.isPublished ? 'Published' : 'Unpublished' }}
                                         </div>
                                     </article>
-                                    <CategoriesRowActions :parentId="item.id" :category="item" />
+                                    <CategoriesRowActions :parent-id="item.id" :category="item" />
                                 </section>
                             </template>
                         </div>

@@ -30,6 +30,7 @@ const addProduct = () => {
 };
 
 const addToCart = async () => {
+    isLoading.value = true;
     const productsPayload: CartProductsInterface[] = [];
     for (const product of products.value) {
         if (product.code) {
@@ -43,7 +44,9 @@ const addToCart = async () => {
     const object = await $api.cart.addEntityToCart(payload);
     if (object.status === 'success') {
         await cartStore.updateAndReturnCart();
+        isOpen.value = false;
     }
+    isLoading.value = false;
 };
 
 onMounted(() => {
@@ -51,6 +54,9 @@ onMounted(() => {
         products.value.push({ code: '', quantity: 1 });
     }
 });
+
+const isOpen = ref(false);
+const isLoading = ref(false);
 </script>
 
 <template>
@@ -63,12 +69,10 @@ onMounted(() => {
             class="text-xs text-center text-slate-500 px-[15px] mb-6 md:px-2.5 md:mb-[15px] lg:mb-6 xl:text-sm xl:mb-[24px]">
             Are you in a hurry? Use the Quick Buy feature!
         </p>
-        <UiDialog>
+        <UiDialog v-model:open="isOpen">
             <UiDialogTrigger as-child>
                 <div class="flex gap-2.5 py-3">
-                    <button
-class="flex items-center justify-center flex-1 bg-blue-500 rounded-lg text-white py-2"
-                        @click="addToCart()">
+                    <button class="flex items-center justify-center flex-1 bg-blue-500 rounded-lg text-white py-2">
                         <CartIcon class="w-6 h-6 mr-2" />
                         <span class="text-sm font-medium">Add to cart</span>
                     </button>
@@ -79,8 +83,7 @@ class="flex items-center justify-center flex-1 bg-blue-500 rounded-lg text-white
                     <UiDialogTitle>Quick buy</UiDialogTitle>
                 </UiDialogHeader>
                 <div class="grid gap-4 py-4">
-                    <QuickBuyInput
-v-for="(product, index) in products" :key="index" :index="index" :code="product.code"
+                    <QuickBuyInput v-for="(product, index) in products" :key="index" :index="index" :code="product.code"
                         :quantity="product.quantity" @update-product="updateProduct" @remove-product="removeProduct" />
                 </div>
                 <UiDialogFooter class="w-full">
@@ -88,7 +91,7 @@ v-for="(product, index) in products" :key="index" :index="index" :code="product.
                         <UiButton variant="secondary" @click="addProduct">
                             <PlusIcon class="w-5 h-5" />
                         </UiButton>
-                        <UiButton class="w-full" @click="addToCart()">
+                        <UiButton :disabled="isLoading" class="w-full" @click="addToCart">
                             <CartIcon class="w-6 h-6 mr-2" />
                             <span class="text-sm font-medium">Add to cart</span>
                         </UiButton>
