@@ -26,7 +26,8 @@
                 <div class="text-stone-500 text-xs font-medium leading-5">
                     {{ getUserDetails?._id }}
                 </div>
-                <CopyIcon
+                <CopyClipboard
+                    :text="getUserDetails?._id as string"
                     class="aspect-square object-contain object-center w-4 h-4 overflow-hidden shrink-0 max-w-full my-auto text-[#9A9A9A]"
                 />
             </div>
