@@ -2,12 +2,13 @@
 import { PlusIcon } from 'lucide-vue-next';
 import { usePricingStore } from '~/store/pricingStore';
 import { useNuxtApp } from '#app';
+import { storeToRefs } from 'pinia';
 
 const { $api } = useNuxtApp();
 
-const pricingStore = usePricingStore();
 
-const isOpen = ref(false);
+const pricingStore = usePricingStore();
+const { showQuantityModal } = storeToRefs(pricingStore);
 
 const quantityList = ref([{ id: 1, min: 0, max: 0 }]);
 
@@ -57,10 +58,7 @@ const createNewQuantityTemplate = async () => {
 </script>
 
 <template>
-    <UiDialog v-model:open="isOpen">
-        <UiDialogTrigger as-child>
-            <UiButton class="justify-start hover:text-blue-500" variant="ghost">Quantity</UiButton>
-        </UiDialogTrigger>
+    <UiDialog v-model:open="showQuantityModal">
         <UiDialogContent class="max-w-sm p-4 sm:max-w-[480px] gap-10 border-none rounded-xl shadow-s">
             <UiDialogHeader>
                 <UiDialogTitle>Create Quantity Template</UiDialogTitle>
@@ -83,7 +81,7 @@ const createNewQuantityTemplate = async () => {
                     type="button"
                     @click="
                         createNewQuantityTemplate();
-                        isOpen = false;
+                        showQuantityModal = false;
                     "
                 >
                     Create

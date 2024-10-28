@@ -5,7 +5,10 @@ import { usePricingStore } from '~/store/pricingStore';
 import { useNuxtApp } from '#app';
 import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 
+import { storeToRefs } from 'pinia';
+
 const pricingStore = usePricingStore();
+const { showEntryModal } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
 
@@ -27,7 +30,9 @@ function deleteAllSelected() {
 }
 
 const editItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
-    entryPriceList.value = itemValue;
+    showEntryModal.value = true;
+    
+    // entryPriceList.value = itemValue;
 };
 
 const selectedCount = computed(() => entryPriceList.value.filter((i) => i.selected).length);

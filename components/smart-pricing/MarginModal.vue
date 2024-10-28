@@ -2,10 +2,12 @@
 import { PlusIcon, Trash2Icon } from 'lucide-vue-next';
 import { useNuxtApp } from '#app';
 import { usePricingStore } from '~/store/pricingStore';
+import { storeToRefs } from 'pinia';
+
+const pricingStore = usePricingStore();
+const { showMarginModal } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
-const pricingStore = usePricingStore();
-const isOpen = ref(false);
 
 const marginList = ref([{ id: 1, value: '' }]);
 
@@ -41,10 +43,7 @@ const createNewMarginTemplate = async () => {
 </script>
 
 <template>
-    <UiDialog v-model:open="isOpen">
-        <UiDialogTrigger as-child>
-            <UiButton class="justify-start hover:text-blue-500" variant="ghost">Margin</UiButton>
-        </UiDialogTrigger>
+    <UiDialog v-model:open="showMarginModal">
         <UiDialogContent class="max-w-sm p-4 sm:max-w-[480px] gap-10 border-none rounded-xl shadow-s">
             <UiDialogHeader>
                 <UiDialogTitle>Create Margin Template</UiDialogTitle>
@@ -83,7 +82,7 @@ const createNewMarginTemplate = async () => {
                     type="button"
                     @click="
                         createNewMarginTemplate();
-                        isOpen = false;
+                        showMarginModal = false;
                     "
                 >
                     Create
