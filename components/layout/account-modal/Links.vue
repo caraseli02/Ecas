@@ -42,7 +42,6 @@ const emit = defineEmits<{
 }>();
 
 const route = useRoute()
-console.log(route);
 
 
 const isAdmin = computed(() => {

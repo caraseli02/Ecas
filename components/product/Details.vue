@@ -4,7 +4,7 @@
             <div class="flex items-center">
                 <div class="text-xl leading-tight font-semibold mr-2">{{ product.alias }}</div>
                 <button class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500">
-                    <CopyIcon class="w-5 h-5" />
+                    <CopyClipboard :text="product.alias || 'N/A'"  class="w-5 h-5" />
                 </button>
             </div>
             <img :src="product.details?.ProductImage.ProductImageLarge" alt="Microchip Logo" class="w-[82px] h-[50px] object-contain" />
