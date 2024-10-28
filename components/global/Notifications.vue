@@ -34,7 +34,7 @@ class="z-10 hover:z-10 hover:bg-slate-200 w-8 h-8" size="icon" variant="secondar
                 </div>
 
                 <UiTabs v-model="selectedTab">
-                    <UiTabsList class="bg-white min-h-9 ml-2 p-0 w-full justify-start overflow-x-scroll lg:overscroll-x-none overflow-y-hidden rounded-none">
+                    <UiTabsList class="bg-white min-h-9 ml-2 p-0 w-full justify-start scrollbar-none overflow-x-scroll lg:overscroll-x-none overflow-y-hidden rounded-none">
                         <template v-for="tab in tabs" :key="tab.value">
                             <UiTabsTrigger
                                 class="pb-3 data-[state=active]:shadow-none data-[state=active]:text-blue-500 relative"
