@@ -3,6 +3,7 @@ import AlertsItem from './AlertsItem.vue';
 import { AlertAndNotificationType } from '~/types/dashboard/control-panel';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
+import { AccountType } from '~/types';
 
 const authStore = useAuthStore();
 
@@ -79,6 +80,7 @@ const settings = reactive({
             title="Order Shipping Updates"
         />
         <AlertsItem
+            v-if="getUserDetails.accountType === AccountType.Business"
             v-model:email="settings.pendingAgents.email"
             v-model:app="settings.pendingAgents.app"
             :alert-key="'pendingAgents'"
