@@ -14,6 +14,10 @@ export const usePricingStore = defineStore({
             showEntryModal: false,
             showMarginModal: false,
             showQuantityModal: false,
+            editEntryPriceModal: null as PriceSettingsInterface | null,
+            editQuantityModal: null as PriceSettingsInterface | null,
+            editMarginModal: null as PriceSettingsInterface | null,
+            type: 'add' || 'edit',
         };
     },
     actions: {
@@ -60,6 +64,15 @@ export const usePricingStore = defineStore({
         },
         removeMarginRange(_id: string) {
             this.margin = this.margin.filter((margin: any) => margin._id !== _id);
+        },
+        editPriceRange(range: { min: number | null; max: number | null }, label: string | null, _id: string) {
+            this.range = this.range.map((r: any) => {
+                if (r._id === _id) {
+                    r.value = [`$${range.min} - $${range.max}`];
+                    r.label = label;
+                }
+                return r;
+            });
         },
     },
     getters: {

@@ -24,7 +24,18 @@ const deleteItem = async (itemValue: { value: string[]; selected: boolean; label
 };
 
 function deleteAllSelected() {
-    marginList.value = marginList.value.filter((i) => !i.selected);
+    const selectedItems = marginList.value.filter((i) => i.selected);
+    console.log(selectedItems);
+
+    selectedItems.map(async (margin) => {
+        const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Margins, margin._id);
+        if (response.status !== 'success') {
+            // Add your logic here to handle the deletion error
+            return;
+        }
+        pricingStore.removeMarginRange(margin._id);
+        marginList.value = marginList.value.filter((i) => i._id !== margin._id);
+    });
 }
 
 const selectedCount = computed(() => marginList.value.filter((i) => i.selected).length);

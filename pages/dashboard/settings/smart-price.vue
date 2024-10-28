@@ -8,7 +8,8 @@ definePageMeta({
 });
 
 const pricingStore = usePricingStore();
-const { showEntryModal, showMarginModal, showQuantityModal } = storeToRefs(pricingStore);
+const { showEntryModal, showMarginModal, showQuantityModal, editEntryPriceModal, editMarginModal, editQuantityModal } =
+    storeToRefs(pricingStore);
 
 const selectedTab = ref('entryPrice');
 
@@ -56,9 +57,33 @@ watch(
                         </UiButton>
                     </UiPopoverTrigger>
                     <UiPopoverContent align="end" class="w-[220px] flex flex-col">
-                        <UiButton class="justify-start hover:text-blue-500" variant="ghost" @click="showEntryModal = true">Entry Price</UiButton>
-                        <UiButton class="justify-start hover:text-blue-500" variant="ghost" @click="showQuantityModal = true">Quantity</UiButton>
-                        <UiButton class="justify-start hover:text-blue-500" variant="ghost" @click="showMarginModal = true">Margin</UiButton>
+                        <UiButton
+                            class="justify-start hover:text-blue-500"
+                            variant="ghost"
+                            @click="
+                                showEntryModal = true;
+                                editEntryPriceModal = null;
+                            "
+                            >Entry Price
+                        </UiButton>
+                        <UiButton
+                            class="justify-start hover:text-blue-500"
+                            variant="ghost"
+                            @click="
+                                showQuantityModal = true;
+                                editQuantityModal = null;
+                            "
+                            >Quantity
+                        </UiButton>
+                        <UiButton
+                            class="justify-start hover:text-blue-500"
+                            variant="ghost"
+                            @click="
+                                showMarginModal = true;
+                                editMarginModal = null;
+                            "
+                            >Margin
+                        </UiButton>
                     </UiPopoverContent>
                 </UiPopover>
             </section>

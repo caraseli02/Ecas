@@ -25,14 +25,24 @@ const deleteItem = async (itemValue: { value: string[]; selected: boolean; label
 };
 
 function deleteAllSelected() {
-    quantityList.value = quantityList.value.filter((i) => !i.selected);
+    const selectedItems = quantityList.value.filter((i) => i.selected);
+    console.log(selectedItems);
+
+    selectedItems.map(async (quantity) => {
+        const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Quantity, quantity._id);
+        if (response.status !== 'success') {
+            // Add your logic here to handle the deletion error
+            return;
+        }
+        pricingStore.removeQuantityRange(quantity._id);
+        quantityList.value = quantityList.value.filter((i) => i._id !== quantity._id);
+    });
 }
 
 const selectedCount = computed(() => quantityList.value.filter((i) => i.selected).length);
 
 const editItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
     showQuantityModal.value = true;
-    
     // entryPriceList.value = itemValue;
 };
 </script>

@@ -8,7 +8,7 @@ import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 import { storeToRefs } from 'pinia';
 
 const pricingStore = usePricingStore();
-const { showEntryModal } = storeToRefs(pricingStore);
+const { showEntryModal, pricing } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
 
@@ -26,13 +26,28 @@ const deleteItem = async (itemValue: { value: string[]; selected: boolean; label
 };
 
 function deleteAllSelected() {
-    entryPriceList.value = entryPriceList.value.filter((i) => !i.selected);
+    const selectedItems = entryPriceList.value.filter((i) => i.selected);
+    console.log(selectedItems);
+
+    selectedItems.map(async (price) => {
+        const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Range, price._id);
+        if (response.status !== 'success') {
+            // Add your logic here to handle the deletion error
+            return;
+        }
+        pricingStore.removePriceRange(price._id);
+        entryPriceList.value = entryPriceList.value.filter((i) => i._id !== price._id);
+    });
 }
 
 const editItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
+    if (!pricing) {
+        console.error('Pricing is not defined');
+        return;
+    }
+    const filteredItems = pricing.value ? pricing.value.filter((i) => i._id === itemValue._id) : [];
+    pricingStore.editEntryPriceModal = filteredItems.length > 0 ? filteredItems[0] : null;
     showEntryModal.value = true;
-    
-    // entryPriceList.value = itemValue;
 };
 
 const selectedCount = computed(() => entryPriceList.value.filter((i) => i.selected).length);
