@@ -1,6 +1,10 @@
 import { ref } from 'vue';
 import { useAuthStore } from '~/store/authStore';
-import { CustomerDashboardActivityData, ProductBannerInterface, ViewHistoryProductInterface } from '~/model/dashboard/customer-information/customer-information';
+import {
+    CustomerDashboardActivityData,
+    ProductBannerInterface,
+    ViewHistoryProductInterface,
+} from '~/model/dashboard/customer-information/customer-information';
 import { BillingAddressInterface, ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
 import { AccountType, StripeCardInterface } from '~/types';
@@ -111,6 +115,7 @@ export const useCustomerDashboard = () => {
                 _id: item.productInfo._id,
                 class: item.productInfo.class,
                 alias: item.productInfo.alias,
+                name: item.productInfo.name,
                 description: item.productInfo.description,
                 variant: item.productInfo.variant,
                 manufacturer: item.productInfo.manufacturer,

@@ -83,7 +83,7 @@ const handleSlideTo = (index: number) => {
 
 const addToFavourite = async (product: ProductDetail) => {
     const payload: FavouriteFolderRequestInterface = {
-        name: product.alias,
+        name: product.name,
         isFolder: false,
         products: { id: product._id, stock: product.stock || 1 },
     };
