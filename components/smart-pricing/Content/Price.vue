@@ -3,6 +3,7 @@ import { SearchIcon, Trash2Icon } from 'lucide-vue-next';
 import { usePricingStore } from '~/store/pricingStore';
 
 import { useNuxtApp } from '#app';
+import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 
 const pricingStore = usePricingStore();
 
@@ -12,17 +13,22 @@ const entryPriceList = ref(pricingStore.range);
 
 const deleteItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
     // console.log(itemValue);
-    const response = await $api.smartPricing.deletePriceRange(itemValue._id);
+    const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Range, itemValue._id);
     if (response.status !== 'success') {
         // Add your logic here to handle the deletion error
         return;
     }
+    pricingStore.removePriceRange(itemValue._id);
     entryPriceList.value = entryPriceList.value.filter((i) => i._id !== itemValue._id);
 };
 
 function deleteAllSelected() {
     entryPriceList.value = entryPriceList.value.filter((i) => !i.selected);
 }
+
+const editItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
+    entryPriceList.value = itemValue;
+};
 
 const selectedCount = computed(() => entryPriceList.value.filter((i) => i.selected).length);
 </script>
@@ -50,6 +56,7 @@ const selectedCount = computed(() => entryPriceList.value.filter((i) => i.select
             :item="item"
             @delete-item="deleteItem(item)"
             @update-selected="item.selected = $event"
+            @edit-item="editItem(item)"
         />
     </section>
 </template>

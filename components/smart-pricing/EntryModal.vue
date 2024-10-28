@@ -16,15 +16,17 @@ const isOpen = ref(false);
 const priceRange = ref<PriceRangeType>({ min: null, max: null, label: null });
 // Handle the "Create" button click
 const handleCreate = async () => {
-    if (priceRange.value.min === null || priceRange.value.max === null) {
+    console.log(priceRange.value);
+    if (
+        priceRange.value.min === null ||
+        priceRange.value.max === null ||
+        priceRange.value.min >= priceRange.value.max ||
+        priceRange.value.min < 0 ||
+        priceRange.value.max < 0
+    ) {
         // Add your logic here to handle the creation without the price range values
         return;
     }
-    console.log({
-        min: priceRange.value.min,
-        max: priceRange.value.max,
-        label: priceRange.value.label || `${pricingStore.range?.length + 1}`,
-    });
     const response = await $api.smartPricing.setNewPriceRange({
         min: priceRange.value.min,
         max: priceRange.value.max,
