@@ -132,6 +132,7 @@ const { userDetails } = storeToRefs(authStore);
 
 // Update tab badges based on notifications
 const updateTabs = () => {
+    selectedTab.value = 'all';
     const accountType = getAccountTypeById(userDetails.value?.accountType as number);
     const allCount = props.notifications.length;
     const usersCount = props.notifications.filter(n => n.group === NotificationsGroups.Users).length;
