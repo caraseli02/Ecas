@@ -8,7 +8,7 @@ export const usePricingStore = defineStore({
     state: () => {
         return {
             pricing: null as PriceSettingsInterface[] | null,
-            range: null as any | null,
+            range: [] as any[],
             quantity: null as any | null,
             margin: null as any | null,
             showEntryModal: false,

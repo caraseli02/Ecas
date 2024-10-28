@@ -8,11 +8,11 @@ import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 import { storeToRefs } from 'pinia';
 
 const pricingStore = usePricingStore();
-const { showEntryModal, pricing } = storeToRefs(pricingStore);
+const { showEntryModal, pricing, range } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
 
-const entryPriceList = ref(pricingStore.range);
+const entryPriceList = ref(range.value);
 
 const deleteItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
     // console.log(itemValue);

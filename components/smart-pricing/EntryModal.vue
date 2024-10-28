@@ -48,7 +48,6 @@ const handleCreate = async () => {
             priceRange.value.label,
             editEntryPriceModal.value._id
         );
-        await pricingStore.updateAndReturnPricing();
     } else if (pricingStore.type === 'add') {
         const response = await $api.smartPricing.setNewPriceRange({
             min: priceRange.value.min,
@@ -67,8 +66,10 @@ const handleCreate = async () => {
             priceRange.value.label || `EP-${pricingStore.range?.length + 1}`,
             response.data.id
         );
+        console.log(pricingStore.range);
     }
 
+    showEntryModal.value = false;
     // Add your logic here to handle the creation with the price range values
 };
 </script>
@@ -86,16 +87,7 @@ const handleCreate = async () => {
                 <UiDialogClose as-child>
                     <UiButton type="button" variant="secondary"> Cancel</UiButton>
                 </UiDialogClose>
-                <UiButton
-                    class="w-full"
-                    type="button"
-                    @click="
-                        handleCreate();
-                        showEntryModal = false;
-                    "
-                >
-                    Create
-                </UiButton>
+                <UiButton class="w-full" type="button" @click="handleCreate()"> Create</UiButton>
             </UiDialogFooter>
         </UiDialogContent>
     </UiDialog>
