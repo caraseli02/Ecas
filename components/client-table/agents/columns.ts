@@ -9,11 +9,10 @@ import UserDashboardService from '~/services/dashboard/user.service';
 import StatusWithColor from '~/components/dataTable/StatusWithColor.vue';
 
 const statusName = {
+    0: 'Inactive',
     1: 'Active',
-    2: 'Disabled',
-    3: 'Pending',
+    2: 'Pending',
 };
-
 const statusColors = {
     Active: 'bg-green-800',
     Disabled: 'bg-pink-500',
@@ -26,7 +25,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
         header: ({ column }) => h(ColumnHeader, { column, title: 'Name' }),
         cell: ({ row }) =>
             h(UserInfo, {
-                name: `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'add userName',
+                name: `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'N/A',
                 email: row.original.contactDetails?.email,
                 navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
             }),
