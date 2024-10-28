@@ -19,7 +19,7 @@
               {{ item.alias }}
             </NuxtLink>
             <button class="flex">
-              <CopyIcon class="w-[22px] h-[22px] text-slate-500 transition-colors duration-300 hover:text-blue-500"/>
+              <CopyClipboard :text="item.alias || 'N/A'" class="w-[22px] h-[22px] text-slate-500 transition-colors duration-300 hover:text-blue-500"/>
             </button>
           </div>
           <button
