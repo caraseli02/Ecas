@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import { SearchIcon, Trash2Icon } from 'lucide-vue-next';
 import { usePricingStore } from '~/store/pricingStore';
+import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
+import { useNuxtApp } from '#app';
 
 const pricingStore = usePricingStore();
+const { $api } = useNuxtApp();
 
 const marginList = ref(pricingStore.margin);
 
-const deleteItem = (itemLabel: string) => {
-    marginList.value = marginList.value.filter((i) => i.label !== itemLabel);
+const deleteItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
+    const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Margins, itemValue._id);
+    if (response.status !== 'success') {
+        // Add your logic here to handle the deletion error
+        return;
+    }
+    pricingStore.removeMarginRange(itemValue._id);
+    marginList.value = marginList.value.filter((i) => i._id !== itemValue._id);
 };
 
 function deleteAllSelected() {
@@ -38,7 +47,7 @@ const selectedCount = computed(() => marginList.value.filter((i) => i.selected).
             v-for="item in marginList"
             :key="item.label"
             :item="item"
-            @deleteItem="deleteItem(item.label)"
+            @deleteItem="deleteItem(item)"
             @updateSelected="item.selected = $event"
         />
     </section>

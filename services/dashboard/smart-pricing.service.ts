@@ -55,10 +55,10 @@ class SmartPricingService extends HttpFactory {
         });
     }
 
-    async deletePriceRange(id: string) {
+    async deleteSmartPricingEntity(type: PriceSettingsTypeEnum, id: string) {
         const token = this.authStore.getToken();
         const data = {
-            type: PriceSettingsTypeEnum.Range,
+            type: type,
         };
         return await this.call<{ status: string; data: string }>('DELETE', `${this.MAIN}/price-setting/${id}`, data, {
             headers: { Authorization: `Bearer ${token}` },

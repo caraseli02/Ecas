@@ -49,6 +49,15 @@ export const usePricingStore = defineStore({
         addMarginRange(margin: { values: string[]; label: string | null }, _id: string) {
             this.margin.push({ value: margin.values, label: margin.label, selected: false, _id: _id });
         },
+        removePriceRange(_id: string) {
+            this.range = this.range.filter((range: any) => range._id !== _id);
+        },
+        removeQuantityRange(_id: string) {
+            this.quantity = this.quantity.filter((quantity: any) => quantity._id !== _id);
+        },
+        removeMarginRange(_id: string) {
+            this.margin = this.margin.filter((margin: any) => margin._id !== _id);
+        },
     },
     getters: {
         getPricing: async (state) => {

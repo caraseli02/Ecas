@@ -28,6 +28,11 @@ function updateQuantity(id: number, quantity: { min: number; max: number }) {
 
 const createNewQuantityTemplate = async () => {
     console.log(quantityList);
+    if (quantityList.value.find((item) => item.min >= item.max || item.min < 0 || item.max < 0 || item.min === 0 || item.max === 0)) {
+        // Add your logic here to handle the creation without the price range values
+        return;
+    }
+    // Add your logic here to handle the creation
     const maxValues = quantityList.value.map((item) => item.max);
 
     const response = await $api.smartPricing.setNewQuantityRange({
