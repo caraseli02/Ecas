@@ -1,152 +1,184 @@
 <template>
-    <div
-        v-click-outside="() => $emit('close')"
-        class="flex flex-col fixed z-50 top-0 left-0 w-full h-full bg-white shadow-m md:absolute md:w-[316px] md:h-[508px] md:max-h-[80vh] md:left-[unset] md:right-0 md:top-[unset] md:-bottom-2.5 md:translate-y-full md:rounded-xl md:overflow-hidden"
-    >
-        <div class="relative flex items-center justify-between py-4 px-3 shadow-s">
-            <button
-                class="flex items-center text-slate-500 transition-colors duration-300 hover:text-blue-500 md:hidden"
-                @click="$emit('close')"
-            >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2">
-                    <path
-                        d="M6.3826 3.95312L2.33594 7.99979L6.3826 12.0465"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-miterlimit="10"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                    <path
-                        d="M13.6653 8L2.44531 8"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-miterlimit="10"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
-                <span class="text-sm leading-[1.43] font-medium"> Back </span>
-            </button>
-            <div
-                class="max-md:absolute max-md:top-1/2 max-md:left-1/2 max-md:-translate-x-1/2 max-md:-translate-y-1/2 text-sm leading-[1.43] font-medium"
-            >
-                Notifications
-            </div>
-            <button class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500">
-                <SettingsIcon class="w-6 h-6" />
-            </button>
-        </div>
-        <div class="flex-1 overflow-y-auto notifications-scroll">
-            <NuxtLink
-                v-for="(notification, index) in notifications"
-                :key="index"
-                :to="`${route.path}`"
-                event=""
-                class="flex flex-col w-full bg-white pt-2 pb-1 px-3 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
-                @click.prevent="markNotificationAsRead(notification, index)"
-            >
-                <div class="flex items-center justify-between w-full mb-2">
-                    <div class="flex items-center">
-                        <NotificationIcon
-                            class="w-5 h-5 mr-2"
-                            :class="[
-                                notification.title === 'Others'
-                                    ? 'text-slate-500'
-                                    : notification.title === 'Password change' || notification.title === 'Reset password'
-                                    ? 'text-blue-500'
-                                    : notification.title === 'Removed'
-                                    ? 'text-rose-500'
-                                    : notification.title === 'Completed'
-                                    ? 'text-[#00D395]'
-                                    : notification.title === 'Pending'
-                                    ? 'text-[#FFB100]'
-                                    : 'text-[#A460BC]',
-                            ]"
-                        />
-                        <span v-if="!notification.seen" class="flex w-2 h-2 flex-shrink-0 bg-blue-500 rounded-full mr-2" />
-                        <span class="capitalize text-sm leading-[1.43] font-medium">
-                            {{ notification.title }}
+    <UiSheet :key="userDetails?._id" v-model:open="isOpen">
+        <UiSheetTrigger>
+            <button class="flex items-center -mr-2.5 xl:-mr-4">
+                <div class="flex items-center">
+                    <div class="flex items-center flex-col">
+                        <BellIcon :class="adminView ? 'text-slate-500' : 'text-white'" class="w-6 h-6 xl:mb-1" />
+                        <span v-if="!adminView" class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block">
+                            Notifications
                         </span>
                     </div>
-                    <div class="flex items-center">
-                        <span class="text-xs leading-[1.67] text-slate-500 mr-4">
-                            {{ getCurrentDate(notification.date) }}
+                    <span
+v-if="unreadNotifications > 0"
+                        class="flex items-center justify-center -translate-y-2 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5] xl:-translate-y-[18px]"
+                        :class="[unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]', adminView ? 'xl:-translate-x-[8px] -translate-x-1' : 'xl:-translate-x-[38px] -translate-x-2.5']">
+                        <span>
+                            {{ unreadNotifications }}
                         </span>
-                        <button
-                            class="flex text-slate-500 transition-colors duration-300 hover:text-blue-500"
-                            @click.stop.prevent="deleteNotification(notification, index)"
-                        >
-                            <XIcon class="w-4 h-4" />
-                        </button>
-                    </div>
+                    </span>
                 </div>
+            </button>
+        </UiSheetTrigger>
+        <LazyUiSheetContent class="md:max-h-[calc(100vh-48px)] w-full h-full md:min-w-[440px] p-0 md:m-6 overflow-hidden rounded-xl">
+            <div class="relative flex flex-col gap-[60px] pt-4 px-3 shadow-s">
                 <div class="flex items-center justify-between">
-                    <div class="text-sm leading-[1.43] text-slate-500 mr-1">
-                        {{ notification.description }}
-                    </div>
-                    <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="w-[18px] h-[18px] flex-shrink-0"
-                    >
-                        <path
-                            d="M7.5 12.75L10.5 9L7.5 5.25"
-                            stroke="#5E6278"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-                    </svg>
+                    <p class="text-2xl font-medium">
+                        Notifications
+                    </p>
+                    <UiButton
+class="z-10 hover:z-10 hover:bg-slate-200 w-8 h-8" size="icon" variant="secondary"
+                        @click="isOpen = false">
+                        <XIcon />
+                    </UiButton>
                 </div>
-            </NuxtLink>
-        </div>
-        <div class="flex justify-center py-4 shadow-s relative z-10">
-            <NuxtLink to="/" class="flex items-center text-blue-500">
-                <span class="text-sm leading-[1.43] font-medium mr-2"> View all </span>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 rotate-180">
-                    <path
-                        d="M6.3826 3.95312L2.33594 7.99979L6.3826 12.0465"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-miterlimit="10"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                    <path
-                        d="M13.6653 8L2.44531 8"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-miterlimit="10"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
-            </NuxtLink>
-        </div>
-    </div>
+
+                <UiTabs v-model="selectedTab">
+                    <UiTabsList class="bg-white min-h-9 ml-2 p-0 w-full justify-start scrollbar-none overflow-x-scroll lg:overscroll-x-none overflow-y-hidden rounded-none">
+                        <template v-for="tab in tabs" :key="tab.value">
+                            <UiTabsTrigger
+                                class="pb-3 data-[state=active]:shadow-none data-[state=active]:text-blue-500 relative"
+                                :value="tab.value">
+                                {{ tab.label }}
+                                <UiBadge
+:key="tab.badge" variant="secondary"
+                                    :class="{ 'bg-blue-500 text-white': selectedTab === tab.value }"
+                                    class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1">{{ tab.badge }}
+                                </UiBadge>
+                                <div
+v-if="selectedTab === tab.value"
+                                    class="w-full h-1 bg-blue-500 absolute bottom-0 rounded-t-full"></div>
+                            </UiTabsTrigger>
+                        </template>
+                    </UiTabsList>
+                </UiTabs>
+            </div>
+            <div class="flex-1 overflow-y-auto h-full md:max-h-[calc(100vh-246px)] notifications-scroll">
+                <NuxtLink
+v-for="(notification, index) in first50" :key="index" :to="`${route.path}`" event=""
+                    class="flex flex-col w-full bg-white pt-2 pb-1 py-3 px-2 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
+                    @click.prevent="markNotificationAsRead(notification, index)">
+                    <div class="flex items-center justify-between w-full py-3 px-2">
+                        <div class="flex items-center">
+                            <NotificationIcon class="w-5 h-5 mr-2" :class="getNotificationClass(notification.title)" />
+                            <span
+v-if="!notification.seen"
+                                class="flex w-2 h-2 flex-shrink-0 bg-blue-500 rounded-full mr-2" />
+                            <span class="capitalize text-sm leading-[1.43] font-medium">
+                                {{ notification.title }}
+                            </span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-xs leading-[1.67] text-slate-500 mr-4">
+                                {{ getCurrentDate(notification.date) }}
+                            </span>
+                            <button
+                                class="flex items-center justify-center text-slate-500 transition-colors duration-300 hover:text-blue-500"
+                                @click.stop.prevent="deleteNotification(notification, index)">
+                                <XIcon class="w-4 h-4" />
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pl-3 pr-2 pb-2 min-h-12">
+                        <div class="text-sm leading-[1.43] text-slate-500 mr-1">
+                            {{ notification.description }}
+                        </div>
+                        <ChevronRight class="w-[18px] h-[18px] flex-shrink-0" />
+                    </div>
+                </NuxtLink>
+            </div>
+            <div class="flex justify-between py-4 shadow-s z-10 sticky bg-white bottom-0 px-4">
+                <NuxtLink to="/" class="flex items-center text-blue-500">
+                    <span class="text-sm leading-[1.43] font-medium mr-2"> View all </span>
+                    <ArrowRight class="w-5 h-5 text-blue-500" />
+                </NuxtLink>
+                <Settings class="w-5 h-5 text-slate-500" />
+            </div>
+        </LazyUiSheetContent>
+    </UiSheet>
 </template>
 
 <script setup lang="ts">
+import BellIcon from '@/assets/icons/header/bell.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
-import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
-import { Notification } from '~/types';
-import XIcon from '@/assets/icons/dashboard/x.svg';
+import { AccountRole, type Notification, getAccountTypeById } from '~/types';
 import moment from 'moment';
-import { PropType } from 'vue';
+import { XIcon, ArrowRight, Settings, ChevronRight } from 'lucide-vue-next';
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
+
+enum NotificationsGroups {
+    Users = 0,
+    Orders = 1,
+    System = 2,
+}
 
 const route = useRoute();
 
 const emits = defineEmits(['close', 'markAsRead', 'delete']);
 
-defineProps({
-    notifications: {
-        type: Array as PropType<Notification[]>,
-        required: true,
-    },
+const props = defineProps<{
+    unreadNotifications: number,
+    notifications: Notification[],
+    adminView?: boolean,
+}>();
+
+const isOpen = ref(false);
+const selectedTab = ref('all');
+const tabs = ref();
+
+const authStore = useAuthStore();
+const { userDetails } = storeToRefs(authStore);
+
+// Update tab badges based on notifications
+const updateTabs = () => {
+    selectedTab.value = 'all';
+    const accountType = getAccountTypeById(userDetails.value?.accountType as number);
+    const allCount = props.notifications.length;
+    const usersCount = props.notifications.filter(n => n.group === NotificationsGroups.Users).length;
+    const ordersCount = props.notifications.filter(n => n.group === NotificationsGroups.Orders).length;
+    const systemCount = props.notifications.filter(n => n.group === NotificationsGroups.System).length;
+
+    tabs.value = [
+        { value: 'all', label: 'All', badge: allCount },
+        { value: 'orders', label: 'Orders', badge: ordersCount },
+        { value: 'system', label: 'System', badge: systemCount },
+    ];
+
+    if (userDetails.value?.role === AccountRole.Admin || accountType === 'Business') {
+        tabs.value.splice(2, 0, { value: 'users', label: 'Users', badge: usersCount });
+    }
+};
+
+// Watch notifications and update tabs accordingly
+watch(() => props.notifications, updateTabs, { deep: true });
+
+// Initial update on mount
+onMounted(updateTabs);
+
+const first50 = computed(() => {
+    let filteredNotifications = props.notifications;
+
+    // Filter based on selected tab
+    if (selectedTab.value !== 'all') {
+        filteredNotifications = filteredNotifications.filter((notification) => {
+            switch (selectedTab.value) {
+                case 'users':
+                    return notification.group === NotificationsGroups.Users;
+                case 'orders':
+                    return notification.group === NotificationsGroups.Orders;
+                case 'system':
+                    return notification.group === NotificationsGroups.System;
+                default:
+                    return true;
+            }
+        });
+    }
+
+    // Sort by unseen first and most recent date
+    return filteredNotifications
+        .sort((a, b) => b.date.localeCompare(a.date))
+        .slice(0, 50);
 });
 
 const getCurrentDate = (date: string) => {
@@ -163,4 +195,24 @@ const markNotificationAsRead = async (notification: Notification, index: number)
 const deleteNotification = async (notification: Notification, index: number) => {
     emits('delete', notification, index);
 };
+
+function getNotificationClass(notificationTitle: string): string {
+    switch (notificationTitle) {
+        case 'Others':
+            return 'text-slate-500';
+        case 'Processing':
+            return 'text-purple-500';
+        case 'Failed':
+        case 'New':
+            return 'text-blue-500';
+        case 'Removed':
+            return 'text-rose-500';
+        case 'Completed':
+            return 'text-green-500';
+        case 'Pending':
+            return 'text-amber-500';
+        default:
+            return 'text-blue-500';
+    }
+}
 </script>

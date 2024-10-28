@@ -32,7 +32,10 @@
 <script setup lang="ts">
 import RonFlag from '@/assets/icons/flags/ron.svg';
 import HeadphonesIcon from '@/assets/icons/headphones.svg';
+import { useAuthStore } from '~/store/authStore';
 import { showNavModal } from '~~/config/modal/nav';
+
+const authStore = useAuthStore();
 
 defineProps({
     isScrolled: {

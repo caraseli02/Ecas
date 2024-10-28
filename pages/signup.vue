@@ -453,8 +453,8 @@ const handleSubmit = async () => {
                             {
                                 name1: businessDetails.value.addressLine1.value,
                                 name2: businessDetails.value.addressLine2.value,
-                                country: businessDetails.value.country.value.value,
-                                region: businessDetails.value.region.value.value,
+                                country: businessDetails.value.country.value.value.value,
+                                region: businessDetails.value.region.value.value.value,
                                 city: businessDetails.value.city.value,
                                 postcode: businessDetails.value.postcode.value,
                                 default: true,
