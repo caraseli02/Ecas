@@ -42,8 +42,8 @@ import { computed, ref } from 'vue';
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
-const availableCredit = ref(getUserDetails.value.adminSettings?.customerCredit?.available || 0);
-const balance = ref(getUserDetails.value.adminSettings?.customerCredit?.spent || 0);
+const availableCredit = computed(() => getUserDetails.value?.adminSettings?.customerCredit?.available || 0);
+const balance = computed(() => getUserDetails.value?.adminSettings?.customerCredit?.spent || 0);
 
 // Format numbers with two decimal places and euro symbol
 const availableCreditFormatted = computed(() => `€ ${availableCredit.value.toFixed(2)}`);

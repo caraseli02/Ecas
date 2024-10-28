@@ -7,10 +7,8 @@ import { storeToRefs } from 'pinia';
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
-console.log(getUserDetails);
-
-const availableCredit = ref(getUserDetails.value.adminSettings?.customerCredit?.available || 0);
-const balance = ref(getUserDetails.value.adminSettings?.customerCredit?.spent || 0);
+const availableCredit = ref(getUserDetails.value?.adminSettings?.customerCredit?.available || 0);
+const balance = ref(getUserDetails.value?.adminSettings?.customerCredit?.spent || 0);
 
 const creditUsagePercentage = computed(() => {
     const totalCredit = availableCredit.value + balance.value;
