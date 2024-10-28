@@ -40,10 +40,10 @@ onMounted(() => {
 
 <style lang="postcss">
 html {
-  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-600 scrollbar-track-slate-300
+  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-300
 }
 
 .app-scroll {
-  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-600 scrollbar-track-slate-300
+  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-300
 }
 </style>
