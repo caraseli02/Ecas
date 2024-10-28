@@ -1,5 +1,5 @@
 <template>
-    <UiSheet v-model:open="isOpen">
+    <UiSheet :key="userDetails?._id" v-model:open="isOpen">
         <UiSheetTrigger>
             <button class="flex items-center -mr-2.5 xl:-mr-4">
                 <div class="flex items-center">
@@ -9,7 +9,8 @@
                             Notifications
                         </span>
                     </div>
-                    <span v-if="unreadNotifications > 0"
+                    <span
+v-if="unreadNotifications > 0"
                         class="flex items-center justify-center -translate-y-2 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5] xl:-translate-y-[18px]"
                         :class="[unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]', adminView ? 'xl:-translate-x-[8px] -translate-x-1' : 'xl:-translate-x-[38px] -translate-x-2.5']">
                         <span>
@@ -19,13 +20,14 @@
                 </div>
             </button>
         </UiSheetTrigger>
-        <UiSheetContent class="max-h-[calc(100vh-48px)] md:min-w-[440px] p-0 m-6 overflow-hidden rounded-xl">
+        <LazyUiSheetContent class="md:max-h-[calc(100vh-48px)] w-full h-full md:min-w-[440px] p-0 md:m-6 overflow-hidden rounded-xl">
             <div class="relative flex flex-col gap-[60px] pt-4 px-3 shadow-s">
                 <div class="flex items-center justify-between">
                     <p class="text-2xl font-medium">
                         Notifications
                     </p>
-                    <UiButton class="z-10 hover:z-10 hover:bg-slate-200 w-8 h-8" size="icon" variant="secondary"
+                    <UiButton
+class="z-10 hover:z-10 hover:bg-slate-200 w-8 h-8" size="icon" variant="secondary"
                         @click="isOpen = false">
                         <XIcon />
                     </UiButton>
@@ -38,25 +40,29 @@
                                 class="pb-3 data-[state=active]:shadow-none data-[state=active]:text-blue-500 relative"
                                 :value="tab.value">
                                 {{ tab.label }}
-                                <UiBadge :key="tab.badge" variant="secondary"
+                                <UiBadge
+:key="tab.badge" variant="secondary"
                                     :class="{ 'bg-blue-500 text-white': selectedTab === tab.value }"
                                     class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1">{{ tab.badge }}
                                 </UiBadge>
-                                <div v-if="selectedTab === tab.value"
+                                <div
+v-if="selectedTab === tab.value"
                                     class="w-full h-1 bg-blue-500 absolute bottom-0 rounded-t-full"></div>
                             </UiTabsTrigger>
                         </template>
                     </UiTabsList>
                 </UiTabs>
             </div>
-            <div class="flex-1 overflow-y-auto h-full max-h-[calc(100vh-246px)] notifications-scroll">
-                <NuxtLink v-for="(notification, index) in notifications" :key="index" :to="`${route.path}`" event=""
+            <div class="flex-1 overflow-y-auto h-full md:max-h-[calc(100vh-246px)] notifications-scroll">
+                <NuxtLink
+v-for="(notification, index) in first50" :key="index" :to="`${route.path}`" event=""
                     class="flex flex-col w-full bg-white pt-2 pb-1 py-3 px-2 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
                     @click.prevent="markNotificationAsRead(notification, index)">
                     <div class="flex items-center justify-between w-full py-3 px-2">
                         <div class="flex items-center">
                             <NotificationIcon class="w-5 h-5 mr-2" :class="getNotificationClass(notification.title)" />
-                            <span v-if="!notification.seen"
+                            <span
+v-if="!notification.seen"
                                 class="flex w-2 h-2 flex-shrink-0 bg-blue-500 rounded-full mr-2" />
                             <span class="capitalize text-sm leading-[1.43] font-medium">
                                 {{ notification.title }}
@@ -88,26 +94,37 @@
                 </NuxtLink>
                 <Settings class="w-5 h-5 text-slate-500" />
             </div>
-        </UiSheetContent>
+        </LazyUiSheetContent>
     </UiSheet>
 </template>
 
 <script setup lang="ts">
 import BellIcon from '@/assets/icons/header/bell.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
-import type { Notification } from '~/types';
+import { AccountRole, type Notification, getAccountTypeById } from '~/types';
 import moment from 'moment';
 import { XIcon, ArrowRight, Settings, ChevronRight } from 'lucide-vue-next';
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
 
 const route = useRoute();
 
 const emits = defineEmits(['close', 'markAsRead', 'delete']);
 
-defineProps<{
+const props = defineProps<{
     unreadNotifications: number,
     notifications: Notification[],
     adminView?: boolean,
 }>();
+
+const first50 = computed(() => {
+    // return first 50 items sorting it by seen: false and most recent first
+    // if the seen is true, it should be removed
+    return props.notifications
+       .filter((notification) =>!notification.seen)
+       .sort((a, b) => b.date.localeCompare(a.date))
+       .slice(0, 50);
+});
 
 const isOpen = ref(false);
 
@@ -126,13 +143,40 @@ const deleteNotification = async (notification: Notification, index: number) => 
     emits('delete', notification, index);
 };
 
+const authStore = useAuthStore();
+const { userDetails } = storeToRefs(authStore);
+
 const selectedTab = ref('all');
-const tabs = [
+const tabs = ref([
     { value: 'all', label: 'All', badge: 7 },
     { value: 'orders', label: 'Orders', badge: 27 },
-    { value: 'users', label: 'Users', badge: 27 },
     { value: 'system', label: 'System', badge: 270 },
-];
+]);
+
+onMounted(() => {
+    const accountType = getAccountTypeById(userDetails.value?.accountType as number)
+
+    if(userDetails.value?.role === AccountRole.Admin || accountType === 'Business') {
+        // add users tabs between 'orders' and 'systems' tab
+        tabs.value.splice(2, 0, { value: 'users', label: 'Users', badge: 270 });
+    }
+})
+
+watch(() => authStore.token.value, async (newVal) => {
+    const accountType = getAccountTypeById(userDetails.value?.accountType as number)
+
+    if(userDetails.value?.role === AccountRole.Admin || accountType === 'Business') {
+        // add users tabs between 'orders' and 'systems' tab
+        tabs.value.splice(2, 0, { value: 'users', label: 'Users', badge: 270 });
+    } else {
+        tabs.value = [
+    { value: 'all', label: 'All', badge: 7 },
+    { value: 'orders', label: 'Orders', badge: 27 },
+    { value: 'system', label: 'System', badge: 270 },
+]
+    }
+}, {deep: true});
+
 
 function getNotificationClass(notificationTitle: string): string {
     switch (notificationTitle) {

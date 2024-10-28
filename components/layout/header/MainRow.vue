@@ -67,10 +67,10 @@
                             <HeartIcon class="w-6 h-6 text-white xl:mb-1" />
                             <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block"> Favorites </span>
                         </button>
-                        <div class="relative" :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex') : 'xl:flex']">
-                                <Notifications
+                        <div class="relative" :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex') : 'flex items-center']">
+                                <LazyNotifications
                                     :notifications="notifications"
-                                    :unreadNotifications="unreadNotifications"
+                                    :unread-notifications="unreadNotifications"
                                     @delete="deleteNotification"
                                     @mark-as-read="markNotificationAsRead"
                                     @close="showNotifications = false"
@@ -208,6 +208,7 @@ import { ProductSearchItems, SearchData } from '~/model/products/response/Produc
 import { CartInterface } from '~/model/cart/response/cart.interface';
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
+import { useAuthStore } from '~/store/authStore';
 
 const { $api } = useNuxtApp();
 const cartStore = useCartStore();
@@ -287,11 +288,11 @@ Emitter.on('update-cart', async (data: CartInterface) => {
     }
 });
 
-Emitter.on('notifications', async (notifications: boolean) => {
-    if (notifications) {
-        await fetchNofications();
-    }
-});
+// Emitter.on('notifications', async (notifications: boolean) => {
+//     if (notifications) {
+//         await fetchNofications();
+//     }
+// });
 
 const fetchList = async () => {
     const data = await getCart.value;
@@ -339,6 +340,8 @@ const showNotifications = ref(false);
 const fetchNofications = async () => {
     error.value = false;
     isLoading.value = true;
+    unreadNotifications.value = 0;
+    notifications.value = [];
 
     const response = await $api.notifications.fetchGetNotifications();
     if (response.status !== 'success') {
@@ -409,4 +412,18 @@ onMounted(() => {
 });
 
 Promise.all([fetchNofications(), fetchList()]);
+
+const authStore = useAuthStore();
+
+watch(() => authStore.token.value, async (newVal) => {
+    if (newVal) {
+        console.log('test123');
+        
+        await fetchNofications();
+        await fetchList();
+    } else {
+        notifications.value = [];
+        unreadNotifications.value = 0;
+    }
+}, {deep: true});
 </script>
