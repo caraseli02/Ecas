@@ -34,7 +34,7 @@ class="z-10 hover:z-10 hover:bg-slate-200 w-8 h-8" size="icon" variant="secondar
                 </div>
 
                 <UiTabs v-model="selectedTab">
-                    <UiTabsList class="bg-white ml-2 p-0 w-full justify-start overflow-x-scroll overflow-y-hidden rounded-none">
+                    <UiTabsList class="bg-white min-h-9 ml-2 p-0 w-full justify-start overflow-x-scroll lg:overscroll-x-none overflow-y-hidden rounded-none">
                         <template v-for="tab in tabs" :key="tab.value">
                             <UiTabsTrigger
                                 class="pb-3 data-[state=active]:shadow-none data-[state=active]:text-blue-500 relative"
@@ -107,6 +107,12 @@ import { XIcon, ArrowRight, Settings, ChevronRight } from 'lucide-vue-next';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 
+enum NotificationsGroups {
+    Users = 0,
+    Orders = 1,
+    System = 2,
+}
+
 const route = useRoute();
 
 const emits = defineEmits(['close', 'markAsRead', 'delete']);
@@ -117,16 +123,63 @@ const props = defineProps<{
     adminView?: boolean,
 }>();
 
-const first50 = computed(() => {
-    // return first 50 items sorting it by seen: false and most recent first
-    // if the seen is true, it should be removed
-    return props.notifications
-       .filter((notification) =>!notification.seen)
-       .sort((a, b) => b.date.localeCompare(a.date))
-       .slice(0, 50);
-});
-
 const isOpen = ref(false);
+const selectedTab = ref('all');
+const tabs = ref();
+
+const authStore = useAuthStore();
+const { userDetails } = storeToRefs(authStore);
+
+// Update tab badges based on notifications
+const updateTabs = () => {
+    selectedTab.value = 'all';
+    const accountType = getAccountTypeById(userDetails.value?.accountType as number);
+    const allCount = props.notifications.length;
+    const usersCount = props.notifications.filter(n => n.group === NotificationsGroups.Users).length;
+    const ordersCount = props.notifications.filter(n => n.group === NotificationsGroups.Orders).length;
+    const systemCount = props.notifications.filter(n => n.group === NotificationsGroups.System).length;
+
+    tabs.value = [
+        { value: 'all', label: 'All', badge: allCount },
+        { value: 'orders', label: 'Orders', badge: ordersCount },
+        { value: 'system', label: 'System', badge: systemCount },
+    ];
+
+    if (userDetails.value?.role === AccountRole.Admin || accountType === 'Business') {
+        tabs.value.splice(2, 0, { value: 'users', label: 'Users', badge: usersCount });
+    }
+};
+
+// Watch notifications and update tabs accordingly
+watch(() => props.notifications, updateTabs, { deep: true });
+
+// Initial update on mount
+onMounted(updateTabs);
+
+const first50 = computed(() => {
+    let filteredNotifications = props.notifications;
+
+    // Filter based on selected tab
+    if (selectedTab.value !== 'all') {
+        filteredNotifications = filteredNotifications.filter((notification) => {
+            switch (selectedTab.value) {
+                case 'users':
+                    return notification.group === NotificationsGroups.Users;
+                case 'orders':
+                    return notification.group === NotificationsGroups.Orders;
+                case 'system':
+                    return notification.group === NotificationsGroups.System;
+                default:
+                    return true;
+            }
+        });
+    }
+
+    // Sort by unseen first and most recent date
+    return filteredNotifications
+        .sort((a, b) => b.date.localeCompare(a.date))
+        .slice(0, 50);
+});
 
 const getCurrentDate = (date: string) => {
     const currentDate = moment();
@@ -142,41 +195,6 @@ const markNotificationAsRead = async (notification: Notification, index: number)
 const deleteNotification = async (notification: Notification, index: number) => {
     emits('delete', notification, index);
 };
-
-const authStore = useAuthStore();
-const { userDetails } = storeToRefs(authStore);
-
-const selectedTab = ref('all');
-const tabs = ref([
-    { value: 'all', label: 'All', badge: 7 },
-    { value: 'orders', label: 'Orders', badge: 27 },
-    { value: 'system', label: 'System', badge: 270 },
-]);
-
-onMounted(() => {
-    const accountType = getAccountTypeById(userDetails.value?.accountType as number)
-
-    if(userDetails.value?.role === AccountRole.Admin || accountType === 'Business') {
-        // add users tabs between 'orders' and 'systems' tab
-        tabs.value.splice(2, 0, { value: 'users', label: 'Users', badge: 270 });
-    }
-})
-
-watch(() => authStore.token.value, async (newVal) => {
-    const accountType = getAccountTypeById(userDetails.value?.accountType as number)
-
-    if(userDetails.value?.role === AccountRole.Admin || accountType === 'Business') {
-        // add users tabs between 'orders' and 'systems' tab
-        tabs.value.splice(2, 0, { value: 'users', label: 'Users', badge: 270 });
-    } else {
-        tabs.value = [
-    { value: 'all', label: 'All', badge: 7 },
-    { value: 'orders', label: 'Orders', badge: 27 },
-    { value: 'system', label: 'System', badge: 270 },
-]
-    }
-}, {deep: true});
-
 
 function getNotificationClass(notificationTitle: string): string {
     switch (notificationTitle) {
