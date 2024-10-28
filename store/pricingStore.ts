@@ -11,6 +11,9 @@ export const usePricingStore = defineStore({
             range: null as any | null,
             quantity: null as any | null,
             margin: null as any | null,
+            showEntryModal: false,
+            showMarginModal: false,
+            showQuantityModal: false,
         };
     },
     actions: {

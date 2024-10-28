@@ -5,7 +5,10 @@ import { usePricingStore } from '~/store/pricingStore';
 import { useNuxtApp } from '#app';
 import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 
+import { storeToRefs } from 'pinia';
+
 const pricingStore = usePricingStore();
+const { showQuantityModal } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
 
@@ -26,6 +29,12 @@ function deleteAllSelected() {
 }
 
 const selectedCount = computed(() => quantityList.value.filter((i) => i.selected).length);
+
+const editItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
+    showQuantityModal.value = true;
+    
+    // entryPriceList.value = itemValue;
+};
 </script>
 
 <template>
@@ -51,6 +60,7 @@ const selectedCount = computed(() => quantityList.value.filter((i) => i.selected
             :item="item"
             @update-selected="item.selected = $event"
             @delete-item="deleteItem(item)"
+            @edit-item="editItem(item)"
         />
     </section>
 </template>

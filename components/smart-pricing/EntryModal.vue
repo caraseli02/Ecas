@@ -2,8 +2,10 @@
 import PriceRange from './PriceRange.vue';
 import { useNuxtApp } from '#app';
 import { usePricingStore } from '~/store/pricingStore';
+import { storeToRefs } from 'pinia';
 
 const pricingStore = usePricingStore();
+const { showEntryModal } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
 
@@ -12,7 +14,7 @@ type PriceRangeType = {
     max: number | null;
     label: string | null;
 };
-const isOpen = ref(false);
+
 const priceRange = ref<PriceRangeType>({ min: null, max: null, label: null });
 // Handle the "Create" button click
 const handleCreate = async () => {
@@ -46,13 +48,12 @@ const handleCreate = async () => {
     );
     // Add your logic here to handle the creation with the price range values
 };
+
+
 </script>
 
 <template>
-    <UiDialog v-model:open="isOpen">
-        <UiDialogTrigger as-child>
-            <UiButton class="justify-start hover:text-blue-500" variant="ghost">Entry Price</UiButton>
-        </UiDialogTrigger>
+    <UiDialog v-model:open="showEntryModal">
         <UiDialogContent class="max-w-sm p-4 sm:max-w-[480px] gap-10 border-none rounded-xl shadow-s">
             <UiDialogHeader>
                 <UiDialogTitle>Create Entry Price Template</UiDialogTitle>

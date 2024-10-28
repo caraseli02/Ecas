@@ -4,7 +4,11 @@ import { usePricingStore } from '~/store/pricingStore';
 import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 import { useNuxtApp } from '#app';
 
+import { storeToRefs } from 'pinia';
+
 const pricingStore = usePricingStore();
+const { showMarginModal } = storeToRefs(pricingStore);
+
 const { $api } = useNuxtApp();
 
 const marginList = ref(pricingStore.margin);
@@ -24,6 +28,10 @@ function deleteAllSelected() {
 }
 
 const selectedCount = computed(() => marginList.value.filter((i) => i.selected).length);
+
+const editItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
+    showMarginModal.value = true;
+};
 </script>
 
 <template>
@@ -49,6 +57,7 @@ const selectedCount = computed(() => marginList.value.filter((i) => i.selected).
             :item="item"
             @deleteItem="deleteItem(item)"
             @updateSelected="item.selected = $event"
+            @edit-item="editItem(item)"
         />
     </section>
 </template>
