@@ -63,19 +63,19 @@ const settings = reactive({
         <AlertsItem
             v-model:email="settings.cartItemsOutOfStock.email"
             v-model:app="settings.cartItemsOutOfStock.app"
-            :alert-key="'cartItemsOutOfStock'"
+            :alert-key="'outOfStock'"
             title="Cart Items - Out of Stock"
         />
         <AlertsItem
             v-model:email="settings.cartItemsPriceUpdate.email"
             v-model:app="settings.cartItemsPriceUpdate.app"
-            :alert-key="'cartItemsPriceUpdate'"
+            :alert-key="'priceChange'"
             title="Cart Items - Price Update"
         />
         <AlertsItem
             v-model:email="settings.orderShippingUpdates.email"
             v-model:app="settings.orderShippingUpdates.app"
-            :alert-key="'orderShippingUpdates'"
+            :alert-key="'shippingUpdates'"
             title="Order Shipping Updates"
         />
         <AlertsItem
