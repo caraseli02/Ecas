@@ -39,6 +39,6 @@ html, body, div#__nuxt {
 }
 
 .app-scroll {
-  @apply overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-300
+  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-300
 }
 </style>
