@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-full min-h-screen overflow-y-auto app-scroll">
+  <div class="flex flex-col h-full min-h-screen overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300">
     <LayoutHeader :is-scrolled="isScrolled"/>
     <main
 class="flex flex-col pt-[96px] flex-1 lg:pt-[180px] xl:pt-[176px]"
@@ -54,12 +54,9 @@ onBeforeUnmount(() => {
 });
 </script>
 
+
 <style lang="postcss">
 html, body, div#__nuxt {
   @apply h-full overflow-hidden
-}
-
-.app-scroll {
-  @apply overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-300
 }
 </style>

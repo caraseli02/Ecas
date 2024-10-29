@@ -81,12 +81,12 @@ const menuActions = ref([
       showNotifications.value = true
     }
   },
-  {
-    icon: SvgoMenuCartAdd,
-    text: 'Quick Buy',
-    to: '/',
-    action: () => null
-  }
+  // {
+  //   icon: SvgoMenuCartAdd,
+  //   text: 'Quick Buy',
+  //   to: '/',
+  //   action: () => null
+  // }
 ])
 const menuLinks = ref([
   {
