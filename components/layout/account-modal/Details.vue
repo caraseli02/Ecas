@@ -22,9 +22,9 @@
                 {{ getUserDetails?.contactDetails.email || 'Loading...' }}
             </div>
             <div class="items-center flex gap-2 mt-1 pr-20">
-                <div class="text-stone-500 text-xs font-medium leading-5 self-stretch whitespace-nowrap">ID:</div>
+                <div class="text-stone-500 text-xs font-medium leading-5 self-stretch whitespace-nowrap">Client code:</div>
                 <div class="text-stone-500 text-xs font-medium leading-5">
-                    {{ getUserDetails?._id }}
+                    {{ getUserDetails?.clientCode || 'N/A' }}
                 </div>
                 <CopyClipboard
                     :text="getUserDetails?._id as string"
@@ -45,20 +45,37 @@ import { storeToRefs } from 'pinia';
 import { AccountRole, AccountType } from '~/types';
 
 const authStore = useAuthStore();
-const fullname = ref('');
+
 const { getUserDetails } = storeToRefs(authStore);
+const accountTypeIcon = ref('');
 
 onMounted(() => {
     if (!getUserDetails.value) return;
 
-    if (getUserDetails.value.role === AccountRole.Client && getUserDetails.value.accountType === AccountType.Personal) {
-        fullname.value = `${getUserDetails.value.personalDetails.firstName} ${getUserDetails.value.personalDetails.lastName}`;
-    } else {
-        fullname.value = `${getUserDetails.value.contactDetails.firstName} ${getUserDetails.value.contactDetails.lastName}`;
+    if (getUserDetails.value.role === AccountRole.Client && getUserDetails.value.accountType === AccountType.Business) {
+        accountTypeIcon.value = BuildingIcon;
+    } else if (
+        getUserDetails.value.role === AccountRole.Client &&
+        (getUserDetails.value.accountType === AccountType.SoleTrader || getUserDetails.value.accountType === AccountType.Agent)
+    ) {
+        accountTypeIcon.value = briefcaseIcon;
+    }
+
+    if (getUserDetails.value.role !== AccountRole.Client) {
+        accountTypeIcon.value = PersonalCardIcon;
     }
 });
 
 const IconTypes = [PersonalCardIcon, UserIcon, BuildingIcon, briefcaseIcon];
+
+const fullname = computed(() => {
+    if (getUserDetails.value?.role === AccountRole.Client && getUserDetails.value?.accountType === AccountType.Personal) {
+        accountTypeIcon.value = UserIcon;
+        return `${getUserDetails.value?.personalDetails?.firstName} ${getUserDetails.value?.personalDetails?.lastName}`;
+    } else {
+        return `${getUserDetails.value?.contactDetails?.firstName} ${getUserDetails.value?.contactDetails?.lastName}`;
+    }
+});
 </script>
 
 <style scoped></style>

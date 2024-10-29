@@ -13,6 +13,7 @@ import OrdersService from '~/services/dashboard/orders.service';
 import CartService from '~/services/cart.service';
 import GeneralSettings from '~/services/general-settings.service';
 import CustomerDashboard from '~/services/dashboard/client.service';
+import SmartPricingService from '~/services/dashboard/smart-pricing.service';
 
 /** ApiInstance interface provides us with good typing */
 export interface IApiInstance {
@@ -29,6 +30,7 @@ export interface IApiInstance {
     generalSettings: GeneralSettings;
     customerDashboard: CustomerDashboard;
     settingsClient: SettingsClientService;
+    smartPricing: SmartPricingService;
 }
 
 declare module '#app' {
@@ -60,6 +62,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         generalSettings: new GeneralSettings(apiFetcher),
         customerDashboard: new CustomerDashboard(apiFetcher),
         settingsClient: new SettingsClientService(apiFetcher),
+        smartPricing: new SmartPricingService(apiFetcher),
     };
 
     return {

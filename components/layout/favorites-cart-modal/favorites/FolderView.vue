@@ -109,10 +109,16 @@
                     class="bg-white w-full px-2.5 pt-[11px] pb-2.5 text-sm leading-snug font-Inter border border-border rounded text-neutral-700 transition-colors duration-300 placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
                 />
             </label>
-            <button class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-blue-500" @click="editing = false">
+            <button
+                class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-blue-500"
+                @click="editing = false"
+            >
                 <CheckIcon class="w-6 h-6" />
             </button>
-            <button class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-rose-500" @click="editing = false">
+            <button
+                class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-rose-500"
+                @click="editing = false"
+            >
                 <XIcon class="w-5 h-5" />
             </button>
         </div>
@@ -239,7 +245,7 @@ const parseProducts = (items: FavouriteFolderResponseInterface[]) => {
         id: item._id,
         type: item.isFolder ? 'folder' : 'product',
         items: item.children?.length ? parseProducts(item.children) : [],
-        title: item.isFolder ? item.name : item?.products[0].productEntity.alias,
+        title: item.isFolder ? item.name : item?.products[0].productEntity.name,
         description: !item.isFolder && item.products.length && item.products[0].productEntity.description,
         image: !item.isFolder && item.products[0].productEntity.details.ProductImage.ProductImageSmall,
     }));

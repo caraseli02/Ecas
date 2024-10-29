@@ -120,7 +120,11 @@
                             <div class="grid grid-cols-[140px,1fr] gap-3">
                                 <div class="text-sm text-slate-500 leading-[1.75]">User Name</div>
                                 <div class="text-sm font-medium leading-[1.75] break-all">
-                                    {{ customerInformation.contactDetails?.email }}
+                                    {{
+                                        customerInformation.accountType === AccountType.Personal
+                                            ? customerInformation.profileDetails?.email
+                                            : customerInformation.contactDetails?.email
+                                    }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-[140px,1fr] gap-3">

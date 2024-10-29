@@ -96,7 +96,7 @@ const mapCartItems = (cart: CartProductsInterface[]) => {
         id: item.id,
         type: item.isFolder ? 'folder' : 'product',
         quantity: Number(item.stock) + Number(item.backorder_stock || 0),
-        title: item.productEntity?.alias,
+        title: item.productEntity?.name,
         description: item.productEntity?.description,
         image: item.productEntity?.details.ProductImage.ProductImageSmall,
         productEntity: item.productEntity,

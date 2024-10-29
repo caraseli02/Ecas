@@ -14,13 +14,12 @@ const userSettings = ref(getUserDetails.value.adminSettings?.marketingPreference
 const newsletterSubscription = ref(userSettings.value?.newsletter.app || false);
 
 watch(newsletterSubscription, async (newValue) => {
-    // console.log({ key: 'newsLetter', type: newValue }, 'app', getUserDetails?.value.firebaseId);
     if (newValue === null || !getUserDetails?.value.firebaseId) {
         return;
     }
     await $api.controlPanel.markSettingsAsRead(
         {
-            key: 'newsLetter',
+            key: 'newsletter',
             ['app']: newValue,
         },
         'app',

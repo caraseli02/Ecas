@@ -9,7 +9,10 @@
                             <TriangleIcon class="w-[22px] h-[22px]" />
                             <span class="text-xs leading-tight ml-[5px] max-md:hidden"> Report an error </span>
                         </button>
-                        <button @click="printPage" class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500">
+                        <button
+                            class="flex items-center text-gray-500 transition-colors duration-300 hover:text-blue-500"
+                            @click="printPage"
+                        >
                             <PrintIcon class="w-[22px] h-[22px]" />
                             <span class="text-xs leading-tight ml-[5px] max-md:hidden"> Print this page </span>
                         </button>
@@ -18,11 +21,7 @@
                 <div class="gap-6 xl:grid xl:grid-cols-[1fr,392px]">
                     <div class="flex flex-col gap-9 max-w-[992px]">
                         <OrderSummaryBackOrderWarning v-if="showWarning" />
-                        <OrderSummaryTable
-                            :loading="loading"
-                            @update-subtotal="calculateSubtotal"
-                            @delete-selected="deleteSelected"
-                        />
+                        <OrderSummaryTable :loading="loading" @update-subtotal="calculateSubtotal" @delete-selected="deleteSelected" />
                         <div class="hidden lg:flex flex-col">
                             <OrderSummarySimilarProducts :loading="loading" />
                             <OrderSummaryBannerImageCard class="hidden xl:flex" />
@@ -456,11 +455,10 @@ async function makeCheckout() {
                     }
                     await router.push({ path: '/checkout/session?', query: { id: orderId } });
                 }
-            } else if (paymentDetails.value.type === PaymentTypeEnum.Credit) {
+            } else if (paymentDetails.value.type === PaymentTypeEnum.Credit || paymentDetails.value.type === PaymentTypeEnum.Bank) {
                 await router.push({ path: '/order-summary/' + orderId });
 
                 console.log('paid with credit');
-                // await router.push({ path: '/checkout/success' });
             }
         }
     } catch (error) {
