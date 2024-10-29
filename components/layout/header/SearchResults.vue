@@ -22,7 +22,7 @@
                     <div class="flex items-center w-[calc(100%-50px)] hover:text-blue-500">
                         <div class="truncate">{{ productTitle(product) }}</div>
                         <CaretIcon class="w-4 h-4 flex-shrink-0" />
-                        <div class="font-Inter">{{ product.alias }}</div>
+                        <div class="font-Inter">{{ product.name }}</div>
                     </div>
                     <div
                         class="rounded-3xl bg-blue-500 px-1 text-xs leading-[1.33] font-semibold text-white flex-shrink-0 lg:translate-y-2.5"

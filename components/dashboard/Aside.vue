@@ -239,6 +239,7 @@ import ProfileIcon from '@/assets/icons/dashboard/profile.svg';
 import SunIcon from '@/assets/icons/dashboard/sun.svg';
 import MoonIcon from '@/assets/icons/dashboard/moon.svg';
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
+import { GanttChartSquareIcon } from 'lucide-vue-next';
 
 defineProps({
   isCollapsedOnDesktop: {
@@ -408,6 +409,11 @@ const nav = ref([
           label: 'Profile',
           to: '/',
           icon: ProfileIcon,
+        },
+        {
+          label: 'Smart Pricing',
+          to: '/dashboard/settings/smart-price',
+          icon: GanttChartSquareIcon,
         },
       ],
     },

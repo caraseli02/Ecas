@@ -17,13 +17,11 @@ export interface AlertsAndNotificationsInterface {
     newProducts?: AlertsAndNotificationsTypes;
     hotDeals?: AlertsAndNotificationsTypes;
     securityAlerts?: AlertsAndNotificationsTypes;
-    shippingUpdates?: AlertsAndNotificationsTypes;
-    priceChange?: AlertsAndNotificationsTypes;
     passwordChange?: AlertsAndNotificationsTypes;
     pendingAgents?: AlertsAndNotificationsTypes;
-    cartItemsPriceUpdate?: AlertsAndNotificationsTypes;
-    cartItemsOutOfStock?: AlertsAndNotificationsTypes;
-    orderShippingUpdates?: AlertsAndNotificationsTypes;
+    priceChange?: AlertsAndNotificationsTypes;
+    outOfStock?: AlertsAndNotificationsTypes;
+    shippingUpdates?: AlertsAndNotificationsTypes;
 }
 
 export interface MarketingPreferencesInterface {

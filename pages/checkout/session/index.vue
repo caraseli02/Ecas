@@ -48,6 +48,9 @@ onMounted(async () => {
             radios: true,
             spacedAccordionItems: false,
         },
+        wallets: {
+            applePay: 'auto',
+        },
         fields: {
             billingDetails: {
                 name: 'auto',

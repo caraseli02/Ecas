@@ -57,16 +57,16 @@
                     </template>
                 </div>
             </div>
-            <DashboardCustomersInfoCards :id="route.params.slug" />
+            <LazyDashboardCustomersInfoCards :id="route.params.slug" />
             <div class="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:grid-rows-[repeat(2,auto)] md:gap-6">
-                <DashboardCustomersCustomerInformation :id="route.params.slug" class="xl:col-start-1 xl:row-start-1 xl:row-span-2" />
+                <LazyDashboardCustomersCustomerInformation :id="route.params.slug" class="xl:col-start-1 xl:row-start-1 xl:row-span-2" />
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:col-start-2 xl:row-start-1">
-                    <DashboardCustomersNetMargin />
-                    <DashboardCustomersRecentTransactions :id="route.params.slug" />
+                    <LazyDashboardCustomersNetMargin />
+                    <LazyDashboardCustomersRecentTransactions :id="route.params.slug" />
                 </div>
-                <DashboardCustomersDefaultShippingAddress :id="route.params.slug" class="xl:col-start-2 xl:row-start-2" />
+                <LazyDashboardCustomersDefaultShippingAddress :id="route.params.slug" class="xl:col-start-2 xl:row-start-2" />
             </div>
-            <ClientTableOrder :user-id="route.params.slug" />
+            <LazyClientTableOrder :user-id="route.params.slug" />
         </div>
     </div>
 </template>
@@ -128,7 +128,7 @@ const getCustomerCredit = async () => {
     }
 };
 
-await getCustomerCredit();
+// await getCustomerCredit();
 
 onMounted(async () => {
     setTimeout(() => {

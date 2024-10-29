@@ -1,10 +1,12 @@
 <template>
-    <div class="h-[298px] col-span-2 lg:col-span-1 w-full relative bg-white rounded-xl font-Inter pt-[15px] pb-2.5 shadow-m md:pb-[26px] lg:pb-4 lg:self-start">
+    <div
+        class="h-[298px] col-span-2 lg:col-span-1 w-full relative bg-white rounded-xl font-Inter pt-[15px] pb-2.5 shadow-m md:pb-[26px] lg:pb-4 lg:self-start"
+    >
         <div class="flex items-end justify-between px-2.5 mb-[18px] md:px-[15px]">
             <div class="flex items-center">
-                <div class="text-xl leading-tight font-semibold mr-2">{{ product.alias }}</div>
+                <div class="text-xl leading-tight font-semibold mr-2">{{ product.name }}</div>
                 <button class="flex text-slate-500 transition-colors duration-300 mr-2 hover:text-blue-500">
-                    <CopyClipboard :text="product.alias || 'N/A'"  class="w-5 h-5" />
+                    <CopyClipboard :text="product.name || 'N/A'" class="w-5 h-5" />
                 </button>
             </div>
             <img :src="product.details?.ProductImage.ProductImageLarge" alt="Microchip Logo" class="w-[82px] h-[50px] object-contain" />
@@ -30,7 +32,7 @@
             </button>
         </div>
         <div class="flex items-center justify-between gap-3 px-2.5 h-8 md:px-[15px]">
-            <div class="text-xs leading-tight font-medium flex-shrink-0 ">EDA / CAD Models</div>
+            <div class="text-xs leading-tight font-medium flex-shrink-0">EDA / CAD Models</div>
             <button class="flex items-center">
                 <CADModelsIcon class="w-4 h-4 mr-[5px]" />
                 <span class="text-xs leading-tight text-slate-500"> ADIN2111BCPZ-ECAD-Model </span>
@@ -41,11 +43,11 @@
             <a
                 class="flex items-center"
                 :href="product.details?.SummaryData.Datasheet"
-                :download="`${product.alias} Datasheet`"
+                :download="`${product.name} Datasheet`"
                 target="_blank"
             >
                 <PDFIcon class="w-5 h-5 mr-[5px]" />
-                <span class="text-xs leading-tight text-slate-500 hover:underline"> {{ product.alias }}-DataSheet </span>
+                <span class="text-xs leading-tight text-slate-500 hover:underline"> {{ product.name }}-DataSheet </span>
             </a>
         </div>
         <div class="flex items-center gap-2 px-2.5 py-2 min-h-[34px] md:px-[15px]">
@@ -67,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { SquarePen, CopyIcon } from 'lucide-vue-next';
+import { SquarePen } from 'lucide-vue-next';
 import CADModelsIcon from '@/assets/icons/cad-models.svg';
 import PDFIcon from '@/assets/icons/pdf.svg';
 import { ProductDetail } from '~~/model/products/response/ProductDetailResponse';

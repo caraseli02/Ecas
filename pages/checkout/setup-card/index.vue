@@ -38,7 +38,7 @@ onMounted(async () => {
     setupIntent = await stripe.retrieveSetupIntent(setupIntentId.value);
     elements = stripe.elements({
         mode: 'setup',
-        currency: 'usd',
+        currency: 'ron',
         payment_method_types: setupIntent.setupIntent?.payment_method_types,
     });
 
@@ -48,6 +48,9 @@ onMounted(async () => {
             defaultCollapsed: false,
             radios: true,
             spacedAccordionItems: false,
+        },
+        terms: {
+            applePay: 'auto',
         },
         fields: {
             billingDetails: {

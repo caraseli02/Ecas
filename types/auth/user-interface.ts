@@ -21,6 +21,7 @@ export interface UserInterface {
     messages?: AccountMessageInterface[];
     productVisitedHistory?: ProductVisitedHistory[];
     createdAt?: string;
+    clientCode?: string;
 }
 
 export enum AccountStatusEnum {
@@ -31,7 +32,16 @@ export enum AccountStatusEnum {
 
 export type CustomerTableColumns = Pick<
     UserInterface,
-    'accountType' | 'firebaseId' | 'verified' | 'status' | 'spent' | 'ordersCount' | 'contactDetails' | 'companyDetails' | 'createdAt'
+    | 'accountType'
+    | 'firebaseId'
+    | 'verified'
+    | 'status'
+    | 'spent'
+    | 'ordersCount'
+    | 'contactDetails'
+    | 'personalDetails'
+    | 'companyDetails'
+    | 'createdAt'
 >;
 
 export interface ProductVisitedHistory {

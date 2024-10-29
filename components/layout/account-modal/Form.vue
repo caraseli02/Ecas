@@ -1,7 +1,13 @@
 <template>
     <div class="mx-auto">
         <div class="grid grid-cols-1 gap-4 mb-[15px]">
-            <FormInput v-model="email.value" size="lg" label="E-mail" :error="email.error" type="email" placeholder="you@company.com" />
+            <FormInput
+                v-model="email.value"
+                size="lg"
+                label="E-mail or client code"
+                type="email"
+                placeholder="you@company.com OR P-XXXXXX"
+            />
             <FormPassword v-model="password.value" size="lg" label="Password" :error="password.error" placeholder="Your Password" />
         </div>
         <div class="flex items-center justify-between mb-[36px]">
@@ -98,10 +104,12 @@ import { UserInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import { useCartStore } from '~/store/cartStore';
 import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import { usePricingStore } from '~/store/pricingStore';
 
 const { checkForInputErrors } = useError();
 const { $api } = useNuxtApp();
 const cartStore = useCartStore();
+const pricingStore = usePricingStore();
 
 const email = ref({
     value: '',
@@ -126,14 +134,24 @@ const errorResponse = reactive({
 const authStore = useAuthStore();
 const { registerUser, getParsedFirebaseJWTToken, getUserToken } = useFirebaseAuth();
 
+const isClientCodeFormat = (value: string) => {
+    const regex = /^[PBAS]-\d{6}$/;
+    return regex.test(value);
+};
+
 const handleSignIn = async () => {
     const hasError = checkForInputErrors([email.value, password.value]);
 
     if (!hasError) {
         const payload = {
-            email: email.value.value,
             password: password.value.value,
-        };
+        } as { password: string; email?: string; clientCode?: string };
+
+        if (isClientCodeFormat(email.value.value)) {
+            payload['clientCode'] = email.value.value;
+        } else {
+            payload['email'] = email.value.value;
+        }
 
         isLoading.value = true;
 
@@ -180,6 +198,7 @@ const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
 
     await cartStore.updateAndReturnCart();
     await authStore.addUserCards();
+    await pricingStore.updateAndReturnPricing();
 
     Emitter.emit('notifications', true);
 };
@@ -190,7 +209,7 @@ const loginWithGoogle = async () => {
     const token = await getUserToken();
     authStore.addToken(token);
     authStore.addUser(parsedToken);
-    
+
     if (!parsedToken.hasOwnProperty('permissions')) {
         authStore.addFirebaseToken(token);
         return navigateTo('/signup');

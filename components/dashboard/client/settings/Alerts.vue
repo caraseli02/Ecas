@@ -3,6 +3,7 @@ import AlertsItem from './AlertsItem.vue';
 import { AlertAndNotificationType } from '~/types/dashboard/control-panel';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
+import { AccountType } from '~/types';
 
 const authStore = useAuthStore();
 
@@ -20,17 +21,17 @@ const settings = reactive({
         app: userSettings.value?.newProducts?.app || false,
     },
     hotDeals: { email: userSettings.value?.hotDeals?.email || false, app: userSettings.value?.hotDeals?.app || false },
-    cartItemsOutOfStock: {
-        email: userSettings.value?.cartItemsOutOfStock?.email || false,
-        app: userSettings.value?.cartItemsOutOfStock?.app || false,
+    outOfStock: {
+        email: userSettings.value?.outOfStock?.email || false,
+        app: userSettings.value?.outOfStock?.app || false,
     },
-    cartItemsPriceUpdate: {
-        email: userSettings.value?.cartItemsPriceUpdate?.email || false,
-        app: userSettings.value?.cartItemsPriceUpdate?.app || false,
+    priceChange: {
+        email: userSettings.value?.priceChange?.email || false,
+        app: userSettings.value?.priceChange?.app || false,
     },
-    orderShippingUpdates: {
-        email: userSettings.value?.orderShippingUpdates?.email || false,
-        app: userSettings.value?.orderShippingUpdates?.app || false,
+    shippingUpdates: {
+        email: userSettings.value?.shippingUpdates?.email || false,
+        app: userSettings.value?.shippingUpdates?.app || false,
     },
     pendingAgents: {
         email: userSettings.value?.pendingAgents?.email || false,
@@ -61,24 +62,25 @@ const settings = reactive({
         />
         <AlertsItem v-model:email="settings.hotDeals.email" v-model:app="settings.hotDeals.app" :alert-key="'hotDeals'" title="HOT Deals" />
         <AlertsItem
-            v-model:email="settings.cartItemsOutOfStock.email"
-            v-model:app="settings.cartItemsOutOfStock.app"
-            :alert-key="'cartItemsOutOfStock'"
+            v-model:email="settings.outOfStock.email"
+            v-model:app="settings.outOfStock.app"
+            :alert-key="'outOfStock'"
             title="Cart Items - Out of Stock"
         />
         <AlertsItem
-            v-model:email="settings.cartItemsPriceUpdate.email"
-            v-model:app="settings.cartItemsPriceUpdate.app"
-            :alert-key="'cartItemsPriceUpdate'"
+            v-model:email="settings.priceChange.email"
+            v-model:app="settings.priceChange.app"
+            :alert-key="'priceChange'"
             title="Cart Items - Price Update"
         />
         <AlertsItem
-            v-model:email="settings.orderShippingUpdates.email"
-            v-model:app="settings.orderShippingUpdates.app"
-            :alert-key="'orderShippingUpdates'"
+            v-model:email="settings.shippingUpdates.email"
+            v-model:app="settings.shippingUpdates.app"
+            :alert-key="'shippingUpdates'"
             title="Order Shipping Updates"
         />
         <AlertsItem
+            v-if="getUserDetails.accountType === AccountType.Business"
             v-model:email="settings.pendingAgents.email"
             v-model:app="settings.pendingAgents.app"
             :alert-key="'pendingAgents'"
