@@ -73,7 +73,7 @@ const payment = computed(() => {
                             <div class="flex flex-col sm:flex-row sm:gap-2">
                                 <span class="text-sm font-medium leading-6 text-gray-500">Item:</span>
                                 <div class="flex gap-5 justify-between">
-                                    <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity?.alias }}</span>
+                                    <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity?.name }}</span>
                                     <span
                                         v-if="item.discount.value"
                                         class="justify-center px-2 my-auto text-xs font-semibold leading-5 text-red-500 bg-white rounded-3xl border border-red-500 border-solid"

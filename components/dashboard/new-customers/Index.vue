@@ -85,7 +85,7 @@ import { useNuxtApp } from '#app';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import Avatar from 'assets/icons/dashboard/avatar.png';
-import { DashboardTableItem, getAccountTypeById } from '~/types';
+import { AccountType, DashboardTableItem, getAccountTypeById } from '~/types';
 
 const { $api } = useNuxtApp();
 
@@ -120,7 +120,10 @@ const fetchAndSetNewCustomers = async (time = 7) => {
 
     people.value = data.data?.map((user: UserInterface) => ({
         avatar: Avatar,
-        name: `${user?.contactDetails?.firstName} ${user?.contactDetails?.lastName}`,
+        name:
+            user.accountType === AccountType.Personal
+                ? `${user?.personalDetails?.firstName} ${user?.personalDetails?.lastName}`
+                : `${user?.contactDetails?.firstName} ${user?.contactDetails?.lastName}`,
         email: user.profileDetails.email,
         account: getAccountTypeById(user.accountType) || '-',
         company: user.companyDetails?.name || '-',

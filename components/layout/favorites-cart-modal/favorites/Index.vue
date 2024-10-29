@@ -30,7 +30,10 @@
                                 : 'bg-white  border-border group-hover:border-gray-300',
                         ]"
                     >
-                        <CheckIcon v-if="allItemsSelected" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
+                        <CheckIcon
+                            v-if="allItemsSelected"
+                            class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
+                        />
                     </div>
                 </label>
                 <Swiper
@@ -211,10 +214,8 @@ import CopyIcon from '@/assets/icons/copy.svg';
 import TrashIcon from '@/assets/icons/trash-can.svg';
 import MergeIcon from '@/assets/icons/merge.svg';
 import FolderArrowIcon from '@/assets/icons/folder-arrow.svg';
-import ProductCover from '@/assets/media/home/product-2.jpg';
 import { A11y } from 'swiper';
 import { useNuxtApp } from '#app';
-import { ProductDetail } from '~/model/products/response/ProductDetailResponse';
 import { FavouriteFolderResponse, FavouriteFolderResponseInterface } from '~/model/favourite-folder/response/favourite-folder.interface';
 
 const { $api } = useNuxtApp();
@@ -254,7 +255,7 @@ const fetchList = async () => {
         id: item._id,
         type: item.isFolder ? 'folder' : 'product',
         items: item.children,
-        title: item.isFolder ? item.name : item.products[0].productEntity?.alias,
+        title: item.isFolder ? item.name : item.products[0].productEntity?.name,
         description: !item.isFolder && item.products[0].productEntity?.description,
         image: !item.isFolder && item.products[0].productEntity?.details.ProductImage.ProductImageSmall,
     }));

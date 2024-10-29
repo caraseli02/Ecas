@@ -29,7 +29,7 @@ class="px-2 py-1 flex flex-row gap-2 rounded-br-lg rounded-tl-xl"
             <div class="flex flex-col gap-3">
                 <div class="flex flex-col gap-1 ml-4">
                     <div class="flex flex-row gap-2 items-center max-w-[188px] sm:max-w-[150px] md:max-w-[188px] xl:max-w-[310px]">
-                        <span class="text-neutral-700 text-base font-semibold leading-6 truncate">{{ item.alias }}</span>
+                        <span class="text-neutral-700 text-base font-semibold leading-6 truncate">{{ item.name }}</span>
                         <button class="group">
                             <InformationIcon class="text-[#5E6278] group-hover:text-[#007FFF] transition duration-150" />
                         </button>

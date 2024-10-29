@@ -9,6 +9,7 @@ export interface ProductDetail {
     _id: string;
     class: string;
     alias: string;
+    name: string;
     description: string;
     variant: string | null;
     manufacturer: string;

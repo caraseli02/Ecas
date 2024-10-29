@@ -1,0 +1,44 @@
+import { PriceSettingsInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
+
+export const smartPricingRange = (pricing: PriceSettingsInterface[] | []) => {
+    return pricing
+        ? pricing
+              .filter((smartPricing) => smartPricing.type === PriceSettingsTypeEnum.Range)
+              .map((item, index) => ({
+                  selected: false,
+                  value: item.range && [`$${item.range.min} - $${item.range.max}`],
+                  label: item.label || `EP-${index}`,
+                  _id: item._id,
+              }))
+        : [];
+};
+
+export const smartPricingQuantity = (pricing: PriceSettingsInterface[] | []) => {
+    return pricing
+        .filter((smartPricing) => smartPricing.type === PriceSettingsTypeEnum.Quantity)
+        .map((item, index) => ({
+            selected: false,
+            value: item.values
+                ? item.values.reduce<string[]>((acc, curr, i) => {
+                      // Calculate the start of the range
+                      const prevMax = i === 0 ? 0 : parseInt(acc[i - 1].split(' - ')[1]) + 1;
+                      const range = `${prevMax} - ${curr}`;
+                      acc.push(range);
+                      return acc;
+                  }, [])
+                : [],
+            label: item.label || `QTY-${index}`,
+            _id: item._id,
+        }));
+};
+
+export const smartPricingMargin = (pricing: PriceSettingsInterface[] | []) => {
+    return pricing
+        .filter((smartPricing) => smartPricing.type === PriceSettingsTypeEnum.Margins)
+        .map((item, index) => ({
+            selected: false,
+            value: item.values && item.values.map((value) => `${value}%`),
+            label: item.label || `NM-${index}`,
+            _id: item._id,
+        }));
+};
