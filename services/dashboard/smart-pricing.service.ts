@@ -1,6 +1,6 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import { PriceSettingsResponseInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
+import { PriceSettingsInterface, PriceSettingsResponseInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 
 class SmartPricingService extends HttpFactory {
     private MAIN = '/prices';
@@ -24,7 +24,7 @@ class SmartPricingService extends HttpFactory {
             },
             label: range.label,
         };
-        return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/price-range`, data, {
+        return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/price-setting`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -37,7 +37,7 @@ class SmartPricingService extends HttpFactory {
             label: quantity.label,
         };
         console.log(data);
-        return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/quantity`, data, {
+        return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/price-setting`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -50,7 +50,7 @@ class SmartPricingService extends HttpFactory {
             label: margin.label,
         };
         console.log(data);
-        return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/margin`, data, {
+        return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/price-setting`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -61,6 +61,16 @@ class SmartPricingService extends HttpFactory {
             type: type,
         };
         return await this.call<{ status: string; data: string }>('DELETE', `${this.MAIN}/price-setting/${id}`, data, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async editPriceRange(data: PriceSettingsInterface, id: string) {
+        const token = this.authStore.getToken();
+        return await this.call<{
+            status: string;
+            data: { id: string };
+        }>('PATCH', `${this.MAIN}/price-setting/${id}`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }

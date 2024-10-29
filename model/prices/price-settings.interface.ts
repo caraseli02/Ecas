@@ -10,7 +10,7 @@ export interface RangeInterface {
 }
 
 export interface PriceSettingsInterface {
-    _id?: string;
+    _id: string;
     type: PriceSettingsTypeEnum;
     range?: RangeInterface;
     values?: number[];

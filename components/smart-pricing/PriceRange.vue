@@ -18,6 +18,7 @@
                         class="self-stretch my-auto text-sm leading-none text-neutral-400 w-full bg-transparent border-none focus:outline-none"
                         placeholder="Min"
                         aria-label="Minimum Price"
+                        @input="updateRange"
                     />
                 </div>
                 <span class="text-sm leading-none text-zinc-800">-</span>
@@ -37,6 +38,7 @@
                         class="self-stretch my-auto text-sm leading-none text-neutral-400 w-full bg-transparent border-none focus:outline-none"
                         placeholder="Max"
                         aria-label="Maximum Price"
+                        @input="updateRange"
                     />
                 </div>
             </div>
@@ -45,6 +47,13 @@
 </template>
 
 <script setup lang="ts">
+import { defineEmits, ref, watch } from 'vue';
+import { usePricingStore } from '~/store/pricingStore';
+import { storeToRefs } from 'pinia';
+
+const pricingStore = usePricingStore();
+const { editEntryPriceModal } = storeToRefs(pricingStore);
+
 const emit = defineEmits<{
     (e: 'update:priceRange', priceRange: { min: number | null; max: number | null; label: string | null }): void;
 }>();
@@ -53,9 +62,28 @@ const minPrice = ref<number | null>(null);
 const maxPrice = ref<number | null>(null);
 const label = ref<string>('');
 
+// Set initial values based on `editEntryPriceModal`
+watch(
+    () => editEntryPriceModal.value,
+    (newRange) => {
+        if (newRange) {
+            pricingStore.type = 'edit';
+            minPrice.value = newRange?.range?.min ?? null;
+            maxPrice.value = newRange?.range?.max ?? null;
+            label.value = newRange?.label ?? '';
+        } else {
+            pricingStore.type = 'add';
+        }
+    },
+    { immediate: true } // Initialize immediately when the component loads
+);
+
+function updateRange() {
+    emit('update:priceRange', { min: minPrice.value, max: maxPrice.value, label: label.value });
+}
+
+// Watch minPrice and maxPrice for changes and emit updated range
 watch([minPrice, maxPrice, label], ([newMin, newMax, newLabel]) => {
-    if (minPrice && maxPrice) {
-        emit('update:priceRange', { min: newMin, max: newMax, label: newLabel });
-    }
+    emit('update:priceRange', { min: newMin, max: newMax, label: newLabel });
 });
 </script>
