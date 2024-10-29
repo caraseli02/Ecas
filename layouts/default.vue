@@ -55,11 +55,11 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="postcss">
-html {
+html, body, div#__nuxt {
   @apply h-full overflow-hidden
 }
 
 .app-scroll {
-  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-300
+  @apply overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-300
 }
 </style>
