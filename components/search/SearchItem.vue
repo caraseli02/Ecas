@@ -80,7 +80,7 @@
                             class="text-[13px] leading-tight"
                             :class="[productDiscount ? 'text-red' : '']"
                         >
-                            $ {{ quantity[1].toFixed(2) }}
+                            {{ quantity[1].toFixed(2) }} lei
                         </span>
                     </div>
                 </section>

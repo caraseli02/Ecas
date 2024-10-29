@@ -14,7 +14,7 @@
                     </div>
                     <button class="flex items-center" @click="showRegionalPreferencesModal = true">
                         <RonFlag class="w-6 h-5 mr-2.5" />
-                        <span class="text-sm text-slate-500 leading-[1.43]">| RON</span>
+                        <span class="text-sm text-slate-500 leading-[1.43]">| lei</span>
                     </button>
                 </div>
             </div>
@@ -33,7 +33,6 @@
 import RonFlag from '@/assets/icons/flags/ron.svg';
 import HeadphonesIcon from '@/assets/icons/headphones.svg';
 import { useAuthStore } from '~/store/authStore';
-import { showNavModal } from '~~/config/modal/nav';
 
 const authStore = useAuthStore();
 

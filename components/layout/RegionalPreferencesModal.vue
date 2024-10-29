@@ -32,7 +32,7 @@
                     label="Currency"
                     placeholder="Currency"
                     :options="[
-                        { value: 'ron', label: 'RON' },
+                        { value: 'ron', label: 'Lei' },
                         { value: 'euro', label: 'EURO' },
                         { value: 'usd', label: 'USD' },
                     ]"
@@ -66,7 +66,7 @@ const language = ref<FormSelectOption>({
     value: 'english',
 });
 const currency = ref<FormSelectOption>({
-    label: 'RON',
+    label: 'Lei',
     value: 'ron',
 });
 

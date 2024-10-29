@@ -1,5 +1,7 @@
 <template>
-    <div class="h-[368px] lg:h-[298px] w-full flex flex-col justify-between relative bg-white rounded-xl shadow-m md:px-[15px] lg:pt-[15px] lg:self-start">
+    <div
+        class="h-[368px] lg:h-[298px] w-full flex flex-col justify-between relative bg-white rounded-xl shadow-m md:px-[15px] lg:pt-[15px] lg:self-start"
+    >
         <!-- <div class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green-600">
             <CheckCircle2 class="w-4 h-4 mr-1 text-white" />
             <span class="text-[11px] font-Inter leading-tight font-semibold text-white"> {{ product.stock }} in stock </span>
@@ -29,7 +31,7 @@
                         @click="quantity = bulkQuantity[0] + 1"
                     >
                         <div class="text-slate-500">{{ bulkQuantity[0] }}+</div>
-                        <div :class="['text-neutral-700', productDiscount ? 'text-red' : '']">${{ bulkQuantity[1].toFixed(2) }}</div>
+                        <div :class="['text-neutral-700', productDiscount ? 'text-red' : '']">{{ bulkQuantity[1].toFixed(2) }} lei</div>
                     </div>
                 </div>
                 <div class="hidden justify-end text-slate-500 text-xs mb-[9px] lg:flex">
@@ -56,21 +58,29 @@
                     </div>
                     <div class="flex items-center h-6">
                         <span class="text-slate-500 mr-[5px]">Minimum Order:</span>
-                        <span class="font-Inter text-neutral-700 font-medium">{{ minPriceConfiguration ? minPriceConfiguration.quantity : 1 }}</span>
+                        <span class="font-Inter text-neutral-700 font-medium">{{
+                            minPriceConfiguration ? minPriceConfiguration.quantity : 1
+                        }}</span>
                     </div>
                 </div>
-                <div class="flex items-center justify-between font-Inter mb-4 lg:justify-start lg:items-end lg:absolute 2xl:relative bottom-0">
+                <div
+                    class="flex items-center justify-between font-Inter mb-4 lg:justify-start lg:items-end lg:absolute 2xl:relative bottom-0"
+                >
                     <div class="lg:mr-[15px]">
                         <div v-if="productDiscount" class="text-sm leading-tight line-through">
                             {{
                                 minPriceConfiguration
-                                    ? `$ ${minPriceConfiguration.price.toFixed(2)} (${minPriceConfiguration.quantity}+)`
+                                    ? `${minPriceConfiguration.price.toFixed(2)} lei (${minPriceConfiguration.quantity}+)`
                                     : '-'
                             }}
                         </div>
                         <div class="text-xl leading-tight font-semibold" :class="[productDiscount ? 'text-rose-500' : '']">
                             <span>
-                                {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : `$ ${minPriceConfiguration?.price.toFixed(2)}` || '-' }}
+                                {{
+                                    discountPrice
+                                        ? `${discountPrice.toFixed(2)} lei`
+                                        : `${minPriceConfiguration?.price.toFixed(2)} lei` || '-'
+                                }}
                             </span>
                             {{ currentPriceConfiguration ? `(${currentPriceConfiguration.quantity}+)` : '-' }}
                         </div>
@@ -107,8 +117,6 @@
 </template>
 
 <script setup lang="ts">
-import { CheckCircle2 } from 'lucide-vue-next';
-
 import CartIcon from '@/assets/icons/cart.svg';
 import { CartInterface, ProductActionObject } from '~/model/cart/response/cart.interface';
 import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';

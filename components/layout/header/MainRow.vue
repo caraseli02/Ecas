@@ -67,13 +67,16 @@
                             <HeartIcon class="w-6 h-6 text-white xl:mb-1" />
                             <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block"> Favorites </span>
                         </button>
-                        <div class="relative" :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex') : 'flex items-center']">
-                                <LazyNotifications
-                                    :notifications="notifications"
-                                    :unread-notifications="unreadNotifications"
-                                    @delete="deleteNotification"
-                                    @mark-as-read="markNotificationAsRead"
-                                />
+                        <div
+                            class="relative"
+                            :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex') : 'flex items-center']"
+                        >
+                            <LazyNotifications
+                                :notifications="notifications"
+                                :unread-notifications="unreadNotifications"
+                                @delete="deleteNotification"
+                                @mark-as-read="markNotificationAsRead"
+                            />
                         </div>
                         <button class="flex items-center md:hidden" @click="showAccountModal = true">
                             <UserIcon class="w-6 h-6 text-white" />
@@ -107,7 +110,7 @@
                                 </span>
                             </div>
                             <div v-if="totalCartPrice" class="flex-col text-white flex-shrink-0 ml-6 max-md:hidden">
-                                <div class="leading-[1.25] font-medium mb-0.5">{{ '$ ' + totalCartPrice }}</div>
+                                <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice + ' lei' }}</div>
                                 <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
                             </div>
                         </button>
@@ -213,7 +216,7 @@ const { $api } = useNuxtApp();
 const cartStore = useCartStore();
 const { getCart, getCartSubtotal } = storeToRefs(cartStore);
 
-const notificationStore = useNotificationStore()
+const notificationStore = useNotificationStore();
 const { unreadNotifications } = storeToRefs(notificationStore);
 
 const totalCartPrice = ref(0);
@@ -415,13 +418,17 @@ Promise.all([fetchNofications(), fetchList()]);
 
 const authStore = useAuthStore();
 
-watch(() => authStore.token.value, async (newVal) => {
-    if (newVal) {        
-        await fetchNofications();
-        await fetchList();
-    } else {
-        notifications.value = [];
-        unreadNotifications.value = 0;
-    }
-}, {deep: true});
+watch(
+    () => authStore.token.value,
+    async (newVal) => {
+        if (newVal) {
+            await fetchNofications();
+            await fetchList();
+        } else {
+            notifications.value = [];
+            unreadNotifications.value = 0;
+        }
+    },
+    { deep: true }
+);
 </script>
