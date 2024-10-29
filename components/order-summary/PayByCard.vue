@@ -75,7 +75,7 @@ v-else
             <span v-if="showPayWithLabel" class="text-neutral-700 text-sm font-normal leading-6 w-full text-start">Pay {{
                 hasCard && isNewCardSelected ? 'with a new card' : 'by card' }}</span>
             <div class="flex justify-end w-full gap-2">
-                <div v-if="!isSelected && !isExpired && !showPayWithLabel" class="flex gap-2 items-center justify-end">
+                <div v-if="!isSelected && !isExpired && !showPayWithLabel && cardInfo" class="flex gap-2 items-center justify-end">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_397_5131)">
                             <path

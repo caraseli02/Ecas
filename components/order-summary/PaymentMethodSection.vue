@@ -27,6 +27,7 @@
                 :is-new-card-selected="isNewCardSelected"
                 :is-selected="order?.paymentDetails?.type === PaymentTypeEnum.Card && !order?.paymentDetails?.card"
                 @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: null })"
+                showPayWithLabel
             />
             <OrderSummaryPayByCard
                 v-else-if="!card && availablePaymentMethods.includes(PaymentTypeEnum.Card)"
