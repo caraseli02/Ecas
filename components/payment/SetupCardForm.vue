@@ -78,7 +78,7 @@ const handleSubmit = async () => {
         clientSecret: setupIntentId.value,
         elements,
         confirmParams: {
-            return_url: `${window.location.origin}/checkout/success`,
+            return_url: `${window.location.origin}/dashboard/client`,
         },
     });
 
