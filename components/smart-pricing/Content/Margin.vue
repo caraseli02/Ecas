@@ -13,6 +13,14 @@ const { $api } = useNuxtApp();
 
 const marginList = ref(pricingStore.margin);
 
+watch(
+    () => pricingStore.margin,
+    (newRange) => {
+        marginList.value = newRange;
+    },
+    { deep: true } // Deep watch to detect changes within the array
+);
+
 const deleteItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
     const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Margins, itemValue._id);
     if (response.status !== 'success') {

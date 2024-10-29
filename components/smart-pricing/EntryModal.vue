@@ -40,14 +40,7 @@ const handleCreate = async () => {
             // Add your logic here to handle the creation error
             return;
         }
-        pricingStore.editPriceRange(
-            {
-                min: priceRange.value.min,
-                max: priceRange.value.max,
-            },
-            priceRange.value.label,
-            editEntryPriceModal.value._id
-        );
+        await pricingStore.updateAndReturnPricing();
     } else if (pricingStore.type === 'add') {
         const response = await $api.smartPricing.setNewPriceRange({
             min: priceRange.value.min,
@@ -58,15 +51,7 @@ const handleCreate = async () => {
             // Add your logic here to handle the creation error
             return;
         }
-        pricingStore.addPriceRange(
-            {
-                min: priceRange.value.min,
-                max: priceRange.value.max,
-            },
-            priceRange.value.label || `EP-${pricingStore.range?.length + 1}`,
-            response.data.id
-        );
-        console.log(pricingStore.range);
+        await pricingStore.updateAndReturnPricing();
     }
 
     showEntryModal.value = false;
