@@ -3,13 +3,39 @@ import { PlusIcon, Trash2Icon } from 'lucide-vue-next';
 import { useNuxtApp } from '#app';
 import { usePricingStore } from '~/store/pricingStore';
 import { storeToRefs } from 'pinia';
+import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 
 const pricingStore = usePricingStore();
-const { showMarginModal } = storeToRefs(pricingStore);
+const { showMarginModal, editMarginModal, type } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
 
 const marginList = ref([{ id: 1, value: '' }]);
+
+watch(
+    () => pricingStore.showMarginModal,
+    (newValue) => {
+        if (newValue) {
+            console.log(newValue, editMarginModal.value);
+            if (editMarginModal.value) {
+                pricingStore.type = 'edit';
+                if (editMarginModal.value.value) {
+                    marginList.value = editMarginModal.value.value?.map((value: string, index: number) => ({
+                        id: index + 1,
+                        value: `${Number(value.replace('%', ''))}`,
+                    }));
+                    editMarginModal.value.value.map((value) => {
+                        console.log(value);
+                    });
+                }
+            } else {
+                pricingStore.type = 'add';
+                marginList.value = [{ id: 1, value: '' }];
+            }
+        }
+    },
+    { deep: true }
+);
 
 function addMargin() {
     marginList.value.push({ id: marginList.value.length + 1, value: '' });
@@ -20,17 +46,36 @@ function removeMargin(id: number) {
 }
 
 const createNewMarginTemplate = async () => {
-    console.log(marginList);
-    // Add your logic here to handle the creation
-    const response = await $api.smartPricing.setNewMarginRange({
-        values: marginList.value.map((item) => Number(item.value)),
-        label: `NM-${pricingStore.margin?.length}`,
-    });
-    if (response.status !== 'success') {
-        // Add your logic here to handle the creation error
+    if (marginList.value.find((item) => Number(item) === 0 || Number(item) < 0)) {
         return;
     }
-    await pricingStore.updateAndReturnPricing();
+    console.log(showMarginModal.value, editMarginModal.value, pricingStore.type);
+    if (pricingStore.type === 'edit') {
+        const editedMarginObject = {
+            label: editMarginModal.value.label,
+            type: PriceSettingsTypeEnum.Margins,
+            values: marginList.value.map((item) => Number(item.value)),
+        };
+
+        // Add your logic here to handle the creation for edit
+        const response = await $api.smartPricing.editPriceRange(editedMarginObject, editMarginModal.value._id);
+        if (response.status !== 'success') {
+            // Add your logic here to handle the creation error
+            return;
+        }
+        await pricingStore.updateAndReturnPricing();
+    } else if (pricingStore.type === 'add') {
+        const response = await $api.smartPricing.setNewMarginRange({
+            values: marginList.value.map((item) => Number(item.value)),
+            label: `NM-${pricingStore.margin?.length}`,
+        });
+        if (response.status !== 'success') {
+            // Add your logic here to handle the creation error
+            return;
+        }
+        await pricingStore.updateAndReturnPricing();
+    }
+    // Add your logic here to handle the creation
 };
 </script>
 

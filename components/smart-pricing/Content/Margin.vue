@@ -7,7 +7,7 @@ import { useNuxtApp } from '#app';
 import { storeToRefs } from 'pinia';
 
 const pricingStore = usePricingStore();
-const { showMarginModal } = storeToRefs(pricingStore);
+const { showMarginModal, pricing, margin } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
 
@@ -49,6 +49,12 @@ function deleteAllSelected() {
 const selectedCount = computed(() => marginList.value.filter((i) => i.selected).length);
 
 const editItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
+    if (!pricing) {
+        console.error('Pricing is not defined');
+        return;
+    }
+    const filteredItems = margin.value ? margin.value.filter((i) => i._id === itemValue._id) : [];
+    pricingStore.editMarginModal = filteredItems.length > 0 ? filteredItems[0] : null;
     showMarginModal.value = true;
 };
 </script>
