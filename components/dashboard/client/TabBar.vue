@@ -193,6 +193,8 @@ const checkForActiveTab = () => {
     }
 }
 
+watch(() => route.query.tab, checkForActiveTab, { immediate: true }  );
+
 onMounted(async () => {
     updateOrderFiltersWithCounts()
     setActiveFilterHighlight();
