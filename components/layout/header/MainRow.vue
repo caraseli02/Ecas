@@ -73,7 +73,6 @@
                                     :unread-notifications="unreadNotifications"
                                     @delete="deleteNotification"
                                     @mark-as-read="markNotificationAsRead"
-                                    @close="showNotifications = false"
                                 />
                         </div>
                         <button class="flex items-center md:hidden" @click="showAccountModal = true">
@@ -198,7 +197,6 @@ import HeartIcon from '@/assets/icons/heart.svg';
 import UserIcon from '@/assets/icons/user.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import XIcon from '@/assets/icons/x.svg';
-import Notifications from '@/components/global/Notifications.vue';
 import CartModal from '@/components/layout/favorites-cart-modal/Index.vue';
 import _ from 'lodash';
 import Emitter from 'tiny-emitter/instance';
@@ -209,11 +207,15 @@ import { CartInterface } from '~/model/cart/response/cart.interface';
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '~/store/authStore';
+import { useNotificationStore } from '~/store/notificationStore';
 
 const { $api } = useNuxtApp();
 const cartStore = useCartStore();
-
 const { getCart, getCartSubtotal } = storeToRefs(cartStore);
+
+const notificationStore = useNotificationStore()
+const { unreadNotifications } = storeToRefs(notificationStore);
+
 const totalCartPrice = ref(0);
 
 const subtotal = () => {
@@ -335,8 +337,6 @@ const error = ref(false);
 
 const notifications = ref<Notification[]>([] as Notification[]);
 
-const unreadNotifications = ref(0);
-const showNotifications = ref(false);
 const fetchNofications = async () => {
     error.value = false;
     isLoading.value = true;
