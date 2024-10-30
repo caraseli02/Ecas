@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <span class="text-neutral-700 text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300">{{
-                            '$ ' + deliveryType.price
+                            deliveryType.price + ' lei'
                         }}</span>
                     </button>
                 </div>
