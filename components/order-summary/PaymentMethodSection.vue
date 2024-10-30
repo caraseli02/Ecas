@@ -116,6 +116,8 @@ import { usePaymentStore } from '~/store/paymentStore';
 
 const paymentStore = usePaymentStore();
 
+const { card, cards, isNewCardSelected } = usePaymentCards();
+
 const props = defineProps<{
     order: OrderInterface;
     accountCredit: CustomerCreditInterface;
