@@ -293,6 +293,10 @@ Emitter.on('update-cart', async (data: CartInterface) => {
     }
 });
 
+Emitter.on('open-account-modal', async () => {
+    showAccountModal.value = true;
+});
+
 // Emitter.on('notifications', async (notifications: boolean) => {
 //     if (notifications) {
 //         await fetchNofications();
