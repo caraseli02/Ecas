@@ -17,7 +17,7 @@ watch(
         if (newValue) {
             if (editQuantityModal.value) {
                 if (editQuantityModal.value.value) {
-                    console.log(pricingStore.type);
+                    pricingStore.type = 'edit';
                     quantityList.value = editQuantityModal.value.value?.map((value: string, index: number) => ({
                         id: index + 1,
                         min: value.split(' - ')[0] || 0,
@@ -25,6 +25,7 @@ watch(
                     }));
                 }
             } else {
+                pricingStore.type = 'add';
                 quantityList.value = [{ id: 1, min: 0, max: 0 }];
             }
         }
@@ -58,6 +59,7 @@ const createNewQuantityTemplate = async () => {
         return;
     }
     if (type.value === 'edit') {
+        console.log('edit');
         const editedQuantityObject = {
             label: editQuantityModal.value.label,
             type: PriceSettingsTypeEnum.Quantity,
@@ -71,6 +73,7 @@ const createNewQuantityTemplate = async () => {
         }
         await pricingStore.updateAndReturnPricing();
     } else if (type.value === 'add') {
+        console.log('add');
         const maxValues = quantityList.value.map((item) => item.max);
 
         const response = await $api.smartPricing.setNewQuantityRange({

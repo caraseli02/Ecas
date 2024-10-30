@@ -63,6 +63,7 @@ watch(
                             @click="
                                 showEntryModal = true;
                                 editEntryPriceModal = null;
+                                pricingStore.type = 'add';
                             "
                             >Entry Price
                         </UiButton>
@@ -71,6 +72,7 @@ watch(
                             variant="ghost"
                             @click="
                                 showQuantityModal = true;
+                                pricingStore.type = 'add';
                                 editQuantityModal = null;
                             "
                             >Quantity
@@ -81,6 +83,7 @@ watch(
                             @click="
                                 showMarginModal = true;
                                 editMarginModal = null;
+                                pricingStore.type = 'add';
                             "
                             >Margin
                         </UiButton>
