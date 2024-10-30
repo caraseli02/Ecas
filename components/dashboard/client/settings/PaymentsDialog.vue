@@ -67,7 +67,6 @@ watch(
 watch(
     () => props.cardInfo,
     (newCardInfo) => {
-        console.log(newCardInfo);
         cardFields.value.cardNumber = '';
         cardFields.value.phoneNumber = newCardInfo?.billing_details?.phone || '';
         cardFields.value.expiryDate =
