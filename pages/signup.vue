@@ -39,7 +39,7 @@ import {
     SignupPersonalDetails as SignupPersonalDetailsType,
     SignupProfileDetails as SignupProfileDetailsType,
 } from '~~/types';
-import { useToast } from '~/components/ui/toast';
+import { useToast } from '@/components/ui/toast/use-toast'
 
 const { $api } = useNuxtApp();
 

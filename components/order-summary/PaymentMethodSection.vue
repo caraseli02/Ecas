@@ -21,10 +21,12 @@
                     view="payment" :card-info="card" :card-type="card?.card?.brand"
                     :is-selected="order?.paymentDetails?.type === PaymentTypeEnum.Card && order?.paymentDetails?.card?.id === card.id"
                     :has-card="true" :cards="true" :is-new-card-selected="isNewCardSelected"
-                    :is-expired="cardExpired(card)" show-pay-with-label
+                    :is-expired="cardExpired(card)"
                     :is-default="card.default"
-                :enable-edit="true"
-                show-pay-with-label@select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: $event })" />
+                    :enable-edit="true"
+                    show-pay-with-label 
+                    @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: $event })" 
+                />
                 <OrderSummaryPayByCard
                     v-else-if="card && isNewCardSelected && availablePaymentMethods.includes(PaymentTypeEnum.Card)"
                     view="payment" :cards="true" :is-new-card-selected="isNewCardSelected"
