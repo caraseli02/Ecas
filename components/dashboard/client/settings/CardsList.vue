@@ -9,6 +9,7 @@
                 :card-type="item?.card?.display_brand"
                 :is-selected="item.id === selectedCard?.id"
                 :is-default="item.default"
+                :enable-edit="false"
                 :has-card="true"
                 :is-expired="item.card.is_expired"
                 @select-payment-option="selectNewCard"
@@ -17,7 +18,7 @@
                 @edit-card="handleEditCard"
             />
         </template>
-        <UiSkeleton class="w-[432px] h-[92px]" v-for="i in 3" :key="i" v-else />
+        <UiSkeleton v-for="i in 3" v-else :key="i" class="w-[432px] h-[92px]" />
     </div>
 </template>
 

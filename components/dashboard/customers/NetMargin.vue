@@ -23,7 +23,7 @@
                     </ClientOnly>
                 </div>
                 <SkeletonLoader v-if="isLoading" class="w-full h-[46px]" />
-                <div v-else class="text-[28px] leading-normal font-semibold">$ 1,200,539.77</div>
+                <div v-else class="text-[28px] leading-normal font-semibold">1,200,539.77 lei</div>
             </div>
             <div class="flex items-center justify-center">
                 <button class="flex items-center">

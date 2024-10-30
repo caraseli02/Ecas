@@ -6,6 +6,7 @@ import useFirebaseAuth from '~/composables/useFirebaseAuth';
 import moment from 'moment';
 import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 import { useNuxtApp } from '#app';
+import { useRouter } from '#app/composables/router';
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
@@ -74,12 +75,17 @@ export const useAuthStore = defineStore({
             this.generalSettings = null;
         },
         getToken() {
-            console.log(`${moment().diff(this.token?.createdAt, 'minutes')} minutes left`);
+            const router = useRouter();
+
+            console.log(`${moment().diff(this.token?.createdAt, 'minutes')} minutes passed`);
             if (moment().diff(this.token?.createdAt, 'minutes') > 59) {
                 this.signOut();
+                router.push('/');
+                Emitter.emit('open-account-modal');
+                return;
             }
 
-            return this.token?.value as UserInfoJWT;
+            return this.token?.value as unknown as UserInfoJWT;
         },
     },
     getters: {
