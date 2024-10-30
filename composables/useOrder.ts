@@ -2,7 +2,7 @@ import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '~/store/authStore';
 import { useCartStore } from '~/store/cartStore';
-import { AccountRole, OrderRequestInterface, PaymentTypeEnum } from '~/types';
+import { AccountRole, AccountType, OrderRequestInterface, PaymentTypeEnum } from '~/types';
 import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
 import { useCheckoutStore } from '~/store/checkout';
 import { useUser } from './useUser';
@@ -29,22 +29,33 @@ export function useOrder() {
     if (!user.value || !user.value?.contactDetails || !deliveryMethod || !paymentDetails) {
       checkout.value = false; // Reset processing state on error
       console.log('User details not available');
-      console.log(!user.value , !user.value?.contactDetails , !deliveryMethod , !paymentDetails);
       return;
     }
 
-    if (user.value.role === AccountRole.Client && user.value?.personalDetails) {
+    if (user.value.role === AccountRole.Client) {
+      const isPersonalAccount = user.value.accountType === AccountType.Personal;
+      const nameDetails = isPersonalAccount
+        ? {
+            firstName: user.value.personalDetails?.firstName,
+            lastName: user.value.personalDetails?.lastName,
+            city: user.value.personalDetails?.address.city,
+            country: user.value.personalDetails?.address.country,
+          }
+        : {
+            firstName: user.value.contactDetails?.firstName,
+            lastName: user.value.contactDetails?.lastName,
+            city: user.value.companyDetails?.address.city,
+            country: user.value.companyDetails?.address.country
+          };
+    
       orderRequestObject.value = {
         isDraft: false,
         cartId: cartId,
         currency: 'usd',
         type: orderType,
         shippingDetails: {
-          firstName: user.value.personalDetails.firstName,
-          lastName: user.value.personalDetails.lastName,
+          ...nameDetails,
           phone: user.value.contactDetails.phone,
-          city: user.value.personalDetails.address.city,
-          country: user.value.personalDetails.address.country,
           address: getShipping(),
           billingAddress: getBilling(),
           deliveryTypeId: deliveryMethod._id,
@@ -55,11 +66,11 @@ export function useOrder() {
           type: paymentDetails.type,
         },
       };
-
+    
       if (paymentDetails.type === PaymentTypeEnum.Card) {
         orderRequestObject.value.stripeCardId = paymentDetails.card?.id || null;
       }
-
+    
       if (note) {
         orderRequestObject.value.note = {
           sender: user.value.firebaseId,

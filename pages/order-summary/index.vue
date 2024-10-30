@@ -25,7 +25,7 @@
                         />
                         <OrderSummaryNoteSection />
                         <OrderSummary :order="order" :general-settings="generalSettings" />
-                        <OrderSummaryCheckoutButtons />
+                        <OrderSummaryCheckoutButtons :isCheckoutDisabled="isCheckoutDisabled" />
                         <OrderSummaryBannerCard />
                         <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
                         <OrderSummarySimilarProducts :loading="loading" />
@@ -203,6 +203,17 @@ const backOrderOption = ref<BackorderShippingTypesInterface | null>(null);
 const stockOrderOption = ref<StockorderShippingTypesInterface | null>(null);
 const smallOrder = ref<SmallOrderChargeInterface | null>(null);
 const paymentDetails = ref<PaymentDetails | null>(null);
+
+const isCheckoutDisabled = computed(() => {
+  // Check if the necessary conditions are fulfilled
+  const hasShippingAddress = !!order.value.shippingDetails.address;
+  const hasBillingAddress = !!order.value.shippingDetails.billingAddress;
+  const hasShippingPreference = !!deliveryMethod.value;
+  const hasPaymentMethod = !!paymentDetails.value && 'type' in paymentDetails.value;
+
+  // If any of the conditions are not met, disable the checkout button
+  return !(hasShippingAddress && hasBillingAddress && hasShippingPreference && hasPaymentMethod);
+});
 
 watch(
     [order],

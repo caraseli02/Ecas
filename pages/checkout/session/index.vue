@@ -1,8 +1,14 @@
 <template>
-    <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-1/2" @submit.prevent="handleSubmit">
-        <div id="payment-element" />
-        <button id="submit" :disabled="isLoading">Pay now</button>
-    </form>
+    <div class="relative min-h-screen">
+        <UiSkeleton v-show="showSkeletonLoader" class="w-full h-full absolute inset-0" />
+        <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-full md:w-1/2 mx-auto"
+            @submit.prevent="handleSubmit">
+            <div id="payment-element" />
+            <div v-if="!showSkeletonLoader" class="flex justify-end items-center mt-2">
+                <UiButton id="submit" :disabled="isLoading">Pay now</UiButton>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -21,7 +27,9 @@ let stripe: Stripe | null;
 let elements: StripeElements;
 let paymentIntent: PaymentIntentResult;
 
+const showSkeletonLoader = ref(false);
 onMounted(async () => {
+    showSkeletonLoader.value = true;
     orderId.value = <string>route.query.id;
 
     stripe = await loadStripe(
@@ -59,6 +67,9 @@ onMounted(async () => {
     });
 
     card.mount('#payment-element');
+    setTimeout(() => {
+        showSkeletonLoader.value = false;
+    }, 1000);
 });
 
 const handleSubmit = async () => {

@@ -57,7 +57,7 @@
                 </div>
             </button>
             <button
-                v-if="availablePaymentMethods.includes(PaymentTypeEnum.Credit)"
+                v-if="availablePaymentMethods.includes(PaymentTypeEnum.Credit) && accountCredit.available > 0"
                 class="p-3 flex flex-col gap-3 border rounded-lg hover:bg-[#007FFF0D] hover:border-blue-500 transition duration-300 group"
                 :class="order.paymentDetails?.type === 1 ? 'border-blue-500 bg-[#007FFF0D]' : 'border-grey-300 bg-white'"
                 :disabled="accountCredit.active"

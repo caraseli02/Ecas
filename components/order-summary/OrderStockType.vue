@@ -204,7 +204,10 @@ const shippingAndBillingMissingInfoWarning = computed(() => {
 const mixedOrBackOrder = computed(() => props.order.type === OrderType.Back || props.order.type === OrderType.Mixed);
 const mixedOrStockOrder = computed(() => props.order.type === OrderType.Stock || props.order.type === OrderType.Mixed);
 
-const paymentMethodWarning = computed(() => props.order.paymentDetails?.type === null);
+const paymentMethodWarning = computed(() => {
+  const paymentDetails = props.order.paymentDetails;
+  return !paymentDetails || paymentDetails.type == null;
+});
 
 watch(orderType, (newOrderType) => {
     props.order.type = orderType.value;
