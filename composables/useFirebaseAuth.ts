@@ -1,5 +1,6 @@
-import { getAdditionalUserInfo, getIdToken, GoogleAuthProvider, signInWithPopup, signOut, User } from 'firebase/auth';
+import { Auth, getAdditionalUserInfo, getIdToken, GoogleAuthProvider, signInWithPopup, signOut, User } from 'firebase/auth';
 import { UserInfoJWT } from '~~/types';
+import useParser from '~/composables/useParser';
 
 interface FirebaseResults {
     token: string | undefined;
@@ -39,15 +40,16 @@ export default function () {
         return useParser().parseJwt(token);
     };
 
-    const getUserToken = async (): Promise<string> => {
+    const getUserToken = async (): Promise<UserInfoJWT> => {
         const { currentUser } = $auth;
+        console.log($auth);
 
-        return (await getIdToken(currentUser)) as UserInfoJWT;
+        return (await getIdToken(currentUser)) as unknown as UserInfoJWT;
     };
 
     const logout = async (): Promise<boolean> => {
-        await signOut($auth);
-        $router.push('/');
+        await signOut(<Auth>$auth);
+        await $router.push('/');
         return true;
     };
 

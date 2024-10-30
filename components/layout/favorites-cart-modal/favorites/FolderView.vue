@@ -131,7 +131,7 @@
             </div>
             <div class="text-sm leading-tight font-Inter">
                 Total:
-                <strong class="font-semibold">$ 175.413,75</strong>
+                <strong class="font-semibold">175.413,75 lei</strong>
             </div>
         </div>
         <div v-if="(products.filter((e) => e.type === 'folder') || []).length > 0" class="grid grid-cols-1 gap-5 px-[15px] mb-10">

@@ -34,12 +34,12 @@
         <div class="mt-auto h-full min-h-[39px]">
             <div class="min-h-[14px] leading-tight line-through text-xs">
                 <template v-if="productDiscount">
-                    {{ priceConfiguration ? `$ ${priceConfiguration.price.toFixed(2)} (${priceConfiguration.quantity}+)` : '-' }}
+                    {{ priceConfiguration ? `${priceConfiguration.price.toFixed(2)} lei (${priceConfiguration.quantity}+)` : '-' }}
                 </template>
             </div>
             <div class="flex gap-1 items-center" :class="[productDiscount ? 'text-rose-500' : '']">
                 <strong>
-                    {{ discountPrice ? `$ ${discountPrice.toFixed(2)}` : priceConfiguration?.price.toFixed(2) || '-' }}
+                    {{ discountPrice ? `${discountPrice.toFixed(2)} lei` : priceConfiguration?.price.toFixed(2) || '-' }}
                 </strong>
                 <span class="text-xs">
                     {{ priceConfiguration ? `(${priceConfiguration.quantity}+)` : '-' }}
