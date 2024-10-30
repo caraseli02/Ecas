@@ -42,7 +42,7 @@
                     </div>
                     <div class="flex items-center">
                         <span class="mr-1">Total:</span>
-                        <span class="font-semibold">$ 175.413,75</span>
+                        <span class="font-semibold">175.413,75 lei</span>
                     </div>
                 </div>
             </button>
@@ -64,10 +64,16 @@
             </Transition>
         </div>
         <div v-if="editing" class="flex items-center justify-center gap-[15px] mt-[25px] mb-[15px]">
-            <button class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-blue-500" @click="editing = false">
+            <button
+                class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-blue-500"
+                @click="editing = false"
+            >
                 <CheckIcon class="w-6 h-6" />
             </button>
-            <button class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-rose-500" @click="editing = false">
+            <button
+                class="flex items-center justify-center w-[42px] h-[42px] bg-[#F5F5F5] rounded-full text-rose-500"
+                @click="editing = false"
+            >
                 <XIcon class="w-5 h-5" />
             </button>
         </div>

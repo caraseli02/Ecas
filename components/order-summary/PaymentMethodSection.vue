@@ -22,7 +22,9 @@
                     :is-selected="order?.paymentDetails?.type === PaymentTypeEnum.Card && order?.paymentDetails?.card?.id === card.id"
                     :has-card="true" :cards="true" :is-new-card-selected="isNewCardSelected"
                     :is-expired="cardExpired(card)" show-pay-with-label
-                    @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: $event })" />
+                    :is-default="card.default"
+                :enable-edit="true"
+                show-pay-with-label@select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: $event })" />
                 <OrderSummaryPayByCard
                     v-else-if="card && isNewCardSelected && availablePaymentMethods.includes(PaymentTypeEnum.Card)"
                     view="payment" :cards="true" :is-new-card-selected="isNewCardSelected"
@@ -105,7 +107,7 @@ import RadioButtonChecked from '@/assets/icons/radio-button-checked.svg';
 import BankIcon from '@/assets/icons/bank.svg';
 import PieChart from '@/assets/icons/pie-chart.svg';
 import MoneyIcon from '@/assets/icons/money.svg';
-import { OrderInterface, PaymentDetails, PaymentTypeEnum } from '~/types';
+import { OrderInterface, PaymentDetails, PaymentTypeEnum, StripeCardInterface } from '~/types';
 import { CustomerCreditInterface } from '~/types/auth/account-settings';
 import moment from 'moment/moment';
 import { storeToRefs } from 'pinia';
@@ -117,7 +119,7 @@ const paymentStore = usePaymentStore();
 const props = defineProps<{
     order: OrderInterface;
     accountCredit: CustomerCreditInterface;
-    card: any;
+    card: StripeCardInterface;
     cards: any;
     isNewCardSelected: boolean;
 }>();
