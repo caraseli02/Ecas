@@ -2,6 +2,7 @@ import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { OrderRequestInterface } from '~/types';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
 
 class OrdersService extends HttpFactory {
     private ORDERS_DASHBOARD_RESOURCE = '/dashboard/orders/admin';
@@ -58,6 +59,11 @@ class OrdersService extends HttpFactory {
         return await this.call<any>('GET', `${this.ORDERS_RESOURCE}/${id}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
+    }
+
+    async validateAddress(address: ShippingAddressInterface) {
+        console.log('address', address);
+        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/validate-address`, { ...address });
     }
 
     async getCustomerOrders() {

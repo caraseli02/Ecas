@@ -39,6 +39,7 @@ import {
     SignupPersonalDetails as SignupPersonalDetailsType,
     SignupProfileDetails as SignupProfileDetailsType,
 } from '~~/types';
+import { useToast } from '~/components/ui/toast';
 
 const { $api } = useNuxtApp();
 
@@ -47,6 +48,8 @@ const { checkForInputErrors, checkContactConfirmationEmail, checkProfileConfirma
 const currentStep = ref(0);
 
 const authStore = useAuthStore();
+
+const { toast } = useToast();
 
 const { logout } = useFirebaseAuth();
 
@@ -176,8 +179,8 @@ const personalDetails = useState<SignupPersonalDetailsType>('signup-personal-det
     };
 });
 
-const handlePersonalDetailsContinue = () => {
-    const hasError = checkForInputErrors([
+const handlePersonalDetailsContinue = async () => {
+    let hasError = checkForInputErrors([
         personalDetails.value.firstName,
         personalDetails.value.lastName,
         personalDetails.value.country,
@@ -186,6 +189,27 @@ const handlePersonalDetailsContinue = () => {
         personalDetails.value.postcode,
         personalDetails.value.addressLine1,
     ]);
+
+    const result = await $api.orders.validateAddress({
+        country: personalDetails.value.country.value.value,
+        region: personalDetails.value.region.value.value,
+        city: personalDetails.value.city.value,
+        postcode: personalDetails.value.postcode.value,
+        name1: personalDetails.value.addressLine1.value,
+        name2: personalDetails.value.addressLine2.value,
+        default: false,
+    });
+
+    if (!result.data.valid) {
+        console.log('Invalid address');
+        hasError = true;
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invalid address',
+        });
+        return;
+    }
 
     if (!hasError) {
         currentStep.value++;
@@ -286,24 +310,24 @@ const profileDetails = useState<SignupProfileDetailsType>('signup-profile-detail
     };
 });
 
-function mapType(selected: string,): AccountType {
-  switch (selected) {
-    case 'personal':
-      return AccountType.Personal;
-    case 'sole-trader':
-      return AccountType.SoleTrader;
-    case 'business':
-      if (selectedBusinessType.value === 'executive') {
-        return AccountType.Business;
-      } else if (selectedBusinessType.value === 'agent') {
-        return AccountType.Agent;
-      }
-      break;
-    default:
-      break;
-  }
-  // Return a general default or handle error, if no cases match
-  throw new Error('Invalid account type selection');
+function mapType(selected: string): AccountType {
+    switch (selected) {
+        case 'personal':
+            return AccountType.Personal;
+        case 'sole-trader':
+            return AccountType.SoleTrader;
+        case 'business':
+            if (selectedBusinessType.value === 'executive') {
+                return AccountType.Business;
+            } else if (selectedBusinessType.value === 'agent') {
+                return AccountType.Agent;
+            }
+            break;
+        default:
+            break;
+    }
+    // Return a general default or handle error, if no cases match
+    throw new Error('Invalid account type selection');
 }
 
 const backToSelectMenu = async () => {
