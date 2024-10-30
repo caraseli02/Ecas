@@ -1,5 +1,5 @@
 <template>
-    <UiSheet :key="userDetails?._id" v-model:open="isOpen">
+    <UiSheet :key="userDetails?._id" v-model:open="showNotifications">
         <UiSheetTrigger>
             <button class="flex items-center -mr-2.5 xl:-mr-4">
                 <div class="flex items-center">
@@ -28,7 +28,7 @@ v-if="unreadNotifications > 0"
                     </p>
                     <UiButton
 class="z-10 hover:z-10 hover:bg-slate-200 w-8 h-8" size="icon" variant="secondary"
-                        @click="isOpen = false">
+                        @click="showNotifications = false">
                         <XIcon />
                     </UiButton>
                 </div>
@@ -106,6 +106,10 @@ import moment from 'moment';
 import { XIcon, ArrowRight, Settings, ChevronRight } from 'lucide-vue-next';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
+import { useNotificationStore } from '~/store/notificationStore';
+
+const notificationStore = useNotificationStore()
+const { unreadNotifications, showNotifications } = storeToRefs(notificationStore);
 
 enum NotificationsGroups {
     Users = 0,
@@ -118,12 +122,10 @@ const route = useRoute();
 const emits = defineEmits(['close', 'markAsRead', 'delete']);
 
 const props = defineProps<{
-    unreadNotifications: number,
     notifications: Notification[],
     adminView?: boolean,
 }>();
 
-const isOpen = ref(false);
 const selectedTab = ref('all');
 const tabs = ref();
 

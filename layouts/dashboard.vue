@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col min-h-screen bg-light-100 app-scroll">
+  <div class="flex flex-col h-full min-h-screen overflow-y-auto app-scroll">
         <DashboardHeader :is-collapsed-on-desktop="isSideNavCollapsedOnDesktop" @show-side-nav="showSideNav = true" />
         <transition name="slide-from-left">
             <DashboardAside v-if="showSideNav" class="w-full md:hidden" @close="showSideNav = false" />
@@ -31,16 +31,11 @@ import HeartIcon from '@/assets/icons/dashboard/heart.svg';
 import { Toaster } from '@/components/ui/toast'
 const isSideNavCollapsedOnDesktop = ref(true);
 const showSideNav = ref(false);
-
-onMounted(() => {
-    // add scrollbar class to html tab
-    document.documentElement.classList.add('app-scroll');
-})
 </script>
 
 <style lang="postcss">
-html {
-  @apply scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-300
+html, body, div#__nuxt {
+  @apply h-full overflow-hidden
 }
 
 .app-scroll {
