@@ -110,6 +110,13 @@ function exitCardModal(option: boolean) {
             card.value.card = payment.value.card?.card;
             card.value.id = payment.value.card?.id;
             card.value.customer = payment.value.card?.customer;
+            //check for default key and value
+            // if exists, set it to the card details
+            if (payment.value.card?.default) {
+                card.value.default = payment.value.card?.default;
+            } else {
+                card.value.default = false;
+            }
             emits('change-is-new-card-selected', false);
         } else {
             emits('change-is-new-card-selected', true);

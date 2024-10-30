@@ -114,12 +114,11 @@ import { usePaymentStore } from '~/store/paymentStore';
 
 const paymentStore = usePaymentStore();
 
+const { card, cards, isNewCardSelected } = usePaymentCards();
+
 const props = defineProps<{
     order: OrderInterface;
     accountCredit: CustomerCreditInterface;
-    card: any;
-    cards: any;
-    isNewCardSelected: boolean;
 }>();
 
 const emits = defineEmits(['update-payment-details', 'change-is-new-card-selected']);
