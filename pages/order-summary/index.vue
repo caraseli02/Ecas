@@ -39,249 +39,187 @@
 <script setup lang="ts">
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 
+// Types and Interfaces
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
-import {  PaymentDetails, StripeCardInfoInterface } from '~/types';
-import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import { PaymentDetails } from '~/types';
 import {
-    BackorderShippingTypesInterface,
-    DeliveryTypesInterface,
-    GeneralSettingsInterface,
-    SmallOrderChargeInterface,
-    StockorderShippingTypesInterface,
+  BackorderShippingTypesInterface,
+  DeliveryTypesInterface,
+  GeneralSettingsInterface,
+  SmallOrderChargeInterface,
 } from '~/types/general-settings/general-settings';
 
-import _ from 'lodash';
-import Emitter from 'tiny-emitter/instance.js';
+// Composables
+import { useUser } from '~/composables/useUser';
+import { useCart } from '~/composables/useCart';
+import { usePaymentCards } from '~/composables/usePaymentCards';
+import { useOrder } from '~/composables/useOrder';
 
+// Stores
 import { useAuthStore } from '~/store/authStore';
 import { useCheckoutStore } from '~/store/checkout';
 import { storeToRefs } from 'pinia';
 
-const { user, getShipping, getBilling } = useUser();
-const { cartId, cartItems, fetchList, calculateSubtotal, calculateDiscount, showWarning } = useCart();
+// Utilities
+import Emitter from 'tiny-emitter/instance.js';
 
-const userId = user.value?.firebaseId;
-const creditObject = ref({} as CustomerCreditInterface);
+// Setup and Initialization
+const router = useRouter();
+const { $api } = useNuxtApp();
+useHead({ title: 'Order Summary' });
+
+// User Information
+const { user, getShipping, getBilling } = useUser();
+const userId = computed(() => user.value?.firebaseId);
+
+// Cart Management
+const {
+  cartId,
+  cartItems,
+  fetchList,
+  calculateSubtotal,
+  calculateDiscount,
+  showWarning,
+} = useCart();
+
+const orderItems = computed(() => {
+  return cartItems.value.map((item) => {
+    const { selected, liked, ...rest } = item;
+    return rest as CartProductsInterface;
+  });
+});
+
+// Payment Processing
+const { card, cards, isNewCardSelected, fetchCards } = usePaymentCards();
+const paymentDetails = ref<PaymentDetails | null>(null);
+const paymentType = ref({ type: 0, selected: false });
+
+// Order Processing
+const { makeCheckout } = useOrder();
 const orderType = ref(0);
 const note = ref('');
-const paymentType = ref({
-    type: 0 as number,
-    selected: false,
+
+const order = ref({
+  total: 0,
+  subtotal: 0,
+  products: orderItems.value,
+  discount: { value: 0, total: 0 },
+  shippingDetails: {
+    address: getShipping(),
+    billingAddress: getBilling(),
+  },
+  paymentDetails: {} as PaymentDetails,
+  type: '',
+  backorderOption: null as BackorderShippingTypesInterface | null,
+  deliveryMethod: null as DeliveryTypesInterface | null,
+  smallOrder: null as SmallOrderChargeInterface | null,
 });
 
-const { $api } = useNuxtApp();
-useHead({
-    title: 'Order Summary',
-});
-
-const loading = ref(true);
-
-watch(
-    [cartItems],
-    ([_items]) => {
-        calculateSubtotal(_items, order);
-        calculateDiscount(_items, order);
-    },
-    { deep: true }
-);
-const generalSettings = ref<GeneralSettingsInterface | null>({} as GeneralSettingsInterface);
+// General Settings
 const authStore = useAuthStore();
 const { getGeneralSettings } = storeToRefs(authStore);
+const generalSettings = computed(() => getGeneralSettings.value);
 
-const getGeneralSettingsFunction = () => {
-    generalSettings.value = getGeneralSettings.value;
-};
-
-const card = ref<any | null>({});
-const cards = ref<StripeCardInfoInterface[]>([]);
-const isNewCardSelected = ref<boolean>(false);
-
-const fetchCards = async () => {
-    const response = (await $api.user.userCards()) as unknown as {
-        status: string;
-        data: StripeCardInfoInterface[];
-    };
-
-    if (response.status === 'success') {
-        if (response.data.length) {
-            cards.value = response.data;
-            card.value = _.cloneDeep(cards.value.find((card: any) => card.default));
-        } else {
-            isNewCardSelected.value = true;
-        }
-    }
-};
-
-await fetchCards();
-
-getGeneralSettingsFunction();
-
-// const mapCartItems = (cart: CartProductsInterface[] = []) => {
-//     cartItems.value = cart?.map((product: CartProductsInterface) => ({
-//         id: product.id,
-//         stock: product.stock,
-//         backorder_stock: product.backorder_stock || 0,
-//         isFolder: false,
-//         initialUnitPrice: product.initialUnitPrice,
-//         unitPriceAfterDiscounts: product.unitPriceAfterDiscounts,
-//         subtotal: product.subtotal || 0,
-//         total: product.total || 0,
-//         discount: product.discount || {
-//             value: 0,
-//             startDate: '',
-//             endDate: '',
-//         },
-//         productEntity: product.productEntity,
-//         liked: false,
-//         selected: false,
-//     }));
-// };
-
-const shippingFee = (shippingType: number) => {
-    console.log(shippingType);
-};
-
-const orderItems = computed((): CartProductsInterface[] => {
-    return cartItems.value?.map((item: any) => {
-        const { selected, liked, ...rest } = item;
-        return rest as CartProductsInterface;
-    });
+// Account Credit
+const loading = ref(true);
+const accountCredit = ref({
+  limit: 0,
+  spent: 0,
+  available: 0,
+  dueDate: '',
+  tillDue: '',
+  term: '',
 });
 
 const getCustomerCredit = async () => {
-    if (!userId) {
-        return;
-    }
-    const response = await $api.user.fetchCustomerCredit(userId);
+  if (!userId.value) return;
 
-    if (response.status !== 'success') {
-        setTimeout(() => {
-            loading.value = false;
-        }, 100);
-        return;
-    } else {
-        setTimeout(() => {
-            loading.value = false;
-        }, 100);
-    }
+  try {
+    const response = await $api.user.fetchCustomerCredit(userId.value);
 
-    creditObject.value = response.data;
+    if (response.status === 'success') {
+      const creditData = response.data;
+      accountCredit.value = {
+        limit: creditData.limit,
+        spent: creditData.spent,
+        available: creditData.available,
+        dueDate: creditData.dueDate,
+        tillDue: creditData.tillDue,
+        term: creditData.term,
+      };
+    }
+  } catch (error) {
+    console.error('Failed to fetch customer credit:', error);
+  } finally {
+    loading.value = false;
+  }
 };
 
-await getCustomerCredit();
-
-const accountCredit = ref({
-    limit: creditObject.value?.limit,
-    spent: creditObject.value?.spent,
-    available: creditObject.value?.available,
-    dueDate: creditObject.value?.dueDate,
-    tillDue: creditObject.value?.tillDue,
-    term: creditObject.value?.term,
-});
-
-const order = ref({
-    total: 0,
-    subtotal: 0,
-    products: orderItems.value,
-    discount: {
-        value: 0,
-        total: 0,
-    },
-    shippingDetails: {
-        address: getShipping(),
-        billingAddress: getBilling(),
-    },
-    paymentDetails: {} as PaymentDetails,
-    type: '',
-    backorderOption: null,
-    deliveryMethod: null,
-    smallOrder: null,
-});
-
-const deliveryMethod = ref<DeliveryTypesInterface | null>(null);
-const backOrderOption = ref<BackorderShippingTypesInterface | null>(null);
-const stockOrderOption = ref<StockorderShippingTypesInterface | null>(null);
-const smallOrder = ref<SmallOrderChargeInterface | null>(null);
-const paymentDetails = ref<PaymentDetails | null>(null);
+// Checkout Control
+const checkoutStore = useCheckoutStore();
+const { checkout } = storeToRefs(checkoutStore);
+const stopButtonTrigger = ref(true);
 
 const isCheckoutDisabled = computed(() => {
-  // Check if the necessary conditions are fulfilled
   const hasShippingAddress = !!order.value.shippingDetails.address;
   const hasBillingAddress = !!order.value.shippingDetails.billingAddress;
-  const hasShippingPreference = !!deliveryMethod.value;
-  const hasPaymentMethod = !!paymentDetails.value && 'type' in paymentDetails.value;
+  const hasShippingPreference = !!order.value.deliveryMethod;
+  const hasPaymentMethod = !!order.value.paymentDetails && 'type' in order.value.paymentDetails;
 
-  // If any of the conditions are not met, disable the checkout button
   return !(hasShippingAddress && hasBillingAddress && hasShippingPreference && hasPaymentMethod);
 });
 
-watch(
-    [order],
-    ([_order]) => {
-        deliveryMethod.value = _order.deliveryMethod;
-        backOrderOption.value = _order.backorderOption;
-        stockOrderOption.value = _order.stockorderOption;
-        smallOrder.value = _order.smallOrder;
-        paymentDetails.value = _order.paymentDetails;
-    },
-    { deep: true }
-);
-
-watch(
-    [card],
-    ([_card]) => {
-        card.value = _card;
-    },
-    { deep: true }
-);
-
-Emitter.on('order-type', async (type: number) => {
-    orderType.value = type;
+watch(checkout, (newVal) => {
+  if (newVal && stopButtonTrigger.value) {
+    makeCheckout(
+      orderType.value,
+      cartId.value,
+      order.value.deliveryMethod,
+      order.value.backorderOption,
+      order.value.smallOrder,
+      order.value.paymentDetails,
+      note.value
+    );
+    stopButtonTrigger.value = false;
+  }
 });
 
-Emitter.on('payment-type', async (object: { type: number; selected: boolean }) => {
-    paymentType.value.type = object.type;
-    paymentType.value.selected = object.selected;
+// Event Handling
+Emitter.on('order-type', (type: number) => {
+  orderType.value = type;
 });
 
-Emitter.on('note', async (noteText: string) => {
-    note.value = noteText;
+Emitter.on('payment-type', (object: { type: number; selected: boolean }) => {
+  paymentType.value = { ...object };
 });
 
-Emitter.on('delete-product-item', async (object: { id: string }) => {
-    setTimeout(() => {
-        cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
-        // mapCartItems(cartItems.value);
-    }, 1000);
+Emitter.on('note', (noteText: string) => {
+  note.value = noteText;
 });
 
-const checkoutStore = useCheckoutStore();
-const { checkout } = storeToRefs(checkoutStore);
+Emitter.on('delete-product-item', (object: { id: string }) => {
+  cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
+});
 
-const { makeCheckout } = useOrder();
+// Watches and Reactions
+watch(cartItems, () => {
+  calculateSubtotal(cartItems.value, order);
+  calculateDiscount(cartItems.value, order);
+  order.value.products = orderItems.value;
+}, { deep: true });
 
-const stopButtonTrigger = ref(true);
-watch(
-    () => checkout,
-    (newVal) => {
-        if (newVal && stopButtonTrigger.value) {
-            makeCheckout(
-                orderType.value,
-                cartId.value,
-                deliveryMethod.value,
-                backOrderOption.value,
-                smallOrder.value,
-                paymentDetails.value,
-                note.value
-            );
-            stopButtonTrigger.value = false;
-        }
-    },
-    { deep: true }
-);
+// Initialization
+onMounted(async () => {
+  await fetchCards(); // Fetch user's payment cards
+  await getCustomerCredit(); // Fetch customer credit information
+  await fetchList(); // Fetch cart items
 
-await fetchList();
-
-calculateSubtotal(cartItems.value, order);
-calculateDiscount(cartItems.value, order);
+  // Initial calculations
+  calculateSubtotal(cartItems.value, order);
+  calculateDiscount(cartItems.value, order);
+  order.value.products = orderItems.value;
+  loading.value = false;
+});
 </script>
+
+
