@@ -7,8 +7,11 @@
             </button>
         </div>
         <div class="flex flex-col gap-4 relative">
-            <OrderSummaryNewCard v-if="isNewCardSelected" :is-selected="true"
-                @click="selectPaymentOption({ type: PaymentTypeEnum.Card, info: null })">
+            <OrderSummaryNewCard 
+                v-if="isNewCardSelected" 
+                :is-selected="order?.paymentDetails?.type === PaymentTypeEnum.Card && !order?.paymentDetails?.card"
+                @click="selectPaymentOption({ type: PaymentTypeEnum.Card, info: null })"
+            >
                 <UiButton v-if="cards.length > 0" size="xs" variant="link" class="flex gap-2 items-center justify-end hover:underline pt-4"
                     @click="paymentStore.toggleCardModal();">
                     <SvgoChangeCard />
