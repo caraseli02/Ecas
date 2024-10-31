@@ -34,6 +34,7 @@
                     show-pay-with-label
                     @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: null })" />
                 <OrderSummaryPayByCard v-else-if="!card && availablePaymentMethods.includes(PaymentTypeEnum.Card)"
+                    enableEdit
                     view="payment" :cards="false" :is-new-card-selected="false"
                     :is-selected="order?.paymentDetails?.type === PaymentTypeEnum.Card && !order?.paymentDetails?.card"
                     @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: null })" />
@@ -123,9 +124,6 @@ const { card, cards, isNewCardSelected } = usePaymentCards();
 const props = defineProps<{
     order: OrderInterface;
     accountCredit: CustomerCreditInterface;
-    card: StripeCardInterface;
-    cards: any;
-    isNewCardSelected: boolean;
 }>();
 
 const emits = defineEmits(['update-payment-details', 'change-is-new-card-selected']);
