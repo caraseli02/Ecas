@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
+const props = defineProps<{
+    entryPrice: string;
+    quantity: string;
+    margin: string;
+}>();
+
 const smartPricing = ref(true);
 const selectedQuantityLength = ref<number | null>(null); // Holds the selected length in Quantity
 const selectedMarginLength = ref<number | null>(null); // Holds the selected length in Margin
@@ -13,15 +19,12 @@ const emit = defineEmits<{
 
 // Emit event to parent
 const handleEntryPriceUpdate = (value: string) => {
-    console.log(value);
     emit('update:entry-price', value);
 };
 const handleQuantityUpdate = (value: string) => {
-    console.log(value);
     emit('update:quantity', value);
 };
 const handleMarginUpdate = (value: string) => {
-    console.log(value);
     emit('update:margin', value);
 };
 
@@ -52,18 +55,20 @@ const handleMarginSelectionChange = (length: number | null) => {
             <UiSwitch id="airplane-mode" v-model:checked="smartPricing" />
         </div>
         <div v-if="smartPricing">
-            <CategoriesSelectEntryPrice title="Entry Price" @update:entry-price="handleEntryPriceUpdate" />
+            <CategoriesSelectEntryPrice title="Entry Price" :entry-price="props.entryPrice" @update:entry-price="handleEntryPriceUpdate" />
 
             <!-- Pass filtering props and update events -->
             <CategoriesSelectQuantity
                 title="Quantity"
                 :filter-length="filterQuantityLength"
+                :quantity="props.quantity"
                 @update:selection-length="handleQuantitySelectionChange"
                 @update:quantity="handleQuantityUpdate"
             />
             <CategoriesSelectMargin
                 title="Margin"
                 :filter-length="filterMarginLength"
+                :margin="props.margin"
                 @update:selection-length="handleMarginSelectionChange"
                 @update:margin="handleMarginUpdate"
             />

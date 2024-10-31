@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { computed, defineEmits, defineProps, ref } from 'vue';
+import { computed, defineEmits, defineProps, ref, watchEffect } from 'vue';
 import { CaretSortIcon, CheckIcon } from '@radix-icons/vue';
 import { cn } from '@/lib/utils';
 import { storeToRefs } from 'pinia';
 import { usePricingStore } from '~/store/pricingStore';
 
-const props = defineProps<{ title: string; filterLength: number | null }>(); // Add filterLength prop
 const emit = defineEmits<{
     (e: 'update:quantity', value: string): void;
     (e: 'update:selection-length', value: number): void;
@@ -35,6 +34,18 @@ const handleSelect = (framework) => {
     emit('update:quantity', framework._id);
     open.value = false;
 };
+
+const props = defineProps<{
+    title: string;
+    quantity: string;
+    filterLength: number | null;
+}>();
+
+watchEffect(() => {
+    if (props.quantity) {
+        handleSelect(filteredQuantity.value.filter((quantity) => quantity._id === props.quantity)[0]);
+    }
+});
 </script>
 
 <template>

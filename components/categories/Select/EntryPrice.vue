@@ -3,6 +3,7 @@ import { CaretSortIcon, CheckIcon } from '@radix-icons/vue';
 import { cn } from '@/lib/utils';
 import { usePricingStore } from '~/store/pricingStore';
 import { storeToRefs } from 'pinia';
+import { watchEffect } from 'vue';
 
 const pricingStore = usePricingStore();
 const { range } = storeToRefs(pricingStore);
@@ -25,9 +26,20 @@ const handleSelect = (ev: CustomEvent) => {
 const open = ref(false);
 const value = ref<string[]>([]);
 
-defineProps<{
+const props = defineProps<{
     title: string;
+    entryPrice: string;
 }>();
+
+watchEffect(() => {
+    if (props.entryPrice) {
+        console.log(props.entryPrice);
+        const selectedFramework = range.value.find((entry) => entry._id === props.entryPrice);
+        if (selectedFramework) {
+            value.value = selectedFramework.value;
+        }
+    }
+});
 </script>
 
 <template>
