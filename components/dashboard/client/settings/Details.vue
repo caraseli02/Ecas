@@ -127,11 +127,12 @@ const baseSchema = z.object({
                 : getUserDetails.value.companyDetails?.address.postcode || ''
         ),
     phoneNumber: z
-        .number({
-            required_error: 'Phone Number is required',
+        .string({
+            required_error: 'Mobile is required',
         })
         .min(1)
-        .default(getUserDetails.value.contactDetails?.phone || ''),
+        .regex(/^\+?\d{1,4}[\s-]?\(?\d{1,3}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$/, 'Invalid phone number')
+        .default(String(getUserDetails.value.contactDetails.phone)),
     mobile: z
         .string({
             required_error: 'Mobile is required',
@@ -209,10 +210,10 @@ const { handleSubmit, setFieldValue, meta } = useForm({
 });
 
 const onSubmit = handleSubmit(async (values) => {
-    if(!meta.value.dirty) {
-        return openEdit.value = !openEdit.value;
+    if (!meta.value.dirty) {
+        return (openEdit.value = !openEdit.value);
     }
-    
+
     if (getUserDetails.value.accountType === AccountType.Personal) {
         const payloadPersonal = {
             personalDetails: {
