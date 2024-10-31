@@ -1,7 +1,7 @@
 <template>
     <div class="relative min-h-[50vh] md:w-full">
         <UiSkeleton v-show="showSkeletonLoader" class="w-full h-full absolute inset-0" />
-        <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-full max-w-[500px] mx-auto" @submit.prevent="handleSubmit">
+        <form id="payment-form" class="p-4 md:p-[30px] items-center lg:pt-10 w-full max-w-[500px] mx-auto" @submit.prevent="handleSubmit">
             <div id="setup-element" />
             <div v-if="!showSkeletonLoader" class="flex justify-end items-center mt-2">
                 <UiButton id="submit" :disabled="isLoading">Save now</UiButton>
