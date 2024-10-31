@@ -29,10 +29,10 @@
             </div>
         </template>
 
-        <div class="flex flex-col gap-4">
+        <div v-if="shippingPreferences.list" class="flex flex-col gap-4">
             <span class="text-neutral-700 text-sm font-medium leading-6">Delivery Method</span>
-            <div v-for="deliveryType in generalSettings?.orderSettings?.deliveryTypes" class="flex flex-col gap-4">
-                <div v-if="deliveryType.active">
+            <div v-for="deliveryType in shippingPreferences.list" class="flex flex-col gap-4">
+                <div v-if="deliveryType.service">
                     <button class="flex flex-row justify-between group" @click="selectDeliveryMethod(deliveryType)">
                         <div class="flex flex-row gap-3 items-start">
                             <RadioButtonChecked
@@ -47,22 +47,16 @@
                                 <h2
                                     class="text-neutral-700 text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300"
                                 >
-                                    {{ deliveryType.title }}
+                                    {{ deliveryType.service.courierName + ' ' }}
                                 </h2>
                                 <p class="text-neutral-700 text-sm font-normal leading-6 text-start">
-                                    {{
-                                        deliveryType.min +
-                                        ' - ' +
-                                        deliveryType.max +
-                                        (deliveryType.unit === 'day' ? '' : ' Business') +
-                                        ' Days'
-                                    }}
+                                    {{ deliveryType.service.name }}
                                 </p>
                             </div>
                         </div>
-                        <span class="text-neutral-700 text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300">{{
-                            deliveryType.price + ' lei'
-                        }}</span>
+                        <span class="text-neutral-700 text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300">
+                            {{ deliveryType.price.total + ' lei' }}</span
+                        >
                     </button>
                 </div>
             </div>
@@ -77,10 +71,10 @@ import { DeliveryMethodEnum, OrderInterface, OrderType } from '~/types';
 import { PropType } from 'vue';
 import {
     BackorderShippingTypesInterface,
-    DeliveryTypesInterface,
     GeneralSettingsInterface,
     StockorderShippingTypesInterface,
 } from '~/types/general-settings/general-settings';
+import { ShippingOrderPricingOption, ShippingOrderPricingResponse } from '~/types/order-summary/shipping-services';
 
 export default defineComponent({
     name: 'ShippingPreferencesSection',
@@ -96,6 +90,10 @@ export default defineComponent({
         },
         generalSettings: {
             type: Object as PropType<GeneralSettingsInterface>,
+            required: true,
+        },
+        shippingPreferences: {
+            type: Object as PropType<ShippingOrderPricingResponse>,
             required: true,
         },
     },
@@ -124,7 +122,8 @@ export default defineComponent({
                 this.order.stockorderOption = option;
             }
         },
-        selectDeliveryMethod(option: DeliveryTypesInterface) {
+        selectDeliveryMethod(option: ShippingOrderPricingOption) {
+            console.log(option);
             this.order.deliveryMethod = option;
         },
     },

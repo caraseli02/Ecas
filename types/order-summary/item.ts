@@ -1,12 +1,9 @@
 import { CustomerCreditInterface, DiscountInterface } from '~/types/auth/account-settings';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
-import {
-    BackorderShippingTypesInterface,
-    DeliveryTypesInterface,
-    StockorderShippingTypesInterface,
-} from '~/types/general-settings/general-settings';
+import { BackorderShippingTypesInterface, StockorderShippingTypesInterface } from '~/types/general-settings/general-settings';
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { PaymentMethod } from '@stripe/stripe-js';
+import { ShippingOrderPricingOption } from '~/types/order-summary/shipping-services';
 
 export interface OrderSummaryItem {
     title: string;
@@ -66,7 +63,7 @@ export interface OrderInterface {
     updatedAt?: string;
     backorderOption: BackorderShippingTypesInterface;
     stockorderOption: StockorderShippingTypesInterface;
-    deliveryMethod: DeliveryTypesInterface;
+    deliveryMethod: ShippingOrderPricingOption;
 
     /**
      * If the order has a parent, it means that the order is
@@ -159,7 +156,7 @@ export interface OrderShippingDetailsInterface {
     billingAddress: ShippingAddressInterface;
     deliveryTypeId: string;
     backorderShippingTypeId?: string;
-    stockorderShippingTypeId?: string;
+    stockorderShippingType?: ShippingOrderPricingOption;
     _id?: string;
 }
 

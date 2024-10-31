@@ -32,11 +32,6 @@ const customerDetails = ref({
 const date = ref<string>('' as string);
 const orderPaySum = ref<PaymentSummaryInterface>({} as PaymentSummaryInterface);
 const paymentMethod = ref<PaymentInfo>();
-
-const shippingMethod = computed(() =>
-    generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data?.order?.shippingDetails.deliveryTypeId)
-);
-
 const addresses = ref<{
     shippingAddress: {
         name1: string;
@@ -55,6 +50,7 @@ const addresses = ref<{
 
 const notes = ref<OrderNotesInterface[] | []>([] as OrderNotesInterface[] | []);
 const data = ref<OrderRequestInterfaceResponse>({} as OrderRequestInterfaceResponse);
+const shippingMethod = computed(() => data.value.data?.order.shippingDetails.stockorderShippingType);
 
 const hasMixedItems = computed(() => {
     const key1Values = new Set(stockOrderItems.value.map((item) => item._id));
@@ -63,9 +59,7 @@ const hasMixedItems = computed(() => {
 });
 
 const paymentSummary = computed(() => {
-    const shippingType = generalSettings?.orderSettings?.deliveryTypes.find(
-        (type) => type._id === data.value.data?.order.shippingDetails._id
-    );
+    const shippingType = data.value.data?.order.shippingDetails.stockorderShippingType;
     const orderInfo = data.value.data?.order;
 
     if (orderInfo) {
@@ -77,7 +71,7 @@ const paymentSummary = computed(() => {
         orderPaySum.value.discountAmount = orderPaySum.value.discountPercentage * (orderPaySum.value.subtotal || 0);
         orderPaySum.value.handlingCharge = 0;
         orderPaySum.value.shippingCost = orderInfo.shippingCost || 0;
-        orderPaySum.value.shippingText = shippingType?.title || '';
+        orderPaySum.value.shippingText = shippingType?.service.courierName || '';
         orderPaySum.value.orderType = orderInfo.type;
         orderPaySum.value.smallOrderCharge = orderInfo.smallOrderCost || 0;
 
@@ -98,6 +92,7 @@ const stockOrder = ref<OrderRequestInterface>({} as OrderRequestInterface);
 const backOrder = ref<OrderRequestInterface>({} as OrderRequestInterface);
 
 const getOrderInformation = async () => {
+    console.log(route.params.id);
     // Fetch order information
     const orderId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
     const response = (await $api.orders.getOrderById(orderId)) as OrderRequestInterfaceResponse;
@@ -209,7 +204,7 @@ onMounted(() => {
                     <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
                     <div class="flex gap-2">
                         <div class="text-slate-500">Shipping Method:</div>
-                        <div class="text-neutral-700">{{ shippingMethod?.title }}</div>
+                        <div class="text-neutral-700">{{ shippingMethod?.service.courierName }}</div>
                     </div>
                 </div>
             </div>

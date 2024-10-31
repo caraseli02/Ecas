@@ -58,8 +58,8 @@ export function useOrder() {
                     phone: user.value.contactDetails.phone,
                     address: getShipping(),
                     billingAddress: getBilling(),
-                    deliveryTypeId: deliveryMethod._id,
-                    backorderShippingTypeId: backOrderOption?._id || undefined,
+                    stockorderShippingType: deliveryMethod,
+                    backorderShippingTypeId: backOrderOption || undefined,
                 },
                 smallOrderChargeId: smallOrder?._id,
                 paymentDetails: {
