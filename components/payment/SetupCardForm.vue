@@ -1,13 +1,13 @@
 <template>
-    <form id="setup-form" class="p-[30px] items-center lg:pt-10 md:w-full w-1/2" @submit.prevent="handleSubmit">
+    <div class="relative min-h-[50vh] md:w-full">
         <UiSkeleton v-show="showSkeletonLoader" class="w-full h-full absolute inset-0" />
-        <form class="p-[30px] items-center lg:pt-10 w-full md:w-1/2 mx-auto" @submit.prevent="handleSubmit">
+        <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-full max-w-[500px] mx-auto" @submit.prevent="handleSubmit">
             <div id="setup-element" />
             <div v-if="!showSkeletonLoader" class="flex justify-end items-center mt-2">
-                <UiButton id="submit" :disabled="isLoading">Save card</UiButton>
+                <UiButton id="submit" :disabled="isLoading">Save now</UiButton>
             </div>
         </form>
-    </form>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -64,10 +64,8 @@ onMounted(async () => {
         },
     });
 
-    card.mount('#setup-element');
-    setTimeout(() => {
-        showSkeletonLoader.value = false;
-    }, 1000);
+    await card.mount('#setup-element');
+    showSkeletonLoader.value = false;
 });
 
 const handleSubmit = async () => {
@@ -92,4 +90,27 @@ const handleSubmit = async () => {
     console.log(error);
     isLoading.value = false;
 };
+
+onMounted(() => {
+  const setupElement = document.getElementById('setup-element');
+
+  if (setupElement) {
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setupElementHeight.value = entry.contentRect.height;
+        if (setupElementHeight.value > 500) {
+          showSkeletonLoader.value = false;
+          resizeObserver.disconnect(); // Stop observing once the condition is met
+        }
+      }
+    });
+
+    resizeObserver.observe(setupElement);
+  }
+});
+
+onBeforeUnmount(() => {
+  // Clean up the observer on component unmount
+  if (resizeObserver) resizeObserver.disconnect();
+});
 </script>
