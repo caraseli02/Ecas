@@ -98,9 +98,10 @@ const onSubmit = handleSubmit(async (values) => {
         country: values.country,
         postcode: values.postcode,
         region: values.county,
+        default: props.address?.default || false,
         icon: '',
     };
-
+    console.log(payload);
     const response = props.address ? await $api.user.updateShippingAsCustomer(payload) : await $api.user.addShippingAsCustomer(payload);
 
     if (response.status === 'success') {

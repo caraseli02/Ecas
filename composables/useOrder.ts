@@ -6,6 +6,7 @@ import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
 import { useCheckoutStore } from '~/store/checkout';
 import { useUser } from './useUser';
 import { storeToRefs } from 'pinia';
+import { toast } from '~/components/ui/toast';
 
 export function useOrder() {
     const router = useRouter();
@@ -76,6 +77,36 @@ export function useOrder() {
                     message: note,
                 };
             }
+        }
+
+        const resultShipping = await $api.orders.validateAddress({
+            country: orderRequestObject.value.shippingDetails.address.country,
+            region: orderRequestObject.value.shippingDetails.address.region,
+            city: orderRequestObject.value.shippingDetails.address.city,
+            postcode: orderRequestObject.value.shippingDetails.address.postcode,
+            name1: orderRequestObject.value.shippingDetails.address.name1,
+            name2: orderRequestObject.value.shippingDetails.address.name2,
+            default: false,
+        });
+
+        const resultBilling = await $api.orders.validateAddress({
+            country: orderRequestObject.value.shippingDetails.billingAddress.country,
+            region: orderRequestObject.value.shippingDetails.billingAddress.region,
+            city: orderRequestObject.value.shippingDetails.billingAddress.city,
+            postcode: orderRequestObject.value.shippingDetails.billingAddress.postcode,
+            name1: orderRequestObject.value.shippingDetails.billingAddress.name1,
+            name2: orderRequestObject.value.shippingDetails.billingAddress.name2,
+            default: false,
+        });
+
+        if (!resultShipping.data.valid || !resultBilling.data.valid) {
+            console.log('Invalid address');
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: `${!resultBilling.data.valid ? 'Billing' : 'Shipping'} address is invalid`,
+            });
+            return;
         }
 
         try {

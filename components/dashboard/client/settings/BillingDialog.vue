@@ -100,9 +100,11 @@ const onSubmit = handleSubmit(async (values) => {
         country: values.country,
         postcode: values.postcode,
         region: values.county,
+        default: props.address?.default || false,
         icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cd8b9b1c0d2b925f29e818d6e49d9d83c8bd553c0416b56bcae00e809eb1cd1b?apiKey=20497529553648aab918fa2d322ece87&',
     };
 
+    console.log(payload);
     const response = props.address ? await $api.user.updateBillingAsCustomer(payload) : await $api.user.addBillingAsCustomer(payload);
 
     if (response.status === 'success') {
