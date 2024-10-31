@@ -92,25 +92,25 @@ const handleSubmit = async () => {
 };
 
 onMounted(() => {
-  const setupElement = document.getElementById('setup-element');
+    const setupElement = document.getElementById('setup-element');
 
-  if (setupElement) {
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        setupElementHeight.value = entry.contentRect.height;
-        if (setupElementHeight.value > 500) {
-          showSkeletonLoader.value = false;
-          resizeObserver.disconnect(); // Stop observing once the condition is met
-        }
-      }
-    });
+    if (setupElement) {
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                setupElementHeight.value = entry.contentRect.height;
+                if (setupElementHeight.value > 500) {
+                    showSkeletonLoader.value = false;
+                    resizeObserver.disconnect(); // Stop observing once the condition is met
+                }
+            }
+        });
 
-    resizeObserver.observe(setupElement);
-  }
+        resizeObserver.observe(setupElement);
+    }
 });
 
 onBeforeUnmount(() => {
-  // Clean up the observer on component unmount
-  if (resizeObserver) resizeObserver.disconnect();
+    // Clean up the observer on component unmount
+    if (resizeObserver) resizeObserver.disconnect();
 });
 </script>

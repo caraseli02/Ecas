@@ -86,6 +86,9 @@ const handleSubmit = async () => {
 
     const result = await stripe.confirmPayment({
         redirect: 'if_required',
+        confirmParams: {
+            return_url: `${window.location.origin}/order-summary/${orderId.value}`,
+        },
         clientSecret: tempClientSecret,
         elements,
     });
@@ -93,10 +96,16 @@ const handleSubmit = async () => {
     if (result.error) {
         cartStore.setPreviousCheckoutError(result.error);
         await router.push({ path: '/checkout/fail', query: {} });
-    } else {
-        await router.push({ path: `/order-summary/${orderId.value}` });
+        isLoading.value = false;
+        return;
     }
 
-    isLoading.value = false;
+    await router.push({ path: `/order-summary/${orderId.value}` });
+
+    // if (result.paymentIntent.status === 'requires_action' && result.paymentIntent.next_action?.redirect_to_url?.url) {
+    //     window.location.href = result.paymentIntent.next_action.redirect_to_url.url;
+    // } else {
+    //     await router.push({ path: `/order-summary/${orderId.value}` });
+    // }
 };
 </script>
