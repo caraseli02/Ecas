@@ -77,7 +77,7 @@ export const useAuthStore = defineStore({
         getToken() {
             const router = useRouter();
 
-            console.log(`${moment().diff(this.token?.createdAt, 'minutes')} minutes passed`);
+            // console.log(`${moment().diff(this.token?.createdAt, 'minutes')} minutes passed`);
             if (moment().diff(this.token?.createdAt, 'minutes') > 59) {
                 this.signOut();
                 router.push('/');

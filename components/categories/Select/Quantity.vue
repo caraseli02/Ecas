@@ -6,7 +6,11 @@ import { storeToRefs } from 'pinia';
 import { usePricingStore } from '~/store/pricingStore';
 
 const props = defineProps<{ title: string; filterLength: number | null }>(); // Add filterLength prop
-const emits = defineEmits(['updateSelectionLength']); // Define custom event
+const emit = defineEmits<{
+    (e: 'update:quantity', value: string): void;
+    (e: 'update:selection-length', value: number): void;
+}>();
+// Define custom event
 const pricingStore = usePricingStore();
 const { quantity } = storeToRefs(pricingStore);
 
@@ -27,7 +31,8 @@ const selectedLabel = computed(() => {
 // Emit selected length to parent when selection changes
 const handleSelect = (framework) => {
     selectedId.value = framework._id;
-    emits('updateSelectionLength', framework.value.length);
+    emit('update:selection-length', framework.value.length);
+    emit('update:quantity', framework._id);
     open.value = false;
 };
 </script>

@@ -5,6 +5,26 @@ const smartPricing = ref(true);
 const selectedQuantityLength = ref<number | null>(null); // Holds the selected length in Quantity
 const selectedMarginLength = ref<number | null>(null); // Holds the selected length in Margin
 
+const emit = defineEmits<{
+    (e: 'update:entry-price', value: string): void;
+    (e: 'update:quantity', value: string): void;
+    (e: 'update:margin', value: string): void;
+}>();
+
+// Emit event to parent
+const handleEntryPriceUpdate = (value: string) => {
+    console.log(value);
+    emit('update:entry-price', value);
+};
+const handleQuantityUpdate = (value: string) => {
+    console.log(value);
+    emit('update:quantity', value);
+};
+const handleMarginUpdate = (value: string) => {
+    console.log(value);
+    emit('update:margin', value);
+};
+
 // Computed to filter Quantity options based on Margin selection
 const filterQuantityLength = computed(() => selectedMarginLength.value ?? null);
 
@@ -15,6 +35,7 @@ const filterMarginLength = computed(() => selectedQuantityLength.value ?? null);
 const handleQuantitySelectionChange = (length: number | null) => {
     selectedQuantityLength.value = length;
     if (length === null) selectedMarginLength.value = null; // Reset if Quantity selection is cleared
+    // emit('update:quantity', selectedQuantityLength.value);
 };
 
 // Update selectedMarginLength when a selection is made in Margin
@@ -31,18 +52,20 @@ const handleMarginSelectionChange = (length: number | null) => {
             <UiSwitch id="airplane-mode" v-model:checked="smartPricing" />
         </div>
         <div v-if="smartPricing">
-            <CategoriesSelectEntryPrice title="Entry Price" />
+            <CategoriesSelectEntryPrice title="Entry Price" @update:entry-price="handleEntryPriceUpdate" />
 
             <!-- Pass filtering props and update events -->
             <CategoriesSelectQuantity
                 title="Quantity"
                 :filter-length="filterQuantityLength"
-                @update-selection-length="handleQuantitySelectionChange"
+                @update:selection-length="handleQuantitySelectionChange"
+                @update:quantity="handleQuantityUpdate"
             />
             <CategoriesSelectMargin
                 title="Margin"
                 :filter-length="filterMarginLength"
-                @update-selection-length="handleMarginSelectionChange"
+                @update:selection-length="handleMarginSelectionChange"
+                @update:margin="handleMarginUpdate"
             />
         </div>
     </section>

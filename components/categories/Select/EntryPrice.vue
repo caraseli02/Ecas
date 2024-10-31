@@ -9,6 +9,19 @@ const { range } = storeToRefs(pricingStore);
 
 const frameworks = ref(range.value);
 
+const emit = defineEmits<{
+    (e: 'update:entry-price', value: string): void;
+}>();
+
+const handleSelect = (ev: CustomEvent) => {
+    console.log(ev.detail.value);
+    if (Array.isArray(ev.detail.value.value)) {
+        value.value = ev.detail.value.value;
+        emit('update:entry-price', ev.detail.value._id);
+    }
+    open.value = false;
+};
+
 const open = ref(false);
 const value = ref<string[]>([]);
 
@@ -41,15 +54,8 @@ defineProps<{
                                 v-for="framework in frameworks"
                                 :key="framework.label"
                                 class="flex justify-between items-center w-full"
-                                :value="framework.value"
-                                @select="
-                                    (ev) => {
-                                        if (Array.isArray(ev.detail.value)) {
-                                            value = ev.detail.value;
-                                        }
-                                        open = false;
-                                    }
-                                "
+                                :value="framework"
+                                @select="handleSelect"
                             >
                                 {{ framework.label }}
                                 <div class="flex items-center gap-1 p-0.5">
