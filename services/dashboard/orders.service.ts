@@ -38,7 +38,7 @@ class OrdersService extends HttpFactory {
         return await this.call<any>(
             'POST',
             `${this.ORDERS_RESOURCE}/new`,
-            { order: order },
+            { ...order },
             {
                 headers: { Authorization: `Bearer ${token}` },
             }

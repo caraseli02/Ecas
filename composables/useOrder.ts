@@ -51,7 +51,7 @@ export function useOrder() {
             orderRequestObject.value = {
                 isDraft: false,
                 cartId: cartId,
-                currency: 'usd',
+                currency: 'ron',
                 type: orderType,
                 shippingDetails: {
                     ...nameDetails,
