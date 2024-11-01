@@ -8,10 +8,23 @@
                     <DashboardClientBanner :slides="hotSales" />
                 </section>
                 <DashboardClientTabBar v-model="activeOrderFilter" />
-                <LazyClientTableOrder v-if="activeOrderFilter.value === 'orders'" @show-total-items="activeOrderFilter.total_items = $event" />
-                <LazyClientTableTransaction v-if="activeOrderFilter.value === 'transaction_history'" class="shadow-xs p-2 pt-6 md:p-6 rounded-xl" @show-total-items="activeOrderFilter.total_items = $event" />
-                <LazyClientTableAgents v-if="activeOrderFilter.value === 'agents'" @show-total-items="activeOrderFilter.total_items = $event" />
-                <LazyClientTableLogs v-if="activeOrderFilter.value === 'activity_logs'" @show-total-items="activeOrderFilter.total_items = $event" />
+                <LazyClientTableOrder
+                    v-if="activeOrderFilter.value === 'orders'"
+                    @show-total-items="activeOrderFilter.total_items = $event"
+                />
+                <LazyClientTableTransaction
+                    v-if="activeOrderFilter.value === 'transaction_history'"
+                    class="shadow-xs p-2 pt-6 md:p-6 rounded-xl"
+                    @show-total-items="activeOrderFilter.total_items = $event"
+                />
+                <LazyClientTableAgents
+                    v-if="activeOrderFilter.value === 'agents'"
+                    @show-total-items="activeOrderFilter.total_items = $event"
+                />
+                <LazyClientTableLogs
+                    v-if="activeOrderFilter.value === 'activity_logs'"
+                    @show-total-items="activeOrderFilter.total_items = $event"
+                />
                 <LazyDashboardClientSettings v-if="activeOrderFilter.value === 'settings'" />
                 <template v-if="activeOrderFilter.value === 'home'">
                     <ClientOnly>
@@ -27,8 +40,8 @@
                         <DashboardClientRecentlyBoughtSlider />
                         <section class="hidden xl:flex flex-col gap-6 min-w-[330px]">
                             <DashboardClientCredit
-                                :available-credit="myAccountInformation.adminSettings?.customerCredit?.spent || 0"
-                                :balance="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                                :available-credit="myAccountInformation.adminSettings?.customerCredit?.available || 0"
+                                :balance="myAccountInformation.adminSettings?.customerCredit?.limit || 0"
                             />
                             <DashboardClientSupport />
                         </section>
@@ -76,14 +89,12 @@ const {
 customerInformation();
 
 onMounted(() => {
-activeOrders();
-addresses();
-activityWidgets();
-recentlyBougth();
-viewHistory();
-monthHotSale();
-getDefaultCard();
-})
-
-
+    activeOrders();
+    addresses();
+    activityWidgets();
+    recentlyBougth();
+    viewHistory();
+    monthHotSale();
+    getDefaultCard();
+});
 </script>

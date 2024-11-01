@@ -8,11 +8,11 @@ const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
 const availableCredit = ref(getUserDetails.value?.adminSettings?.customerCredit?.available || 0);
-const balance = ref(getUserDetails.value?.adminSettings?.customerCredit?.spent || 0);
+const balance = ref(getUserDetails.value?.adminSettings?.customerCredit?.limit || 0);
 
 const creditUsagePercentage = computed(() => {
     const totalCredit = availableCredit.value + balance.value;
-    return (balance.value / totalCredit) * 100;
+    return (availableCredit.value / balance.value) * 100;
 });
 
 const handlePayNow = () => {
