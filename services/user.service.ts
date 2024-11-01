@@ -28,7 +28,10 @@ class UserService extends HttpFactory {
 
     async resetPasswordLink(email: string): Promise<ProductResponse | FirebaseError | unknown> {
         try {
-            return await this.call('POST', `${this.RESOURCE}/password/email/reset`, { email: email });
+            return await this.call<{
+                status: string;
+                data: any;
+            }>('POST', `${this.RESOURCE}/password/email/reset`, { email: email });
         } catch (err) {
             if (err instanceof FirebaseError) {
                 return err;
@@ -97,7 +100,10 @@ class UserService extends HttpFactory {
     async deleteShippingAsCustomer(id: string) {
         const token = this.authStore.getToken();
 
-        return await this.call<{ status: string; data: string }>('DELETE', `${this.RESOURCE}/shipping-address/${id}`, null, {
+        return await this.call<{
+            status: string;
+            data: string;
+        }>('DELETE', `${this.RESOURCE}/shipping-address/${id}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -131,7 +137,10 @@ class UserService extends HttpFactory {
     async deleteBillingAsCustomer(id: string) {
         const token = this.authStore.getToken();
 
-        return await this.call<{ status: string; data: string }>('DELETE', `${this.RESOURCE}/billing-address/${id}`, null, {
+        return await this.call<{
+            status: string;
+            data: string;
+        }>('DELETE', `${this.RESOURCE}/billing-address/${id}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }

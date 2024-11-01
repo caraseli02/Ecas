@@ -113,7 +113,10 @@
                                         : 'bg-white  border-border group-hover:border-gray-300',
                                 ]"
                             >
-                                <CheckIcon v-if="item.email" class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500" />
+                                <CheckIcon
+                                    v-if="item.email"
+                                    class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
+                                />
                             </div>
                         </label>
                     </div>
@@ -178,7 +181,7 @@ const getCustomerSettings = async () => {
         return;
     }
 
-    const settings = response.description.adminSettings as AccountAdminSettings;
+    const settings = response.data as AccountAdminSettings;
 
     if (!settings.alertsAndNotifications || !settings.marketingPreferences) {
         return;

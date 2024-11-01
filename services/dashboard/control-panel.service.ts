@@ -13,7 +13,10 @@ class ControlPanelService extends HttpFactory {
 
     async fetchCustomerSettings(id: string) {
         const token = this.authStore.getToken();
-        return await this.call<AccountAdminSettings>('GET', `${this.SETTINGS_RESOURCE}/${id}`, null, {
+        return await this.call<{
+            status: string;
+            data: AccountAdminSettings;
+        }>('GET', `${this.SETTINGS_RESOURCE}/${id}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -29,7 +32,7 @@ class ControlPanelService extends HttpFactory {
             },
         };
         console.log(data);
-        return await this.call<AccountAdminSettings>('POST', `${this.SETTINGS_RESOURCE}/${id}`, data, {
+        return await this.call<{ status: string; data: string }>('POST', `${this.SETTINGS_RESOURCE}/${id}`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
