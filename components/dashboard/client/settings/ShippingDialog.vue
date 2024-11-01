@@ -10,6 +10,7 @@ import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
 import { AddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';
+import { useToast } from '~/components/ui/toast';
 
 const { $api } = useNuxtApp();
 
@@ -74,6 +75,7 @@ console.log(formSchema);
 const { handleSubmit, values, setFieldValue, errors } = useForm({
     validationSchema: formSchema,
 });
+const { toast } = useToast();
 
 watch(
     () => props.address,
@@ -108,6 +110,12 @@ const onSubmit = handleSubmit(async (values) => {
         !props.address && emit('addShippingAddress', payload);
         await updateStoreDetails();
         onCloseDialog();
+    } else {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invalid address',
+        });
     }
 });
 

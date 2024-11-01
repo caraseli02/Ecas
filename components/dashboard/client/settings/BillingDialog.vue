@@ -11,6 +11,7 @@ import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
 import { AddressInterface, BillingAddressInterface } from '~/types/auth/user-interface';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';
+import { useToast } from '~/components/ui/toast';
 
 const { $api } = useNuxtApp();
 
@@ -89,6 +90,7 @@ watch(
         setFieldValue('postcode', newAddress?.postcode || '');
     }
 );
+const { toast } = useToast();
 
 const onSubmit = handleSubmit(async (values) => {
     const payload: AddressInterface = {
@@ -111,6 +113,12 @@ const onSubmit = handleSubmit(async (values) => {
         emit('addBillingAddress', payload);
         await updateStoreDetails();
         onCloseDialog();
+    } else {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invalid address',
+        });
     }
 });
 

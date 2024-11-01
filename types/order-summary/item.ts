@@ -166,6 +166,7 @@ export interface PaymentDetails {
     paymentIntentId?: string;
     // card?: StripeCardInterface;
     card?: Pick<PaymentMethod.Card, 'last4' | 'exp_year' | 'exp_month' | 'brand'>;
+    invoiceId?: string;
 }
 
 export interface StripeCardInterface {

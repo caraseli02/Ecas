@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import { OrderTableColumns } from '~/types';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
-import RowActions from '~/components/dataTable/RowActions.vue';
+import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';
 import OrderType from '~/components/dataTable/OrderType.vue';
 import StatusWithColor from '~/components/dataTable/StatusWithColor.vue';
@@ -9,6 +9,7 @@ import UserInfo from '~/components/dataTable/UserInfo.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
 import { statusColors } from './options';
 import { OrderTableColumnsEnum } from '~/components/client-table/order/columns.enum';
+import DocumentService from '~/services/dashboard/document.service';
 
 export const columns: ColumnDef<OrderTableColumns>[] = [
     // {
@@ -60,11 +61,28 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
         accessorKey: OrderTableColumnsEnum.TOTAL,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Total' }),
         cell: ({ row }) =>
-            h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas(row.getValue(OrderTableColumnsEnum.TOTAL), '$')),
+            h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas(row.getValue(OrderTableColumnsEnum.TOTAL), ' lei')),
     },
     {
         id: 'actions',
         header: ({ column }) => h(ColumnHeader, { column, title: 'Actions' }),
-        cell: ({ row }) => h(RowActions, { row }),
+        cell: ({ row }) =>
+            h(RowActions, {
+                row: row,
+                service: DocumentService,
+                options: [
+                    {
+                        label: 'View order',
+                        enable: true,
+                        navigateToRoute: `/dashboard/order/${row.getValue(OrderTableColumnsEnum.SHORT_ID)}`,
+                    },
+                    {
+                        label: 'Download invoice',
+                        enable: true,
+                        actionFn: 'downloadDocument',
+                        actionParameter: row.original.invoiceId,
+                    },
+                ] as ActionOptionsConfiguration[],
+            }),
     },
 ];
