@@ -12,7 +12,7 @@
                     <div class="md:w-[301px] lg:w-auto">
                         <div class="flex items-center mb-2">
                             <div class="font-semibold leading-normal md:mr-6">
-                                {{ address.name || 'Address Alias ' + (index + 1) }}
+                                {{ address.alias || 'Address Alias ' + (index + 1) }}
                             </div>
                             <div
                                 v-if="address.default"

@@ -1,7 +1,7 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import { AccountAdminSettings } from '~/types/auth/account-settings';
-import { ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
+import { BillingAddressInterface, ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
 import { PaginatedTransactionsInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 
 class ControlPanelService extends HttpFactory {
@@ -85,7 +85,20 @@ class ControlPanelService extends HttpFactory {
 
     async fetchShipping(id: string, type: number) {
         const token = this.authStore.getToken();
-        return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
+        return await this.call<{
+            status: string;
+            data: any;
+        }>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async fetchBilling(id: string, type: number) {
+        const token = this.authStore.getToken();
+        return await this.call<{
+            status: string;
+            data: any;
+        }>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -96,6 +109,19 @@ class ControlPanelService extends HttpFactory {
         return await this.call<AccountAdminSettings>(
             'POST',
             `${this.MAIN}/${id}/${type === 0 ? 'personal/shipping-address' : 'business/shipping-address'}`,
+            { address: address },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+    }
+
+    async updateBilling(id: string, address: BillingAddressInterface[], type: number) {
+        const token = this.authStore.getToken();
+
+        return await this.call<AccountAdminSettings>(
+            'POST',
+            `${this.MAIN}/${id}/${type === 0 ? 'personal/billing-address' : 'business/billing-address'}`,
             { address: address },
             {
                 headers: { Authorization: `Bearer ${token}` },
