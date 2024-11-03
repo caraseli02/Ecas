@@ -1,7 +1,7 @@
 <template>
   <div class="app-scroll">
     <main>
-      <slot/>
+      <NuxtPage />
     </main>
   </div>
 </template>
