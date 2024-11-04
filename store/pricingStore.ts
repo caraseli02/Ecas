@@ -15,8 +15,8 @@ export const usePricingStore = defineStore({
             showMarginModal: false,
             showQuantityModal: false,
             editEntryPriceModal: null as PriceSettingsInterface | null,
-            editQuantityModal: null as PriceSettingsInterface | null,
-            editMarginModal: null as PriceSettingsInterface | null,
+            editQuantityModal: null as any | null,
+            editMarginModal: null as any | null,
             type: 'add' || 'edit',
         };
     },
