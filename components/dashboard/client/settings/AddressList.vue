@@ -5,7 +5,7 @@ import AddressCard from './AddressCard.vue';
 interface AddressData {
     icon: string;
     alias: string;
-    isDefault: boolean;
+    default: boolean;
     name: string;
     address: string;
     phone: string;
