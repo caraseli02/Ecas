@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { CheckCircle, FilePenLineIcon, Trash2Icon, Building2 } from 'lucide-vue-next';
+import { Building2, CheckCircle, FilePenLineIcon, Trash2Icon } from 'lucide-vue-next';
 
 interface AddressData {
     icon: string;
     alias: string;
-    isDefault: boolean;
+    default: boolean;
     name: string;
     address: string;
     phone: string;
@@ -20,7 +20,7 @@ interface AddressData {
 const props = defineProps<{
     addressData: AddressData;
 }>();
-
+console.log(props.addressData);
 const emit = defineEmits<{
     (e: 'setDefault', address: AddressData): void;
     (e: 'edit', address: AddressData): void;
@@ -52,7 +52,7 @@ const setDefault = () => {
                             {{ addressData.alias }}
                         </h2>
                         <div
-                            v-if="addressData.isDefault"
+                            v-if="addressData.default"
                             class="max-w-20 max-h-6 hidden md:flex items-center gap-1 justify-center px-2 py-1 text-xs font-medium leading-4 text-white whitespace-nowrap bg-emerald-500 rounded-full"
                         >
                             <CheckCircle class="shrink-0 w-4 h-4 aspect-square" />
@@ -73,7 +73,7 @@ const setDefault = () => {
             <div class="flex gap-4 my-auto">
                 <div class="flex-1 my-auto">
                     <div
-                        v-if="addressData.isDefault"
+                        v-if="addressData.default"
                         class="md:hidden max-w-20 max-h-6 flex items-center gap-1 justify-center px-2 py-1 text-xs font-medium leading-4 text-white whitespace-nowrap bg-emerald-500 rounded-[100px]"
                     >
                         <CheckCircle class="shrink-0 w-4 h-4 aspect-square" />
@@ -81,7 +81,7 @@ const setDefault = () => {
                     </div>
                 </div>
                 <UiButton
-                    v-if="!addressData.isDefault"
+                    v-if="!addressData.default"
                     size="icon"
                     class="rounded-full"
                     aria-label="Edit address"

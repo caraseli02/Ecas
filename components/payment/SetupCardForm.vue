@@ -1,18 +1,17 @@
 <template>
-    <form id="setup-form" class="p-[30px] items-center lg:pt-10 md:w-full w-1/2" @submit.prevent="handleSubmit">
-        <div id="setup-element" />
-        <button id="submit" :disabled="isLoading" class="flex items-center">
-            <span class="text-sm font-medium left-[1.43] text-slate-500 mr-2">
-                <span class="md:hidden lg:inline-block"> Save card </span>
-            </span>
-            <ArrowRightIcon class="w-4 h-4" />
-        </button>
-    </form>
+    <div class="relative min-h-[50vh] md:w-full">
+        <UiSkeleton v-show="showSkeletonLoader" class="w-full h-full absolute inset-0" />
+        <form id="payment-form" class="p-4 md:p-[30px] items-center lg:pt-10 w-full max-w-[500px] mx-auto" @submit.prevent="handleSubmit">
+            <div id="setup-element" />
+            <div v-if="!showSkeletonLoader" class="flex justify-end items-center mt-2">
+                <UiButton id="submit" :disabled="isLoading">Save now</UiButton>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { loadStripe, SetupIntentResult, Stripe, StripeElements } from '@stripe/stripe-js';
-import ArrowRightIcon from 'assets/icons/dashboard/arrow-right.svg';
 
 const { $api } = useNuxtApp();
 
@@ -22,7 +21,9 @@ let elements: StripeElements;
 let setupIntent: SetupIntentResult;
 const setupIntentId = ref(null);
 
+const showSkeletonLoader = ref(false);
 onMounted(async () => {
+    showSkeletonLoader.value = true;
     stripe = await loadStripe(
         'pk_test_51MovuoHH6OAXXqHTJaUf46KvhzKeTRHqN0iohnBKiazdOoYorFeHSYTMtq1Tdd9zK8uNf1BPed3mMbxighKBSDTl002ysjwmrw'
     );
@@ -63,7 +64,8 @@ onMounted(async () => {
         },
     });
 
-    card.mount('#setup-element');
+    await card.mount('#setup-element');
+    showSkeletonLoader.value = false;
 });
 
 const handleSubmit = async () => {
@@ -88,4 +90,27 @@ const handleSubmit = async () => {
     console.log(error);
     isLoading.value = false;
 };
+
+onMounted(() => {
+    const setupElement = document.getElementById('setup-element');
+
+    if (setupElement) {
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                setupElementHeight.value = entry.contentRect.height;
+                if (setupElementHeight.value > 500) {
+                    showSkeletonLoader.value = false;
+                    resizeObserver.disconnect(); // Stop observing once the condition is met
+                }
+            }
+        });
+
+        resizeObserver.observe(setupElement);
+    }
+});
+
+onBeforeUnmount(() => {
+    // Clean up the observer on component unmount
+    if (resizeObserver) resizeObserver.disconnect();
+});
 </script>

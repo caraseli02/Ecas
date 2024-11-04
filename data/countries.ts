@@ -13738,9 +13738,30 @@ export const countries = [
                 shortCode: 'RO-BV',
             },
             {
-                name: 'Bucharest',
-                shortCode: 'RO-B',
+                name: 'Sectorul 1',
+                shortCode: 'RO-B-S1',
             },
+            {
+                name: 'Sectorul 2',
+                shortCode: 'RO-B-S2',
+            },
+            {
+                name: 'Sectorul 3',
+                shortCode: 'RO-B-S3',
+            },
+            {
+                name: 'Sectorul 4',
+                shortCode: 'RO-B-S4',
+            },
+            {
+                name: 'Sectorul 5',
+                shortCode: 'RO-B-S5',
+            },
+            {
+                name: 'Sectorul 6',
+                shortCode: 'RO-B-S6',
+            },
+
             {
                 name: 'Buzau',
                 shortCode: 'RO-BZ',

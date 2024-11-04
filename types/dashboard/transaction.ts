@@ -5,8 +5,7 @@ export interface TransactionInterface {
     shortId: string;
     orderId: string;
     orderShortId: string;
-    userId?: string;
-    businessId?: string;
+    user: string;
     invoiceId?: string;
     amount: number;
     type: PaymentTypeEnum;

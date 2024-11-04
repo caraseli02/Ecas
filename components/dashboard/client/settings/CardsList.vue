@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-h-[480px] h-fit overflow-y-auto">
-        <template v-if="cards.length > 0">
+        <template v-if="!isLoading">
             <OrderSummaryPayByCard
                 v-for="item in cards"
                 :key="item.id"
@@ -65,7 +65,9 @@ const selectedCardToDelete = async (cardInfo: StripeCardInterface) => {
 };
 
 const { $api } = useNuxtApp();
+const isLoading = ref(false);
 const fetchCards = async () => {
+    isLoading.value = true;
     const response = (await $api.user.userCards()) as unknown as {
         status: string;
         data: StripeCardInterface[];
@@ -81,6 +83,7 @@ const fetchCards = async () => {
             isNewCardSelected.value = true;
         }
     }
+    isLoading.value = false;
 };
 
 await fetchCards();
