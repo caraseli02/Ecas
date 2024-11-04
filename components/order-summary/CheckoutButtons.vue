@@ -10,9 +10,9 @@
                 </button>
             </div>
             <div>
-                <button
-                    :disabled="checkout"
-                    class="px-6 flex flex-row items-center justify-center w-full bg-blue-500 rounded-lg"
+                <UiButton
+                    :disabled="isCheckoutDisabled"
+                    class="w-full"
                     @click.once="
                         checkout = true;
                         stopButtonTrigger();
@@ -22,7 +22,7 @@
                     <div class="p-2">
                         <span class="text-white text-base font-medium leading-7">Secure Checkout</span>
                     </div>
-                </button>
+                </UiButton>
             </div>
         </div>
         <div class="flex flex-row sm:gap-6 sm:justify-start lg:justify-between lg:gap-0 justify-between">
@@ -44,6 +44,10 @@ import BadgeGooglePay from '@/assets/icons/badge-googlepay.svg';
 import BadgeStripe from '@/assets/icons/badge-stripe.svg';
 import { useCheckoutStore } from '~/store/checkout';
 import { storeToRefs } from 'pinia';
+
+defineProps<{
+    isCheckoutDisabled: boolean
+}>()
 
 const stopButtonTrigger = async () => {
     console.log('Button clicked');

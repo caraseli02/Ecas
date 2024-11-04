@@ -12,8 +12,10 @@
                     <div class="flex flex-col">
                         <div class="text-sm leading-relaxed font-medium text-slate-500 mb-3">Credit Limit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight">
-                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                            <div v-else>{{ '€' + credit.limit }}</div>
+                            <div v-if="emptyData || error || !credit" class="text-sm font-medium leading-tight text-gray-500">
+                                No data available
+                            </div>
+                            <div v-else>{{ credit.limit + 'lei' }}</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -22,8 +24,10 @@
                     >
                         <div class="text-sm leading-relaxed font-medium text-slate-500 mb-3">Available Credit</div>
                         <div v-if="!isLoading" class="font-semibold leading-tight text-blue-500">
-                            <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                            <div v-else>{{ '€' + credit.available }}</div>
+                            <div v-if="emptyData || error || !credit" class="text-sm font-medium leading-tight text-gray-500">
+                                No data available
+                            </div>
+                            <div v-else>{{ credit.available + 'lei' }}</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -41,8 +45,10 @@
                             <div>Credit Limit</div>
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
-                        <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                        <div v-else class="text-sm font-semibold leading-tight">>{{ '€' + credit.limit }}</div>
+                        <div v-if="emptyData || error || !credit" class="text-sm font-medium leading-tight text-gray-500">
+                            No data available
+                        </div>
+                        <div v-else class="text-sm font-semibold leading-tight">>{{ credit.limit + 'lei' }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -57,8 +63,10 @@
                             <div>Available Credit</div>
                             <WarningIcon v-if="error" class="w-5 h-5 md:hidden" />
                         </div>
-                        <div v-if="emptyData || error" class="text-sm font-medium leading-tight text-gray-500">No data available</div>
-                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">>{{ '€' + credit.available }}</div>
+                        <div v-if="emptyData || error || !credit" class="text-sm font-medium leading-tight text-gray-500">
+                            No data available
+                        </div>
+                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">>{{ credit.available + 'lei' }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>

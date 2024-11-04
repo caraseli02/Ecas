@@ -8,6 +8,7 @@ export interface ActionOptionsConfiguration {
     enable: boolean;
     navigateToRoute?: string; // only if isRouter = true
     actionFn?: (id: string) => Promise<unknown>;
+    actionParameter?: string;
 }
 
 interface DataTableRowActionsProps {
@@ -134,7 +135,7 @@ if (props.service) {
                     <UiDropdownMenuItem
                         v-if="option.enable && option.actionFn"
                         :key="index"
-                        @click="actionService[option.actionFn](row.original.firebaseId as string)"
+                        @click="actionService[option.actionFn](option.actionParameter || (row.original.firebaseId as string))"
                     >
                         {{ option.label }}
                     </UiDropdownMenuItem>
