@@ -188,6 +188,18 @@ Emitter.on('edit', async (object: any) => {
     addresses.value[object.index].postcode = object.address.postcode.value;
     addresses.value[object.index].phone = object.address.phone.value;
 
+    const result = await $api.orders.validateAddress(addresses.value[object.index]);
+
+    if (!result.data.valid) {
+        console.log('Invalid address');
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invalid address',
+        });
+        return;
+    }
+
     if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
         return;
     }
