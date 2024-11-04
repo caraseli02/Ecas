@@ -76,12 +76,17 @@ export const useAuthStore = defineStore({
         },
         getToken() {
             const router = useRouter();
+            const route = useRoute();
+            const time = this.token.createdAt ? moment().diff(this.token.createdAt, 'minutes') : 999;
 
-            console.log(`${moment().diff(this.token?.createdAt, 'minutes')} minutes passed`);
-            if (moment().diff(this.token?.createdAt, 'minutes') > 59) {
+            if (time > 59) {
                 this.signOut();
-                router.push('/');
-                Emitter.emit('open-account-modal');
+
+                if (route.path.includes('dashboard') || route.path.includes('order') || route.path.includes('checkout')) {
+                    router.push('/');
+                    Emitter.emit('open-account-modal');
+                }
+
                 return;
             }
 
