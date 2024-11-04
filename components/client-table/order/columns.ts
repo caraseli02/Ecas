@@ -24,7 +24,7 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
     {
         accessorKey: OrderTableColumnsEnum.SHORT_ID,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Order' }),
-        cell: ({ row }) => h(IdCell, { IdCell: row.getValue(OrderTableColumnsEnum.SHORT_ID), notes: [] }),
+        cell: ({ row }) => h(IdCell, { IdCell: row.getValue(OrderTableColumnsEnum.SHORT_ID), orderId: row.original._id,  notes: [] }),
     },
     {
         accessorKey: OrderTableColumnsEnum.TYPE,
