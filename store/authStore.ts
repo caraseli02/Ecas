@@ -79,6 +79,7 @@ export const useAuthStore = defineStore({
             const route = useRoute();
             const time = this.token.createdAt ? moment().diff(this.token.createdAt, 'minutes') : 999;
 
+            console.log('Time', time);
             if (time > 59) {
                 this.signOut();
 
