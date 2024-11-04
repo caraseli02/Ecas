@@ -80,6 +80,7 @@
                         :order="order"
                         class="item"
                         :general-settings="generalSettings"
+                        :shipping-preferences="shippingPreferences"
                         @select-backorder-preference="selectBackorderPreference"
                     />
                 </Transition>
@@ -139,6 +140,7 @@ import { useAuthStore } from '~/store/authStore';
 import { usePaymentStore } from '~/store/paymentStore';
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '~/store/cartStore';
+import { ShippingOrderPricingResponse } from '~/types/order-summary/shipping-services';
 
 const props = defineProps<{
     items: CartProductsInterface[];
@@ -147,6 +149,7 @@ const props = defineProps<{
     cards: any;
     card: any;
     isNewCardSelected: boolean;
+    shippingPreferences: ShippingOrderPricingResponse;
 }>();
 
 const emits = defineEmits(['update-payment-details']);
@@ -160,7 +163,10 @@ const generalSettings = useAuthStore().generalSettings;
 const cartStore = useCartStore();
 
 const stockOrder = computed(() => {
-    return cartStore.cart?.products.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0).length > 0;
+    return (
+        cartStore.cart?.products.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0).length >
+        0
+    );
 });
 
 const backOrder = computed(() => {
@@ -204,7 +210,10 @@ const shippingAndBillingMissingInfoWarning = computed(() => {
 const mixedOrBackOrder = computed(() => props.order.type === OrderType.Back || props.order.type === OrderType.Mixed);
 const mixedOrStockOrder = computed(() => props.order.type === OrderType.Stock || props.order.type === OrderType.Mixed);
 
-const paymentMethodWarning = computed(() => props.order.paymentDetails?.type === null);
+const paymentMethodWarning = computed(() => {
+    const paymentDetails = props.order.paymentDetails;
+    return !paymentDetails || paymentDetails.type == null;
+});
 
 watch(orderType, (newOrderType) => {
     props.order.type = orderType.value;

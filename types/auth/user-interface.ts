@@ -76,7 +76,7 @@ export interface ContactDetails {
     firstName: string;
     lastName: string;
     phone: string;
-    mobile?: number;
+    mobile?: string;
     email: string;
     _id?: string;
 }

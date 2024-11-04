@@ -72,27 +72,14 @@ const onEditClick = () => {
                 <AlertTriangle class="w-5 h-5 text-rose-500" />
                 <div class="text-red-500 text-sm leading-6">Card expired</div>
             </span>
-            <span v-if="showPayWithLabel" class="text-neutral-700 text-sm font-normal leading-6 w-full text-start"
-                >Pay {{ hasCard && isNewCardSelected ? 'with a new card' : 'by card' }}</span
-            >
+            <span v-if="showPayWithLabel" class="text-neutral-700 text-sm font-normal leading-6 w-full text-start">Pay {{
+                isNewCardSelected ? 'with a new card' : 'by card' }}</span>
             <div class="flex justify-end w-full gap-2">
-                <div v-if="!isSelected && !isExpired && !showPayWithLabel" class="flex gap-2 items-center justify-end">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_397_5131)">
-                            <path
-                                d="M5.3335 7.99992L7.02328 9.52073C7.31095 9.77963 7.75789 9.73998 7.9955 9.43449L10.6668 5.99992M8.00016 14.6666C11.6821 14.6666 14.6668 11.6818 14.6668 7.99992C14.6668 4.31802 11.6821 1.33325 8.00016 1.33325C4.31827 1.33325 1.3335 4.31802 1.3335 7.99992C1.3335 11.6818 4.31827 14.6666 8.00016 14.6666Z"
-                                stroke="#2D2D2D"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_397_5131">
-                                <rect width="16" height="16" fill="white" />
-                            </clipPath>
-                        </defs>
-                    </svg>
-                    <span class="text-neutral-700 text-sm font-normal leading-6">Set as default</span>
+                <div v-if="!isExpired && !showPayWithLabel && cardInfo && !cardInfo.default" class="flex gap-2 items-center justify-end">
+                    <UiButton @click.stop="emits('set-default', cardInfo)" variant="ghost" size="xs" class="text-neutral-700 text-sm font-normal leading-6">
+                        <CheckCircle2 class="w-4 h-4 stroke-1 mr-1" />
+                        Set as default
+                    </UiButton>
                 </div>
                 <UiButton
                     v-if="enableEdit"

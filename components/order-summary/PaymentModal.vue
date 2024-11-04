@@ -17,8 +17,8 @@
         <div class="flex flex-col gap-3 h-full overflow-y-auto relative">
             <OrderSummaryNewCard
                 class="mt-8 sticky top-0 bg-white"
-                :is-selected="isNewCardSelectedModal"
-                @click="isNewCardSelectedModal = true"
+                :is-selected="isNewCardSelected"
+                @click="isNewCardSelected = true"
                 @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: null })"
             />
             <h4 v-if="cards.length > 1" class="text-zinc-800 text-sm font-medium leading-6 self-stretch mt-2">Saved cards</h4>
@@ -28,13 +28,14 @@
                     :card-info="card"
                     :card-type="card?.card?.brand"
                     :is-selected="
-                        !isNewCardSelectedModal &&
+                        !isNewCardSelected &&
                         (payment.card?.id ? payment.card?.id === card?.id : order.paymentDetails?.card?.id === card?.id)
                     "
                     :has-card="true"
                     :is-expired="cardExpired(card)"
-                    @click="isNewCardSelectedModal = false"
+                    @click="isNewCardSelected = false"
                     @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: card })"
+                    @set-default="setCardAsDefault"
                 />
             </div>
         </div>
@@ -76,21 +77,20 @@
 
 <script setup lang="ts">
 import { usePaymentStore } from '~/store/paymentStore';
-import { OrderInterface, PaymentDetails, PaymentTypeEnum } from '~/types';
+import { OrderInterface, PaymentDetails, PaymentTypeEnum, StripeCardInterface } from '~/types';
 import moment from 'moment';
+import { usePaymentCards } from '~/composables/usePaymentCards';
 
 const paymentStore = usePaymentStore();
 
+const { card, cards, isNewCardSelected } = usePaymentCards();
+
 const props = defineProps<{
     order: OrderInterface;
-    cards: any;
-    card: any;
-    isNewCardSelected: boolean;
 }>();
 
 const emits = defineEmits(['change-is-new-card-selected']);
 const payment = ref({} as PaymentDetails);
-const isNewCardSelectedModal = ref(props.isNewCardSelected);
 
 function selectPaymentOption(option: { type: PaymentTypeEnum; info?: any }) {
     if (props.order.paymentDetails) {
@@ -106,10 +106,17 @@ function exitCardModal(option: boolean) {
     if (!option) {
         props.order.paymentDetails = payment.value;
         if (payment.value.card) {
-            props.card.billing_details = payment.value.card?.billing_details;
-            props.card.card = payment.value.card?.card;
-            props.card.id = payment.value.card?.id;
-            props.card.customer = payment.value.card?.customer;
+            card.value.billing_details = payment.value.card?.billing_details;
+            card.value.card = payment.value.card?.card;
+            card.value.id = payment.value.card?.id;
+            card.value.customer = payment.value.card?.customer;
+            //check for default key and value
+            // if exists, set it to the card details
+            if (payment.value.card?.default) {
+                card.value.default = payment.value.card?.default;
+            } else {
+                card.value.default = false;
+            }
             emits('change-is-new-card-selected', false);
         } else {
             emits('change-is-new-card-selected', true);
@@ -123,6 +130,21 @@ function cardExpired(card: any) {
     const dif = exp_date.diff(date, 'months');
     return dif < 0;
 }
+
+const { $api } = useNuxtApp();
+const setCardAsDefault = async (cardInfo: StripeCardInterface) => {
+    cards.value =  cards.value.map((card: StripeCardInterface) => {
+        return {
+            ...card,
+            default: card.id === cardInfo.id,
+        };
+    });
+    const response = await $api.settingsClient.updateCardAsDefault(cardInfo.id);
+    if (response.status === 'success') {
+        selectPaymentOption({ type: PaymentTypeEnum.Card, info: cardInfo })
+        console.log('Card set as default');
+    }
+};
 </script>
 
 <style scoped></style>
