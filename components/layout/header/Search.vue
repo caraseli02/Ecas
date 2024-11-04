@@ -80,7 +80,7 @@ const onInput = _.debounce(async () => {
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[] | null> => {
     isLoading.value = true;
 
-    const { data: products } = (await $api.product.fetchSearchProduct(keyword, page, perPage)) as SearchData;
+    const { data: products } = (await $api.product.fetchSearchProduct(keyword, page, perPage)) as unknown as SearchData;
 
     if (!products) {
         return null;
