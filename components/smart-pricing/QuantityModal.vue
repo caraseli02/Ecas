@@ -3,14 +3,35 @@ import { PlusIcon } from 'lucide-vue-next';
 import { usePricingStore } from '~/store/pricingStore';
 import { useNuxtApp } from '#app';
 import { storeToRefs } from 'pinia';
+import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 
 const { $api } = useNuxtApp();
 
-
 const pricingStore = usePricingStore();
-const { showQuantityModal } = storeToRefs(pricingStore);
+const { showQuantityModal, editQuantityModal, type } = storeToRefs(pricingStore);
 
 const quantityList = ref([{ id: 1, min: 0, max: 0 }]);
+watch(
+    () => pricingStore.showQuantityModal,
+    (newValue) => {
+        if (newValue) {
+            if (editQuantityModal.value) {
+                if (editQuantityModal.value.value) {
+                    pricingStore.type = 'edit';
+                    quantityList.value = editQuantityModal.value.value?.map((value: string, index: number) => ({
+                        id: index + 1,
+                        min: value.split(' - ')[0] || 0,
+                        max: value.split(' - ')[1] || 0,
+                    }));
+                }
+            } else {
+                pricingStore.type = 'add';
+                quantityList.value = [{ id: 1, min: 0, max: 0 }];
+            }
+        }
+    },
+    { deep: true }
+);
 
 function addQuantity() {
     quantityList.value.push({ id: quantityList.value.length + 1, min: 0, max: 0 });
@@ -28,32 +49,45 @@ function updateQuantity(id: number, quantity: { min: number; max: number }) {
 }
 
 const createNewQuantityTemplate = async () => {
-    console.log(quantityList);
-    if (quantityList.value.find((item) => item.min >= item.max || item.min < 0 || item.max < 0 || item.min === 0 || item.max === 0)) {
+    console.log(quantityList.value);
+    if (
+        quantityList.value.find(
+            (item) => Number(item.min) >= Number(item.max) || Number(item.min) < 0 || Number(item.max) < 0 || Number(item.max) === 0
+        )
+    ) {
         // Add your logic here to handle the creation without the price range values
         return;
     }
-    // Add your logic here to handle the creation
-    const maxValues = quantityList.value.map((item) => item.max);
+    if (type.value === 'edit') {
+        console.log('edit');
+        const editedQuantityObject = {
+            label: editQuantityModal.value.label,
+            type: PriceSettingsTypeEnum.Quantity,
+            values: quantityList.value.map((item) => Number(item.max)),
+        };
 
-    const response = await $api.smartPricing.setNewQuantityRange({
-        values: maxValues,
-        label: `QTY-${pricingStore.quantity?.length + 1}`,
-    });
-    if (response.status !== 'success') {
-        // Add your logic here to handle the creation error
-        return;
+        const response = await $api.smartPricing.editPriceRange(editedQuantityObject, editQuantityModal.value?._id);
+        if (response.status !== 'success') {
+            // Add your logic here to handle the creation error
+            return;
+        }
+        await pricingStore.updateAndReturnPricing();
+    } else if (type.value === 'add') {
+        console.log('add');
+        const maxValues = quantityList.value.map((item) => item.max);
+
+        const response = await $api.smartPricing.setNewQuantityRange({
+            values: maxValues,
+            label: `QTY-${pricingStore.quantity?.length + 1}`,
+        });
+        if (response.status !== 'success') {
+            // Add your logic here to handle the creation error
+            return;
+        }
+        await pricingStore.updateAndReturnPricing();
     }
 
-    pricingStore.addQuantityRange(
-        {
-            values: quantityList.value.map((item) => {
-                return `${item.min} - ${item.max}`;
-            }),
-            label: `QTY-${pricingStore.quantity?.length + 1}`,
-        },
-        response.data.id
-    );
+    // Add your logic here to handle the creation
 };
 </script>
 
@@ -69,7 +103,7 @@ const createNewQuantityTemplate = async () => {
                     :key="quantity.id"
                     :quantity="quantity"
                     @delete="removeQuantity(quantity.id)"
-                    @updateRange="updateQuantity(quantity.id, $event)"
+                    @update:quantity-range="updateQuantity(quantity.id, $event)"
                 />
             </section>
             <UiDialogFooter class="sm:justify-start">

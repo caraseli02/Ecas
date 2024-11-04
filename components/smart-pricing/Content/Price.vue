@@ -14,6 +14,14 @@ const { $api } = useNuxtApp();
 
 const entryPriceList = ref(range.value);
 
+watch(
+    () => pricingStore.range,
+    (newRange) => {
+        entryPriceList.value = newRange;
+    },
+    { deep: true } // Deep watch to detect changes within the array
+);
+
 const deleteItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
     // console.log(itemValue);
     const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Range, itemValue._id);

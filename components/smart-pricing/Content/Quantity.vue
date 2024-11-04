@@ -8,11 +8,20 @@ import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 import { storeToRefs } from 'pinia';
 
 const pricingStore = usePricingStore();
-const { showQuantityModal } = storeToRefs(pricingStore);
+
+const { showQuantityModal, pricing, quantity } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
 
 const quantityList = ref(pricingStore.quantity);
+
+watch(
+    () => pricingStore.quantity,
+    (newRange) => {
+        quantityList.value = newRange;
+    },
+    { deep: true } // Deep watch to detect changes within the array
+);
 
 const deleteItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
     const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Quantity, itemValue._id);
@@ -42,8 +51,13 @@ function deleteAllSelected() {
 const selectedCount = computed(() => quantityList.value.filter((i) => i.selected).length);
 
 const editItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
+    if (!pricing) {
+        console.error('Pricing is not defined');
+        return;
+    }
+    const filteredItems = quantity.value ? quantity.value.filter((i) => i._id === itemValue._id) : [];
+    pricingStore.editQuantityModal = filteredItems.length > 0 ? filteredItems[0] : null;
     showQuantityModal.value = true;
-    // entryPriceList.value = itemValue;
 };
 </script>
 
