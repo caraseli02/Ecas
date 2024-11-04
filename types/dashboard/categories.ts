@@ -1,4 +1,3 @@
-import { type IconName } from '@/types/Icons';
 import { PriceSmartLinkingInterface } from '~/model/prices/price-settings.interface';
 
 export interface TaxonomyInterface {
@@ -19,4 +18,11 @@ export interface ICreatePayload {
     icon: string;
     parentId?: string;
     averageWeight?: string;
+    smartPricingSettings?: SmartPricingSettings;
+}
+
+export interface SmartPricingSettings {
+    priceRangeId: string;
+    quantityId: string;
+    marginId: string;
 }
