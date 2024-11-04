@@ -31,31 +31,21 @@ const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 const accountType = ref(getUserDetails.value.accountType);
 
-
 const isDialogOpen = ref(false);
 
 const formatAddresses = () => {
     const { accountType, personalDetails, companyDetails } = getUserDetails.value;
-    const addresses = accountType === AccountType.Personal
-        ? personalDetails?.shippingAddress
-        : companyDetails?.shippingAddress;
+    const addresses = accountType === AccountType.Personal ? personalDetails?.shippingAddress : companyDetails?.shippingAddress;
 
     return addresses?.map((address, index) => {
-        const name = accountType === AccountType.Personal
-            ? `${personalDetails?.firstName} ${personalDetails?.lastName}`
-            : companyDetails?.name;
+        const name =
+            accountType === AccountType.Personal ? `${personalDetails?.firstName} ${personalDetails?.lastName}` : companyDetails?.name;
 
-        const formattedAddress = [
-            address.name1,
-            address.name2,
-            address.city,
-            address.postcode,
-            address.country
-        ].filter(Boolean).join(', ');
+        const formattedAddress = [address.name1, address.name2, address.city, address.postcode, address.country].filter(Boolean).join(', ');
 
         return {
             alias: address.alias || `Shipping Address Alias ${index + 1}`,
-            isDefault: address.default || false,
+            default: address.default || false,
             name,
             address: formattedAddress,
             phone: address.phone || '',
@@ -102,7 +92,6 @@ const handleChange = async (address: ShippingAddressInterface) => {
         await updateStoreDetails();
     }
 };
-
 </script>
 
 <template>
@@ -111,12 +100,10 @@ const handleChange = async (address: ShippingAddressInterface) => {
             <h2 class="self-start text-xl font-semibold leading-7 text-neutral-700">Shipping</h2>
         </div>
         <AddressList :addresses="addresses" @edit="handleEdit" @delete="handleDelete" @set-default="handleSetDefault" />
-        <section
-            class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
+        <section class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
             <ShippingDialog v-model="isDialogOpen" :address="addressToBeEdited" :account-type="accountType" />
         </section>
     </section>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

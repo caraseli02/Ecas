@@ -105,7 +105,7 @@ const calculatedVAT = computed(() => parseFloat((cartSubtotal.value * 0.19).toFi
 const calculatedTotal = computed(() => {
     const subtotal = Number(cartSubtotal.value || 0);
     const VAT = calculatedVAT.value;
-    const shippingFee = shipping.value?.price || 0;
+    const shippingFee = shipping.value?.price.total || 0;
     const discount = itemsDiscount.value || 0;
     return parseFloat((subtotal + VAT + shippingFee + smallOrder.value - discount).toFixed(2));
 });
@@ -113,9 +113,8 @@ const calculatedTotal = computed(() => {
 const shipping = computed(() => props.order.deliveryMethod);
 const shippingText = computed(() => {
     if (!shipping.value) return '';
-    const { title, min, max, unit } = shipping.value;
-    const unitText = unit === 'day' ? '' : ' Business';
-    return `${title} (${min}-${max}${unitText} Days)`;
+
+    return `${shipping.value.service.courierName} (${shipping.value.service.courierName})`;
 });
-const formattedShippingPrice = computed(() => `${shipping.value?.price.toFixed(2)} lei`);
+const formattedShippingPrice = computed(() => `${shipping.value?.price.total.toFixed(2)} lei`);
 </script>

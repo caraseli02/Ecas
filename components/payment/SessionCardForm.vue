@@ -1,14 +1,12 @@
 <template>
-    <div class="flex justify-center flex-col items-center bg-gray-100">
-        <div class="align-center p-8 rounded-lg w-full">
-            <p class="text-center text-2xl font-bold mb-6">Setup Card</p>
-            <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-1/2" @submit.prevent="handleSubmit">
-                <div id="payment-element" />
-                <button id="submit" :disabled="isLoading" class="flex items-center rounded-lg bg-gray-100 px-6 py-3">
-                    <span class="leading-normal text-slate-500 font-medium mr-2"> Pay now </span>
-                </button>
-            </form>
-        </div>
+    <div class="relative min-h-screen md:w-full">
+        <UiSkeleton v-show="showSkeletonLoader" class="w-full h-full absolute inset-0" />
+        <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-full md:w-1/2 mx-auto" @submit.prevent="handleSubmit">
+            <div id="payment-element" />
+            <div v-if="!showSkeletonLoader" class="flex justify-end items-center mt-2">
+                <UiButton id="submit" :disabled="isLoading">Pay now</UiButton>
+            </div>
+        </form>
     </div>
 </template>
 
@@ -28,7 +26,9 @@ let stripe: Stripe | null;
 let elements: StripeElements;
 let paymentIntent: PaymentIntentResult;
 
+const showSkeletonLoader = ref(false);
 onMounted(async () => {
+    showSkeletonLoader.value = true;
     orderId.value = <string>route.query.id;
 
     stripe = await loadStripe(
@@ -36,7 +36,7 @@ onMounted(async () => {
     );
 
     if (!stripe || !getOrderClientSecret.value) {
-        return;
+        return null;
     }
 
     paymentIntent = await stripe.retrievePaymentIntent(getOrderClientSecret.value);
@@ -66,6 +66,9 @@ onMounted(async () => {
     });
 
     card.mount('#payment-element');
+    setTimeout(() => {
+        showSkeletonLoader.value = false;
+    }, 1000);
 });
 
 const handleSubmit = async () => {
@@ -83,6 +86,9 @@ const handleSubmit = async () => {
 
     const result = await stripe.confirmPayment({
         redirect: 'if_required',
+        confirmParams: {
+            return_url: `${window.location.origin}/order-summary/${orderId.value}`,
+        },
         clientSecret: tempClientSecret,
         elements,
     });
@@ -90,10 +96,16 @@ const handleSubmit = async () => {
     if (result.error) {
         cartStore.setPreviousCheckoutError(result.error);
         await router.push({ path: '/checkout/fail', query: {} });
-    } else {
-        await router.push({ path: `/order-summary/${orderId.value}` });
+        isLoading.value = false;
+        return;
     }
 
-    isLoading.value = false;
+    await router.push({ path: `/order-summary/${orderId.value}` });
+
+    // if (result.paymentIntent.status === 'requires_action' && result.paymentIntent.next_action?.redirect_to_url?.url) {
+    //     window.location.href = result.paymentIntent.next_action.redirect_to_url.url;
+    // } else {
+    //     await router.push({ path: `/order-summary/${orderId.value}` });
+    // }
 };
 </script>
