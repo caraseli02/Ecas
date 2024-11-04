@@ -3,11 +3,13 @@
     <main>
       <NuxtPage />
     </main>
+    <Toaster />
   </div>
 </template>
 
 <script setup lang="ts">
 import _ from 'lodash';
+import { Toaster } from '@/components/ui/toast'
 
 const calcViewportHeight = () => {
   if (typeof window !== 'undefined') {

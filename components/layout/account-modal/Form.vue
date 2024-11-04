@@ -105,6 +105,8 @@ import Emitter from 'tiny-emitter/instance.js';
 import { useCartStore } from '~/store/cartStore';
 import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 import { usePricingStore } from '~/store/pricingStore';
+import { useMagicKeys } from '@vueuse/core'
+
 
 const { checkForInputErrors } = useError();
 const { $api } = useNuxtApp();
@@ -176,6 +178,13 @@ const handleSignIn = async () => {
         isLoading.value = false;
     }
 };
+
+const { enter } = useMagicKeys()
+
+watch(enter, (v) => {
+  if (v)
+    handleSignIn()
+})
 
 const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
     const detailsResponse = await $api.auth.fetchUserDetails(parsedToken.user_id);

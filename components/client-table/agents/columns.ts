@@ -90,6 +90,11 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                         enable: row.original.status === AccountStatusEnum.Active,
                         actionFn: 'deactivateUser',
                     },
+                    {
+                        label: 'Activate account',
+                        enable: row.original.status === AccountStatusEnum.Pending,
+                        actionFn: 'activateUser',
+                    },
                 ] as ActionOptionsConfiguration[],
             }),
     },

@@ -43,7 +43,7 @@ const formatAddresses = () => {
 
         return {
             alias: address.alias || `Billing Address Alias ${index + 1}`,
-            isDefault: address.default || false,
+            default: address.default || false,
             name,
             address: formattedAddress,
             phone: address.phone || '',

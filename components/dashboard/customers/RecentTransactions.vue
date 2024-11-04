@@ -73,7 +73,8 @@ import ArrowRightIcon from '@/assets/icons/dashboard/arrow-right.svg';
 import ArrowSquareRightIcon from '@/assets/icons/dashboard/arrow-square-right.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
-import { Currency, OrderInterface } from '~/types';
+import { PaymentStatusEnum } from '~/types';
+import { TransactionInterface } from '~/types/dashboard/transaction';
 
 const error = ref(false);
 const emptyData = ref(false);
@@ -85,7 +86,7 @@ const props = defineProps({
         required: true,
     },
 });
-const recentTransactions = ref<OrderInterface[]>({} as OrderInterface[]);
+const recentTransactions = ref<TransactionInterface[]>({} as TransactionInterface[]);
 
 const { $api } = useNuxtApp();
 
@@ -102,9 +103,9 @@ const fetchRecentTransactions = async () => {
     if (!props.id) {
         return;
     }
-    const response = (await $api.customerProfile.fetchCustomerRecentTransactions(props.id)) as {
+    const response = (await $api.customerProfile.fetchCustomerRecentTransactions(props.id)) as unknown as {
         status: string;
-        data: OrderInterface[];
+        data: TransactionInterface[];
     };
 
     if (response.status !== 'success' || !Array.isArray(response.data)) {
@@ -118,13 +119,11 @@ const fetchRecentTransactions = async () => {
 
     recentTransactions.value = response.data;
 
-    const transactionInfo = {} as OrderInfo;
-
     recentTransactions.value?.map((transaction, index) => {
-        transactionInfo.amount = `${Currency[transaction.currency as unknown as keyof typeof Currency]} ${transaction.total
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
-        transactionInfo.status = `${transaction.status.replace('Payment ', '').toLocaleLowerCase()}`;
+        const transactionInfo = {} as OrderInfo;
+
+        transactionInfo.amount = `${transaction.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} lei`;
+        transactionInfo.status = `${PaymentStatusEnum[transaction.status]}`;
         recentTransactionArray.push(transactionInfo);
     });
 };
