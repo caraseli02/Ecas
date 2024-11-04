@@ -52,13 +52,13 @@
                 </ClientOnly>
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-max flex flex-col text-center">
                     <div class="text-xl font-bold leading-[1.4] mb-2" :class="[chartSeries[0] !== 0 ? 'text-[#EE514E]' : '']">
-                        €
                         {{
                             creditObject?.available?.toLocaleString(undefined, {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                             }) || '0,00'
                         }}
+                        lei
                     </div>
                     <div class="text-sm leading-[1.14]">Available Credit</div>
                 </div>
@@ -75,9 +75,9 @@
                 <SkeletonLoader v-if="loading" class="w-full h-12" />
                 <template v-else>
                     <div v-if="creditObject?.limit" class="flex items-center gap-2 mb-4">
-                        <span class="text-xl leading-[1.2] font-semibold">{{ '€' + (creditObject?.spent?.toLocaleString() || '0') }}</span>
+                        <span class="text-xl leading-[1.2] font-semibold">{{ creditObject?.spent?.toLocaleString() + 'lei' || '0' }}</span>
                         <span class="text-sm leading-[1.71]"> spent of </span>
-                        <span class="text-sm leading-[1.71] font-medium">{{ '€' + (creditObject?.limit?.toLocaleString() || '0') }}</span>
+                        <span class="text-sm leading-[1.71] font-medium">{{ creditObject?.limit?.toLocaleString() + 'lei' || '0' }}</span>
                         <span class="text-sm leading-[1.71]"> limit </span>
                     </div>
                     <ProgressBar :value="creditObject"></ProgressBar>

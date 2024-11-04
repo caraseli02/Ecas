@@ -184,13 +184,13 @@ const formBusinessSchema = toTypedSchema(
             .string({
                 required_error: 'Tax ID is required',
             })
-            .min(1)
+            .optional()
             .default(getUserDetails.value.companyDetails?.taxId || ''),
         vatNumber: z
             .string({
                 required_error: 'V.A.T Number is required',
             })
-            .min(1)
+            .optional()
             .default(getUserDetails.value.companyDetails?.vat || ''),
         bankName: z
             .string()

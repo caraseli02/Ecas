@@ -40,7 +40,7 @@
                         No data available
                     </div>
                     <div v-else-if="!emptyData && !error.totalSpent" class="text-xl font-semibold leading-[1.2]">
-                        ${{ totalSpent.toFixed(2) || 0 }}
+                        {{ totalSpent.toFixed(2) || 0 }} lei
                     </div>
                 </div>
             </div>

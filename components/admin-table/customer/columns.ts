@@ -60,7 +60,8 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
     {
         accessorKey: CustomerTableColumnsEnum.SPENT,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Spent' }),
-        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas((row.original.spent ?? 0) as number, '$')),
+        cell: ({ row }) =>
+            h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas((row.original.spent ?? 0) as number, 'lei')),
     },
     {
         accessorKey: CustomerTableColumnsEnum.ORDERS_COUNT,

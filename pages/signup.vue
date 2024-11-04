@@ -39,7 +39,7 @@ import {
     SignupPersonalDetails as SignupPersonalDetailsType,
     SignupProfileDetails as SignupProfileDetailsType,
 } from '~~/types';
-import { useToast } from '@/components/ui/toast/use-toast'
+import { useToast } from '@/components/ui/toast/use-toast';
 
 const { $api } = useNuxtApp();
 
@@ -108,7 +108,7 @@ const businessDetails = useState<SignupBusinessDetailsType>('signup-business-det
     };
 });
 
-const handleBusinessDetailsContinue = () => {
+const handleBusinessDetailsContinue = async () => {
     let hasError = false;
     if (selectedType.value === 'business') {
         hasError = checkForInputErrors([
@@ -135,6 +135,27 @@ const handleBusinessDetailsContinue = () => {
             businessDetails.value.postcode,
             businessDetails.value.addressLine1,
         ]);
+    }
+
+    const result = await $api.orders.validateAddress({
+        country: businessDetails.value.country.value.value.value,
+        region: businessDetails.value.region.value.value.value,
+        city: businessDetails.value.city.value,
+        postcode: businessDetails.value.postcode.value,
+        name1: businessDetails.value.addressLine1.value,
+        name2: businessDetails.value.addressLine2.value,
+        default: false,
+    });
+
+    if (!result.data.valid) {
+        console.log('Invalid address');
+        hasError = true;
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invalid address',
+        });
+        return;
     }
 
     if (!hasError) {

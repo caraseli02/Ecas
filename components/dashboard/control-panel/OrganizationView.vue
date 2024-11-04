@@ -185,6 +185,7 @@ import { useNuxtApp } from '#app';
 import { AddressInterface, CompanyDetails, ContactDetails, UserInterface } from '~/types/auth/user-interface';
 import { PropType } from 'nuxt/dist/app/compat/capi';
 import { getRegionByCountry } from '~/helpers/form.helper';
+import { toast } from '~/components/ui/toast';
 
 const companyInformation = ref<CompanyDetails>({} as CompanyDetails);
 const { $api } = useNuxtApp();
@@ -254,11 +255,13 @@ const form = ref({
         value: '',
         error: '',
     },
-    bank_iban: {  // New IBAN field
+    bank_iban: {
+        // New IBAN field
         value: '',
         error: '',
     },
-    bank_name: {  // New Bank Details field
+    bank_name: {
+        // New Bank Details field
         value: '',
         error: '',
     },
@@ -329,6 +332,26 @@ const updateAccountDetails = async () => {
     newAddress.name2 = form.value.name2?.value || '';
     newAddress.postcode = form.value.postcode?.value;
 
+    const result = await $api.orders.validateAddress({
+        country: newAddress.country,
+        region: newAddress.region,
+        city: newAddress.city,
+        postcode: newAddress.postcode,
+        name1: newAddress.name1,
+        name2: newAddress.name2,
+        default: false,
+    });
+
+    if (!result.data.valid) {
+        console.log('Invalid address');
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invalid address',
+        });
+        return;
+    }
+
     const payload = {
         companyDetails: {} as CompanyDetails,
         contactDetails: {} as ContactDetails,
@@ -337,8 +360,8 @@ const updateAccountDetails = async () => {
     payload.companyDetails.registrationNumber = form.value.companyRegistrationNumber.value;
     payload.companyDetails.taxId = '-';
     payload.companyDetails.vat = form.value.vatNumber.value;
-    payload.companyDetails.bank_iban = form.value.bank_iban.value;  // Add IBAN to payload
-    payload.companyDetails.bank_name = form.value.bank_name.value;  // Add Bank Details to payload
+    payload.companyDetails.bank_iban = form.value.bank_iban.value; // Add IBAN to payload
+    payload.companyDetails.bank_name = form.value.bank_name.value; // Add Bank Details to payload
 
     payload.contactDetails = { ...props.account?.contactDetails };
     payload.contactDetails.email = form.value.companyEmail.value;

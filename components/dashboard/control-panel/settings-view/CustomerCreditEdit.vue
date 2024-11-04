@@ -134,13 +134,13 @@
             <div class="mb-10">
                 <div class="text-sm text-slate-500 mb-1">Credit Amount</div>
                 <div class="flex border border-border rounded-lg h-11 overflow-hidden">
-                    <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">€</div>
                     <input
                         v-model="creditAmount"
                         type="number"
                         placeholder="Discount (i.e. 5, 10, 17)"
                         class="bg-transparent px-2 text-sm w-full transition-colors duration-300 focus:outline-none"
                     />
+                    <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">lei</div>
                 </div>
             </div>
             <div class="grid grid-cols-[auto,1fr] gap-4">

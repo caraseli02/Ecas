@@ -1,5 +1,5 @@
 import { CustomerCreditInterface, DiscountInterface } from '~/types/auth/account-settings';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import { ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
 import { BackorderShippingTypesInterface, StockorderShippingTypesInterface } from '~/types/general-settings/general-settings';
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { PaymentMethod } from '@stripe/stripe-js';
@@ -40,6 +40,7 @@ export interface OrderNotesInterface {
 export interface OrderInterface {
     _id: string;
     shortId: string;
+    user: UserInterface;
     userId?: string;
     userEmail?: string;
     userName: string;
@@ -74,10 +75,11 @@ export interface OrderInterface {
     parent?: string;
 }
 
-export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'userName' | 'createdAt' | 'status' | 'total' | 'userEmail'>;
+export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'user' | 'createdAt' | 'status' | 'total'>;
 
 export interface OrderRequestInterface {
     shortId: string;
+    user: UserInterface;
     userId?: string;
     userName: string;
     userEmail: string;

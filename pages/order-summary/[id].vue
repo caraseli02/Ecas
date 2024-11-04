@@ -141,8 +141,8 @@ const getOrderInformation = async () => {
         };
         customerDetails.value = {
             title: 'Customer Details',
-            name: response?.data?.order.userName,
-            email: response?.data?.order.userEmail,
+            name: `${response?.data?.order.user.contactDetails.firstName} ${response?.data?.order.user.contactDetails.lastName}`,
+            email: response?.data?.order.user.contactDetails.email,
             phone: response?.data?.order.shippingDetails.phone,
         };
         date.value = moment(response.data.order.updatedAt).format('DD MMMM YYYY, HH:mm');
