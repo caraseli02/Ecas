@@ -5,6 +5,8 @@ export interface ProductResponse {
 
 export interface ProductInterface {
     erpItemId?: string;
+    path?: string;
+    category?: string;
     active?: boolean;
     class?: string;
     name: string;
@@ -22,7 +24,7 @@ export interface ProductInterface {
     adminSettings?: AdminSettings;
     additionalInfo?: AdditionalInfoInterface;
     favourite?: boolean;
-    _id: string;
+    _id?: string;
 }
 
 export interface PriceConfigurationSettingsInterface {
