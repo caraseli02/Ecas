@@ -66,7 +66,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
     {
         accessorKey: CustomerTableColumnsEnum.ORDERS_COUNT,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Orders count' }),
-        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas((row.original.ordersCount ?? 0) as number)),
+        cell: ({ row }) => h('div', { class: 'inline overflow-hidden' }, row.original.ordersCount ?? 0),
     },
     {
         id: 'actions',
