@@ -1,6 +1,6 @@
 <template>
   <div class="min-w-[128px] flex justify-between items-center text-neutral-700">
-    <NuxtLink :to="`${route.path}/${orderId}`">
+    <NuxtLink :to="`/order-summary/${orderId}`">
       <UiButton variant="link" class="text-sm hover:text-blue-500">{{ IdCell ?? 'N/A' }}</UiButton>
     </NuxtLink>
     <NuxtLink v-if="notes" to="#">
