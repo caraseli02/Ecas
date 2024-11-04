@@ -51,7 +51,7 @@ export const columns: ColumnDef<TransactionTableColumnsEnum>[] = [
         accessorKey: TransactionTableColumnsEnum.TOTAL,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Total' }),
         cell: ({ row }) =>
-            h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas(row.getValue(TransactionTableColumnsEnum.TOTAL), '$')),
+            h('div', { class: 'inline overflow-hidden' }, `lei ${formatNumberWithCommas(row.getValue(TransactionTableColumnsEnum.TOTAL))}`),
     },
     {
         id: TransactionTableColumnsEnum.ACTIONS, // Update the id
