@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/vue-table';
-import { OrderTableColumns } from '~/types';
+import { AccountRole, OrderTableColumns } from '~/types';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
 import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';
@@ -10,6 +10,11 @@ import CellDate from '~/components/dataTable/CellDate.vue';
 import { statusColors } from './options';
 import { OrderTableColumnsEnum } from '~/components/client-table/order/columns.enum';
 import DocumentService from '~/services/dashboard/document.service';
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
+
+const authStore = useAuthStore();
+const { getUserDetails } = storeToRefs(authStore);
 
 export const columns: ColumnDef<OrderTableColumns>[] = [
     // {
@@ -78,7 +83,7 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
                     },
                     {
                         label: 'Download invoice',
-                        enable: true,
+                        enable: getUserDetails.value.role === AccountRole.Client,
                         actionFn: 'downloadDocument',
                         actionParameter: row.original._id,
                     },
