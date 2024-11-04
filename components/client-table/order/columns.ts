@@ -80,7 +80,7 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
                         label: 'Download invoice',
                         enable: true,
                         actionFn: 'downloadDocument',
-                        actionParameter: row.original.invoiceId,
+                        actionParameter: row.original._id,
                     },
                 ] as ActionOptionsConfiguration[],
             }),
