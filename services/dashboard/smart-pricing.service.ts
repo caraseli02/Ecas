@@ -1,6 +1,6 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import { PriceSettingsInterface, PriceSettingsResponseInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
+import { PriceSettingsResponseInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 
 class SmartPricingService extends HttpFactory {
     private MAIN = '/prices';
@@ -65,7 +65,7 @@ class SmartPricingService extends HttpFactory {
         });
     }
 
-    async editPriceRange(data: PriceSettingsInterface, id: string) {
+    async editPriceRange(data: any, id: string) {
         const token = this.authStore.getToken();
         return await this.call<{
             status: string;
