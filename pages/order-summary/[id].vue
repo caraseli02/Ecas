@@ -158,28 +158,59 @@ onMounted(() => {
     <section class="container px-4 py-6 md:p-6 flex flex-col gap-10">
         <div class="flex flex-col self-stretch">
             <div class="flex flex-wrap lg:gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-                <div class="flex gap-5 justify-between my-auto">
-                    <h1 class="text-2xl font-semibold leading-8 text-neutral-700">
-                        Order ID: <span class="text-blue-500">#{{ data.data?.order?.shortId }}</span>
-                    </h1>
-                    <UiBadge
-                        v-if="orderType === OrderType.Mixed"
-                        class="justify-center px-2 py-1 my-auto text-sm font-medium leading-5 text-white bg-blue-500 rounded"
+                <section class="flex flex-col gap-4">
+                    <div class="flex gap-5 justify-between my-auto">
+                        <h4 class="text-2xl leading-8 text-slate-500">
+                            Order ID: <span class="text-neutral-700 ml-4">{{ data.data?.order?.shortId }}</span>
+                        </h4>
+                        <section class="flex gap-4 items-center">
+                            <h2 data-layername="orderType" class="self-stretch my-auto text-sm leading-none text-gray-500">
+                            Order Type
+                            </h2>
+                            <div data-layername="orderType" class="flex overflow-hidden gap-2 justify-center items-center self-stretch my-auto rounded-md">
+                            <span data-layername="s" class="overflow-hidden self-stretch p-0.5 my-auto w-4 h-4 text-xs font-medium leading-none text-center text-white whitespace-nowrap bg-emerald-500 rounded-[100px]">
+                                S
+                            </span>
+                            <p data-layername="stockOrder" class="self-stretch my-auto text-sm leading-none text-zinc-800">
+                                Stock Order
+                            </p>
+                            </div>
+                        </section>
+                    </div>
+                    <div
+                        class="flex items-center flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5"
                     >
-                        Mixed Order
-                    </UiBadge>
-                </div>
+                        <div class="flex gap-2">
+                            <div class="text-slate-500">Order Date:</div>
+                            <div class="text-neutral-700">{{ date }}</div>
+                        </div>
+                        <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
+                        <div class="flex gap-2">
+                            <div class="text-slate-500">Shipping Method:</div>
+                            <div class="text-neutral-700">{{ shippingMethod?.service.courierName }}</div>
+                        </div>
+                    </div>
+                </section>
                 <div
                     class="md:w-full lg:w-fit flex gap-2 md:gap-4 order-2 lg:order-1 mt-5 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
                 >
                     <UiButton
                         variant="secondary"
-                        class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
+                        size="xs"
+                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
                     >
-                        <FileText class="shrink-0 w-6 aspect-square stroke-[1.5]" />
-                        <span class="hidden lg:inline">View</span> Invoices
+                        <FileText class="shrink-0 w-4 aspect-square stroke-[1.5]" />
+                        Proforma Invoice
                     </UiButton>
                     <UiButton
+                        variant="secondary"
+                        size="xs"
+                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
+                    >
+                        <FileText class="shrink-0 w-4 aspect-square stroke-[1.5]" />
+                        Invoices
+                    </UiButton>
+                    <!-- <UiButton
                         variant="secondary"
                         class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
                     >
@@ -192,20 +223,7 @@ onMounted(() => {
                     >
                         <BoxIcon class="shrink-0 w-6 aspect-square stroke-[1.5]" />
                         View All <span class="hidden lg:inline">Orders</span>
-                    </UiButton>
-                </div>
-                <div
-                    class="flex items-center flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5"
-                >
-                    <div class="flex gap-2">
-                        <div class="text-slate-500">Order Date:</div>
-                        <div class="text-neutral-700">{{ date }}</div>
-                    </div>
-                    <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
-                    <div class="flex gap-2">
-                        <div class="text-slate-500">Shipping Method:</div>
-                        <div class="text-neutral-700">{{ shippingMethod?.service.courierName }}</div>
-                    </div>
+                    </UiButton> -->
                 </div>
             </div>
         </div>
@@ -228,7 +246,7 @@ onMounted(() => {
             :order-type="orderType"
         />
         <section class="flex flex-col lg:flex-row gap-9">
-            <div v-if="notes[0]" class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
+            <div class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
                 <h2 class="w-full font-semibold max-md:max-w-full">Customer Notes</h2>
                 <textarea
                     :placeholder="notes[0] && notes[0].message ? notes[0].message : 'No message provided'"
@@ -241,15 +259,15 @@ onMounted(() => {
         <div v-if="paymentSummary" class="flex flex-col gap-6">
             <h4 class="font-semibold text-sm">Need Help?</h4>
             <section class="flex gap-6 flex-wrap">
-                <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+                <UiButton size="xs" class="gap-2 px-0" variant="link">
                     <TruckIcon class="w-5 h-5 stroke-1.5" />
                     Delivery Info
                 </UiButton>
-                <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+                <UiButton size="xs" class="gap-2 px-0" variant="link">
                     <Undo2Icon class="w-5 h-5 stroke-1.5" />
                     Returns
                 </UiButton>
-                <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+                <UiButton size="xs" class="gap-2 px-0" variant="link">
                     <PackageOpenIcon class="w-5 h-5 stroke-1.5" />
                     Order Issues
                 </UiButton>
