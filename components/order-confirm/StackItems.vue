@@ -46,7 +46,7 @@ const payment = computed(() => {
 
 <template>
     <div v-if="stockItems.length > 0" class="flex flex-col gap-4">
-        <UiBadge class="bg-green-600 text-white w-fit rounded-md h-7">Stock Order</UiBadge>
+        <OrderConfirmStackItemsHeader />
         <section class="flex flex-col gap-10 px-4 py-6 md:p-6 border border-gray-300 rounded-xl">
             <div v-if="lgAndLarger" class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
                 <span class="text-sm font-semibold leading-6 text-neutral-700 w-full max-w-[412px]">Product Details</span>

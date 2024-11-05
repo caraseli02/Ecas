@@ -233,7 +233,7 @@ onMounted(() => {
             :payment-method="paymentMethod"
             :has-mixed-items="hasMixedItems"
         />
-        <UiSeparator />
+        <UiSeparator class="bg-grey-100" />
         <OrderConfirmAddress v-if="addresses" :shipping-address="addresses.shippingAddress" :billing-address="addresses.billingAddress" />
         <OrderConfirmStackItems
             v-if="stockOrder && (orderType === OrderType.Stock || orderType === OrderType.Mixed)"
