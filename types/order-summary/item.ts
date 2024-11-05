@@ -146,6 +146,13 @@ export enum BackorderOptionEnum {
     Full = 2,
 }
 
+export interface OrderStatusTracking {
+    status: string;
+    dateTime: string;
+    reason?: string;
+    comment?: string;
+}
+
 export interface OrderShippingDetailsInterface {
     firstName: string;
     lastName: string;
@@ -159,6 +166,11 @@ export interface OrderShippingDetailsInterface {
     deliveryTypeId: string;
     backorderShippingTypeId?: string;
     stockorderShippingType?: ShippingOrderPricingOption;
+    statusTracking?: {
+        awb: string;
+        uniqueId: string;
+        history?: OrderStatusTracking[];
+    };
     _id?: string;
 }
 

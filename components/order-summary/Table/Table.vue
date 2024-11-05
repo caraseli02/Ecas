@@ -38,10 +38,10 @@ const emits = defineEmits(['checkAll', 'updateSubtotal', 'deleteSelected']);
 
 const cartStore = useCartStore();
 onMounted(() => {
-    if(cartStore.cart){
+    if (cartStore.cart) {
         cartStore.cart.products = mapCartItems(cartStore.cart?.products);
     }
-})
+});
 
 const stockItems = computed(() => {
     return cartStore.cart?.products.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0);
@@ -49,7 +49,7 @@ const stockItems = computed(() => {
 
 const backOrderItems = computed(() => {
     return cartStore.cart?.products.filter((item: CartProductsInterface) => {
-        return item.productEntity?.stock !== undefined &&  item?.backorder_stock && item?.backorder_stock > 0;
+        return item.productEntity?.stock !== undefined && item?.backorder_stock && item?.backorder_stock > 0;
     });
 });
 
@@ -58,7 +58,8 @@ function checkAll(checked: boolean): void {
 }
 
 function updateSubtotal(): void {
-    emits('updateSubtotal');
+    console.log('updateSubtotal');
+    emits('updateSubtotal', cartStore.cart?.products);
 }
 
 function deleteSelected(): void {
