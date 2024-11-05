@@ -9,9 +9,15 @@ class DocumentService extends HttpFactory {
     async downloadDocument(id: string) {
         const token = this.authStore.getToken();
 
-        return await this.call<any>('GET', `${this.DOCUMENT_RESOURCE}/${id}`, null, {
+        const response = await this.call<any>('GET', `${this.DOCUMENT_RESOURCE}/${id}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
+
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url); // Open the document in a new window
+        
+        return response;
     }
 }
 
