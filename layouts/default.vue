@@ -4,7 +4,7 @@
     <main
 class="flex flex-col pt-[96px] flex-1 lg:pt-[180px] xl:pt-[176px]"
           :class="[isScrolled ? 'md:pt-[170px]' : 'md:pt-[172px]']">
-      <NuxtPage />
+      <slot />
     </main>
     <LayoutFooter/>
     <Toaster />
