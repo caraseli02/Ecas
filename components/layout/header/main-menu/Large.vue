@@ -167,7 +167,7 @@
                         class="grid grid-cols-2 gap-3 px-4 py-2.5 lg:grid-cols-3 lg:gap-x-[25px] lg:px-5 lg:pt-[5px]"
                     >
                         <NuxtLink
-                            v-for="(subCategory, index) in selectedCategory?.subcategory"
+                            v-for="(subCategory, index) in selectedSubCategory?.subcategory"
                             :key="index"
                             to="/"
                             class="relative flex items-center text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue-500 before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue-500 hover:before:opacity-100"
@@ -223,7 +223,7 @@
                         </div>
                         <div v-if="selectedCategory && selectedSubCategory" class="grid grid-cols-3 gap-x-5 gap-y-2 px-[25px] pb-5">
                             <NuxtLink
-                                v-for="(subCategory, index) in selectedCategory.subcategory"
+                                v-for="(subCategory, index) in selectedSubCategory.subcategory"
                                 :key="index"
                                 :to="`/search?category=${subCategory.id}`"
                                 class="relative flex items-start text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue-500 before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue-500 hover:before:opacity-100"
