@@ -172,7 +172,7 @@
                             to="/"
                             class="relative flex items-center text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue-500 before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue-500 hover:before:opacity-100"
                         >
-                            <div class="text-sm font-medium truncate mr-[5px]">Semiconductors ({{ subCategory.productCount }})</div>
+                            <div class="text-sm font-medium truncate mr-[5px]">{{ subCategory.name }} ({{ subCategory.productCount }})</div>
                             <div
                                 v-if="index === 3 || index === 5"
                                 class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
@@ -225,10 +225,12 @@
                             <NuxtLink
                                 v-for="(subCategory, index) in selectedCategory.subcategory"
                                 :key="index"
-                                to="/"
+                                :to="`/search?category=${subCategory.id}`"
                                 class="relative flex items-start text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue-500 before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue-500 hover:before:opacity-100"
                             >
-                                <div class="text-sm font-medium truncate mr-[5px]">Semiconductors ({{ subCategory.productCount }})</div>
+                                <div class="text-sm font-medium truncate mr-[5px]">
+                                    {{ subCategory.name }} ({{ subCategory.productCount }})
+                                </div>
                                 <div
                                     v-if="index === 3 || index === 5"
                                     class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
@@ -293,7 +295,8 @@ const allCategories = ref<
         name: string;
         productCount: number;
         icon: any;
-        subcategory: { name: string; productCount: number }[];
+        id: string;
+        subcategory: { name: string; productCount: number; id: string }[];
     }[]
 >([]);
 const setCategories = async () => {
@@ -304,7 +307,8 @@ const setCategories = async () => {
             name: item.name.trim(),
             productCount: item.productCount,
             icon: iconMap[item.name.trim()] || DefaultIcon, // Use mapped icon or default if not found
-            subcategory: item.subcategory ? mapCategories(item.subcategory) : [], // Recursively map subcategories
+            subcategory: item.subcategory ? mapCategories(item.subcategory) : [],
+            id: item.id, // Recursively map subcategories
         }));
     }
 
@@ -312,6 +316,7 @@ const setCategories = async () => {
 };
 
 await setCategories();
+console.log(allCategories.value);
 
 const selectedCategory = ref<(typeof allCategories.value)[0] | null>(null);
 const selectedSubCategory = ref<any>();
