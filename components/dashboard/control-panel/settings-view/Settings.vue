@@ -180,8 +180,7 @@ const getCustomerSettings = async () => {
     if (response.status !== 'success') {
         return;
     }
-
-    const settings = response.data as AccountAdminSettings;
+    const settings: AccountAdminSettings = response.data.adminSettings;
 
     if (!settings.alertsAndNotifications || !settings.marketingPreferences) {
         return;

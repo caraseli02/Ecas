@@ -15,7 +15,7 @@ class ControlPanelService extends HttpFactory {
         const token = this.authStore.getToken();
         return await this.call<{
             status: string;
-            data: AccountAdminSettings;
+            data: { adminSettings: AccountAdminSettings };
         }>('GET', `${this.SETTINGS_RESOURCE}/${id}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
