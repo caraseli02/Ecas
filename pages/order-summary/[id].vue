@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { BoxIcon, FileText, MapPin, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
+import { DotsVerticalIcon } from '@radix-icons/vue';
+
 import {
     OrderNotesInterface,
     OrderRequestInterface,
@@ -157,9 +159,9 @@ onMounted(() => {
 <template>
     <section class="container px-4 py-6 md:p-6 flex flex-col gap-10">
         <div class="flex flex-col self-stretch">
-            <div class="flex flex-wrap lg:gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-                <section class="flex flex-col gap-4">
-                    <div class="flex gap-5 justify-between my-auto">
+            <div class="flex flex-col md:flex-row gap-4 justify-between w-full">
+                <section class="flex flex-col gap-4 w-full">
+                    <div class="flex flex-wrap gap-8 xl:gap-10">
                         <h4 class="text-2xl leading-8 text-slate-500">
                             Order ID: <span class="text-neutral-700 ml-4">{{ data.data?.order?.shortId }}</span>
                         </h4>
@@ -178,13 +180,13 @@ onMounted(() => {
                         </section>
                     </div>
                     <div
-                        class="flex items-center flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5"
+                        class="flex flex-col xl:flex-row flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5"
                     >
                         <div class="flex gap-2">
                             <div class="text-slate-500">Order Date:</div>
                             <div class="text-neutral-700">{{ date }}</div>
                         </div>
-                        <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
+                        <UiSeparator class="hidden lg:block h-4 bg-grey-100" orientation="vertical" />
                         <div class="flex gap-2">
                             <div class="text-slate-500">Shipping Method:</div>
                             <div class="text-neutral-700">{{ shippingMethod?.service.courierName }}</div>
@@ -192,7 +194,7 @@ onMounted(() => {
                     </div>
                 </section>
                 <div
-                    class="md:w-full lg:w-fit flex gap-2 md:gap-4 order-2 lg:order-1 mt-5 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
+                    class="md:w-full lg:w-fit flex md:justify-end gap-2 md:gap-4 order-2 lg:order-1 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
                 >
                     <UiButton
                         variant="secondary"
@@ -209,6 +211,13 @@ onMounted(() => {
                     >
                         <FileText class="shrink-0 w-4 aspect-square stroke-[1.5]" />
                         Invoices
+                    </UiButton>
+                    <UiButton
+                        variant="secondary"
+                        size="icon"
+                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
+                    >
+                        <DotsVerticalIcon class="shrink-0 w-4 aspect-square stroke-[1.5]" />
                     </UiButton>
                     <!-- <UiButton
                         variant="secondary"
@@ -255,7 +264,7 @@ onMounted(() => {
             </div>
             <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
         </section>
-
+        <UiSeparator class="bg-grey-100" />
         <div v-if="paymentSummary" class="flex flex-col gap-6">
             <h4 class="font-semibold text-sm">Need Help?</h4>
             <section class="flex gap-6 flex-wrap">
