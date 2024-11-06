@@ -64,6 +64,7 @@ const perPage = ref(10);
 const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
 const order = ref<1 | 0>(1);
 const resetProductsFilters = ref(false);
+const category = ref<string | null>(route.query?.category?.toString() || null);
 
 onMounted(async () => {
     watch(
@@ -111,7 +112,7 @@ async function getProduct(
     filter: ProductParametricDataFeaturesInterface[] = [],
     flag = false
 ) {
-    const { data } = await $api.product.fetchSearchProduct(keyword, atPage, perPage, sort, filter);
+    const { data } = await $api.product.fetchSearchProduct(keyword, category.value, atPage, perPage, sort, filter);
 
     products.value = data;
     filters.value = data.filters;

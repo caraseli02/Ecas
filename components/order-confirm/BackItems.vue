@@ -67,7 +67,7 @@ const payment = computed(() => {
                     <div class="flex gap-3 lg:mt-6 w-full lg:max-w-[412px]">
                         <figure class="flex justify-center items-center h-fit rounded-lg border border-solid border-grey-300">
                             <img
-                                :src="item?.productEntity?.details.ProductImage.ProductImageSmall"
+                                :src="item?.productEntity?.details?.ProductImage?.ProductImageSmall"
                                 alt="Product image"
                                 class="aspect-square max-h-[60px] min-w-[60px] lg:max-h-[72px] lg:w-[72px] rounded-lg"
                             />

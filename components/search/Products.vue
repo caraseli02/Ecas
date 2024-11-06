@@ -365,7 +365,7 @@ const setProductsList = () => {
     //     paginatedProductsList.value = paginatedProducts.map((item) => ({
     //         slug: item._id,
     //         title: item.alias,
-    //         cover: item.details.ProductImage.ProductImageSmall,
+    //         cover: item.details?.ProductImage?.ProductImageSmall,
     //         manufacturer: item.manufacturer,
     //         manufacturerCode: item.manufacturerCode,
     //         stock: item.stock,

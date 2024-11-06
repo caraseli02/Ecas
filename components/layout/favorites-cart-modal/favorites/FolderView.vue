@@ -247,7 +247,7 @@ const parseProducts = (items: FavouriteFolderResponseInterface[]) => {
         items: item.children?.length ? parseProducts(item.children) : [],
         title: item.isFolder ? item.name : item?.products[0].productEntity.name,
         description: !item.isFolder && item.products.length && item.products[0].productEntity.description,
-        image: !item.isFolder && item.products[0].productEntity.details.ProductImage.ProductImageSmall,
+        image: !item.isFolder && item.products[0].productEntity.details?.ProductImage?.ProductImageSmall,
     }));
 
     return children;

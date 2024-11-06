@@ -29,6 +29,8 @@ const selectedLabel = computed(() => {
 
 // Emit selected length to parent when selection changes
 const handleSelect = (framework) => {
+    if (!framework) return;
+    
     selectedId.value = framework._id;
     emit('update:selection-length', framework.value.length);
     emit('update:margin', framework._id);

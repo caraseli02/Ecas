@@ -257,7 +257,7 @@ const fetchList = async () => {
         items: item.children,
         title: item.isFolder ? item.name : item.products[0].productEntity?.name,
         description: !item.isFolder && item.products[0].productEntity?.description,
-        image: !item.isFolder && item.products[0].productEntity?.details.ProductImage.ProductImageSmall,
+        image: !item.isFolder && item.products[0].productEntity?.details?.ProductImage?.ProductImageSmall,
     }));
 
     folders.value = [];
