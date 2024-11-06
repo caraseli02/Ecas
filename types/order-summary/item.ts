@@ -199,6 +199,9 @@ export enum PaymentStatusEnum {
     Paid = 1,
     Canceled = 2,
     Declined = 3,
+    Failed = 4,
+    Refunding = 5,
+    Refunded = 6,
 }
 
 export const getPaymentStatusById = <

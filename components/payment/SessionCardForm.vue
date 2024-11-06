@@ -15,6 +15,8 @@ import { loadStripe, PaymentIntentResult, Stripe, StripeElements } from '@stripe
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 
+const { $api } = useNuxtApp();
+
 const router = useRouter();
 const route = useRoute();
 const cartStore = useCartStore();
@@ -25,6 +27,7 @@ const orderId = ref<string>();
 let stripe: Stripe | null;
 let elements: StripeElements;
 let paymentIntent: PaymentIntentResult;
+let submitAttempt = false;
 
 const showSkeletonLoader = ref(false);
 onMounted(async () => {
@@ -72,6 +75,7 @@ onMounted(async () => {
 });
 
 const handleSubmit = async () => {
+    submitAttempt = true;
     if (isLoading.value || !getOrderClientSecret.value || !stripe) {
         return;
     }
@@ -81,7 +85,6 @@ const handleSubmit = async () => {
     await elements.submit();
     const tempClientSecret = getOrderClientSecret.value;
 
-    cartStore.emptyOrderClientSecret();
     cartStore.emptyPreviousCheckoutError();
 
     const result = await stripe.confirmPayment({
@@ -94,13 +97,15 @@ const handleSubmit = async () => {
     });
 
     if (result.error) {
+        console.log('error', result.error);
         cartStore.setPreviousCheckoutError(result.error);
-        await router.push({ path: '/checkout/fail', query: {} });
+        await router.push({ path: `/checkout/fail`, query: { id: orderId.value } });
         isLoading.value = false;
         return;
     }
 
     await router.push({ path: `/order-summary/${orderId.value}` });
+    cartStore.emptyOrderClientSecret();
 
     // if (result.paymentIntent.status === 'requires_action' && result.paymentIntent.next_action?.redirect_to_url?.url) {
     //     window.location.href = result.paymentIntent.next_action.redirect_to_url.url;
@@ -108,4 +113,16 @@ const handleSubmit = async () => {
     //     await router.push({ path: `/order-summary/${orderId.value}` });
     // }
 };
+
+onBeforeRouteLeave(async () => {
+    console.log('Leaving checkout fail page');
+
+    if (!submitAttempt && orderId.value) {
+        console.log('Cancelling order. Payment not attempted');
+        await $api.orders.cancelOrder(orderId.value);
+    }
+
+    cartStore.emptyPreviousCheckoutError();
+    cartStore.emptyOrderClientSecret();
+});
 </script>
