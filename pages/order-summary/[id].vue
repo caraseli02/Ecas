@@ -250,7 +250,7 @@ onMounted(() => {
                 <h2 class="w-full font-semibold max-md:max-w-full">Customer Notes</h2>
                 <textarea
                     :placeholder="notes[0] && notes[0].message ? notes[0].message : 'No message provided'"
-                    class="min-h-[336px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full"
+                    class="min-h-[204px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full"
                 />
             </div>
             <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
