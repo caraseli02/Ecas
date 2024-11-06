@@ -1,5 +1,5 @@
 <template>
-    <div class="relative min-h-screen md:w-full">
+    <div v-if="getOrderClientSecret" class="relative min-h-screen md:w-full">
         <UiSkeleton v-show="showSkeletonLoader" class="w-full h-full absolute inset-0" />
         <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-full md:w-1/2 mx-auto" @submit.prevent="handleSubmit">
             <div id="payment-element" />
@@ -7,6 +7,9 @@
                 <UiButton id="submit" :disabled="isLoading">Pay now</UiButton>
             </div>
         </form>
+    </div>
+    <div v-else>
+        <p>No data available</p>
     </div>
 </template>
 
@@ -115,14 +118,14 @@ const handleSubmit = async () => {
 };
 
 onBeforeRouteLeave(async () => {
-    console.log('Leaving checkout fail page');
+    console.log('Leaving session page');
 
     if (!submitAttempt && orderId.value) {
         console.log('Cancelling order. Payment not attempted');
         await $api.orders.cancelOrder(orderId.value);
-    }
 
-    cartStore.emptyPreviousCheckoutError();
-    cartStore.emptyOrderClientSecret();
+        cartStore.emptyPreviousCheckoutError();
+        cartStore.emptyOrderClientSecret();
+    }
 });
 </script>

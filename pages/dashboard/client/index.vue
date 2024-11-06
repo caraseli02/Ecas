@@ -65,6 +65,7 @@
 
 <script setup lang="ts">
 import { useCustomerDashboard } from '@/composables/useCustomerDashboard';
+import { useAuthStore } from '~/store/authStore';
 
 const {
     ordersIds,
@@ -88,7 +89,14 @@ const {
 
 customerInformation();
 
-onMounted(() => {
+onMounted(async () => {
+    const router = useRouter();
+    const authStore = useAuthStore();
+    // if (!authStore.getToken()?.permissions?.includes(UserPermissionsEnum.AdminRead)) {
+    //     await router.push('/');
+    //     return;
+    // }
+
     activeOrders();
     addresses();
     activityWidgets();
