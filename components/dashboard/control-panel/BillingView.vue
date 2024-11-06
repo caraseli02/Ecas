@@ -79,18 +79,23 @@
         </div>
         <Teleport to="body">
             <Transition name="fade">
-                <DashboardControlPanelAddAddress v-if="addAddressModal" @close="addAddressModal = false" @add="handleAddAddress" />
+                <DashboardControlPanelAddAddress
+                    v-if="addAddressModal"
+                    :type="'billing'"
+                    @close="addAddressModal = false"
+                    @add-billing-address="handleAddAddress"
+                />
             </Transition>
             <Transition name="fade">
                 <DashboardControlPanelEditAddress
                     v-if="editAddressModal"
                     :index="indexOfEditAddressModal"
                     :address="editAddressModal"
+                    :type="'billing'"
                     :delete-button-enable="addresses.length > 1"
-                    @close="
-                        editAddressModal = null;
-                        indexOfEditAddressModal = 0;
-                    "
+                    @edit-billing-address="handleEditAddress"
+                    @close="editAddressModal = null"
+                    @delete-edit-address="handleDeleteAddress"
                 />
             </Transition>
             <div
@@ -111,7 +116,7 @@ import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import CheckIcon from '@/assets/icons/check-circle.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { useNuxtApp } from '#app';
-import { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
+import { BillingAddressInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance';
 import { toast } from '~/components/ui/toast';
 
@@ -150,45 +155,32 @@ const setAsDefault = async (address: any) => {
     }
     await $api.controlPanel.updateBilling(props.id, addresses.value, props.accountType);
 };
-const handleAddAddress = (val: any) => {
-    (addresses as any).value.push({
-        alias: val.alias.value,
-        country: val.country.value.value,
-        region: val.region.value.value,
-        name1: val.name1.value,
-        city: val.city.value,
-        name2: val.name2.value,
-        postcode: val.postcode.value,
-        phone: val.phone.value,
+const handleAddAddress = async (val: any) => {
+    addAddressModal.value = false;
+    console.log('Add billing address');
+    newAddress.value = {} as BillingAddressInterface;
+
+    newAddress.value.alias = val.address.alias.value;
+    newAddress.value.name1 = val.address.name1.value;
+    newAddress.value.name2 = val.address.name2.value;
+    newAddress.value.country = val.address.country.value.value;
+    newAddress.value.city = val.address.city.value;
+    newAddress.value.region = val.address.region.value.value;
+    newAddress.value.phone = val.address.phone.value;
+    newAddress.value.postcode = val.address.postcode.value;
+    newAddress.value.default = false;
+
+    const result = await $api.orders.validateAddress({
+        country: newAddress.value.country,
+        region: newAddress.value.region,
+        city: newAddress.value.city,
+        postcode: newAddress.value.postcode,
+        name1: newAddress.value.name1,
+        name2: newAddress.value.name2,
+        phone: newAddress.value.phone,
+        alias: newAddress.value.alias,
         default: false,
     });
-
-    addAddressModal.value = false;
-};
-
-const getBillingInformation = async () => {
-    if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
-        return;
-    }
-    const response = await $api.controlPanel.fetchBilling(props.id, props.accountType);
-    if (response.status !== 'success') {
-        return;
-    }
-    addresses.value = response.data.billingAddress;
-};
-await getBillingInformation();
-
-Emitter.on('edit', async (object: any) => {
-    addresses.value[object.index].alias = object.address.alias.value;
-    addresses.value[object.index].name1 = object.address.name1.value;
-    addresses.value[object.index].name2 = object.address.name2.value;
-    addresses.value[object.index].country = object.address.country.value.value;
-    addresses.value[object.index].city = object.address.city.value;
-    addresses.value[object.index].region = object.address.region.value.value;
-    addresses.value[object.index].postcode = object.address.postcode.value;
-    addresses.value[object.index].phone = object.address.phone.value;
-
-    const result = await $api.orders.validateAddress(addresses.value[object.index]);
 
     if (!result.data.valid) {
         console.log('Invalid address');
@@ -198,16 +190,72 @@ Emitter.on('edit', async (object: any) => {
             description: 'Invalid address',
         });
         return;
+    } else {
+        addresses.value.push(newAddress.value);
+        if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
+            return;
+        }
+        await $api.controlPanel.updateBilling(props.id, addresses.value, props.accountType);
     }
+};
 
+const getBillingInformation = async () => {
     if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
         return;
     }
-    await $api.controlPanel.updateBilling(props.id, addresses.value, props.accountType);
-});
+    const response = await $api.controlPanel.fetchBilling(props.id, props.accountType);
 
-Emitter.on('delete', async (index: number) => {
-    addresses.value.splice(index, 1);
+    if (response.status !== 'success') {
+        return;
+    }
+    addresses.value = response.data.billingAddress;
+    addAddressModal.value = false;
+};
+await getBillingInformation();
+
+const handleEditAddress = async (object: any) => {
+    editAddressModal.value = null;
+    console.log('Edit billing address');
+    const addressToBeVerified = {
+        alias: object.address.alias.value,
+        name1: object.address.name1.value,
+        name2: object.address.name2.value,
+        city: object.address.city.value,
+        country: object.address.country.value.value,
+        region: object.address.region.value.value,
+        postcode: object.address.postcode.value,
+        phone: object.address.phone.value,
+    } as BillingAddressInterface;
+
+    const result = await $api.orders.validateAddress(addressToBeVerified);
+
+    if (!result.data.valid) {
+        console.log('Invalid address');
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invalid address',
+        });
+        return;
+    } else {
+        if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
+            return;
+        }
+        await $api.controlPanel.updateBilling(props.id, addresses.value, props.accountType);
+
+        addresses.value[object.index].alias = object.address.alias.value;
+        addresses.value[object.index].name1 = object.address.name1.value;
+        addresses.value[object.index].name2 = object.address.name2.value;
+        addresses.value[object.index].city = object.address.city.value;
+        addresses.value[object.index].country = object.address.country.value.value;
+        addresses.value[object.index].region = object.address.region.value.value;
+        addresses.value[object.index].postcode = object.address.postcode.value;
+        addresses.value[object.index].phone = object.address.phone.value;
+    }
+};
+
+const handleDeleteAddress = async (index: number) => {
+    // Handle deleting the address at a specific index
     if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
         return;
     }
@@ -215,25 +263,6 @@ Emitter.on('delete', async (index: number) => {
         addresses.value[0].default = true;
     }
     await $api.controlPanel.updateBilling(props.id, addresses.value, props.accountType);
-});
-
-Emitter.on('add', async (object: any) => {
-    newAddress.value = {} as ShippingAddressInterface;
-
-    newAddress.value.alias = object.address.alias.value;
-    newAddress.value.name1 = object.address.name1.value;
-    newAddress.value.name2 = object.address.name2.value;
-    newAddress.value.country = object.address.country.value.value;
-    newAddress.value.city = object.address.city.value;
-    newAddress.value.region = object.address.region.value.value;
-    newAddress.value.phone = object.address.phone.value;
-    newAddress.value.postcode = object.address.postcode.value;
-    newAddress.value.default = false;
-
-    addresses.value.push(newAddress.value);
-    if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
-        return;
-    }
-    await $api.controlPanel.updateBilling(props.id, addresses.value, props.accountType);
-});
+    addresses.value.splice(index, 1);
+};
 </script>

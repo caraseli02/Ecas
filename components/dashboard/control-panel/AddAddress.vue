@@ -132,6 +132,13 @@ const data = ref({
 });
 const regions = ref<FormSelectOption[]>([]);
 
+const props = defineProps({
+    type: {
+        type: String,
+        required: true,
+    },
+});
+
 watch(data.value.country, (newVal) => {
     if (newVal?.value) {
         data.value.region = {
@@ -150,12 +157,16 @@ watch(data.value.country, (newVal) => {
     }
 });
 
-const emit = defineEmits(['close', 'add-shipping-address']);
+const emit = defineEmits(['close', 'add-shipping-address', 'add-billing-address']);
 
 // Other data and function definitions here...
 
 const handleSave = () => {
     // Emit the edit event, debounced
-    emit('add-shipping-address', { address: data.value });
+    if (props.type === 'shipping') {
+        emit('add-shipping-address', { address: data.value });
+    } else {
+        emit('add-billing-address', { address: data.value });
+    }
 };
 </script>
