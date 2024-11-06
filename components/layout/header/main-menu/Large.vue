@@ -231,12 +231,12 @@
                                 <div class="text-sm font-medium truncate mr-[5px]">
                                     {{ subCategory.name }} ({{ subCategory.productCount }})
                                 </div>
-                                <div
-                                    v-if="index === 3 || index === 5"
-                                    class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
-                                >
-                                    New
-                                </div>
+                                <!--                                <div-->
+                                <!--                                    v-if="index === 3 || index === 5"-->
+                                <!--                                    class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"-->
+                                <!--                                >-->
+                                <!--                                    New-->
+                                <!--                                </div>-->
                             </NuxtLink>
                         </div>
                     </div>
@@ -251,6 +251,7 @@
 import SemiconductorsIcon from '@/assets/icons/header/semiconductors.svg';
 import PassiveIcon from '@/assets/icons/header/passive.svg';
 import ElectromechanicsIcon from '@/assets/icons/header/electromechanics.svg';
+import CardPlaceholderSmall from '@/assets/icons/card-placeholder-small.svg';
 import CablesAndConnectorsIcon from '@/assets/icons/header/cables-and-connectors.svg';
 import PowerSupplyIcon from '@/assets/icons/header/power-supply.svg';
 import CasesIcon from '@/assets/icons/header/cases.svg';
@@ -269,7 +270,7 @@ import { A11y, Pagination } from 'swiper';
 import { showNavModal } from '~~/config/modal/nav';
 import { TaxonomyInterface } from '~/types/dashboard/categories';
 
-const DefaultIcon = ToolsIcon;
+const DefaultIcon = CardPlaceholderSmall;
 
 const props = defineProps({
     isStatic: {
