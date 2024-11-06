@@ -3,6 +3,9 @@ export enum UserPermissionsEnum {
     AdminWrite = 'write:admin',
     AdminDelete = 'delete:admin',
 
+    AdminDashboardRead = 'read:admin-dashboard',
+    ClientDashboardRead = 'read:client-dashboard',
+
     UsersRead = 'read:users',
     UsersWrite = 'write:users',
     UsersDelete = 'delete:users',
@@ -26,21 +29,24 @@ export enum UserPermissionsEnum {
     AgentWrite = 'write:agent',
     AgentDelete = 'delete:agent',
     AgentApprove = 'approve:agent',
+    AgentInactivate = 'inactivate:agent',
 
     OrdersRead = 'read:orders',
+    OrdersWrite = 'write:orders',
+    OrdersDelete = 'delete:orders',
 
     AccountDataRead = 'read:account-data',
     AccountDataWrite = 'write:account-data',
     AccountDataDelete = 'delete:account-data',
 
-    MessageRead = 'read:message',
-    MessageWrite = 'write:message',
-    MessageDelete = 'delete:message',
-    MessageSend = 'send:message',
+    OrganizationDataRead = 'read:organization-data',
+    OrganizationDataWrite = 'write:organization-data',
+    OrganizationDataDelete = 'delete:organization-data',
 
     InvoiceRead = 'read:invoice',
     InvoiceWrite = 'write:invoice',
     InvoiceDelete = 'delete:invoice',
+    InvoiceDownload = 'download:invoice',
 
     DeliveryDetailsRead = 'read:delivery',
     DeliveryDetailsWrite = 'write:delivery',
@@ -50,6 +56,10 @@ export enum UserPermissionsEnum {
     PaymentDetailsWrite = 'write:payment',
     PaymentDetailsDelete = 'delete:payment',
 
+    TransactionRead = 'read:transaction',
+    TransactionWrite = 'write:transaction',
+    TransactionDelete = 'delete:transaction',
+
     FavouriteRead = 'read:favourite',
     FavouriteWrite = 'write:favourite',
     FavouriteDelete = 'delete:favourite',
@@ -57,4 +67,8 @@ export enum UserPermissionsEnum {
     PriceSettingsRead = 'read:price-settings',
     PriceSettingsWrite = 'write:price-settings',
     PriceSettingsDelete = 'delete:price-settings',
+
+    CategoriesRead = 'read:categories',
+    CategoriesWrite = 'write:categories',
+    CategoriesDelete = 'delete:categories',
 }
