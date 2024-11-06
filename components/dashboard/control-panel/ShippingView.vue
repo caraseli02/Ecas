@@ -92,6 +92,7 @@
                     :address="editAddressModal"
                     :delete-button-enable="addresses.length > 1"
                     @edit-shipping-address="handleEditAddress"
+                    @close="editAddressModal = null"
                     @delete-edit-address="handleDeleteAddress"
                 />
             </Transition>
