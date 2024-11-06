@@ -150,7 +150,7 @@ watch(data.value.country, (newVal) => {
     }
 });
 
-const emit = defineEmits(['add-shipping-address']);
+const emit = defineEmits(['close', 'add-shipping-address']);
 
 // Other data and function definitions here...
 

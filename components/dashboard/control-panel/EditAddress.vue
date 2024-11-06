@@ -74,8 +74,8 @@
                         v-if="props.deleteButtonEnable"
                         class="flex items-center justify-center rounded-lg text-rose-500 py-[7px] px-7 border border-[#FA4B4B]"
                         @click="
-                            $emit('close');
                             handleDelete();
+                            $emit('close');
                         "
                     >
                         <TrashIcon class="w-6 h-6 mr-2" />
