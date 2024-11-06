@@ -44,6 +44,7 @@
                         size="lg"
                         class="relative z-10"
                     />
+                    <FormInput v-model="data.city.value" :error="data.city.error" label="City" size="lg" placeholder="Bucharest" />
                     <FormInput
                         v-model="data.name1.value"
                         :error="data.name1.error"
@@ -103,7 +104,6 @@
 </template>
 
 <script setup lang="ts">
-import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { countries } from '@/data/countries';
@@ -148,6 +148,10 @@ const data = ref({
         },
         error: '',
     },
+    city: {
+        value: '',
+        error: '',
+    },
     name1: {
         value: '',
         error: '',
@@ -180,6 +184,7 @@ const setCustomerInformation = () => {
     data.value.name2.value = props.address.name2;
     data.value.postcode.value = props.address.postcode;
     data.value.phone.value = props.address.phone;
+    data.value.city.value = props.address.city;
     getCountryRegion(props.address.country, props.address.region);
 };
 

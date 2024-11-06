@@ -44,6 +44,8 @@
                         size="lg"
                         class="relative z-10"
                     />
+                    <FormInput v-model="data.city.value" :error="data.city.error" label="City" size="lg" placeholder="Bucharest" />
+
                     <FormInput
                         v-model="data.name1.value"
                         :error="data.name1.error"
@@ -109,6 +111,10 @@ const data = ref({
         error: '',
     },
     region: {
+        value: '',
+        error: '',
+    },
+    city: {
         value: '',
         error: '',
     },

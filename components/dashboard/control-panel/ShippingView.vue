@@ -158,6 +158,7 @@ const handleAddAddress = (val: any) => {
         name1: val.name1.value,
         name2: val.name2.value,
         postcode: val.postcode.value,
+        city: val.city.value.value,
         phone: val.phone.value,
         default: false,
     });
@@ -183,10 +184,12 @@ Emitter.on('edit', async (object: any) => {
     addresses.value[object.index].name1 = object.address.name1.value;
     addresses.value[object.index].name2 = object.address.name2.value;
     addresses.value[object.index].country = object.address.country.value.value;
-    addresses.value[object.index].city = object.address.region.value.value;
+    addresses.value[object.index].city = object.address.city.value.value;
     addresses.value[object.index].region = object.address.region.value.value;
     addresses.value[object.index].postcode = object.address.postcode.value;
     addresses.value[object.index].phone = object.address.phone.value;
+
+    console.log(addresses.value[object.index]);
 
     const result = await $api.orders.validateAddress(addresses.value[object.index]);
 
@@ -224,11 +227,13 @@ Emitter.on('add', async (object: any) => {
     newAddress.value.name1 = object.address.name1.value;
     newAddress.value.name2 = object.address.name2.value;
     newAddress.value.country = object.address.country.value.value;
-    newAddress.value.city = object.address.region.value.value;
+    newAddress.value.city = object.address.city.value.value;
     newAddress.value.region = object.address.region.value.value;
     newAddress.value.phone = object.address.phone.value;
     newAddress.value.postcode = object.address.postcode.value;
     newAddress.value.default = false;
+
+    console.log(newAddress.value);
 
     const result = await $api.orders.validateAddress({
         country: newAddress.value.country,

@@ -26,7 +26,7 @@
                     </div>
                     <div
                         class="rounded-3xl bg-blue-500 px-1 text-xs leading-[1.33] font-semibold text-white flex-shrink-0 lg:translate-y-2.5"
-                        :class="[product.adminSettings.featured === true ? 'invisible' : '']"
+                        :class="[product.adminSettings?.featured === true ? 'invisible' : '']"
                     >
                         New
                     </div>
@@ -52,7 +52,7 @@ const props = defineProps<{
 }>();
 
 const productTitle = (product: ProductInterface) => {
-    const titleArray = product.details.SummaryData.TaxonomyPath.split('>');
+    const titleArray = product.path ? product.path.split('/') : [];
     return titleArray[titleArray.length - 1];
 };
 </script>
