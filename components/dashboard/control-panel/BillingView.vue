@@ -113,6 +113,7 @@ import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { useNuxtApp } from '#app';
 import { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance';
+import { toast } from '~/components/ui/toast';
 
 const addAddressModal = ref(false);
 const editAddressModal = ref();
@@ -186,6 +187,18 @@ Emitter.on('edit', async (object: any) => {
     addresses.value[object.index].region = object.address.region.value.value;
     addresses.value[object.index].postcode = object.address.postcode.value;
     addresses.value[object.index].phone = object.address.phone.value;
+
+    const result = await $api.orders.validateAddress(addresses.value[object.index]);
+
+    if (!result.data.valid) {
+        console.log('Invalid address');
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invalid address',
+        });
+        return;
+    }
 
     if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
         return;

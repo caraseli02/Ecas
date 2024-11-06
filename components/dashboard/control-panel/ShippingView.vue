@@ -189,8 +189,6 @@ Emitter.on('edit', async (object: any) => {
     addresses.value[object.index].postcode = object.address.postcode.value;
     addresses.value[object.index].phone = object.address.phone.value;
 
-    console.log(addresses.value[object.index]);
-
     const result = await $api.orders.validateAddress(addresses.value[object.index]);
 
     if (!result.data.valid) {
