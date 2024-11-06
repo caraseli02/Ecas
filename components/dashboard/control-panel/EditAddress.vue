@@ -75,7 +75,7 @@
                         class="flex items-center justify-center rounded-lg text-rose-500 py-[7px] px-7 border border-[#FA4B4B]"
                         @click="
                             $emit('close');
-                            Emitter.emit('delete', props.index);
+                            handleDelete();
                         "
                     >
                         <TrashIcon class="w-6 h-6 mr-2" />
@@ -91,8 +91,8 @@
                         :disabled="!data.region.value && !data.country.value"
                         class="flex justify-center px-5 py-2 rounded-lg bg-blue-500 leading-[1.75] text-white font-medium"
                         @click="
+                            handleSave();
                             $emit('close');
-                            Emitter.emit('edit', { address: data, index: props.index });
                         "
                     >
                         Save
@@ -108,7 +108,6 @@ import XIcon from '@/assets/icons/dashboard/x.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { countries } from '@/data/countries';
 import { FormSelectOption } from '~/types';
-import Emitter from 'tiny-emitter/instance.js';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { getRegionByCountry } from '~/helpers/form.helper';
 
@@ -127,7 +126,8 @@ const props = defineProps({
     },
 });
 
-defineEmits(['close']);
+const emit = defineEmits(['close', 'edit-shipping-address', 'delete-shipping-address']);
+
 const data = ref({
     alias: {
         value: '',
@@ -207,6 +207,17 @@ watch(data.value.country, (newVal) => {
             }) || [];
     }
 });
+
+// Other data and function definitions here...
+
+const handleSave = () => {
+    // Emit the edit event, debounced
+    emit('edit-shipping-address', { address: data.value, index: props.index });
+};
+
+const handleDelete = () => {
+    emit('delete-shipping-address', props.index);
+};
 
 // onMounted(() => {
 //
