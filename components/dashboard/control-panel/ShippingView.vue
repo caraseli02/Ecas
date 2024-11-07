@@ -239,8 +239,6 @@ const handleEditAddress = async (object: any) => {
         if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
             return;
         }
-        await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType);
-
         addresses.value[object.index].alias = object.address.alias.value;
         addresses.value[object.index].name1 = object.address.name1.value;
         addresses.value[object.index].name2 = object.address.name2.value;
@@ -249,6 +247,8 @@ const handleEditAddress = async (object: any) => {
         addresses.value[object.index].region = object.address.region.value.value;
         addresses.value[object.index].postcode = object.address.postcode.value;
         addresses.value[object.index].phone = object.address.phone.value;
+
+        await $api.controlPanel.updateShipping(props.id, addresses.value[object.index], props.accountType);
     }
 };
 

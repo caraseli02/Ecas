@@ -106,7 +106,7 @@ class ControlPanelService extends HttpFactory {
         });
     }
 
-    async updateShipping(id: string, address: ShippingAddressInterface[], type: number) {
+    async updateShipping(id: string, address: ShippingAddressInterface, type: number) {
         const token = this.authStore.getToken();
 
         return await this.call<AccountAdminSettings>(
@@ -119,7 +119,7 @@ class ControlPanelService extends HttpFactory {
         );
     }
 
-    async updateBilling(id: string, address: BillingAddressInterface[], type: number) {
+    async updateBilling(id: string, address: BillingAddressInterface, type: number) {
         const token = this.authStore.getToken();
 
         return await this.call<AccountAdminSettings>(
