@@ -4,7 +4,7 @@ import { MapPin, CheckCircle, RefreshCcw, BarcodeIcon, PackageCheck, ArrowRight,
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const isAdmin = ref(true);
-const bankTransferPayment = ref(false);
+const bankTransferPayment = ref(true);
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const smallerThanSm = breakpoints.smaller('sm') // sm and larger

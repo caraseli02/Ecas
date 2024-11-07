@@ -72,10 +72,10 @@ const payment = computed(() => {
                             />
                         </figure>
                         <div class="flex flex-col w-full md:max-w-none lg:max-w-[328px]">
-                            <div class="flex flex-col sm:flex-row sm:gap-2">
+                            <div class="flex flex-row gap-2">
                                 <span class="text-sm font-medium leading-6 text-gray-500">Item:</span>
                                 <div class="flex gap-5 justify-between">
-                                    <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity?.name }}</span>
+                                    <span class="text-sm font-medium leading-6 text-neutral-700 max-w-[150px] md:max-w-[235px] lg:max-w-[328px] truncate">{{ item.productEntity?.name }}</span>
                                     <span
                                         v-if="item.discount.value"
                                         class="justify-center px-2 my-auto text-xs font-semibold leading-5 text-red-500 bg-white rounded-3xl border border-red-500 border-solid"
@@ -84,15 +84,15 @@ const payment = computed(() => {
                                     </span>
                                 </div>
                             </div>
-                            <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
+                            <div class="flex flex-row gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Description:</span>
-                                <span class="text-ellipsis text-neutral-700 w-full max-w-[235px] lg:max-w-[328px] truncate">
+                                <span class="text-ellipsis text-neutral-700 w-full max-w-[150px] md:max-w-[235px] lg:max-w-[328px] truncate">
                                     {{ item.productEntity?.description }}
                                 </span>
                             </div>
-                            <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
+                            <div class="flex flex-row gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Manufacturer:</span>
-                                <span class="text-ellipsis text-neutral-700">{{ item.productEntity?.manufacturer }}</span>
+                                <span class="truncate text-neutral-700 max-w-[150px] md:max-w-[235px] lg:max-w-[328px] ">{{ item.productEntity?.manufacturer }}</span>
                             </div>
                         </div>
                     </div>
@@ -197,6 +197,7 @@ const payment = computed(() => {
                         </section>
                     </template>
                 </div>
+                
             </div>
             <div v-if="orderType === OrderType.Mixed">
                 <UiSeparator class="bg-light-500" />

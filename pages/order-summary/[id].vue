@@ -264,6 +264,10 @@ onMounted(() => {
             </div>
             <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
         </section>
+        <div class="flex justify-between gap-2">
+            <OrderConfirmCompanyDetails />
+            <OrderConfirmBankDetails />
+        </div>
         <UiSeparator class="bg-grey-100" />
         <div v-if="paymentSummary" class="flex flex-col gap-6">
             <h4 class="font-semibold text-sm">Need Help?</h4>
