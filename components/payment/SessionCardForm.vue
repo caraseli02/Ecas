@@ -45,7 +45,9 @@ onMounted(async () => {
         return null;
     }
 
+    console.log('Retrieving payment intent', getOrderClientSecret.value);
     paymentIntent = await stripe.retrievePaymentIntent(getOrderClientSecret.value);
+    console.log(paymentIntent);
     elements = stripe.elements({
         mode: 'payment',
         amount: paymentIntent.paymentIntent?.amount,

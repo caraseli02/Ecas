@@ -1,6 +1,6 @@
 <template>
-    <div v-if="getPreviousCheckoutError && getOrderClientSecret">
-        <p>Payment failed. Reason: {{ getPreviousCheckoutError?.message }}</p>
+    <div v-if="getOrderClientSecret">
+        <p>Payment failed. Reason: {{ getPreviousCheckoutError?.message || 'Something went wrong' }}</p>
 
         <button
             class="flex items-center justify-center w-1/12 text-left px-4 py-2 rounded-md transition-colors duration-300 bg-[#F2F2F2] text-slate-500 hover:text-white hover:bg-blue-500 xl:px-6"
