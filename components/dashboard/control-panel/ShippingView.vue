@@ -81,6 +81,7 @@
             <Transition name="fade">
                 <DashboardControlPanelAddAddress
                     v-if="addAddressModal"
+                    :type="'shipping'"
                     @close="addAddressModal = false"
                     @add-shipping-address="handleAddAddress"
                 />
@@ -90,6 +91,7 @@
                     v-if="editAddressModal"
                     :index="indexOfEditAddressModal"
                     :address="editAddressModal"
+                    :type="'shipping'"
                     :delete-button-enable="addresses.length > 1"
                     @edit-shipping-address="handleEditAddress"
                     @close="editAddressModal = null"
@@ -155,7 +157,7 @@ const setAsDefault = async (address: any) => {
 };
 const handleAddAddress = async (val: any) => {
     addAddressModal.value = false;
-
+    console.log('Add shipping address');
     newAddress.value = {} as ShippingAddressInterface;
 
     newAddress.value.alias = val.address.alias.value;
@@ -213,7 +215,7 @@ await getShippingInformation();
 
 const handleEditAddress = async (object: any) => {
     editAddressModal.value = null;
-
+    console.log('Edit shipping address');
     const addressToBeVerified = {
         alias: object.address.alias.value,
         name1: object.address.name1.value,

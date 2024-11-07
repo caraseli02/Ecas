@@ -105,6 +105,7 @@
 
 <script setup lang="ts">
 import XIcon from '@/assets/icons/dashboard/x.svg';
+import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { countries } from '@/data/countries';
 import { FormSelectOption } from '~/types';
@@ -124,9 +125,13 @@ const props = defineProps({
         type: Boolean,
         required: true,
     },
+    type: {
+        type: String,
+        required: true,
+    },
 });
 
-const emit = defineEmits(['close', 'edit-shipping-address', 'delete-shipping-address']);
+const emit = defineEmits(['close', 'edit-shipping-address', 'delete-shipping-address', 'edit-billing-address', 'delete-billing-address']);
 
 const data = ref({
     alias: {
@@ -212,7 +217,11 @@ watch(data.value.country, (newVal) => {
 
 const handleSave = () => {
     // Emit the edit event, debounced
-    emit('edit-shipping-address', { address: data.value, index: props.index });
+    if (props.type === 'shipping') {
+        emit('edit-shipping-address', { address: data.value, index: props.index });
+    } else {
+        emit('edit-billing-address', { address: data.value, index: props.index });
+    }
 };
 
 const handleDelete = () => {
