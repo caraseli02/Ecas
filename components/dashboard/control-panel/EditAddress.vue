@@ -134,6 +134,10 @@ const props = defineProps({
 const emit = defineEmits(['close', 'edit-shipping-address', 'delete-shipping-address', 'edit-billing-address', 'delete-billing-address']);
 
 const data = ref({
+    _id: {
+        value: '',
+        error: '',
+    },
     alias: {
         value: '',
         error: '',
@@ -190,10 +194,11 @@ const setCustomerInformation = () => {
     data.value.postcode.value = props.address.postcode;
     data.value.phone.value = props.address.phone;
     data.value.city.value = props.address.city;
+    data.value._id.value = props.address._id;
     getCountryRegion(props.address.country, props.address.region);
 };
 
-await setCustomerInformation();
+setCustomerInformation();
 
 watch(data.value.country, (newVal) => {
     if (newVal?.value) {

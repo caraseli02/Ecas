@@ -120,6 +120,8 @@ import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance';
 import { toast } from '~/components/ui/toast';
 
+const route = useRoute();
+
 const addAddressModal = ref(false);
 const editAddressModal = ref();
 const indexOfEditAddressModal = ref(0);
@@ -139,6 +141,7 @@ const addresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterface
 const newAddress = ref<ShippingAddressInterface>({} as ShippingAddressInterface);
 
 const setAsDefault = async (address: any) => {
+    console.log(address);
     addresses.value.forEach((item: any) => {
         item.default = false;
     });
@@ -153,8 +156,9 @@ const setAsDefault = async (address: any) => {
     if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
         return;
     }
-    await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType);
+    await $api.controlPanel.updateShipping(address, route.params.slug as string);
 };
+
 const handleAddAddress = async (val: any) => {
     addAddressModal.value = false;
     console.log('Add shipping address');
@@ -170,17 +174,7 @@ const handleAddAddress = async (val: any) => {
     newAddress.value.postcode = val.address.postcode.value;
     newAddress.value.default = false;
 
-    const result = await $api.orders.validateAddress({
-        country: newAddress.value.country,
-        region: newAddress.value.region,
-        city: newAddress.value.city,
-        postcode: newAddress.value.postcode,
-        name1: newAddress.value.name1,
-        name2: newAddress.value.name2,
-        phone: newAddress.value.phone,
-        alias: newAddress.value.alias,
-        default: false,
-    });
+    const result = await $api.orders.validateAddress({ ...newAddress.value });
 
     if (!result.data.valid) {
         console.log('Invalid address');
@@ -195,7 +189,8 @@ const handleAddAddress = async (val: any) => {
         if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
             return;
         }
-        await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType);
+        await $api.controlPanel.addShipping(newAddress.value, route.params.slug as string);
+        await getShippingInformation();
     }
 };
 
@@ -238,6 +233,7 @@ const handleEditAddress = async (object: any) => {
         });
         return;
     } else {
+        console.log(props.id);
         if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
             return;
         }
@@ -249,20 +245,31 @@ const handleEditAddress = async (object: any) => {
         addresses.value[object.index].region = object.address.region.value.value;
         addresses.value[object.index].postcode = object.address.postcode.value;
         addresses.value[object.index].phone = object.address.phone.value;
+        addresses.value[object.index]._id = object.address._id.value;
 
-        await $api.controlPanel.updateShipping(props.id, addresses.value[object.index], props.accountType);
+        await $api.controlPanel.updateShipping(addresses.value[object.index], route.params.slug as string);
+        await getShippingInformation();
     }
 };
 
 const handleDeleteAddress = async (index: number) => {
+    console.log('Delete shipping address');
     // Handle deleting the address at a specific index
     if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
         return;
     }
+
+    console.log(addresses.value[index]);
+    if (!addresses?.value[index] || !addresses.value[index]?._id) {
+        return;
+    }
+
     if (defaultAddressIndex.value === index) {
         addresses.value[0].default = true;
     }
-    await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType);
+
+    await $api.controlPanel.deleteShipping(addresses.value[index]?._id || '', route.params.slug as string);
     addresses.value.splice(index, 1);
+    await getShippingInformation();
 };
 </script>

@@ -1,7 +1,7 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import { AccountAdminSettings } from '~/types/auth/account-settings';
-import { BillingAddressInterface, ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
+import { ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
 import { PaginatedTransactionsInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 
 class ControlPanelService extends HttpFactory {
@@ -106,12 +106,12 @@ class ControlPanelService extends HttpFactory {
         });
     }
 
-    async updateShipping(id: string, address: ShippingAddressInterface, type: number) {
+    async updateShipping(address: ShippingAddressInterface, userId: string) {
         const token = this.authStore.getToken();
 
-        return await this.call<AccountAdminSettings>(
-            'POST',
-            `${this.MAIN}/${id}/${type === 0 ? 'personal/shipping-address' : 'business/shipping-address'}`,
+        return await this.call<{ status: string; data: string }>(
+            'PATCH',
+            `user/shipping-address/${userId}`,
             { address: address },
             {
                 headers: { Authorization: `Bearer ${token}` },
@@ -119,17 +119,65 @@ class ControlPanelService extends HttpFactory {
         );
     }
 
-    async updateBilling(id: string, address: BillingAddressInterface, type: number) {
+    async updateBilling(address: ShippingAddressInterface, userId: string) {
         const token = this.authStore.getToken();
 
-        return await this.call<AccountAdminSettings>(
-            'POST',
-            `${this.MAIN}/${id}/${type === 0 ? 'personal/billing-address' : 'business/billing-address'}`,
+        return await this.call<{ status: string; data: string }>(
+            'PATCH',
+            `user/billing-address/${userId}`,
             { address: address },
             {
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
+    }
+
+    async addShipping(address: ShippingAddressInterface, userId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{ status: string; data: string }>(
+            'POST',
+            `user/shipping-address/${userId}`,
+            { address: address },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+    }
+
+    async addBilling(address: ShippingAddressInterface, userId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{ status: string; data: string }>(
+            'POST',
+            `user/billing-address/${userId}`,
+            { address: address },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+    }
+
+    async deleteShipping(id: string, userId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{
+            status: string;
+            data: string;
+        }>('DELETE', `user/shipping-address/${id}/${userId}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async deleteBilling(id: string, userId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{
+            status: string;
+            data: string;
+        }>('DELETE', `user/billing-address/${id}/${userId}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
     }
 
     async fetchAccountDetails(id: string, type: number) {

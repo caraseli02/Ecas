@@ -71,7 +71,7 @@ class UserService extends HttpFactory {
         });
     }
 
-    async addShippingAsCustomer(address: ShippingAddressInterface[]) {
+    async addShippingAsCustomer(address: ShippingAddressInterface) {
         const token = this.authStore.getToken();
 
         return await this.call<{ status: string; data: string }>(
@@ -84,7 +84,7 @@ class UserService extends HttpFactory {
         );
     }
 
-    async updateShippingAsCustomer(address: ShippingAddressInterface[]) {
+    async updateShippingAsCustomer(address: ShippingAddressInterface) {
         const token = this.authStore.getToken();
 
         return await this.call<{ status: string; data: string }>(
@@ -108,7 +108,7 @@ class UserService extends HttpFactory {
         });
     }
 
-    async addBillingAsCustomer(address: ShippingAddressInterface[]) {
+    async addBillingAsCustomer(address: ShippingAddressInterface) {
         const token = this.authStore.getToken();
 
         return await this.call<{ status: string; data: string }>(
@@ -121,7 +121,7 @@ class UserService extends HttpFactory {
         );
     }
 
-    async updateBillingAsCustomer(address: ShippingAddressInterface[]) {
+    async updateBillingAsCustomer(address: ShippingAddressInterface) {
         const token = this.authStore.getToken();
 
         return await this.call<{ status: string; data: string }>(
