@@ -42,7 +42,4 @@
 </template>
 
 <script lang="ts">
-import { OrderConfirmBankSelect } from '#build/components';
-
-
 </script>

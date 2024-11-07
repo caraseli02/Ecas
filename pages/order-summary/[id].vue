@@ -264,7 +264,7 @@ onMounted(() => {
             </div>
             <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
         </section>
-        <div class="flex justify-between gap-2">
+        <div class="flex flex-wrap md:flex-nowrap justify-between gap-12 md:gap-2">
             <OrderConfirmCompanyDetails />
             <OrderConfirmBankDetails />
         </div>
