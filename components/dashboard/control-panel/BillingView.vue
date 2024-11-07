@@ -60,7 +60,7 @@
                         <button
                             v-if="addresses.length > 1"
                             class="flex items-center justify-center w-11 h-11 bg-[#F2F2F2] bg-opacity-95 rounded-full text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
-                            @click="Emitter.emit('delete', index)"
+                            @click="handleDeleteAddress(index)"
                         >
                             <TrashIcon class="w-5 h-5" />
                         </button>
@@ -95,7 +95,7 @@
                     :delete-button-enable="addresses.length > 1"
                     @edit-billing-address="handleEditAddress"
                     @close="editAddressModal = null"
-                    @delete-edit-address="handleDeleteAddress"
+                    @delete-billing-address="handleDeleteAddress"
                 />
             </Transition>
             <div
@@ -117,7 +117,6 @@ import CheckIcon from '@/assets/icons/check-circle.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { useNuxtApp } from '#app';
 import { BillingAddressInterface } from '~/types/auth/user-interface';
-import Emitter from 'tiny-emitter/instance';
 import { toast } from '~/components/ui/toast';
 
 const route = useRoute();
@@ -232,7 +231,7 @@ const handleEditAddress = async (object: any) => {
         });
         return;
     } else {
-        if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
+        if (!props.id || props.accountType || typeof props.accountType === 'undefined') {
             return;
         }
 
