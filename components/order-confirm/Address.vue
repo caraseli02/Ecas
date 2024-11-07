@@ -27,7 +27,7 @@ const props = defineProps<{
                     <h3 class="text-sm font-semibold leading-6 text-neutral-700">Address Alias 1</h3>
                     <div
                         v-if="props.shippingAddress.default"
-                        class="flex gap-1 items-center justify-center p-1 text-xs font-medium leading-4 text-green-600 whitespace-nowrap bg-white border border-emerald-500 border-solid rounded-[100px]"
+                        class="flex gap-1 items-center py-0.5 pr-1.5 pl-1 text-xs font-medium leading-none whitespace-nowrap bg-white border border-emerald-500 border-solid rounded-[100px] text-zinc-800"
                     >
                         <CheckIcon class="w-4 h-4 rounded-full text-slate-50 bg-green-600" />
                         <span class="font-medium">Default</span>

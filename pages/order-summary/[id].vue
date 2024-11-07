@@ -194,7 +194,7 @@ onMounted(() => {
                     </div>
                 </section>
                 <div
-                    class="md:w-full lg:w-fit flex md:justify-end gap-2 md:gap-4 order-2 lg:order-1 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
+                    class="md:w-full lg:w-fit flex justify-between md:justify-end gap-2 md:gap-4 order-2 lg:order-1 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
                 >
                     <UiButton
                         variant="secondary"
@@ -215,7 +215,7 @@ onMounted(() => {
                     <UiButton
                         variant="secondary"
                         size="icon"
-                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
+                        class="flex gap-2 h-8 justify-center text-slate-500 rounded-lg bg-zinc-100"
                     >
                         <DotsVerticalIcon class="shrink-0 w-4 aspect-square stroke-[1.5]" />
                     </UiButton>
