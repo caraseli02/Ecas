@@ -75,7 +75,7 @@ export interface OrderInterface {
     parent?: string;
 }
 
-export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'user' | 'createdAt' | 'status' | 'total'>;
+export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'user' | 'createdAt' | 'status' | 'total' | 'paymentDetails'>;
 
 export interface OrderRequestInterface {
     shortId: string;
@@ -169,6 +169,7 @@ export interface PaymentDetails {
     // card?: StripeCardInterface;
     card?: Pick<PaymentMethod.Card, 'last4' | 'exp_year' | 'exp_month' | 'brand'>;
     invoiceId?: string;
+    invoiceShortId?: string;
 }
 
 export interface StripeCardInterface {
