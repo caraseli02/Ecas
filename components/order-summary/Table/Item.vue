@@ -1,29 +1,44 @@
 <template>
     <div class="rounded-lg" :class="expanded ? 'custom-shadow' : ''">
         <OrderSummaryTableItemHeader
-:short-stock="shortStock" :stock-item="stockItem" :expanded="expanded" :item="item"
-            :item-quantity="itemQuantity" @toggleExpanded="expanded = $event" @check="emits('check', $event);"
-            @deleteItem="deleteItem = $event;" />
+            :short-stock="shortStock"
+            :stock-item="stockItem"
+            :expanded="expanded"
+            :item="item"
+            :item-quantity="itemQuantity"
+            @toggleExpanded="expanded = $event"
+            @check="emits('check', $event)"
+            @deleteItem="deleteItem = $event"
+        />
         <Transition name="expand">
             <OrderSummaryTableItemDropdown
-v-if="expanded"
-                :key="stockItem ? `${item.id} - ${item.stock}` : `${item.id} - ${item.backorder_stock}`" ref="tab"
-                :item="item" :short-stock="(shortStock as boolean)" :stock-item="stockItem" class="item"
-                @like-item="liked = !liked" />
+                v-if="expanded"
+                :key="stockItem ? `${item.id} - ${item.stock}` : `${item.id} - ${item.backorder_stock}`"
+                ref="tab"
+                :item="item"
+                :short-stock="(shortStock as boolean)"
+                :stock-item="stockItem"
+                class="item"
+                @update-quantity="emits('updateQuantity')"
+                @like-item="liked = !liked"
+            />
         </Transition>
     </div>
     <LayoutFavoritesModalsDelete
         v-model="deleteItem"
         :remove-only-stock-quantity="stockItem && !!item.backorder_stock && item.backorder_stock > 0"
-        :remove-only-backstock-quantity="!stockItem && item.stock > 0" :products="[item]" :delete-from-cart="true"
-        @close="deleteItem = false" />
+        :remove-only-backstock-quantity="!stockItem && item.stock > 0"
+        :products="[item]"
+        :delete-from-cart="true"
+        @close="deleteItem = false"
+    />
 </template>
 
 <script setup lang="ts">
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 const props = defineProps<{
-    item: CartProductsInterface,
+    item: CartProductsInterface;
     stockItem: boolean;
 }>();
 
@@ -43,6 +58,7 @@ const shortStock = computed(() => {
 });
 
 watch(itemQuantity, () => {
+    console.log('updateQuantity');
     if (props.item.stock || props.item.backorder_stock) {
         emits('updateQuantity');
     }
@@ -63,7 +79,6 @@ const setupMediaQuery = () => {
 
 onMounted(setupMediaQuery);
 </script>
-
 
 <style scoped>
 .expand-enter-from,
