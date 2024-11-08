@@ -269,6 +269,9 @@ import DiodesIcon2 from '@/assets/icons/header/banner/diodes.svg';
 import { A11y, Pagination } from 'swiper';
 import { showNavModal } from '~~/config/modal/nav';
 import { TaxonomyInterface } from '~/types/dashboard/categories';
+import { useCategoriesStore } from '~/store/categoriesStore';
+
+const { categoriesMap, updateCategories } = useCategoriesStore();
 
 const DefaultIcon = CardPlaceholderSmall;
 
@@ -303,6 +306,8 @@ const allCategories = ref<
 const setCategories = async () => {
     await getCategories();
 
+    // await updateCategories();
+
     function mapCategories(sourceArray: any) {
         return sourceArray.map((item: TaxonomyInterface) => ({
             name: item.name.trim(),
@@ -310,14 +315,15 @@ const setCategories = async () => {
             icon: iconMap[item.name.trim()] || DefaultIcon, // Use mapped icon or default if not found
             subcategory: item.subcategory ? mapCategories(item.subcategory) : [],
             id: item.id, // Recursively map subcategories
+            path: item.path,
         }));
     }
 
     allCategories.value = mapCategories(categories.value);
+    await updateCategories(categories.value);
 };
 
 await setCategories();
-console.log(allCategories.value);
 
 const selectedCategory = ref<(typeof allCategories.value)[0] | null>(null);
 const selectedSubCategory = ref<any>();
