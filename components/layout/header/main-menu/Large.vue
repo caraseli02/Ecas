@@ -9,7 +9,7 @@
             :class="[isStatic ? 'hidden h-0 md:h-auto md:flex' : '', isBannerExpanded ? 'md:opacity-0 md:pointer-events-none' : '']"
         >
             <button
-                v-for="(category, index) in categories"
+                v-for="(category, index) in allCategories"
                 :key="index"
                 class="group flex items-center px-2 py-1.5 rounded-[5px] w-full text-slate-500 text-left font-Inter transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500 xl:px-2.5 xl:py-2"
                 :class="[selectedCategory === category ? 'text-blue-500 bg-[#F4F4F4]' : '']"
@@ -23,13 +23,13 @@
                 </div>
                 <div>
                     <div class="text-sm font-semibold leading-normal mb-px xl:text-base xl:mb-1.5">
-                        {{ category.label }}
+                        {{ category.name }}
                     </div>
                     <div
                         class="text-xs font-semibold transition-colors duration-300 group-hover:text-slate-500"
                         :class="[selectedCategory === category ? 'text-slate-500 ' : 'text-gray-500']"
                     >
-                        {{ category.products }} Products
+                        {{ category.productCount }} Products
                     </div>
                 </div>
             </button>
@@ -140,24 +140,24 @@
                     <CaretLeft class="w-6 h-6" />
                 </button>
                 <div class="text-sm font-semibold text-blue-500">
-                    {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory?.label }}
+                    {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory?.name }}
                 </div>
             </div>
             <div class="flex flex-col flex-1">
                 <div class="flex-1 overflow-y-auto scrollbar-thin">
                     <div v-if="selectedCategory && !selectedSubCategory" class="flex flex-wrap gap-x-2.5 gap-y-[15px] p-2.5 lg:p-[15px]">
                         <button
-                            v-for="(subCategory, index) in selectedCategory.subCategories"
+                            v-for="(subCategory, index) in selectedCategory.subcategory"
                             :key="index"
                             class="group flex items-center px-2 py-1.5 rounded-[5px] text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
                             @click="selectedSubCategory = subCategory"
                         >
                             <div>
                                 <div class="text-sm font-semibold">
-                                    {{ subCategory.label }}
+                                    {{ subCategory.name }}
                                 </div>
                                 <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
-                                    {{ subCategory.products }} Products
+                                    {{ subCategory.productCount }} Products
                                 </div>
                             </div>
                         </button>
@@ -167,12 +167,12 @@
                         class="grid grid-cols-2 gap-3 px-4 py-2.5 lg:grid-cols-3 lg:gap-x-[25px] lg:px-5 lg:pt-[5px]"
                     >
                         <NuxtLink
-                            v-for="(subCategory, index) in selectedCategory?.subCategories"
+                            v-for="(subCategory, index) in selectedSubCategory?.subcategory"
                             :key="index"
                             to="/"
                             class="relative flex items-center text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue-500 before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue-500 hover:before:opacity-100"
                         >
-                            <div class="text-sm font-medium truncate mr-[5px]">Semiconductors ({{ subCategory.products }})</div>
+                            <div class="text-sm font-medium truncate mr-[5px]">{{ subCategory.name }} ({{ subCategory.productCount }})</div>
                             <div
                                 v-if="index === 3 || index === 5"
                                 class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
@@ -195,14 +195,14 @@
                         <CaretLeft class="w-6 h-6" />
                     </button>
                     <div class="text-sm font-semibold text-blue-500">
-                        {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory?.label }}
+                        {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory?.name }}
                     </div>
                 </div>
                 <div class="flex flex-col flex-1">
                     <div class="flex-1 overflow-y-auto scrollbar-thin">
                         <div v-if="selectedCategory" class="flex flex-wrap gap-2.5 pt-[15px] px-[25px] pb-5">
                             <button
-                                v-for="(subCategory, index) in selectedCategory.subCategories"
+                                v-for="(subCategory, index) in selectedCategory.subcategory"
                                 :key="index"
                                 class="group flex items-center px-2 py-1.5 rounded-[5px] text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
                                 :class="[selectedSubCategory === subCategory ? 'text-blue-500 bg-[#F4F4F4]' : '']"
@@ -210,31 +210,33 @@
                             >
                                 <div>
                                     <div class="text-sm font-semibold mb-2">
-                                        {{ subCategory.label }}
+                                        {{ subCategory.name }}
                                     </div>
                                     <div
                                         class="text-xs font-semibold transition-colors duration-300 group-hover:text-slate-500"
                                         :class="[selectedSubCategory === subCategory ? 'text-slate-500' : 'text-gray-500']"
                                     >
-                                        {{ subCategory.products }} Products
+                                        {{ subCategory.productCount }} Products
                                     </div>
                                 </div>
                             </button>
                         </div>
                         <div v-if="selectedCategory && selectedSubCategory" class="grid grid-cols-3 gap-x-5 gap-y-2 px-[25px] pb-5">
                             <NuxtLink
-                                v-for="(subCategory, index) in selectedCategory.subCategories"
+                                v-for="(subCategory, index) in selectedSubCategory.subcategory"
                                 :key="index"
-                                to="/"
+                                :to="`/search?category=${subCategory.id}`"
                                 class="relative flex items-start text-[#6E6E6E] text-left px-[5px] transition-colors duration-300 before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[15px] before:w-0.5 before:bg-blue-500 before:rounded-full before:opacity-0 before:transition-opacity before:duration-300 hover:text-blue-500 hover:before:opacity-100"
                             >
-                                <div class="text-sm font-medium truncate mr-[5px]">Semiconductors ({{ subCategory.products }})</div>
-                                <div
-                                    v-if="index === 3 || index === 5"
-                                    class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
-                                >
-                                    New
+                                <div class="text-sm font-medium truncate mr-[5px]">
+                                    {{ subCategory.name }} ({{ subCategory.productCount }})
                                 </div>
+                                <!--                                <div-->
+                                <!--                                    v-if="index === 3 || index === 5"-->
+                                <!--                                    class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"-->
+                                <!--                                >-->
+                                <!--                                    New-->
+                                <!--                                </div>-->
                             </NuxtLink>
                         </div>
                     </div>
@@ -249,6 +251,7 @@
 import SemiconductorsIcon from '@/assets/icons/header/semiconductors.svg';
 import PassiveIcon from '@/assets/icons/header/passive.svg';
 import ElectromechanicsIcon from '@/assets/icons/header/electromechanics.svg';
+import CardPlaceholderSmall from '@/assets/icons/card-placeholder-small.svg';
 import CablesAndConnectorsIcon from '@/assets/icons/header/cables-and-connectors.svg';
 import PowerSupplyIcon from '@/assets/icons/header/power-supply.svg';
 import CasesIcon from '@/assets/icons/header/cases.svg';
@@ -265,6 +268,10 @@ import PowerSupplyIcon2 from '@/assets/icons/header/banner/power-supply.svg';
 import DiodesIcon2 from '@/assets/icons/header/banner/diodes.svg';
 import { A11y, Pagination } from 'swiper';
 import { showNavModal } from '~~/config/modal/nav';
+import { TaxonomyInterface } from '~/types/dashboard/categories';
+import { mapLabelsToIds } from '~/helpers/categories.helper';
+
+const DefaultIcon = CardPlaceholderSmall;
 
 const props = defineProps({
     isStatic: {
@@ -273,353 +280,46 @@ const props = defineProps({
     },
 });
 
-const categories = ref([
+const iconMap = {
+    Semiconductors: SemiconductorsIcon,
+    Passive: PassiveIcon,
+    Electromechanics: ElectromechanicsIcon,
+    'Cables & Connectors': CablesAndConnectorsIcon,
+    'Power Supply': PowerSupplyIcon,
+    Cases: CasesIcon,
+    Tools: ToolsIcon,
+    'Industrial Furniture': IndustrialFurnitureIcon,
+};
+
+const { categories, getCategories } = useCategories();
+const allCategories = ref<
     {
-        label: 'Semiconductors',
-        products: 1700,
-        icon: SemiconductorsIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 17000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Power Supply',
-                products: 17000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 17000,
-            },
-        ],
-    },
-    {
-        label: 'Pasive',
-        products: 1700,
-        icon: PassiveIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 17000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Power Supply',
-                products: 17000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 17000,
-            },
-        ],
-    },
-    {
-        label: 'Electromechanics',
-        products: 1700,
-        icon: ElectromechanicsIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 17000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Power Supply',
-                products: 17000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 17000,
-            },
-        ],
-    },
-    {
-        label: 'Cables & Connectors',
-        products: 1700,
-        icon: CablesAndConnectorsIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 17000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Power Supply',
-                products: 17000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 17000,
-            },
-        ],
-    },
-    {
-        label: 'Power Supply',
-        products: 1700,
-        icon: PowerSupplyIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 17000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Power Supply',
-                products: 17000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 17000,
-            },
-        ],
-    },
-    {
-        label: 'Cases',
-        products: 1700,
-        icon: CasesIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 17000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Power Supply',
-                products: 17000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 17000,
-            },
-        ],
-    },
-    {
-        label: 'Tools',
-        products: 1700,
-        icon: ToolsIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 17000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Power Supply',
-                products: 17000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 17000,
-            },
-        ],
-    },
-    {
-        label: 'Industrial Furniture',
-        products: 1700,
-        icon: IndustrialFurnitureIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 17000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Power Supply',
-                products: 17000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 17000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 17000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 17000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 17000,
-            },
-        ],
-    },
-]);
-const selectedCategory = ref<(typeof categories.value)[0] | null>(null);
+        name: string;
+        productCount: number;
+        icon: any;
+        id: string;
+        subcategory: { name: string; productCount: number; id: string }[];
+    }[]
+>([]);
+const setCategories = async () => {
+    await getCategories();
+
+    function mapCategories(sourceArray: any) {
+        return sourceArray.map((item: TaxonomyInterface) => ({
+            name: item.name.trim(),
+            productCount: item.productCount,
+            icon: iconMap[item.name.trim()] || DefaultIcon, // Use mapped icon or default if not found
+            subcategory: item.subcategory ? mapCategories(item.subcategory) : [],
+            id: item.id, // Recursively map subcategories
+            path: item.path,
+        }));
+    }
+
+    allCategories.value = mapCategories(categories.value);
+    mapLabelsToIds(allCategories.value);
+};
+
+const selectedCategory = ref<(typeof allCategories.value)[0] | null>(null);
 const selectedSubCategory = ref<any>();
 
 const slides = ref([
@@ -705,7 +405,9 @@ const handleTogglerMouseLeave = (event: MouseEvent) => {
 
 const swiperDOM = ref<any>(null);
 
-onMounted(() => {
+onMounted(async () => {
+    await setCategories();
+
     if (swiperDOM.value) {
         swiperDOM.value.destroy = () => {};
     }
@@ -716,16 +418,20 @@ onMounted(() => {
 .headerSubmenu--swiper {
     @apply z-20 pb-[22px] mt-auto md:pb-[38px] #{!important};
 }
+
 .headerSubmenu--swiper .swiper-slide {
     @apply h-auto #{!important};
 }
+
 .headerSubmenu--swiper .swiper-pagination {
     @apply flex justify-center w-full h-2 bottom-1.5 space-x-1.5 md:space-x-2 md:bottom-[15px] #{!important};
 }
+
 .headerSubmenu--swiper .swiper-pagination-bullet {
     @apply w-1.5 h-1.5 bg-gray-500 rounded-full opacity-100 m-0 transition-all duration-300 md:w-2 md:h-2 #{!important};
     margin-right: 0 !important;
 }
+
 .headerSubmenu--swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
     @apply w-[25px] bg-white #{!important};
 }

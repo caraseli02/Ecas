@@ -34,6 +34,7 @@ const props = defineProps<{
 watchEffect(() => {
     if (props.entryPrice) {
         console.log(props.entryPrice);
+        console.log(range.value);
         const selectedFramework = range.value.find((entry) => entry._id === props.entryPrice);
         if (selectedFramework) {
             value.value = selectedFramework.value;

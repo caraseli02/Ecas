@@ -1,7 +1,7 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
-import { OrderRequestInterface } from '~/types';
+import { OrderRequestInterface, OrderStatus } from '~/types';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 
 class OrdersService extends HttpFactory {
@@ -77,6 +77,32 @@ class OrdersService extends HttpFactory {
     async validateAddress(address: ShippingAddressInterface) {
         console.log('address', address);
         return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/validate-address`, { ...address });
+    }
+
+    async cancelOrder(id: string) {
+        const token = this.authStore.getToken();
+        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}/cancel`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async markAsPaid(id: string) {
+        const token = this.authStore.getToken();
+        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}}/paid`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async changeStatus(id: string, status: OrderStatus) {
+        const token = this.authStore.getToken();
+        return await this.call<any>(
+            'POST',
+            `${this.ORDERS_RESOURCE}/${id}`,
+            { status },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
     }
 
     async getCustomerOrders() {

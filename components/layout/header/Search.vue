@@ -48,6 +48,7 @@ import Emitter from 'tiny-emitter/instance';
 import { useNuxtApp } from '#app';
 
 const { $api } = useNuxtApp();
+const route = useRoute();
 
 const props = defineProps({
     isScrolled: {
@@ -71,6 +72,7 @@ const searchVal = ref('');
 const isLoading = ref<boolean>(false);
 const productList = ref<ProductInterface[]>([]);
 const showSearchResults = ref(true);
+const category = ref<string | null>(route.query?.category?.toString() || null);
 
 const onInput = _.debounce(async () => {
     productList.value = (await searchProduct(searchVal.value)) || [];
@@ -80,7 +82,7 @@ const onInput = _.debounce(async () => {
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[] | null> => {
     isLoading.value = true;
 
-    const { data: products } = (await $api.product.fetchSearchProduct(keyword, page, perPage)) as unknown as SearchData;
+    const { data: products } = (await $api.product.fetchSearchProduct(keyword, category.value, page, perPage)) as unknown as SearchData;
 
     if (!products) {
         return null;
