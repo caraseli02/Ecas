@@ -1,20 +1,34 @@
 import { TaxonomyInterface } from '~/types/dashboard/categories';
+import { useCategoriesStore } from '~/store/categoriesStore';
 
 export const mapLabelsToIds = (array: any, result = {}) => {
-    array.forEach((item: any) => {
-        // Add the current item to the result object
-        result[item.name] = item.id;
+    const categoriesStore = useCategoriesStore();
 
-        // Check if the item has subcategories and recursively process them
-        if (item.subcategory && item.subcategory.length > 0) {
-            mapLabelsToIds(item.subcategory, result);
-        }
-    });
-    return result;
+    if (categoriesStore.categoriesMap && Object.keys(categoriesStore.categoriesMap).length) {
+        return categoriesStore.categoriesMap;
+    }
+
+    const recursiveFn = (array: any, result = {}) => {
+        array.forEach((item: any) => {
+            // Add the current item to the result object
+            result[item.name] = item.id;
+            console.log(item.name);
+            // Check if the item has subcategories and recursively process them
+            if (item.subcategory && item.subcategory.length > 0) {
+                recursiveFn(item.subcategory, result);
+            }
+        });
+
+        return result;
+    };
+
+    const mappedCategories = recursiveFn(array, result);
+    categoriesStore.updateCategories(mappedCategories);
+
+    return mappedCategories;
 };
 
 export const mapPathArrayOfNames = (path: string, categoriesMap: any) => {
-    console.log(path);
     const idToNameMap = Object.entries(categoriesMap).reduce((acc, [name, id]) => {
         acc[id] = {
             name: name,
@@ -27,7 +41,7 @@ export const mapPathArrayOfNames = (path: string, categoriesMap: any) => {
         .split('/') // Split the path by "/"
         .filter((id) => id) // Remove empty strings
         .map((id) => idToNameMap[id]) // Map each ID to its name using the reverse map
-        .filter((name) => name);
+        .filter((name) => name) as { id: string; name: string }[];
 };
 
 export const mapNamesToPath = (namesArray: any, categoriesMap: any) => {

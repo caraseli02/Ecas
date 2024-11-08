@@ -56,9 +56,7 @@ async function loadCategoryLabels() {
     if (category.value) {
         await getCategories();
         map.value = mapLabelsToIds(categories.value);
-        if (map.value) {
-            categoriesStore.updateCategories(map.value);
-        }
+
         const path = findCategory(category.value.toString(), categories.value)?.path;
         if (path) {
             categoryLabels.value = mapPathArrayOfNames(path.toString(), map.value);

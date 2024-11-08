@@ -269,9 +269,7 @@ import DiodesIcon2 from '@/assets/icons/header/banner/diodes.svg';
 import { A11y, Pagination } from 'swiper';
 import { showNavModal } from '~~/config/modal/nav';
 import { TaxonomyInterface } from '~/types/dashboard/categories';
-import { useCategoriesStore } from '~/store/categoriesStore';
-
-const { categoriesMap, updateCategories } = useCategoriesStore();
+import { mapLabelsToIds } from '~/helpers/categories.helper';
 
 const DefaultIcon = CardPlaceholderSmall;
 
@@ -306,8 +304,6 @@ const allCategories = ref<
 const setCategories = async () => {
     await getCategories();
 
-    // await updateCategories();
-
     function mapCategories(sourceArray: any) {
         return sourceArray.map((item: TaxonomyInterface) => ({
             name: item.name.trim(),
@@ -320,10 +316,8 @@ const setCategories = async () => {
     }
 
     allCategories.value = mapCategories(categories.value);
-    await updateCategories(categories.value);
+    mapLabelsToIds(allCategories.value);
 };
-
-await setCategories();
 
 const selectedCategory = ref<(typeof allCategories.value)[0] | null>(null);
 const selectedSubCategory = ref<any>();
@@ -411,7 +405,9 @@ const handleTogglerMouseLeave = (event: MouseEvent) => {
 
 const swiperDOM = ref<any>(null);
 
-onMounted(() => {
+onMounted(async () => {
+    await setCategories();
+
     if (swiperDOM.value) {
         swiperDOM.value.destroy = () => {};
     }
