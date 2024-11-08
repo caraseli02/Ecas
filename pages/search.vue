@@ -79,8 +79,7 @@ onMounted(async () => {
                         sortBy: sortBy.value.name,
                         sortOrder: order.value === 0 ? 'desc' : 'asc',
                     },
-                    newValues[1],
-                    true
+                    newValues[1]
                 );
                 showSimilarOnly.value = false;
             }
@@ -89,7 +88,6 @@ onMounted(async () => {
     );
 
     if (!products.value && !showSimilarOnly.value) {
-        console.log('else branch');
         await getProduct(
             keyword.value,
             atPage.value,
@@ -98,8 +96,7 @@ onMounted(async () => {
                 sortBy: sortBy.value.name,
                 sortOrder: order.value === 0 ? 'desc' : 'asc',
             },
-            [],
-            true
+            []
         );
     }
 });
@@ -110,13 +107,12 @@ async function getProduct(
     perPage: number,
     sort = {},
     filter: ProductParametricDataFeaturesInterface[] = [],
-    flag = false
+    ignoreCategory = false
 ) {
-    const { data } = await $api.product.fetchSearchProduct(keyword, category.value, atPage, perPage, sort, filter);
+    const { data } = await $api.product.fetchSearchProduct(keyword, ignoreCategory ? null : category.value, atPage, perPage, sort, filter);
 
     products.value = data;
     filters.value = data.filters;
-    console.log('products changed', flag, products.value, filters.value);
 }
 
 async function changePath() {
@@ -168,7 +164,6 @@ watch(route, (value) => {
 });
 
 Emitter.on('register-filter-option', async (filter: ProductParametricDataFeaturesInterface[]) => {
-    console.log('register-filter-option', filter);
     await getProduct(
         keyword.value,
         1,
@@ -205,7 +200,6 @@ Emitter.on('reset-products-filters', async (value: boolean) => {
 
 Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
     keyword.value = value.keyword;
-
-    await getProduct(value.keyword, atPage.value, perPage.value, {});
+    await getProduct(value.keyword, atPage.value, perPage.value, {}, [], true);
 });
 </script>
