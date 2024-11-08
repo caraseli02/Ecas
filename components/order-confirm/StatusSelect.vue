@@ -50,7 +50,7 @@ const selected = ref();
 const isOpen = ref(false);
 const previousValue = ref();
 let isCanceling = false;
-console.log(props.statuses);
+console.log(props.defaultValue);
 
 // Watch for status change
 watch(selected, (newValue, oldVal) => {

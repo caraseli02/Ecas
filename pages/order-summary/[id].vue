@@ -3,6 +3,7 @@ import { FileText, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next
 import { DotsVerticalIcon } from '@radix-icons/vue';
 
 import {
+    OrderInterface,
     OrderNotesInterface,
     OrderRequestInterface,
     OrderRequestInterfaceResponse,
@@ -117,7 +118,11 @@ const getOrderInformation = async () => {
         }
 
         if (orderType.value === OrderType.Mixed) {
-            paymentMethod.value = paymentInfoHelper(stockOrder.value, getUserDetails.value, userCards.value || []);
+            paymentMethod.value = paymentInfoHelper(
+                stockOrder.value as unknown as OrderInterface,
+                getUserDetails.value,
+                userCards.value || []
+            );
         } else {
             paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value, userCards.value || []);
         }
@@ -145,7 +150,7 @@ const getOrderInformation = async () => {
             email: response?.data?.order.user.contactDetails.email,
             phone: response?.data?.order.shippingDetails.phone,
         };
-        date.value = moment(response.data.order.updatedAt).format('DD MMMM YYYY, HH:mm');
+        date.value = moment(response.data.order.createdAt).format('DD MMMM YYYY, HH:mm');
     }
 };
 

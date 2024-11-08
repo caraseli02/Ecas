@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { BoxIcon, FileText, MapPin, PackageOpenIcon, TruckIcon, Undo2Icon, ChevronLeft } from 'lucide-vue-next';
+import { BoxIcon, ChevronLeft, FileText, MapPin, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
 import {
+    OrderInterface,
     OrderNotesInterface,
     OrderRequestInterface,
     OrderRequestInterfaceResponse,
@@ -100,7 +101,7 @@ const backOrder = ref<OrderRequestInterface>({} as OrderRequestInterface);
 const getOrderInformation = async () => {
     // Fetch order information
     console.log(route.params.id);
-    
+
     const orderId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
     const response = (await $api.orders.getOrderById(orderId)) as OrderRequestInterfaceResponse;
 
@@ -124,7 +125,11 @@ const getOrderInformation = async () => {
         }
 
         if (orderType.value === OrderType.Mixed) {
-            paymentMethod.value = paymentInfoHelper(stockOrder.value, getUserDetails.value, userCards.value || []);
+            paymentMethod.value = paymentInfoHelper(
+                stockOrder.value as unkwown as OrderInterface,
+                getUserDetails.value,
+                userCards.value || []
+            );
         } else {
             paymentMethod.value = paymentInfoHelper(response.data.order, getUserDetails.value, userCards.value || []);
         }
@@ -167,7 +172,8 @@ onMounted(() => {
             <template #order>
                 <span class="text-xs leading-[1.33] text-slate-500 flex-shrink-0 mx-1">/</span>
                 <span
-                    class="text-xs leading-[1.33] flex-shrink-0 font-medium text-blue-500 transition-colors duration-300 hover:text-blue-500">
+                    class="text-xs leading-[1.33] flex-shrink-0 font-medium text-blue-500 transition-colors duration-300 hover:text-blue-500"
+                >
                     #{{ route.params.id }}
                 </span>
             </template>
@@ -182,108 +188,111 @@ onMounted(() => {
         </DashboardOrdersBreadcrumbs>
         <OrderConfirmAdminBtns class="px-2" />
         <section class="container px-4 py-6 md:p-6 flex flex-col gap-10">
-        <div class="flex flex-col self-stretch">
-            <div class="flex flex-wrap lg:gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-                <div class="flex gap-5 justify-between my-auto">
-                    <h1 class="text-2xl font-semibold leading-8 text-neutral-700">
-                        Order ID: <span class="text-blue-500">#{{ data.data?.order?.shortId }}</span>
-                    </h1>
-                    <UiBadge
-                        v-if="orderType === OrderType.Mixed"
-                        class="justify-center px-2 py-1 my-auto text-sm font-medium leading-5 text-white bg-blue-500 rounded"
-                    >
-                        Mixed Order
-                    </UiBadge>
-                </div>
-                <div
-                    class="md:w-full lg:w-fit flex gap-2 md:gap-4 order-2 lg:order-1 mt-5 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
-                >
-                    <UiButton
-                        variant="secondary"
-                        class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
-                    >
-                        <FileText class="shrink-0 w-6 aspect-square stroke-[1.5]" />
-                        <span class="hidden lg:inline">View</span> Invoices
-                    </UiButton>
-                    <UiButton
-                        variant="secondary"
-                        class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
-                    >
-                        <MapPin class="shrink-0 w-6 aspect-square stroke-[1.5]" />
-                        Track <span class="hidden lg:inline">Order</span>
-                    </UiButton>
-                    <UiButton
-                        variant="secondary"
-                        class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
-                    >
-                        <BoxIcon class="shrink-0 w-6 aspect-square stroke-[1.5]" />
-                        View All <span class="hidden lg:inline">Orders</span>
-                    </UiButton>
-                </div>
-                <div
-                    class="flex items-center flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5"
-                >
-                    <div class="flex gap-2">
-                        <div class="text-slate-500">Order Date:</div>
-                        <div class="text-neutral-700">{{ date }}</div>
+            <div class="flex flex-col self-stretch">
+                <div class="flex flex-wrap lg:gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
+                    <div class="flex gap-5 justify-between my-auto">
+                        <h1 class="text-2xl font-semibold leading-8 text-neutral-700">
+                            Order ID: <span class="text-blue-500">#{{ data.data?.order?.shortId }}</span>
+                        </h1>
+                        <UiBadge
+                            v-if="orderType === OrderType.Mixed"
+                            class="justify-center px-2 py-1 my-auto text-sm font-medium leading-5 text-white bg-blue-500 rounded"
+                        >
+                            Mixed Order
+                        </UiBadge>
                     </div>
-                    <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
-                    <div class="flex gap-2">
-                        <div class="text-slate-500">Shipping Method:</div>
-                        <div class="text-neutral-700">{{ shippingMethod?.title }}</div>
+                    <div
+                        class="md:w-full lg:w-fit flex gap-2 md:gap-4 order-2 lg:order-1 mt-5 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
+                    >
+                        <UiButton
+                            variant="secondary"
+                            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
+                        >
+                            <FileText class="shrink-0 w-6 aspect-square stroke-[1.5]" />
+                            <span class="hidden lg:inline">View</span> Invoices
+                        </UiButton>
+                        <UiButton
+                            variant="secondary"
+                            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
+                        >
+                            <MapPin class="shrink-0 w-6 aspect-square stroke-[1.5]" />
+                            Track <span class="hidden lg:inline">Order</span>
+                        </UiButton>
+                        <UiButton
+                            variant="secondary"
+                            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
+                        >
+                            <BoxIcon class="shrink-0 w-6 aspect-square stroke-[1.5]" />
+                            View All <span class="hidden lg:inline">Orders</span>
+                        </UiButton>
+                    </div>
+                    <div
+                        class="flex items-center flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5"
+                    >
+                        <div class="flex gap-2">
+                            <div class="text-slate-500">Order Date:</div>
+                            <div class="text-neutral-700">{{ date }}</div>
+                        </div>
+                        <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
+                        <div class="flex gap-2">
+                            <div class="text-slate-500">Shipping Method:</div>
+                            <div class="text-neutral-700">{{ shippingMethod?.title }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <OrderConfirmDetails
-            v-if="paymentMethod"
-            :customer-details="customerDetails"
-            :payment-method="paymentMethod"
-            :has-mixed-items="hasMixedItems"
-        />
-        <UiSeparator />
-        <OrderConfirmAddress v-if="addresses" :shipping-address="addresses.shippingAddress" :billing-address="addresses.billingAddress" />
-        <OrderConfirmStackItems
-            v-if="stockOrder && (orderType === OrderType.Stock || orderType === OrderType.Mixed)"
-            :data="stockOrder"
-            :order-type="orderType"
-        />
-        <OrderConfirmBackItems
-            v-if="backOrder && (orderType === OrderType.Back || orderType === OrderType.Mixed)"
-            :data="backOrder"
-            :order-type="orderType"
-        />
-        <section class="flex flex-col lg:flex-row gap-9">
-            <div v-if="notes[0]" class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
-                <h2 class="w-full font-semibold max-md:max-w-full">Customer Notes</h2>
-                <textarea
-                    :placeholder="notes[0] && notes[0].message ? notes[0].message : 'No message provided'"
-                    class="min-h-[336px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full"
-                />
-            </div>
-            <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
-        </section>
-
-        <div v-if="paymentSummary" class="flex flex-col gap-6">
-            <h4 class="font-semibold text-sm">Need Help?</h4>
-            <section class="flex gap-6 flex-wrap">
-                <UiButton size="xs" class="gap-2 px-0" variant="ghost">
-                    <TruckIcon class="w-5 h-5 stroke-1.5" />
-                    Delivery Info
-                </UiButton>
-                <UiButton size="xs" class="gap-2 px-0" variant="ghost">
-                    <Undo2Icon class="w-5 h-5 stroke-1.5" />
-                    Returns
-                </UiButton>
-                <UiButton size="xs" class="gap-2 px-0" variant="ghost">
-                    <PackageOpenIcon class="w-5 h-5 stroke-1.5" />
-                    Order Issues
-                </UiButton>
+            <OrderConfirmDetails
+                v-if="paymentMethod"
+                :customer-details="customerDetails"
+                :payment-method="paymentMethod"
+                :has-mixed-items="hasMixedItems"
+            />
+            <UiSeparator />
+            <OrderConfirmAddress
+                v-if="addresses"
+                :shipping-address="addresses.shippingAddress"
+                :billing-address="addresses.billingAddress"
+            />
+            <OrderConfirmStackItems
+                v-if="stockOrder && (orderType === OrderType.Stock || orderType === OrderType.Mixed)"
+                :data="stockOrder"
+                :order-type="orderType"
+            />
+            <OrderConfirmBackItems
+                v-if="backOrder && (orderType === OrderType.Back || orderType === OrderType.Mixed)"
+                :data="backOrder"
+                :order-type="orderType"
+            />
+            <section class="flex flex-col lg:flex-row gap-9">
+                <div v-if="notes[0]" class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
+                    <h2 class="w-full font-semibold max-md:max-w-full">Customer Notes</h2>
+                    <textarea
+                        :placeholder="notes[0] && notes[0].message ? notes[0].message : 'No message provided'"
+                        class="min-h-[336px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full"
+                    />
+                </div>
+                <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
             </section>
-        </div>
-    </section>
+
+            <div v-if="paymentSummary" class="flex flex-col gap-6">
+                <h4 class="font-semibold text-sm">Need Help?</h4>
+                <section class="flex gap-6 flex-wrap">
+                    <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+                        <TruckIcon class="w-5 h-5 stroke-1.5" />
+                        Delivery Info
+                    </UiButton>
+                    <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+                        <Undo2Icon class="w-5 h-5 stroke-1.5" />
+                        Returns
+                    </UiButton>
+                    <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+                        <PackageOpenIcon class="w-5 h-5 stroke-1.5" />
+                        Order Issues
+                    </UiButton>
+                </section>
+            </div>
+        </section>
     </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

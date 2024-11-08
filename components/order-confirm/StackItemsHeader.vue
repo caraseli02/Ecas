@@ -8,6 +8,7 @@ import { useAuthStore } from '~/store/authStore';
 import { ref } from 'vue';
 import { orderType, statusColors } from '~/components/admin-table/order/options';
 import { paymentStatusOptions } from '~/components/client-table/transaction/options';
+import moment from 'moment/moment';
 
 const { $api } = useNuxtApp();
 const authStore = useAuthStore();
@@ -87,7 +88,7 @@ const getPaymentStatusValueByOrder = () => {
                     </section>
                 </UiPopoverTrigger>
                 <UiPopoverContent v-if="isAdmin" class="w-fit flex flex-col gap-2 p-2" align="end">
-                    <UiButton v-if="awb" class="hover:text-blue-500 justify-start gap-1" variant="ghost" size="sm">
+                    <UiButton v-if="!awb" class="hover:text-blue-500 justify-start gap-1" variant="ghost" size="sm" @click="generateAWB">
                         <BarcodeIcon class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                         Generate AWB
                         <span
@@ -95,7 +96,7 @@ const getPaymentStatusValueByOrder = () => {
                             aria-hidden="true"
                         ></span>
                     </UiButton>
-                    <UiButton v-if="!awb" disabled class="hover:text-blue-500 justify-start gap-1" variant="ghost" size="sm">
+                    <UiButton v-if="awb" disabled class="hover:text-blue-500 justify-start gap-1" variant="ghost" size="sm">
                         <BarcodeIcon class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                         Generate AWB
                         <span
@@ -105,14 +106,14 @@ const getPaymentStatusValueByOrder = () => {
                     </UiButton>
                 </UiPopoverContent>
             </UiPopover>
-            <div class="hidden md:flex gap-3 items-center self-stretch my-auto text-sm leading-none">
+            <div v-if="!isAdmin" class="hidden md:flex gap-3 items-center self-stretch my-auto text-sm leading-none">
                 <h4 class="self-stretch my-auto text-gray-500">Order Status</h4>
                 <OrderConfirmStatusDisplay :status-color="getStatusByOrder().color" :status-text="getStatusByOrder().value" />
             </div>
             <section class="flex gap-2">
                 <div v-if="isAdmin" class="flex gap-3 items-center self-stretch my-auto text-sm leading-none">
                     <h4 class="self-stretch my-auto text-gray-500">Order Status</h4>
-                    <OrderConfirmStatusSelect :statuses="statuses" :default-value="getStatusByOrder" />
+                    <OrderConfirmStatusSelect :statuses="statuses" :default-value="getStatusByOrder()" />
                 </div>
                 <div class="flex gap-3 items-center self-stretch my-auto">
                     <UiButton
@@ -123,7 +124,7 @@ const getPaymentStatusValueByOrder = () => {
                         <MapPin class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                         <span class="self-stretch py-1 pl-2 my-auto">Track Order</span>
                     </UiButton>
-                    <OrderConfirmActionMenu />
+                    <OrderConfirmActionMenu v-if="isAdmin" />
                 </div>
             </section>
         </div>
@@ -153,12 +154,12 @@ const getPaymentStatusValueByOrder = () => {
                                 <p class="self-stretch my-auto">Pending</p>
                             </div>
                             <p v-if="awb" class="self-stretch my-auto font-medium">{{ awb }}</p>
-                            <RefreshCcw class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
+                            <RefreshCcw class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" @click="generateAWB" />
                         </section>
                     </section>
                 </UiPopoverTrigger>
                 <UiPopoverContent class="w-fit flex flex-col gap-2 p-2" align="end">
-                    <UiButton v-if="awb" class="hover:text-blue-500 justify-start gap-1" variant="ghost" size="sm">
+                    <UiButton v-if="!awb" class="hover:text-blue-500 justify-start gap-1" variant="ghost" size="sm" @click="generateAWB">
                         <BarcodeIcon class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                         Generate AWB
                         <span
@@ -166,7 +167,7 @@ const getPaymentStatusValueByOrder = () => {
                             aria-hidden="true"
                         ></span>
                     </UiButton>
-                    <UiButton v-if="!awb" disabled class="hover:text-blue-500 justify-start gap-1" variant="ghost" size="sm">
+                    <UiButton v-if="awb" disabled class="hover:text-blue-500 justify-start gap-1" variant="ghost" size="sm">
                         <BarcodeIcon class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                         Generate AWB
                         <span
@@ -206,15 +207,15 @@ const getPaymentStatusValueByOrder = () => {
                             <dl class="flex flex-col w-full text-xs leading-loose">
                                 <div class="flex gap-10 justify-between items-start w-full">
                                     <dt class="text-gray-500">Amount</dt>
-                                    <dd class="text-zinc-800">$ 1,572.39</dd>
+                                    <dd class="text-zinc-800">{{ order.total }} lei</dd>
                                 </div>
                                 <div class="flex gap-10 justify-between items-start mt-2 w-full">
                                     <dt class="text-gray-500">Date</dt>
-                                    <dd class="text-zinc-800">27 DEC 2024</dd>
+                                    <dd class="text-zinc-800">{{ moment(order.createdAt).format('DD MMMM YYYY, HH:mm') }}</dd>
                                 </div>
                                 <div class="flex gap-10 justify-between items-start mt-2 w-full whitespace-nowrap">
                                     <dt class="text-gray-500">Reference</dt>
-                                    <dd class="text-zinc-800">S-241105007UPGS</dd>
+                                    <dd class="text-zinc-800">{{ order.shortId }}</dd>
                                 </div>
                             </dl>
                             <template v-if="bankTransferPayment">

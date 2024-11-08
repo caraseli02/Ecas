@@ -107,7 +107,7 @@ export interface OrderRequestInterface {
 export interface OrderRequestInterfaceResponse {
     status: string;
     data: {
-        order: OrderRequestInterface;
+        order: OrderInterface;
         children: any;
     };
 }
