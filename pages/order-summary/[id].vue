@@ -19,6 +19,7 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { toast } from '~/components/ui/toast';
+import { orderType } from '~/components/admin-table/order/options';
 
 const authStore = useAuthStore();
 const { getUserDetails, userCards } = storeToRefs(authStore);
@@ -27,7 +28,7 @@ const { $api } = useNuxtApp();
 
 const route = useRoute();
 
-const orderType = ref<OrderType | null>(null);
+const orderTypeValue = ref<OrderType | null>(null);
 const customerDetails = ref({
     title: 'Customer Details',
     name: '',
@@ -102,7 +103,7 @@ const getOrderInformation = async () => {
 
     if (response.status === 'success' && response.data.order) {
         data.value = response;
-        orderType.value = response.data.order.type;
+        orderTypeValue.value = response.data.order.type;
         stockOrder.value =
             response.data.order.type === OrderType.Mixed
                 ? response.data.children.find((child: any) => child.type === OrderType.Stock)
@@ -119,7 +120,7 @@ const getOrderInformation = async () => {
             notes.value = response.data.order.notes || [];
         }
 
-        if (orderType.value === OrderType.Mixed) {
+        if (orderTypeValue.value === OrderType.Mixed) {
             paymentMethod.value = paymentInfoHelper(
                 stockOrder.value as unknown as OrderInterface,
                 getUserDetails.value,
@@ -168,6 +169,10 @@ const downloadDocument = async () => {
     }
 };
 
+const getOrderTypeValueByOrder = () => {
+    return orderType.find((type) => type.value === orderTypeValue.value) || orderType[0];
+};
+
 onMounted(() => {
     getOrderInformation();
 });
@@ -192,10 +197,10 @@ onMounted(() => {
                                     data-layername="s"
                                     class="overflow-hidden self-stretch p-0.5 my-auto w-4 h-4 text-xs font-medium leading-none text-center text-white whitespace-nowrap bg-emerald-500 rounded-[100px]"
                                 >
-                                    S
+                                    {{ getOrderTypeValueByOrder().badge.text }}
                                 </span>
                                 <p data-layername="stockOrder" class="self-stretch my-auto text-sm leading-none text-zinc-800">
-                                    Stock Order
+                                    {{ getOrderTypeValueByOrder().label }}
                                 </p>
                             </div>
                         </section>
@@ -211,6 +216,17 @@ onMounted(() => {
                         <div class="flex gap-2">
                             <div class="text-slate-500">Shipping Method:</div>
                             <div class="text-neutral-700">{{ shippingMethod?.service.courierName }}</div>
+                        </div>
+                        <UiSeparator
+                            v-if="stockOrder && stockOrder.shippingDetails?.statusTracking?.estimatedPickUpDate"
+                            class="hidden lg:block h-4 bg-grey-100"
+                            orientation="vertical"
+                        />
+                        <div v-if="stockOrder && stockOrder.shippingDetails?.statusTracking?.estimatedPickUpDate" class="flex gap-2">
+                            <div class="text-slate-500">Estimated pick-up date:</div>
+                            <div class="text-neutral-700">
+                                {{ stockOrder.shippingDetails.statusTracking?.estimatedPickUpDate }}
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -266,14 +282,14 @@ onMounted(() => {
         <UiSeparator class="bg-grey-100" />
         <OrderConfirmAddress v-if="addresses" :shipping-address="addresses.shippingAddress" :billing-address="addresses.billingAddress" />
         <OrderConfirmStackItems
-            v-if="stockOrder && (orderType === OrderType.Stock || orderType === OrderType.Mixed)"
+            v-if="stockOrder && (orderTypeValue === OrderType.Stock || orderTypeValue === OrderType.Mixed)"
             :data="stockOrder"
-            :order-type="orderType"
+            :order-type="orderTypeValue"
         />
         <OrderConfirmBackItems
-            v-if="backOrder && (orderType === OrderType.Back || orderType === OrderType.Mixed)"
+            v-if="backOrder && (orderTypeValue === OrderType.Back || orderTypeValue === OrderType.Mixed)"
             :data="backOrder"
-            :order-type="orderType"
+            :order-type="orderTypeValue"
         />
         <section class="flex flex-col lg:flex-row gap-9">
             <div class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">

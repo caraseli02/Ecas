@@ -170,6 +170,7 @@ export interface OrderShippingDetailsInterface {
     statusTracking?: {
         awb: string;
         uniqueId: string;
+        estimatedPickUpDate?: string;
         history?: OrderStatusTracking[];
     };
     _id?: string;
