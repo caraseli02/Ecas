@@ -7,7 +7,7 @@ import { toast } from '~/components/ui/toast';
 import { useAuthStore } from '~/store/authStore';
 import { ref } from 'vue';
 import { orderType, statusColors } from '~/components/admin-table/order/options';
-import { paymentTypeOptions } from '~/components/client-table/transaction/options';
+import { paymentStatusOptions } from '~/components/client-table/transaction/options';
 
 const { $api } = useNuxtApp();
 const authStore = useAuthStore();
@@ -23,7 +23,7 @@ const statuses = ref(
         color: statusColors[status],
     }))
 );
-const paymentStatuses = ref(paymentTypeOptions);
+const paymentStatuses = ref(paymentStatusOptions);
 
 const user = authStore.userDetails;
 const isAdmin = ref(user?.role !== AccountRole.Client);
@@ -61,7 +61,7 @@ const getOrderTypeValueByOrder = () => {
 };
 
 const getPaymentStatusValueByOrder = () => {
-    return paymentStatuses.value.find((status) => status.value === props.order.paymentDetails?.type) || paymentStatuses.value[0];
+    return paymentStatuses.value.find((status) => status.value === props.order.paymentDetails?.status) || paymentStatuses.value[0];
 };
 </script>
 
