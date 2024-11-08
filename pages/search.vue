@@ -1,6 +1,6 @@
 <template>
     <div>
-        <SearchBreadcrumbs />
+        <SearchBreadcrumbs @change-path="changePath" />
         <SearchFilters
             v-if="filters"
             :filters="filters"
@@ -117,6 +117,16 @@ async function getProduct(
     products.value = data;
     filters.value = data.filters;
     console.log('products changed', flag, products.value, filters.value);
+}
+
+async function changePath() {
+    const { data } = await $api.product.fetchSearchProduct(keyword.value, route.query.category, atPage.value, perPage.value, {
+        sortBy: sortBy.value.name,
+        sortOrder: order.value === 0 ? 'desc' : 'asc',
+    });
+
+    products.value = data;
+    filters.value = data.filters;
 }
 
 const handleSortOrderChange = async () => {
