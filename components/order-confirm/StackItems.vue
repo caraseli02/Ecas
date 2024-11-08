@@ -50,10 +50,12 @@ const payment = computed(() => {
         <section class="flex flex-col gap-10 px-4 py-6 md:p-6 border border-gray-300 rounded-xl">
             <div v-if="lgAndLarger" class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
                 <span class="text-sm font-semibold leading-6 text-neutral-700 w-full max-w-[412px]">Product Details</span>
-                <span class="text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Unit Price</span>
-                <span class="text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Quantity</span>
-                <span class="text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Tax (19%)</span>
-                <span class="text-sm font-semibold leading-6 text-neutral-700 text-center min-w-[86px]">Subtotal</span>
+                <span class="text-sm font-semibold leading-6 text-neutral-700 text-end min-w-[86px]">Unit Price</span>
+                <span class="text-sm font-semibold leading-6 text-neutral-700 text-end min-w-[86px]">Quantity</span>
+                <span class="text-sm font-semibold leading-6 text-neutral-700 text-end min-w-[86px]">Delivered</span>
+                <span class="text-sm font-semibold leading-6 text-neutral-700 text-end min-w-[86px]">Payment Status</span>
+                <span class="text-sm font-semibold leading-6 text-neutral-700 text-end min-w-[86px]">Tax (19%)</span>
+                <span class="text-sm font-semibold leading-6 text-neutral-700 text-end min-w-[86px]">Subtotal</span>
             </div>
             <div class="flex flex-col gap-6">
                 <div
@@ -70,10 +72,10 @@ const payment = computed(() => {
                             />
                         </figure>
                         <div class="flex flex-col w-full md:max-w-none lg:max-w-[328px]">
-                            <div class="flex flex-col sm:flex-row sm:gap-2">
+                            <div class="flex flex-row gap-2">
                                 <span class="text-sm font-medium leading-6 text-gray-500">Item:</span>
                                 <div class="flex gap-5 justify-between">
-                                    <span class="text-sm font-medium leading-6 text-neutral-700">{{ item.productEntity?.name }}</span>
+                                    <span class="text-sm font-medium leading-6 text-neutral-700 max-w-[150px] md:max-w-[235px] lg:max-w-[328px] truncate">{{ item.productEntity?.name }}</span>
                                     <span
                                         v-if="item.discount.value"
                                         class="justify-center px-2 my-auto text-xs font-semibold leading-5 text-red-500 bg-white rounded-3xl border border-red-500 border-solid"
@@ -82,47 +84,55 @@ const payment = computed(() => {
                                     </span>
                                 </div>
                             </div>
-                            <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
+                            <div class="flex flex-row gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Description:</span>
-                                <span class="text-ellipsis text-neutral-700 w-full max-w-[235px] lg:max-w-[328px] truncate">
+                                <span class="text-ellipsis text-neutral-700 w-full max-w-[150px] md:max-w-[235px] lg:max-w-[328px] truncate">
                                     {{ item.productEntity?.description }}
                                 </span>
                             </div>
-                            <div class="flex flex-col sm:flex-row sm:gap-2 text-sm font-medium leading-6 whitespace-nowrap">
+                            <div class="flex flex-row gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Manufacturer:</span>
-                                <span class="text-ellipsis text-neutral-700">{{ item.productEntity?.manufacturer }}</span>
+                                <span class="truncate text-neutral-700 max-w-[150px] md:max-w-[235px] lg:max-w-[328px] ">{{ item.productEntity?.manufacturer }}</span>
                             </div>
                         </div>
                     </div>
                     <template v-if="lgAndLarger">
                         <div
-                            class="flex flex-col p-6 text-sm w-[86px]"
+                            class="flex justify-center items-center flex-col text-sm min-w-[86px]"
                             :class="item.discount.value ? 'justify-center self-stretch px-6 py-4 leading-5' : ''"
                         >
                             <p class="text-neutral-700">
                                 <span class="text-neutral-700" :class="item.discount.value ? 'line-through' : ''">
                                     {{ item.initialUnitPrice.toFixed(2) }}
                                 </span>
-                                <span class="font-semibold text-neutral-700">lei</span>
+                                <span class="text-neutral-700"> lei</span>
                             </p>
                             <p v-if="item.discount.value" class="mt-1 text-red-500">
                                 <span class="text-red-500"> {{ item.unitPriceAfterDiscounts.toFixed(2) }}</span>
-                                <span class="font-semibold text-red-500">lei</span>
+                                <span class=" text-red-500">lei</span>
                             </p>
                         </div>
-                        <div class="flex flex-col p-6 text-sm">
-                            <p class="font-semibold">{{ item.stock }}</p>
+                        <div class="flex justify-center items-center flex-col text-sm min-w-[86px]">
+                            <p >{{ item.stock }}</p>
                         </div>
-                        <div class="flex flex-col p-6 text-sm">
+                        <div class="flex justify-center items-center text-sm min-w-[86px]">
+                            <span class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1" aria-hidden="true"></span>
+                            <p >16</p>
+                        </div>
+                        <div class="flex justify-center items-center text-sm min-w-[86px]">
+                            <span class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1" aria-hidden="true"></span>
+                            <p >Paid</p>
+                        </div>
+                        <div class="flex justify-center items-end flex-col text-sm min-w-[86px]">
                             <p>
                                 {{ (item.stock * item.unitPriceAfterDiscounts * 0.19).toFixed(2) }}
-                                <span class="font-semibold">lei</span>
+                                <span >lei</span>
                             </p>
                         </div>
-                        <div class="flex flex-col p-6 text-sm">
+                        <div class="flex justify-center flex-col text-sm min-w-[86px] text-end">
                             <p>
                                 {{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}
-                                <span class="font-semibold">lei</span>
+                                <span > lei</span>
                             </p>
                         </div>
                     </template>
@@ -148,6 +158,23 @@ const payment = computed(() => {
                                 <p>{{ item.stock }}</p>
                             </article>
                             <article
+                                class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full"
+                            >
+                                <p>Delivered</p>
+                                <p class="flex gap-1">
+                                    <span class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1" aria-hidden="true"></span>
+                                    16</p>
+                            </article>
+                            <article
+                                class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full"
+                            >
+                                <p>Payment Status</p>
+                                <p class="flex gap-1">
+                                    <span class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1" aria-hidden="true"></span>
+                                    Paid
+                                </p>
+                            </article>
+                            <article
                                 class="flex gap-5 justify-between mt-1 w-full leading-6 text-neutral-800 max-md:flex-wrap max-md:max-w-full"
                             >
                                 <p>Tax (VAT 19%)</p>
@@ -170,6 +197,7 @@ const payment = computed(() => {
                         </section>
                     </template>
                 </div>
+                
             </div>
             <div v-if="orderType === OrderType.Mixed">
                 <UiSeparator class="bg-light-500" />
