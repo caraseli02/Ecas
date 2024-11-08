@@ -29,7 +29,10 @@
             </div>
         </template>
 
-        <div v-if="shippingPreferences.list" class="flex flex-col gap-4">
+        <div v-if="!shippingPreferences" class="flex flex-col gap-4">
+            <span class="text-neutral-700 text-sm font-medium leading-6">No delivery methods available for the current selection</span>
+        </div>
+        <div v-if="shippingPreferences?.list" class="flex flex-col gap-4">
             <span class="text-neutral-700 text-sm font-medium leading-6">Delivery Method</span>
             <div v-for="deliveryType in shippingPreferences.list" class="flex flex-col gap-4">
                 <div v-if="deliveryType.service">
