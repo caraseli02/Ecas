@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { DotsVerticalIcon } from '@radix-icons/vue';
-import { MapPin, CheckCircle, RefreshCcw, BarcodeIcon, PackageCheck, ArrowRight, InfoIcon } from 'lucide-vue-next';
+import { MapPin, RefreshCcw, BarcodeIcon, ArrowRight, InfoIcon } from 'lucide-vue-next';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const isAdmin = ref(true);
@@ -58,29 +57,7 @@ const smAndLarger = breakpoints.greaterOrEqual('sm') // sm and larger
             <MapPin class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
             <span class="self-stretch py-1 pl-2 my-auto">Track Order</span>
           </UiButton>
-          <UiPopover>
-            <UiPopoverTrigger>
-              <UiButton variant="ghost" size="icon"
-                class="flex overflow-hidden justify-center items-center self-stretch p-1 my-auto w-8 h-8 rounded-md bg-zinc-100"
-                aria-label="Additional options">
-                <DotsVerticalIcon alt="" class="object-contain self-stretch my-auto w-6 aspect-square" />
-              </UiButton>
-            </UiPopoverTrigger>
-            <UiPopoverContent class="w-fit flex flex-col gap-2 p-2" align="end">
-              <UiButton class="hover:text-blue-500 justify-start gap-2 min-w-[164px]" variant="ghost" size="sm">
-                <PackageCheck class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
-                Fulfill Order
-              </UiButton>
-              <UiButton class="hover:text-blue-500 justify-start gap-2 min-w-[164px]" variant="ghost" size="sm">
-                <CheckCircle class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
-                Mark as Paid
-              </UiButton>
-              <UiButton class="hover:text-blue-500 justify-start gap-2 min-w-[164px]" variant="ghost" size="sm">
-                <MapPin class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
-                Track Order
-              </UiButton>
-            </UiPopoverContent>
-          </UiPopover>
+          <OrderConfirmActionMenu />
         </div>
       </section>
     </div>
