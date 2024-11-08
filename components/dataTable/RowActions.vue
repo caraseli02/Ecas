@@ -131,15 +131,15 @@ if (props.service) {
                 </UiButton>
             </UiDropdownMenuTrigger>
             <UiDropdownMenuContent align="end" class="w-[167px]">
-                <template v-for="(option, index) of props.options">
+                <template v-for="(option, index) of props.options" :key="index">
                     <UiDropdownMenuItem
-                        v-if="option.enable && option.actionFn"
-                        :key="index"
+                        v-if="!option.navigateToRoute"
+                        :disabled="!option.enable || !option.actionFn"
                         @click="actionService[option.actionFn](option.actionParameter || (row.original.firebaseId as string))"
                     >
                         {{ option.label }}
                     </UiDropdownMenuItem>
-                    <UiDropdownMenuItem v-if="option.enable && option.navigateToRoute" :key="index">
+                    <UiDropdownMenuItem v-if="!option.actionFn" :disabled="!option.enable || !option.navigateToRoute">
                         <NuxtLink class="w-full h-full" :to="option.navigateToRoute">{{ option.label }}</NuxtLink>
                     </UiDropdownMenuItem>
                 </template>

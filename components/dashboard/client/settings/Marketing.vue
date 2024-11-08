@@ -11,13 +11,15 @@ const { getUserDetails } = storeToRefs(authStore);
 
 const userSettings = ref(getUserDetails.value.adminSettings?.marketingPreferences);
 
+const settings = ref(getUserDetails.value);
+
 const newsletterSubscription = ref(userSettings.value?.newsletter.app || false);
 
 watch(newsletterSubscription, async (newValue) => {
     if (newValue === null || !getUserDetails?.value.firebaseId) {
         return;
     }
-    await $api.controlPanel.markSettingsAsRead(
+    const response = await $api.controlPanel.markSettingsAsRead(
         {
             key: 'newsletter',
             ['app']: newValue,
@@ -25,6 +27,15 @@ watch(newsletterSubscription, async (newValue) => {
         'app',
         getUserDetails?.value.firebaseId
     );
+    if (response.status === 'success' && getUserDetails.value.adminSettings?.marketingPreferences) {
+        getUserDetails.value.adminSettings.marketingPreferences.newsletter.app = newValue;
+    }
+});
+
+watch(settings, (newSettings) => {
+    if (newSettings) {
+        newsletterSubscription.value = newSettings?.adminSettings?.marketingPreferences?.newsletter.app || false;
+    }
 });
 </script>
 

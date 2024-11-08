@@ -219,6 +219,9 @@ const { getCart, getCartSubtotal } = storeToRefs(cartStore);
 const notificationStore = useNotificationStore();
 const { unreadNotifications } = storeToRefs(notificationStore);
 
+const authStore = useAuthStore();
+const token = authStore.getToken();
+
 const totalCartPrice = ref(0);
 
 const subtotal = () => {
@@ -248,6 +251,7 @@ const favoritesCartModal = ref({
 
 const cartItems = ref(0);
 const cart = ref<CartInterface | null>(null);
+const category = ref<string | null>(route.query?.category?.toString() || null);
 
 const navItems = [
     {
@@ -297,12 +301,6 @@ Emitter.on('open-account-modal', async () => {
     showAccountModal.value = true;
 });
 
-// Emitter.on('notifications', async (notifications: boolean) => {
-//     if (notifications) {
-//         await fetchNofications();
-//     }
-// });
-
 const fetchList = async () => {
     const data = await getCart.value;
 
@@ -318,7 +316,7 @@ const fetchList = async () => {
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
     isLoading.value = true;
 
-    const { data: products } = (await $api.product.fetchSearchProduct(keyword, page, perPage)) as SearchData;
+    const { data: products } = (await $api.product.fetchSearchProduct(keyword, category.value, page, perPage)) as SearchData;
 
     if (!products) {
         return;
@@ -350,6 +348,11 @@ const fetchNofications = async () => {
     unreadNotifications.value = 0;
     notifications.value = [];
 
+    if (!token) {
+        isLoading.value = false;
+        return;
+    }
+
     const response = await $api.notifications.fetchGetNotifications();
     if (response.status !== 'success') {
         isLoading.value = false;
@@ -359,6 +362,7 @@ const fetchNofications = async () => {
     } else {
         isLoading.value = false;
     }
+
     notifications.value = response.description;
     Object.keys(notifications.value).forEach((notification) => {
         if (notifications.value[notification].seen === false) {
@@ -419,8 +423,6 @@ onMounted(() => {
 });
 
 Promise.all([fetchNofications(), fetchList()]);
-
-const authStore = useAuthStore();
 
 watch(
     () => authStore.token.value,

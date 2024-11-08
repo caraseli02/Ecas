@@ -75,7 +75,7 @@ export interface OrderInterface {
     parent?: string;
 }
 
-export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'user' | 'createdAt' | 'status' | 'total'>;
+export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'user' | 'createdAt' | 'status' | 'total' | 'paymentDetails'>;
 
 export interface OrderRequestInterface {
     shortId: string;
@@ -181,6 +181,7 @@ export interface PaymentDetails {
     // card?: StripeCardInterface;
     card?: Pick<PaymentMethod.Card, 'last4' | 'exp_year' | 'exp_month' | 'brand'>;
     invoiceId?: string;
+    invoiceShortId?: string;
 }
 
 export interface StripeCardInterface {
@@ -211,6 +212,9 @@ export enum PaymentStatusEnum {
     Paid = 1,
     Canceled = 2,
     Declined = 3,
+    Failed = 4,
+    Refunding = 5,
+    Refunded = 6,
 }
 
 export const getPaymentStatusById = <

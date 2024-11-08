@@ -58,7 +58,7 @@ const searchSimilarProducts = async () => {
     isLoading.value = true;
 
     checkedFeatures.value = features.filter((item) => item.checked);
-    const { data } = await $api.product.fetchSearchProduct('', 1, 10, {}, checkedFeatures.value);
+    const { data } = await $api.product.fetchSearchProduct('', null, 1, 10, {}, checkedFeatures.value);
 
     totalSimilarProducts.value = !checkedFeatures.value.length ? 0 : data.items.total_items;
     similarProducts.value = data.items;
@@ -68,7 +68,7 @@ const searchSimilarProducts = async () => {
 };
 
 const showSimilarProducts = async () => {
-    productStore.showSimilarOnly = true
+    productStore.showSimilarOnly = true;
     await router.push({
         path: '/search',
         query: { similar: true },

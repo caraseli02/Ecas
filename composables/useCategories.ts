@@ -34,10 +34,8 @@ export const useCategories = () => {
             }>(`${config.public.BASE_URL_API}/taxonomy`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            console.log(categories.value);
             categories.value = response.data.data;
             taxonomyId.value = response.data._id;
-            console.log(categories.value);
         } catch (error) {
             console.error('Failed to fetch counts from API:', error);
         } finally {

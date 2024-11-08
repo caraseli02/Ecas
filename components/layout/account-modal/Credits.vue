@@ -34,7 +34,7 @@ const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
 const availableCredit = computed(() => getUserDetails.value?.adminSettings?.customerCredit?.available || 0);
-const balance = computed(() => getUserDetails.value?.adminSettings?.customerCredit?.spent || 0);
+const balance = computed(() => getUserDetails.value?.adminSettings?.customerCredit?.limit || 0);
 
 // Format numbers with two decimal places and euro symbol
 const availableCreditFormatted = computed(() => `${availableCredit.value.toFixed(2)} lei`);

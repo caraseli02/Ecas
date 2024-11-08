@@ -129,7 +129,6 @@ const getCustomerCredit = async () => {
         return;
     } else {
         credit.value = customerCreditHelper(response.data);
-        console.log(credit.value);
         error.value = false;
         emptyData.value = false;
         setTimeout(() => {

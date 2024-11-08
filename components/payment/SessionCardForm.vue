@@ -1,5 +1,5 @@
 <template>
-    <div class="relative min-h-screen md:w-full">
+    <div v-if="getOrderClientSecret" class="relative min-h-screen md:w-full">
         <UiSkeleton v-show="showSkeletonLoader" class="w-full h-full absolute inset-0" />
         <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-full md:w-1/2 mx-auto" @submit.prevent="handleSubmit">
             <div id="payment-element" />
@@ -8,12 +8,17 @@
             </div>
         </form>
     </div>
+    <div v-else>
+        <p>No data available</p>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { loadStripe, PaymentIntentResult, Stripe, StripeElements } from '@stripe/stripe-js';
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
+
+const { $api } = useNuxtApp();
 
 const router = useRouter();
 const route = useRoute();
@@ -25,6 +30,7 @@ const orderId = ref<string>();
 let stripe: Stripe | null;
 let elements: StripeElements;
 let paymentIntent: PaymentIntentResult;
+let submitAttempt = false;
 
 const showSkeletonLoader = ref(false);
 onMounted(async () => {
@@ -39,7 +45,9 @@ onMounted(async () => {
         return null;
     }
 
+    console.log('Retrieving payment intent', getOrderClientSecret.value);
     paymentIntent = await stripe.retrievePaymentIntent(getOrderClientSecret.value);
+    console.log(paymentIntent);
     elements = stripe.elements({
         mode: 'payment',
         amount: paymentIntent.paymentIntent?.amount,
@@ -72,6 +80,7 @@ onMounted(async () => {
 });
 
 const handleSubmit = async () => {
+    submitAttempt = true;
     if (isLoading.value || !getOrderClientSecret.value || !stripe) {
         return;
     }
@@ -81,7 +90,6 @@ const handleSubmit = async () => {
     await elements.submit();
     const tempClientSecret = getOrderClientSecret.value;
 
-    cartStore.emptyOrderClientSecret();
     cartStore.emptyPreviousCheckoutError();
 
     const result = await stripe.confirmPayment({
@@ -94,13 +102,15 @@ const handleSubmit = async () => {
     });
 
     if (result.error) {
+        console.log('error', result.error);
         cartStore.setPreviousCheckoutError(result.error);
-        await router.push({ path: '/checkout/fail', query: {} });
+        await router.push({ path: `/checkout/fail`, query: { id: orderId.value } });
         isLoading.value = false;
         return;
     }
 
     await router.push({ path: `/order-summary/${orderId.value}` });
+    cartStore.emptyOrderClientSecret();
 
     // if (result.paymentIntent.status === 'requires_action' && result.paymentIntent.next_action?.redirect_to_url?.url) {
     //     window.location.href = result.paymentIntent.next_action.redirect_to_url.url;
@@ -108,4 +118,16 @@ const handleSubmit = async () => {
     //     await router.push({ path: `/order-summary/${orderId.value}` });
     // }
 };
+
+onBeforeRouteLeave(async () => {
+    console.log('Leaving session page');
+
+    if (!submitAttempt && orderId.value) {
+        console.log('Cancelling order. Payment not attempted');
+        await $api.orders.cancelOrder(orderId.value);
+
+        cartStore.emptyPreviousCheckoutError();
+        cartStore.emptyOrderClientSecret();
+    }
+});
 </script>
