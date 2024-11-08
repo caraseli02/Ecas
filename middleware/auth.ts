@@ -2,10 +2,10 @@ import { useAuthStore } from '~~/store/authStore';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const authStore = useAuthStore();
-    const token = authStore.getToken();
+    const user = authStore.loggedInUser;
 
     // redirect the user to the home page
-    if (!token) {
+    if (!user) {
         return navigateTo({
             path: '/',
         });

@@ -46,7 +46,7 @@ const payment = computed(() => {
 
 <template>
     <div v-if="stockItems.length > 0" class="flex flex-col gap-4">
-        <OrderConfirmStackItemsHeader />
+        <OrderConfirmStackItemsHeader :order="data" />
         <section class="flex flex-col gap-10 px-4 py-6 md:p-6 border border-gray-300 rounded-xl">
             <div v-if="lgAndLarger" class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between self-stretch">
                 <span class="text-sm font-semibold leading-6 text-neutral-700 w-full max-w-[412px]">Product Details</span>
@@ -75,7 +75,10 @@ const payment = computed(() => {
                             <div class="flex flex-row gap-2">
                                 <span class="text-sm font-medium leading-6 text-gray-500">Item:</span>
                                 <div class="flex gap-5 justify-between">
-                                    <span class="text-sm font-medium leading-6 text-neutral-700 max-w-[150px] md:max-w-[235px] lg:max-w-[328px] truncate">{{ item.productEntity?.name }}</span>
+                                    <span
+                                        class="text-sm font-medium leading-6 text-neutral-700 max-w-[150px] md:max-w-[235px] lg:max-w-[328px] truncate"
+                                        >{{ item.productEntity?.name }}</span
+                                    >
                                     <span
                                         v-if="item.discount.value"
                                         class="justify-center px-2 my-auto text-xs font-semibold leading-5 text-red-500 bg-white rounded-3xl border border-red-500 border-solid"
@@ -86,13 +89,17 @@ const payment = computed(() => {
                             </div>
                             <div class="flex flex-row gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Description:</span>
-                                <span class="text-ellipsis text-neutral-700 w-full max-w-[150px] md:max-w-[235px] lg:max-w-[328px] truncate">
+                                <span
+                                    class="text-ellipsis text-neutral-700 w-full max-w-[150px] md:max-w-[235px] lg:max-w-[328px] truncate"
+                                >
                                     {{ item.productEntity?.description }}
                                 </span>
                             </div>
                             <div class="flex flex-row gap-2 text-sm font-medium leading-6 whitespace-nowrap">
                                 <span class="text-gray-500">Manufacturer:</span>
-                                <span class="truncate text-neutral-700 max-w-[150px] md:max-w-[235px] lg:max-w-[328px] ">{{ item.productEntity?.manufacturer }}</span>
+                                <span class="truncate text-neutral-700 max-w-[150px] md:max-w-[235px] lg:max-w-[328px]">{{
+                                    item.productEntity?.manufacturer
+                                }}</span>
                             </div>
                         </div>
                     </div>
@@ -109,30 +116,36 @@ const payment = computed(() => {
                             </p>
                             <p v-if="item.discount.value" class="mt-1 text-red-500">
                                 <span class="text-red-500"> {{ item.unitPriceAfterDiscounts.toFixed(2) }}</span>
-                                <span class=" text-red-500">lei</span>
+                                <span class="text-red-500">lei</span>
                             </p>
                         </div>
                         <div class="flex justify-center items-center flex-col text-sm min-w-[86px]">
-                            <p >{{ item.stock }}</p>
+                            <p>{{ item.stock }}</p>
                         </div>
                         <div class="flex justify-center items-center text-sm min-w-[86px]">
-                            <span class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1" aria-hidden="true"></span>
-                            <p >16</p>
+                            <span
+                                class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1"
+                                aria-hidden="true"
+                            ></span>
+                            <p>16</p>
                         </div>
                         <div class="flex justify-center items-center text-sm min-w-[86px]">
-                            <span class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1" aria-hidden="true"></span>
-                            <p >Paid</p>
+                            <span
+                                class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1"
+                                aria-hidden="true"
+                            ></span>
+                            <p>Paid</p>
                         </div>
                         <div class="flex justify-center items-end flex-col text-sm min-w-[86px]">
                             <p>
                                 {{ (item.stock * item.unitPriceAfterDiscounts * 0.19).toFixed(2) }}
-                                <span >lei</span>
+                                <span>lei</span>
                             </p>
                         </div>
                         <div class="flex justify-center flex-col text-sm min-w-[86px] text-end">
                             <p>
                                 {{ (item.stock * item.unitPriceAfterDiscounts).toFixed(2) }}
-                                <span > lei</span>
+                                <span> lei</span>
                             </p>
                         </div>
                     </template>
@@ -162,15 +175,22 @@ const payment = computed(() => {
                             >
                                 <p>Delivered</p>
                                 <p class="flex gap-1">
-                                    <span class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1" aria-hidden="true"></span>
-                                    16</p>
+                                    <span
+                                        class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1"
+                                        aria-hidden="true"
+                                    ></span>
+                                    16
+                                </p>
                             </article>
                             <article
                                 class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full"
                             >
                                 <p>Payment Status</p>
                                 <p class="flex gap-1">
-                                    <span class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1" aria-hidden="true"></span>
+                                    <span
+                                        class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1"
+                                        aria-hidden="true"
+                                    ></span>
                                     Paid
                                 </p>
                             </article>
@@ -197,7 +217,6 @@ const payment = computed(() => {
                         </section>
                     </template>
                 </div>
-                
             </div>
             <div v-if="orderType === OrderType.Mixed">
                 <UiSeparator class="bg-light-500" />

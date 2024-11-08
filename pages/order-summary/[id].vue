@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BoxIcon, FileText, MapPin, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
+import { FileText, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
 import { DotsVerticalIcon } from '@radix-icons/vue';
 
 import {
@@ -94,8 +94,6 @@ const stockOrder = ref<OrderRequestInterface>({} as OrderRequestInterface);
 const backOrder = ref<OrderRequestInterface>({} as OrderRequestInterface);
 
 const getOrderInformation = async () => {
-    console.log(route.params.id);
-    // Fetch order information
     const orderId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
     const response = (await $api.orders.getOrderById(orderId)) as OrderRequestInterfaceResponse;
 
@@ -143,7 +141,7 @@ const getOrderInformation = async () => {
         };
         customerDetails.value = {
             title: 'Customer Details',
-            name: `${response?.data?.order.user.contactDetails.firstName} ${response?.data?.order.user.contactDetails.lastName}`,
+            name: `${response?.data?.order.user.contactDetails?.firstName} ${response?.data?.order.user.contactDetails?.lastName}`,
             email: response?.data?.order.user.contactDetails.email,
             phone: response?.data?.order.shippingDetails.phone,
         };
@@ -166,16 +164,20 @@ onMounted(() => {
                             Order ID: <span class="text-neutral-700 ml-4">{{ data.data?.order?.shortId }}</span>
                         </h4>
                         <section class="flex gap-4 items-center">
-                            <h2 data-layername="orderType" class="self-stretch my-auto text-sm leading-none text-gray-500">
-                            Order Type
-                            </h2>
-                            <div data-layername="orderType" class="flex overflow-hidden gap-2 justify-center items-center self-stretch my-auto rounded-md">
-                            <span data-layername="s" class="overflow-hidden self-stretch p-0.5 my-auto w-4 h-4 text-xs font-medium leading-none text-center text-white whitespace-nowrap bg-emerald-500 rounded-[100px]">
-                                S
-                            </span>
-                            <p data-layername="stockOrder" class="self-stretch my-auto text-sm leading-none text-zinc-800">
-                                Stock Order
-                            </p>
+                            <h2 data-layername="orderType" class="self-stretch my-auto text-sm leading-none text-gray-500">Order Type</h2>
+                            <div
+                                data-layername="orderType"
+                                class="flex overflow-hidden gap-2 justify-center items-center self-stretch my-auto rounded-md"
+                            >
+                                <span
+                                    data-layername="s"
+                                    class="overflow-hidden self-stretch p-0.5 my-auto w-4 h-4 text-xs font-medium leading-none text-center text-white whitespace-nowrap bg-emerald-500 rounded-[100px]"
+                                >
+                                    S
+                                </span>
+                                <p data-layername="stockOrder" class="self-stretch my-auto text-sm leading-none text-zinc-800">
+                                    Stock Order
+                                </p>
                             </div>
                         </section>
                     </div>
@@ -196,27 +198,15 @@ onMounted(() => {
                 <div
                     class="md:w-full lg:w-fit flex justify-between md:justify-end gap-2 md:gap-4 order-2 lg:order-1 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
                 >
-                    <UiButton
-                        variant="secondary"
-                        size="xs"
-                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
-                    >
+                    <UiButton variant="secondary" size="xs" class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100">
                         <FileText class="shrink-0 w-4 aspect-square stroke-[1.5]" />
                         Proforma Invoice
                     </UiButton>
-                    <UiButton
-                        variant="secondary"
-                        size="xs"
-                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
-                    >
+                    <UiButton variant="secondary" size="xs" class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100">
                         <FileText class="shrink-0 w-4 aspect-square stroke-[1.5]" />
                         Invoices
                     </UiButton>
-                    <UiButton
-                        variant="secondary"
-                        size="icon"
-                        class="flex gap-2 h-8 justify-center text-slate-500 rounded-lg bg-zinc-100"
-                    >
+                    <UiButton variant="secondary" size="icon" class="flex gap-2 h-8 justify-center text-slate-500 rounded-lg bg-zinc-100">
                         <DotsVerticalIcon class="shrink-0 w-4 aspect-square stroke-[1.5]" />
                     </UiButton>
                     <!-- <UiButton

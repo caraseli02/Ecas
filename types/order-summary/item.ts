@@ -78,6 +78,7 @@ export interface OrderInterface {
 export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'user' | 'createdAt' | 'status' | 'total' | 'paymentDetails'>;
 
 export interface OrderRequestInterface {
+    _id: string;
     shortId: string;
     user: UserInterface;
     userId?: string;
@@ -172,6 +173,13 @@ export interface OrderShippingDetailsInterface {
         history?: OrderStatusTracking[];
     };
     _id?: string;
+}
+
+export interface ShippingCourierCreateOrderResponse {
+    service: ShippingOrderPricingOption;
+    estimatedPickUpDate: string;
+    awb: string;
+    uniqueId: string;
 }
 
 export interface PaymentDetails {
