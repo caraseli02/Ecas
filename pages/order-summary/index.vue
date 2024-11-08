@@ -8,7 +8,7 @@
                         <OrderSummaryBackOrderWarning v-if="showWarning" />
                         <OrderSummaryTable
                             :loading="loading"
-                            @update-subtotal="calculateSubtotal($event, order)"
+                            @update-subtotal="updateSubtotal($event, order)"
                             @delete-selected="deleteSelected"
                         />
                         <div class="hidden lg:flex flex-col">
@@ -18,7 +18,6 @@
                     </div>
                     <div class="flex flex-col justify-start">
                         <OrderStockType
-                            v-if="shippingPreferences"
                             :items="cartItems"
                             :account-credit="accountCredit"
                             :order="order"
@@ -75,7 +74,7 @@ const { user, getShipping, getBilling } = useUser();
 const userId = computed(() => user.value?.firebaseId);
 
 // Cart Management
-const { cartId, cartItems, fetchList, calculateSubtotal, calculateDiscount, showWarning } = useCart();
+const { cartId, cartItems, fetchList, calculateSubtotal, calculateDiscount, showWarning, fetchShippingPrices } = useCart();
 
 const orderItems = computed(() => {
     return cartItems.value.map((item) => {
@@ -132,7 +131,7 @@ const getCustomerCredit = async () => {
     try {
         const response = await $api.user.fetchCustomerCredit(userId.value);
 
-        if (response.status === 'success') {
+        if (response.status === 'success' && response.data) {
             const creditData = response.data;
             accountCredit.value = {
                 limit: creditData.limit,
@@ -148,10 +147,6 @@ const getCustomerCredit = async () => {
     } finally {
         loading.value = false;
     }
-};
-
-const fetchShippingPrices = async () => {
-    return (await $api.orders.getShippingPricesForOrder(order.value)).data as ShippingOrderPricingResponse;
 };
 
 const shippingPreferences = ref(null as ShippingOrderPricingResponse | null);
@@ -202,11 +197,16 @@ Emitter.on('delete-product-item', (object: { id: string }) => {
     cartItems.value = cartItems.value.filter((product) => product.id !== object.id);
 });
 
+const updateSubtotal = async (items: CartProductsInterface[], order) => {
+    shippingPreferences.value = await fetchShippingPrices(order);
+    await calculateSubtotal(items, order);
+};
+
 // Watches and Reactions
 watch(
     cartItems,
-    () => {
-        calculateSubtotal(cartItems.value, order);
+    async () => {
+        await calculateSubtotal(cartItems.value, order.value);
         calculateDiscount(cartItems.value, order);
         order.value.products = orderItems.value;
     },
@@ -218,10 +218,10 @@ onMounted(async () => {
     await fetchCards(); // Fetch user's payment cards
     await getCustomerCredit(); // Fetch customer credit information
     await fetchList(); // Fetch cart items
-    shippingPreferences.value = await fetchShippingPrices(); // Fetch shipping prices
-
+    shippingPreferences.value = await fetchShippingPrices(order.value); // Fetch shipping prices
+    console.log('shippingPreferences', shippingPreferences.value);
     // Initial calculations
-    calculateSubtotal(cartItems.value, order);
+    await calculateSubtotal(cartItems.value, order);
     calculateDiscount(cartItems.value, order);
     order.value.products = orderItems.value;
     loading.value = false;

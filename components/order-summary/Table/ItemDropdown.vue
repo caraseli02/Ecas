@@ -99,6 +99,8 @@ import AdditionalDetails from './AdditionalDetails.vue';
 
 import { OrderType } from '~/types';
 
+const emits = defineEmits(['updateQuantity']);
+
 const props = defineProps<{
     item: CartProductsInterface;
     shortStock: boolean;
@@ -112,6 +114,11 @@ const quantity = ref(props.stockItem ? props.item.stock : props.item.backorder_s
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
+
+watch(quantity, () => {
+    console.log('updateQuantity1');
+    emits('updateQuantity');
+});
 
 const discounts = computed(() => {
     if (!props.item.productEntity) {
