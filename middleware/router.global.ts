@@ -11,6 +11,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     if (!user) {
         // if the path is not any product page or search, redirect to homepage
+        // TODO: add here Contact and other pages
         if (!to.path.startsWith('/product') && !to.path.startsWith('/search') && to.path !== '/') {
             return navigateTo('/');
         }
