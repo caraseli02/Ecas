@@ -12,6 +12,16 @@ const frameworks = [
 
 const open = ref(false)
 const value = ref('')
+
+const emit = defineEmits(['bankSelect'])
+
+const handleSelect = (event: CustomEvent) => {
+  if (typeof event.detail.value ==='string') {
+    value.value = event.detail.value
+    emit('bankSelect', value.value)
+  }
+  open.value = false
+}
 </script>
 
 <template>
@@ -39,12 +49,7 @@ const value = ref('')
               v-for="framework in frameworks"
               :key="framework.value"
               :value="framework.value"
-              @select="(ev) => {
-                if (typeof ev.detail.value === 'string') {
-                  value = ev.detail.value
-                }
-                open = false
-              }"
+              @select="handleSelect"
             >
               {{ framework.label }}
               <CheckIcon

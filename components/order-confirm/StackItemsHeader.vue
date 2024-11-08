@@ -69,7 +69,7 @@ const getPaymentStatusValueByOrder = () => {
 <template>
     <section class="flex flex-col">
         <div class="flex justify-end md:justify-between flex-wrap gap-3 items-center w-full max-md:max-w-full">
-            <UiPopover v-if="smAndLarger">
+            <UiPopover v-if="smAndLarger && isAdmin">
                 <UiPopoverTrigger>
                     <section class="flex gap-3 items-center text-sm leading-6 whitespace-nowrap text-zinc-800">
                         <h2 class="self-stretch my-auto text-gray-500">AWB</h2>
