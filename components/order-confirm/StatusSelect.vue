@@ -40,8 +40,13 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useNuxtApp } from '#app';
+import { toast } from '~/components/ui/toast';
+
+const { $api } = useNuxtApp();
 
 const props = defineProps<{
+    orderId: string;
     defaultValue: { value: string; label: string; color: string };
     statuses: { value: string; label: string; color: string }[];
 }>();
@@ -50,7 +55,6 @@ const selected = ref();
 const isOpen = ref(false);
 const previousValue = ref();
 let isCanceling = false;
-console.log(props.defaultValue);
 
 // Watch for status change
 watch(selected, (newValue, oldVal) => {
@@ -63,8 +67,28 @@ watch(selected, (newValue, oldVal) => {
 });
 
 // Confirm change
-const confirmChange = () => {
+const confirmChange = async () => {
     isOpen.value = false; // Close dialog
+
+    const result = (await $api.orders.changeStatus(props.orderId, selected.value)) as unknown as {
+        status: string;
+        description: string;
+    };
+    console.log(result);
+    if (result.status !== 'success') {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: result.description || 'Failed to update order status',
+        });
+        return;
+    }
+
+    toast({
+        variant: 'success',
+        title: 'Success',
+        description: 'Order status updated successfully',
+    });
 };
 
 // Cancel change

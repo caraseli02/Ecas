@@ -113,7 +113,7 @@ const getPaymentStatusValueByOrder = () => {
             <section class="flex gap-2">
                 <div v-if="isAdmin" class="flex gap-3 items-center self-stretch my-auto text-sm leading-none">
                     <h4 class="self-stretch my-auto text-gray-500">Order Status</h4>
-                    <OrderConfirmStatusSelect :statuses="statuses" :default-value="getStatusByOrder()" />
+                    <OrderConfirmStatusSelect :statuses="statuses" :default-value="getStatusByOrder()" :order-id="order._id" />
                 </div>
                 <div class="flex gap-3 items-center self-stretch my-auto">
                     <UiButton
