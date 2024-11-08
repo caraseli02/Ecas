@@ -44,6 +44,7 @@
                         size="lg"
                         class="relative z-10"
                     />
+                    <FormInput v-model="data.city.value" :error="data.city.error" label="City" size="lg" placeholder="Bucharest" />
                     <FormInput
                         v-model="data.name1.value"
                         :error="data.name1.error"
@@ -73,8 +74,8 @@
                         v-if="props.deleteButtonEnable"
                         class="flex items-center justify-center rounded-lg text-rose-500 py-[7px] px-7 border border-[#FA4B4B]"
                         @click="
+                            handleDelete();
                             $emit('close');
-                            Emitter.emit('delete', props.index);
                         "
                     >
                         <TrashIcon class="w-6 h-6 mr-2" />
@@ -90,8 +91,8 @@
                         :disabled="!data.region.value && !data.country.value"
                         class="flex justify-center px-5 py-2 rounded-lg bg-blue-500 leading-[1.75] text-white font-medium"
                         @click="
+                            handleSave();
                             $emit('close');
-                            Emitter.emit('edit', { address: data, index: props.index });
                         "
                     >
                         Save
@@ -103,12 +104,11 @@
 </template>
 
 <script setup lang="ts">
-import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
+import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { countries } from '@/data/countries';
 import { FormSelectOption } from '~/types';
-import Emitter from 'tiny-emitter/instance.js';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { getRegionByCountry } from '~/helpers/form.helper';
 
@@ -125,10 +125,19 @@ const props = defineProps({
         type: Boolean,
         required: true,
     },
+    type: {
+        type: String,
+        required: true,
+    },
 });
 
-defineEmits(['close']);
+const emit = defineEmits(['close', 'edit-shipping-address', 'delete-shipping-address', 'edit-billing-address', 'delete-billing-address']);
+
 const data = ref({
+    _id: {
+        value: '',
+        error: '',
+    },
     alias: {
         value: '',
         error: '',
@@ -146,6 +155,10 @@ const data = ref({
             value: '',
             label: '',
         },
+        error: '',
+    },
+    city: {
+        value: '',
         error: '',
     },
     name1: {
@@ -180,10 +193,12 @@ const setCustomerInformation = () => {
     data.value.name2.value = props.address.name2;
     data.value.postcode.value = props.address.postcode;
     data.value.phone.value = props.address.phone;
+    data.value.city.value = props.address.city;
+    data.value._id.value = props.address._id;
     getCountryRegion(props.address.country, props.address.region);
 };
 
-await setCustomerInformation();
+setCustomerInformation();
 
 watch(data.value.country, (newVal) => {
     if (newVal?.value) {
@@ -202,6 +217,21 @@ watch(data.value.country, (newVal) => {
             }) || [];
     }
 });
+
+// Other data and function definitions here...
+
+const handleSave = () => {
+    // Emit the edit event, debounced
+    if (props.type === 'shipping') {
+        emit('edit-shipping-address', { address: data.value, index: props.index });
+    } else {
+        emit('edit-billing-address', { address: data.value, index: props.index });
+    }
+};
+
+const handleDelete = () => {
+    emit('delete-shipping-address', props.index);
+};
 
 // onMounted(() => {
 //

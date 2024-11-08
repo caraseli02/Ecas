@@ -13,7 +13,10 @@ class ControlPanelService extends HttpFactory {
 
     async fetchCustomerSettings(id: string) {
         const token = this.authStore.getToken();
-        return await this.call<AccountAdminSettings>('GET', `${this.SETTINGS_RESOURCE}/${id}`, null, {
+        return await this.call<{
+            status: string;
+            data: { adminSettings: AccountAdminSettings };
+        }>('GET', `${this.SETTINGS_RESOURCE}/${id}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -29,7 +32,7 @@ class ControlPanelService extends HttpFactory {
             },
         };
         console.log(data);
-        return await this.call<AccountAdminSettings>('POST', `${this.SETTINGS_RESOURCE}/${id}`, data, {
+        return await this.call<{ status: string; data: string }>('POST', `${this.SETTINGS_RESOURCE}/${id}`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
@@ -85,22 +88,96 @@ class ControlPanelService extends HttpFactory {
 
     async fetchShipping(id: string, type: number) {
         const token = this.authStore.getToken();
-        return await this.call<AccountAdminSettings>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
+        return await this.call<{
+            status: string;
+            data: any;
+        }>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
 
-    async updateShipping(id: string, address: ShippingAddressInterface[], type: number) {
+    async fetchBilling(id: string, type: number) {
+        const token = this.authStore.getToken();
+        return await this.call<{
+            status: string;
+            data: any;
+        }>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async updateShipping(address: ShippingAddressInterface, userId: string) {
         const token = this.authStore.getToken();
 
-        return await this.call<AccountAdminSettings>(
-            'POST',
-            `${this.MAIN}/${id}/${type === 0 ? 'personal/shipping-address' : 'business/shipping-address'}`,
+        return await this.call<{ status: string; data: string }>(
+            'PATCH',
+            `user/shipping-address/${userId}`,
             { address: address },
             {
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
+    }
+
+    async updateBilling(address: ShippingAddressInterface, userId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{ status: string; data: string }>(
+            'PATCH',
+            `user/billing-address/${userId}`,
+            { address: address },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+    }
+
+    async addShipping(address: ShippingAddressInterface, userId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{ status: string; data: string }>(
+            'POST',
+            `user/shipping-address/${userId}`,
+            { address: address },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+    }
+
+    async addBilling(address: ShippingAddressInterface, userId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{ status: string; data: string }>(
+            'POST',
+            `user/billing-address/${userId}`,
+            { address: address },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+    }
+
+    async deleteShipping(id: string, userId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{
+            status: string;
+            data: string;
+        }>('DELETE', `user/shipping-address/${id}/${userId}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async deleteBilling(id: string, userId: string) {
+        const token = this.authStore.getToken();
+
+        return await this.call<{
+            status: string;
+            data: string;
+        }>('DELETE', `user/billing-address/${id}/${userId}`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
     }
 
     async fetchAccountDetails(id: string, type: number) {

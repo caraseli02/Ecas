@@ -5,7 +5,7 @@
         <div class="flex items-start">
             <NuxtLink :to="`/product/${item._id}`" class="flex flex-shrink-0 mr-2.5 md:mr-[15px]">
                 <img
-                    :src="item.details.ProductImage.ProductImageLarge"
+                    :src="item.details?.ProductImage?.ProductImageLarge"
                     :alt="item.name"
                     class="w-[100px] h-[100px] md:w-[120px] md:h-[120px]"
                 />

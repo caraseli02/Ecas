@@ -58,6 +58,7 @@ class ProductService extends HttpFactory {
 
     async fetchSearchProduct(
         keyword: string,
+        category: string | null,
         page = 1,
         perPage = 10,
         sort = {},
@@ -85,6 +86,10 @@ class ProductService extends HttpFactory {
                 manufacturer: keyword,
                 manufacturerCode: keyword,
             };
+        }
+
+        if (category) {
+            filters = { ...filters, category };
         }
 
         return await this.call<ProductSearchResponse>(

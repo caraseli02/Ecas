@@ -12,7 +12,7 @@
                     <div class="md:w-[301px] lg:w-auto">
                         <div class="flex items-center mb-2">
                             <div class="font-semibold leading-normal md:mr-6">
-                                {{ address.name || 'Address Alias ' + (index + 1) }}
+                                {{ address.alias || 'Address Alias ' + (index + 1) }}
                             </div>
                             <div
                                 v-if="address.default"
@@ -60,7 +60,7 @@
                         <button
                             v-if="addresses.length > 1"
                             class="flex items-center justify-center w-11 h-11 bg-[#F2F2F2] bg-opacity-95 rounded-full text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
-                            @click="Emitter.emit('delete', index)"
+                            @click="handleDeleteAddress(index)"
                         >
                             <TrashIcon class="w-5 h-5" />
                         </button>
@@ -79,18 +79,23 @@
         </div>
         <Teleport to="body">
             <Transition name="fade">
-                <DashboardControlPanelAddAddress v-if="addAddressModal" @close="addAddressModal = false" @add="handleAddAddress" />
+                <DashboardControlPanelAddAddress
+                    v-if="addAddressModal"
+                    :type="'shipping'"
+                    @close="addAddressModal = false"
+                    @add-shipping-address="handleAddAddress"
+                />
             </Transition>
             <Transition name="fade">
                 <DashboardControlPanelEditAddress
                     v-if="editAddressModal"
                     :index="indexOfEditAddressModal"
                     :address="editAddressModal"
+                    :type="'shipping'"
                     :delete-button-enable="addresses.length > 1"
-                    @close="
-                        editAddressModal = null;
-                        indexOfEditAddressModal = 0;
-                    "
+                    @edit-shipping-address="handleEditAddress"
+                    @close="editAddressModal = null"
+                    @delete-shipping-address="handleDeleteAddress"
                 />
             </Transition>
             <div
@@ -112,8 +117,9 @@ import CheckIcon from '@/assets/icons/check-circle.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { useNuxtApp } from '#app';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
-import Emitter from 'tiny-emitter/instance';
 import { toast } from '~/components/ui/toast';
+
+const route = useRoute();
 
 const addAddressModal = ref(false);
 const editAddressModal = ref();
@@ -134,6 +140,7 @@ const addresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterface
 const newAddress = ref<ShippingAddressInterface>({} as ShippingAddressInterface);
 
 const setAsDefault = async (address: any) => {
+    console.log(address);
     addresses.value.forEach((item: any) => {
         item.default = false;
     });
@@ -145,24 +152,45 @@ const setAsDefault = async (address: any) => {
         }
     });
 
-    if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
+    if (!props.id || props.accountType || typeof props.accountType === 'undefined') {
         return;
     }
-    await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType);
+    await $api.controlPanel.updateShipping(address, route.params.slug as string);
 };
-const handleAddAddress = (val: any) => {
-    (addresses as any).value.push({
-        alias: val.alias.value,
-        country: val.country.value.value,
-        region: val.region.value.value,
-        name1: val.name1.value,
-        name2: val.name2.value,
-        postcode: val.postcode.value,
-        phone: val.phone.value,
-        default: false,
-    });
 
+const handleAddAddress = async (val: any) => {
     addAddressModal.value = false;
+    console.log('Add shipping address');
+    newAddress.value = {} as ShippingAddressInterface;
+
+    newAddress.value.alias = val.address.alias.value;
+    newAddress.value.name1 = val.address.name1.value;
+    newAddress.value.name2 = val.address.name2.value;
+    newAddress.value.country = val.address.country.value.value;
+    newAddress.value.city = val.address.city.value;
+    newAddress.value.region = val.address.region.value.value;
+    newAddress.value.phone = val.address.phone.value;
+    newAddress.value.postcode = val.address.postcode.value;
+    newAddress.value.default = false;
+
+    const result = await $api.orders.validateAddress({ ...newAddress.value });
+
+    if (!result.data.valid) {
+        console.log('Invalid address');
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invalid address',
+        });
+        return;
+    } else {
+        addresses.value.push(newAddress.value);
+        if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
+            return;
+        }
+        await $api.controlPanel.addShipping(newAddress.value, route.params.slug as string);
+        await getShippingInformation();
+    }
 };
 
 const getShippingInformation = async () => {
@@ -175,20 +203,25 @@ const getShippingInformation = async () => {
         return;
     }
     addresses.value = response.data.shippingAddress;
+    addAddressModal.value = false;
 };
 await getShippingInformation();
 
-Emitter.on('edit', async (object: any) => {
-    addresses.value[object.index].alias = object.address.alias.value;
-    addresses.value[object.index].name1 = object.address.name1.value;
-    addresses.value[object.index].name2 = object.address.name2.value;
-    addresses.value[object.index].country = object.address.country.value.value;
-    addresses.value[object.index].city = object.address.region.value.value;
-    addresses.value[object.index].region = object.address.region.value.value;
-    addresses.value[object.index].postcode = object.address.postcode.value;
-    addresses.value[object.index].phone = object.address.phone.value;
+const handleEditAddress = async (object: any) => {
+    editAddressModal.value = null;
+    console.log('Edit shipping address');
+    const addressToBeVerified = {
+        alias: object.address.alias.value,
+        name1: object.address.name1.value,
+        name2: object.address.name2.value,
+        city: object.address.city.value,
+        country: object.address.country.value.value,
+        region: object.address.region.value.value,
+        postcode: object.address.postcode.value,
+        phone: object.address.phone.value,
+    } as ShippingAddressInterface;
 
-    const result = await $api.orders.validateAddress(addresses.value[object.index]);
+    const result = await $api.orders.validateAddress(addressToBeVerified);
 
     if (!result.data.valid) {
         console.log('Invalid address');
@@ -198,62 +231,44 @@ Emitter.on('edit', async (object: any) => {
             description: 'Invalid address',
         });
         return;
-    }
+    } else {
+        console.log(props.id);
+        if (!props.id || props.accountType || typeof props.accountType === 'undefined') {
+            return;
+        }
+        addresses.value[object.index].alias = object.address.alias.value;
+        addresses.value[object.index].name1 = object.address.name1.value;
+        addresses.value[object.index].name2 = object.address.name2.value;
+        addresses.value[object.index].city = object.address.city.value;
+        addresses.value[object.index].country = object.address.country.value.value;
+        addresses.value[object.index].region = object.address.region.value.value;
+        addresses.value[object.index].postcode = object.address.postcode.value;
+        addresses.value[object.index].phone = object.address.phone.value;
+        addresses.value[object.index]._id = object.address._id.value;
 
+        await $api.controlPanel.updateShipping(addresses.value[object.index], route.params.slug as string);
+        await getShippingInformation();
+    }
+};
+
+const handleDeleteAddress = async (index: number) => {
+    console.log('Delete shipping address');
+    // Handle deleting the address at a specific index
     if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
         return;
     }
-    await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType);
-});
 
-Emitter.on('delete', async (index: number) => {
-    addresses.value.splice(index, 1);
-    if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
+    console.log(addresses.value[index]);
+    if (!addresses?.value[index] || !addresses.value[index]?._id) {
         return;
     }
+
     if (defaultAddressIndex.value === index) {
         addresses.value[0].default = true;
     }
-    await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType);
-});
 
-Emitter.on('add', async (object: any) => {
-    newAddress.value = {} as ShippingAddressInterface;
-
-    newAddress.value.alias = object.address.alias.value;
-    newAddress.value.name1 = object.address.name1.value;
-    newAddress.value.name2 = object.address.name2.value;
-    newAddress.value.country = object.address.country.value.value;
-    newAddress.value.city = object.address.region.value.value;
-    newAddress.value.region = object.address.region.value.value;
-    newAddress.value.phone = object.address.phone.value;
-    newAddress.value.postcode = object.address.postcode.value;
-    newAddress.value.default = false;
-
-    const result = await $api.orders.validateAddress({
-        country: newAddress.value.country,
-        region: newAddress.value.region,
-        city: newAddress.value.city,
-        postcode: newAddress.value.postcode,
-        name1: newAddress.value.name1,
-        name2: newAddress.value.name2,
-        default: false,
-    });
-
-    if (!result.data.valid) {
-        console.log('Invalid address');
-        toast({
-            variant: 'destructive',
-            title: 'Error',
-            description: 'Invalid address',
-        });
-        return;
-    }
-
-    addresses.value.push(newAddress.value);
-    if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
-        return;
-    }
-    await $api.controlPanel.updateShipping(props.id, addresses.value, props.accountType);
-});
+    await $api.controlPanel.deleteShipping(addresses.value[index]?._id || '', route.params.slug as string);
+    addresses.value.splice(index, 1);
+    await getShippingInformation();
+};
 </script>
