@@ -10,6 +10,7 @@ import {
     OrderType,
     PaymentInfo,
     PaymentSummaryInterface,
+    PaymentTypeEnum,
 } from '~/types';
 import moment from 'moment';
 import { paymentInfoHelper } from '~/helpers/payment-info.helper';
@@ -17,6 +18,7 @@ import { paymentInfoHelper } from '~/helpers/payment-info.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import { toast } from '~/components/ui/toast';
 
 const authStore = useAuthStore();
 const { getUserDetails, userCards } = storeToRefs(authStore);
@@ -154,6 +156,18 @@ const getOrderInformation = async () => {
     }
 };
 
+const downloadDocument = async () => {
+    const result = await $api.documents.downloadDocument(stockOrder.value.paymentDetails.invoiceId);
+
+    if (!result) {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Failed to download document',
+        });
+    }
+};
+
 onMounted(() => {
     getOrderInformation();
 });
@@ -203,11 +217,23 @@ onMounted(() => {
                 <div
                     class="md:w-full lg:w-fit flex justify-between md:justify-end gap-2 md:gap-4 order-2 lg:order-1 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
                 >
-                    <UiButton variant="secondary" size="xs" class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100">
+                    <UiButton
+                        v-if="paymentMethod?.type === PaymentTypeEnum.Bank"
+                        variant="secondary"
+                        size="xs"
+                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
+                        @click="downloadDocument()"
+                    >
                         <FileText class="shrink-0 w-4 aspect-square stroke-[1.5]" />
                         Proforma Invoice
                     </UiButton>
-                    <UiButton variant="secondary" size="xs" class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100">
+                    <UiButton
+                        v-if="paymentMethod?.type !== PaymentTypeEnum.Bank"
+                        variant="secondary"
+                        size="xs"
+                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
+                        @click="downloadDocument()"
+                    >
                         <FileText class="shrink-0 w-4 aspect-square stroke-[1.5]" />
                         Invoices
                     </UiButton>
