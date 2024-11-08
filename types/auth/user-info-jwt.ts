@@ -1,3 +1,5 @@
+import { UserPermissionsEnum } from '~/types/auth/permissions';
+
 export interface UserInfoJWT {
     aud: string;
     auth_time: number;
@@ -11,7 +13,7 @@ export interface UserInfoJWT {
     picture: string;
     sub: string;
     user_id: string;
-    permissions: string[];
+    permissions: UserPermissionsEnum[];
 }
 
 interface Firebase {

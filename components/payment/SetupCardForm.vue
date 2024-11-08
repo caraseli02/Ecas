@@ -109,6 +109,10 @@ onMounted(() => {
     }
 });
 
+onBeforeRouteLeave(() => {
+    console.log('Leaving setup card page');
+});
+
 onBeforeUnmount(() => {
     // Clean up the observer on component unmount
     if (resizeObserver) resizeObserver.disconnect();

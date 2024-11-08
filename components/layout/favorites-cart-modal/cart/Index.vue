@@ -98,7 +98,7 @@ const mapCartItems = (cart: CartProductsInterface[]) => {
         quantity: Number(item.stock) + Number(item.backorder_stock || 0),
         title: item.productEntity?.name,
         description: item.productEntity?.description,
-        image: item.productEntity?.details.ProductImage.ProductImageSmall,
+        image: item.productEntity?.details?.ProductImage?.ProductImageSmall,
         productEntity: item.productEntity,
     }));
 };

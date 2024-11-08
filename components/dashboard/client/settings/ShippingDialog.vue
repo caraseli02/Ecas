@@ -8,7 +8,7 @@ import { countries } from '@/data/countries';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
-import { AddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
+import { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';
 import { useToast } from '~/components/ui/toast';
 
@@ -91,7 +91,7 @@ watch(
 );
 
 const onSubmit = handleSubmit(async (values) => {
-    const payload: AddressInterface = {
+    const payload: ShippingAddressInterface = {
         _id: props.address?._id,
         alias: values.addressAlias,
         name1: values.addressLine1,
@@ -101,9 +101,7 @@ const onSubmit = handleSubmit(async (values) => {
         postcode: values.postcode,
         region: values.county,
         default: props.address?.default || false,
-        icon: '',
     };
-    console.log(payload);
     const response = props.address ? await $api.user.updateShippingAsCustomer(payload) : await $api.user.addShippingAsCustomer(payload);
 
     if (response.status === 'success') {

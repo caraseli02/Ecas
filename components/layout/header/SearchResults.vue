@@ -45,6 +45,9 @@
 <script setup lang="ts">
 import CaretIcon from '@/assets/icons/caret-right.svg';
 import { ProductInterface } from '~/model/products/response/ProductResponse';
+import { mapLabelsToIds, mapPathArrayOfNames } from '~/helpers/categories.helper';
+
+const { categories, getCategories } = useCategories();
 
 const props = defineProps<{
     products: ProductInterface[];
@@ -52,7 +55,13 @@ const props = defineProps<{
 }>();
 
 const productTitle = (product: ProductInterface) => {
-    const titleArray = product.path ? product.path.split('/') : [];
-    return titleArray[titleArray.length - 1];
+    if (!product.path) {
+        return 'N/A';
+    }
+
+    const mapLabels = mapLabelsToIds(categories.value);
+    const categoriesLabelsArray = mapPathArrayOfNames(product.path, mapLabels);
+
+    return categoriesLabelsArray[categoriesLabelsArray.length - 1].name;
 };
 </script>

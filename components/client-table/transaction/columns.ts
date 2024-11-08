@@ -1,11 +1,18 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
-import RowActions from '~/components/dataTable/RowActions.vue';
+import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';
 import EnumToText from '~/components/dataTable/EnumToText.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
 import { paymentStatusOptions, paymentTypeOptions } from '~/components/client-table/transaction/options';
 import { TransactionTableColumnsEnum } from '~/components/client-table/transaction/columns.enum';
+import { AccountRole } from '~/types';
+import DocumentService from '~/services/dashboard/document.service';
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
+
+const authStore = useAuthStore();
+const { getUserDetails } = storeToRefs(authStore);
 
 export const columns: ColumnDef<TransactionTableColumnsEnum>[] = [
     // Update here
@@ -56,6 +63,18 @@ export const columns: ColumnDef<TransactionTableColumnsEnum>[] = [
     {
         id: TransactionTableColumnsEnum.ACTIONS, // Update the id
         header: ({ column }) => h(ColumnHeader, { column, title: 'Actions' }),
-        cell: ({ row }) => h(RowActions, { row }),
+        cell: ({ row }) =>
+            h(RowActions, {
+                row: row,
+                service: DocumentService,
+                options: [
+                    {
+                        label: 'Download invoice',
+                        enable: getUserDetails.value.role === AccountRole.Client && row.original?.invoiceId,
+                        actionFn: 'downloadDocument',
+                        actionParameter: row.original.invoiceId,
+                    },
+                ] as unknown as ActionOptionsConfiguration[],
+            }),
     },
 ];

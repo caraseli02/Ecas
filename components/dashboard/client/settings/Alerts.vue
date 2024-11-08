@@ -4,10 +4,25 @@ import { AlertAndNotificationType } from '~/types/dashboard/control-panel';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountType } from '~/types';
+import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import { useNuxtApp } from '#app';
 
+const { $api } = useNuxtApp();
 const authStore = useAuthStore();
 
 const { getUserDetails } = storeToRefs(authStore);
+
+const getCustomerSettings = async () => {
+    if (getUserDetails) {
+        const response = (await $api.generalSettings.fetchSettings()) as {
+            data: GeneralSettingsInterface;
+            status: string;
+        };
+        authStore.addGeneralSettings(response.data as GeneralSettingsInterface);
+    }
+};
+
+await getCustomerSettings();
 
 const userSettings = ref(getUserDetails.value.adminSettings?.alertsAndNotifications);
 
@@ -38,6 +53,16 @@ const settings = reactive({
         app: userSettings.value?.pendingAgents?.app || false,
     },
 });
+
+watch(
+    () => getUserDetails.value.adminSettings?.alertsAndNotifications,
+    (newSettings) => {
+        if (newSettings) {
+            Object.assign(settings, newSettings);
+        }
+    },
+    { deep: true, immediate: true }
+);
 </script>
 
 <template>

@@ -9,7 +9,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { ref, watch } from 'vue';
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
-import { AddressInterface, BillingAddressInterface } from '~/types/auth/user-interface';
+import { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';
 import { useToast } from '~/components/ui/toast';
 
@@ -93,7 +93,7 @@ watch(
 const { toast } = useToast();
 
 const onSubmit = handleSubmit(async (values) => {
-    const payload: AddressInterface = {
+    const payload: ShippingAddressInterface = {
         _id: props.address?._id,
         alias: values.addressAlias,
         name1: values.addressLine1,
@@ -103,10 +103,8 @@ const onSubmit = handleSubmit(async (values) => {
         postcode: values.postcode,
         region: values.county,
         default: props.address?.default || false,
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cd8b9b1c0d2b925f29e818d6e49d9d83c8bd553c0416b56bcae00e809eb1cd1b?apiKey=20497529553648aab918fa2d322ece87&',
     };
 
-    console.log(payload);
     const response = props.address ? await $api.user.updateBillingAsCustomer(payload) : await $api.user.addBillingAsCustomer(payload);
 
     if (response.status === 'success') {

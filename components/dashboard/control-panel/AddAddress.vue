@@ -44,6 +44,8 @@
                         size="lg"
                         class="relative z-10"
                     />
+                    <FormInput v-model="data.city.value" :error="data.city.error" label="City" size="lg" placeholder="Bucharest" />
+
                     <FormInput
                         v-model="data.name1.value"
                         :error="data.name1.error"
@@ -77,10 +79,7 @@
                     </button>
                     <button
                         class="flex justify-center px-5 py-2 rounded-lg bg-blue-500 leading-[1.75] text-white font-medium"
-                        @click="
-                            $emit('close');
-                            Emitter.emit('add', { address: data });
-                        "
+                        @click="handleSave()"
                     >
                         Save
                     </button>
@@ -95,9 +94,7 @@ import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import { countries } from '@/data/countries';
 import { FormSelectOption } from '~/types';
-import Emitter from 'tiny-emitter/instance.js';
-
-defineEmits(['close', 'add']);
+import { defineEmits } from 'vue';
 
 const data = ref({
     alias: {
@@ -109,6 +106,10 @@ const data = ref({
         error: '',
     },
     region: {
+        value: '',
+        error: '',
+    },
+    city: {
         value: '',
         error: '',
     },
@@ -131,6 +132,13 @@ const data = ref({
 });
 const regions = ref<FormSelectOption[]>([]);
 
+const props = defineProps({
+    type: {
+        type: String,
+        required: true,
+    },
+});
+
 watch(data.value.country, (newVal) => {
     if (newVal?.value) {
         data.value.region = {
@@ -148,4 +156,17 @@ watch(data.value.country, (newVal) => {
             }) || [];
     }
 });
+
+const emit = defineEmits(['close', 'add-shipping-address', 'add-billing-address']);
+
+// Other data and function definitions here...
+
+const handleSave = () => {
+    // Emit the edit event, debounced
+    if (props.type === 'shipping') {
+        emit('add-shipping-address', { address: data.value });
+    } else {
+        emit('add-billing-address', { address: data.value });
+    }
+};
 </script>

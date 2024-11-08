@@ -17,15 +17,6 @@ const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
 export const columns: ColumnDef<OrderTableColumns>[] = [
-    // {
-    //   id: 'select',
-    //   header: ({ table }) => h(Checkbox,
-    //     { 'checked': table.getIsAllPageRowsSelected(), 'onUpdate:checked': value => table.toggleAllPageRowsSelected(!!value), 'ariaLabel': 'Select all', 'class': 'translate-y-0.5' }),
-    //   cell: ({ row }) => h(Checkbox,
-    //     { 'checked': row.getIsSelected(), 'onUpdate:checked': value => row.toggleSelected(!!value), 'ariaLabel': 'Select row', 'class': 'translate-y-0.5' }),
-    //   enableSorting: false,
-    //   enableHiding: false,
-    // },
     {
         accessorKey: OrderTableColumnsEnum.SHORT_ID,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Order' }),
@@ -83,9 +74,9 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
                     },
                     {
                         label: 'Download invoice',
-                        enable: getUserDetails.value.role === AccountRole.Client,
+                        enable: getUserDetails.value.role === AccountRole.Client && row.original?.paymentDetails?.invoiceId,
                         actionFn: 'downloadDocument',
-                        actionParameter: row.original._id,
+                        actionParameter: row.original.paymentDetails.invoiceId,
                     },
                 ] as ActionOptionsConfiguration[],
             }),
