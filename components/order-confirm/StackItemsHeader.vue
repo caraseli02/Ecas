@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowRight, BarcodeIcon, InfoIcon, MapPin, RefreshCcw } from 'lucide-vue-next';
+import { ArrowRight, BarcodeIcon, InfoIcon, MapPin } from 'lucide-vue-next';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { useNuxtApp } from '#app';
 import { AccountRole, OrderInterface, OrderStatus, PaymentTypeEnum, ShippingCourierCreateOrderResponse } from '~/types';
@@ -73,7 +73,7 @@ const getPaymentStatusValueByOrder = () => {
                 <UiPopoverTrigger>
                     <section class="flex gap-3 items-center text-sm leading-6 whitespace-nowrap text-zinc-800">
                         <h2 class="self-stretch my-auto text-gray-500">AWB</h2>
-                        <RefreshCcw v-if="isAdmin" class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
+                        <InfoIcon v-if="isAdmin" class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                         <div
                             v-if="!awb"
                             class="flex overflow-hidden gap-2 justify-center items-center self-stretch my-auto leading-none rounded-md"
@@ -154,7 +154,7 @@ const getPaymentStatusValueByOrder = () => {
                                 <p class="self-stretch my-auto">Pending</p>
                             </div>
                             <p v-if="awb" class="self-stretch my-auto font-medium">{{ awb }}</p>
-                            <RefreshCcw class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" @click="generateAWB" />
+                            <InfoIcon class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" @click="generateAWB" />
                         </section>
                     </section>
                 </UiPopoverTrigger>
@@ -181,7 +181,7 @@ const getPaymentStatusValueByOrder = () => {
                 <span class="self-stretch my-auto text-sm leading-none text-gray-500">Order Type</span>
                 <div class="flex overflow-hidden gap-2 justify-center items-center self-stretch my-auto rounded-md">
                     <span
-                        class="overflow-hidden self-stretch p-0.5 my-auto w-4 h-4 text-xs font-medium leading-none text-center text-white whitespace-nowrap bg-emerald-500 rounded-[100px]"
+                        class="overflow-hidden flex justify-center items-center my-auto w-4 h-4 text-xs font-medium leading-none text-center text-white whitespace-nowrap bg-emerald-500 rounded-[100px]"
                         >{{ getOrderTypeValueByOrder().badge.text }}</span
                     >
                     <span class="self-stretch my-auto text-sm leading-none text-zinc-800">{{ getOrderTypeValueByOrder().label }}</span>

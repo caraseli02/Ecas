@@ -23,7 +23,7 @@ import { orderType } from '~/components/admin-table/order/options';
 
 const authStore = useAuthStore();
 const { getUserDetails, userCards } = storeToRefs(authStore);
-const generalSettings = useAuthStore().generalSettings;
+
 const { $api } = useNuxtApp();
 
 const route = useRoute();
@@ -179,7 +179,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="container px-4 py-6 md:p-6 flex flex-col gap-10">
+    <section class="container px-4 py-6 md:p-6 flex flex-col gap-10 font-Poppins">
         <div class="flex flex-col self-stretch">
             <div class="flex flex-col md:flex-row gap-4 justify-between w-full">
                 <section class="flex flex-col gap-4 w-full">
@@ -194,8 +194,7 @@ onMounted(() => {
                                 class="flex overflow-hidden gap-2 justify-center items-center self-stretch my-auto rounded-md"
                             >
                                 <span
-                                    data-layername="s"
-                                    class="overflow-hidden self-stretch p-0.5 my-auto w-4 h-4 text-xs font-medium leading-none text-center text-white whitespace-nowrap bg-emerald-500 rounded-[100px]"
+                                    class="overflow-hidden flex justify-center items-center p-0.5 my-auto w-4 h-4 text-xs font-medium leading-none text-center text-white whitespace-nowrap bg-emerald-500 rounded-[100px]"
                                 >
                                     {{ getOrderTypeValueByOrder().badge.text }}
                                 </span>
@@ -301,7 +300,7 @@ onMounted(() => {
             </div>
             <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
         </section>
-        <div class="flex flex-wrap md:flex-nowrap justify-between gap-12 md:gap-2">
+        <div v-if="getUserDetails?.role === 2" class="flex flex-wrap md:flex-nowrap justify-between gap-12 md:gap-2">
             <OrderConfirmCompanyDetails />
             <OrderConfirmBankDetails />
         </div>

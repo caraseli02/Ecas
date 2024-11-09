@@ -1,48 +1,66 @@
 <script setup lang="ts">
 import { DotsVerticalIcon } from '@radix-icons/vue';
-import { CheckCircle, MapPin, PackageCheck } from 'lucide-vue-next';
+import { CheckCircle, MapPin, PackageCheck, CalendarDays } from 'lucide-vue-next';
 
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
 import * as z from 'zod';
-import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
+// Define props to initialize the form values
+const props = defineProps<{
+  initialAmountPaid?: number;
+  initialCurrency?: string;
+  initialDop?: Date | null;
+  initialReference?: string;
+  initialComments?: string;
+}>();
+
+// Schema for validation
 const formSchema = toTypedSchema(
   z.object({
-    username: z.string().min(2).max(50),
-    dob: z.date({
-      required_error: 'A date of birth is required.',
+    amountPaid: z.number().min(0, 'Amount must be a positive number'),
+    currency: z.string().nonempty('Currency is required'),
+    dop: z.date({
+      required_error: 'Payment date is required',
     }),
+    reference: z.string().optional(),
+    comments: z.string().optional(),
   })
 );
 
-const { isFieldDirty, handleSubmit } = useForm({
+// Use Vee-Validate form composable
+const { handleSubmit, errors, resetForm, isFieldDirty } = useForm({
   validationSchema: formSchema,
+  initialValues: {
+    amountPaid: props.initialAmountPaid || 0,
+    currency: props.initialCurrency || 'usd',
+    dop: props.initialDop || new Date(),
+    reference: props.initialReference || '',
+    comments: props.initialComments || '',
+  },
 });
 
-const isOpen = ref(true);
+const isOpen = ref(false);
 
-const amountPaid = ref('');
-const currency = ref('');
-const paymentDate = ref('');
-const paymentReference = ref('');
-const comments = ref('');
+const emit = defineEmits(['close', 'submit']);
 
-// const handleSubmit = () => {
-//   console.log('Form submitted', {
-//     amountPaid: amountPaid.value,
-//     currency: currency.value,
-//     paymentDate: paymentDate.value,
-//     paymentReference: paymentReference.value,
-//     comments: comments.value,
-//   });
-// };
+// Submit handler
+const onSubmit = handleSubmit((values) => {
+  console.log('Form submitted:', values);
+  // Emit the form values to the parent component
+  emit('submit', values);
 
-defineEmits(['close']);
+  // Reset the form and close the dialog
+  resetForm();
+  isOpen.value = false;
+});
 </script>
+
+
 
 <template>
   <UiPopover>
@@ -70,7 +88,7 @@ defineEmits(['close']);
     </UiPopoverContent>
   </UiPopover>
   <UiDialog v-model:open="isOpen">
-    <UiDialogContent class="border-none shadow-s rounded-xl">
+    <UiDialogContent class="border-none shadow-s rounded-xl max-w-[358px] md:max-w-[480px]">
       <section data-layername="property1Desktop"
         class="flex flex-col gap-10 bg-white rounded-xl shadow-sm max-w-[480px]">
         <header class="flex gap-10 justify-between items-center w-full">
@@ -78,41 +96,41 @@ defineEmits(['close']);
             Mark as Paid
           </h2>
         </header>
-        <form class="flex flex-col gap-4 w-full text-sm" @submit.prevent="handleSubmit">
+        <form class="flex flex-col gap-4 w-full text-sm" @submit="onSubmit">
           <div class="flex gap-3 items-start w-full">
-            <FormField class="flex flex-col" name="amount">
+            <FormField v-slot="{ componentField }" :validate-on-blur="!isFieldDirty" class="flex flex-col" name="amountPaid">
               <div class="flex flex-col w-full">
                 <FormLabel for="amountPaid" class="leading-none text-slate-500">Amount Paid</FormLabel>
                 <FormControl>
-                  <UiInput class="mt-2.5 h-10 border border-grey-300" id="amountPaid" v-model="amountPaid" type="number"
+                  <UiInput v-bind="componentField" class="mt-2.5 h-10 border border-grey-300" id="amountPaid" type="number"
                     placeholder="Amount Paid" />
                 </FormControl>
+                <FormMessage />
               </div>
-              <FormMessage />
             </FormField>
-            <FormField name="currency">
+            <FormField v-slot="{ componentField }" name="currency">
               <FormItem class="relative">
                 <FormLabel for="currency" data-layername="dropDownField" class="leading-none text-slate-500">
                   Currency
                 </FormLabel>
-                <UiSelect>
+                <UiSelect v-bind="componentField">
                   <FormControl>
-                    <UiSelectTrigger class="border-grey-300 border">
-                      <UISelectValue class="min-w-[125px]" placeholder="Currency" />
+                    <UiSelectTrigger class="border-grey-300 border max-w-[125px] w-[125px]">
+                      <UiSelectValue class=" items-start text-start" placeholder="Currency" />
                     </UiSelectTrigger>
                   </FormControl>
                   <UiSelectContent>
                     <UiSelectGroup>
-                      <UiSelectItem value="usd">USD</UiSelectItem>
-                      <UiSelectItem value="eur">EUR</UiSelectItem>
-                      <UiSelectItem value="ron">RON</UiSelectItem>
+                      <UiSelectItem class="pl-2" value="usd">USD</UiSelectItem>
+                      <UiSelectItem class="pl-2" value="eur">EUR</UiSelectItem>
+                      <UiSelectItem class="pl-2" value="ron">RON</UiSelectItem>
                     </UiSelectGroup>
                   </UiSelectContent>
                 </UiSelect>
               </FormItem>
             </FormField>
           </div>
-          <FormField v-slot="{ componentField, value }" name="dob">
+          <FormField v-slot="{ componentField, value }" name="dop">
             <FormItem class="flex flex-col gap-2">
               <FormLabel class="text-slate-500">Payment Date</FormLabel>
               <UiPopover>
@@ -123,7 +141,7 @@ defineEmits(['close']);
                       !value && 'text-muted-foreground',
                     )">
                       <span>{{ value ? format(value, "PPP") : "Pick a date" }}</span>
-                      <CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
+                      <CalendarDays class="ms-auto h-4 w-4 opacity-50" />
                     </UiButton>
                   </FormControl>
                 </UiPopoverTrigger>
@@ -147,7 +165,7 @@ defineEmits(['close']);
             <FormItem>
               <FormLabel>Comments</FormLabel>
               <FormControl>
-                <UiTextarea placeholder="Comments..." class="resize-none min-h-32 border-grey-300"
+                <UiTextarea placeholder="Comments..." class="resize-none min-h-32 border-grey-300 bg-light-100"
                   v-bind="componentField" />
               </FormControl>
               <FormMessage />
