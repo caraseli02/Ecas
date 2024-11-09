@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils'
 import { CaretSortIcon, CheckIcon } from '@radix-icons/vue'
 
-const frameworks = [
+const banks = [
   { value: 'bcr_ron', label: 'BCR Bank RON' },
   { value: 'bcr_usd', label: 'BCR Bank USD' },
   { value: 'uni_ron', label: 'UNI Bank RON' },
@@ -22,6 +22,10 @@ const handleSelect = (event: CustomEvent) => {
   }
   open.value = false
 }
+
+onMounted(() => {
+  value.value = banks[0].value
+})
 </script>
 
 <template>
@@ -34,7 +38,7 @@ const handleSelect = (event: CustomEvent) => {
         class="w-[200px] justify-between"
       >
         {{ value
-          ? frameworks.find((framework) => framework.value === value)?.label
+          ? banks.find((bank) => bank.value === value)?.label
           : "Select bank..." }}
         <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </UiButton>
@@ -46,16 +50,16 @@ const handleSelect = (event: CustomEvent) => {
         <UiCommandList>
           <UiCommandGroup>
             <UiCommandItem
-              v-for="framework in frameworks"
-              :key="framework.value"
-              :value="framework.value"
+              v-for="bank in banks"
+              :key="bank.value"
+              :value="bank.value"
               @select="handleSelect"
             >
-              {{ framework.label }}
+              {{ bank.label }}
               <CheckIcon
                 :class="cn(
                   'ml-auto h-4 w-4',
-                  value === framework.value ? 'opacity-100' : 'opacity-0',
+                  value === bank.value ? 'opacity-100' : 'opacity-0',
                 )"
               />
             </UiCommandItem>

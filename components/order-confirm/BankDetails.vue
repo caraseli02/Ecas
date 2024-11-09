@@ -52,7 +52,7 @@ interface BankDetails {
   iban: string
 }
 
-const bankData: Record<string, BankDetails> = {
+const bankData = ref({
   bcr_ron: {
     bankName: 'BANCA COMERCIALA ROMANA SA',
     bankAddress: 'Soseaua Orhideelor nr.15D, Cladire The Bridge 1, Bucuresti',
@@ -88,7 +88,7 @@ const bankData: Record<string, BankDetails> = {
     swift: 'CARPRO22',
     iban: 'RO55 CARP 0255 0255 5688 USD',
   },
-}
+})
 
-const selectedBank = ref<BankDetails | null>(null)
+const selectedBank = ref<BankDetails>(bankData.value.bcr_ron)
 </script>
