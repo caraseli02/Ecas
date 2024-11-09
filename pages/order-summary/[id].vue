@@ -156,6 +156,14 @@ const getOrderInformation = async () => {
 };
 
 const downloadDocument = async () => {
+    if (!stockOrder.value.paymentDetails?.invoiceId) {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invoice is not available for the moment',
+        });
+        return;
+    }
     const result = await $api.documents.downloadDocument(stockOrder.value.paymentDetails.invoiceId);
 
     if (!result) {
@@ -179,13 +187,13 @@ onMounted(() => {
 <template>
     <section class="container px-4 py-6 md:p-6 flex flex-col gap-10 font-Poppins">
         <OrderConfirmHeader
-        :order-id="data.data?.order?.shortId"
-        :order-type="getOrderTypeValueByOrder()"
-        :date="date"
-        :shipping-method="shippingMethod?.service?.courierName"
-        :pickup-date="stockOrder?.shippingDetails?.statusTracking?.estimatedPickUpDate"
-        :payment-method="paymentMethod"
-        :on-download-document="downloadDocument"
+            :order-id="data.data?.order?.shortId"
+            :order-type="getOrderTypeValueByOrder()"
+            :date="date"
+            :shipping-method="shippingMethod?.service?.courierName"
+            :pickup-date="stockOrder?.shippingDetails?.statusTracking?.estimatedPickUpDate"
+            :payment-method="paymentMethod"
+            :on-download-document="downloadDocument"
         />
         <OrderConfirmDetails
             v-if="paymentMethod"
