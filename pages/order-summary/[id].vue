@@ -10,7 +10,6 @@ import {
     OrderType,
     PaymentInfo,
     PaymentSummaryInterface,
-    PaymentTypeEnum,
 } from '~/types';
 import moment from 'moment';
 import { paymentInfoHelper } from '~/helpers/payment-info.helper';
@@ -23,7 +22,7 @@ import { orderType } from '~/components/admin-table/order/options';
 
 const authStore = useAuthStore();
 const { getUserDetails, userCards } = storeToRefs(authStore);
-const generalSettings = useAuthStore().generalSettings;
+
 const { $api } = useNuxtApp();
 
 const route = useRoute();
@@ -179,100 +178,16 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="container px-4 py-6 md:p-6 flex flex-col gap-10">
-        <div class="flex flex-col self-stretch">
-            <div class="flex flex-col md:flex-row gap-4 justify-between w-full">
-                <section class="flex flex-col gap-4 w-full">
-                    <div class="flex flex-wrap gap-8 xl:gap-10">
-                        <h4 class="text-2xl leading-8 text-slate-500">
-                            Order ID: <span class="text-neutral-700 ml-4">{{ data.data?.order?.shortId }}</span>
-                        </h4>
-                        <section class="flex gap-4 items-center">
-                            <h2 data-layername="orderType" class="self-stretch my-auto text-sm leading-none text-gray-500">Order Type</h2>
-                            <div
-                                data-layername="orderType"
-                                class="flex overflow-hidden gap-2 justify-center items-center self-stretch my-auto rounded-md"
-                            >
-                                <span
-                                    data-layername="s"
-                                    class="overflow-hidden self-stretch p-0.5 my-auto w-4 h-4 text-xs font-medium leading-none text-center text-white whitespace-nowrap bg-emerald-500 rounded-[100px]"
-                                >
-                                    {{ getOrderTypeValueByOrder().badge.text }}
-                                </span>
-                                <p data-layername="stockOrder" class="self-stretch my-auto text-sm leading-none text-zinc-800">
-                                    {{ getOrderTypeValueByOrder().label }}
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-                    <div
-                        class="flex flex-col xl:flex-row flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5"
-                    >
-                        <div class="flex gap-2">
-                            <div class="text-slate-500">Order Date:</div>
-                            <div class="text-neutral-700">{{ date }}</div>
-                        </div>
-                        <UiSeparator class="hidden lg:block h-4 bg-grey-100" orientation="vertical" />
-                        <div class="flex gap-2">
-                            <div class="text-slate-500">Shipping Method:</div>
-                            <div class="text-neutral-700">{{ shippingMethod?.service.courierName }}</div>
-                        </div>
-                        <UiSeparator
-                            v-if="stockOrder && stockOrder.shippingDetails?.statusTracking?.estimatedPickUpDate"
-                            class="hidden lg:block h-4 bg-grey-100"
-                            orientation="vertical"
-                        />
-                        <div v-if="stockOrder && stockOrder.shippingDetails?.statusTracking?.estimatedPickUpDate" class="flex gap-2">
-                            <div class="text-slate-500">Estimated pick-up date:</div>
-                            <div class="text-neutral-700">
-                                {{ stockOrder.shippingDetails.statusTracking?.estimatedPickUpDate }}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <div
-                    class="md:w-full lg:w-fit flex justify-between md:justify-end gap-2 md:gap-4 order-2 lg:order-1 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
-                >
-                    <UiButton
-                        v-if="paymentMethod?.type === PaymentTypeEnum.Bank"
-                        variant="secondary"
-                        size="xs"
-                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
-                        @click="downloadDocument()"
-                    >
-                        <FileText class="shrink-0 w-4 aspect-square stroke-[1.5]" />
-                        Proforma Invoice
-                    </UiButton>
-                    <UiButton
-                        v-if="paymentMethod?.type !== PaymentTypeEnum.Bank"
-                        variant="secondary"
-                        size="xs"
-                        class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
-                        @click="downloadDocument()"
-                    >
-                        <FileText class="shrink-0 w-4 aspect-square stroke-[1.5]" />
-                        Invoices
-                    </UiButton>
-                    <UiButton variant="secondary" size="icon" class="flex gap-2 h-8 justify-center text-slate-500 rounded-lg bg-zinc-100">
-                        <DotsVerticalIcon class="shrink-0 w-4 aspect-square stroke-[1.5]" />
-                    </UiButton>
-                    <!-- <UiButton
-                        variant="secondary"
-                        class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
-                    >
-                        <MapPin class="shrink-0 w-6 aspect-square stroke-[1.5]" />
-                        Track <span class="hidden lg:inline">Order</span>
-                    </UiButton>
-                    <UiButton
-                        variant="secondary"
-                        class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
-                    >
-                        <BoxIcon class="shrink-0 w-6 aspect-square stroke-[1.5]" />
-                        View All <span class="hidden lg:inline">Orders</span>
-                    </UiButton> -->
-                </div>
-            </div>
-        </div>
+    <section class="container px-4 py-6 md:p-6 flex flex-col gap-10 font-Poppins">
+        <OrderConfirmHeader
+        :order-id="data.data?.order?.shortId"
+        :order-type="getOrderTypeValueByOrder()"
+        :date="date"
+        :shipping-method="shippingMethod?.service?.courierName"
+        :pickup-date="stockOrder?.shippingDetails?.statusTracking?.estimatedPickUpDate"
+        :payment-method="paymentMethod"
+        :on-download-document="downloadDocument"
+        />
         <OrderConfirmDetails
             v-if="paymentMethod"
             :customer-details="customerDetails"
@@ -301,7 +216,7 @@ onMounted(() => {
             </div>
             <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
         </section>
-        <div class="flex flex-wrap md:flex-nowrap justify-between gap-12 md:gap-2">
+        <div v-if="getUserDetails?.role === 2" class="flex flex-wrap md:flex-nowrap justify-between gap-12 md:gap-2">
             <OrderConfirmCompanyDetails />
             <OrderConfirmBankDetails />
         </div>
