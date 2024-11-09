@@ -198,6 +198,7 @@ Emitter.on('delete-product-item', (object: { id: string }) => {
 });
 
 const updateSubtotal = async (items: CartProductsInterface[], order) => {
+    console.log('items', items);
     shippingPreferences.value = await fetchShippingPrices(order);
     await calculateSubtotal(items, order);
 };

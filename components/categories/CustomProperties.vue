@@ -9,10 +9,10 @@ const props = defineProps<{
 }>();
 
 const customProperties = ref(true);
-const avgWeightValue = ref<number | null>(props.avgItemWeight);
-const widthValue = ref<number | null>(props.width);
-const heightValue = ref<number | null>(props.height);
-const lengthValue = ref<number | null>(props.length);
+const avgWeightValue = ref<string | null>(props.avgItemWeight);
+const widthValue = ref<string | null>(props.width);
+const heightValue = ref<string | null>(props.height);
+const lengthValue = ref<string | null>(props.length);
 
 const emit = defineEmits<{
     (e: 'update:weight', value: string): void;
