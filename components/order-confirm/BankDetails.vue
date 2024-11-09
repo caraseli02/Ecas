@@ -4,33 +4,33 @@
       <h2 class="self-stretch my-auto text-base font-semibold text-zinc-800">Bank Details</h2>
       <OrderConfirmBankSelect @bank-select="selectedBank = bankData[$event]" />
     </header>
-    <div class="flex flex-col mt-4 w-full text-sm leading-6 max-md:max-w-full" v-if="selectedBank">
+    <div v-if="selectedBank" class="flex flex-col mt-4 w-full text-sm leading-6 max-md:max-w-full">
       <dl>
-        <div class="flex flex-wrap gap-3 items-center w-full max-md:max-w-full">
+        <div class="flex flex-col md:flex-row flex-wrap gap-0.5 md:gap-3 items-center w-full max-md:max-w-full">
           <dt class="self-stretch my-auto text-gray-500">Bank Name:</dt>
           <dd class="flex-1 shrink self-stretch my-auto basis-0 text-zinc-800 max-md:max-w-full">
             {{ selectedBank.bankName }}
           </dd>
         </div>
-        <div class="flex flex-wrap gap-3 items-center mt-1 max-w-full w-[506px]">
+        <div class="flex flex-col md:flex-row flex-wrap gap-0.5 md:gap-3 items-center mt-2 md:mt-1 max-w-full w-[506px]">
           <dt class="self-stretch my-auto text-gray-500">Bank Address:</dt>
           <dd class="flex-1 shrink self-stretch my-auto basis-0 text-zinc-800">
             {{ selectedBank.bankAddress }}
           </dd>
         </div>
-        <div class="flex flex-wrap gap-3 items-center mt-1 w-full max-md:max-w-full">
+        <div class="flex flex-col md:flex-row flex-wrap gap-0.5 md:gap-3 items-center mt-2 md:mt-1 w-full max-md:max-w-full">
           <dt class="self-stretch my-auto text-gray-500">Account Number:</dt>
           <dd class="flex-1 shrink self-stretch my-auto basis-0 text-zinc-800 max-md:max-w-full">
             {{ selectedBank.accountNumber }}
           </dd>
         </div>
-        <div class="flex flex-wrap gap-3 items-center mt-1 w-full whitespace-nowrap max-md:max-w-full">
+        <div class="flex flex-col md:flex-row flex-wrap gap-0.5 md:gap-3 items-center mt-2 md:mt-1 w-full whitespace-nowrap max-md:max-w-full">
           <dt class="self-stretch my-auto text-gray-500">SWIFT/BIC:</dt>
           <dd class="flex-1 shrink self-stretch my-auto basis-0 text-zinc-800 max-md:max-w-full">
             {{ selectedBank.swift }}
           </dd>
         </div>
-        <div class="flex flex-wrap gap-3 items-center mt-1 w-full max-md:max-w-full">
+        <div class="flex flex-col md:flex-row flex-wrap gap-0.5 md:gap-3 items-center mt-2 md:mt-1 w-full max-md:max-w-full">
           <dt class="self-stretch my-auto text-gray-500">IBAN:</dt>
           <dd class="flex-1 shrink self-stretch my-auto basis-0 text-zinc-800 max-md:max-w-full">
             {{ selectedBank.iban }}
