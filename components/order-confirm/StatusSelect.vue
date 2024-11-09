@@ -5,7 +5,7 @@
         </UiSelectTrigger>
         <UiSelectContent>
             <UiSelectGroup>
-                <UiSelectItem v-for="status in statuses" :key="status.value" class="p-2" :value="status.value">
+                <UiSelectItem v-for="status in statuses" :key="status.value" class="p-2 focus:bg-light-300" :value="status.value">
                     <div class="flex items-center gap-2">
                         <p class="w-3 h-3 rounded-full" :class="status.color" />
                         {{ status.label }}

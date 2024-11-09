@@ -72,16 +72,16 @@ const onSubmit = handleSubmit((values) => {
       </UiButton>
     </UiPopoverTrigger>
     <UiPopoverContent class="w-fit flex flex-col gap-2 p-2 border-none" align="end">
-      <UiButton class="hover:text-blue-500 justify-start gap-2 min-w-[164px]" variant="ghost" size="sm">
+      <UiButton class="hover:text-blue-500 hover:bg-light-300 justify-start gap-2 min-w-[164px]" variant="ghost" size="sm">
         <PackageCheck class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
         Fulfill Order
       </UiButton>
-      <UiButton class="hover:text-blue-500 justify-start gap-2 min-w-[164px]" variant="ghost" size="sm"
+      <UiButton class="hover:text-blue-500 hover:bg-light-300  justify-start gap-2 min-w-[164px]" variant="ghost" size="sm"
         @click="isOpen = true">
         <CheckCircle class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
         Mark as Paid
       </UiButton>
-      <UiButton class="hover:text-blue-500 justify-start gap-2 min-w-[164px]" variant="ghost" size="sm">
+      <UiButton class="hover:text-blue-500 hover:bg-light-300  justify-start gap-2 min-w-[164px]" variant="ghost" size="sm">
         <MapPin class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
         Track Order
       </UiButton>
