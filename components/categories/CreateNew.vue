@@ -14,6 +14,11 @@ const selectedEntryPrice = ref<string>('');
 const selectedQuantity = ref<string>('');
 const selectedMargin = ref<string>('');
 
+const avgWeight = ref<number | null>(null);
+const width = ref<number | null>(null);
+const height = ref<number | null>(null);
+const length = ref<number | null>(null);
+
 async function makeCreate() {
     const payload: ICreatePayload = {
         name: title.value,
@@ -22,6 +27,12 @@ async function makeCreate() {
             priceRangeId: selectedEntryPrice.value,
             quantityId: selectedQuantity.value,
             marginId: selectedMargin.value,
+        },
+        customProperties: {
+            avgItemWeight: avgWeight.value,
+            length: length.value,
+            width: width.value,
+            height: height.value,
         },
     };
     if (selected.value) {
@@ -80,6 +91,12 @@ watch(isOpen, () => {
                     @update:entry-price="selectedEntryPrice = $event"
                     @update:quantity="selectedQuantity = $event"
                     @update:margin="selectedMargin = $event"
+                />
+                <CategoriesCustomProperties
+                    @update:weight="avgWeight = $event"
+                    @update:length="length = $event"
+                    @update:width="width = $event"
+                    @update:height="height = $event"
                 />
             </div>
             <UiDialogFooter>
