@@ -72,17 +72,17 @@ const getPaymentStatusValueByOrder = () => {
             <UiPopover v-if="smAndLarger && isAdmin">
                 <UiPopoverTrigger>
                     <section class="flex gap-3 items-center text-sm leading-6 whitespace-nowrap text-zinc-800">
-                        <h2 class="self-stretch my-auto text-gray-500">AWB</h2>
-                        <InfoIcon v-if="isAdmin" class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
+                        <h2 class="self-stretch text-gray-500">AWB</h2>
+                        <InfoIcon v-if="isAdmin" class="object-contain shrink-0 self-stretch w-4 aspect-square text-slate-500" />
                         <div
                             v-if="!awb"
-                            class="flex overflow-hidden gap-2 justify-center items-center self-stretch my-auto leading-none rounded-md"
+                            class="flex overflow-hidden gap-2 justify-center items-center rounded-md"
                         >
                             <span
-                                class="flex shrink-0 self-stretch my-auto w-3 h-3 bg-amber-500 rounded-full fill-amber-500"
+                                class="flex shrink-0 w-3 h-3 bg-amber-500 rounded-full fill-amber-500"
                                 aria-hidden="true"
                             ></span>
-                            <p class="self-stretch my-auto">Pending</p>
+                            <p class="self-stretch">Pending</p>
                         </div>
                         <p v-if="awb" class="self-stretch my-auto font-medium">{{ awb }}</p>
                     </section>
@@ -154,7 +154,7 @@ const getPaymentStatusValueByOrder = () => {
                                 <p class="self-stretch my-auto">Pending</p>
                             </div>
                             <p v-if="awb" class="self-stretch my-auto font-medium">{{ awb }}</p>
-                            <InfoIcon class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" @click="generateAWB" />
+                            <InfoIcon class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square text-slate-500" @click="generateAWB" />
                         </section>
                     </section>
                 </UiPopoverTrigger>
@@ -196,7 +196,7 @@ const getPaymentStatusValueByOrder = () => {
                                 :status-color="getPaymentStatusValueByOrder().color"
                                 :status-text="getPaymentStatusValueByOrder().label"
                             />
-                            <InfoIcon class="w-4 h-4" />
+                            <InfoIcon class="w-4 h-4 text-slate-500" />
                         </span>
                     </div>
                 </UiPopoverTrigger>

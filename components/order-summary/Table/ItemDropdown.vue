@@ -4,7 +4,7 @@
             <NuxtLink :to="`/product/${item.id}`" class="flex flex-shrink-0 mr-2.5 md:mr-[15px]">
                 <div class="flex flex-row px-4 gap-3">
                     <div class="border-2 rounded-lg min-w-[60px] w-[60px] h-[60px] overflow-hidden">
-                        <img :src="item.productEntity?.details?.ProductImage?.ProductImageSmall" class="object-cover w-full h-full" />
+                        <ImageWithFallback :src="item.productEntity?.details?.ProductImage?.ProductImageSmall" class="object-cover w-full h-full" />
                     </div>
                     <ProductDetails :item="item" :short-stock="shortStock" :stock-item="stockItem" />
                 </div>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { FileText, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
-import { DotsVerticalIcon } from '@radix-icons/vue';
+import { PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
 
 import {
     OrderInterface,
@@ -210,6 +209,7 @@ onMounted(() => {
             <div class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
                 <h2 class="w-full font-semibold max-md:max-w-full">Customer Notes</h2>
                 <textarea
+                    disabled
                     :placeholder="notes[0] && notes[0].message ? notes[0].message : 'No message provided'"
                     class="min-h-[204px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full"
                 />
