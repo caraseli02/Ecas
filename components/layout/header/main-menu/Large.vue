@@ -16,6 +16,7 @@
                 @click="
                     selectedCategory = category;
                     selectedSubCategory = null;
+                    handleCategoryClick(category);
                 "
             >
                 <div class="flex items-center justify-center w-8 h-8 rounded bg-gray-100 mr-2 xl:w-10 xl:h-10 xl:mr-2.5">
@@ -150,7 +151,10 @@
                             v-for="(subCategory, index) in selectedCategory.subcategory"
                             :key="index"
                             class="group flex items-center px-2 py-1.5 rounded-[5px] text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
-                            @click="selectedSubCategory = subCategory"
+                            @click="
+                                selectedSubCategory = subCategory;
+                                handleCategoryClick(subCategory);
+                            "
                         >
                             <div>
                                 <div class="text-sm font-semibold">
@@ -270,6 +274,9 @@ import { A11y, Pagination } from 'swiper';
 import { showNavModal } from '~~/config/modal/nav';
 import { TaxonomyInterface } from '~/types/dashboard/categories';
 import { mapLabelsToIds } from '~/helpers/categories.helper';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const DefaultIcon = CardPlaceholderSmall;
 
@@ -279,6 +286,17 @@ const props = defineProps({
         required: false,
     },
 });
+
+const handleCategoryClick = (category) => {
+    if (category.subcategory.length === 0) {
+        // Redirect to the category link if it's the last level
+        router.push(`/search?category=${category.id}`);
+    } else {
+        // Otherwise, set the selected category or subcategory as usual
+        selectedCategory.value = category;
+        selectedSubCategory.value = null;
+    }
+};
 
 const iconMap = {
     Semiconductors: SemiconductorsIcon,

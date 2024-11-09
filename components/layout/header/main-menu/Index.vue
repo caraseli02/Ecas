@@ -9,7 +9,7 @@
                 <div class="flex items-center text-blue-500">
                     <component :is="selectedCategory.icon" v-if="!selectedSubCategory" class="w-[22px] h-[22px] mr-1.5" />
                     <div class="text-sm font-semibold">
-                        {{ selectedSubCategory ? selectedSubCategory.label : selectedCategory.label }}
+                        {{ selectedSubCategory ? selectedSubCategory.name : selectedCategory.name }}
                     </div>
                 </div>
             </template>
@@ -25,59 +25,59 @@
         >
             <template v-if="!selectedCategory">
                 <button
-                    v-for="(category, index) in categories"
+                    v-for="(category, index) in allCategories"
                     :key="index"
                     class="group flex items-center px-2.5 py-[5px] rounded-[5px] w-full text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
-                    @click="selectedCategory = category"
+                    @click="
+                        selectedCategory = category;
+                        handleCategoryClick(category);
+                    "
                 >
                     <div class="flex items-center justify-center w-[34px] h-[34px] rounded bg-gray-100 mr-2">
                         <component :is="category.icon" class="w-7 h-7" />
                     </div>
                     <div>
                         <div class="text-[15px] font-semibold mb-px">
-                            {{ category.label }}
+                            {{ category.name }}
                         </div>
                         <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
-                            {{ category.products }} Products
+                            {{ category.productCount }} Products
                         </div>
                     </div>
                 </button>
             </template>
             <template v-else-if="selectedCategory && !selectedSubCategory">
                 <button
-                    v-for="(subCategory, index) in selectedCategory.subCategories"
+                    v-for="(subCategory, index) in selectedCategory.subcategory"
                     :key="index"
                     class="group flex items-center px-2.5 py-[5px] rounded-[5px] w-full text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
-                    @click="selectedSubCategory = subCategory"
+                    @click="
+                        selectedSubCategory = subCategory;
+                        handleCategoryClick(category);
+                    "
                 >
                     <div>
                         <div class="text-[15px] font-semibold mb-px">
-                            {{ subCategory.label }}
+                            {{ subCategory.name }}
                         </div>
                         <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
-                            {{ subCategory.products }} Products
+                            {{ subCategory.productCount }} Products
                         </div>
                     </div>
                 </button>
             </template>
             <template v-else-if="selectedSubCategory">
                 <NuxtLink
-                    v-for="(subCategory, index) in selectedCategory.subCategories"
+                    v-for="(subCategory, index) in selectedCategory.subcategory"
                     :key="index"
                     to="/"
                     class="group flex items-center justify-between px-2.5 py-[5px] rounded-[5px] w-full text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
                 >
                     <div>
-                        <div class="text-[15px] font-semibold mb-px">Semiconductors</div>
+                        <div class="text-[15px] font-semibold mb-px">{{ subCategory.name }}</div>
                         <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
-                            {{ subCategory.products }} Products
+                            {{ subCategory.productCount }} Products
                         </div>
-                    </div>
-                    <div
-                        v-if="index === 3 || index === 5"
-                        class="bg-blue-500 text-white rounded-full px-[5px] py-px font-Inter font-semibold text-xs leading-tight"
-                    >
-                        New
                     </div>
                 </NuxtLink>
             </template>
@@ -102,7 +102,6 @@
 </template>
 
 <script setup lang="ts">
-import XIcon from '@/assets/icons/x.svg';
 import SemiconductorsIcon from '@/assets/icons/header/semiconductors.svg';
 import PassiveIcon from '@/assets/icons/header/passive.svg';
 import ElectromechanicsIcon from '@/assets/icons/header/electromechanics.svg';
@@ -113,353 +112,70 @@ import ToolsIcon from '@/assets/icons/header/tools.svg';
 import IndustrialFurnitureIcon from '@/assets/icons/header/industrial-furniture.svg';
 import CaretLeft from '@/assets/icons/caret-left.svg';
 import { showNavModal } from '~~/config/modal/nav';
+import { TaxonomyInterface } from '~/types/dashboard/categories';
+import { mapLabelsToIds } from '~/helpers/categories.helper';
+import CardPlaceholderSmall from 'assets/icons/card-placeholder-small.svg';
+import { useRouter } from 'vue-router';
 
-const categories = ref([
+const router = useRouter();
+
+const iconMap = {
+    Semiconductors: SemiconductorsIcon,
+    Passive: PassiveIcon,
+    Electromechanics: ElectromechanicsIcon,
+    'Cables & Connectors': CablesAndConnectorsIcon,
+    'Power Supply': PowerSupplyIcon,
+    Cases: CasesIcon,
+    Tools: ToolsIcon,
+    'Industrial Furniture': IndustrialFurnitureIcon,
+};
+
+const DefaultIcon = CardPlaceholderSmall;
+
+const handleCategoryClick = (category) => {
+    if (category.subcategory.length === 0) {
+        // Redirect to the category link if it's the last level
+        router.push(`/search?category=${category.id}`);
+        showNavModal.value = false;
+    } else {
+        // Otherwise, set the selected category or subcategory as usual
+        selectedCategory.value = category;
+        selectedSubCategory.value = null;
+    }
+};
+
+const { categories, getCategories } = useCategories();
+const allCategories = ref<
     {
-        label: 'Semiconductors',
-        products: 17000,
-        icon: SemiconductorsIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 170000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Power Supply',
-                products: 170000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 170000,
-            },
-        ],
-    },
-    {
-        label: 'Pasive',
-        products: 17000,
-        icon: PassiveIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 170000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Power Supply',
-                products: 170000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 170000,
-            },
-        ],
-    },
-    {
-        label: 'Electromechanics',
-        products: 17000,
-        icon: ElectromechanicsIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 170000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Power Supply',
-                products: 170000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 170000,
-            },
-        ],
-    },
-    {
-        label: 'Cables & Connectors',
-        products: 17000,
-        icon: CablesAndConnectorsIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 170000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Power Supply',
-                products: 170000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 170000,
-            },
-        ],
-    },
-    {
-        label: 'Power Supply',
-        products: 17000,
-        icon: PowerSupplyIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 170000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Power Supply',
-                products: 170000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 170000,
-            },
-        ],
-    },
-    {
-        label: 'Cases',
-        products: 17000,
-        icon: CasesIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 170000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Power Supply',
-                products: 170000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 170000,
-            },
-        ],
-    },
-    {
-        label: 'Tools',
-        products: 17000,
-        icon: ToolsIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 170000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Power Supply',
-                products: 170000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 170000,
-            },
-        ],
-    },
-    {
-        label: 'Industrial Furniture',
-        products: 17000,
-        icon: IndustrialFurnitureIcon,
-        subCategories: [
-            {
-                label: 'Capacitors',
-                products: 170000,
-            },
-            {
-                label: 'High power electrolytic capacitors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Power Supply',
-                products: 170000,
-            },
-            {
-                label: 'Semiconductors',
-                products: 170000,
-            },
-            {
-                label: 'Electromechanics',
-                products: 170000,
-            },
-            {
-                label: 'Optolelectronics',
-                products: 170000,
-            },
-            {
-                label: 'Electrolytic capacitors',
-                products: 170000,
-            },
-        ],
-    },
-]);
+        name: string;
+        productCount: number;
+        icon: any;
+        id: string;
+        subcategory: { name: string; productCount: number; id: string }[];
+    }[]
+>([]);
+const setCategories = async () => {
+    await getCategories();
+
+    function mapCategories(sourceArray: any) {
+        return sourceArray.map((item: TaxonomyInterface) => ({
+            name: item.name.trim(),
+            productCount: item.productCount,
+            icon: iconMap[item.name.trim()] || DefaultIcon, // Use mapped icon or default if not found
+            subcategory: item.subcategory ? mapCategories(item.subcategory) : [],
+            id: item.id, // Recursively map subcategories
+            path: item.path,
+        }));
+    }
+
+    allCategories.value = mapCategories(categories.value);
+    mapLabelsToIds(allCategories.value);
+};
+
+onMounted(async () => {
+    await setCategories();
+});
+
 const selectedCategory = ref<(typeof categories.value)[0] | null>(null);
 const selectedSubCategory = ref();
 
