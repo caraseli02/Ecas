@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { FileText, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
-import { DotsVerticalIcon } from '@radix-icons/vue';
+import { PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
 
 import {
     OrderInterface,
