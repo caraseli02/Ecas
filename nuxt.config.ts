@@ -2,8 +2,9 @@ const _ = require('lodash');
 const svgPrefix = {};
 svgPrefix.toString = () => `${_.uniqueId()}_`;
 
-require('dotenv').config();
+import dotenv from 'dotenv';
 
+dotenv.config({ path: '.env' });
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     // server: {
@@ -93,7 +94,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         FIREBASE_API_KEY: process.env.NUXT_FIREBASE_API_KEY,
-        FIREBASE_AUTH_DOMAIN: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+        FIREBASE_AUTH_DOMAIN: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
         FIREBASE_PROJECT_ID: process.env.NUXT_FIREBASE_PROJECT_ID,
         FIREBASE_STORAGE_BUCKET: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
         FIREBASE_MESSAGE_SENDER_ID: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
