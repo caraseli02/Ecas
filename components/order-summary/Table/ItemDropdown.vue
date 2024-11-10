@@ -42,7 +42,7 @@
                         <div>
                             <QuantityButtons
                                 v-if="quantity"
-                                v-model="quantity"
+                                :model-value="quantity"
                                 size="lg"
                                 :type="stockItem ? OrderType.Stock : OrderType.Back"
                                 :update-only-available-stock="true"
@@ -119,10 +119,14 @@ const quantity = ref(props.stockItem ? props.item.stock : props.item.backorder_s
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
-watch(quantity, () => {
-    console.log('updateQuantity');
-    emits('updateQuantity');
-});
+watch(
+    quantity,
+    () => {
+        console.log('updateQuantity');
+        emits('updateQuantity');
+    },
+    { immediate: true }
+);
 
 const discounts = computed(() => {
     if (!props.item.productEntity) {
