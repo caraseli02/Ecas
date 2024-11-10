@@ -79,6 +79,7 @@
             @toggle-packaging-details="togglePackagingDetails"
             @toggle-delivery-details="toggleDeliveryDetails"
             @delete-item="deleteItem = true"
+            @removed="emits('updateQuantity')"
         />
     </div>
     <LayoutFavoritesModalsDelete
@@ -88,6 +89,7 @@
         :products="[item as any]"
         :delete-from-cart="true"
         @close="deleteItem = false"
+        @removed="emits('updateQuantity')"
     />
 </template>
 
