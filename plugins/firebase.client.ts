@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 
 export default defineNuxtPlugin(async (nuxtApp) => {
     const config = useRuntimeConfig();
-    console.log('config: ', config.FIREBASE_API_KEY);
+    console.log('config: ', config);
     console.log('Initializing Firebase client', import.meta.env);
     const app = initializeApp({
         apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
