@@ -4,7 +4,9 @@ import { getAuth } from '@firebase/auth';
 export default defineNuxtPlugin(async (nuxtApp) => {
     const config = useRuntimeConfig();
     console.log('config: ', config);
-    console.log('Initializing Firebase client', process.env);
+    if (import.meta.server) {
+        console.log('API secret:', config.firebaseApiKey);
+    }
     // const app = initializeApp({
     //     apiKey: process.env.VITE_FIREBASE_API_KEY as string,
     //     authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN as string,
@@ -15,13 +17,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     //     measurementId: process.env.VITE_FIREBASE_MEASUREMENT_ID as string,
     // });
     const app = initializeApp({
-        apiKey: (config.FIREBASE_API_KEY as string) || 'test',
-        authDomain: (config.FIREBASE_AUTH_DOMAIN as string) || 'test',
-        projectId: (config.FIREBASE_PROJECT_ID as string) || 'test',
-        storageBucket: (config.FIREBASE_STORAGE_BUCKET as string) || 'test',
-        messagingSenderId: (config.FIREBASE_MESSAGE_SENDER_ID as string) || 'test',
-        appId: (config.FIREBASE_APP_ID as string) || 'test',
-        measurementId: (config.FIREBASE_MEASUREMENT_ID as string) || 'test',
+        apiKey: (config.firebaseApiKey as string) || 'test',
+        authDomain: (config.firebaseAuthDomain as string) || 'test',
+        projectId: (config.firebaseProjectID as string) || 'test',
+        storageBucket: (config.firebaseStorageBucket as string) || 'test',
+        messagingSenderId: (config.firebaseMessageSenderID as string) || 'test',
+        appId: (config.firebaseAppID as string) || 'test',
+        measurementId: (config.firebaseMeasurementID as string) || 'test',
     });
 
     const auth = getAuth(app);
