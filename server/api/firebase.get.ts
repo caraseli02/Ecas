@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
-
+    console.log(config);
     return {
         apiKey: config.FIREBASE_API_KEY,
         authDomain: config.FIREBASE_AUTH_DOMAIN,

@@ -20,13 +20,14 @@ let stripe: Stripe | null;
 let elements: StripeElements;
 let setupIntent: SetupIntentResult;
 const setupIntentId = ref(null);
+const config = useRuntimeConfig();
 
 const showSkeletonLoader = ref(false);
 onMounted(async () => {
     showSkeletonLoader.value = true;
-    stripe = await loadStripe(
-        'pk_test_51MovuoHH6OAXXqHTJaUf46KvhzKeTRHqN0iohnBKiazdOoYorFeHSYTMtq1Tdd9zK8uNf1BPed3mMbxighKBSDTl002ysjwmrw'
-    );
+    console.log(import.meta.env);
+    console.log(config.STRIPE_PUBLISHABLE_KEY, config.public.BASE_URL_API);
+    stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
 
     const fetchSetupIntentResult = await $api.orders.createAndRetrieveSetupIntent();
 

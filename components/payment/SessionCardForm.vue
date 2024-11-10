@@ -37,9 +37,7 @@ onMounted(async () => {
     showSkeletonLoader.value = true;
     orderId.value = <string>route.query.id;
 
-    stripe = await loadStripe(
-        'pk_test_51MovuoHH6OAXXqHTJaUf46KvhzKeTRHqN0iohnBKiazdOoYorFeHSYTMtq1Tdd9zK8uNf1BPed3mMbxighKBSDTl002ysjwmrw'
-    );
+    stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
 
     if (!stripe || !getOrderClientSecret.value) {
         return null;
