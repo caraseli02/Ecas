@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 export default defineNuxtPlugin(async (nuxtApp) => {
+    console.log('Initializing Firebase client', import.meta.env);
     const app = initializeApp({
         apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
         authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN as string,
