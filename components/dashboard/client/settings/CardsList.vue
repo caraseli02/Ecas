@@ -18,7 +18,7 @@
                 @edit-card="handleEditCard"
             />
         </template>
-        <UiSkeleton v-for="i in 3" :key="i" class="w-[432px] h-[92px]" />
+        <UiSkeleton v-else v-for="i in 3" :key="i" class="w-[432px] h-[92px]" />
     </div>
 </template>
 
