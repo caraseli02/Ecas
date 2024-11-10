@@ -73,15 +73,17 @@ const props = defineProps({
 });
 
 const currentQuantity = ref(props.modelValue);
+const initialQuantity = ref(props.modelValue);
 
 const emits = defineEmits(['update:modelValue']);
 const inputHandler = async (quantity: number) => {
-    if (currentQuantity.value === quantity) {
+    if (initialQuantity.value === quantity) {
         console.log('same value');
         return;
     }
 
-    currentQuantity.value = quantity; // Update local state first
+    initialQuantity.value = quantity; // Update local state first
+    currentQuantity.value = quantity; // Update the current quantity
 
     if (props.object && props.object.action === ProductAction.Update) {
         const payload = {} as UpdateProductCartRequestInterface;
@@ -119,7 +121,6 @@ const inputHandler = async (quantity: number) => {
     }
 };
 
-
 const inputHandlerModified = (event: Event) => {
     const target = event.target as HTMLInputElement;
 
@@ -141,7 +142,6 @@ watch(
     { immediate: true, deep: true }
 );
 </script>
-
 
 <!-- <template>
     <div v-if="modelValue > 0" class="flex bg-stone-50 bg-opacity-95 rounded-lg max-w-max">

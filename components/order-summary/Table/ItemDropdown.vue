@@ -52,6 +52,7 @@
                                     min: stockItem ? item?.productEntity?.priceConfiguration?.configuration[0].quantity : 1,
                                     max: item.productEntity?.stock
                                 } as any"
+                                @update:model-value="quantity = $event"
                             />
                         </div>
                     </div>
