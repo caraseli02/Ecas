@@ -86,8 +86,10 @@ RUN \
     # copy nginx site config \
     mv ./nginx-app.conf /etc/nginx/nginx.conf
 
+ENTRYPOINT ["/code/docker_entrypoint.sh"]
+
 EXPOSE 3000
 
-ENTRYPOINT ["/code/docker_entrypoint.sh"]
+STOPSIGNAL SIGTERM
 
 CMD [ "node", ".output/server/index.mjs" ]
