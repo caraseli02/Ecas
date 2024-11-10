@@ -25,8 +25,7 @@ const config = useRuntimeConfig();
 const showSkeletonLoader = ref(false);
 onMounted(async () => {
     showSkeletonLoader.value = true;
-    console.log(import.meta.env);
-    console.log(config.STRIPE_PUBLISHABLE_KEY, config.public.BASE_URL_API);
+
     stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
 
     const fetchSetupIntentResult = await $api.orders.createAndRetrieveSetupIntent();
