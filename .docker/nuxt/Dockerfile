@@ -71,11 +71,12 @@ RUN apk add --no-cache \
     supervisor
 
 WORKDIR /code
-
+RUN pwd
 ADD package.json ./
 ADD nuxt.config.ts ./
 ADD .docker/nuxt/nginx-app.conf ./
 ADD .docker/nuxt/docker_entrypoint.sh ./
+RUN chmod 777 ./docker_entrypoint.sh
 
 COPY --from=builder /code/.output /code/.output
 COPY --from=builder /code/node_modules /code/node_modules
@@ -87,6 +88,6 @@ RUN \
 
 EXPOSE 3000
 
-ENTRYPOINT ["docker_entrypoint.sh"]
+ENTRYPOINT ["/code/docker_entrypoint.sh"]
 
 CMD [ "node", ".output/server/index.mjs" ]
