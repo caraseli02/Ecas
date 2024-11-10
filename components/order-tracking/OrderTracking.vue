@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import {
-  MoreHorizontal,
+  MoreVertical,
   MapPin,
   FileSpreadsheet,
   FilePlus2,
-  Hourglass,
+  DotIcon,
   Package,
   Truck,
   CheckCircle,
   ChevronRight
 } from 'lucide-vue-next'
+import { cn } from '~/lib/utils';
 
 interface OrderStatus {
   processing: boolean,
@@ -67,9 +68,9 @@ const formattedDate = computed(() => {
 })
 
 const statusColor = computed(() => ({
-  processing: 'bg-orange-500',
+  processing: 'bg-purple-500',
   packaging: 'bg-blue-500',
-  transit: 'bg-emerald-500',
+  transit: 'bg-blue-500',
   fulfilled: 'bg-emerald-500'
 }[props.order.status]))
 
@@ -92,115 +93,121 @@ const handleMoreOptions = () => {
 
 <template>
   <section
-    class="flex overflow-hidden flex-col gap-8 p-6 bg-white rounded-xl border border-solid border-neutral-300 max-md:px-4 max-md:gap-4"
+    class="w-full mx-auto flex overflow-hidden flex-col gap-8 p-6 bg-white rounded-xl border border-solid border-D3D3D3-300 max-md:px-4 max-md:gap-4"
   >
-    <header class="flex flex-col w-full">
+    <section class="flex flex-col w-full">
       <div class="flex flex-wrap gap-10 justify-between items-start w-full max-md:gap-4">
-        <div class="flex flex-wrap gap-6 items-center text-2xl leading-none w-full md:w-auto max-md:gap-3">
-          <div class="flex gap-3 items-center self-stretch my-auto w-full md:w-auto">
-            <span class="text-gray-500">Order ID:</span>
+        <div class="flex flex-col lg:flex-row flex-wrap gap-6 items-center text-xl sm:text-2xl leading-none w-full md:w-auto max-md:gap-3 border md:border-none border-grey-300 p-2 bg-light-100 md:bg-transparent rounded-lg">
+          <div class="flex justify-between md:justify-start gap-3 items-center self-stretch my-auto w-full md:w-auto">
+            <span class="text-gray-500 font-normal">Order ID:</span>
             <span class="font-medium text-zinc-800">{{ order.orderId }}</span>
           </div>
-          <div class="hidden md:block w-px h-6 bg-stone-300"></div>
-          <div class="flex gap-3 items-center self-stretch my-auto text-gray-500 w-full md:w-auto">
-            <span>AWB:</span>
-            <span>{{ order.awb || 'Pending...' }}</span>
+          <div class="hidden lg:block w-px h-6 bg-stone-300"></div>
+          <div class="flex justify-between md:justify-start gap-3 items-center self-stretch my-auto text-slate-500 w-full md:w-auto text-base sm:text-2xl">
+            <span class="font-normal">AWB:</span>
+            <p class="flex items-center gap-2" v-if="order.awb">
+              {{ order.awb }}
+              <CopyClipboard :text="order.awb" />
+            </p>
+            <p v-else class="flex items-center gap-2 text-sm text-neutral-700">
+              <span  class="bg-orange-500 flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full" aria-hidden="true"></span>
+              Pending
+            </p>
+
           </div>
         </div>
         
-        <div class="flex gap-9 items-start w-full md:w-auto max-md:gap-4">
-          <div class="flex gap-3 items-center font-medium">
-            <div class="text-xl leading-8 text-zinc-800">
+        <div class="flex justify-end gap-4 lg:gap-9 items-start w-full md:w-auto max-md:gap-4">
+            <UiBadge
+              class="flex gap-3 items-center font-normal px-3 py-1 text-sm rounded-md h-8"
+              variant="outline"
+            >
+            <div class="text-zinc-800">
               <span>$</span>
               <span>{{ order.amount.toFixed(2) }}</span>
             </div>
-            <UiButton
-              class="flex items-center px-3 py-1 text-sm text-white rounded-md"
-              size="xs"
-              :class="billingStatusColor"
-            >
-              <Hourglass v-if="order.billingStatus === 'pending'" class="w-4 h-4 mr-2" />
-              <CheckCircle v-if="order.billingStatus === 'paid'" class="w-4 h-4 mr-2" />
-              <span class="capitalize">{{ order.billingStatus }}</span>
-            </UiButton>
-          </div>
+            <UiSeparator class="h-4 bg-grey-300" orientation="vertical" />
+              
+              <span class="capitalize flex gap-1">
+                <span :class="billingStatusColor" class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full" aria-hidden="true"></span>
+                {{ order.billingStatus }}
+              </span>
+            </UiBadge>
           <UiButton
             class="flex justify-center items-center p-1 w-8 h-8 rounded-md bg-zinc-100"
             aria-label="More options"
             size="xs"
             @click="handleMoreOptions"
           >
-            <MoreHorizontal class="w-6 h-6" />
+            <MoreVertical class="w-6 h-6 text-black stroke-1" />
           </UiButton>
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center mt-8 w-fit gap-4 max-md:mt-4">
-        <div class="flex gap-2 items-center font-medium w-full md:w-auto">
+      <div class="flex flex-wrap items-center mt-8 w-full lg:w-fit gap-4 max-md:mt-4">
+        <div class="flex gap-2 items-center font-medium w-full lg:w-auto">
           <div class="w-8 h-8 flex items-center justify-center bg-sky-100 rounded-full text-sky-500">
             {{ order.company.initial }}
           </div>
           <span class="text-sm leading-6 text-zinc-800">{{ order.company.name }}</span>
         </div>
-        <div class="hidden md:block w-px h-6 bg-stone-300"></div>
+        <div class="hidden lg:block w-px h-6 bg-stone-300"></div>
         <div class="flex gap-1 items-center text-sm leading-6 text-zinc-800 w-fit md:flex-1">
           <MapPin class="w-5 h-5 shrink-0" />
           <address class="not-italic">{{ order.address }}</address>
         </div>
-        <div class="hidden md:block w-px h-6 bg-stone-300"></div>
+        <div class="hidden lg:block w-px h-6 bg-stone-300"></div>
         <div class="flex gap-1 items-center text-sm leading-6 text-zinc-800">
           <FileSpreadsheet class="w-5 h-5" />
           <span class="capitalize">{{ order.billingStatus }}</span>
         </div>
       </div>
-    </header>
+    </section>
 
-    <main class="flex flex-col gap-6 px-4 py-6 rounded-xl border border-solid bg-stone-50 border-neutral-300">
-      <div class="flex flex-wrap gap-10 justify-between items-center text-sm leading-6 max-md:gap-4">
-        <div class="flex items-center gap-6 max-md:gap-3 w-full md:w-auto">
-          <h2 class="font-medium text-zinc-800">Order received</h2>
-          <div class="hidden md:block w-px h-6 bg-stone-300"></div>
+    <section class="flex flex-col gap-6 px-4 py-6 rounded-xl border border-solid bg-light-100 border-grey-300">
+      <div class="flex md:flex-wrap gap-10 justify-between md:items-center text-sm leading-6 max-md:gap-4">
+        <div class="flex flex-col md:flex-row md:items-center max-md:gap-1 w-full md:w-auto">
+          <h2 class="font-medium text-zinc-800">Order updated</h2>
+          <DotIcon class="hidden md:block text-stone-300" />
           <time class="flex gap-1 text-gray-500">
             <span>{{ formattedDate.day }}</span>
             <span>{{ formattedDate.month }}</span>
             <span>{{ formattedDate.year }}</span>
           </time>
         </div>
-        <button 
-          class="flex items-center px-3 py-1 text-sm text-white rounded-md w-full md:w-auto justify-center md:justify-start"
-          :class="statusColor"
+        <UiBadge 
+          :class="cn('flex items-start md:items-center justify-end md:justify-start gap-2 bg-light-100 text-neutral-700 font-normal p-0 text-sm rounded-md w-full md:w-auto')"
         >
-          <Hourglass class="w-4 h-4 mr-2" />
+          <span :class="statusColor" class="flex shrink-0 self-stretch w-3 h-3 rounded-full mt-1" aria-hidden="true"></span>
           <span class="capitalize">{{ order.status }}</span>
-        </button>
+        </UiBadge>
       </div>
 
-      <div class="flex flex-wrap gap-3 items-center mt-6 min-h-[36px] max-md:mt-4">
+      <div class="relative flex justify-between flex-wrap gap-3 items-center min-h-[36px]">
         <template v-for="(status, index) in ['processing', 'packaging', 'transit', 'fulfilled']" :key="status">
           <component
             :is="statusIcons[status]"
-            class="w-9 h-9 shrink-0"
+            class="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 shrink-0 z-10 bg-light-100 p-1"
             :class="{
-              'text-emerald-500': order.trackingStatus[status],
+              'text-slate-500': order.trackingStatus[status],
               'text-gray-300': !order.trackingStatus[status]
             }"
           />
-          <div 
-            v-if="index < 3"
-            class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden min-w-[100px] md:min-w-[240px]"
+        </template>
+        <div 
+            class="mx-6 md:mx-8 lg:mx-10 absolute inset-0 top-4 lg:top-3.5 flex-1 h-1 md:h-1.5 lg:h-2 bg-gray-200 rounded-full overflow-hidden min-w-[100px] md:min-w-[240px]"
           >
             <div
-              class="h-full transition-all duration-300 ease-in-out"
+              class="h-full transition-all duration-300 ease-in-out rounded-full"
               :class="{
-              'bg-emerald-500': order.status === 'fulfilled' || order.status === 'transit',
-              'bg-blue-500': order.status === 'packaging',
-              'bg-orange-500': order.status === 'processing'
+              'bg-emerald-500 full': order.status === 'fulfilled',
+              'bg-blue-500 w-[85.5%]': order.status === 'transit',
+              'bg-blue-500 w-1/2': order.status === 'packaging',
+              'bg-purple-500 w-[12.5%]': order.status === 'processing' && order.billingStatus === 'paid',
             }"
-              :style="{ width: order.trackingStatus[status] ? '100%' : '0%' }"
             ></div>
           </div>
-        </template>
       </div>
-    </main>
+    </section>
   </section>
 </template>

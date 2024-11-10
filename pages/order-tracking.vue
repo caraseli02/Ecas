@@ -23,6 +23,26 @@ const orders = [
     }
   },
   {
+    // New order - just received
+    orderId: 'S-241030007',
+    awb: null,
+    amount: 457.92,
+    status: 'processing',
+    company: {
+      name: 'Ecas Electro S.R.L',
+      initial: 'E'
+    },
+    address: 'Bd. Dimitrie Pompei Nr. 8, Sector 2, Bucuresti, 90210, Romania',
+    billingStatus: 'paid',
+    orderDate: new Date('2024-11-27'),
+    trackingStatus: {
+      processing: true,
+      packaging: false,
+      transit: false,
+      fulfilled: false
+    }
+  },
+  {
     // Order in processing
     orderId: 'S-241030008',
     awb: 'MOP524103008',
@@ -86,7 +106,7 @@ const orders = [
 </script>
 
 <template>
-  <div class="flex flex-col gap-6 p-6">
+  <div class="flex flex-col gap-6 pt-6 max-w-[1392px] mx-auto w-full container">
     <h1 class="text-2xl font-bold text-zinc-800">Order Tracking Examples</h1>
     
     <div class="grid gap-6">
