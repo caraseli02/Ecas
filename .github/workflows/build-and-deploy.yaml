@@ -13,12 +13,8 @@ on:
       version:
         description: 'Image version'
         required: true
-#2
-env:
-  REGISTRY: 'registry.digitalocean.com/ecas-dev'
-  IMAGE_NAME: 'dev-frontend'
 
-#3
+#2
 jobs:
   check_branch_name:
     name: 1) valid branch name
@@ -31,6 +27,7 @@ jobs:
   create_draft_pr:
     name: 2) create the draft pull request
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
@@ -40,8 +37,10 @@ jobs:
       - run: python .github/helpers/create_pull_request.py "${{secrets.GH_TOKEN}}" "${{github.repository}}" "${{github.ref}}" "${{github.actor}}"
 
   build_and_push:
+    name: 3) build the image and push to Digital Ocean
     runs-on: ubuntu-latest
     needs: create_draft_pr
+    environment: dev
     steps:
       - uses: actions/github-script@v6
         id: get_issue_number
@@ -87,9 +86,12 @@ jobs:
           FIREBASE_MESSAGE_SENDER_ID: ${{secrets.FIREBASE_MESSAGE_SENDER_ID}}
           FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
           FIREBASE_MEASUREMENT_ID: ${{secrets.FIREBASE_MEASUREMENT_ID}}
-          BASE_URL_API: ${{secrets.BASE_URL_API}}
+          STRIPE_PUBLISHABLE_KEY: ${{secrets.STRIPE_PUBLISHABLE_KEY}}
+          BASE_URL_API: ${{vars.BASE_URL_API}}
           REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
           SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
+          REGISTRY: ${{vars.REGISTRY}}
+          IMAGE_NAME: ${{vars.IMAGE_NAME}}
         run: >
           docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo $FIREBASE_SERVICE_ACCOUNT_JSON) 
           --build-arg NUXT_FIREBASE_API_KEY=$(echo $FIREBASE_API_KEY) 
@@ -99,6 +101,7 @@ jobs:
           --build-arg NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo $FIREBASE_MESSAGE_SENDER_ID) 
           --build-arg NUXT_FIREBASE_APP_ID=$(echo $FIREBASE_APP_ID) 
           --build-arg NUXT_FIREBASE_MEASUREMENT_ID=$(echo $FIREBASE_MEASUREMENT_ID) 
+            --build-arg NUXT_STRIPE_PUBLISHABLE_KEY=$(echo $STRIPE_PUBLISHABLE_KEY)
           --build-arg NUXT_PUBLIC_BASE_URL_API=$(echo $BASE_URL_API) 
           -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
 
@@ -116,5 +119,7 @@ jobs:
       - name: Push image to DigitalOcean Container Registry
         run: docker push  $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
         env:
+          REGISTRY: ${{vars.REGISTRY}}
+          IMAGE_NAME: ${{vars.IMAGE_NAME}}
           REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
           SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}

@@ -47,7 +47,7 @@ export default defineNuxtConfig({
         'nuxt3-leaflet',
         'nuxt-viewport',
         '@vueuse/nuxt',
-        '@formkit/auto-animate/nuxt'
+        '@formkit/auto-animate/nuxt',
     ],
     shadcn: {
         /**
@@ -58,8 +58,8 @@ export default defineNuxtConfig({
          * Directory that the component lives in.
          * @default "./components/ui"
          */
-        componentDir: './components/ui'
-      },
+        componentDir: './components/ui',
+    },
     viewport: {
         breakpoints: {
             xs: 390,
@@ -98,6 +98,7 @@ export default defineNuxtConfig({
         FIREBASE_STORAGE_BUCKET: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
         FIREBASE_MESSAGE_SENDER_ID: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
         FIREBASE_APP_ID: process.env.NUXT_FIREBASE_APP_ID,
+        STRIPE_PUBLISHABLE_KEY: process.env.NUXT_STRIPE_PUBLISHABLE_KEY,
         FIREBASE_MEASUREMENT_ID: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
         public: {
             BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API ?? 'https://dev-backend.ecasmag.ro/ecas',
@@ -117,9 +118,9 @@ export default defineNuxtConfig({
     },
     vite: {
         vue: {
-          script: {
-            defineModel: true,
-          },
+            script: {
+                defineModel: true,
+            },
         },
-      },
+    },
 });
