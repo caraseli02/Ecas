@@ -13,12 +13,8 @@ on:
       version:
         description: 'Image version'
         required: true
-#2
-env:
-  REGISTRY: 'registry.digitalocean.com/ecas-dev'
-  IMAGE_NAME: 'dev-frontend'
 
-#3
+#2
 jobs:
   check_branch_name:
     name: 1) valid branch name
@@ -94,6 +90,8 @@ jobs:
           BASE_URL_API: ${{vars.BASE_URL_API}}
           REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
           SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
+          REGISTRY: ${{vars.REGISTRY}}
+          IMAGE_NAME: ${{vars.IMAGE_NAME}}
         run: >
           docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo $FIREBASE_SERVICE_ACCOUNT_JSON) 
           --build-arg NUXT_FIREBASE_API_KEY=$(echo $FIREBASE_API_KEY) 
@@ -121,5 +119,7 @@ jobs:
       - name: Push image to DigitalOcean Container Registry
         run: docker push  $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
         env:
+          REGISTRY: ${{vars.REGISTRY}}
+          IMAGE_NAME: ${{vars.IMAGE_NAME}}
           REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
           SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
