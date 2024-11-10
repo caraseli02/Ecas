@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { BoxIcon, ChevronLeft, FileText, MapPin, PackageOpenIcon, TruckIcon, Undo2Icon } from 'lucide-vue-next';
+
 import {
     OrderInterface,
     OrderNotesInterface,
@@ -15,15 +16,21 @@ import { paymentInfoHelper } from '~/helpers/payment-info.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import { toast } from '~/components/ui/toast';
+import { orderType } from '~/components/admin-table/order/options';
+
+definePageMeta({
+    layout: 'dashboard',
+});
 
 const authStore = useAuthStore();
 const { getUserDetails, userCards } = storeToRefs(authStore);
-const generalSettings = useAuthStore().generalSettings;
+
 const { $api } = useNuxtApp();
 
 const route = useRoute();
 
-const orderType = ref<OrderType | null>(null);
+const orderTypeValue = ref<OrderType | null>(null);
 const customerDetails = ref({
     title: 'Customer Details',
     name: '',
@@ -33,11 +40,6 @@ const customerDetails = ref({
 const date = ref<string>('' as string);
 const orderPaySum = ref<PaymentSummaryInterface>({} as PaymentSummaryInterface);
 const paymentMethod = ref<PaymentInfo>();
-
-const shippingMethod = computed(() =>
-    generalSettings?.orderSettings?.deliveryTypes.find((type) => type._id === data.value.data?.order?.shippingDetails.deliveryTypeId)
-);
-
 const addresses = ref<{
     shippingAddress: {
         name1: string;
@@ -56,6 +58,7 @@ const addresses = ref<{
 
 const notes = ref<OrderNotesInterface[] | []>([] as OrderNotesInterface[] | []);
 const data = ref<OrderRequestInterfaceResponse>({} as OrderRequestInterfaceResponse);
+const shippingMethod = computed(() => data.value.data?.order.shippingDetails.stockorderShippingType);
 
 const hasMixedItems = computed(() => {
     const key1Values = new Set(stockOrderItems.value.map((item) => item._id));
@@ -64,9 +67,7 @@ const hasMixedItems = computed(() => {
 });
 
 const paymentSummary = computed(() => {
-    const shippingType = generalSettings?.orderSettings?.deliveryTypes.find(
-        (type) => type._id === data.value.data?.order.shippingDetails._id
-    );
+    const shippingType = data.value.data?.order.shippingDetails.stockorderShippingType;
     const orderInfo = data.value.data?.order;
 
     if (orderInfo) {
@@ -78,7 +79,7 @@ const paymentSummary = computed(() => {
         orderPaySum.value.discountAmount = orderPaySum.value.discountPercentage * (orderPaySum.value.subtotal || 0);
         orderPaySum.value.handlingCharge = 0;
         orderPaySum.value.shippingCost = orderInfo.shippingCost || 0;
-        orderPaySum.value.shippingText = shippingType?.title || '';
+        orderPaySum.value.shippingText = shippingType?.service.courierName || '';
         orderPaySum.value.orderType = orderInfo.type;
         orderPaySum.value.smallOrderCharge = orderInfo.smallOrderCost || 0;
 
@@ -99,15 +100,12 @@ const stockOrder = ref<OrderRequestInterface>({} as OrderRequestInterface);
 const backOrder = ref<OrderRequestInterface>({} as OrderRequestInterface);
 
 const getOrderInformation = async () => {
-    // Fetch order information
-    console.log(route.params.id);
-
     const orderId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
     const response = (await $api.orders.getOrderById(orderId)) as OrderRequestInterfaceResponse;
 
     if (response.status === 'success' && response.data.order) {
         data.value = response;
-        orderType.value = response.data.order.type;
+        orderTypeValue.value = response.data.order.type;
         stockOrder.value =
             response.data.order.type === OrderType.Mixed
                 ? response.data.children.find((child: any) => child.type === OrderType.Stock)
@@ -124,9 +122,9 @@ const getOrderInformation = async () => {
             notes.value = response.data.order.notes || [];
         }
 
-        if (orderType.value === OrderType.Mixed) {
+        if (orderTypeValue.value === OrderType.Mixed) {
             paymentMethod.value = paymentInfoHelper(
-                stockOrder.value as unkwown as OrderInterface,
+                stockOrder.value as unknown as OrderInterface,
                 getUserDetails.value,
                 userCards.value || []
             );
@@ -153,12 +151,36 @@ const getOrderInformation = async () => {
         };
         customerDetails.value = {
             title: 'Customer Details',
-            name: response?.data?.order.userName,
-            email: response?.data?.order.userEmail,
+            name: `${response?.data?.order.user.contactDetails?.firstName} ${response?.data?.order.user.contactDetails?.lastName}`,
+            email: response?.data?.order.user.contactDetails.email,
             phone: response?.data?.order.shippingDetails.phone,
         };
-        date.value = moment(response.data.order.updatedAt).format('DD MMMM YYYY, HH:mm');
+        date.value = moment(response.data.order.createdAt).format('DD MMMM YYYY, HH:mm');
     }
+};
+
+const downloadDocument = async () => {
+    if (!stockOrder.value.paymentDetails?.invoiceId) {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Invoice is not available for the moment',
+        });
+        return;
+    }
+    const result = await $api.documents.downloadDocument(stockOrder.value.paymentDetails.invoiceId);
+
+    if (!result) {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Failed to download document',
+        });
+    }
+};
+
+const getOrderTypeValueByOrder = () => {
+    return orderType.find((type) => type.value === orderTypeValue.value) || orderType[0];
 };
 
 onMounted(() => {
@@ -167,132 +189,91 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="w-[1488px] max-w-full lg:p-4 mx-auto transition-all duration-300 md:py-6 2xl:px-6">
-        <DashboardOrdersBreadcrumbs class="px-2 pt-4" title="Order">
-            <template #order>
-                <span class="text-xs leading-[1.33] text-slate-500 flex-shrink-0 mx-1">/</span>
-                <span
-                    class="text-xs leading-[1.33] flex-shrink-0 font-medium text-blue-500 transition-colors duration-300 hover:text-blue-500"
-                >
-                    #{{ route.params.id }}
-                </span>
-            </template>
-            <section class="flex gap-3">
-                <UiButton size="icon">
-                    <ChevronLeft class="w-5 h-5" />
-                </UiButton>
-                <UiButton variant="secondary" size="icon">
-                    <ChevronLeft class="w-5 h-5 rotate-180" />
-                </UiButton>
-            </section>
-        </DashboardOrdersBreadcrumbs>
-        <OrderConfirmAdminBtns class="px-2" />
-        <section class="container px-4 py-6 md:p-6 flex flex-col gap-10">
-            <div class="flex flex-col self-stretch">
-                <div class="flex flex-wrap lg:gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-                    <div class="flex gap-5 justify-between my-auto">
-                        <h1 class="text-2xl font-semibold leading-8 text-neutral-700">
-                            Order ID: <span class="text-blue-500">#{{ data.data?.order?.shortId }}</span>
-                        </h1>
-                        <UiBadge
-                            v-if="orderType === OrderType.Mixed"
-                            class="justify-center px-2 py-1 my-auto text-sm font-medium leading-5 text-white bg-blue-500 rounded"
-                        >
-                            Mixed Order
-                        </UiBadge>
-                    </div>
-                    <div
-                        class="md:w-full lg:w-fit flex gap-2 md:gap-4 order-2 lg:order-1 mt-5 lg:mt-0 text-sm font-medium leading-6 text-white max-md:flex-wrap"
+    <section class="max-w-full bg-light-100">
+        <div class="container font-Poppins lg:p-4 transition-all duration-300 md:py-6 2xl:px-6 ">
+            <DashboardOrdersBreadcrumbs class="px-2 pt-4" title="Order">
+                <template #order>
+                    <span class="text-xs leading-[1.33] text-slate-500 flex-shrink-0 mx-1">/</span>
+                    <span
+                        class="text-xs leading-[1.33] flex-shrink-0 font-medium text-blue-500 transition-colors duration-300 hover:text-blue-500"
                     >
-                        <UiButton
-                            variant="secondary"
-                            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
-                        >
-                            <FileText class="shrink-0 w-6 aspect-square stroke-[1.5]" />
-                            <span class="hidden lg:inline">View</span> Invoices
-                        </UiButton>
-                        <UiButton
-                            variant="secondary"
-                            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
-                        >
-                            <MapPin class="shrink-0 w-6 aspect-square stroke-[1.5]" />
-                            Track <span class="hidden lg:inline">Order</span>
-                        </UiButton>
-                        <UiButton
-                            variant="secondary"
-                            class="w-[114px] md:w-full lg:w-fit flex gap-2 justify-center px-6 py-2 text-slate-500 rounded-lg bg-zinc-100 max-md:px-5"
-                        >
-                            <BoxIcon class="shrink-0 w-6 aspect-square stroke-[1.5]" />
-                            View All <span class="hidden lg:inline">Orders</span>
-                        </UiButton>
-                    </div>
-                    <div
-                        class="flex items-center flex-wrap gap-3 order-1 lg:order-2 pr-20 mt-3 lg:mt-0 text-sm font-medium leading-6 max-md:flex-wrap max-md:pr-5"
-                    >
-                        <div class="flex gap-2">
-                            <div class="text-slate-500">Order Date:</div>
-                            <div class="text-neutral-700">{{ date }}</div>
-                        </div>
-                        <UiSeparator class="hidden lg:block h-4" orientation="vertical" />
-                        <div class="flex gap-2">
-                            <div class="text-slate-500">Shipping Method:</div>
-                            <div class="text-neutral-700">{{ shippingMethod?.title }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        #{{ route.params.id }}
+                    </span>
+                </template>
+                <section class="flex gap-3">
+                    <UiButton size="icon">
+                        <ChevronLeft class="w-5 h-5" />
+                    </UiButton>
+                    <UiButton variant="secondary" size="icon">
+                        <ChevronLeft class="w-5 h-5 rotate-180" />
+                    </UiButton>
+                </section>
+            </DashboardOrdersBreadcrumbs>
+            <OrderConfirmAdminBtns class="px-2" />
+            <section class="px-4 py-6 md:p-6 flex flex-col gap-10 shadow-s rounded-xl">
+            <OrderConfirmHeader
+                :order-id="data.data?.order?.shortId"
+                :order-type="getOrderTypeValueByOrder()"
+                :date="date"
+                :shipping-method="shippingMethod?.service?.courierName"
+                :pickup-date="stockOrder?.shippingDetails?.statusTracking?.estimatedPickUpDate"
+                :payment-method="paymentMethod"
+                :on-download-document="downloadDocument"
+            />
             <OrderConfirmDetails
                 v-if="paymentMethod"
                 :customer-details="customerDetails"
                 :payment-method="paymentMethod"
                 :has-mixed-items="hasMixedItems"
             />
-            <UiSeparator />
-            <OrderConfirmAddress
-                v-if="addresses"
-                :shipping-address="addresses.shippingAddress"
-                :billing-address="addresses.billingAddress"
-            />
+            <UiSeparator class="bg-grey-100" />
+            <OrderConfirmAddress v-if="addresses" :shipping-address="addresses.shippingAddress" :billing-address="addresses.billingAddress" />
             <OrderConfirmStackItems
-                v-if="stockOrder && (orderType === OrderType.Stock || orderType === OrderType.Mixed)"
+                v-if="stockOrder && (orderTypeValue === OrderType.Stock || orderTypeValue === OrderType.Mixed)"
                 :data="stockOrder"
-                :order-type="orderType"
+                :order-type="orderTypeValue"
             />
             <OrderConfirmBackItems
-                v-if="backOrder && (orderType === OrderType.Back || orderType === OrderType.Mixed)"
+                v-if="backOrder && (orderTypeValue === OrderType.Back || orderTypeValue === OrderType.Mixed)"
                 :data="backOrder"
-                :order-type="orderType"
+                :order-type="orderTypeValue"
             />
             <section class="flex flex-col lg:flex-row gap-9">
-                <div v-if="notes[0]" class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
+                <div class="flex flex-col order-3 lg:order-1 w-full self-stretch text-sm leading-6 text-neutral-700">
                     <h2 class="w-full font-semibold max-md:max-w-full">Customer Notes</h2>
                     <textarea
+                        disabled
                         :placeholder="notes[0] && notes[0].message ? notes[0].message : 'No message provided'"
-                        class="min-h-[336px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full"
+                        class="min-h-[204px] justify-center px-3 pt-3 pb-16 mt-4 rounded-lg border border-solid bg-light-100 border-grey-300 max-md:pb-10 max-md:max-w-full"
                     />
                 </div>
                 <OrderConfirmPaySummary v-if="paymentSummary" :order-pay-sum="orderPaySum" />
             </section>
-
+            <div v-if="getUserDetails?.role === 2" class="flex flex-wrap md:flex-nowrap justify-between gap-12 md:gap-2">
+                <OrderConfirmCompanyDetails />
+                <OrderConfirmBankDetails />
+            </div>
+            <UiSeparator class="bg-grey-100" />
             <div v-if="paymentSummary" class="flex flex-col gap-6">
                 <h4 class="font-semibold text-sm">Need Help?</h4>
                 <section class="flex gap-6 flex-wrap">
-                    <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+                    <UiButton size="xs" class="gap-2 px-0" variant="link">
                         <TruckIcon class="w-5 h-5 stroke-1.5" />
                         Delivery Info
                     </UiButton>
-                    <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+                    <UiButton size="xs" class="gap-2 px-0" variant="link">
                         <Undo2Icon class="w-5 h-5 stroke-1.5" />
                         Returns
                     </UiButton>
-                    <UiButton size="xs" class="gap-2 px-0" variant="ghost">
+                    <UiButton size="xs" class="gap-2 px-0" variant="link">
                         <PackageOpenIcon class="w-5 h-5 stroke-1.5" />
                         Order Issues
                     </UiButton>
                 </section>
             </div>
         </section>
-    </div>
+        </div>
+    </section>
 </template>
 
 <style scoped></style>

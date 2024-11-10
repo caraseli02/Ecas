@@ -1,6 +1,6 @@
 <template>
   <div class="min-w-[128px] flex justify-between items-center text-neutral-700">
-    <NuxtLink :to="`/order-summary/${orderId}`">
+    <NuxtLink :to="orderLink">
       <UiButton variant="link" class="text-sm hover:text-blue-500">{{ IdCell ?? 'N/A' }}</UiButton>
     </NuxtLink>
     <NuxtLink v-if="notes" to="#">
@@ -32,12 +32,24 @@ d="M4.6665 8.66699H8.6665" stroke="currentColor" stroke-width="1.5" stroke-linec
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '~/store/authStore';
+
+const authStore = useAuthStore();
+
 const route = useRoute()
-defineProps<{
+const props = defineProps<{
   IdCell: string
   notes?: string
   orderId?: string
 }>()
+
+const isAdmin = computed(() => authStore.userDetails?.role === 1);
+
+const orderLink = computed(() => {
+  return isAdmin.value ? `${route.path}/${props.orderId}` : `/order-summary/${props.orderId}`
+})
+
+
 </script>
 
 <style scoped>
