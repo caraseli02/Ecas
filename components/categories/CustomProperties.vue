@@ -6,9 +6,10 @@ const props = defineProps<{
     length: string;
     width: string;
     height: string;
+    enabled: boolean;
 }>();
 
-const customProperties = ref(true);
+const customProperties = ref(props.enabled);
 const avgWeightValue = ref<string | null>(props.avgItemWeight);
 const widthValue = ref<string | null>(props.width);
 const heightValue = ref<string | null>(props.height);
@@ -19,7 +20,16 @@ const emit = defineEmits<{
     (e: 'update:width', value: string): void;
     (e: 'update:length', value: string): void;
     (e: 'update:height', value: string): void;
+    (e: 'update:enabled', value: boolean): void;
 }>();
+
+watch(
+    () => customProperties.value,
+    (value) => {
+        emit('update:enabled', value);
+    },
+    { immediate: true }
+);
 </script>
 
 <template>
