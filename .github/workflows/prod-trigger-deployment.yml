@@ -6,11 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       parameter:
-        description: 'Deploy to env'
+        description: 'Deploy to prod'
 
 jobs:
   deploy-trigger-check:
+    name: 1) looking for deploy trigger
     runs-on: ubuntu-20.04
+    environment: prod
     steps:
       - name: acknowledge deployment request to commenter
         id: check
@@ -24,8 +26,10 @@ jobs:
       triggered: ${{ steps.check.outputs.triggered }}
 
   deploy:
+    name: 2) deploy pull request to DO
     runs-on: ubuntu-20.04
     needs: deploy-trigger-check
+    environment: prod
     if: needs.deploy-trigger-check.outputs.triggered == 'true'
     steps:
       - name: get pull request ref
@@ -79,6 +83,7 @@ jobs:
           FIREBASE_MESSAGE_SENDER_ID: ${{secrets.FIREBASE_MESSAGE_SENDER_ID}}
           FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
           FIREBASE_MEASUREMENT_ID: ${{secrets.FIREBASE_MEASUREMENT_ID}}
+          STRIPE_PUBLISHABLE_KEY: ${{secrets.STRIPE_PUBLISHABLE_KEY}}
           BASE_URL_API: ${{secrets.BASE_URL_API}}
 
         uses: appleboy/ssh-action@v0.1.9
@@ -90,7 +95,7 @@ jobs:
           envs:
             IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA,FIREBASE_SERVICE_ACCOUNT_JSON,FIREBASE_API_KEY,
             FIREBASE_AUTH_DOMAIN,FIREBASE_PROJECT_ID,FIREBASE_STORAGE_BUCKET,FIREBASE_MESSAGE_SENDER_ID,FIREBASE_APP_ID,FIREBASE_MEASUREMENT_ID,
-            REF,SHA,BASE_URL_API
+            REF,SHA,BASE_URL_API,STRIPE_PUBLISHABLE_KEY
           script: |
             # Login to registry
             docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
