@@ -93,7 +93,7 @@ jobs:
           REGISTRY: ${{vars.REGISTRY}}
           IMAGE_NAME: ${{vars.IMAGE_NAME}}
         run: >
-          docker build t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
+          docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
       #          docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo $FIREBASE_SERVICE_ACCOUNT_JSON)
       #          --build-arg NUXT_FIREBASE_API_KEY=$(echo $FIREBASE_API_KEY)
       #          --build-arg NUXT_FIREBASE_AUTH_DOMAIN=$(echo $FIREBASE_AUTH_DOMAIN)
