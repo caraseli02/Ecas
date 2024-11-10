@@ -84,12 +84,12 @@ jobs:
           FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
           FIREBASE_MEASUREMENT_ID: ${{secrets.FIREBASE_MEASUREMENT_ID}}
           STRIPE_PUBLISHABLE_KEY: ${{secrets.STRIPE_PUBLISHABLE_KEY}}
-          BASE_URL_API: ${{secrets.BASE_URL_API}}
+          BASE_URL_API: ${{vars.BASE_URL_API}}
 
         uses: appleboy/ssh-action@v0.1.9
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.USERNAME }}
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           envs:
