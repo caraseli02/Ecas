@@ -75,7 +75,7 @@ WORKDIR /code
 ADD package.json ./
 ADD nuxt.config.ts ./
 ADD .docker/nuxt/nginx-app.conf ./
-ADD .docker/nuxt/docker-entrypoint.sh ./
+ADD .docker/nuxt/docker_entrypoint.sh ./
 
 COPY --from=builder /code/.output /code/.output
 COPY --from=builder /code/node_modules /code/node_modules
@@ -87,6 +87,6 @@ RUN \
 
 EXPOSE 3000
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["docker_entrypoint.sh"]
 
 CMD [ "node", ".output/server/index.mjs" ]
