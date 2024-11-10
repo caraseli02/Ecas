@@ -5,9 +5,10 @@ const props = defineProps<{
     entryPrice: string;
     quantity: string;
     margin: string;
+    enabled: boolean;
 }>();
 
-const smartPricing = ref(true);
+const smartPricing = ref(props.enabled);
 const selectedQuantityLength = ref<number | null>(null); // Holds the selected length in Quantity
 const selectedMarginLength = ref<number | null>(null); // Holds the selected length in Margin
 
@@ -15,6 +16,7 @@ const emit = defineEmits<{
     (e: 'update:entry-price', value: string): void;
     (e: 'update:quantity', value: string): void;
     (e: 'update:margin', value: string): void;
+    (e: 'update:enabled', value: boolean): void;
 }>();
 
 // Emit event to parent
@@ -46,6 +48,15 @@ const handleMarginSelectionChange = (length: number | null) => {
     selectedMarginLength.value = length;
     if (length === null) selectedQuantityLength.value = null; // Reset if Margin selection is cleared
 };
+
+watch(
+    () => smartPricing.value,
+    (value) => {
+        console.log('smartPricing', value);
+        emit('update:enabled', value);
+    },
+    { immediate: true }
+);
 </script>
 
 <template>

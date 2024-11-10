@@ -1,11 +1,11 @@
-import { OrderRequestInterface, PaymentTypeEnum, StripeCardInterface } from '~/types';
+import { OrderInterface, PaymentTypeEnum, StripeCardInterface } from '~/types';
 import { UserInterface } from '~/types/auth/user-interface';
 import { customerCreditHelper } from '~/helpers/customer-credit.helper';
 
-export const paymentInfoHelper = (order: OrderRequestInterface, userDetails: UserInterface, userCards: StripeCardInterface[]) => {
+export const paymentInfoHelper = (order: OrderInterface, userDetails: UserInterface, userCards: StripeCardInterface[]) => {
     const creditInfo = userDetails.adminSettings?.customerCredit;
 
-    switch (order.paymentDetails.type) {
+    switch (order.paymentDetails?.type) {
         case PaymentTypeEnum.Card: {
             return {
                 type: PaymentTypeEnum.Card,

@@ -525,10 +525,22 @@ const handleSubmit = async () => {
 
         try {
             firebaseToken ? await registerFirebaseSignup(payload) : await registerClassicSignup(payload);
+
+            toast({
+                variant: 'success',
+                title: 'Success',
+                description: 'Account created successfully',
+            });
+
             await logout();
             // TODO: Notification banner
         } catch (error) {
             console.log(error);
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: 'An error occurred while creating your account',
+            });
             return;
         } finally {
             clearFormData();

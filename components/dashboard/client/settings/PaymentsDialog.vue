@@ -39,23 +39,15 @@ const cardFields = ref({
 });
 
 const props = defineProps<{
-    isOpen: boolean;
     cardInfo: StripeCardInterface;
 }>();
 
 const emit = defineEmits(['update:isOpen']);
 
-const localIsOpen = ref(props.isOpen);
+const localIsOpen = defineModel<boolean>()
 
 watch(
-    () => props.isOpen,
-    (newVal) => {
-        localIsOpen.value = newVal;
-    }
-);
-
-watch(
-    () => localIsOpen.value,
+    () => localIsOpen,
     () => {
         cardFields.value.cardNumber = '';
         cardFields.value.phoneNumber = '  ';
@@ -77,10 +69,6 @@ watch(
     },
     { immediate: true } // Log immediately on mount if cardInfo is already available
 );
-
-const onCloseDialog = () => {
-    emit('update:isOpen', false);
-};
 
 const showErrorMsg = ref(true);
 </script>

@@ -1,0 +1,16 @@
+<template>
+  <div
+    class="flex overflow-hidden gap-2 justify-center items-center self-stretch my-auto whitespace-nowrap rounded-md text-zinc-800">
+    <span :class="statusColor" class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full" aria-hidden="true"></span>
+    <span class="capitalize">{{ statusText }}</span>
+  </div>
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  statusText: string,
+  statusColor: string,
+}>()
+</script>
+
+<style scoped></style>

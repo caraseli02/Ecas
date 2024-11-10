@@ -18,8 +18,7 @@
                         />
                     </div>
                 </label>
-                <img
-                    v-if="productItem.image"
+                <ImageWithFallback
                     :src="productItem.image"
                     :alt="productItem.title"
                     :class="[

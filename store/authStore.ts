@@ -75,21 +75,32 @@ export const useAuthStore = defineStore({
             this.generalSettings = null;
         },
         getToken() {
+            // Ensure this code only runs on the client side
+            if (process.server) return null;
+        
             const router = useRouter();
             const route = useRoute();
-            const time = this.token.createdAt ? moment().diff(this.token.createdAt, 'minutes') : 999;
-
+        
+            // Check if the token is loaded from local storage
+            if (!this.token || !this.token.createdAt) {
+                // Early return to wait for token initialization from pinia-persisted data
+                return null;
+            }
+        
+            const time = moment().diff(this.token.createdAt, 'minutes');
+        
+            console.log('Time', time);
             if (time > 59) {
                 this.signOut();
-
+        
                 if (route.path.includes('dashboard') || route.path.includes('order') || route.path.includes('checkout')) {
                     router.push('/');
                     Emitter.emit('open-account-modal');
                 }
-
+        
                 return;
             }
-
+        
             return this.token?.value as unknown as UserInfoJWT;
         },
     },

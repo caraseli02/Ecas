@@ -49,7 +49,6 @@ function updateQuantity(id: number, quantity: { min: number; max: number }) {
 }
 
 const createNewQuantityTemplate = async () => {
-    console.log(quantityList.value);
     if (
         quantityList.value.find(
             (item) => Number(item.min) >= Number(item.max) || Number(item.min) < 0 || Number(item.max) < 0 || Number(item.max) === 0
@@ -59,7 +58,6 @@ const createNewQuantityTemplate = async () => {
         return;
     }
     if (type.value === 'edit') {
-        console.log('edit');
         const editedQuantityObject = {
             label: editQuantityModal.value.label,
             type: PriceSettingsTypeEnum.Quantity,
@@ -73,7 +71,6 @@ const createNewQuantityTemplate = async () => {
         }
         await pricingStore.updateAndReturnPricing();
     } else if (type.value === 'add') {
-        console.log('add');
         const maxValues = quantityList.value.map((item) => item.max);
 
         const response = await $api.smartPricing.setNewQuantityRange({

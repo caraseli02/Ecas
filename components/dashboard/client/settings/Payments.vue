@@ -19,7 +19,7 @@ const handleEditCard = (cardInfo: StripeCardInterface) => {
         </div>
         <CardsList @edit-card="handleEditCard" />
         <section class="flex justify-center items-center self-stretch p-4 rounded-xl border border-blue-500 border-dashed max-md:px-5">
-            <PaymentsDialog :is-open="isDialogOpen" :card-info="selectedCardInfo" @update:is-open="isDialogOpen = $event" />
+            <PaymentsDialog v-model="isDialogOpen" :card-info="selectedCardInfo" />
         </section>
     </section>
 </template>

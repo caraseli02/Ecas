@@ -23,14 +23,14 @@ const props = defineProps<{
         <div class="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col grow max-md:mt-9 max-md:max-w-full">
                 <h2 class="text-base font-semibold leading-7 text-neutral-700 max-md:max-w-full">Shipping Address</h2>
-                <div class="flex gap-5 justify-between mt-9 w-full max-md:flex-wrap max-md:max-w-full">
+                <div class="flex gap-5 mt-9 w-full max-md:flex-wrap max-md:max-w-full">
                     <h3 class="text-sm font-semibold leading-6 text-neutral-700">Address Alias 1</h3>
                     <div
                         v-if="props.shippingAddress.default"
-                        class="flex gap-1 items-center justify-center px-2 py-1 text-xs font-medium leading-4 text-emerald-500 whitespace-nowrap bg-white border border-emerald-500 border-solid rounded-[100px]"
+                        class="flex gap-1 items-center py-0.5 pr-1.5 pl-1 text-xs font-medium leading-none whitespace-nowrap bg-white border border-emerald-500 border-solid rounded-[100px] text-zinc-800"
                     >
-                        <CheckIcon class="w-4 h-4 rounded-full text-slate-50 bg-green-500" />
-                        <span>Default</span>
+                        <CheckIcon class="w-4 h-4 rounded-full text-slate-50 bg-green-600" />
+                        <span class="font-medium">Default</span>
                     </div>
                 </div>
                 <p class="mt-2 text-sm font-medium leading-5 text-gray-500 max-md:max-w-full">

@@ -75,7 +75,6 @@ class OrdersService extends HttpFactory {
     }
 
     async validateAddress(address: ShippingAddressInterface) {
-        console.log('address', address);
         return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/validate-address`, { ...address });
     }
 
@@ -103,6 +102,13 @@ class OrdersService extends HttpFactory {
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
+    }
+
+    async retryFailedShippingOrders(id: string) {
+        const token = this.authStore.getToken();
+        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}/shipping/retry`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
     }
 
     async getCustomerOrders() {
