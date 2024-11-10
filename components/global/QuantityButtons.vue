@@ -1,17 +1,17 @@
 <template>
     <div v-if="modelValue > 0" class="flex bg-stone-50 bg-opacity-95 rounded-lg max-w-max">
         <button
-            :disabled="Number(currentQuantity) === object.min || currentQuantity === 1"
+            :disabled="Number(modelValue) === object.min || modelValue === 1"
             class="flex items-center justify-center bg-gray-100 text-slate-500 px-2.5 transition-colors duration-300 disabled:text-border"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
             @click.once="inputHandler(currentQuantity - 1)"
         >
             <MinusIcon class="w-6 h-6 flex-shrink-0" />
         </button>
-        <label :key="currentQuantity" class="flex">
+        <label :key="modelValue" class="flex">
             <input
-                v-if="currentQuantity > -1"
-                :value="Number(currentQuantity) < object.min && type === OrderType.Stock ? Number(object.min) : Number(currentQuantity)"
+                v-if="modelValue > -1"
+                :value="Number(modelValue) < object.min && type === OrderType.Stock ? Number(object.min) : Number(modelValue)"
                 type="number"
                 :min="1"
                 placeholder="Quantity"
@@ -24,13 +24,13 @@
         <button
             class="flex items-center justify-center bg-gray-100 px-2.5"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
-            :disabled="object.max && props.type !== OrderType.Back ? Number(currentQuantity) >= object.max : false"
+            :disabled="object.max && props.type !== OrderType.Back ? Number(modelValue) >= object.max : false"
             @click.once="inputHandler(currentQuantity + 1)"
         >
             <PlusIcon class="w-6 h-6 flex-shrink-0 text-slate-500" />
         </button>
     </div>
-    <UiSkeleton v-if="currentQuantity === 0" class="w-[140px] h-[42px]" />
+    <UiSkeleton v-if="modelValue === 0" class="w-[140px] h-[42px]" />
 </template>
 
 <script setup lang="ts">

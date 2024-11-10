@@ -120,7 +120,7 @@ const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
 watch(
-    quantity,
+    [quantity, deleteItem],
     () => {
         console.log('updateQuantity');
         emits('updateQuantity');
