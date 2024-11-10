@@ -93,17 +93,18 @@ jobs:
           REGISTRY: ${{vars.REGISTRY}}
           IMAGE_NAME: ${{vars.IMAGE_NAME}}
         run: >
-          docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo $FIREBASE_SERVICE_ACCOUNT_JSON) 
-          --build-arg NUXT_FIREBASE_API_KEY=$(echo $FIREBASE_API_KEY) 
-          --build-arg NUXT_FIREBASE_AUTH_DOMAIN=$(echo $FIREBASE_AUTH_DOMAIN) 
-          --build-arg NUXT_FIREBASE_PROJECT_ID=$(echo $FIREBASE_PROJECT_ID) 
-          --build-arg NUXT_FIREBASE_STORAGE_BUCKET=$(echo $FIREBASE_STORAGE_BUCKET) 
-          --build-arg NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo $FIREBASE_MESSAGE_SENDER_ID) 
-          --build-arg NUXT_FIREBASE_APP_ID=$(echo $FIREBASE_APP_ID) 
-          --build-arg NUXT_FIREBASE_MEASUREMENT_ID=$(echo $FIREBASE_MEASUREMENT_ID) 
-            --build-arg NUXT_STRIPE_PUBLISHABLE_KEY=$(echo $STRIPE_PUBLISHABLE_KEY)
-          --build-arg NUXT_PUBLIC_BASE_URL_API=$(echo $BASE_URL_API) 
-          -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
+          docker build t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
+      #          docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo $FIREBASE_SERVICE_ACCOUNT_JSON)
+      #          --build-arg NUXT_FIREBASE_API_KEY=$(echo $FIREBASE_API_KEY)
+      #          --build-arg NUXT_FIREBASE_AUTH_DOMAIN=$(echo $FIREBASE_AUTH_DOMAIN)
+      #          --build-arg NUXT_FIREBASE_PROJECT_ID=$(echo $FIREBASE_PROJECT_ID)
+      #          --build-arg NUXT_FIREBASE_STORAGE_BUCKET=$(echo $FIREBASE_STORAGE_BUCKET)
+      #          --build-arg NUXT_FIREBASE_MESSAGE_SENDER_ID=$(echo $FIREBASE_MESSAGE_SENDER_ID)
+      #          --build-arg NUXT_FIREBASE_APP_ID=$(echo $FIREBASE_APP_ID)
+      #          --build-arg NUXT_FIREBASE_MEASUREMENT_ID=$(echo $FIREBASE_MEASUREMENT_ID)
+      #            --build-arg NUXT_STRIPE_PUBLISHABLE_KEY=$(echo $STRIPE_PUBLISHABLE_KEY)
+      #          --build-arg NUXT_PUBLIC_BASE_URL_API=$(echo $BASE_URL_API)
+      #          -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
