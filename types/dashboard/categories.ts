@@ -17,12 +17,19 @@ export interface ICreatePayload {
     name: string;
     icon: string;
     parentId?: string;
-    averageWeight?: string;
     smartPricingSettings?: SmartPricingSettings;
+    customProperties?: CustomPropertiesSettings;
 }
 
 export interface SmartPricingSettings {
     priceRangeId: string;
     quantityId: string;
     marginId: string;
+}
+
+export interface CustomPropertiesSettings {
+    avgWeight: number;
+    width: number;
+    height: number;
+    length: number;
 }

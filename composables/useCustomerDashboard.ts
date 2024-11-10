@@ -35,7 +35,9 @@ export const useCustomerDashboard = () => {
     const activeOrders = async () => {
         const { data, status } = await $api.customerDashboard.fetchCustomerActiveOrders();
         if (status && data && data.total) {
-            ordersIds.value = data.total.map((object) => object.shortId);
+            ordersIds.value = data.total.map((object) => {
+                return {shortId: object.shortId, id: object._id };
+            });
         }
     };
 

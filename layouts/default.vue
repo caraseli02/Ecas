@@ -1,14 +1,14 @@
 <template>
-  <ScrollArea class="flex flex-col h-full min-h-screen overflow-y-auto app-scroll test">
+  <UiScrollArea class="flex flex-col h-full min-h-screen overflow-y-auto app-scroll test">
     <LayoutHeader :is-scrolled="isScrolled"/>
     <main
 class="flex flex-col pt-[96px] flex-1 lg:pt-[180px] xl:pt-[176px]"
           :class="[isScrolled ? 'md:pt-[170px]' : 'md:pt-[172px]']">
-      <slot/>
+      <slot />
     </main>
     <LayoutFooter/>
     <Toaster />
-  </ScrollArea>
+  </UiScrollArea>
 </template>
 
 <script setup lang="ts">

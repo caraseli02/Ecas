@@ -93,7 +93,7 @@ jobs:
           REGISTRY: ${{vars.REGISTRY}}
           IMAGE_NAME: ${{vars.IMAGE_NAME}}
         run: >
-          docker build t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
+          docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7)) -f .docker/nuxt/Dockerfile .
       #          docker build --build-arg NUXT_FIREBASE_SERVICE_ACCOUNT_JSON=$(echo $FIREBASE_SERVICE_ACCOUNT_JSON)
       #          --build-arg NUXT_FIREBASE_API_KEY=$(echo $FIREBASE_API_KEY)
       #          --build-arg NUXT_FIREBASE_AUTH_DOMAIN=$(echo $FIREBASE_AUTH_DOMAIN)
@@ -114,8 +114,11 @@ jobs:
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 600
 
-      #      - name: Remove all old images
-      #        run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME) $(doctl registry repository list-tags $(echo $IMAGE_NAME) | grep -o "sha.*") --force; else echo "No repository"; fi
+      - name: Remove all old images
+        env:
+          REGISTRY: ${{vars.REGISTRY}}
+          IMAGE_NAME: ${{vars.IMAGE_NAME}}
+        run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME) $(doctl registry repository list-tags $(echo $IMAGE_NAME) | grep -o "sha.*") --force; else echo "No repository"; fi
 
       - name: Push image to DigitalOcean Container Registry
         run: docker push  $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))

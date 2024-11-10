@@ -78,6 +78,7 @@ export interface OrderInterface {
 export type OrderTableColumns = Pick<OrderInterface, 'shortId' | 'type' | 'user' | 'createdAt' | 'status' | 'total' | 'paymentDetails'>;
 
 export interface OrderRequestInterface {
+    _id: string;
     shortId: string;
     user: UserInterface;
     userId?: string;
@@ -106,7 +107,7 @@ export interface OrderRequestInterface {
 export interface OrderRequestInterfaceResponse {
     status: string;
     data: {
-        order: OrderRequestInterface;
+        order: OrderInterface;
         children: any;
     };
 }
@@ -169,9 +170,17 @@ export interface OrderShippingDetailsInterface {
     statusTracking?: {
         awb: string;
         uniqueId: string;
+        estimatedPickUpDate?: string;
         history?: OrderStatusTracking[];
     };
     _id?: string;
+}
+
+export interface ShippingCourierCreateOrderResponse {
+    service: ShippingOrderPricingOption;
+    estimatedPickUpDate: string;
+    awb: string;
+    uniqueId: string;
 }
 
 export interface PaymentDetails {
@@ -293,24 +302,27 @@ export interface OrderConfirmationAddress {
 export enum OrderStatus {
     Completed = 'Completed',
     Canceled = 'Canceled',
-    OnDispute = 'OnDispute',
-    Disputed = 'Disputed',
-    PartiallyRefunded = 'Partially Refunded',
     Refunded = 'Refunded',
-    Returned = 'Returned',
-    PartiallyShipped = 'Partially Shipped',
-    Shipped = 'Shipped',
     Delivered = 'Delivered',
     AbandonedCheckout = 'Abandoned Checkout',
-    VerificationRequired = 'Verification Required',
-    Processing = 'Processing',
     Pending = 'Pending',
-    AwaitingPayment = 'Awaiting Payment',
-    AwaitingFulfillment = 'Awaiting Fulfillment',
-    AwaitingShipment = 'Awaiting Shipment',
-    AwaitingPickup = 'Awaiting Pickup',
-    PaymentReceived = 'Payment Received',
-    PaymentDeclined = 'Payment Declined',
+    Processing = 'Processing',
+    Dispatched = 'Dispatched',
+
+    // OnDispute = 'OnDispute',
+    // Disputed = 'Disputed',
+    // PartiallyRefunded = 'Partially Refunded',
+    // Returned = 'Returned',
+    // PartiallyShipped = 'Partially Shipped',
+    // Shipped = 'Shipped',
+    // VerificationRequired = 'Verification Required',
+    // AwaitingPayment = 'Awaiting Payment',
+    // AwaitingFulfillment = 'Awaiting Fulfillment',
+    // AwaitingShipment = 'Awaiting Shipment',
+    // AwaitingPickup = 'Awaiting Pickup',
+    // PaymentReceived = 'Payment Received',
+    // PaymentDeclined = 'Payment Declined',
+    // PaymentFailed = 'Payment Failed',
 }
 
 export enum OrderType {

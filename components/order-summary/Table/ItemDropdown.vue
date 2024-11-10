@@ -4,7 +4,10 @@
             <NuxtLink :to="`/product/${item.id}`" class="flex flex-shrink-0 mr-2.5 md:mr-[15px]">
                 <div class="flex flex-row px-4 gap-3">
                     <div class="border-2 rounded-lg min-w-[60px] w-[60px] h-[60px] overflow-hidden">
-                        <img :src="item.productEntity?.details?.ProductImage?.ProductImageSmall" class="object-cover w-full h-full" />
+                        <ImageWithFallback
+                            :src="item.productEntity?.details?.ProductImage?.ProductImageSmall"
+                            class="object-cover w-full h-full"
+                        />
                     </div>
                     <ProductDetails :item="item" :short-stock="shortStock" :stock-item="stockItem" />
                 </div>
@@ -39,7 +42,7 @@
                         <div>
                             <QuantityButtons
                                 v-if="quantity"
-                                v-model="quantity"
+                                :model-value="quantity"
                                 size="lg"
                                 :type="stockItem ? OrderType.Stock : OrderType.Back"
                                 :update-only-available-stock="true"
@@ -49,6 +52,7 @@
                                     min: stockItem ? item?.productEntity?.priceConfiguration?.configuration[0].quantity : 1,
                                     max: item.productEntity?.stock
                                 } as any"
+                                @update:model-value="quantity = $event"
                             />
                         </div>
                     </div>
@@ -75,6 +79,7 @@
             @toggle-packaging-details="togglePackagingDetails"
             @toggle-delivery-details="toggleDeliveryDetails"
             @delete-item="deleteItem = true"
+            @removed="emits('updateQuantity')"
         />
     </div>
     <LayoutFavoritesModalsDelete
@@ -84,6 +89,7 @@
         :products="[item as any]"
         :delete-from-cart="true"
         @close="deleteItem = false"
+        @removed="emits('updateQuantity')"
     />
 </template>
 
@@ -115,10 +121,14 @@ const quantity = ref(props.stockItem ? props.item.stock : props.item.backorder_s
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
 
-watch(quantity, () => {
-    console.log('updateQuantity1');
-    emits('updateQuantity');
-});
+watch(
+    [quantity, deleteItem],
+    () => {
+        console.log('updateQuantity');
+        emits('updateQuantity');
+    },
+    { immediate: true }
+);
 
 const discounts = computed(() => {
     if (!props.item.productEntity) {

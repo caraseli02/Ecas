@@ -61,7 +61,7 @@ const isBankInfo = computed(() => props.paymentMethod.type === PaymentTypeEnum.B
                 <UiDropdownMenu v-if="isCreditInfo">
                     <UiDropdownMenuTrigger class="w-fit flex items-center gap-2 mt-9">
                         Credit
-                        <InfoIcon class="w-4 h-4 stroke-1" />
+                        <InfoIcon class="w-4 h-4 stroke-1 text-slate-500" />
                     </UiDropdownMenuTrigger>
                     <UiDropdownMenuContent class="p-4">
                         <article class="flex flex-col w-full max-w-[261px]">
@@ -108,7 +108,7 @@ const isBankInfo = computed(() => props.paymentMethod.type === PaymentTypeEnum.B
                 <UiDropdownMenu v-if="isBankInfo">
                     <UiDropdownMenuTrigger class="w-fit flex items-center gap-2 mt-9">
                         Bank Transfer
-                        <InfoIcon class="w-4 h-4 stroke-1" />
+                        <InfoIcon class="w-4 h-4 stroke-1 text-slate-500" />
                     </UiDropdownMenuTrigger>
                     <UiDropdownMenuContent class="p-4"> Bank Transfer</UiDropdownMenuContent>
                 </UiDropdownMenu>

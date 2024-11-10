@@ -2,8 +2,9 @@ const _ = require('lodash');
 const svgPrefix = {};
 svgPrefix.toString = () => `${_.uniqueId()}_`;
 
-require('dotenv').config();
+import dotenv from 'dotenv';
 
+dotenv.config({ path: '.env' });
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     // server: {
@@ -92,15 +93,15 @@ export default defineNuxtConfig({
         },
     },
     runtimeConfig: {
-        FIREBASE_API_KEY: process.env.NUXT_FIREBASE_API_KEY,
-        FIREBASE_AUTH_DOMAIN: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
-        FIREBASE_PROJECT_ID: process.env.NUXT_FIREBASE_PROJECT_ID,
-        FIREBASE_STORAGE_BUCKET: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
-        FIREBASE_MESSAGE_SENDER_ID: process.env.NUXT_FIREBASE_MESSAGE_SENDER_ID,
-        FIREBASE_APP_ID: process.env.NUXT_FIREBASE_APP_ID,
-        STRIPE_PUBLISHABLE_KEY: process.env.NUXT_STRIPE_PUBLISHABLE_KEY,
-        FIREBASE_MEASUREMENT_ID: process.env.NUXT_FIREBASE_MEASUREMENT_ID,
         public: {
+            firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
+            firebaseAuthDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+            firebaseProjectID: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID,
+            firebaseStorageBucket: process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+            firebaseMessageSenderID: process.env.NUXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID,
+            firebaseAppID: process.env.NUXT_PUBLIC_FIREBASE_APP_ID,
+            firebaseMeasurementID: process.env.NUXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+            stripePublishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
             BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API ?? 'https://dev-backend.ecasmag.ro/ecas',
             HOST: '0.0.0.0',
         },

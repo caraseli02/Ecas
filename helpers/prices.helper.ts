@@ -63,7 +63,7 @@ export const initializeQuantities = (
 
     const cartProduct = data.products.find((item: CartProductsInterface) => item.id === product?._id);
     const cartProductQuantity = cartProduct?.stock + cartProduct?.backorder_stock;
-    console.log(cartProduct?.stock, cartProduct?.backorder_stock, cartProductQuantity);
+
     quantity.value = cartProduct && cartProductQuantity > 0 ? cartProductQuantity : minPriceConfiguration?.quantity || 0;
     initialRequestedQuantity.value = cartProduct && cartProductQuantity > 0 ? cartProductQuantity : 0;
 };

@@ -12,7 +12,7 @@
             </span>
             <span
                 v-if="filter.total_items"
-                class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium min-w-[32px] transition-colors duration-300"
+                class="px-2 rounded-[25px] text-xs leading-[1.66] font-medium min-w-[32px] transition-colors duration-300 text-center"
                 :class="filter.label === activeOrderFilter?.label ? 'text-white bg-blue-500' : 'text-slate-500 bg-gray-100'"
             >
                 {{ filter.total_items }}

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Clock, FileText } from 'lucide-vue-next';
 defineProps<{
-  items: string[]
+  items: {shortId: string, id: string}[]
 }>()
 </script>
 
@@ -16,13 +16,14 @@ defineProps<{
           <Clock  class="stroke-1 w-5 h-5 text-slate-500"/>
         </div>
         <div class="flex gap-1.5 mt-4 mb-1 flex-wrap lg:max-w-[424px]">
-          <button
+          <NuxtLink
               v-for="item in items"
-              :key="item"
+              :key="item.id"
+              :to="`/order-summary/${item.id}`"
               class="w-fit text-slate-500 hover:text-blue-500 text-[12px] leading-5 font-medium flex justify-center items-center bg-gray-200 px-[6px] rounded-3xl"
           >
-            {{ item }}
-          </button>
+            {{ item.shortId }}
+          </NuxtLink>
         </div>
 
       </div>

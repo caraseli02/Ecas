@@ -16,14 +16,6 @@
                 >
                     Orders
                 </NuxtLink>
-                <span class="text-xs leading-[1.33] text-slate-500 flex-shrink-0 mx-1">/</span>
-                <NuxtLink
-                    to="/dashboard/orders"
-                    :class="{'text-blue-500': !slots.order}"
-                    class="text-xs leading-[1.33] flex-shrink-0 font-medium transition-colors duration-300 hover:text-blue-500"
-                >
-                    All Orders
-                </NuxtLink>
                 <slot name="order" />
             </div>
             <h2 class="text-xl leading-[1.4] text-neutral-700 font-semibold">{{ title }}</h2>
