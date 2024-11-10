@@ -23,6 +23,9 @@ const setupIntentId = ref(null);
 const config = useRuntimeConfig();
 
 const showSkeletonLoader = ref(false);
+const setupElementHeight = ref(0); // Define setupElementHeight here
+let resizeObserver: ResizeObserver | null = null; // Declare resizeObserver outside onMounted
+
 onMounted(async () => {
     showSkeletonLoader.value = true;
 
@@ -66,6 +69,21 @@ onMounted(async () => {
 
     await card.mount('#setup-element');
     showSkeletonLoader.value = false;
+
+    const setupElement = document.getElementById('setup-element');
+    if (setupElement) {
+        resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                setupElementHeight.value = entry.contentRect.height;
+                if (setupElementHeight.value > 500) {
+                    showSkeletonLoader.value = false;
+                    resizeObserver?.disconnect(); // Stop observing once the condition is met
+                }
+            }
+        });
+
+        resizeObserver.observe(setupElement);
+    }
 });
 
 const handleSubmit = async () => {
@@ -84,37 +102,15 @@ const handleSubmit = async () => {
         },
     });
 
-    if (error.type === 'card_error' || error.type === 'validation_error') {
+    if (error?.type === 'card_error' || error?.type === 'validation_error') {
         console.log(error.message);
     }
     console.log(error);
     isLoading.value = false;
 };
 
-onMounted(() => {
-    const setupElement = document.getElementById('setup-element');
-
-    if (setupElement) {
-        const resizeObserver = new ResizeObserver((entries) => {
-            for (const entry of entries) {
-                setupElementHeight.value = entry.contentRect.height;
-                if (setupElementHeight.value > 500) {
-                    showSkeletonLoader.value = false;
-                    resizeObserver.disconnect(); // Stop observing once the condition is met
-                }
-            }
-        });
-
-        resizeObserver.observe(setupElement);
-    }
-});
-
-onBeforeRouteLeave(() => {
-    console.log('Leaving setup card page');
-});
-
 onBeforeUnmount(() => {
     // Clean up the observer on component unmount
-    if (resizeObserver) resizeObserver.disconnect();
+    resizeObserver?.disconnect();
 });
 </script>

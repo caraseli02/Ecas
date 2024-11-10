@@ -193,7 +193,7 @@ onMounted(() => {
         </UiButton>
         <UiButton class="gap-2" variant="secondary">
             <LayoutDashboard class="w-4 h-4 stroke-2" />
-            <NuxtLink to="/dashboard/client">Dashboard</NuxtLink>
+            <NuxtLink to="/dashboard/client?tab=home">Dashboard</NuxtLink>
             
         </UiButton>
     </section>
