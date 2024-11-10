@@ -8,6 +8,7 @@ filtered_output=$(echo "$output" | grep -E '^VITE_|^NUXT_')
 
 # Print the filtered output
 echo "$filtered_output"
+echo "$filtered_output" > /code/.env
 
 echo "Environment variables written to .env"
 

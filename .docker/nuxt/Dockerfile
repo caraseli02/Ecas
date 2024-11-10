@@ -3,7 +3,6 @@ FROM node:20-alpine AS base
 
 WORKDIR /code
 
-RUN echo "MY_VAR=test" > /code/.env
 
 # ARG NUXT_FIREBASE_API_KEY
 # ENV VITE_FIREBASE_API_KEY=$NUXT_FIREBASE_API_KEY
