@@ -95,7 +95,7 @@
                 v-if="minPriceConfiguration"
                 v-model="quantity"
                 size="lg"
-                :object="{action : 'add', min: minPriceConfiguration.quantity, id: item._id} as ProductActionObject"
+                :object="{action : 'update', min: minPriceConfiguration.quantity, id: item._id} as ProductActionObject"
             />
             <button
                 :disabled="quantity === 0"
