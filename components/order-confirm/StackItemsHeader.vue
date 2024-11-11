@@ -50,7 +50,9 @@ const generateAWB = async () => {
         return;
     }
 
-    awb.value = result.data.awb;
+    if (result.data) {
+        awb.value = result.data.awb;
+    }
 };
 
 const getStatusByOrder = () => {
