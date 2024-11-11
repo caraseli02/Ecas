@@ -11,8 +11,11 @@ import {
     SettingsIcon,
     Undo2Icon,
 } from 'lucide-vue-next';
-import { OrderInterface, OrderStatus, PaymentTypeEnum } from '~/types';
+import { OrderInterface, OrderStatus, PaymentStatusEnum, PaymentTypeEnum } from '~/types';
 import { PropType } from 'vue';
+import { toast } from '~/components/ui/toast';
+
+const { $api } = useNuxtApp();
 
 const props = defineProps({
     order: {
@@ -20,7 +23,71 @@ const props = defineProps({
         required: true,
     },
 });
-console.log(props.order);
+
+const markAsPaid = async () => {
+    const response = (await $api.orders.markAsPaid(props.order?._id)) as { status: string; description: string };
+
+    if (response.status !== 'success') {
+        toast({
+            title: 'Error',
+            description: response.description || 'Failed to mark order as paid',
+            variant: 'destructive',
+        });
+        return;
+    }
+
+    toast({
+        title: 'Success',
+        description: 'Order cancelled successfully',
+        variant: 'success',
+    });
+    return;
+};
+
+const cancelOrder = async () => {
+    const response = (await $api.orders.cancelOrder(props.order?._id)) as { status: string; description: string };
+
+    if (response.status !== 'success') {
+        toast({
+            title: 'Error',
+            description: response.description || 'Failed to cancel order',
+            variant: 'destructive',
+        });
+        return;
+    }
+
+    toast({
+        title: 'Success',
+        description: 'Order cancelled successfully',
+        variant: 'success',
+    });
+
+    return;
+};
+
+const changeStatus = async (status: OrderStatus) => {
+    const response = (await $api.orders.changeStatus(props.order?._id, status)) as {
+        status: string;
+        description: string;
+    };
+
+    if (response.status !== 'success') {
+        toast({
+            title: 'Error',
+            description: response.description || 'Failed to change status',
+            variant: 'destructive',
+        });
+        return;
+    }
+
+    toast({
+        title: 'Success',
+        description: 'Order cancelled successfully',
+        variant: 'success',
+    });
+    return;
+};
+
 const actions = [
     { title: 'Archive', enable: true, icon: ArchiveIcon, value: 'archive' },
     {
@@ -28,6 +95,7 @@ const actions = [
         enable: props.order.paymentDetails?.type === PaymentTypeEnum.Bank,
         icon: CheckCheckIcon,
         value: 'mark_as_paid',
+        action: markAsPaid,
     },
     { title: 'Print Order', enable: true, icon: PrinterIcon, value: 'print_order' },
     {
@@ -41,12 +109,17 @@ const actions = [
         enable: props.order?.status !== OrderStatus.Canceled && props.order?.status !== OrderStatus.Completed,
         icon: FilePenLineIcon,
         value: 'update_order_status',
+        action: changeStatus,
     },
     {
         title: 'Cancel Order',
-        enable: props.order?.status !== OrderStatus.Completed,
+        enable:
+            props.order?.status !== OrderStatus.Completed &&
+            props.order?.status !== OrderStatus.Canceled &&
+            props.order?.paymentDetails?.status !== PaymentStatusEnum.Paid,
         icon: PackageXIcon,
         value: 'cancel_order',
+        action: cancelOrder,
     },
 ];
 </script>
@@ -79,6 +152,7 @@ const actions = [
                     :disabled="!btn.enable"
                     class="flex gap-3 w-full justify-start"
                     :value="btn.value"
+                    @click="btn.action"
                 >
                     <component :is="btn.icon" class="w-6 h-6 stroke-1" />
                     <span>{{ btn.title }}</span>
