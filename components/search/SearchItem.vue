@@ -96,14 +96,14 @@
                 size="lg"
                 :object="{action : 'update', min: minPriceConfiguration.quantity, id: item._id} as ProductActionObject"
             />
-            // <button
-            //     :disabled="quantity === 0"
-            //     class="flex items-center flex-1 justify-center bg-blue-500 rounded text-white px-5 py-[9px]"
-            //     @click="addToCart(item)"
-            // >
-            //     <CartIcon class="w-6 h-6 mr-2" />
-            //     <span class="text-sm font-medium">Add to cart</span>
-            // </button>
+            <button
+                :disabled="quantity === 0"
+                class="flex items-center flex-1 justify-center bg-blue-500 rounded text-white px-5 py-[9px]"
+                @click="addToCart(item)"
+            >
+                <CartIcon class="w-6 h-6 mr-2" />
+                <span class="text-sm font-medium">Add to cart</span>
+            </button>
         </div>
         <div class="absolute top-0 right-0 flex flex-col gap-2.5">
             <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue">
