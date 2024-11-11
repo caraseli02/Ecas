@@ -92,8 +92,13 @@ const updateCustomPropertiesEnabled = (value: boolean) => {
             </UiDialogHeader>
             <div class="grid gap-4 py-4">
                 <div class="flex flex-col items-start gap-4">
-                    <UiLabel for="title" class="text-right"> Title</UiLabel>
+                    <UiLabel for="title" class="text-right">Title</UiLabel>
                     <UiInput id="title" v-model="title" class="col-span-3" />
+                </div>
+                <div class="flex flex-col items-start gap-4">
+                    <UiLabel for="title" class="text-right"
+                        >ID: <b>{{ category.id }}</b></UiLabel
+                    >
                 </div>
                 <div class="flex flex-col items-start gap-4">
                     <IconUpload @update:svg-preview="icon = $event" />
