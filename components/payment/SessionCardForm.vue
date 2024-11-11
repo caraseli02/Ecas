@@ -22,6 +22,7 @@ const { $api } = useNuxtApp();
 
 const router = useRouter();
 const route = useRoute();
+const config = useRuntimeConfig();
 const cartStore = useCartStore();
 const { getOrderClientSecret } = storeToRefs(cartStore);
 const isLoading = ref(false);
@@ -37,7 +38,7 @@ onMounted(async () => {
     showSkeletonLoader.value = true;
     orderId.value = <string>route.query.id;
 
-    stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
+    stripe = await loadStripe(config.public.stripePublishableKey as string);
 
     if (!stripe || !getOrderClientSecret.value) {
         return null;

@@ -29,7 +29,7 @@ let resizeObserver: ResizeObserver | null = null; // Declare resizeObserver outs
 onMounted(async () => {
     showSkeletonLoader.value = true;
 
-    stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
+    stripe = await loadStripe(config.public.stripePublishableKey as string);
 
     const fetchSetupIntentResult = await $api.orders.createAndRetrieveSetupIntent();
 

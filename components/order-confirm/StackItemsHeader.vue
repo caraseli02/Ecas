@@ -74,14 +74,8 @@ const getPaymentStatusValueByOrder = () => {
                     <section class="flex gap-3 items-center text-sm leading-6 whitespace-nowrap text-zinc-800">
                         <h2 class="self-stretch text-gray-500">AWB</h2>
                         <InfoIcon v-if="isAdmin" class="object-contain shrink-0 self-stretch w-4 aspect-square text-slate-500" />
-                        <div
-                            v-if="!awb"
-                            class="flex overflow-hidden gap-2 justify-center items-center rounded-md"
-                        >
-                            <span
-                                class="flex shrink-0 w-3 h-3 bg-amber-500 rounded-full fill-amber-500"
-                                aria-hidden="true"
-                            ></span>
+                        <div v-if="!awb" class="flex overflow-hidden gap-2 justify-center items-center rounded-md">
+                            <span class="flex shrink-0 w-3 h-3 bg-amber-500 rounded-full fill-amber-500" aria-hidden="true"></span>
                             <p class="self-stretch">Pending</p>
                         </div>
                         <p v-if="awb" class="self-stretch my-auto font-medium">{{ awb }}</p>
@@ -124,7 +118,12 @@ const getPaymentStatusValueByOrder = () => {
                         <MapPin class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                         <span class="self-stretch py-1 pl-2 my-auto">Track Order</span>
                     </UiButton>
-                    <OrderConfirmActionMenu v-if="isAdmin" />
+                    <OrderConfirmActionMenu
+                        v-if="isAdmin"
+                        :initial-amount-paid="order.total"
+                        :initial-currency="order.currency"
+                        :order="order"
+                    />
                 </div>
             </section>
         </div>
@@ -154,7 +153,10 @@ const getPaymentStatusValueByOrder = () => {
                                 <p class="self-stretch my-auto">Pending</p>
                             </div>
                             <p v-if="awb" class="self-stretch my-auto font-medium">{{ awb }}</p>
-                            <InfoIcon class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square text-slate-500" @click="generateAWB" />
+                            <InfoIcon
+                                class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square text-slate-500"
+                                @click="generateAWB"
+                            />
                         </section>
                     </section>
                 </UiPopoverTrigger>
