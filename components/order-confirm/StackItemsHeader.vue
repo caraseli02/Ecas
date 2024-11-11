@@ -246,7 +246,7 @@ const showTrackingDialog = ref(false);
             </UiPopover>
         </div>
     </section>
-    <OrderConfirmTrackingDialog :order="order" v-model="showTrackingDialog" />
+    <LazyOrderConfirmTrackingDialog :order="order" v-model="showTrackingDialog" />
 </template>
 
 <style scoped></style>
