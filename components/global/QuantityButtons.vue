@@ -4,7 +4,7 @@
             :disabled="Number(modelValue) === object.min || modelValue === 1"
             class="flex items-center justify-center bg-gray-100 text-slate-500 px-2.5 transition-colors duration-300 disabled:text-border"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
-            @click.once="inputHandler(currentQuantity - 1)"
+            @click="inputHandler(currentQuantity - 1)"
         >
             <MinusIcon class="w-6 h-6 flex-shrink-0" />
         </button>
@@ -25,7 +25,7 @@
             class="flex items-center justify-center bg-gray-100 px-2.5"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
             :disabled="object.max && props.type !== OrderType.Back ? Number(modelValue) >= object.max : false"
-            @click.once="inputHandler(currentQuantity + 1)"
+            @click="inputHandler(currentQuantity + 1)"
         >
             <PlusIcon class="w-6 h-6 flex-shrink-0 text-slate-500" />
         </button>
