@@ -218,6 +218,7 @@ onMounted(() => {
                     :shipping-method="shippingMethod?.service?.courierName"
                     :pickup-date="stockOrder?.shippingDetails?.statusTracking?.estimatedPickUpDate"
                     :payment-method="paymentMethod"
+                    :payment-status="data.data?.order?.paymentDetails?.status"
                     :on-download-document="downloadDocument"
                 />
                 <OrderConfirmDetails

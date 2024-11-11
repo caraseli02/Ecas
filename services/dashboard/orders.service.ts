@@ -87,7 +87,7 @@ class OrdersService extends HttpFactory {
 
     async markAsPaid(id: string) {
         const token = this.authStore.getToken();
-        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}}/paid`, null, {
+        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}/paid`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }

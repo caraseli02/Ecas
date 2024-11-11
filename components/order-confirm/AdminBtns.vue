@@ -64,34 +64,11 @@ const cancelOrder = async () => {
     return;
 };
 
-const changeStatus = async (status: OrderStatus) => {
-    const response = (await $api.orders.changeStatus(props.order?._id, status)) as {
-        status: string;
-        description: string;
-    };
-
-    if (response.status !== 'success') {
-        toast({
-            title: 'Error',
-            description: response.description || 'Failed to change status',
-            variant: 'destructive',
-        });
-        return;
-    }
-
-    toast({
-        title: 'Success',
-        description: 'Order cancelled successfully',
-        variant: 'success',
-    });
-    return;
-};
-
 const actions = [
     { title: 'Archive', enable: true, icon: ArchiveIcon, value: 'archive' },
     {
         title: 'Mark as paid',
-        enable: props.order.paymentDetails?.type === PaymentTypeEnum.Bank,
+        enable: props.order?.status !== OrderStatus.Canceled && props.order.paymentDetails?.type === PaymentTypeEnum.Bank,
         icon: CheckCheckIcon,
         value: 'mark_as_paid',
         action: markAsPaid,
