@@ -43,6 +43,26 @@ export const useCategories = () => {
         }
     };
 
+    const getCategoriesBySearchQuery = async () => {
+        // search recursively in all categories and subcategories
+        const search = (categories: TaxonomyInterface[], query: string) => {
+            return categories.filter((category: TaxonomyInterface) => {
+                if (category.name.toLowerCase().includes(query.toLowerCase())) {
+                    console.log(category.name);
+                    return true;
+                }
+                if (category.subcategory && category.subcategory?.length > 0) {
+                    return search(category.subcategory, query);
+                }
+                return false;
+            });
+        };
+
+        const results = search(categories.value, searchQuery.value);
+        console.log(searchQuery.value, results);
+        return results;
+    };
+
     const createCategory = async (payload: ICreatePayload) => {
         const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category`, 'POST', token, payload);
         if (response.status === 'success') {
@@ -53,7 +73,7 @@ export const useCategories = () => {
 
     const deleteCategories = async (categoryIds: string[]) => {
         const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category`, 'DELETE', token, { categoryIds });
-        if (response.status === 'success') getCategories();
+        if (response.status === 'success') await getCategories();
     };
 
     const updateCategory = async (categoryId: string, payload: ICreatePayload) => {
@@ -74,12 +94,12 @@ export const useCategories = () => {
 
     const mergeCategories = async (sourceIds: string[], targetID: string) => {
         const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category/merge/${targetID}`, 'POST', token, { sourceIds });
-        if (response.status === 'success') getCategories();
+        if (response.status === 'success') await getCategories();
     };
 
     const moveCategories = async (categoryIds: string[], parentId: string) => {
         const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category/move/${parentId}`, 'POST', token, { categoryIds });
-        if (response.status === 'success') getCategories();
+        if (response.status === 'success') await getCategories();
     };
 
     const duplicateCategory = async (sourceId: string, targetId?: string) => {
@@ -94,7 +114,7 @@ export const useCategories = () => {
             };
         }
         const response = await apiRequest(url, 'POST', token, payload);
-        if (response.status === 'success') getCategories();
+        if (response.status === 'success') await getCategories();
     };
 
     const selectCategory = (categoryId: string) => {
@@ -117,6 +137,7 @@ export const useCategories = () => {
         taxonomyId,
         searchQuery,
         sortOrder,
+        getCategoriesBySearchQuery,
         getCategories,
         createCategory,
         deleteCategories,
