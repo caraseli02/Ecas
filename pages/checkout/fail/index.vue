@@ -1,24 +1,21 @@
 <template>
-    <div v-if="getOrderClientSecret">
-        <p>Payment failed. Reason: {{ getPreviousCheckoutError?.message || 'Something went wrong' }}</p>
-
-        <button
-            class="flex items-center justify-center w-1/12 text-left px-4 py-2 rounded-md transition-colors duration-300 bg-[#F2F2F2] text-slate-500 hover:text-white hover:bg-blue-500 xl:px-6"
-            @click="retry = true"
-        >
-            <CopyIcon class="w-5 h-5 mr-2 text-current xl:w-6 xl:h-6" />
-            <span class="text-sm leading-[1.42857] font-medium"> Retry </span>
-        </button>
-        <button
-            class="flex items-center justify-center w-1/12 text-left px-4 py-2 rounded-md transition-colors duration-300 bg-[#F2F2F2] text-slate-500 hover:text-white hover:bg-blue-500 xl:px-6"
-            @click="
+    <div class="container flex items-center flex-col gap-8 my-10 min-h-[50vh]" v-if="true">
+        <section class="w-full bg-light-100 border-[1.5px] border-red-500 rounded-lg p-6 flex flex-col justify-center items-center gap-4">
+            <h4 class="text-2xl font-medium">Payment failed</h4>
+            <AlertTriangleIcon class="text-red-500 w-10 h-10 stroke-2" />
+            <p>Reason: {{ getPreviousCheckoutError?.message || 'Something went wrong' }}</p>
+        </section>
+        <div class="flex gap-4">
+            <UiButton class="w-fit" variant="secondary" @click="
                 cancelOrder();
-                router.push({ path: `/dashboard/client` });
-            "
-        >
-            <CopyIcon class="w-5 h-5 mr-2 text-current xl:w-6 xl:h-6" />
-            <span class="text-sm leading-[1.42857] font-medium"> Cancel order </span>
-        </button>
+            router.push({ path: `/dashboard/client` });
+            ">
+                <span class="text-sm leading-[1.42857] font-medium"> Cancel order </span>
+            </UiButton>
+            <UiButton @click="retry = true" class="w-fit">
+                <span class="text-sm leading-[1.42857] font-medium"> Try Again </span>
+            </UiButton>
+        </div>
         <PaymentSessionCardForm v-if="retry" />
     </div>
     <div v-else>No data available</div>
@@ -27,8 +24,7 @@
 <script setup lang="ts">
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
-import CopyIcon from 'assets/icons/dashboard/copy.svg';
-
+import { AlertTriangleIcon } from 'lucide-vue-next';
 const { $api } = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
