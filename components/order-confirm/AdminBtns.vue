@@ -3,7 +3,6 @@ import {
     ArchiveIcon,
     CheckCheckIcon,
     ChevronDownIcon,
-    FilePenLineIcon,
     HandCoinsIcon,
     PackageXIcon,
     PrinterIcon,
@@ -103,13 +102,6 @@ const actions = [
         enable: props.order?.shippingDetails.statusTracking?.awb,
         icon: ReceiptTextIcon,
         value: 'print_shipping_label',
-    },
-    {
-        title: 'Update Order Status',
-        enable: props.order?.status !== OrderStatus.Canceled && props.order?.status !== OrderStatus.Completed,
-        icon: FilePenLineIcon,
-        value: 'update_order_status',
-        action: changeStatus,
     },
     {
         title: 'Cancel Order',
