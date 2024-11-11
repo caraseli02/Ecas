@@ -191,7 +191,18 @@ export interface PaymentDetails {
     card?: Pick<PaymentMethod.Card, 'last4' | 'exp_year' | 'exp_month' | 'brand'>;
     invoiceId?: string;
     invoiceShortId?: string;
+    bankTransfer?: MarkAsPaidInterface;
 }
+
+export interface MarkAsPaidInterface {
+    amountPaid: number;
+    currency: string;
+    reference?: string;
+    comments?: string;
+    date: Date;
+}
+
+export type MarkAsPaidRequestInterface = MarkAsPaidInterface;
 
 export interface StripeCardInterface {
     billing_details: ShippingAddressInterface;

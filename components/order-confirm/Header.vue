@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { FileText } from 'lucide-vue-next';
 import { DotsVerticalIcon } from '@radix-icons/vue';
-import { PaymentTypeEnum } from '~/types';
+import { PaymentStatusEnum, PaymentTypeEnum } from '~/types';
 
 interface OrderTypeValue {
     badge: { text: string };
@@ -15,6 +15,7 @@ interface Props {
     shippingMethod?: string;
     pickupDate?: string;
     paymentMethod?: Record<string, any>;
+    paymentStatus?: PaymentStatusEnum;
     onDownloadDocument: () => void;
 }
 
@@ -78,7 +79,7 @@ defineProps<Props>();
             class="md:w-full lg:w-fit flex justify-between md:justify-end gap-2 md:gap-4 text-sm font-medium leading-6 text-white max-md:flex-wrap"
         >
             <UiButton
-                v-if="paymentMethod?.type === PaymentTypeEnum.Bank"
+                v-if="paymentMethod?.type === PaymentTypeEnum.Bank && paymentStatus !== PaymentStatusEnum.Paid"
                 variant="secondary"
                 size="xs"
                 class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
@@ -88,7 +89,10 @@ defineProps<Props>();
                 Proforma Invoice
             </UiButton>
             <UiButton
-                v-if="paymentMethod?.type !== PaymentTypeEnum.Bank"
+                v-if="
+                    paymentMethod?.type !== PaymentTypeEnum.Bank ||
+                    (paymentMethod?.type === PaymentTypeEnum.Bank && paymentStatus === PaymentStatusEnum.Paid)
+                "
                 variant="secondary"
                 size="xs"
                 class="flex gap-2 justify-center text-slate-500 rounded-lg bg-zinc-100"
