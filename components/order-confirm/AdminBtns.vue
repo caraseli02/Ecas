@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
     ArchiveIcon,
-    CheckCheckIcon,
     ChevronDownIcon,
     HandCoinsIcon,
     PackageXIcon,
@@ -10,7 +9,7 @@ import {
     SettingsIcon,
     Undo2Icon,
 } from 'lucide-vue-next';
-import { OrderInterface, OrderStatus, PaymentStatusEnum, PaymentTypeEnum } from '~/types';
+import { OrderInterface, OrderStatus, PaymentStatusEnum } from '~/types';
 import { PropType } from 'vue';
 import { toast } from '~/components/ui/toast';
 
@@ -22,26 +21,6 @@ const props = defineProps({
         required: true,
     },
 });
-
-const markAsPaid = async () => {
-    const response = (await $api.orders.markAsPaid(props.order?._id)) as { status: string; description: string };
-
-    if (response.status !== 'success') {
-        toast({
-            title: 'Error',
-            description: response.description || 'Failed to mark order as paid',
-            variant: 'destructive',
-        });
-        return;
-    }
-
-    toast({
-        title: 'Success',
-        description: 'Order cancelled successfully',
-        variant: 'success',
-    });
-    return;
-};
 
 const cancelOrder = async () => {
     const response = (await $api.orders.cancelOrder(props.order?._id)) as { status: string; description: string };
@@ -66,13 +45,13 @@ const cancelOrder = async () => {
 
 const actions = [
     { title: 'Archive', enable: true, icon: ArchiveIcon, value: 'archive' },
-    {
-        title: 'Mark as paid',
-        enable: props.order?.status !== OrderStatus.Canceled && props.order.paymentDetails?.type === PaymentTypeEnum.Bank,
-        icon: CheckCheckIcon,
-        value: 'mark_as_paid',
-        action: markAsPaid,
-    },
+    // {
+    //     title: 'Mark as paid',
+    //     enable: props.order?.status !== OrderStatus.Canceled && props.order.paymentDetails?.type === PaymentTypeEnum.Bank,
+    //     icon: CheckCheckIcon,
+    //     value: 'mark_as_paid',
+    //     action: markAsPaid,
+    // },
     { title: 'Print Order', enable: true, icon: PrinterIcon, value: 'print_order' },
     {
         title: 'Print Shipping Label',

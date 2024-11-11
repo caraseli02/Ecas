@@ -1,7 +1,7 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
-import { OrderRequestInterface, OrderStatus } from '~/types';
+import { MarkAsPaidRequestInterface, OrderRequestInterface, OrderStatus } from '~/types';
 import { ShippingAddressInterface } from '~/types/auth/user-interface';
 
 class OrdersService extends HttpFactory {
@@ -85,9 +85,9 @@ class OrdersService extends HttpFactory {
         });
     }
 
-    async markAsPaid(id: string) {
+    async markAsPaid(id: string, payload: MarkAsPaidRequestInterface) {
         const token = this.authStore.getToken();
-        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}/paid`, null, {
+        return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}/paid`, payload, {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
