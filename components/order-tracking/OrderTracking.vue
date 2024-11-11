@@ -117,7 +117,7 @@ const handleMoreOptions = () => {
           </div>
         </div>
         
-        <div class="flex justify-end gap-4 lg:gap-9 items-start w-full md:w-auto max-md:gap-4">
+        <div class="flex justify-end gap-4 items-start w-full md:w-auto max-md:gap-4">
             <UiBadge
               class="flex gap-3 items-center font-normal px-3 py-1 text-sm rounded-md h-8"
               variant="outline"

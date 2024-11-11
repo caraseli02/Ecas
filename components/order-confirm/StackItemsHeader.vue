@@ -64,6 +64,8 @@ const getOrderTypeValueByOrder = () => {
 const getPaymentStatusValueByOrder = () => {
     return paymentStatuses.value.find((status) => status.value === props.order.paymentDetails?.status) || paymentStatuses.value[0];
 };
+
+const showTrackingDialog = ref(false);
 </script>
 
 <template>
@@ -112,6 +114,7 @@ const getPaymentStatusValueByOrder = () => {
                 <div class="flex gap-3 items-center self-stretch my-auto">
                     <UiButton
                         v-if="!isAdmin"
+                        @click="showTrackingDialog = true"
                         size="xs"
                         class="flex overflow-hidden justify-center items-center self-stretch px-4 py-0 my-auto text-sm font-medium leading-6 text-white bg-sky-500 rounded-md"
                     >
@@ -123,6 +126,7 @@ const getPaymentStatusValueByOrder = () => {
                         :initial-amount-paid="order.total"
                         :initial-currency="order.currency"
                         :order="order"
+                        @showTrackingDialog="showTrackingDialog = true"
                     />
                 </div>
             </section>
@@ -242,6 +246,7 @@ const getPaymentStatusValueByOrder = () => {
             </UiPopover>
         </div>
     </section>
+    <OrderConfirmTrackingDialog :order="order" v-model="showTrackingDialog" />
 </template>
 
 <style scoped></style>

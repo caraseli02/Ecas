@@ -1,0 +1,17 @@
+<script setup lang="ts">
+import { OrderInterface } from '~/types';
+
+const props = defineProps<{
+  order: OrderInterface;
+}>();
+
+const isOpen = defineModel<boolean>();
+</script>
+
+<template>
+  <UiDialog v-model:open="isOpen">
+    <UiDialogContent class="w-full max-w-[calc(100vw-5%)] pt-0 pr-10">
+      <OrderTracking class="border-none pt-4" />
+    </UiDialogContent>
+  </UiDialog>
+</template>

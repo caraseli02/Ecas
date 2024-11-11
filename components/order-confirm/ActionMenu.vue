@@ -119,7 +119,7 @@ const { handleSubmit, errors, resetForm, isFieldDirty } = useForm({
 
 const isOpen = ref(false);
 
-const emit = defineEmits(['close', 'submit']);
+const emit = defineEmits(['close', 'submit', 'showTrackingDialog']);
 
 // Submit handler
 const onSubmit = handleSubmit(async (values) => {
@@ -141,6 +141,7 @@ const onSubmit = handleSubmit(async (values) => {
     resetForm();
     isOpen.value = false;
 });
+
 </script>
 
 <template>
@@ -195,7 +196,7 @@ const onSubmit = handleSubmit(async (values) => {
                 <CheckCircle class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                 Mark as Paid
             </UiButton>
-            <UiButton class="hover:text-blue-500 hover:bg-light-300 justify-start gap-2 min-w-[164px]" variant="ghost" size="sm">
+            <UiButton @click="emit('showTrackingDialog')" class="hover:text-blue-500 hover:bg-light-300 justify-start gap-2 min-w-[164px]" variant="ghost" size="sm">
                 <MapPin class="mr-1 object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                 Track Order
             </UiButton>
