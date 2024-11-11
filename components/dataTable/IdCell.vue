@@ -23,7 +23,7 @@ d="M4.6665 8.66699H8.6665" stroke="currentColor" stroke-width="1.5" stroke-linec
             </svg>
           </UiTooltipTrigger>
           <UiTooltipContent>
-            <p>Has Message</p>
+            <p>Order note</p>
           </UiTooltipContent>
         </UiTooltip>
       </UiTooltipProvider>

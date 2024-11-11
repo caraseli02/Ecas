@@ -1,7 +1,8 @@
 <template>
   <div
-      class="items-stretch shadow-xs bg-white flex w-full xl:max-w-[514px] flex-col rounded-xl h-[233px] md:h-[192px] xl:h-[240px] pb-1.5">
+      class="items-stretch shadow-xs bg-white flex w-full xl:max-w-[514px] flex-col rounded-xl h-[233px] md:h-[192px] xl:h-[240px] pb-1.5 relative">
     <Swiper
+      v-if="slides && slides.length > 0"
         :modules="[A11y, Pagination]" :slides-per-view="1" :space-between="15" :grab-cursor="true" :pagination="{
       bulletElement: 'button',
       clickable: true,
@@ -65,6 +66,10 @@
         </div>
       </SwiperSlide>
     </Swiper>
+    <section class="absolute inset-0 flex flex-col items-center justify-center text-center">
+        <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+        <div class="w-full">No results.</div>
+    </section>
   </div>
 </template>
 
@@ -73,6 +78,7 @@ import {A11y, Pagination} from 'swiper';
 import {ProductBannerInterface} from '~/model/dashboard/customer-information/customer-information';
 import {addToCartHelper} from '~/helpers/prices.helper';
 import {useCartStore} from '~/store/cartStore';
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 
 const cartStore = useCartStore();
 
