@@ -71,7 +71,7 @@
                 <section class="flex gap-2 min-w-fit">
                     <div class="flex flex-col items-start gap-1.5">
                         <span class="text-xs leading-tight font-normal mb-2"> Quantity (pcs) </span>
-                        <span v-for="(quantity, _) in bulkQuantities" class="text-[13px] leading-tight"> {{ quantity[0] }}+ </span>
+                        <span v-for="(quantity, _) in bulkQuantities" :key="quantity" class="text-[13px] leading-tight"> {{ quantity[0] }}+ </span>
                     </div>
                     <div class="flex flex-col items-start gap-1.5">
                         <span class="text-xs leading-tight font-normal mb-2"> Price (Ex VAT)</span>
@@ -79,6 +79,7 @@
                             v-for="(quantity, _) in bulkQuantities"
                             class="text-[13px] leading-tight"
                             :class="[productDiscount ? 'text-red' : '']"
+                            :key="quantity[0]"
                         >
                             {{ quantity[1].toFixed(2) }} lei
                         </span>
