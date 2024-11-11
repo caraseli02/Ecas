@@ -20,15 +20,15 @@ let stripe: Stripe | null;
 let elements: StripeElements;
 let setupIntent: SetupIntentResult;
 const setupIntentId = ref(null);
-const config = useRuntimeConfig();
 
 const showSkeletonLoader = ref(false);
 const setupElementHeight = ref(0); // Define setupElementHeight here
 let resizeObserver: ResizeObserver | null = null; // Declare resizeObserver outside onMounted
 
 onMounted(async () => {
-    showSkeletonLoader.value = true;
+    const config = useRuntimeConfig();
 
+    showSkeletonLoader.value = true;
     stripe = await loadStripe(config.public.stripePublishableKey as string);
 
     const fetchSetupIntentResult = await $api.orders.createAndRetrieveSetupIntent();
