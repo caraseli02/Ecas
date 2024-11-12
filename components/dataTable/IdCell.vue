@@ -1,6 +1,6 @@
 <template>
   <div class="min-w-[128px] flex justify-between items-center text-neutral-700">
-    <NuxtLink :to="orderLink">
+    <NuxtLink v-if="props.orderId" :to="orderLink">
       <UiButton variant="link" class="text-sm hover:text-blue-500">{{ IdCell ?? 'N/A' }}</UiButton>
     </NuxtLink>
     <NuxtLink v-if="notes" to="#">
