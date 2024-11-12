@@ -185,12 +185,12 @@ const route = useRoute();
 const checkForActiveTab = () => {
     const tabLabel = route.query.tab;
     const tab = orderFilters.value.find((filter) => filter.value === tabLabel);
-    // if (tab) {
-    //     activeOrderFilter.value = tab;
-    //     setTimeout(() => {
-    //         setActiveFilterHighlight()
-    //     }, 2000);
-    // }
+    if (tab) {
+        activeOrderFilter.value = tab;
+        // setTimeout(() => {
+        //     setActiveFilterHighlight()
+        // }, 2000);
+    }
 }
 
 watch(() => route.query.tab, checkForActiveTab, { immediate: true }  );
