@@ -62,6 +62,6 @@ const productTitle = (product: ProductInterface) => {
     const mapLabels = mapLabelsToIds(categories.value);
     const categoriesLabelsArray = mapPathArrayOfNames(product.path, mapLabels);
 
-    return categoriesLabelsArray[categoriesLabelsArray.length - 1].name;
+    return categoriesLabelsArray[categoriesLabelsArray.length - 1]?.name;
 };
 </script>

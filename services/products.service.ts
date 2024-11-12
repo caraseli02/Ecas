@@ -79,7 +79,7 @@ class ProductService extends HttpFactory {
                 perPage: perPage,
                 ...sort,
                 operator: '$or',
-                partDescription: keyword,
+                code: keyword,
                 description: keyword,
                 alias: keyword,
                 name: keyword,
