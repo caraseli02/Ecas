@@ -100,7 +100,7 @@
                     v-if="minPriceConfiguration"
                     v-model="quantity"
                     size="lg"
-                    :object="{ id: product._id, min: minPriceConfiguration.quantity , action : 'add'} as ProductActionObject"
+                    :object="{ id: product._id, min: minPriceConfiguration.quantity , action : 'update'} as ProductActionObject"
                 />
             </div>
             <button
@@ -179,6 +179,7 @@ const buildBulkQuantities = () => {
 };
 
 const addToCart = async (product: ProductInterface) => {
+    console.log(initialRequestedQuantity.value, quantity.value);
     const stock = initialRequestedQuantity.value > 0 ? quantity.value - initialRequestedQuantity.value : quantity.value;
 
     const response = (await addToCartHelper(product, stock)) as any;

@@ -85,7 +85,7 @@ const inputHandler = async (quantity: number) => {
     initialQuantity.value = quantity; // Update local state first
     currentQuantity.value = quantity; // Update the current quantity
 
-    if (props.object && props.object.action === ProductAction.Update) {
+    if (props.object && props.object.action === ProductAction.Add) {
         const payload = {} as UpdateProductCartRequestInterface;
         let product: CartProductsInterface;
         payload.products = [];
@@ -110,11 +110,17 @@ const inputHandler = async (quantity: number) => {
         const object = await $api.cart.updateEntityFromCart(payload);
         if (object.status === 'success') {
             await cartStore.updateAndReturnCart();
+
             console.log('emitting', quantity);
 
             // Emit the new value to the parent after the successful update
             emits('update:modelValue', currentQuantity.value);
         }
+    } else {
+        console.log('emitting', quantity);
+
+        // Emit the new value to the parent after the successful update
+        emits('update:modelValue', currentQuantity.value);
     }
 };
 

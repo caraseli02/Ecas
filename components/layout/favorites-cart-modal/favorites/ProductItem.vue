@@ -88,13 +88,14 @@
                 </div>
             </div>
             <div v-else class="font-Inter font-semibold leading-[1.25]">
-                {{ product ? (currentConfigurationDiscountPrice * (product.quantity || 1)).toFixed(2) : 0 }} Lei
+                {{ product ? (currentConfigurationDiscountPrice * (quantity || 1)).toFixed(2) : 0 }} Lei
             </div>
             <QuantityButtons
                 v-if="typeof productItem.quantity === 'number'"
-                v-model="productItem.quantity"
-                :object="{action : ProductAction.Update, id: productItem.id, min : minPriceConfiguration?.quantity} as ProductActionObject"
+                v-model="quantity"
+                :object="{action : ProductAction.Add, id: productItem.id, min : minPriceConfiguration?.quantity} as ProductActionObject"
                 class="mr-10"
+                @update:model-value="quantity = $event"
             />
         </div>
     </div>
@@ -168,6 +169,8 @@ const discountPrice = ref(0);
 const currentConfigurationDiscountPrice = ref(0);
 const userDiscount = ref(0);
 const productDiscount = ref(0);
+
+const quantity = ref(productItem.value.quantity || minPriceConfiguration.value?.quantity || 10);
 
 const getPricesConfiguration = () => {
     const discountsHelper = parseProductPriceConfiguration(props.product?.productEntity, getUserDetails.value, productItem.value.quantity);

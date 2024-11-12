@@ -171,20 +171,20 @@ const isCheckoutDisabled = computed(() => {
 });
 
 const isLoadingCheckout = ref(false);
-watch(checkout,async (newVal) => {
+watch(checkout, async (newVal) => {
     if (newVal && stopButtonTrigger.value) {
         try {
             isLoadingCheckout.value = true;
-        await makeCheckout(
-            orderType.value,
-            cartId.value,
-            order.value.deliveryMethod,
-            order.value.backorderOption,
-            order.value.smallOrder,
-            order.value.paymentDetails,
-            note.value
-        );
-        stopButtonTrigger.value = false;
+            await makeCheckout(
+                orderType.value,
+                cartId.value,
+                order.value.deliveryMethod,
+                order.value.backorderOption,
+                order.value.smallOrder,
+                order.value.paymentDetails,
+                note.value
+            );
+            stopButtonTrigger.value = false;
         } catch (error) {
             console.log(error);
             isLoadingCheckout.value = false;
@@ -211,7 +211,6 @@ Emitter.on('delete-product-item', (object: { id: string }) => {
 });
 
 const updateSubtotal = async (items: CartProductsInterface[], order) => {
-    console.log('items', items);
     shippingPreferences.value = await fetchShippingPrices(order);
     await calculateSubtotal(items, order);
 };
@@ -232,11 +231,13 @@ onMounted(async () => {
     await fetchCards(); // Fetch user's payment cards
     await getCustomerCredit(); // Fetch customer credit information
     await fetchList(); // Fetch cart items
+
     shippingPreferences.value = await fetchShippingPrices(order.value); // Fetch shipping prices
-    console.log('shippingPreferences', shippingPreferences.value);
+
     // Initial calculations
     await calculateSubtotal(cartItems.value, order);
     calculateDiscount(cartItems.value, order);
+
     order.value.products = orderItems.value;
     loading.value = false;
 });

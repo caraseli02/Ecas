@@ -47,7 +47,7 @@
                                 :type="stockItem ? OrderType.Stock : OrderType.Back"
                                 :update-only-available-stock="true"
                                 :object="{
-                                    action: ProductAction.Update,
+                                    action: ProductAction.Add,
                                     id: item.id,
                                     min: stockItem ? item?.productEntity?.priceConfiguration?.configuration[0].quantity : 1,
                                     max: item.productEntity?.stock
@@ -124,7 +124,6 @@ const { getUserDetails } = storeToRefs(authStore);
 watch(
     [quantity, deleteItem],
     () => {
-        console.log('updateQuantity');
         emits('updateQuantity');
     },
     { immediate: true }
