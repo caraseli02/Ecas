@@ -110,7 +110,7 @@
                                 </span>
                             </div>
                             <div v-if="totalCartPrice" class="flex-col text-white flex-shrink-0 ml-6 max-md:hidden">
-                                <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice + 'lei' }}</div>
+                                <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice + 'Lei' }}</div>
                                 <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
                             </div>
                         </button>

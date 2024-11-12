@@ -9,7 +9,7 @@
                             <div v-if="emptyData || error || !credit" class="text-sm font-medium leading-tight text-gray-500">
                                 No data available
                             </div>
-                            <div v-else>{{ credit.limit }} lei</div>
+                            <div v-else>{{ credit.limit }} Lei</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -21,7 +21,7 @@
                             <div v-if="emptyData || error || !credit" class="text-sm font-medium leading-tight text-gray-500">
                                 No data available
                             </div>
-                            <div v-else>{{ credit.available }} lei</div>
+                            <div v-else>{{ credit.available }} Lei</div>
                         </div>
                         <SkeletonLoader v-else class="w-[104px] h-5" />
                     </div>
@@ -42,7 +42,7 @@
                         <div v-if="emptyData || error || !credit" class="text-sm font-medium leading-tight text-gray-500">
                             No data available
                         </div>
-                        <div v-else class="text-sm font-semibold leading-tight">{{ credit.limit + 'lei' }}</div>
+                        <div v-else class="text-sm font-semibold leading-tight">{{ credit.limit + 'Lei' }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -61,7 +61,7 @@
                             No data available
                         </div>
                         <div v-else class="text-sm font-semibold leading-tight text-blue-500">
-                            {{ credit.available + 'lei' }}
+                            {{ credit.available + 'Lei' }}
                         </div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>

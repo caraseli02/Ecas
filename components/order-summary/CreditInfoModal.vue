@@ -31,7 +31,7 @@
                 <div class="flex flex-col gap-1">
                     <span class="text-[#5E6278] text-xs font-normal leading-5">Total Spent</span>
                     <!-- <span class="text-neutral-700 text-xs font-medium leading-5">€ {{ accountCredit.spent }}</span> -->
-                    <span class="text-neutral-700 text-xs font-medium leading-5">{{ accountCredit.spent.toFixed(2) }} lei</span>
+                    <span class="text-neutral-700 text-xs font-medium leading-5">{{ accountCredit.spent.toFixed(2) }} Lei</span>
                     <!-- placeholder (uncomment the above line) -->
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 <div class="flex flex-col gap-1">
                     <span class="text-[#5E6278] text-xs font-normal leading-5">Available</span>
                     <!-- <span class="text-neutral-700 text-xs font-medium leading-5">€ {{ accountCredit.available }}</span> -->
-                    <span class="text-[#EE514E] text-xs font-medium leading-5">{{ accountCredit.available.toFixed(2) }} lei</span>
+                    <span class="text-[#EE514E] text-xs font-medium leading-5">{{ accountCredit.available.toFixed(2) }} Lei</span>
                     <!-- placeholder (uncomment the above line) -->
                 </div>
             </div>

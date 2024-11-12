@@ -31,7 +31,7 @@
                         @click="quantity = bulkQuantity[0] + 1"
                     >
                         <div class="text-slate-500">{{ bulkQuantity[0] }}+</div>
-                        <div :class="['text-neutral-700', productDiscount ? 'text-red' : '']">{{ bulkQuantity[1].toFixed(2) }} lei</div>
+                        <div :class="['text-neutral-700', productDiscount ? 'text-red' : '']">{{ bulkQuantity[1].toFixed(2) }} Lei</div>
                     </div>
                 </div>
                 <div class="hidden justify-end text-slate-500 text-xs mb-[9px] lg:flex">
@@ -70,7 +70,7 @@
                         <div v-if="productDiscount" class="text-sm leading-tight line-through">
                             {{
                                 minPriceConfiguration
-                                    ? `${minPriceConfiguration.price.toFixed(2)} lei (${minPriceConfiguration.quantity}+)`
+                                    ? `${minPriceConfiguration.price.toFixed(2)} Lei (${minPriceConfiguration.quantity}+)`
                                     : '-'
                             }}
                         </div>
@@ -78,8 +78,8 @@
                             <span>
                                 {{
                                     discountPrice
-                                        ? `${discountPrice.toFixed(2)} lei`
-                                        : `${minPriceConfiguration?.price.toFixed(2)} lei` || '-'
+                                        ? `${discountPrice.toFixed(2)} Lei`
+                                        : `${minPriceConfiguration?.price.toFixed(2)} Lei` || '-'
                                 }}
                             </span>
                             {{ currentPriceConfiguration ? `(${currentPriceConfiguration.quantity}+)` : '-' }}

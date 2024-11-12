@@ -122,7 +122,7 @@ const fetchRecentTransactions = async () => {
     recentTransactions.value?.map((transaction, index) => {
         const transactionInfo = {} as OrderInfo;
 
-        transactionInfo.amount = `${transaction.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} lei`;
+        transactionInfo.amount = `${transaction.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} Lei`;
         transactionInfo.status = `${PaymentStatusEnum[transaction.status]}`;
         recentTransactionArray.push(transactionInfo);
     });

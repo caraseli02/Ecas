@@ -116,9 +116,9 @@ const showTrackingDialog = ref(false);
                 <div class="flex gap-3 items-center self-stretch my-auto">
                     <UiButton
                         v-if="!isAdmin"
-                        @click="showTrackingDialog = true"
                         size="xs"
                         class="flex overflow-hidden justify-center items-center self-stretch px-4 py-0 my-auto text-sm font-medium leading-6 text-white bg-sky-500 rounded-md"
+                        @click="showTrackingDialog = true"
                     >
                         <MapPin class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                         <span class="self-stretch py-1 pl-2 my-auto">Track Order</span>
@@ -215,7 +215,7 @@ const showTrackingDialog = ref(false);
                             <dl class="flex flex-col w-full text-xs leading-loose">
                                 <div class="flex gap-10 justify-between items-start w-full">
                                     <dt class="text-gray-500">Amount</dt>
-                                    <dd class="text-zinc-800">{{ order.total }} lei</dd>
+                                    <dd class="text-zinc-800">{{ order.total }} Lei</dd>
                                 </div>
                                 <div class="flex gap-10 justify-between items-start mt-2 w-full">
                                     <dt class="text-gray-500">Date</dt>
@@ -248,7 +248,7 @@ const showTrackingDialog = ref(false);
             </UiPopover>
         </div>
     </section>
-    <LazyOrderConfirmTrackingDialog :order="order" v-model="showTrackingDialog" />
+    <LazyOrderConfirmTrackingDialog v-model="showTrackingDialog" :order="order" />
 </template>
 
 <style scoped></style>

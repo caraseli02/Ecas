@@ -26,7 +26,7 @@ const handlePayNow = () => {
         <div class="flex flex-col py-6 mt-8 bg-white rounded-xl max-md:max-w-full">
             <div class="flex gap-2 justify-between leading-[133%] max-md:flex-wrap max-md:max-w-full">
                 <div class="flex flex-col justify-center">
-                    <p class="text-2xl font-semibold tracking-normal text-neutral-700">{{ availableCredit.toFixed(2) }} lei</p>
+                    <p class="text-2xl font-semibold tracking-normal text-neutral-700">{{ availableCredit.toFixed(2) }} Lei</p>
                     <p class="mt-1 text-xs font-medium text-slate-500">Available Credit</p>
                 </div>
                 <svg
@@ -55,7 +55,7 @@ const handlePayNow = () => {
             <div class="flex gap-5 justify-between mt-4 w-full max-md:flex-wrap max-md:max-w-full">
                 <div class="flex gap-2">
                     <p class="text-base font-medium leading-6 text-slate-500">Balance:</p>
-                    <p class="text-lg font-semibold leading-6 text-neutral-700">{{ balance.toFixed(2) }} lei</p>
+                    <p class="text-lg font-semibold leading-6 text-neutral-700">{{ balance.toFixed(2) }} Lei</p>
                 </div>
                 <button class="flex gap-1 text-base font-semibold leading-6 text-slate-500" @click="handlePayNow">
                     <CreditCard class="shrink-0 w-6 aspect-square" />

@@ -19,7 +19,7 @@
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
                     <span class="text-slate-500"> Credit Limit </span>
                     <span class="font-medium">
-                        {{ (creditObjectToEdit?.limit ? getAmountFormat(creditObjectToEdit.limit) : '0') + 'lei' }}
+                        {{ (creditObjectToEdit?.limit ? getAmountFormat(creditObjectToEdit.limit) : '0') + 'Lei' }}
                     </span>
                 </div>
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
@@ -37,13 +37,13 @@
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
                     <span class="text-slate-500"> Total Spent </span>
                     <span class="font-medium">
-                        {{ (creditObjectToEdit?.spent ? getAmountFormat(creditObjectToEdit.spent) : '0') + 'lei' }}
+                        {{ (creditObjectToEdit?.spent ? getAmountFormat(creditObjectToEdit.spent) : '0') + 'Lei' }}
                     </span>
                 </div>
                 <div class="flex items-center justify-between text-sm leading-[1.42]">
                     <span class="text-slate-500"> Available Credit </span>
                     <span class="font-medium text-[#EE514E]">
-                        {{ (creditObjectToEdit?.available ? getAmountFormat(creditObjectToEdit.available) : '0') + 'lei' }}
+                        {{ (creditObjectToEdit?.available ? getAmountFormat(creditObjectToEdit.available) : '0') + 'Lei' }}
                     </span>
                 </div>
             </div>
@@ -140,7 +140,7 @@
                         placeholder="Discount (i.e. 5, 10, 17)"
                         class="bg-transparent px-2 text-sm w-full transition-colors duration-300 focus:outline-none"
                     />
-                    <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">lei</div>
+                    <div class="text-xl leading-[1.3] px-3 py-2 border-r border-border bg-[#F5F5F5]">Lei</div>
                 </div>
             </div>
             <div class="grid grid-cols-[auto,1fr] gap-4">

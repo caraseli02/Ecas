@@ -47,7 +47,7 @@
                         <strong>
                             {{
                                 currentConfigurationDiscountPrice
-                                    ? `${currentConfigurationDiscountPrice.toFixed(2)} lei`
+                                    ? `${currentConfigurationDiscountPrice.toFixed(2)} Lei`
                                     : minPriceConfiguration?.price.toFixed(2) || '-'
                             }}
                         </strong>
@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div v-else class="font-Inter font-semibold leading-[1.25]">
-                {{ product ? (currentConfigurationDiscountPrice * (product.quantity || 1)).toFixed(2) : 0 }} lei
+                {{ product ? (currentConfigurationDiscountPrice * (product.quantity || 1)).toFixed(2) : 0 }} Lei
             </div>
             <QuantityButtons
                 v-if="typeof productItem.quantity === 'number'"
