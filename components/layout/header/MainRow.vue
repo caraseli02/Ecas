@@ -316,7 +316,7 @@ const fetchList = async () => {
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
     isLoading.value = true;
 
-    const { data: products } = (await $api.product.fetchSearchProduct(keyword, category.value, page, perPage)) as SearchData;
+    const { data: products } = (await $api.product.fetchSearchProduct(keyword, category.value, page, perPage)) as unknown as SearchData;
 
     if (!products) {
         return;

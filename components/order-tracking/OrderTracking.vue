@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { DotIcon, FilePlus2, FileSpreadsheet, MapPin, MoreVertical, Package, Truck } from 'lucide-vue-next';
 import { cn } from '~/lib/utils';
-import { OrderInterface, PaymentStatusEnum } from '~/types';
+import { OrderInterface, OrderStatus, PaymentStatusEnum } from '~/types';
 import { AddressInterface } from '~/types/auth/user-interface';
 
 interface OrderStatus {
@@ -171,7 +171,7 @@ const handleMoreOptions = () => {
         <section class="flex flex-col gap-6 px-4 py-6 rounded-xl border border-solid bg-light-100 border-grey-300">
             <div class="flex md:flex-wrap gap-10 justify-between md:items-center text-sm leading-6 max-md:gap-4">
                 <div class="flex flex-col md:flex-row md:items-center max-md:gap-1 w-full md:w-auto">
-                    <h2 class="font-medium text-zinc-800">Order updated</h2>
+                    <h2 class="font-medium text-zinc-800">Order {{ order.status === OrderStatus.Pending ? 'received' : 'updated' }}</h2>
                     <DotIcon class="hidden md:block text-stone-300" />
                     <time class="flex gap-1 text-gray-500">
                         <span>{{ formattedDate.day }}</span>

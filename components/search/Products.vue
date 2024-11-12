@@ -326,7 +326,7 @@ watch(
     { deep: true }
 );
 
-const show = ref('New products only');
+const show = ref('All products');
 const showShowOptions = ref(false);
 const showOptions = ref(['New products only', 'Available in stock', 'Sales only', 'All products']);
 const showPerPageOptions = ref(false);
@@ -334,13 +334,12 @@ const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
 const showSortByOptions = ref(false);
 
 const sortByOptions = ref([
-    { label: 'Product Code', name: 'manufacturerCode' },
+    { label: 'Product Code', name: 'code' },
     { label: 'Manufacturer', name: 'manufacturer' },
-    { label: 'Manufacturer Code', name: 'manufacturerCode' },
     { label: 'Description', name: 'description' },
-    { label: 'Category', name: 'taxonomy' },
+    { label: 'Category', name: 'category' },
     { label: 'Stock', name: 'stock' },
-    { label: 'Price', name: 'priceRon' },
+    { label: 'Price', name: 'price' },
 ]);
 
 const atPage = ref(1);
