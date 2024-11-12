@@ -17,7 +17,7 @@
                         <button>
                             <EditSmall
                                 class="text-[#5E6278] hover:text-[#007FFF] transition duration-150"
-                                @click="router.push('/dashboard/client?tab=settings')"
+                                @click="$router.push('/dashboard/client?tab=settings')"
                             />
                         </button>
                         <template #content>
@@ -64,7 +64,7 @@
                         <button>
                             <EditSmall
                                 class="text-[#5E6278] hover:text-[#007FFF] transition duration-150"
-                                @click="router.push('/dashboard/client?tab=settings')"
+                                @click="$router.push('/dashboard/client?tab=settings')"
                             />
                         </button>
                         <template #content>
