@@ -27,7 +27,6 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
             h(UserInfo, {
                 name: `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'N/A',
                 email: row.original.contactDetails?.email,
-                navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
             }),
     },
     {
