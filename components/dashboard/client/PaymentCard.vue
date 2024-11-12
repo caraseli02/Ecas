@@ -1,5 +1,6 @@
 <template>
-    <div class="items-stretch shadow-xs bg-white flex w-full lg:max-w-[476px] xl:max-w-md flex-col p-6 rounded-xl">
+    <div class="relative items-stretch shadow-xs bg-white flex w-full lg:max-w-[476px] xl:max-w-md flex-col p-6 rounded-xl">
+        <template v-if="card">
         <section class="justify-between items-stretch flex gap-5">
             <div class="text-neutral-800 text-sm font-medium leading-5 capitalize">Card</div>
            <UiButton @click="openSettingTab" variant="ghost" class="p-1 w-10 h-10">
@@ -40,6 +41,11 @@
                 class="aspect-square object-contain object-center w-4 justify-center items-center overflow-hidden shrink-0 max-w-full my-auto"
             />
         </button>
+        </template>
+        <section v-else class="absolute inset-0 flex flex-col items-center justify-center text-center">
+        <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+        <div class="w-full">No results.</div>
+        </section>
     </div>
 </template>
 
@@ -49,6 +55,7 @@ import masterIcon from '@/assets/icons/mastercard58.svg';
 import visaIcon from '@/assets/icons/visa58.svg';
 import { StripeCardInterface } from '~/types';
 import Emitter from 'tiny-emitter/instance';
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 
 defineProps<{
     card: StripeCardInterface;
