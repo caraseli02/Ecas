@@ -19,12 +19,20 @@ export const columns: ColumnDef<TransactionTableColumnsEnum>[] = [
     {
         accessorKey: TransactionTableColumnsEnum.TRANSACTION_ID, // Update accessor keys
         header: ({ column }) => h(ColumnHeader, { column, title: 'Transaction ID' }), // Adapt titles if needed
-        cell: ({ row }) => h(IdCell, { IdCell: row.getValue(TransactionTableColumnsEnum.TRANSACTION_ID) }),
+        cell: ({ row }) =>
+            h(IdCell, {
+                IdCell: row.getValue(TransactionTableColumnsEnum.TRANSACTION_ID),
+                orderId: row.original.orderId,
+            }),
     },
     {
         accessorKey: TransactionTableColumnsEnum.ORDER_ID,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Order ID' }),
-        cell: ({ row }) => h(IdCell, { IdCell: row.getValue(TransactionTableColumnsEnum.ORDER_ID) }),
+        cell: ({ row }) =>
+            h(IdCell, {
+                IdCell: row.getValue(TransactionTableColumnsEnum.ORDER_ID),
+                orderId: row.original.orderId,
+            }),
     },
     {
         accessorKey: TransactionTableColumnsEnum.INVOICE_ID,
