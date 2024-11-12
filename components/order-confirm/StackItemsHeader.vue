@@ -104,7 +104,7 @@ const showTrackingDialog = ref(false);
                     </UiButton>
                 </UiPopoverContent>
             </UiPopover>
-            <div v-if="!isAdmin" class="hidden md:flex gap-3 items-center self-stretch my-auto text-sm leading-none">
+            <div v-if="!isAdmin" class="hidden md:flex gap-3 items-center self-stretch text-sm leading-none">
                 <h4 class="self-stretch my-auto text-gray-500">Order Status</h4>
                 <OrderConfirmStatusDisplay :status-color="getStatusByOrder().color" :status-text="getStatusByOrder().value" />
             </div>

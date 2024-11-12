@@ -10,7 +10,7 @@ const isOpen = defineModel<boolean>();
 
 <template>
     <UiDialog v-model:open="isOpen">
-        <UiDialogContent class="w-full max-w-[calc(100vw-5%)] pt-0 pr-10">
+        <UiDialogContent class="w-full max-w-7xl pt-0 pr-10">
             <OrderTracking :order="order" class="border-none pt-4" />
         </UiDialogContent>
     </UiDialog>
