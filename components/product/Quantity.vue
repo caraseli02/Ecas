@@ -100,7 +100,7 @@
                     v-if="minPriceConfiguration"
                     v-model="quantity"
                     size="lg"
-                    :object="{ id: product._id, min: minPriceConfiguration.quantity , action : 'update'} as ProductActionObject"
+                    :object="{ id: product._id, min: minPriceConfiguration.quantity , action : 'add'} as ProductActionObject"
                 />
             </div>
             <button

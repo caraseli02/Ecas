@@ -1,5 +1,9 @@
 <template>
-    <div class="pt-[30px] lg:pt-10">
+    <div v-if="isLoadingCheckout">
+        <UiSkeleton class="h-full w-full absolute inset-0 z-50" />
+        <LoaderIcon class="absolute top-[50%] left-[50%] z-50 animate-spin" />
+    </div>
+    <div v-else class="pt-[30px] lg:pt-10">
         <div class="grid grid-cols-1">
             <div class="container px-4">
                 <OrderSummaryHeader />
@@ -42,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import { LoaderIcon } from 'lucide-vue-next';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 
 // Types and Interfaces
@@ -165,9 +170,12 @@ const isCheckoutDisabled = computed(() => {
     return !(hasShippingAddress && hasBillingAddress && hasShippingPreference && hasPaymentMethod);
 });
 
-watch(checkout, (newVal) => {
+const isLoadingCheckout = ref(false);
+watch(checkout,async (newVal) => {
     if (newVal && stopButtonTrigger.value) {
-        makeCheckout(
+        try {
+            isLoadingCheckout.value = true;
+        await makeCheckout(
             orderType.value,
             cartId.value,
             order.value.deliveryMethod,
@@ -177,6 +185,11 @@ watch(checkout, (newVal) => {
             note.value
         );
         stopButtonTrigger.value = false;
+        } catch (error) {
+            console.log(error);
+            isLoadingCheckout.value = false;
+        }
+        isLoadingCheckout.value = false;
     }
 });
 

@@ -46,7 +46,7 @@ const props = defineProps<{
 const isAdmin = computed(() => authStore.userDetails?.role === 1);
 
 const orderLink = computed(() => {
-  return isAdmin.value ? `${route.path}/${props.orderId}` : `/order-summary/${props.orderId}`
+  return isAdmin.value ? `/dashboard/orders/${props.orderId}` : `/order-summary/${props.orderId}`
 })
 
 
