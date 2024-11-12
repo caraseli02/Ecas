@@ -279,7 +279,7 @@ const contactDetails = useState<SignupContactDetailsType>('signup-contact-detail
 });
 
 const handleContactDetailsContinue = () => {
-    let inputsToCheck = [contactDetails.value.phone, contactDetails.value.mobile];
+    let inputsToCheck = [contactDetails.value.phone];
 
     if (selectedType.value === 'personal') {
         inputsToCheck.push(contactDetails.value.email, contactDetails.value.confirmEmail);

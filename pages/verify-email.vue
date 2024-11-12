@@ -27,9 +27,9 @@ const verifyEmail = async () => {
         return false;
     }
 
-    const response = (await $api.auth.verifyEmail(route.query.oobCode as string)) as { success: string };
+    const response = (await $api.auth.verifyEmail(route.query.oobCode as string)) as { status: string };
 
-    if (response.success !== 'success') {
+    if (response.status !== 'success') {
         toast({
             description: 'For some reason, your email verification failed. Please try again.',
             title: 'Email verification failed',

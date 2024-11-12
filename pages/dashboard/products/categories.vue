@@ -2,6 +2,8 @@
 definePageMeta({
     layout: 'dashboard',
 });
+
+const { isLocked } = useCategories();
 </script>
 
 <template>
@@ -10,6 +12,7 @@ definePageMeta({
         <div class="flex flex-col w-full relative py-6 container bg-white rounded-xl">
             <div class="flex justify-between items-center mb-10">
                 <h2 class="text-xl leading-[1.4] text-neutral-700 font-semibold">Categories</h2>
+                <h4>{{ isLocked ? 'Currently updating. Please wait and refresh again' : '' }}</h4>
                 <CategoriesCreateNew />
             </div>
             <CategoriesFilters />

@@ -12,9 +12,11 @@
                     {{ fullname || 'Loading...' }}
                 </div>
                 <Tooltip theme="black" position="top">
-                    <component :is="IconTypes[3]" class="w-5 h-5 hover:text-blue-500" />
+                    <component :is="getIconBadgeByAccountType()" class="w-5 h-5 hover:text-blue-500" />
                     <template #content>
-                        <span class="text-sm">Business</span>
+                        <span class="text-sm">{{
+                            getUserDetails.accountType ? AccountType[getUserDetails.accountType] : AccountRole[getUserDetails.role]
+                        }}</span>
                     </template>
                 </Tooltip>
             </div>
@@ -65,6 +67,20 @@ onMounted(() => {
         accountTypeIcon.value = PersonalCardIcon;
     }
 });
+
+const getIconBadgeByAccountType = () => {
+    switch (getUserDetails.value?.accountType) {
+        case AccountType.Personal:
+            return PersonalCardIcon;
+        case AccountType.Business:
+            return BuildingIcon;
+        case AccountType.SoleTrader:
+        case AccountType.Agent:
+            return briefcaseIcon;
+        default:
+            return UserIcon;
+    }
+};
 
 const IconTypes = [PersonalCardIcon, UserIcon, BuildingIcon, briefcaseIcon];
 

@@ -319,6 +319,7 @@ export enum OrderStatus {
     Pending = 'Pending',
     Processing = 'Processing',
     Dispatched = 'Dispatched',
+    Packaging = 'Packaging',
 
     // OnDispute = 'OnDispute',
     // Disputed = 'Disputed',
