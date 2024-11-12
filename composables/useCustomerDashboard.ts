@@ -42,6 +42,7 @@ export const useCustomerDashboard = () => {
     };
 
     const activityWidgets = async () => {
+        myActivityData.value = {} as CustomerDashboardActivityData;
         const favorites = await $api.customerDashboard.fetchFavorites();
         const totalOrders = await $api.customerDashboard.fetchTotalOrders();
         const returns = await $api.customerDashboard.fetchReturns();
@@ -76,6 +77,7 @@ export const useCustomerDashboard = () => {
     };
 
     const addresses = async () => {
+        myAddresses.value = []
         const shipping = ref<ShippingAddressInterface>({
             alias: '-',
             name1: '-',
