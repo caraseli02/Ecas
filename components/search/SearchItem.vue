@@ -160,13 +160,21 @@ const authStore = useAuthStore();
 const cartStore = useCartStore();
 
 const { getUserDetails } = storeToRefs(authStore);
-const { getCart } = storeToRefs(cartStore);
+const { getCart, cart } = storeToRefs(cartStore);
 
 const minPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
 const currentPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
 const discountPrice = ref(0);
 const userDiscount = ref(0);
 const productDiscount = ref(0);
+
+watch(
+    [cart],
+    async () => {
+        await fetchCart();
+    },
+    { deep: true }
+);
 
 const getPricesConfiguration = () => {
     const discountsHelper = parseProductPriceConfiguration(props.item, getUserDetails.value, quantity.value);
@@ -179,7 +187,7 @@ const getPricesConfiguration = () => {
 };
 
 const fetchCart = async () => {
-    const data = await getCart.value;
+    const data = cart.value;
 
     getPricesConfiguration();
     initializeQuantities(props.item, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);

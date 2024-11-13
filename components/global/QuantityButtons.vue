@@ -4,7 +4,7 @@
             :disabled="Number(modelValue) === object.min || modelValue === 1"
             class="flex items-center justify-center bg-gray-100 text-slate-500 px-2.5 transition-colors duration-300 disabled:text-border"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
-            @click="inputHandler(currentQuantity - 1)"
+            @click="inputHandler(modelValue - 1)"
         >
             <MinusIcon class="w-6 h-6 flex-shrink-0" />
         </button>
@@ -25,7 +25,7 @@
             class="flex items-center justify-center bg-gray-100 px-2.5"
             :class="[size === 'sm' ? 'w-8 h-9' : 'w-[42px] h-[42px]']"
             :disabled="object.max && props.type !== OrderType.Back ? Number(modelValue) >= object.max : false"
-            @click="inputHandler(currentQuantity + 1)"
+            @click="inputHandler(modelValue + 1)"
         >
             <PlusIcon class="w-6 h-6 flex-shrink-0 text-slate-500" />
         </button>
@@ -72,7 +72,7 @@ const props = defineProps({
     },
 });
 
-const currentQuantity = ref(props.modelValue);
+// const currentQuantity = ref(props.modelValue);
 const initialQuantity = ref(props.modelValue);
 
 const emits = defineEmits(['update:modelValue']);
@@ -82,7 +82,6 @@ const inputHandler = async (quantity: number) => {
     }
 
     initialQuantity.value = quantity; // Update local state first
-    currentQuantity.value = quantity; // Update the current quantity
 
     if (props.object && props.object.action === ProductAction.Add) {
         const payload = {} as UpdateProductCartRequestInterface;
@@ -111,11 +110,11 @@ const inputHandler = async (quantity: number) => {
             await cartStore.updateAndReturnCart();
 
             // Emit the new value to the parent after the successful update
-            emits('update:modelValue', currentQuantity.value);
+            emits('update:modelValue', quantity);
         }
     } else {
         // Emit the new value to the parent after the successful update
-        emits('update:modelValue', currentQuantity.value);
+        emits('update:modelValue', quantity);
     }
 };
 
