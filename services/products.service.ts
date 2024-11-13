@@ -62,10 +62,11 @@ class ProductService extends HttpFactory {
         page = 1,
         perPage = 10,
         sort = {},
+        additionalfilters = {},
         featuresFilters: ProductParametricDataFeaturesInterface[] = []
     ): Promise<ProductSearchResponse> {
-        const token = this.authStore.getToken();
         let filters = {};
+        console.log(additionalfilters);
 
         const headers = this.authStore.getToken() ? { Authorization: `Bearer ${this.authStore.getToken()}` } : {};
 
@@ -90,6 +91,10 @@ class ProductService extends HttpFactory {
 
         if (category) {
             filters = { ...filters, category };
+        }
+
+        if (additionalfilters) {
+            filters = { ...filters, ...additionalfilters };
         }
 
         return await this.call<ProductSearchResponse>(
