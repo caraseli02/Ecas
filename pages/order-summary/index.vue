@@ -46,6 +46,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+    middleware: 'auth',
+});
+
 import { LoaderIcon } from 'lucide-vue-next';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 

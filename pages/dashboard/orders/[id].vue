@@ -20,6 +20,7 @@ import { toast } from '~/components/ui/toast';
 import { orderType } from '~/components/admin-table/order/options';
 
 definePageMeta({
+    middleware: 'auth',
     layout: 'dashboard',
 });
 

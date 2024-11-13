@@ -4,6 +4,7 @@ import { usePricingStore } from '~/store/pricingStore';
 import { storeToRefs } from 'pinia';
 
 definePageMeta({
+    middleware: 'auth',
     layout: 'dashboard',
 });
 

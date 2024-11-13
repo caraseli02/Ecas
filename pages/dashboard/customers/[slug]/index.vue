@@ -101,6 +101,7 @@ Emitter.on('customer-info', async (object: { name: string }) => {
 });
 
 definePageMeta({
+    middleware: 'auth',
     layout: 'dashboard',
 });
 

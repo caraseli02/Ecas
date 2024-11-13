@@ -30,6 +30,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+    middleware: 'auth',
+});
+
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 import { AlertTriangleIcon } from 'lucide-vue-next';

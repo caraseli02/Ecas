@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+    middleware: 'auth',
+});
+
 import { ArrowLeft, LayoutDashboard, PackageOpenIcon, ShoppingCart, TruckIcon, Undo2Icon } from 'lucide-vue-next';
 
 import {
