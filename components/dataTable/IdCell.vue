@@ -1,8 +1,9 @@
 <template>
   <div class="min-w-[128px] flex justify-between items-center text-neutral-700">
-    <NuxtLink v-if="props.orderId" :to="orderLink">
+    <NuxtLink v-if="props.orderId && !showInvoiceLink" :to="orderLink">
       <UiButton variant="link" class="text-sm hover:text-blue-500">{{ IdCell ?? 'N/A' }}</UiButton>
     </NuxtLink>
+    <UiButton v-else-if="invoiceId" @click="download" variant="link" class="text-sm hover:text-blue-500">{{ IdCell ?? 'N/A' }}</UiButton>
     <NuxtLink v-if="notes" to="#">
       <UiTooltipProvider>
         <UiTooltip>
@@ -33,6 +34,7 @@ d="M4.6665 8.66699H8.6665" stroke="currentColor" stroke-width="1.5" stroke-linec
 
 <script setup lang="ts">
 import { useAuthStore } from '~/store/authStore';
+const { $api } = useNuxtApp();
 
 const authStore = useAuthStore();
 
@@ -41,6 +43,7 @@ const props = defineProps<{
   IdCell: string
   notes?: string
   orderId?: string
+  invoiceId?: string
 }>()
 
 const isAdmin = computed(() => authStore.userDetails?.role === 1);
@@ -49,7 +52,11 @@ const orderLink = computed(() => {
   return isAdmin.value ? `/dashboard/orders/${props.orderId}` : `/order-summary/${props.orderId}`
 })
 
-
+const download = async () => {
+  console.log('Download invoice ID: ', props.invoiceId);
+  
+  // await $api.documents.downloadDocument(props.invoiceId);
+}
 </script>
 
 <style scoped>

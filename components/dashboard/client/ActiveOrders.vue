@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
   <div
-      class="relative justify-between items-stretch shadow-xs bg-white flex w-full lg:w-fit lg:max-w-[476px] xl:min-w-[358px] h-[240px] flex-col p-4 md:p-6 rounded-xl"
+      class="relative justify-between items-stretch shadow-xs bg-white flex w-full md:min-w-[476px] lg:w-fit lg:max-w-[476px] xl:min-w-[358px] h-[240px] flex-col p-4 md:p-6 rounded-xl"
   >
     <template v-if="items.length > 0">
       <div class="items-stretch flex justify-between gap-4">
