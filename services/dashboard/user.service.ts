@@ -96,7 +96,6 @@ class UserDashboardService extends HttpFactory {
     async deleteUser(userID: string) {
         const authStore = useAuthStore();
         const token = authStore.getToken();
-        console.log(userID);
         return await this.call('DELETE', `${this.RESOURCE}/${userID}`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });

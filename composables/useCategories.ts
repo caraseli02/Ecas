@@ -51,7 +51,6 @@ export const useCategories = () => {
         const search = (categories: TaxonomyInterface[], query: string) => {
             return categories.filter((category: TaxonomyInterface) => {
                 if (category.name.toLowerCase().includes(query.toLowerCase())) {
-                    console.log(category.name);
                     return true;
                 }
                 if (category.subcategory && category.subcategory?.length > 0) {
@@ -62,7 +61,6 @@ export const useCategories = () => {
         };
 
         const results = search(categories.value, searchQuery.value);
-        console.log(searchQuery.value, results);
         return results;
     };
 

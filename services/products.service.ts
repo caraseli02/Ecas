@@ -66,7 +66,6 @@ class ProductService extends HttpFactory {
         featuresFilters: ProductParametricDataFeaturesInterface[] = []
     ): Promise<ProductSearchResponse> {
         let filters = {};
-        console.log(additionalfilters);
 
         const headers = this.authStore.getToken() ? { Authorization: `Bearer ${this.authStore.getToken()}` } : {};
 

@@ -45,8 +45,6 @@ export function findParentId(categories: Category[], targetId: string): string |
 }
 
 export function extractIds(data: TaxonomyInterface) {
-    console.log(data);
-
     const ids: string[] = [];
 
     function recurse(item: TaxonomyInterface) {
@@ -91,7 +89,6 @@ export const filterByQuery = (items: TaxonomyInterface[], query: string): Taxono
     const search = (categories: TaxonomyInterface[], query: string) => {
         for (const category of categories) {
             if (category.name.toLowerCase().includes(query.toLowerCase())) {
-                console.log(category.name, query);
                 results.push(category);
             } else {
                 category?.subcategory && search(category.subcategory, query);

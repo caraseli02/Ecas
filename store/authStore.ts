@@ -29,7 +29,6 @@ export const useAuthStore = defineStore({
             this.loggedInUser = user;
         },
         addUserDetail(user: UserInterface) {
-            console.log('setting user details', user);
             this.userDetails = user;
         },
         async addUserCards() {
@@ -68,7 +67,6 @@ export const useAuthStore = defineStore({
             const firebaseAuth = useFirebaseAuth();
             await firebaseAuth.logout();
 
-            console.log('Signing out');
             this.loggedInUser = null;
             this.userDetails = null;
             this.token = { value: '', createdAt: '' };
@@ -77,30 +75,29 @@ export const useAuthStore = defineStore({
         getToken() {
             // Ensure this code only runs on the client side
             if (process.server) return null;
-        
+
             const router = useRouter();
             const route = useRoute();
-        
+
             // Check if the token is loaded from local storage
             if (!this.token || !this.token.createdAt) {
                 // Early return to wait for token initialization from pinia-persisted data
                 return null;
             }
-        
+
             const time = moment().diff(this.token.createdAt, 'minutes');
-        
-            console.log('Time', time);
+
             if (time > 59) {
                 this.signOut();
-        
+
                 if (route.path.includes('dashboard') || route.path.includes('order') || route.path.includes('checkout')) {
                     router.push('/');
                     Emitter.emit('open-account-modal');
                 }
-        
+
                 return;
             }
-        
+
             return this.token?.value as unknown as UserInfoJWT;
         },
     },
