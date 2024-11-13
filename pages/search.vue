@@ -216,7 +216,6 @@ watch(route, (value) => {
 });
 
 Emitter.on('register-filter-option', async (filter: ProductParametricDataFeaturesInterface[]) => {
-    additionalFilters.value = {};
     await getProduct(
         keyword.value,
         1,
@@ -225,7 +224,7 @@ Emitter.on('register-filter-option', async (filter: ProductParametricDataFeature
             sortBy: sortBy.value.name,
             sortOrder: order.value === 0 ? 'desc' : 'asc',
         },
-        {},
+        additionalFilters.value,
         filter
     );
 });

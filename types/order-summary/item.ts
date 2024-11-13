@@ -148,10 +148,18 @@ export enum BackorderOptionEnum {
 }
 
 export interface OrderStatusTracking {
-    status: string;
     dateTime: string;
-    reason?: string;
-    comment?: string;
+    unixDateTime: number;
+    statusTextParts: {
+        ro: {
+            name: string;
+            reason: string;
+        };
+    };
+    comment: {
+        ro: string;
+    };
+    code: number;
 }
 
 export interface OrderShippingDetailsInterface {

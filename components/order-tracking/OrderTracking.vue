@@ -4,18 +4,25 @@ import { cn } from '~/lib/utils';
 import { OrderInterface, OrderStatus, PaymentStatusEnum } from '~/types';
 import { AddressInterface } from '~/types/auth/user-interface';
 
-interface OrderStatus {
-    processing: boolean;
-    packaging: boolean;
-    transit: boolean;
-    fulfilled: boolean;
+// interface OrderStatus {
+//     processing: boolean;
+//     packaging: boolean;
+//     transit: boolean;
+//     fulfilled: boolean;
+// }
+
+enum TrackingStatus {
+    Processing = 'processing',
+    Packaging = 'packaging',
+    Transit = 'transit',
+    Fulfilled = 'fulfilled',
 }
 
 interface Order {
     orderId: string;
     awb: string | null;
     amount: number;
-    status: 'processing' | 'packaging' | 'transit' | 'fulfilled';
+    status: OrderStatus;
     company: {
         name: string;
         initial: string;
@@ -23,7 +30,7 @@ interface Order {
     address: AddressInterface;
     billingStatus: PaymentStatusEnum;
     orderDate: Date;
-    trackingStatus: OrderStatus;
+    trackingStatus: TrackingStatus;
 }
 
 const props = defineProps<{
@@ -44,9 +51,33 @@ const processedOrder = computed(() => {
         billingStatus: props.order.paymentDetails?.status,
         // orderDate: moment(props.order.createdAt).format('DD MMM YYYY, HH:mm'),
         orderDate: props.order.createdAt,
-        trackingStatus: 'processing',
+        trackingStatus: TrackingStatus.Processing,
     };
 });
+
+const translateTrackingStatus = () => {
+    /** Care este codul pentru comanda livrata? */
+    if (props.order.shippingDetails.statusTracking?.history?.find((status) => status.code === 0)) {
+        processedOrder.value.trackingStatus = TrackingStatus.Fulfilled;
+        return;
+    }
+
+    /** 20050 = Ridicata de la expeditor (?) */
+    if (props.order.shippingDetails.statusTracking?.history?.find((status) => status.code === 20050)) {
+        processedOrder.value.trackingStatus = TrackingStatus.Transit;
+        return;
+    }
+
+    if (props.order.status === OrderStatus.Packaging) {
+        processedOrder.value.trackingStatus = TrackingStatus.Packaging;
+        return;
+    }
+
+    if (props.order.status === OrderStatus.Processing) {
+        processedOrder.value.trackingStatus = TrackingStatus.Processing;
+        return;
+    }
+};
 
 const formattedDate = computed(() => {
     const date = new Date(processedOrder.value.orderDate);
@@ -81,6 +112,8 @@ const billingStatusColor = computed(
             [PaymentStatusEnum.Pending]: 'bg-orange-500',
         }[processedOrder.value.billingStatus])
 );
+
+translateTrackingStatus();
 
 const handleMoreOptions = () => {
     // Implement more options menu logic
@@ -192,7 +225,7 @@ const handleMoreOptions = () => {
             </div>
 
             <div class="relative flex justify-between flex-wrap gap-3 items-center min-h-[36px]">
-                <template v-for="(status, index) in ['processing', 'packaging', 'transit', 'fulfilled']" :key="status">
+                <template v-for="(status, index) in TrackingStatus" :key="status">
                     <component
                         :is="statusIcons[status]"
                         class="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 shrink-0 z-10 bg-light-100 p-1"
@@ -208,11 +241,12 @@ const handleMoreOptions = () => {
                     <div
                         class="h-full transition-all duration-300 ease-in-out rounded-full"
                         :class="{
-                            'bg-emerald-500 full': processedOrder.status === 'fulfilled',
-                            'bg-blue-500 w-[85.5%]': processedOrder.status === 'transit',
-                            'bg-blue-500 w-1/2': processedOrder.status === 'packaging',
+                            'bg-emerald-500 full': processedOrder.trackingStatus === TrackingStatus.Fulfilled,
+                            'bg-blue-500 w-[85.5%]': processedOrder.trackingStatus === TrackingStatus.Transit,
+                            'bg-blue-500 w-1/2': processedOrder.trackingStatus === TrackingStatus.Packaging,
                             'bg-purple-500 w-[12.5%]':
-                                processedOrder.status === 'processing' && processedOrder.billingStatus === PaymentStatusEnum.Paid,
+                                processedOrder.trackingStatus === TrackingStatus.Processing &&
+                                processedOrder.billingStatus === PaymentStatusEnum.Paid,
                         }"
                     ></div>
                 </div>
