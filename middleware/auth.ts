@@ -1,11 +1,12 @@
+import { storeToRefs } from 'pinia';
 import { useAuthStore } from '~~/store/authStore';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const authStore = useAuthStore();
-    const user = authStore.loggedInUser;
+    const {loggedInUser} = storeToRefs(authStore)
 
     // redirect the user to the home page
-    if (!user) {
+    if (!loggedInUser.value) {
         return navigateTo({
             path: '/',
         });
