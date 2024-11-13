@@ -95,7 +95,7 @@ export const useAuthStore = defineStore({
                     Emitter.emit('open-account-modal');
                 }
 
-                return;
+                return null;
             }
 
             return this.token?.value as unknown as UserInfoJWT;
