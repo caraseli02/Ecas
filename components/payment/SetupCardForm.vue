@@ -105,7 +105,6 @@ const handleSubmit = async () => {
     if (error?.type === 'card_error' || error?.type === 'validation_error') {
         console.log(error.message);
     }
-    console.log(error);
     isLoading.value = false;
 };
 

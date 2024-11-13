@@ -123,7 +123,6 @@ const emit = defineEmits(['close', 'submit', 'showTrackingDialog']);
 
 // Submit handler
 const onSubmit = handleSubmit(async (values) => {
-    console.log('Form submitted:', values);
     // Emit the form values to the parent component
     emit('submit', values);
 

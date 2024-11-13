@@ -155,7 +155,6 @@ const getPricesConfiguration = () => {
 };
 
 const fetchCart = async () => {
-    console.log('fetching cart');
     const data = (await getCart.value) as CartInterface;
 
     // getPricesConfiguration();
@@ -179,7 +178,6 @@ const buildBulkQuantities = () => {
 };
 
 const addToCart = async (product: ProductInterface) => {
-    console.log(initialRequestedQuantity.value, quantity.value);
     const stock = initialRequestedQuantity.value > 0 ? quantity.value - initialRequestedQuantity.value : quantity.value;
 
     const response = (await addToCartHelper(product, stock)) as any;

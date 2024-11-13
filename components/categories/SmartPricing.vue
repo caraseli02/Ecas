@@ -52,7 +52,6 @@ const handleMarginSelectionChange = (length: number | null) => {
 watch(
     () => smartPricing.value,
     (value) => {
-        console.log('smartPricing', value);
         emit('update:enabled', value);
     },
     { immediate: true }

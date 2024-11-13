@@ -58,7 +58,6 @@ const shortStock = computed(() => {
 });
 
 watch(itemQuantity, () => {
-    console.log('updateQuantity');
     if (props.item.stock || props.item.backorder_stock) {
         emits('updateQuantity');
     }

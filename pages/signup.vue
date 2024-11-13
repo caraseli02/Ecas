@@ -148,7 +148,6 @@ const handleBusinessDetailsContinue = async () => {
     });
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         hasError = true;
         toast({
             variant: 'destructive',
@@ -222,7 +221,6 @@ const handlePersonalDetailsContinue = async () => {
     });
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         hasError = true;
         toast({
             variant: 'destructive',
@@ -535,7 +533,6 @@ const handleSubmit = async () => {
             await logout();
             // TODO: Notification banner
         } catch (error) {
-            console.log(error);
             toast({
                 variant: 'destructive',
                 title: 'Error',

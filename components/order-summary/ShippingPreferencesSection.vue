@@ -126,7 +126,6 @@ export default defineComponent({
             }
         },
         selectDeliveryMethod(option: ShippingOrderPricingOption) {
-            console.log(option);
             this.order.deliveryMethod = option;
         },
     },

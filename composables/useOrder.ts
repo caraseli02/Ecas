@@ -142,7 +142,7 @@ export function useOrder() {
             } else {
                 switch (result.status) {
                     case 'succeeded':
-                        orderId && (await router.push({ path: '/order-summary/' + orderId }));
+                        orderId && (await router.push({ path: '/order-summary/' + orderId, query: { new: 'true' } }));
                         break;
                     case 'canceled':
                         console.log('Order canceled reason:', result.cancellation_reason);
@@ -160,7 +160,7 @@ export function useOrder() {
                         break;
                     default:
                         console.log('Order pending', result.status);
-                        await router.push({ path: '/order-summary/' + orderId });
+                        await router.push({ path: '/order-summary/' + orderId, query: { new: 'true' } });
                         break;
                 }
             }

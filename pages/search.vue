@@ -197,7 +197,6 @@ watch(
 );
 
 watch(additionalFilters, async (filter) => {
-    console.log(filter);
     await getProduct(
         keyword.value,
         atPage.value,

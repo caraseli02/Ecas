@@ -186,7 +186,6 @@ watch(checkout, async (newVal) => {
             );
             stopButtonTrigger.value = false;
         } catch (error) {
-            console.log(error);
             isLoadingCheckout.value = false;
         }
         isLoadingCheckout.value = false;

@@ -139,9 +139,7 @@ const getCustomerCredit = async () => {
         isLoading.value = false;
         error.value = false;
         emptyData.value = response.data === null;
-        console.log(response.data);
         credit.value = customerCreditHelper(response.data);
-        console.log(credit.value);
     }
 };
 await getCustomerCredit();

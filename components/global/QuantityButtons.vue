@@ -78,7 +78,6 @@ const initialQuantity = ref(props.modelValue);
 const emits = defineEmits(['update:modelValue']);
 const inputHandler = async (quantity: number) => {
     if (initialQuantity.value === quantity) {
-        console.log('same value');
         return;
     }
 
@@ -111,14 +110,10 @@ const inputHandler = async (quantity: number) => {
         if (object.status === 'success') {
             await cartStore.updateAndReturnCart();
 
-            console.log('emitting', quantity);
-
             // Emit the new value to the parent after the successful update
             emits('update:modelValue', currentQuantity.value);
         }
     } else {
-        console.log('emitting', quantity);
-
         // Emit the new value to the parent after the successful update
         emits('update:modelValue', currentQuantity.value);
     }

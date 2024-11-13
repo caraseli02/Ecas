@@ -237,7 +237,6 @@ const onSubmit = handleSubmit(async (values) => {
         };
         const response = await $api.settingsClient.updateDetails(payloadPersonal);
         if (response.status === 'success') {
-            console.log('success');
         }
     } else {
         const payloadBusiness = {
@@ -263,7 +262,6 @@ const onSubmit = handleSubmit(async (values) => {
         };
         const response = await $api.settingsClient.updateDetails(payloadBusiness);
         if (response.status === 'success') {
-            console.log('success');
         }
     }
 

@@ -15,9 +15,7 @@ const creditUsagePercentage = computed(() => {
     return (availableCredit.value / balance.value) * 100;
 });
 
-const handlePayNow = () => {
-    console.log('Pay now clicked');
-};
+const handlePayNow = () => {};
 </script>
 
 <template>

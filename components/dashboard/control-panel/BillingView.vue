@@ -159,7 +159,6 @@ const setAsDefault = async (address: any) => {
 
 const handleAddAddress = async (val: any) => {
     addAddressModal.value = false;
-    console.log('Add billing address');
     newAddress.value = {} as BillingAddressInterface;
 
     newAddress.value.alias = val.address.alias.value;
@@ -175,7 +174,6 @@ const handleAddAddress = async (val: any) => {
     const result = await $api.orders.validateAddress({ ...newAddress.value });
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         toast({
             variant: 'destructive',
             title: 'Error',
@@ -208,7 +206,6 @@ await getBillingInformation();
 
 const handleEditAddress = async (object: any) => {
     editAddressModal.value = null;
-    console.log('Edit billing address');
     const addressToBeVerified = {
         alias: object.address.alias.value,
         name1: object.address.name1.value,
@@ -223,7 +220,6 @@ const handleEditAddress = async (object: any) => {
     const result = await $api.orders.validateAddress(addressToBeVerified);
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         toast({
             variant: 'destructive',
             title: 'Error',
