@@ -6,7 +6,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const {loggedInUser} = storeToRefs(authStore)
 
     // redirect the user to the home page
-    if (!loggedInUser.value) {
+    if (process.client && !loggedInUser.value) {
         return navigateTo({
             path: '/',
         });
