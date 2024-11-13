@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PackageOpenIcon, TruckIcon, Undo2Icon, ArrowLeft, LayoutDashboard } from 'lucide-vue-next';
+import { PackageOpenIcon, TruckIcon, Undo2Icon, ArrowLeft, LayoutDashboard, ShoppingCart } from 'lucide-vue-next';
 
 import {
     OrderInterface,
@@ -185,11 +185,16 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="container max-w-[1392px] flex flex-col gap-6 p-4 transition-all duration-300 py-6 lg:px-6 xl:p-0 xl:my-10">
+    <div class="container flex flex-col gap-6 p-4 transition-all duration-300 py-6 lg:px-6">
+    <OrderConfirmThankYou />
     <section class="w-full flex justify-between">
-        <UiButton class="gap-2" variant="secondary">
+        <UiButton v-if="false" class="gap-2" variant="secondary">
             <ArrowLeft class="w-4 h-4 stroke-2" /> 
             <NuxtLink to="/dashboard/client?tab=orders">Back</NuxtLink>
+        </UiButton>
+        <UiButton v-if="true" class="gap-2">
+            <ShoppingCart class="w-4 h-4 stroke-2" /> 
+            <NuxtLink to="/">Continue Shopping</NuxtLink>
         </UiButton>
         <UiButton class="gap-2" variant="secondary">
             <LayoutDashboard class="w-4 h-4 stroke-2" />
