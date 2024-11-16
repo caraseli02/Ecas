@@ -1,5 +1,5 @@
 <template>
-  <UiScrollArea class="flex flex-col h-full min-h-screen overflow-y-auto app-scroll test">
+  <div class="flex flex-col min-h-screen app-scroll">
     <LayoutHeader :is-scrolled="isScrolled"/>
     <main
 class="flex flex-col pt-[96px] flex-1 lg:pt-[180px] xl:pt-[176px]"
@@ -8,7 +8,7 @@ class="flex flex-col pt-[96px] flex-1 lg:pt-[180px] xl:pt-[176px]"
     </main>
     <LayoutFooter/>
     <Toaster />
-  </UiScrollArea>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
 
 <style lang="postcss">
 html, body, div#__nuxt {
-  @apply h-full overflow-hidden
+  @apply h-full
 }
 
 .app-scroll {
