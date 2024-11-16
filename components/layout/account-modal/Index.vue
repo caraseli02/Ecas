@@ -116,10 +116,11 @@ const navItems = ref([
     },
 ]);
 
+const token = useCookie('token');
 const handleSignOut = async () => {
+    token.value = '';
     authStore.signOut();
     await authStore.firebaseSignOut();
-
     setTimeout(() => {
         emit('close');
     }, 200);

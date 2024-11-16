@@ -2,13 +2,16 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '~~/store/authStore';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const authStoreCookie = useCookie('auth-store');
-    console.log(authStoreCookie);
-    
+    const token = useCookie('token');
+    const authStore = useAuthStore();
     // redirect the user to the home page
-    if (!authStoreCookie?.value?.token?.value) {
+    if (!token?.value) {
         return navigateTo({
             path: '/',
         });
     }
+
+    if(import.meta.client && !token?.value) {
+        authStore.signOut();
+    };
 });

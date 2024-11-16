@@ -425,7 +425,7 @@ onMounted(() => {
 Promise.all([fetchNofications(), fetchList()]);
 
 watch(
-    () => authStore.token.value,
+    () => authStore.token?.value,
     async (newVal) => {
         if (newVal) {
             await fetchNofications();
