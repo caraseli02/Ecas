@@ -92,7 +92,5 @@ export const usePricingStore = defineStore({
             return state.pricing as PriceSettingsInterface[];
         },
     },
-    persist: {
-        storage: persistedState.localStorage,
-    },
+    persist: true,
 });

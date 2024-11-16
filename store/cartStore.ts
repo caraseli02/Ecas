@@ -103,7 +103,5 @@ export const useCartStore = defineStore({
         getPreviousCheckoutError: (state): StripeError => state.previousCheckoutError as StripeError,
         itemsDiscount: (state) => state.cart?.products[0]?.discount.value,
     },
-    persist: {
-        storage: persistedState.localStorage,
-    },
+    persist: true,
 });
