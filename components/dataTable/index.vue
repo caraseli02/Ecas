@@ -63,9 +63,10 @@ const table = useVueTable({
 watch(
     () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting],
     (oldVal, newVal) => {
+        console.log(newVal);
         const { pageIndex, pageSize } = table.getState().pagination;
-        if(_isEqual(oldVal, newVal)) return;
-        
+        if (_isEqual(oldVal, newVal)) return;
+
         const rightIndex = pageIndex + 1;
         props.fetchFn(
             rightIndex,
@@ -124,7 +125,7 @@ watchDebounced(
 const loadingSize = computed(async () => {
     // const size = 60 * 10;
     const size = 60 * Number(table.getState().pagination.pageSize);
-    await nextTick()
+    await nextTick();
     return `${size}px`;
 });
 </script>
@@ -169,7 +170,11 @@ const loadingSize = computed(async () => {
                     </div>
                 </UiTableBody>
             </UiTable>
-            <UiSkeleton v-if="refresh || loading" :style="{ height: loadingSize }" class="w-full rounded absolute inset-0 top-[49px] z-10" />
+            <UiSkeleton
+                v-if="refresh || loading"
+                :style="{ height: loadingSize }"
+                class="w-full rounded absolute inset-0 top-[49px] z-10"
+            />
         </div>
         <DataTablePagination :total-items="totalItems" :page-count="props.pageCount" :table="table" />
     </div>

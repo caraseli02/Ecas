@@ -8,6 +8,7 @@ class ControlPanelService extends HttpFactory {
     private MAIN = '/dashboard/control-panel';
     private SETTINGS_RESOURCE = `${this.MAIN}/settings`;
     private TRANSACTION_RESOURCE = '/transaction';
+    private ACTIVITY_LOGS_RESOURCE = '/audit';
 
     private authStore = useAuthStore();
 
@@ -199,6 +200,20 @@ class ControlPanelService extends HttpFactory {
         const token = this.authStore.getToken();
 
         return await this.call<PaginatedTransactionsInterface>('GET', this.TRANSACTION_RESOURCE, null, {
+            params: {
+                page: page,
+                perPage: perPage,
+                ...filters,
+                ...sort,
+            },
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
+
+    async fetchActivityLogs(page: number, perPage: number, filters = {}, sort = {}) {
+        const token = this.authStore.getToken();
+
+        return await this.call<any>('GET', this.ACTIVITY_LOGS_RESOURCE, null, {
             params: {
                 page: page,
                 perPage: perPage,
