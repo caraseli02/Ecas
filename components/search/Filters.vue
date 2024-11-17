@@ -168,7 +168,6 @@ filterData();
 Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
     productFiltersData.value = parseFilters(value.products.filters);
     checkedOptions.value = [];
-
     filterData();
 });
 
