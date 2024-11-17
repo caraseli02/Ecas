@@ -13,7 +13,5 @@ export const useCategoriesStore = defineStore({
         },
     },
     getters: {},
-    persist: {
-        storage: persistedState.localStorage,
-    },
+    persist: true,
 });

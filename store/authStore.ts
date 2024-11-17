@@ -107,6 +107,6 @@ export const useAuthStore = defineStore({
         getGeneralSettings: (state) => state.generalSettings as GeneralSettingsInterface,
     },
     persist: {
-        storage: persistedState.localStorage,
+        storage: piniaPluginPersistedstate.localStorage(),
     },
 });

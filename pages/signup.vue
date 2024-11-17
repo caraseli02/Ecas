@@ -53,7 +53,7 @@ const { toast } = useToast();
 
 const { logout } = useFirebaseAuth();
 
-const firebaseToken = authStore.token.value;
+const firebaseToken = authStore.token?.value;
 const userInfo = authStore.loggedInUser;
 
 const selectedType = useState<SignupAccountType | ''>('signup-account-type', () => '');
