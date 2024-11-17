@@ -99,6 +99,8 @@ const filter = ref(props.filter);
 const options = ref([] as FilterOptions[]);
 
 const onInput = () => {
+    console.log(searchValue.value.trim());
+
     if (searchValue.value.trim() === '') {
         options.value = parseOptions();
     } else {
