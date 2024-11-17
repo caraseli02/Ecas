@@ -41,15 +41,15 @@ export default defineNuxtConfig({
   },
 
   modules: [
-      'nuxt-svgo',
-      'nuxt-swiper',
-      '@pinia/nuxt',
-      'pinia-plugin-persistedstate/nuxt',
-      'nuxt-lodash',
-      'nuxt3-leaflet',
-      'nuxt-viewport',
-      '@vueuse/nuxt',
-      '@formkit/auto-animate/nuxt',
+    'nuxt-svgo',
+    'nuxt-swiper',
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
+    'nuxt-lodash',
+    'nuxt-viewport',
+    '@vueuse/nuxt',
+    '@formkit/auto-animate/nuxt',
+    '@nuxtjs/leaflet',
   ],
 
   shadcn: {

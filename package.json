@@ -10,6 +10,7 @@
         "pretty": "prettier --write ."
     },
     "devDependencies": {
+        "@nuxtjs/leaflet": "^1.2.4",
         "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
         "@types/lodash": "^4.14.191",
         "@types/uuid": "^9.0.0",
@@ -18,7 +19,6 @@
         "nuxt-lodash": "^2.4.1",
         "nuxt-svgo": "^3.7.0",
         "nuxt-viewport": "^2.0.6",
-        "nuxt3-leaflet": "^1.0.12",
         "postcss": "^8.4.21",
         "sass": "^1.62.0",
         "tailwind-scrollbar": "^3.1.0",

@@ -8,11 +8,11 @@ import { paymentStatusOptions, paymentTypeOptions } from '~/components/client-ta
 import { TransactionTableColumnsEnum } from '~/components/client-table/transaction/columns.enum';
 import { AccountRole } from '~/types';
 import DocumentService from '~/services/dashboard/document.service';
-import { useAuthStore } from '~/store/authStore';
-import { storeToRefs } from 'pinia';
+// import { useAuthStore } from '~/store/authStore';
+// import { storeToRefs } from 'pinia';
 
-const authStore = useAuthStore();
-const { getUserDetails } = storeToRefs(authStore);
+// const authStore = useAuthStore();
+// const { getUserDetails } = storeToRefs(authStore);
 
 export const columns: ColumnDef<TransactionTableColumnsEnum>[] = [
     // Update here
@@ -81,7 +81,7 @@ export const columns: ColumnDef<TransactionTableColumnsEnum>[] = [
                 options: [
                     {
                         label: 'Download invoice',
-                        enable: getUserDetails.value.role === AccountRole.Client && row.original?.invoiceId,
+                        // enable: getUserDetails.value.role === AccountRole.Client && row.original?.invoiceId,
                         actionFn: 'downloadDocument',
                         actionParameter: row.original.invoiceId,
                     },
