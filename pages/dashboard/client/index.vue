@@ -64,9 +64,6 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-    middleware: 'auth',
-});
 
 import { useCustomerDashboard } from '@/composables/useCustomerDashboard';
 
