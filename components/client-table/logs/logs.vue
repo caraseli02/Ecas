@@ -21,7 +21,6 @@ const token = authStore.getToken();
 
 const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
     error.value = false;
-    loading.value = true;
     // FIX to use userID
 
     // const data = await $api.userDashboard.fetchCustomersList(page, perPage, filters, sort);
