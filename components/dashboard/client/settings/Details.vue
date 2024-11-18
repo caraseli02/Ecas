@@ -313,7 +313,7 @@ watch(region, (newRegion) => {
                     <UiButton
                         :class="openEdit ? 'text-white' : 'text-slate-500'"
                         :variant="openEdit ? 'default' : 'secondary'"
-                        @click="openEdit = !openEdit"
+                        :disabled="getUserDetails.accountType === AccountType.Agent"
                     >
                         <FilePenLineIcon class="w-5 h-5 stroke-1.5 mr-2" />
                         <span>Edit</span>
@@ -504,7 +504,7 @@ watch(region, (newRegion) => {
 
                 <FormField v-slot="{ componentField }" name="email">
                     <FormItem>
-                        <FormLabel>{{ getUserDetails.accountType !== AccountType.Personal ? 'Company Email' : 'Email' }} </FormLabel>
+                        <FormLabel>{{ getUserDetails.accountType !== AccountType.Personal ? 'Company Email' : 'Email' }}</FormLabel>
                         <FormControl>
                             <Input type="email" placeholder="youremail@gmail.com" v-bind="componentField" :disabled="!openEdit" />
                         </FormControl>
