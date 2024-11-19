@@ -16,42 +16,27 @@ const emit = defineEmits<{
 }>();
 
 const smartPricing = ref(props.enabled);
-const selectedQuantityLength = ref<number | null>(null);
-const selectedMarginLength = ref<number | null>(null);
-const firstSelected = ref<'quantity' | 'margin' | null>(null); // Tracks which was selected first
+const selectedQuantityLength = ref<number | null>(null); // Tracks the length of the selected quantity
 
-// Emit events to parent
+// Emit events to the parent
 const handleEntryPriceUpdate = (value: string) => emit('update:entry-price', value);
 const handleQuantityUpdate = (value: string) => emit('update:quantity', value);
 const handleMarginUpdate = (value: string) => emit('update:margin', value);
 
-// Computed to filter options based on the first selection
-const filterQuantityLength = computed(() => (firstSelected.value === 'margin' ? selectedMarginLength.value : null));
-const filterMarginLength = computed(() => (firstSelected.value === 'quantity' ? selectedQuantityLength.value : null));
+// Computed property for filtering Margin based on Quantity selection
+const filterMarginLength = computed(() => selectedQuantityLength.value);
 
-// Lock the first-selected component and propagate its length
+// Update the `selectedQuantityLength` whenever a selection is made in Quantity
 const handleQuantitySelectionChange = (length: number | null) => {
-    if (!firstSelected.value && length !== null) {
-        firstSelected.value = 'quantity';
-    }
     selectedQuantityLength.value = length;
 };
 
-const handleMarginSelectionChange = (length: number | null) => {
-    if (!firstSelected.value && length !== null) {
-        firstSelected.value = 'margin';
-    }
-    selectedMarginLength.value = length;
-};
-
-// Reset the selection logic when Smart Pricing is toggled off
+// Reset logic when Smart Pricing is toggled off
 watch(
     () => smartPricing.value,
     (value) => {
         if (!value) {
-            firstSelected.value = null;
-            selectedQuantityLength.value = null;
-            selectedMarginLength.value = null;
+            selectedQuantityLength.value = null; // Reset Quantity length filter for Margin
         }
         emit('update:enabled', value);
     },
@@ -69,7 +54,6 @@ watch(
             <CategoriesSelectEntryPrice title="Entry Price" :entry-price="props.entryPrice" @update:entry-price="handleEntryPriceUpdate" />
             <CategoriesSelectQuantity
                 title="Quantity"
-                :filter-length="filterQuantityLength"
                 :quantity="props.quantity"
                 @update:selection-length="handleQuantitySelectionChange"
                 @update:quantity="handleQuantityUpdate"
@@ -78,7 +62,6 @@ watch(
                 title="Margin"
                 :filter-length="filterMarginLength"
                 :margin="props.margin"
-                @update:selection-length="handleMarginSelectionChange"
                 @update:margin="handleMarginUpdate"
             />
         </div>

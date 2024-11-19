@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, defineEmits, defineProps, ref, watchEffect } from 'vue';
-import { CaretSortIcon, CheckIcon } from '@radix-icons/vue'; // ICONS
-import { cn } from '@/lib/utils'; // UTILITY FUNCTION
-import { storeToRefs } from 'pinia'; // PINIA STATE MANAGEMENT
-import { usePricingStore } from '~/store/pricingStore'; // STORE FOR QUANTITY DATA
+import { CaretSortIcon, CheckIcon } from '@radix-icons/vue';
+import { cn } from '@/lib/utils';
+import { storeToRefs } from 'pinia';
+import { usePricingStore } from '~/store/pricingStore';
 
 const emit = defineEmits<{
     (e: 'update:quantity', value: string): void;
@@ -13,40 +13,31 @@ const emit = defineEmits<{
 const props = defineProps<{
     title: string;
     quantity: string;
-    filterLength: number | null;
 }>();
 
 const pricingStore = usePricingStore();
 const { quantity } = storeToRefs(pricingStore);
 
 const open = ref(false);
-const selectedId = ref<string | null>(null); // Track selected item's `_id`
+const selectedId = ref<string | null>(null);
 
-// Filter quantity options based on `filterLength` prop
-const filteredQuantity = computed(() =>
-    props.filterLength !== null ? quantity.value.filter((item) => item.value.length === props.filterLength) : quantity.value
-);
-
-// Display the label for the currently selected quantity
 const selectedLabel = computed(() => {
     const selectedItem = quantity.value.find((item) => item._id === selectedId.value);
-    return selectedItem ? selectedItem.label : `Select ${props.title} Template`;
+    return selectedItem ? selectedItem.label : `Select ${props.title}`;
 });
 
-// Handle the selection of a quantity option
 const handleSelect = (framework) => {
     if (!framework) return;
     selectedId.value = framework._id;
-    emit('update:selection-length', framework.value.length);
+    emit('update:selection-length', framework.value.length); // Emit the length for filtering Margin
     emit('update:quantity', framework._id);
     open.value = false;
 };
 
-// Pre-select the current value if provided in props
 watchEffect(() => {
     if (props.quantity) {
-        const selectedItem = filteredQuantity.value.find((item) => item._id === props.quantity);
-        if (selectedItem) handleSelect(selectedItem);
+        const selectedItem = quantity.value.find((item) => item._id === props.quantity);
+        if (selectedItem) selectedId.value = selectedItem._id;
     }
 });
 </script>
@@ -61,14 +52,14 @@ watchEffect(() => {
                     <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </UiButton>
             </UiPopoverTrigger>
-            <UiPopoverContent :inert="!open" disabled-portal class="w-full p-0">
+            <UiPopoverContent disabled-portal class="w-full p-0">
                 <UiCommand class="w-full">
                     <UiCommandInput class="h-9" placeholder="Search quantity..." />
                     <UiCommandEmpty>No options found.</UiCommandEmpty>
                     <UiCommandList>
                         <UiCommandGroup>
                             <UiCommandItem
-                                v-for="framework in filteredQuantity"
+                                v-for="framework in quantity"
                                 :key="framework._id"
                                 :value="framework.value"
                                 class="flex justify-between items-center w-full"
@@ -76,7 +67,6 @@ watchEffect(() => {
                             >
                                 {{ framework.label }}
                                 <div class="flex items-center gap-1 p-0.5">
-                                    <!-- Use UiBadge to display framework values -->
                                     <div v-for="val in framework.value" :key="val">
                                         <UiBadge class="bg-light-300" variant="secondary">{{ val }}</UiBadge>
                                     </div>
