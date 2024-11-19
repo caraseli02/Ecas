@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
     entryPrice: string;
@@ -8,10 +8,6 @@ const props = defineProps<{
     enabled: boolean;
 }>();
 
-const smartPricing = ref(props.enabled);
-const selectedQuantityLength = ref<number | null>(null); // Holds the selected length in Quantity
-const selectedMarginLength = ref<number | null>(null); // Holds the selected length in Margin
-
 const emit = defineEmits<{
     (e: 'update:entry-price', value: string): void;
     (e: 'update:quantity', value: string): void;
@@ -19,40 +15,44 @@ const emit = defineEmits<{
     (e: 'update:enabled', value: boolean): void;
 }>();
 
-// Emit event to parent
-const handleEntryPriceUpdate = (value: string) => {
-    emit('update:entry-price', value);
-};
-const handleQuantityUpdate = (value: string) => {
-    emit('update:quantity', value);
-};
-const handleMarginUpdate = (value: string) => {
-    emit('update:margin', value);
-};
+const smartPricing = ref(props.enabled);
+const selectedQuantityLength = ref<number | null>(null);
+const selectedMarginLength = ref<number | null>(null);
+const firstSelected = ref<'quantity' | 'margin' | null>(null); // Tracks which was selected first
 
-// Computed to filter Quantity options based on Margin selection
-const filterQuantityLength = computed(() => selectedMarginLength.value ?? null);
+// Emit events to parent
+const handleEntryPriceUpdate = (value: string) => emit('update:entry-price', value);
+const handleQuantityUpdate = (value: string) => emit('update:quantity', value);
+const handleMarginUpdate = (value: string) => emit('update:margin', value);
 
-// Computed to filter Margin options based on Quantity selection
-const filterMarginLength = computed(() => selectedQuantityLength.value ?? null);
+// Computed to filter options based on the first selection
+const filterQuantityLength = computed(() => (firstSelected.value === 'margin' ? selectedMarginLength.value : null));
+const filterMarginLength = computed(() => (firstSelected.value === 'quantity' ? selectedQuantityLength.value : null));
 
-// Update selectedQuantityLength when a selection is made in Quantity
+// Lock the first-selected component and propagate its length
 const handleQuantitySelectionChange = (length: number | null) => {
+    if (!firstSelected.value && length !== null) {
+        firstSelected.value = 'quantity';
+    }
     selectedQuantityLength.value = length;
-    if (length === null) selectedMarginLength.value = null; // Reset if Quantity selection is cleared
-    // emit('update:quantity', selectedQuantityLength.value);
 };
 
-// Update selectedMarginLength when a selection is made in Margin
 const handleMarginSelectionChange = (length: number | null) => {
+    if (!firstSelected.value && length !== null) {
+        firstSelected.value = 'margin';
+    }
     selectedMarginLength.value = length;
-    if (length === null) selectedQuantityLength.value = null; // Reset if Margin selection is cleared
 };
 
+// Reset the selection logic when Smart Pricing is toggled off
 watch(
     () => smartPricing.value,
     (value) => {
-        console.log('smartPricing', value);
+        if (!value) {
+            firstSelected.value = null;
+            selectedQuantityLength.value = null;
+            selectedMarginLength.value = null;
+        }
         emit('update:enabled', value);
     },
     { immediate: true }
@@ -62,13 +62,11 @@ watch(
 <template>
     <section>
         <div class="flex items-center justify-between space-x-2 mb-6">
-            <UiLabel for="airplane-mode">Smart Pricing</UiLabel>
-            <UiSwitch id="airplane-mode" v-model:checked="smartPricing" />
+            <UiLabel for="smart-pricing">Smart Pricing</UiLabel>
+            <UiSwitch id="smart-pricing" v-model:checked="smartPricing" />
         </div>
         <div v-if="smartPricing">
             <CategoriesSelectEntryPrice title="Entry Price" :entry-price="props.entryPrice" @update:entry-price="handleEntryPriceUpdate" />
-
-            <!-- Pass filtering props and update events -->
             <CategoriesSelectQuantity
                 title="Quantity"
                 :filter-length="filterQuantityLength"
