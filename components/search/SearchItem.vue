@@ -190,7 +190,10 @@ const fetchCart = async () => {
     const data = cart.value;
 
     getPricesConfiguration();
-    initializeQuantities(props.item, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
+
+    if (data) {
+        initializeQuantities(props.item, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
+    }
 
     getPricesConfiguration();
 };
