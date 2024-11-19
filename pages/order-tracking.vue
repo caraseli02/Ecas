@@ -1,7 +1,5 @@
 <script setup lang="ts">
-definePageMeta({
-    middleware: 'auth',
-});
+
 // Example orders showing different states and variations
 const orders = [
     {
