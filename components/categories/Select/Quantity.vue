@@ -12,7 +12,7 @@ const emit = defineEmits<{
 // Define custom event
 const pricingStore = usePricingStore();
 const { quantity } = storeToRefs(pricingStore);
-``;
+
 const open = ref(false);
 const selectedId = ref<string | null>(null); // Track selected item's _id
 
@@ -23,7 +23,7 @@ const filteredQuantity = computed(() =>
 
 // Computed property to display the selected label
 const selectedLabel = computed(() => {
-    const selectedItem = quantity.value.find((item) => item._id === selectedId.value);
+    const selectedItem = quantity.value?.find((item) => item._id === selectedId.value);
     return selectedItem ? selectedItem.label : `Select ${props.title} Template`;
 });
 
@@ -44,7 +44,7 @@ const props = defineProps<{
 }>();
 
 watchEffect(() => {
-    if (props.quantity) {
+    if (props.quantity && filteredQuantity.value) {
         handleSelect(filteredQuantity.value.filter((quantity) => quantity._id === props.quantity)[0]);
     }
 });

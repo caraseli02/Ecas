@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
-import { StripeCardInterface, UserInfoJWT } from '~~/types';
-import { UserInterface } from '~/types/auth/user-interface';
 import Emitter from 'tiny-emitter/instance.js';
 import useFirebaseAuth from '~/composables/useFirebaseAuth';
 import moment from 'moment';
-import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 import { useNuxtApp } from '#app';
 import { useRouter } from '#app/composables/router';
+import type { StripeCardInterface, UserInfoJWT } from '~/types';
+import type { UserInterface } from '~/types/auth/user-interface';
+import type { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
 export const useAuthStore = defineStore({
     id: 'auth-store',
