@@ -44,9 +44,7 @@ onMounted(async () => {
         return null;
     }
 
-    console.log('Retrieving payment intent', getOrderClientSecret.value);
     paymentIntent = await stripe.retrievePaymentIntent(getOrderClientSecret.value);
-    console.log(paymentIntent);
     elements = stripe.elements({
         mode: 'payment',
         amount: paymentIntent.paymentIntent?.amount,
@@ -94,21 +92,20 @@ const handleSubmit = async () => {
     const result = await stripe.confirmPayment({
         redirect: 'if_required',
         confirmParams: {
-            return_url: `${window.location.origin}/order-summary/${orderId.value}`,
+            return_url: `${window.location.origin}/order-summary/${orderId.value}?new=true`,
         },
         clientSecret: tempClientSecret,
         elements,
     });
 
     if (result.error) {
-        console.log('error', result.error);
         cartStore.setPreviousCheckoutError(result.error);
         await router.push({ path: `/checkout/fail`, query: { id: orderId.value } });
         isLoading.value = false;
         return;
     }
 
-    await router.push({ path: `/order-summary/${orderId.value}` });
+    await router.push({ path: `/order-summary/${orderId.value}`, query: { new: 'true' } });
     cartStore.emptyOrderClientSecret();
 
     // if (result.paymentIntent.status === 'requires_action' && result.paymentIntent.next_action?.redirect_to_url?.url) {
@@ -119,10 +116,7 @@ const handleSubmit = async () => {
 };
 
 onBeforeRouteLeave(async () => {
-    console.log('Leaving session page');
-
     if (!submitAttempt && orderId.value) {
-        console.log('Cancelling order. Payment not attempted');
         await $api.orders.cancelOrder(orderId.value);
 
         cartStore.emptyPreviousCheckoutError();

@@ -6,7 +6,7 @@ import type { ICreatePayload } from '~/types/dashboard/categories';
 const title = ref('');
 const icon = ref('');
 
-const { createCategory, selectedCategories, categoriesOptions } = useCategories();
+const { createCategory, selectedCategories, categoriesOptions, isLocked } = useCategories();
 
 const isOpen = ref(false);
 const selected = ref<string>('');
@@ -57,7 +57,7 @@ watch(isOpen, () => {
 <template>
     <UiDialog v-model:open="isOpen">
         <UiDialogTrigger as-child>
-            <UiButton :disabled="selectedCategories.length > 1">+ Create New</UiButton>
+            <UiButton :disabled="selectedCategories.length > 1 || isLocked">+ Create New</UiButton>
         </UiDialogTrigger>
         <UiDialogContent class="sm:max-w-[640px]">
             <UiDialogHeader>
@@ -101,7 +101,7 @@ watch(isOpen, () => {
             </div>
             <UiDialogFooter>
                 <UiButton variant="secondary" @click="isOpen = false"> Cancel</UiButton>
-                <UiButton @click="makeCreate()"> Create</UiButton>
+                <UiButton :disabled="isLocked" @click="makeCreate()"> Create</UiButton>
             </UiDialogFooter>
         </UiDialogContent>
     </UiDialog>

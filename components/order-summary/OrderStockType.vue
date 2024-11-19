@@ -221,7 +221,6 @@ watch(orderType, (newOrderType) => {
 
 onMounted(() => {
     props.order.type = orderType.value;
-    console.log(props.order.type, orderType.value);
 });
 
 onBeforeUnmount(() => {

@@ -56,11 +56,11 @@ function setFilterValue(value: string[] | undefined) {
                                 variant="secondary"
                                 class="rounded-sm px-1 font-normal"
                             >
-                            <span
-                                v-if="option.color"
-                                :class="option.color"
-                                class="h-4 w-4 mr-2 rounded-full text-xs flex justify-center items-center"
-                            />
+                                <span
+                                    v-if="option.color"
+                                    :class="option.color"
+                                    class="h-4 w-4 mr-2 rounded-full text-xs flex justify-center items-center"
+                                />
                                 {{ option.label }}
                             </UiBadge>
                         </template>
@@ -84,7 +84,6 @@ function setFilterValue(value: string[] | undefined) {
                             :value="option"
                             @select="
                                 (e) => {
-                                    console.log(e.detail.value);
                                     const isSelected = selectedValues.has(option.value);
                                     if (isSelected) {
                                         selectedValues.delete(option.value);

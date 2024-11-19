@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <span class="text-neutral-700 text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300">
-                            {{ deliveryType.price.total + 'lei' }}</span
+                            {{ deliveryType.price.total + 'Lei' }}</span
                         >
                     </button>
                 </div>
@@ -126,7 +126,6 @@ export default defineComponent({
             }
         },
         selectDeliveryMethod(option: ShippingOrderPricingOption) {
-            console.log(option);
             this.order.deliveryMethod = option;
         },
     },

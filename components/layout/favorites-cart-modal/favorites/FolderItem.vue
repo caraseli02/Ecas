@@ -42,7 +42,7 @@
                     </div>
                     <div class="flex items-center">
                         <span class="mr-1">Total:</span>
-                        <span class="font-semibold">175.413,75 lei</span>
+                        <span class="font-semibold">175.413,75 Lei</span>
                     </div>
                 </div>
             </button>

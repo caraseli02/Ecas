@@ -33,7 +33,6 @@ const deleteItem = async (itemValue: { value: string[]; selected: boolean; label
 
 function deleteAllSelected() {
     const selectedItems = marginList.value.filter((i) => i.selected);
-    console.log(selectedItems);
 
     selectedItems.map(async (margin) => {
         const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Margins, margin._id);

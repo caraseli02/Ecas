@@ -12,7 +12,7 @@ const emit = defineEmits<{
 // Define custom event
 const pricingStore = usePricingStore();
 const { quantity } = storeToRefs(pricingStore);
-``;
+
 const open = ref(false);
 const selectedId = ref<string | null>(null); // Track selected item's _id
 
@@ -23,14 +23,14 @@ const filteredQuantity = computed(() =>
 
 // Computed property to display the selected label
 const selectedLabel = computed(() => {
-    const selectedItem = quantity.value.find((item) => item._id === selectedId.value);
+    const selectedItem = quantity.value?.find((item) => item._id === selectedId.value);
     return selectedItem ? selectedItem.label : `Select ${props.title} Template`;
 });
 
 // Emit selected length to parent when selection changes
 const handleSelect = (framework) => {
     if (!framework) return;
-    
+
     selectedId.value = framework._id;
     emit('update:selection-length', framework.value.length);
     emit('update:quantity', framework._id);
@@ -42,10 +42,9 @@ const props = defineProps<{
     quantity: string;
     filterLength: number | null;
 }>();
-console.log(props.quantity);
+
 watchEffect(() => {
-    console.log(filteredQuantity.value, quantity.value);
-    if (props.quantity) {
+    if (props.quantity && filteredQuantity.value) {
         handleSelect(filteredQuantity.value.filter((quantity) => quantity._id === props.quantity)[0]);
     }
 });

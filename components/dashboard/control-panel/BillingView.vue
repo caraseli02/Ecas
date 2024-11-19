@@ -43,13 +43,13 @@
                     <div class="flex items-center gap-4 ml-auto">
                         <button
                             v-if="!address.default"
-                            class="flex items-center justify-center w-11 h-11 bg-[#F2F2F2] bg-opacity-95 rounded-full text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+                            class="flex items-center justify-center w-11 h-11 bg-light-300 bg-opacity-95 rounded-full text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
                             @click="setAsDefault(address)"
                         >
                             <CheckIcon class="w-5 h-5" />
                         </button>
                         <button
-                            class="flex items-center justify-center w-11 h-11 bg-[#F2F2F2] bg-opacity-95 rounded-full text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+                            class="flex items-center justify-center w-11 h-11 bg-light-300 bg-opacity-95 rounded-full text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
                             @click="
                                 editAddressModal = address;
                                 indexOfEditAddressModal = index;
@@ -59,7 +59,7 @@
                         </button>
                         <button
                             v-if="addresses.length > 1"
-                            class="flex items-center justify-center w-11 h-11 bg-[#F2F2F2] bg-opacity-95 rounded-full text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+                            class="flex items-center justify-center w-11 h-11 bg-light-300 bg-opacity-95 rounded-full text-slate-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
                             @click="handleDeleteAddress(index)"
                         >
                             <TrashIcon class="w-5 h-5" />
@@ -116,7 +116,7 @@ import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import CheckIcon from '@/assets/icons/check-circle.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { useNuxtApp } from '#app';
-import { BillingAddressInterface } from '~/types/auth/user-interface';
+import type { BillingAddressInterface } from '~/types/auth/user-interface';
 import { toast } from '~/components/ui/toast';
 
 const route = useRoute();
@@ -159,7 +159,6 @@ const setAsDefault = async (address: any) => {
 
 const handleAddAddress = async (val: any) => {
     addAddressModal.value = false;
-    console.log('Add billing address');
     newAddress.value = {} as BillingAddressInterface;
 
     newAddress.value.alias = val.address.alias.value;
@@ -175,7 +174,6 @@ const handleAddAddress = async (val: any) => {
     const result = await $api.orders.validateAddress({ ...newAddress.value });
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         toast({
             variant: 'destructive',
             title: 'Error',
@@ -208,7 +206,6 @@ await getBillingInformation();
 
 const handleEditAddress = async (object: any) => {
     editAddressModal.value = null;
-    console.log('Edit billing address');
     const addressToBeVerified = {
         alias: object.address.alias.value,
         name1: object.address.name1.value,
@@ -223,7 +220,6 @@ const handleEditAddress = async (object: any) => {
     const result = await $api.orders.validateAddress(addressToBeVerified);
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         toast({
             variant: 'destructive',
             title: 'Error',

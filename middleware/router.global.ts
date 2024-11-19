@@ -22,7 +22,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     switch (true) {
         case to.path === '/dashboard/client':
-            console.log('Client dashboard');
             if (!permissions.includes(UserPermissionsEnum.ClientDashboardRead)) {
                 return navigateTo('/');
             }

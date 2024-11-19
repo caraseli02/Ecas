@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useNuxtApp } from '#app';
-import { PriceSettingsInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
+import { type PriceSettingsInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 import { smartPricingMargin, smartPricingQuantity, smartPricingRange } from '~/helpers/smart-pricing.helper';
 
 export const usePricingStore = defineStore({
@@ -93,6 +93,6 @@ export const usePricingStore = defineStore({
         },
     },
     persist: {
-        storage: persistedState.localStorage,
+        storage: piniaPluginPersistedstate.localStorage(),
     },
 });

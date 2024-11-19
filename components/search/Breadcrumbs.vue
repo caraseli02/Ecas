@@ -60,7 +60,6 @@ async function loadCategoryLabels() {
         const path = findCategory(category.value.toString(), categories.value)?.path;
         if (path) {
             categoryLabels.value = mapPathArrayOfNames(path.toString(), map.value);
-            console.log(categoryLabels.value);
         }
     }
 }

@@ -88,8 +88,8 @@ const deactivateAccountAsAdmin = async (id: string) => {
     emits('close');
     emits('changeLockStatus');
     const response = await $api.userDashboard.deactivateUser(id);
+
     if (response.status !== 'success') {
-        console.log(response.status);
         return;
     }
 };
@@ -98,7 +98,6 @@ const activateAccountAsAdmin = async (id: string) => {
     emits('changeLockStatus');
     const response = await $api.userDashboard.activateUser(id);
     if (response.status !== 'success') {
-        console.log(response.status);
         return;
     }
 };

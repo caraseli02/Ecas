@@ -36,7 +36,6 @@ class SmartPricingService extends HttpFactory {
             values: quantity.values,
             label: quantity.label,
         };
-        console.log(data);
         return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/price-setting`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });
@@ -49,7 +48,6 @@ class SmartPricingService extends HttpFactory {
             values: margin.values,
             label: margin.label,
         };
-        console.log(data);
         return await this.call<{ status: string; data: { id: string } }>('POST', `${this.MAIN}/price-setting`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });

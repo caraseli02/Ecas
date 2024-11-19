@@ -133,7 +133,7 @@ function cardExpired(card: any) {
 
 const { $api } = useNuxtApp();
 const setCardAsDefault = async (cardInfo: StripeCardInterface) => {
-    cards.value =  cards.value.map((card: StripeCardInterface) => {
+    cards.value = cards.value.map((card: StripeCardInterface) => {
         return {
             ...card,
             default: card.id === cardInfo.id,
@@ -141,8 +141,7 @@ const setCardAsDefault = async (cardInfo: StripeCardInterface) => {
     });
     const response = await $api.settingsClient.updateCardAsDefault(cardInfo.id);
     if (response.status === 'success') {
-        selectPaymentOption({ type: PaymentTypeEnum.Card, info: cardInfo })
-        console.log('Card set as default');
+        selectPaymentOption({ type: PaymentTypeEnum.Card, info: cardInfo });
     }
 };
 </script>

@@ -15,7 +15,6 @@ const emit = defineEmits<{
 }>();
 
 const handleSelect = (ev: CustomEvent) => {
-    console.log(ev.detail.value);
     if (Array.isArray(ev.detail.value.value)) {
         value.value = ev.detail.value.value;
         emit('update:entry-price', ev.detail.value._id);
@@ -33,8 +32,6 @@ const props = defineProps<{
 
 watchEffect(() => {
     if (props.entryPrice) {
-        console.log(props.entryPrice);
-        console.log(range.value);
         const selectedFramework = range.value.find((entry) => entry._id === props.entryPrice);
         if (selectedFramework) {
             value.value = selectedFramework.value;

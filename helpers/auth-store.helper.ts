@@ -8,7 +8,6 @@ const { $api } = useNuxtApp();
 export const updateStoreDetails = async () => {
     const authStore = useAuthStore();
     const { getUserDetails } = storeToRefs(authStore);
-    console.log('updating store details');
     const response = await $api.auth.fetchUserDetails(getUserDetails.value.firebaseId);
 
     if (response.status !== 'success') {

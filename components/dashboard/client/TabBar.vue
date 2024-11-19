@@ -133,32 +133,32 @@ const filterHightlightLeft = ref(0);
 //     }
 // });
 
-const setActiveFilterHighlight = () => {
-    const activeFilter = activeOrderFilter.value;
-    const index = computedOrderFilters.value.findIndex((filter) => filter.value === activeFilter?.value);
+// const setActiveFilterHighlight = () => {
+//     const activeFilter = activeOrderFilter.value;
+//     const index = computedOrderFilters.value.findIndex((filter) => filter.value === activeFilter?.value);
 
-    nextTick(() => {
-        if (index !== -1) {
-        const filterElement = document.querySelectorAll('.ordersFilter')[index] as HTMLElement;
+//     nextTick(() => {
+//         if (index !== -1) {
+//         const filterElement = document.querySelectorAll('.ordersFilter')[index] as HTMLElement;
 
-        if (filterElement) {
-            filterHighlightWidth.value = filterElement.clientWidth;
-            filterHightlightLeft.value = filterElement.offsetLeft;
-        }
-    }
-    });
+//         if (filterElement) {
+//             filterHighlightWidth.value = filterElement.clientWidth;
+//             filterHightlightLeft.value = filterElement.offsetLeft;
+//         }
+//     }
+//     });
 
-};
+// };
 
-watch(
-    activeOrderFilter,
-    (newVlad) => {
-        console.log(newVlad);
+// watch(
+//     activeOrderFilter,
+//     (newVlad) => {
+//         console.log(newVlad);
         
-        setActiveFilterHighlight();
-    },
-    { deep: true, immediate: true }
-);
+//         setActiveFilterHighlight();
+//     },
+//     { deep: true, immediate: true }
+// );
 
 const updateOrderFiltersWithCounts = async () => {
     const token = useAuthStore().getToken();
@@ -187,9 +187,9 @@ const checkForActiveTab = () => {
     const tab = orderFilters.value.find((filter) => filter.value === tabLabel);
     if (tab) {
         activeOrderFilter.value = tab;
-        setTimeout(() => {
-            setActiveFilterHighlight()
-        }, 2000);
+        // setTimeout(() => {
+        //     setActiveFilterHighlight()
+        // }, 2000);
     }
 }
 
@@ -197,7 +197,7 @@ watch(() => route.query.tab, checkForActiveTab, { immediate: true }  );
 
 onMounted(async () => {
     updateOrderFiltersWithCounts()
-    setActiveFilterHighlight();
+    // setActiveFilterHighlight();
     checkForActiveTab()
 });
 </script>

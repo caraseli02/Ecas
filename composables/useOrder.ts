@@ -28,7 +28,6 @@ export function useOrder() {
     ) => {
         if (!user.value || !user.value?.contactDetails || !deliveryMethod || !paymentDetails) {
             checkout.value = false; // Reset processing state on error
-            console.log('User details not available');
             return;
         }
 
@@ -100,7 +99,6 @@ export function useOrder() {
         });
 
         if (!resultShipping.data.valid || !resultBilling.data.valid) {
-            console.log('Invalid address');
             toast({
                 variant: 'destructive',
                 title: 'Error',
@@ -119,7 +117,6 @@ export function useOrder() {
                 await handleOrderResponse(response, orderId, paymentDetails.type);
             }
         } catch (error) {
-            console.error('Error sending order:', error);
             await router.push({ path: '/checkout/fail' });
         } finally {
             await cartStore.updateAndReturnCart();
@@ -132,8 +129,6 @@ export function useOrder() {
             const result = response.data.result;
 
             if (!result) {
-                console.log('Pay with a new card', response.data);
-
                 if (response.data.clientSecret) {
                     cartStore.setOrderClientSecret(response.data.clientSecret);
                 }
@@ -142,31 +137,26 @@ export function useOrder() {
             } else {
                 switch (result.status) {
                     case 'succeeded':
-                        orderId && (await router.push({ path: '/order-summary/' + orderId }));
+                        orderId && (await router.push({ path: '/order-summary/' + orderId, query: { new: 'true' } }));
                         break;
                     case 'canceled':
-                        console.log('Order canceled reason:', result.cancellation_reason);
                         await router.push({ path: '/checkout/fail' });
                         break;
                     case 'requires_action':
-                        console.log('Order requires action');
                         if (result.next_action?.redirect_to_url?.url) {
                             window.location.href = result.next_action.redirect_to_url.url;
                         }
                         break;
                     case 'requires_payment_method':
-                        console.log('Order requires payment method');
                         await router.push({ path: '/checkout/session' });
                         break;
                     default:
-                        console.log('Order pending', result.status);
-                        await router.push({ path: '/order-summary/' + orderId });
+                        await router.push({ path: '/order-summary/' + orderId, query: { new: 'true' } });
                         break;
                 }
             }
         } else if (paymentType === PaymentTypeEnum.Credit || paymentType === PaymentTypeEnum.Bank) {
-            await router.push({ path: '/order-summary/' + orderId });
-            console.log('Paid with credit or bank transfer');
+            await router.push({ path: '/order-summary/' + orderId, query: { new: true } });
         }
     };
 

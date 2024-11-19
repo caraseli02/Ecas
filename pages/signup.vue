@@ -53,7 +53,7 @@ const { toast } = useToast();
 
 const { logout } = useFirebaseAuth();
 
-const firebaseToken = authStore.token.value;
+const firebaseToken = authStore.token?.value;
 const userInfo = authStore.loggedInUser;
 
 const selectedType = useState<SignupAccountType | ''>('signup-account-type', () => '');
@@ -148,7 +148,6 @@ const handleBusinessDetailsContinue = async () => {
     });
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         hasError = true;
         toast({
             variant: 'destructive',
@@ -222,7 +221,6 @@ const handlePersonalDetailsContinue = async () => {
     });
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         hasError = true;
         toast({
             variant: 'destructive',
@@ -279,7 +277,7 @@ const contactDetails = useState<SignupContactDetailsType>('signup-contact-detail
 });
 
 const handleContactDetailsContinue = () => {
-    let inputsToCheck = [contactDetails.value.phone, contactDetails.value.mobile];
+    let inputsToCheck = [contactDetails.value.phone];
 
     if (selectedType.value === 'personal') {
         inputsToCheck.push(contactDetails.value.email, contactDetails.value.confirmEmail);
@@ -535,7 +533,6 @@ const handleSubmit = async () => {
             await logout();
             // TODO: Notification banner
         } catch (error) {
-            console.log(error);
             toast({
                 variant: 'destructive',
                 title: 'Error',

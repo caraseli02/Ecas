@@ -343,7 +343,6 @@ const updateAccountDetails = async () => {
     });
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         toast({
             variant: 'destructive',
             title: 'Error',
