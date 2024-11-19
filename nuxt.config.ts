@@ -39,17 +39,19 @@ export default defineNuxtConfig({
             ],
         },
     },
+
     modules: [
         'nuxt-svgo',
         'nuxt-swiper',
         '@pinia/nuxt',
-        '@pinia-plugin-persistedstate/nuxt',
+        'pinia-plugin-persistedstate/nuxt',
         'nuxt-lodash',
-        'nuxt3-leaflet',
         'nuxt-viewport',
         '@vueuse/nuxt',
         '@formkit/auto-animate/nuxt',
+        '@nuxtjs/leaflet',
     ],
+
     shadcn: {
         /**
          * Prefix for all the imported component
@@ -61,6 +63,7 @@ export default defineNuxtConfig({
          */
         componentDir: './components/ui',
     },
+
     viewport: {
         breakpoints: {
             xs: 390,
@@ -71,6 +74,7 @@ export default defineNuxtConfig({
             '2xl': 1536,
         },
     },
+
     svgo: {
         svgo: true,
         defaultImport: 'component',
@@ -78,6 +82,7 @@ export default defineNuxtConfig({
             multipass: true,
         },
     },
+
     css: [
         '~/assets/css/main.css',
         '~/assets/css/resets.css',
@@ -86,12 +91,14 @@ export default defineNuxtConfig({
         'leaflet/dist/leaflet.css',
         'v-calendar/style.css',
     ],
+
     postcss: {
         plugins: {
             tailwindcss: {},
             autoprefixer: {},
         },
     },
+
     runtimeConfig: {
         public: {
             firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
@@ -106,6 +113,7 @@ export default defineNuxtConfig({
             HOST: '0.0.0.0',
         },
     },
+
     lodash: {
         prefix: '_',
         prefixSkip: ['string'],
@@ -117,11 +125,18 @@ export default defineNuxtConfig({
             ['isDate', 'isLodashDate'], // => _isLodashDate
         ],
     },
+
     vite: {
         vue: {
             script: {
                 defineModel: true,
             },
         },
+    },
+    routeRules: {
+        '/dashboard/**': { appMiddleware: ['auth'] },
+        '/checkout/**': { appMiddleware: ['auth'] },
+        '/order-summary/**': { appMiddleware: ['auth'] },
+        '/product/categories': { appMiddleware: ['auth'] },
     },
 });

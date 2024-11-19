@@ -22,12 +22,12 @@
                 <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
                 <div class="flex flex-row justify-between">
                     <span class="text-neutral-700 text-xs font-normal leading-5">$20.00 - $39.99 excl. VAT</span>
-                    <span class="text-neutral-700 text-xs font-medium leading-5">5.49 lei</span>
+                    <span class="text-neutral-700 text-xs font-medium leading-5">5.49 Lei</span>
                 </div>
                 <div class="h-[1px] rounded-lg bg-[#EBEBEB] block"></div>
                 <div class="flex flex-row justify-between">
                     <span class="text-neutral-700 text-xs font-normal leading-5">Up to $20.00 excl. VAT</span>
-                    <span class="text-neutral-700 text-xs font-medium leading-5">7.49 lei</span>
+                    <span class="text-neutral-700 text-xs font-medium leading-5">7.49 Lei</span>
                 </div>
             </div>
         </div>

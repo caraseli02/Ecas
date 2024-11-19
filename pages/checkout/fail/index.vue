@@ -2,16 +2,22 @@
     <div class="container flex items-center flex-col gap-8 my-10 min-h-[50vh]" v-if="getOrderClientSecret">
         <PaymentSessionCardForm v-if="retry" />
         <template v-else>
-            <section class="w-full bg-light-100 border-[1.5px] border-red-500 rounded-lg p-6 flex flex-col justify-center items-center gap-4">
+            <section
+                class="w-full bg-light-100 border-[1.5px] border-red-500 rounded-lg p-6 flex flex-col justify-center items-center gap-4"
+            >
                 <h4 class="text-2xl font-medium">Payment failed</h4>
                 <AlertTriangleIcon class="text-red-500 w-10 h-10 stroke-2" />
                 <p>Reason: {{ getPreviousCheckoutError?.message || 'Something went wrong' }}</p>
             </section>
             <div class="flex gap-4">
-                <UiButton class="w-fit" variant="secondary" @click="
-                    cancelOrder();
-                router.push({ path: `/dashboard/client` });
-                ">
+                <UiButton
+                    class="w-fit"
+                    variant="secondary"
+                    @click="
+                        cancelOrder();
+                        router.push({ path: `/dashboard/client` });
+                    "
+                >
                     <span class="text-sm leading-[1.42857] font-medium"> Cancel order </span>
                 </UiButton>
                 <UiButton @click="retry = true" class="w-fit">
@@ -24,9 +30,12 @@
 </template>
 
 <script setup lang="ts">
+
+
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 import { AlertTriangleIcon } from 'lucide-vue-next';
+
 const { $api } = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
@@ -45,7 +54,6 @@ const cancelOrder = async () => {
     }
 
     await $api.orders.cancelOrder(orderId.value);
-    console.log('Order cancelled');
 
     cartStore.emptyOrderClientSecret();
     cartStore.emptyPreviousCheckoutError();
@@ -54,8 +62,6 @@ const cancelOrder = async () => {
 };
 
 onBeforeRouteLeave(async (to, from, next) => {
-    console.log('Leaving checkout fail page');
-
     await cancelOrder();
     next();
 });

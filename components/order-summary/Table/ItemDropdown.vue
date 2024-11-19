@@ -25,15 +25,15 @@
                         </div>
                         <div v-if="item.discount?.value" class="flex flex-col text-center h-[36px] justify-center">
                             <span v-if="discounts?.productDiscount" class="line-through text-neutral-700 text-sm font-normal leading-5"
-                                >{{ item.initialUnitPrice.toFixed(2) }} lei</span
+                                >{{ item.initialUnitPrice.toFixed(2) }} Lei</span
                             >
                             <span class="text-sm font-normal leading-5" :class="discounts?.productDiscount ? 'text-rose-500' : ''"
-                                >{{ discounts?.currentConfigurationDiscountPrice.toFixed(2) }} lei</span
+                                >{{ discounts?.currentConfigurationDiscountPrice.toFixed(2) }} Lei</span
                             >
                         </div>
                         <div v-else class="flex flex-col text-center h-[36px] justify-center">
                             <span class="text-neutral-700 text-sm font-normal leading-5"
-                                >{{ discounts?.currentConfigurationDiscountPrice.toFixed(2) }} lei</span
+                                >{{ discounts?.currentConfigurationDiscountPrice.toFixed(2) }} Lei</span
                             >
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                                 :type="stockItem ? OrderType.Stock : OrderType.Back"
                                 :update-only-available-stock="true"
                                 :object="{
-                                    action: ProductAction.Update,
+                                    action: ProductAction.Add,
                                     id: item.id,
                                     min: stockItem ? item?.productEntity?.priceConfiguration?.configuration[0].quantity : 1,
                                     max: item.productEntity?.stock
@@ -59,13 +59,13 @@
                     <div class="flex flex-row justify-between items-center xl:flex-col xl:gap-4">
                         <span class="text-neutral-700 text-center text-sm font-normal leading-6 xl:gap-4 px-0 xl:px-4">Tax (VAT 19%)</span>
                         <div class="flex flex-col text-center h-[36px] justify-center">
-                            <span class="text-neutral-700 text-sm font-normal leading-5">{{ Number(taxPrice).toFixed(2) }} lei</span>
+                            <span class="text-neutral-700 text-sm font-normal leading-5">{{ Number(taxPrice).toFixed(2) }} Lei</span>
                         </div>
                     </div>
                     <div class="flex flex-row justify-between items-center xl:flex-col xl:gap-4">
                         <span class="text-neutral-700 text-center text-sm font-normal leading-6 xl:gap-4 px-0 xl:px-4">Subtotal</span>
                         <div class="flex flex-col text-center h-[36px] justify-center">
-                            <span class="text-neutral-700 text-sm font-normal leading-5">{{ subtotal.toFixed(2) }} lei</span>
+                            <span class="text-neutral-700 text-sm font-normal leading-5">{{ subtotal.toFixed(2) }} Lei</span>
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,6 @@ const { getUserDetails } = storeToRefs(authStore);
 watch(
     [quantity, deleteItem],
     () => {
-        console.log('updateQuantity');
         emits('updateQuantity');
     },
     { immediate: true }

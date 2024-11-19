@@ -50,7 +50,9 @@ const generateAWB = async () => {
         return;
     }
 
-    awb.value = result.data.awb;
+    if (result.data) {
+        awb.value = result.data.awb;
+    }
 };
 
 const getStatusByOrder = () => {
@@ -64,6 +66,8 @@ const getOrderTypeValueByOrder = () => {
 const getPaymentStatusValueByOrder = () => {
     return paymentStatuses.value.find((status) => status.value === props.order.paymentDetails?.status) || paymentStatuses.value[0];
 };
+
+const showTrackingDialog = ref(false);
 </script>
 
 <template>
@@ -100,7 +104,7 @@ const getPaymentStatusValueByOrder = () => {
                     </UiButton>
                 </UiPopoverContent>
             </UiPopover>
-            <div v-if="!isAdmin" class="hidden md:flex gap-3 items-center self-stretch my-auto text-sm leading-none">
+            <div v-if="!isAdmin" class="hidden md:flex gap-3 items-center self-stretch text-sm leading-none">
                 <h4 class="self-stretch my-auto text-gray-500">Order Status</h4>
                 <OrderConfirmStatusDisplay :status-color="getStatusByOrder().color" :status-text="getStatusByOrder().value" />
             </div>
@@ -114,6 +118,7 @@ const getPaymentStatusValueByOrder = () => {
                         v-if="!isAdmin"
                         size="xs"
                         class="flex overflow-hidden justify-center items-center self-stretch px-4 py-0 my-auto text-sm font-medium leading-6 text-white bg-sky-500 rounded-md"
+                        @click="showTrackingDialog = true"
                     >
                         <MapPin class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                         <span class="self-stretch py-1 pl-2 my-auto">Track Order</span>
@@ -123,6 +128,7 @@ const getPaymentStatusValueByOrder = () => {
                         :initial-amount-paid="order.total"
                         :initial-currency="order.currency"
                         :order="order"
+                        @showTrackingDialog="showTrackingDialog = true"
                     />
                 </div>
             </section>
@@ -209,7 +215,7 @@ const getPaymentStatusValueByOrder = () => {
                             <dl class="flex flex-col w-full text-xs leading-loose">
                                 <div class="flex gap-10 justify-between items-start w-full">
                                     <dt class="text-gray-500">Amount</dt>
-                                    <dd class="text-zinc-800">{{ order.total }} lei</dd>
+                                    <dd class="text-zinc-800">{{ order.total }} Lei</dd>
                                 </div>
                                 <div class="flex gap-10 justify-between items-start mt-2 w-full">
                                     <dt class="text-gray-500">Date</dt>
@@ -242,6 +248,7 @@ const getPaymentStatusValueByOrder = () => {
             </UiPopover>
         </div>
     </section>
+    <LazyOrderConfirmTrackingDialog v-model="showTrackingDialog" :order="order" />
 </template>
 
 <style scoped></style>

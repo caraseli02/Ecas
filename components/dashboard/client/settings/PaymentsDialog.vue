@@ -25,10 +25,6 @@ const { handleSubmit, values, setErrors } = useForm({
 
 const onSubmit = handleSubmit((values) => {
     showErrorMsg.value = true;
-    console.log({
-        title: 'You submitted the following values:',
-        description: JSON.stringify(values, null, 2),
-    });
 });
 
 const cardFields = ref({
@@ -44,7 +40,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:isOpen']);
 
-const localIsOpen = defineModel<boolean>()
+const localIsOpen = defineModel<boolean>();
 
 watch(
     () => localIsOpen,

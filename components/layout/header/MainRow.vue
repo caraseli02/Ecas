@@ -110,7 +110,7 @@
                                 </span>
                             </div>
                             <div v-if="totalCartPrice" class="flex-col text-white flex-shrink-0 ml-6 max-md:hidden">
-                                <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice + 'lei' }}</div>
+                                <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice + 'Lei' }}</div>
                                 <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
                             </div>
                         </button>
@@ -316,7 +316,7 @@ const fetchList = async () => {
 const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
     isLoading.value = true;
 
-    const { data: products } = (await $api.product.fetchSearchProduct(keyword, category.value, page, perPage)) as SearchData;
+    const { data: products } = (await $api.product.fetchSearchProduct(keyword, category.value, page, perPage)) as unknown as SearchData;
 
     if (!products) {
         return;
@@ -425,7 +425,7 @@ onMounted(() => {
 Promise.all([fetchNofications(), fetchList()]);
 
 watch(
-    () => authStore.token.value,
+    () => authStore.token?.value,
     async (newVal) => {
         if (newVal) {
             await fetchNofications();

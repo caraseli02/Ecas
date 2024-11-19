@@ -44,7 +44,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
                 v-if="table.getColumn(OrderTableColumnsEnum.TOTAL)"
                 :column="table.getColumn(OrderTableColumnsEnum.TOTAL)"
                 title="Total"
-                prefix="$"
+                prefix="Lei"
             />
             <UiButton
                 v-if="isFiltered"

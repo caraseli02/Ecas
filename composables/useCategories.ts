@@ -8,6 +8,7 @@ const showDeleteAlert = ref(false);
 const categories = ref<TaxonomyInterface[]>([]);
 const taxonomyId = ref('');
 const isLoading = ref(false);
+const isLocked = ref(false);
 
 const searchQuery = ref('');
 const sortBy = ref<'name' | 'averageWeight' | 'productCount'>('name');
@@ -30,12 +31,14 @@ export const useCategories = () => {
         try {
             const response = await $fetch<{
                 status: string;
-                data: { _id: string; data: TaxonomyInterface[] };
+                data: { _id: string; data: TaxonomyInterface[]; locked: boolean };
             }>(`${config.public.BASE_URL_API}/taxonomy`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
+
             categories.value = response.data.data;
             taxonomyId.value = response.data._id;
+            isLocked.value = response.data.locked;
         } catch (error) {
             console.error('Failed to fetch counts from API:', error);
         } finally {
@@ -48,7 +51,6 @@ export const useCategories = () => {
         const search = (categories: TaxonomyInterface[], query: string) => {
             return categories.filter((category: TaxonomyInterface) => {
                 if (category.name.toLowerCase().includes(query.toLowerCase())) {
-                    console.log(category.name);
                     return true;
                 }
                 if (category.subcategory && category.subcategory?.length > 0) {
@@ -59,7 +61,6 @@ export const useCategories = () => {
         };
 
         const results = search(categories.value, searchQuery.value);
-        console.log(searchQuery.value, results);
         return results;
     };
 
@@ -137,6 +138,7 @@ export const useCategories = () => {
         taxonomyId,
         searchQuery,
         sortOrder,
+        isLocked,
         getCategoriesBySearchQuery,
         getCategories,
         createCategory,

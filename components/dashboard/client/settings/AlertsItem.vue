@@ -19,7 +19,7 @@ async function handleChange(title: string, type: string, value: boolean) {
     if (!type || !title || !props.alertKey || !getUserDetails?.value.firebaseId) {
         return;
     }
-    console.log({ key: props.alertKey, type: value }, type, getUserDetails?.value.firebaseId);
+
     await $api.controlPanel.markSettingsAsRead(
         {
             key: props.alertKey,

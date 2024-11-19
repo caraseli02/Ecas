@@ -58,7 +58,6 @@ function checkAll(checked: boolean): void {
 }
 
 function updateSubtotal(): void {
-    console.log('updateSubtotal');
     emits('updateSubtotal', cartStore.cart?.products);
 }
 

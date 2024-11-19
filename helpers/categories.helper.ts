@@ -12,7 +12,6 @@ export const mapLabelsToIds = (array: any, result = {}) => {
         array.forEach((item: any) => {
             // Add the current item to the result object
             result[item.name] = item.id;
-            console.log(item.name);
             // Check if the item has subcategories and recursively process them
             if (item.subcategory && item.subcategory.length > 0) {
                 recursiveFn(item.subcategory, result);

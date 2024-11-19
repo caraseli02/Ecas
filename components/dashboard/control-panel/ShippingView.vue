@@ -140,7 +140,6 @@ const addresses = ref<ShippingAddressInterface[]>([] as ShippingAddressInterface
 const newAddress = ref<ShippingAddressInterface>({} as ShippingAddressInterface);
 
 const setAsDefault = async (address: any) => {
-    console.log(address);
     addresses.value.forEach((item: any) => {
         item.default = false;
     });
@@ -160,7 +159,6 @@ const setAsDefault = async (address: any) => {
 
 const handleAddAddress = async (val: any) => {
     addAddressModal.value = false;
-    console.log('Add shipping address');
     newAddress.value = {} as ShippingAddressInterface;
 
     newAddress.value.alias = val.address.alias.value;
@@ -176,7 +174,6 @@ const handleAddAddress = async (val: any) => {
     const result = await $api.orders.validateAddress({ ...newAddress.value });
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         toast({
             variant: 'destructive',
             title: 'Error',
@@ -209,7 +206,6 @@ await getShippingInformation();
 
 const handleEditAddress = async (object: any) => {
     editAddressModal.value = null;
-    console.log('Edit shipping address');
     const addressToBeVerified = {
         alias: object.address.alias.value,
         name1: object.address.name1.value,
@@ -224,7 +220,6 @@ const handleEditAddress = async (object: any) => {
     const result = await $api.orders.validateAddress(addressToBeVerified);
 
     if (!result.data.valid) {
-        console.log('Invalid address');
         toast({
             variant: 'destructive',
             title: 'Error',
@@ -232,7 +227,6 @@ const handleEditAddress = async (object: any) => {
         });
         return;
     } else {
-        console.log(props.id);
         if (!props.id || props.accountType || typeof props.accountType === 'undefined') {
             return;
         }
@@ -252,13 +246,11 @@ const handleEditAddress = async (object: any) => {
 };
 
 const handleDeleteAddress = async (index: number) => {
-    console.log('Delete shipping address');
     // Handle deleting the address at a specific index
     if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
         return;
     }
 
-    console.log(addresses.value[index]);
     if (!addresses?.value[index] || !addresses.value[index]?._id) {
         return;
     }

@@ -35,7 +35,7 @@ const showSideNav = ref(false);
 
 <style lang="postcss">
 html, body, div#__nuxt {
-  @apply h-full overflow-hidden
+  @apply h-full
 }
 
 .app-scroll {

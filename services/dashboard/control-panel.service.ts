@@ -31,7 +31,6 @@ class ControlPanelService extends HttpFactory {
                 option: type,
             },
         };
-        console.log(data);
         return await this.call<{ status: string; data: string }>('POST', `${this.SETTINGS_RESOURCE}/${id}`, data, {
             headers: { Authorization: `Bearer ${token}` },
         });

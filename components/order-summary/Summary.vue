@@ -6,13 +6,13 @@
         <div class="flex flex-col gap-2 relative">
             <div class="flex flex-row justify-between w-full">
                 <span class="text-slate-500 text-sm font-normal leading-6">Subtotal</span>
-                <span class="text-neutral-700 text-sm font-medium leading-6">{{ cartSubtotal.toFixed(2) }} lei</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">{{ cartSubtotal.toFixed(2) }} Lei</span>
             </div>
             <div class="flex flex-row justify-between w-full">
                 <div class="flex flex-row gap-6">
                     <span class="text-slate-500 text-sm font-normal leading-6">Discount</span>
                 </div>
-                <span class="text-neutral-700 text-sm font-medium leading-6">{{ itemsDiscount?.toFixed(2) }} lei</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">{{ itemsDiscount?.toFixed(2) }} Lei</span>
             </div>
             <div v-if="smallOrder" class="flex flex-row justify-between w-full">
                 <div class="flex flex-col gap-1">
@@ -25,7 +25,7 @@
                     <span class="text-neutral-700 italic text-sm font-normal leading-6">Small order charge</span>
                 </div>
                 <div class="flex flex-col justify-end">
-                    <span class="text-neutral-700 text-sm font-medium leading-6">{{ smallOrder }} lei</span>
+                    <span class="text-neutral-700 text-sm font-medium leading-6">{{ smallOrder }} Lei</span>
                 </div>
             </div>
             <Transition name="fade-bottom">
@@ -59,12 +59,12 @@
                     </button>
                     <span class="text-neutral-700 text-sm font-normal leading-6 ml-6">(VAT 19%)</span>
                 </div>
-                <span class="text-neutral-700 text-sm font-medium leading-6">{{ calculatedVAT }} lei</span>
+                <span class="text-neutral-700 text-sm font-medium leading-6">{{ calculatedVAT }} Lei</span>
             </div>
             <div class="w-full h-[1px] bg-light-500 rounded-lg"></div>
             <div class="flex flex-row justify-between w-full">
                 <span class="text-neutral-700 text-xl font-normal leading-9">Total</span>
-                <span class="text-neutral-700 text-2xl font-semibold leading-9">{{ calculatedTotal }} lei</span>
+                <span class="text-neutral-700 text-2xl font-semibold leading-9">{{ calculatedTotal }} Lei</span>
             </div>
         </div>
     </div>
@@ -116,5 +116,5 @@ const shippingText = computed(() => {
 
     return `${shipping.value.service.courierName} (${shipping.value.service.courierName})`;
 });
-const formattedShippingPrice = computed(() => `${shipping.value?.price.total.toFixed(2)} lei`);
+const formattedShippingPrice = computed(() => `${shipping.value?.price.total.toFixed(2)} Lei`);
 </script>

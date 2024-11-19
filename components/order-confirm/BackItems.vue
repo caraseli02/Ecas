@@ -106,11 +106,11 @@ const payment = computed(() => {
                                 <span class="text-neutral-700" :class="item.discount.value ? 'line-through' : ''">
                                     {{ item.initialUnitPrice.toFixed(2) }}
                                 </span>
-                                <span class="font-semibold text-neutral-700">lei</span>
+                                <span class="font-semibold text-neutral-700">Lei</span>
                             </p>
                             <p v-if="item.discount.value" class="mt-1 text-red-500">
                                 <span class="text-red-500"> {{ item.unitPriceAfterDiscounts.toFixed(2) }}</span>
-                                <span class="font-semibold text-red-500">lei</span>
+                                <span class="font-semibold text-red-500">Lei</span>
                             </p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
@@ -119,13 +119,13 @@ const payment = computed(() => {
                         <div class="flex flex-col p-6 text-sm">
                             <p v-if="item.backorder_stock">
                                 {{ ((item?.backorder_stock * item.unitPriceAfterDiscounts * 0.19) / 100).toFixed(2) }}
-                                <span class="font-semibold">lei</span>
+                                <span class="font-semibold">Lei</span>
                             </p>
                         </div>
                         <div class="flex flex-col p-6 text-sm">
                             <p v-if="item.backorder_stock">
                                 {{ (item.backorder_stock * item.unitPriceAfterDiscounts).toFixed(2) }}
-                                <span class="font-semibold">lei</span>
+                                <span class="font-semibold">Lei</span>
                             </p>
                         </div>
                     </template>
@@ -136,11 +136,11 @@ const payment = computed(() => {
                                 <section class="flex flex-col leading-[143%]">
                                     <p class="text-neutral-800 line-through">
                                         <span class="leading-5">{{ item.initialUnitPrice.toFixed(2) }}</span>
-                                        <span class="leading-5 text-neutral-800">lei</span>
+                                        <span class="leading-5 text-neutral-800">Lei</span>
                                     </p>
                                     <p class="font-medium text-red-500">
                                         <span> {{ item.unitPriceAfterDiscounts.toFixed(2) }}</span>
-                                        <span class="text-red-500">lei</span>
+                                        <span class="text-red-500">Lei</span>
                                     </p>
                                 </section>
                             </article>
@@ -155,7 +155,7 @@ const payment = computed(() => {
                             >
                                 <p>Tax (VAT 19%)</p>
                                 <p v-if="item.backorder_stock">
-                                    {{ ((item?.backorder_stock * item.unitPriceAfterDiscounts * 0.19) / 100).toFixed(2) }} lei
+                                    {{ ((item?.backorder_stock * item.unitPriceAfterDiscounts * 0.19) / 100).toFixed(2) }} Lei
                                 </p>
                             </article>
                             <article
@@ -163,7 +163,7 @@ const payment = computed(() => {
                             >
                                 <p>Subtotal</p>
                                 <p v-if="item.backorder_stock">
-                                    {{ (item.backorder_stock * item.unitPriceAfterDiscounts).toFixed(2) }} lei
+                                    {{ (item.backorder_stock * item.unitPriceAfterDiscounts).toFixed(2) }} Lei
                                 </p>
                             </article>
                         </section>
@@ -179,14 +179,14 @@ const payment = computed(() => {
                     <section class="flex flex-col gap-2">
                         <div class="flex gap-2 justify-between w-full text-sm font-medium leading-6">
                             <div class="text-gray-500">Subtotal</div>
-                            <div class="text-neutral-700">{{ payment.subtotal.toFixed(2) }} lei</div>
+                            <div class="text-neutral-700">{{ payment.subtotal.toFixed(2) }} Lei</div>
                         </div>
                         <div v-if="payment.discountAmount" class="flex gap-2 justify-between w-full text-sm leading-6">
                             <div class="flex gap-5 justify-between whitespace-nowrap">
                                 <div class="font-medium text-gray-500">Discount</div>
                                 <div class="text-neutral-700">{{ payment.discountRate.toFixed(2) }}%</div>
                             </div>
-                            <div class="font-medium text-neutral-700">{{ payment.discountAmount }} lei</div>
+                            <div class="font-medium text-neutral-700">{{ payment.discountAmount }} Lei</div>
                         </div>
                         <div class="flex gap-5 text-sm leading-6">
                             <div class="flex flex-col md:flex-row justify-between md:justify-start w-full gap-2 font-medium text-gray-500">
@@ -197,7 +197,7 @@ const payment = computed(() => {
                                 <div>Small order charge</div>
                             </div>
                             <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-full">
-                                {{ payment.handlingCharge.toFixed(2) }} lei
+                                {{ payment.handlingCharge.toFixed(2) }} Lei
                             </div>
                         </div>
                         <div class="flex gap-5 text-sm leading-6">
@@ -211,7 +211,7 @@ const payment = computed(() => {
                                 <div>{{ shippingMethod?.title }}</div>
                             </div>
                             <div class="flex justify-end text-neutral-700 font-medium min-w-12 w-fit">
-                                {{ payment.shippingCost || 0 }} lei
+                                {{ payment.shippingCost || 0 }} Lei
                             </div>
                         </div>
                         <div class="flex gap-2 justify-between w-full text-sm leading-6">
@@ -222,12 +222,12 @@ const payment = computed(() => {
                                 </div>
                                 <div class="text-neutral-700">({{ payment.taxRate }}%)</div>
                             </div>
-                            <div class="font-medium text-neutral-700">{{ payment.taxAmount.toFixed(2) }} lei</div>
+                            <div class="font-medium text-neutral-700">{{ payment.taxAmount.toFixed(2) }} Lei</div>
                         </div>
                         <UiSeparator class="bg-light-500" />
                         <div class="flex gap-2 justify-between mt-2 w-full text-neutral-700">
                             <div class="text-xl leading-9">{{ type + ' Order Total' }}</div>
-                            <div class="text-2xl font-semibold leading-9">{{ payment.backOrderTotal.toFixed(2) }} lei</div>
+                            <div class="text-2xl font-semibold leading-9">{{ payment.backOrderTotal.toFixed(2) }} Lei</div>
                         </div>
                     </section>
                 </div>

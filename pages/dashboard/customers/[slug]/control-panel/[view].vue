@@ -82,6 +82,7 @@ const fetchInformation = async () => {
 await fetchInformation();
 
 definePageMeta({
+    middleware: 'auth',
     layout: 'dashboard',
 });
 </script>

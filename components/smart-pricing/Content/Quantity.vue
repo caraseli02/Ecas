@@ -35,7 +35,6 @@ const deleteItem = async (itemValue: { value: string[]; selected: boolean; label
 
 function deleteAllSelected() {
     const selectedItems = quantityList.value.filter((i) => i.selected);
-    console.log(selectedItems);
 
     selectedItems.map(async (quantity) => {
         const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Quantity, quantity._id);

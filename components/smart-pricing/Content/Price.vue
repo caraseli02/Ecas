@@ -23,7 +23,6 @@ watch(
 );
 
 const deleteItem = async (itemValue: { value: string[]; selected: boolean; label: string; _id: string }) => {
-    // console.log(itemValue);
     const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Range, itemValue._id);
     if (response.status !== 'success') {
         // Add your logic here to handle the deletion error
@@ -35,7 +34,6 @@ const deleteItem = async (itemValue: { value: string[]; selected: boolean; label
 
 function deleteAllSelected() {
     const selectedItems = entryPriceList.value.filter((i) => i.selected);
-    console.log(selectedItems);
 
     selectedItems.map(async (price) => {
         const response = await $api.smartPricing.deleteSmartPricingEntity(PriceSettingsTypeEnum.Range, price._id);

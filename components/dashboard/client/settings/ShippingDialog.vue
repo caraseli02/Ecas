@@ -70,7 +70,6 @@ const formSchema = toTypedSchema(
             .default(props.address?.postcode || ''),
     })
 );
-console.log(formSchema);
 
 const { handleSubmit, values, setFieldValue, errors } = useForm({
     validationSchema: formSchema,
@@ -147,7 +146,7 @@ watch(country, (newCountry) => {
                     value: e.name,
                 };
             }) || [];
-        region.value = { label: country.value.regions[0].name, value: country.value.regions[0].shortCode };
+        region.value = { label: props.address.city, value: props.address.city };
     } else {
         region.value = undefined;
     }

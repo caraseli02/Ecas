@@ -23,7 +23,12 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
     {
         accessorKey: OrderTableColumnsEnum.SHORT_ID,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Order' }),
-        cell: ({ row }) => h(IdCell, { IdCell: row.getValue(OrderTableColumnsEnum.SHORT_ID), orderId: row.original._id, notes: [] }),
+        cell: ({ row }) =>
+            h(IdCell, {
+                IdCell: row.getValue(OrderTableColumnsEnum.SHORT_ID),
+                orderId: row.original._id,
+                notes: [],
+            }),
     },
     {
         accessorKey: OrderTableColumnsEnum.TYPE,
@@ -60,7 +65,7 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
         accessorKey: OrderTableColumnsEnum.TOTAL,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Total' }),
         cell: ({ row }) =>
-            h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas(row.getValue(OrderTableColumnsEnum.TOTAL), '$')),
+            h('div', { class: 'inline overflow-hidden' }, formatNumberWithCommas(row.getValue(OrderTableColumnsEnum.TOTAL), 'lei')),
     },
     {
         id: 'actions',

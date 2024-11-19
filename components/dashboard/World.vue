@@ -20,6 +20,7 @@
                     minZoom: 1,
                     maxZoom: 5,
                 }"
+                :use-global-leaflet="false"
             >
                 <LControlZoom position="topright" />
                 <LTileLayer url="" :no-wrap="true" />
@@ -31,7 +32,7 @@
                     }"
                 />
                 <LMarker v-if="tooltipCountry" :lat-lng="tooltipCountry.latLng" :draggable="false">
-                    <LIcon :tooltip-anchor="[0, -5]" :icon-size="20" />
+                    <!-- <LIcon :tooltip-anchor="[0, -5]" :icon-size="20" /> -->
                     <LTooltip
                         :options="{
                             direction: 'top',

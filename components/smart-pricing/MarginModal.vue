@@ -16,7 +16,6 @@ watch(
     () => pricingStore.showMarginModal,
     (newValue) => {
         if (newValue) {
-            console.log(newValue, editMarginModal.value);
             if (editMarginModal.value) {
                 pricingStore.type = 'edit';
                 if (editMarginModal.value.value) {
@@ -24,9 +23,7 @@ watch(
                         id: index + 1,
                         value: `${Number(value.replace('%', ''))}`,
                     }));
-                    editMarginModal.value.value.map((value) => {
-                        console.log(value);
-                    });
+                    editMarginModal.value.value.map((value) => {});
                 }
             } else {
                 pricingStore.type = 'add';
@@ -49,7 +46,6 @@ const createNewMarginTemplate = async () => {
     if (marginList.value.find((item) => Number(item) === 0 || Number(item) < 0)) {
         return;
     }
-    console.log(showMarginModal.value, editMarginModal.value, pricingStore.type);
     if (pricingStore.type === 'edit') {
         const editedMarginObject = {
             label: editMarginModal.value.label,
