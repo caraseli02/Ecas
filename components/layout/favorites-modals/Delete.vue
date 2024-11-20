@@ -124,7 +124,6 @@ const deleteItem = async (items: FavoriteItem[] = []) => {
             // Emitter.emit('delete-product-item', {
             //     id: items[0].id,
             // });
-            console.log('removed');
             emits('removed');
             await cartStore.updateAndReturnCart();
         }

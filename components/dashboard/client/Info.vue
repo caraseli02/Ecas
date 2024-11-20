@@ -232,7 +232,7 @@ const customerDetails = ref<DashboardCustomerTableItem>({} as DashboardCustomerT
 const fetchInformation = async () => {
     error.value = false;
     isLoading.value = true;
-    console.log(props.accountInformation);
+
     if (props.accountInformation && props.accountInformation.contactDetails) {
         customerInformation.value = props.accountInformation;
         address.value =

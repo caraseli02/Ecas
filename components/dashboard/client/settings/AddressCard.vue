@@ -20,7 +20,7 @@ interface AddressData {
 const props = defineProps<{
     addressData: AddressData;
 }>();
-console.log(props.addressData);
+
 const emit = defineEmits<{
     (e: 'setDefault', address: AddressData): void;
     (e: 'edit', address: AddressData): void;

@@ -17,6 +17,7 @@
             @per-page="perPage = $event"
             @sort-by-change="sortBy = $event"
             @sort-order-change="order = $event"
+            @show-filter="additionalFilters = $event"
         />
         <ProductBlocks
             :rows-number="2"
@@ -59,6 +60,7 @@ const keyword = ref<string | undefined>(route.query.keyword as string | undefine
 
 const products = ref<SearchData | null>(null);
 const filters = ref<ProductFilters | null>(null);
+const additionalFilters = ref({});
 const atPage = ref(1);
 const perPage = ref(10);
 const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
@@ -79,6 +81,7 @@ onMounted(async () => {
                         sortBy: sortBy.value.name,
                         sortOrder: order.value === 0 ? 'desc' : 'asc',
                     },
+                    additionalFilters.value,
                     newValues[1]
                 );
                 showSimilarOnly.value = false;
@@ -96,6 +99,7 @@ onMounted(async () => {
                 sortBy: sortBy.value.name,
                 sortOrder: order.value === 0 ? 'desc' : 'asc',
             },
+            additionalFilters.value,
             []
         );
     }
@@ -106,37 +110,65 @@ async function getProduct(
     atPage: number,
     perPage: number,
     sort = {},
+    additionalFilters = {},
     filter: ProductParametricDataFeaturesInterface[] = [],
     ignoreCategory = false
 ) {
-    const { data } = await $api.product.fetchSearchProduct(keyword, ignoreCategory ? null : category.value, atPage, perPage, sort, filter);
+    const { data } = await $api.product.fetchSearchProduct(
+        keyword,
+        ignoreCategory ? null : category.value,
+        atPage,
+        perPage,
+        sort,
+        additionalFilters,
+        filter
+    );
 
     products.value = data;
     filters.value = data.filters;
 }
 
 async function changePath() {
-    const { data } = await $api.product.fetchSearchProduct(keyword.value, route.query.category, atPage.value, perPage.value, {
-        sortBy: sortBy.value.name,
-        sortOrder: order.value === 0 ? 'desc' : 'asc',
-    });
+    const { data } = await $api.product.fetchSearchProduct(
+        keyword.value,
+        route.query.category,
+        atPage.value,
+        perPage.value,
+        {
+            sortBy: sortBy.value.name,
+            sortOrder: order.value === 0 ? 'desc' : 'asc',
+        },
+        additionalFilters.value
+    );
 
     products.value = data;
     filters.value = data.filters;
 }
 
 const handleSortOrderChange = async () => {
-    await getProduct(keyword.value, atPage.value, perPage.value, {
-        sortBy: sortBy.value.name,
-        sortOrder: order.value === 0 ? 'desc' : 'asc',
-    });
+    await getProduct(
+        keyword.value,
+        atPage.value,
+        perPage.value,
+        {
+            sortBy: sortBy.value.name,
+            sortOrder: order.value === 0 ? 'desc' : 'asc',
+        },
+        additionalFilters.value
+    );
 };
 
 const handleSortChange = async () => {
-    await getProduct(keyword.value, atPage.value, perPage.value, {
-        sortBy: sortBy.value.name,
-        sortOrder: order.value === 0 ? 'desc' : 'asc',
-    });
+    await getProduct(
+        keyword.value,
+        atPage.value,
+        perPage.value,
+        {
+            sortBy: sortBy.value.name,
+            sortOrder: order.value === 0 ? 'desc' : 'asc',
+        },
+        additionalFilters.value
+    );
 };
 
 watch([sortBy], async ([_sortBy]) => {
@@ -150,17 +182,36 @@ watch([order], async ([_sortOrder]) => {
 watch(
     [atPage, perPage],
     async ([_atPage, _perPage]) => {
-        await getProduct(keyword.value, _atPage, _perPage, {
-            sortBy: sortBy.value.name,
-            sortOrder: order.value === 0 ? 'desc' : 'asc',
-        });
+        await getProduct(
+            keyword.value,
+            _atPage,
+            _perPage,
+            {
+                sortBy: sortBy.value.name,
+                sortOrder: order.value === 0 ? 'desc' : 'asc',
+            },
+            additionalFilters.value
+        );
     },
     { deep: true }
 );
 
+watch(additionalFilters, async (filter) => {
+    await getProduct(
+        keyword.value,
+        atPage.value,
+        perPage.value,
+        {
+            sortBy: sortBy.value.name,
+            sortOrder: order.value === 0 ? 'desc' : 'asc',
+        },
+        filter
+    );
+});
+
 watch(route, (value) => {
     const newKeyword = value.query.keyword as string;
-    getProduct(newKeyword, 1, 10, {}, []);
+    getProduct(newKeyword, 1, 10, {}, additionalFilters.value);
 });
 
 Emitter.on('register-filter-option', async (filter: ProductParametricDataFeaturesInterface[]) => {
@@ -172,6 +223,7 @@ Emitter.on('register-filter-option', async (filter: ProductParametricDataFeature
             sortBy: sortBy.value.name,
             sortOrder: order.value === 0 ? 'desc' : 'asc',
         },
+        additionalFilters.value,
         filter
     );
 });
@@ -200,6 +252,6 @@ Emitter.on('reset-products-filters', async (value: boolean) => {
 
 Emitter.on('product-keyword-change', async (value: { keyword: string; products: SearchData }) => {
     keyword.value = value.keyword;
-    await getProduct(value.keyword, atPage.value, perPage.value, {}, [], true);
+    await getProduct(value.keyword, atPage.value, perPage.value, {}, additionalFilters.value, [], true);
 });
 </script>

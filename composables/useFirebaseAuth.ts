@@ -42,7 +42,6 @@ export default function () {
 
     const getUserToken = async (): Promise<UserInfoJWT> => {
         const { currentUser } = $auth;
-        console.log($auth);
 
         return (await getIdToken(currentUser)) as unknown as UserInfoJWT;
     };

@@ -6,10 +6,13 @@ import {
     UpdateProductCartRequestInterface,
 } from '~/model/cart/request/cart.interface';
 import { CartProductsInterface, CartResponse } from '~/model/cart/response/cart.interface';
+import Emitter from 'tiny-emitter/instance.js';
 
 class CartService extends HttpFactory {
     private RESOURCE = '/cart';
     private authStore = useAuthStore();
+
+    private router = useRouter();
 
     async fetchCartList() {
         const token = this.authStore.getToken();
@@ -27,7 +30,12 @@ class CartService extends HttpFactory {
         const user = this.authStore.getCurrentUser;
         const token = this.authStore.getToken();
 
-        payload.userId = user.user_id;
+        if (!token) {
+            await this.router.push('/');
+            Emitter.emit('open-account-modal');
+        }
+
+        payload.userId = user?.user_id;
 
         return await this.call('POST', `${this.RESOURCE}`, payload, {
             headers: { Authorization: `Bearer ${token}` },
@@ -46,6 +54,11 @@ class CartService extends HttpFactory {
     async updateEntityFromCart(payload: UpdateProductCartRequestInterface) {
         const user = this.authStore.getCurrentUser;
         const token = this.authStore.getToken();
+
+        if (!token) {
+            await this.router.push('/');
+            Emitter.emit('open-account-modal');
+        }
 
         payload.userId = user.user_id;
 

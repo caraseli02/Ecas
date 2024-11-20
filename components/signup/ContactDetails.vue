@@ -29,13 +29,7 @@
                             label="Phone"
                             placeholder="Phone Number"
                         />
-                        <FormInput
-                            v-model="details.mobile.value"
-                            :error="details.mobile.error"
-                            type="tel"
-                            label="Mobile"
-                            placeholder="Mobile Number"
-                        />
+                        <FormInput v-model="details.mobile.value" type="tel" label="Mobile" placeholder="Mobile Number" />
                         <template v-if="selectedType !== 'personal'">
                             <FormInput
                                 v-model="details.companyEmail.value"

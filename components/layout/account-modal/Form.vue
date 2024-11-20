@@ -105,8 +105,7 @@ import Emitter from 'tiny-emitter/instance.js';
 import { useCartStore } from '~/store/cartStore';
 import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 import { usePricingStore } from '~/store/pricingStore';
-import { useMagicKeys } from '@vueuse/core'
-
+import { useMagicKeys } from '@vueuse/core';
 
 const { checkForInputErrors } = useError();
 const { $api } = useNuxtApp();
@@ -141,6 +140,8 @@ const isClientCodeFormat = (value: string) => {
     return regex.test(value);
 };
 
+const cookieToken = useCookie('token', { maxAge: 60 * 60 * 6 });
+
 const handleSignIn = async () => {
     const hasError = checkForInputErrors([email.value, password.value]);
 
@@ -165,6 +166,7 @@ const handleSignIn = async () => {
             isLoading.value = false;
             authStore.addUser(parsedTokenResponse);
             authStore.addToken(response.token);
+            cookieToken.value = response.token;
 
             await fetchUserDetails(parsedTokenResponse, response.token);
         } catch (error) {
@@ -179,12 +181,11 @@ const handleSignIn = async () => {
     }
 };
 
-const { enter } = useMagicKeys()
+const { enter } = useMagicKeys();
 
 watch(enter, (v) => {
-  if (v)
-    handleSignIn()
-})
+    if (v) handleSignIn();
+});
 
 const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
     const detailsResponse = await $api.auth.fetchUserDetails(parsedToken.user_id);
@@ -221,8 +222,10 @@ const loginWithGoogle = async () => {
 
     if (!parsedToken.hasOwnProperty('permissions')) {
         authStore.addFirebaseToken(token);
+        cookieToken.value = token;
         return navigateTo('/signup');
     } else {
+        cookieToken.value = token;
         await fetchUserDetails(parsedToken, token);
     }
 };

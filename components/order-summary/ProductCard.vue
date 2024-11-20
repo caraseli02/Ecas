@@ -45,11 +45,11 @@
                             >RON {{ item.priceRon }} (100+)</span
                         >
                         <div v-if="itemDiscount" class="flex flex-row">
-                            <span class="text-rose-500 text-base font-bold leading-5">{{ item.priceRon }} lei</span>
+                            <span class="text-rose-500 text-base font-bold leading-5">{{ item.priceRon }} Lei</span>
                             <span class="text-rose-500 text-xs font-normal leading-5 self-center pl-2">(100+)</span>
                         </div>
                         <div v-else class="flex flex-row">
-                            <span class="text-neutral-700 text-base font-bold leading-6">{{ item.priceRon }} lei</span>
+                            <span class="text-neutral-700 text-base font-bold leading-6">{{ item.priceRon }} Lei</span>
                             <span class="text-neutral-700 text-xs font-normal leading-5 self-center pl-2">(100+)</span>
                         </div>
                     </div>

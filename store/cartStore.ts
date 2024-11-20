@@ -104,6 +104,6 @@ export const useCartStore = defineStore({
         itemsDiscount: (state) => state.cart?.products[0]?.discount.value,
     },
     persist: {
-        storage: persistedState.localStorage,
-    },
+        storage: piniaPluginPersistedstate.localStorage(),
+      },
 });

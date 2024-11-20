@@ -16,16 +16,36 @@
 
 <script setup lang="ts">
 import { useNuxtApp } from '#app';
+import { toast } from '~/components/ui/toast';
 
 const { $api } = useNuxtApp();
 const route = useRoute();
+const router = useRouter();
 
 const verifyEmail = async () => {
     if (!route.query.oobCode) {
         return false;
     }
 
-    await $api.auth.verifyEmail(route.query.oobCode as string);
+    const response = (await $api.auth.verifyEmail(route.query.oobCode as string)) as { status: string };
+
+    if (response.status !== 'success') {
+        toast({
+            description: 'For some reason, your email verification failed. Please try again.',
+            title: 'Email verification failed',
+            variant: 'destructive',
+        });
+        await router.push('/');
+        return;
+    }
+
+    toast({
+        description: 'Your email has been verified successfully.',
+        title: 'Email verified',
+        variant: 'success',
+    });
+    await router.push('/');
+    return;
 };
 
 useHead({

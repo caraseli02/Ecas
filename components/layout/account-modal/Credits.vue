@@ -37,8 +37,8 @@ const availableCredit = computed(() => getUserDetails.value?.adminSettings?.cust
 const balance = computed(() => getUserDetails.value?.adminSettings?.customerCredit?.limit || 0);
 
 // Format numbers with two decimal places and euro symbol
-const availableCreditFormatted = computed(() => `${availableCredit.value.toFixed(2)} lei`);
-const balanceFormatted = computed(() => `${balance.value.toFixed(2)} lei`);
+const availableCreditFormatted = computed(() => `${availableCredit.value.toFixed(2)} Lei`);
+const balanceFormatted = computed(() => `${balance.value.toFixed(2)} Lei`);
 
 // Calculate the spent percentage
 const spentPercentage = computed(() => {

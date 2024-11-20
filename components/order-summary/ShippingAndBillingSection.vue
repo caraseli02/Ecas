@@ -15,7 +15,10 @@
                 <div class="flex flex-row gap-4">
                     <Tooltip theme="black" position="top">
                         <button>
-                            <EditSmall class="text-[#5E6278] hover:text-[#007FFF] transition duration-150" />
+                            <EditSmall
+                                class="text-[#5E6278] hover:text-[#007FFF] transition duration-150"
+                                @click="$router.push('/dashboard/client?tab=settings')"
+                            />
                         </button>
                         <template #content>
                             <span class="capitalize">Edit</span>
@@ -59,7 +62,10 @@
                 <div class="flex flex-row gap-4">
                     <Tooltip theme="black" position="top">
                         <button>
-                            <EditSmall class="text-[#5E6278] hover:text-[#007FFF] transition duration-150" />
+                            <EditSmall
+                                class="text-[#5E6278] hover:text-[#007FFF] transition duration-150"
+                                @click="$router.push('/dashboard/client?tab=settings')"
+                            />
                         </button>
                         <template #content>
                             <span class="capitalize">Edit</span>
@@ -106,6 +112,7 @@ import SettingCog from '@/assets/icons/setting-cog.svg';
 import CheckCircleSmall from '@/assets/icons/check-circle-small.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 import { OrderInterface } from '~/types';
+import { PropType } from 'vue';
 
 export default defineComponent({
     name: 'ShippingAndBillingSection',
@@ -122,6 +129,13 @@ export default defineComponent({
             type: Object as PropType<OrderInterface>,
             required: true,
         },
+    },
+    setup() {
+        const router = useRouter();
+
+        return {
+            router,
+        };
     },
     computed: {
         billingInfoMissing() {

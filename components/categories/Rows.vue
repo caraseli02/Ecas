@@ -4,7 +4,7 @@ import CardPlaceholderSmall from '@/assets/icons/card-placeholder-small.svg';
 
 import { useCategories } from '@/composables/useCategories';
 
-const { selectCategory, filteredAndSortedData, getCategories, selectedCategories, isLoading } = useCategories();
+const { selectCategory, filteredAndSortedData, getCategories, selectedCategories, isLoading, isLocked } = useCategories();
 
 getCategories();
 </script>
@@ -26,7 +26,11 @@ getCategories();
                 class="flex items-center gap-1 px-3 hover:bg-light-200"
                 :class="{ 'bg-light-200 border-b': open || selectedCategories.includes(category.id) }"
             >
-                <UiCheckbox :checked="selectedCategories.includes(category.id)" @update:checked="selectCategory(category.id)" />
+                <UiCheckbox
+                    :disabled="isLocked"
+                    :checked="selectedCategories.includes(category.id)"
+                    @update:checked="selectCategory(category.id)"
+                />
                 <UiAccordionTrigger
                     class="flex-row-reverse justify-center gap-2.5 py-1 truncate w-10 max-w-[50px] h-7"
                     :class="{ 'opacity-0': category.subcategory?.length === 0 }"
@@ -34,8 +38,12 @@ getCategories();
                 <section class="w-full flex gap-2 items-center py-2">
                     <article class="flex flex-1 gap-2 self-stretch rounded-lg bg-white bg-opacity-0">
                         <figure class="flex justify-center items-center px-2.5 w-10 h-10 rounded-lg bg-light-300">
-                            <div v-if="category.icon && category.icon !== 'N/A' && category.icon.includes('.svg')" class="h-5 w-5 stroke-1" v-html="category.icon" />
-              <CardPlaceholderSmall v-else-if="category.icon === 'N/A'" class="w-5 aspect-square stroke-1" />
+                            <div
+                                v-if="category.icon && category.icon !== 'N/A' && category.icon.includes('.svg')"
+                                class="h-5 w-5 stroke-1"
+                                v-html="category.icon"
+                            />
+                            <CardPlaceholderSmall v-else-if="category.icon === 'N/A'" class="w-5 aspect-square stroke-1" />
                             <CardPlaceholderSmall v-else="category.icon === 'N/A'" class="w-5 aspect-square stroke-1" />
                         </figure>
                         <p

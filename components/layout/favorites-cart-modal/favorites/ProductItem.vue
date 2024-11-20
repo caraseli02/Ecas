@@ -47,7 +47,7 @@
                         <strong>
                             {{
                                 currentConfigurationDiscountPrice
-                                    ? `${currentConfigurationDiscountPrice.toFixed(2)} lei`
+                                    ? `${currentConfigurationDiscountPrice.toFixed(2)} Lei`
                                     : minPriceConfiguration?.price.toFixed(2) || '-'
                             }}
                         </strong>
@@ -88,13 +88,17 @@
                 </div>
             </div>
             <div v-else class="font-Inter font-semibold leading-[1.25]">
-                {{ product ? (currentConfigurationDiscountPrice * (product.quantity || 1)).toFixed(2) : 0 }} lei
+                {{ product ? (currentConfigurationDiscountPrice * (quantity || 1)).toFixed(2) : 0 }} Lei
             </div>
             <QuantityButtons
                 v-if="typeof productItem.quantity === 'number'"
-                v-model="productItem.quantity"
-                :object="{action : ProductAction.Update, id: productItem.id, min : minPriceConfiguration?.quantity} as ProductActionObject"
+                v-model="quantity"
+                :object="{action : ProductAction.Add, id: productItem.id, min : minPriceConfiguration?.quantity} as ProductActionObject"
                 class="mr-10"
+                @update:model-value="
+                    quantity = $event;
+                    getPricesConfiguration();
+                "
             />
         </div>
     </div>
@@ -132,7 +136,6 @@ import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { useNuxtApp } from '#app';
-import Emitter from 'tiny-emitter/instance.js';
 import { useCartStore } from '~/store/cartStore';
 
 const { $api } = useNuxtApp();
@@ -152,7 +155,7 @@ const props = defineProps({
     },
 });
 const productItem = ref<FavoriteItem>(props.product);
-const emits = defineEmits(['select']);
+const emits = defineEmits(['select', 'update-quantity', 'delete-product']);
 
 const deleteItem = ref(false);
 const copyItems = ref(false);
@@ -169,8 +172,10 @@ const currentConfigurationDiscountPrice = ref(0);
 const userDiscount = ref(0);
 const productDiscount = ref(0);
 
+const quantity = ref(productItem.value.quantity || minPriceConfiguration.value?.quantity || 10);
+
 const getPricesConfiguration = () => {
-    const discountsHelper = parseProductPriceConfiguration(props.product?.productEntity, getUserDetails.value, productItem.value.quantity);
+    const discountsHelper = parseProductPriceConfiguration(props.product?.productEntity, getUserDetails.value, quantity.value);
 
     minPriceConfiguration.value = discountsHelper?.minimumOrderQuantityConfiguration;
     currentPriceConfiguration.value = discountsHelper?.priceConfiguration;
@@ -186,13 +191,9 @@ const deleteItemFromCart = async () => {
     const payload = {
         products: [props.product?.id],
     };
+    emits('delete-product', props.product);
 
     await $api.cart.removeEntityFromCart(payload);
-
-    Emitter.emit('delete-product-item', {
-        id: props.product?.id,
-    });
-
     await cartStore.updateAndReturnCart();
 };
 

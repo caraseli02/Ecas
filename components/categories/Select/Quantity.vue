@@ -13,6 +13,7 @@ const emit = defineEmits<{
 const props = defineProps<{
     title: string;
     quantity: string;
+    filterLength: number | null;
 }>();
 
 const pricingStore = usePricingStore();
@@ -22,12 +23,13 @@ const open = ref(false);
 const selectedId = ref<string | null>(null);
 
 const selectedLabel = computed(() => {
-    const selectedItem = quantity.value.find((item) => item._id === selectedId.value);
+    const selectedItem = quantity.value?.find((item) => item._id === selectedId.value);
     return selectedItem ? selectedItem.label : `Select ${props.title}`;
 });
 
 const handleSelect = (framework) => {
     if (!framework) return;
+
     selectedId.value = framework._id;
     emit('update:selection-length', framework.value.length); // Emit the length for filtering Margin
     emit('update:quantity', framework._id);
@@ -35,7 +37,7 @@ const handleSelect = (framework) => {
 };
 
 watchEffect(() => {
-    if (props.quantity) {
+    if (props.quantity && filteredQuantity.value) {
         const selectedItem = quantity.value.find((item) => item._id === props.quantity);
         if (selectedItem) selectedId.value = selectedItem._id;
     }

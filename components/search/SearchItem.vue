@@ -71,16 +71,19 @@
                 <section class="flex gap-2 min-w-fit">
                     <div class="flex flex-col items-start gap-1.5">
                         <span class="text-xs leading-tight font-normal mb-2"> Quantity (pcs) </span>
-                        <span v-for="(quantity, _) in bulkQuantities" class="text-[13px] leading-tight"> {{ quantity[0] }}+ </span>
+                        <span v-for="(quantity, _) in bulkQuantities" :key="quantity" class="text-[13px] leading-tight">
+                            {{ quantity[0] }}+
+                        </span>
                     </div>
                     <div class="flex flex-col items-start gap-1.5">
                         <span class="text-xs leading-tight font-normal mb-2"> Price (Ex VAT)</span>
                         <span
                             v-for="(quantity, _) in bulkQuantities"
+                            :key="quantity[0]"
                             class="text-[13px] leading-tight"
                             :class="[productDiscount ? 'text-red' : '']"
                         >
-                            {{ quantity[1].toFixed(2) }} lei
+                            {{ quantity[1].toFixed(2) }} Lei
                         </span>
                     </div>
                 </section>
@@ -157,13 +160,21 @@ const authStore = useAuthStore();
 const cartStore = useCartStore();
 
 const { getUserDetails } = storeToRefs(authStore);
-const { getCart } = storeToRefs(cartStore);
+const { getCart, cart } = storeToRefs(cartStore);
 
 const minPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
 const currentPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
 const discountPrice = ref(0);
 const userDiscount = ref(0);
 const productDiscount = ref(0);
+
+watch(
+    [cart],
+    async () => {
+        await fetchCart();
+    },
+    { deep: true }
+);
 
 const getPricesConfiguration = () => {
     const discountsHelper = parseProductPriceConfiguration(props.item, getUserDetails.value, quantity.value);
@@ -176,10 +187,13 @@ const getPricesConfiguration = () => {
 };
 
 const fetchCart = async () => {
-    const data = await getCart.value;
+    const data = cart.value;
 
     getPricesConfiguration();
-    initializeQuantities(props.item, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
+
+    if (data) {
+        initializeQuantities(props.item, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
+    }
 
     getPricesConfiguration();
 };

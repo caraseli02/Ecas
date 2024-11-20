@@ -37,7 +37,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                 name:
                     row.original.accountType === AccountTypeEnum.Personal
                         ? `${row.original.personalDetails?.firstName} ${row.original.personalDetails?.lastName}`
-                        : `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'N/A',
+                        : `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` || 'N/A',
                 email: row.original.contactDetails?.email,
                 navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
             }),

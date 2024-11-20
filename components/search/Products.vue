@@ -14,7 +14,7 @@
                             @click="showShowOptions = !showShowOptions"
                         >
                             <div class="flex items-center">
-                                <span class="text-sm mr-2.5">{{ show }}</span>
+                                <span class="text-sm mr-2.5">{{ show.name }}</span>
                                 <div
                                     class="flex items-center justify-center w-[18px] h-[18px] rounded border bg-blue-500 border-blue-500 transition-colors duration-300 mr-[13px]"
                                 >
@@ -37,30 +37,31 @@
                             >
                                 <label
                                     v-for="option in showOptions"
-                                    :key="option"
+                                    :key="option.name"
                                     class="group flex w-full items-center justify-between cursor-pointer px-[9px] py-1.5 transition-colors duration-300 hover:bg-[#F2F2F2]"
                                 >
                                     <input
-                                        v-model="show"
+                                        v-model="show.name"
                                         name="show"
-                                        :value="option"
+                                        :value="option.name"
                                         type="radio"
                                         class="sr-only"
                                         @change="showShowOptions = false"
+                                        @click="option?.key && emits('show-filter', option?.key)"
                                     />
                                     <span class="flex w-full text-left text-sm rounded-[5px]">
-                                        {{ option }}
+                                        {{ option.name }}
                                     </span>
                                     <div
                                         class="flex items-center justify-center flex-shrink-0 w-[18px] h-[18px] rounded mt-px border transition-colors duration-300"
                                         :class="[
-                                            option === show
+                                            option.name === show.name
                                                 ? 'bg-blue-500 border-blue-500 group-hover:bg-white'
                                                 : 'bg-white  border-border group-hover:border-gray-300',
                                         ]"
                                     >
                                         <CheckIcon
-                                            v-if="option === show"
+                                            v-if="option.name === show.name"
                                             class="w-4 text-white transition-colors duration-300 group-hover:text-blue-500"
                                         />
                                     </div>
@@ -309,38 +310,45 @@ import ChevronDownIcon from '@/assets/icons/chevron-down.svg';
 import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
 import Pagination from 'vuejs-paginate-next';
 import { SearchData } from '~/model/products/response/ProductSearchResponse';
+import moment from 'moment';
 
 const props = defineProps<{
     products: SearchData | null;
     keyword: string | '';
 }>();
 
-const emits = defineEmits(['at-page', 'per-page', 'sort-by-change', 'sort-order-change']);
+const emits = defineEmits(['at-page', 'per-page', 'sort-by-change', 'sort-order-change', 'show-filter']);
 
 watch(
     () => props.products,
     () => {
-        console.log('products changed');
         setProductsList();
     },
     { deep: true }
 );
 
-const show = ref('New products only');
+const show = ref({ name: 'All products', key: {} });
 const showShowOptions = ref(false);
-const showOptions = ref(['New products only', 'Available in stock', 'Sales only', 'All products']);
+const showOptions = ref([
+    {
+        name: 'New products only',
+        key: { startDate: moment().subtract(24, 'hours') },
+    },
+    { name: 'Available in stock', key: { stockFrom: 1 } },
+    { name: 'Sales only' },
+    { name: 'All products', key: {} },
+]);
 const showPerPageOptions = ref(false);
 const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
 const showSortByOptions = ref(false);
 
 const sortByOptions = ref([
-    { label: 'Product Code', name: 'manufacturerCode' },
+    { label: 'Product Code', name: 'code' },
     { label: 'Manufacturer', name: 'manufacturer' },
-    { label: 'Manufacturer Code', name: 'manufacturerCode' },
     { label: 'Description', name: 'description' },
-    { label: 'Category', name: 'taxonomy' },
+    { label: 'Category', name: 'category' },
     { label: 'Stock', name: 'stock' },
-    { label: 'Price', name: 'priceRon' },
+    { label: 'Price', name: 'price' },
 ]);
 
 const atPage = ref(1);
@@ -361,17 +369,6 @@ const setProductsList = () => {
     totalItems.value = paginatedProductsData?.items.total_items;
     totalPages.value = paginatedProductsData?.items.page_count;
     paginatedProductsList.value = paginatedProducts;
-    // if (paginatedProducts) {
-    //     paginatedProductsList.value = paginatedProducts.map((item) => ({
-    //         slug: item._id,
-    //         title: item.alias,
-    //         cover: item.details?.ProductImage?.ProductImageSmall,
-    //         manufacturer: item.manufacturer,
-    //         manufacturerCode: item.manufacturerCode,
-    //         stock: item.stock,
-    //         description: item.description,
-    //     }));
-    // }
 };
 
 setProductsList();

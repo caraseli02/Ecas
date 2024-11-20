@@ -18,7 +18,6 @@ type PriceRangeType = {
 const priceRange = ref<PriceRangeType>({ min: null, max: null, label: null });
 // Handle the "Create" button click
 const handleCreate = async () => {
-    console.log(priceRange.value, pricingStore.type);
     if (
         priceRange.value.min === null ||
         priceRange.value.max === null ||

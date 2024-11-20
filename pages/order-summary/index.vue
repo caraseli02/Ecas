@@ -1,5 +1,9 @@
 <template>
-    <div class="pt-[30px] lg:pt-10">
+    <div v-if="isLoadingCheckout">
+        <UiSkeleton class="h-full w-full absolute inset-0 z-50" />
+        <LoaderIcon class="absolute top-[50%] left-[50%] z-50 animate-spin" />
+    </div>
+    <div v-else class="pt-[30px] lg:pt-10">
         <div class="grid grid-cols-1">
             <div class="container px-4">
                 <OrderSummaryHeader />
@@ -42,6 +46,8 @@
 </template>
 
 <script setup lang="ts">
+
+import { LoaderIcon } from 'lucide-vue-next';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 
 // Types and Interfaces
@@ -165,18 +171,25 @@ const isCheckoutDisabled = computed(() => {
     return !(hasShippingAddress && hasBillingAddress && hasShippingPreference && hasPaymentMethod);
 });
 
-watch(checkout, (newVal) => {
+const isLoadingCheckout = ref(false);
+watch(checkout, async (newVal) => {
     if (newVal && stopButtonTrigger.value) {
-        makeCheckout(
-            orderType.value,
-            cartId.value,
-            order.value.deliveryMethod,
-            order.value.backorderOption,
-            order.value.smallOrder,
-            order.value.paymentDetails,
-            note.value
-        );
-        stopButtonTrigger.value = false;
+        try {
+            isLoadingCheckout.value = true;
+            await makeCheckout(
+                orderType.value,
+                cartId.value,
+                order.value.deliveryMethod,
+                order.value.backorderOption,
+                order.value.smallOrder,
+                order.value.paymentDetails,
+                note.value
+            );
+            stopButtonTrigger.value = false;
+        } catch (error) {
+            isLoadingCheckout.value = false;
+        }
+        isLoadingCheckout.value = false;
     }
 });
 
@@ -198,7 +211,6 @@ Emitter.on('delete-product-item', (object: { id: string }) => {
 });
 
 const updateSubtotal = async (items: CartProductsInterface[], order) => {
-    console.log('items', items);
     shippingPreferences.value = await fetchShippingPrices(order);
     await calculateSubtotal(items, order);
 };
@@ -219,11 +231,13 @@ onMounted(async () => {
     await fetchCards(); // Fetch user's payment cards
     await getCustomerCredit(); // Fetch customer credit information
     await fetchList(); // Fetch cart items
+
     shippingPreferences.value = await fetchShippingPrices(order.value); // Fetch shipping prices
-    console.log('shippingPreferences', shippingPreferences.value);
+
     // Initial calculations
     await calculateSubtotal(cartItems.value, order);
     calculateDiscount(cartItems.value, order);
+
     order.value.products = orderItems.value;
     loading.value = false;
 });

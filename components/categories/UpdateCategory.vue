@@ -4,6 +4,7 @@ import { useCategories } from '@/composables/useCategories';
 import type { ICreatePayload, TaxonomyInterface } from '~/types/dashboard/categories';
 import { PencilLine } from 'lucide-vue-next';
 import { type IconName } from '@/types/Icons';
+import { toast } from '~/components/ui/toast';
 
 const props = defineProps<{ category: TaxonomyInterface }>();
 const enableSmartPricing = ref(false);
@@ -36,7 +37,7 @@ onMounted(() => {
     enableCustomProperties.value = avgWeight.value !== null && length.value !== null && width.value !== null && height.value !== null;
 });
 
-const { updateCategory, selectedCategories } = useCategories();
+const { updateCategory, selectedCategories, isLocked } = useCategories();
 
 const isOpen = ref(false);
 
@@ -64,10 +65,24 @@ async function makeUpdate() {
         payload.parentId = selectedCategories.value[0];
     }
     const response = await updateCategory(props.category.id, payload);
-    if (response) {
+
+    if (response === 'success') {
         title.value = '';
         isOpen.value = false;
+
+        toast({
+            title: 'Category updated',
+            description: response.description,
+            variant: 'success',
+        });
+        return;
     }
+
+    toast({
+        title: 'Category update failed',
+        description: 'Something went wrong. Please try again.',
+        variant: 'destructive',
+    });
 }
 
 const updateSmartPricingEnabled = (value: boolean) => {
@@ -82,7 +97,7 @@ const updateCustomPropertiesEnabled = (value: boolean) => {
 <template>
     <UiDialog v-model:open="isOpen">
         <UiDialogTrigger as-child>
-            <UiButton variant="ghost" size="icon" :disabled="selectedCategories.length > 1">
+            <UiButton variant="ghost" size="icon" :disabled="selectedCategories.length > 1 || isLocked">
                 <PencilLine class="w-5 h-5 text-slate-500" />
             </UiButton>
         </UiDialogTrigger>
@@ -128,7 +143,7 @@ const updateCustomPropertiesEnabled = (value: boolean) => {
             </div>
             <UiDialogFooter>
                 <UiButton variant="secondary" @click="isOpen = false"> Cancel</UiButton>
-                <UiButton @click="makeUpdate()"> Update</UiButton>
+                <UiButton :disabled="isLocked" @click="makeUpdate()"> Update</UiButton>
             </UiDialogFooter>
         </UiDialogContent>
     </UiDialog>

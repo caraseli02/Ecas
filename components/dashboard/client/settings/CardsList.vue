@@ -18,7 +18,7 @@
                 @edit-card="handleEditCard"
             />
         </template>
-        <UiSkeleton v-else v-for="i in 3" :key="i" class="w-[432px] h-[92px]" />
+        <UiSkeleton v-for="i in 3" v-else :key="i" class="w-[432px] h-[92px]" />
     </div>
 </template>
 
@@ -52,14 +52,12 @@ const setCardAsDefault = async (cardInfo: StripeCardInterface) => {
     selectedCard.value = cardInfo;
     const response = await $api.settingsClient.updateCardAsDefault(cardInfo.id);
     if (response.status === 'success') {
-        console.log('Card set as default');
     }
 };
 
 const selectedCardToDelete = async (cardInfo: StripeCardInterface) => {
     const response = await $api.settingsClient.deleteCard(cardInfo.id);
     if (response.status === 'success') {
-        console.log('Card deleted');
         cards.value = cards.value.filter((card: StripeCardInterface) => card.id !== cardInfo.id);
     }
 };
@@ -75,8 +73,6 @@ const fetchCards = async () => {
 
     if (response.status === 'success') {
         if (response.data.length) {
-            console.log(response.data);
-
             cards.value = response.data;
             card.value = _.cloneDeep(cards.value.find((card: StripeCardInterface) => card.default));
         } else {

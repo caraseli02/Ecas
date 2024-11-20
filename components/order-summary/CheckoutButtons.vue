@@ -46,12 +46,10 @@ import { useCheckoutStore } from '~/store/checkout';
 import { storeToRefs } from 'pinia';
 
 defineProps<{
-    isCheckoutDisabled: boolean
-}>()
+    isCheckoutDisabled: boolean;
+}>();
 
-const stopButtonTrigger = async () => {
-    console.log('Button clicked');
-};
+const stopButtonTrigger = async () => {};
 
 const checkoutStore = useCheckoutStore();
 const { checkout } = storeToRefs(checkoutStore);

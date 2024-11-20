@@ -4,7 +4,7 @@
             <div class="justify-center items-stretch flex flex-col whitespace-nowrap">
                 <div class="text-zinc-800 text-2xl font-semibold leading-7">
                     {{ Number(availableCredit).toFixed(2) }}
-                    lei
+                    Lei
                 </div>
                 <div class="text-slate-500 text-xs leading-4 mt-1">Available Credit</div>
             </div>
@@ -30,7 +30,7 @@
         <form class="justify-between items-stretch flex w-full gap-5 mt-4">
             <div class="items-stretch flex justify-between gap-2 text-sm whitespace-nowrap">
                 <label for="balance" class="text-slate-500 leading-5 grow">Balance:</label>
-                <div class="text-zinc-800 font-semibold leading-5 grow">{{ Number(balance).toFixed(2) }} lei</div>
+                <div class="text-zinc-800 font-semibold leading-5 grow">{{ Number(balance).toFixed(2) }} Lei</div>
             </div>
             <div class="flex items-center justify-between gap-2 text-slate-500 hover:text-blue-500">
                 <SvgoCard16 />

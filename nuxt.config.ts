@@ -44,12 +44,12 @@ export default defineNuxtConfig({
       'nuxt-svgo',
       'nuxt-swiper',
       '@pinia/nuxt',
-      '@pinia-plugin-persistedstate/nuxt',
+      'pinia-plugin-persistedstate/nuxt',
       'nuxt-lodash',
-      'nuxt3-leaflet',
       'nuxt-viewport',
       '@vueuse/nuxt',
       '@formkit/auto-animate/nuxt',
+      '@nuxtjs/leaflet',
   ],
 
   shadcn: {
@@ -134,5 +134,12 @@ export default defineNuxtConfig({
       },
   },
 
-  compatibilityDate: '2024-11-15',
+  routeRules: {
+      '/dashboard/**': { appMiddleware: ['auth'] },
+      '/checkout/**': { appMiddleware: ['auth'] },
+      '/order-summary/**': { appMiddleware: ['auth'] },
+      '/product/categories': { appMiddleware: ['auth'] },
+  },
+
+  compatibilityDate: '2024-11-20',
 });

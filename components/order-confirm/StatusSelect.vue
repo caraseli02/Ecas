@@ -74,7 +74,6 @@ const confirmChange = async () => {
         status: string;
         description: string;
     };
-    console.log(result);
     if (result.status !== 'success') {
         toast({
             variant: 'destructive',

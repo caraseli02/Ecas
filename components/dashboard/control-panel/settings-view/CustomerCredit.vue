@@ -27,7 +27,7 @@
                 <div class="relative pr-4 after:absolute after:w-px after:top-0 after:right-0 after:h-full after:bg-border">
                     <div class="text-xs leading-[1.5] font-medium text-slate-500 mb-2">Credit Limit</div>
                     <div class="text-sm leading-[1.43] font-semibold">
-                        {{ (creditObject?.limit ? getAmountFormat(creditObject.limit) : '0') + 'lei' }}
+                        {{ (creditObject?.limit ? getAmountFormat(creditObject.limit) : '0') + 'Lei' }}
                     </div>
                 </div>
                 <div class="relative px-4 after:absolute after:w-px after:top-0 after:right-0 after:h-full after:bg-border">
@@ -58,7 +58,7 @@
                                 maximumFractionDigits: 2,
                             }) || '0,00'
                         }}
-                        lei
+                        Lei
                     </div>
                     <div class="text-sm leading-[1.14]">Available Credit</div>
                 </div>
@@ -75,9 +75,9 @@
                 <SkeletonLoader v-if="loading" class="w-full h-12" />
                 <template v-else>
                     <div v-if="creditObject?.limit" class="flex items-center gap-2 mb-4">
-                        <span class="text-xl leading-[1.2] font-semibold">{{ creditObject?.spent?.toLocaleString() + 'lei' || '0' }}</span>
+                        <span class="text-xl leading-[1.2] font-semibold">{{ creditObject?.spent?.toLocaleString() + 'Lei' || '0' }}</span>
                         <span class="text-sm leading-[1.71]"> spent of </span>
-                        <span class="text-sm leading-[1.71] font-medium">{{ creditObject?.limit?.toLocaleString() + 'lei' || '0' }}</span>
+                        <span class="text-sm leading-[1.71] font-medium">{{ creditObject?.limit?.toLocaleString() + 'Lei' || '0' }}</span>
                         <span class="text-sm leading-[1.71]"> limit </span>
                     </div>
                     <ProgressBar :value="creditObject"></ProgressBar>
