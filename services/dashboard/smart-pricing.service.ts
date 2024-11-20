@@ -1,6 +1,7 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 import { PriceSettingsResponseInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
+import { AccountRole } from '~/types';
 
 class SmartPricingService extends HttpFactory {
     private MAIN = '/prices';
@@ -9,6 +10,12 @@ class SmartPricingService extends HttpFactory {
 
     async fetchPriceSettings() {
         const token = this.authStore.getToken();
+        const user = this.authStore.userDetails;
+        
+        if (user && user.role === AccountRole.Client) {
+            return null;
+        }
+
         return await this.call<PriceSettingsResponseInterface>('GET', `${this.MAIN}/price-settings`, null, {
             headers: { Authorization: `Bearer ${token}` },
         });
