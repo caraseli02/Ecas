@@ -108,7 +108,6 @@ watch(
 );
 
 const deleteProduct = (object: { id: string }) => {
-    console.log('object: ', object.id, cart.value?.products);
     items.value = items.value.filter((product) => product.id !== object.id);
     mapCartItems();
 };
