@@ -13,5 +13,7 @@ export const useCategoriesStore = defineStore({
         },
     },
     getters: {},
-    persist: true,
+    persist: {
+        storage: piniaPluginPersistedstate.localStorage(),
+      },
 });
