@@ -25,6 +25,8 @@ export const useCartStore = defineStore({
             this.orderClientSecret = secret;
         },
         setPreviousCheckoutError(error: StripeError) {
+            console.log(error);
+            
             this.previousCheckoutError = error;
         },
         emptyOrderClientSecret() {
