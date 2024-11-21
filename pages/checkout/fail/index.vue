@@ -1,7 +1,6 @@
 <template>
     <div class="container flex items-center flex-col gap-8 my-10 min-h-[50vh]" v-if="getOrderClientSecret">
-        <PaymentSessionCardForm v-if="retry" />
-        <template v-else>
+        <template v-if="cartStore.previousCheckoutError">
             <section
                 class="w-full bg-light-100 border-[1.5px] border-red-500 rounded-lg p-6 flex flex-col justify-center items-center gap-4"
             >
@@ -20,11 +19,12 @@
                 >
                     <span class="text-sm leading-[1.42857] font-medium"> Cancel order </span>
                 </UiButton>
-                <UiButton @click="retry = true" class="w-fit">
+                <UiButton @click="cartStore.previousCheckoutError = null" class="w-fit">
                     <span class="text-sm leading-[1.42857] font-medium"> Try Again </span>
                 </UiButton>
             </div>
         </template>
+        <PaymentSessionCardForm v-else />
     </div>
     <div v-else>No data available</div>
 </template>
