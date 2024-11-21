@@ -30,14 +30,14 @@
 import { useAuthStore } from '~~/store/authStore';
 import {
     AccountType,
-    FirebaseBusinessAccount as SignupBusinessPayload,
-    FirebasePersonalAccount as SignupPersonalPayload,
-    InputObject,
-    SignupAccountType,
-    SignupBusinessDetails as SignupBusinessDetailsType,
-    SignupContactDetails as SignupContactDetailsType,
-    SignupPersonalDetails as SignupPersonalDetailsType,
-    SignupProfileDetails as SignupProfileDetailsType,
+    type FirebaseBusinessAccount as SignupBusinessPayload,
+    type FirebasePersonalAccount as SignupPersonalPayload,
+    type InputObject,
+    type SignupAccountType,
+    type SignupBusinessDetails as SignupBusinessDetailsType,
+    type SignupContactDetails as SignupContactDetailsType,
+    type SignupPersonalDetails as SignupPersonalDetailsType,
+    type SignupProfileDetails as SignupProfileDetailsType,
 } from '~~/types';
 import { useToast } from '@/components/ui/toast/use-toast';
 
