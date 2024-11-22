@@ -337,7 +337,7 @@ watch(region, (newRegion) => {
                     <FormItem>
                         <FormLabel>Company Registration Number</FormLabel>
                         <FormControl>
-                            <Input type="text" placeholder="ABC123456" v-bind="componentField" :disabled="!openEdit" />
+                            <Input type="text" placeholder="ABC123456" v-bind="componentField" :disabled="true" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
