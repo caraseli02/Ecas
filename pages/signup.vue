@@ -409,7 +409,7 @@ useHead({
 });
 
 onBeforeRouteLeave(() => {
-    // clearFormData()
+    authStore.$reset()
     logout();
 })
 </script>
