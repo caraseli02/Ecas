@@ -167,6 +167,29 @@ const profileDetails = useState<SignupProfileDetails>('signup-profile-details', 
   };
 });
 
+const clearFormData = () => {
+    // Clear personal details
+    for (const key in personalDetails.value) {
+        personalDetails.value[key].value = '';
+        personalDetails.value[key].error = '';
+    }
+    // Clear business details
+    for (const key in businessDetails.value) {
+        businessDetails.value[key].value = '';
+        businessDetails.value[key].error = '';
+    }
+    // Clear contact details
+    for (const key in contactDetails.value) {
+        contactDetails.value[key].value = '';
+        contactDetails.value[key].error = '';
+    }
+    // Clear profile details
+    for (const key in profileDetails.value) {
+        profileDetails.value[key].value = '';
+        profileDetails.value[key].error = '';
+    }
+};
+
   return {
     currentStep,
     selectedType,
@@ -176,5 +199,6 @@ const profileDetails = useState<SignupProfileDetails>('signup-profile-details', 
     personalDetails,
     contactDetails,
     profileDetails,
+    clearFormData
   };
 };

@@ -2,7 +2,7 @@
     <aside class="flex flex-col bg-[#22242F] shadow-m pt-[30px] px-5 pb-[25px] md:w-[290px] md:pt-10 md:pb-5 lg:w-[400px] lg:px-[30px]">
         <div class="flex items-center justify-between mb-[46px] md:mb-[100px]">
             <Logo class="w-[121px]" />
-            <NuxtLink to="/" class="flex">
+            <NuxtLink @click="clearFormData" to="/" class="flex">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6">
                     <path
                         fill="#fff"
@@ -84,7 +84,8 @@ import Logo from '@/assets/media/logo-light.svg';
 import TwitterIcon from '@/assets/icons/social/twitter.svg';
 import LinkedInIcon from '@/assets/icons/social/linkedin.svg';
 import InstagramIcon from '@/assets/icons/social/instagram.svg';
-import { SignupAccountType } from '~~/types';
+import type { SignupAccountType } from '~~/types';
+import { useSignupState } from '@/composables/signup/useSignupState';
 
 defineProps({
     currentStep: {
@@ -93,11 +94,13 @@ defineProps({
     },
 });
 
+const { clearFormData } = useSignupState();
+
 const selectedType = useState<SignupAccountType>('signup-account-type');
 
 const steps = computed(() => [
     {
-        label: "Account <span class='max-md:hidden'>Type</span>",
+        label: 'Account <span class=\'max-md:hidden\'>Type</span>',
         description: 'Choose your account type',
     },
     {
@@ -105,7 +108,7 @@ const steps = computed(() => [
         description: `Setup your ${selectedType.value === 'personal' ? 'personal' : 'business'} details`,
     },
     {
-        label: "Contact <span class='max-md:hidden'>Details</span>",
+        label: 'Contact <span class=\'max-md:hidden\'>Details</span>',
         description: 'Setup your contact details',
     },
     {
