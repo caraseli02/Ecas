@@ -189,18 +189,24 @@ onMounted(() => {
     <div class="container flex flex-col gap-6 p-4 transition-all duration-300 py-6 lg:px-6">
         <OrderConfirmThankYou v-if="isNew" />
         <section class="w-full flex justify-between">
-            <UiButton v-if="false" class="gap-2" variant="secondary">
-                <ArrowLeft class="w-4 h-4 stroke-2" />
-                <NuxtLink to="/dashboard/client?tab=orders">Back</NuxtLink>
-            </UiButton>
-            <UiButton v-if="true" class="gap-2">
-                <ShoppingCart class="w-4 h-4 stroke-2" />
-                <NuxtLink to="/">Continue Shopping</NuxtLink>
-            </UiButton>
-            <UiButton class="gap-2" variant="secondary">
-                <LayoutDashboard class="w-4 h-4 stroke-2" />
-                <NuxtLink to="/dashboard/client?tab=home">Dashboard</NuxtLink>
-            </UiButton>
+            <NuxtLink v-if="false" class="w-fit" to="/dashboard/client?tab=orders">
+                <UiButton  class="gap-2" variant="secondary">
+                    <ArrowLeft class="w-4 h-4 stroke-2" />
+                    Back
+                </UiButton>
+            </NuxtLink>
+            <NuxtLink v-if="true"  to="/">
+                <UiButton class="gap-2">
+                    <ShoppingCart class="w-4 h-4 stroke-2" />
+                    Continue Shopping
+                </UiButton>
+            </NuxtLink>
+            <NuxtLink to="/dashboard/client?tab=home">
+                <UiButton class="gap-2" variant="secondary">
+                    <LayoutDashboard class="w-4 h-4 stroke-2" />
+                    Dashboard
+                </UiButton>
+            </NuxtLink>
         </section>
         <section class="px-4 py-6 md:p-6 flex flex-col gap-10 font-Poppins shadow-s rounded-xl">
             <OrderConfirmHeader
