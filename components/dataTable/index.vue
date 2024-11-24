@@ -2,9 +2,9 @@
 import type { ColumnDef, ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/vue-table';
 import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
-import { transformFiltersToObject, transformSortingKeys, valueUpdater } from '@/lib/utils';
-import { DebouncedFunc } from 'lodash';
+import type { DebouncedFunc } from 'lodash';
 import { watchDebounced } from '@vueuse/core';
+import { transformFiltersToObject, transformSortingKeys, valueUpdater } from '~/lib/utils';
 
 interface Props {
     columns: ColumnDef<TData, TValue>[];
