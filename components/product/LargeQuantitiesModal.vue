@@ -14,18 +14,21 @@ import {
 
 const formSchema = toTypedSchema(
   z.object({
-    quantity: z.number().min(1, 'Quantity must be at least 1'),
+    quantity: z.number().min(100, 'Quantity must be at least 100'),
     productCode: z.string().min(1, 'Product code is required'),
     email: z.string().email('Invalid email address'),
     details: z.string().optional(),
   })
 )
 
-const form = useForm({
+const { handleSubmit, setFieldValue } = useForm({
   validationSchema: formSchema,
+  initialValues: {
+    quantity: 100,
+  },
 })
 
-const onSubmit = form.handleSubmit((values) => {
+const onSubmit = handleSubmit((values) => {
   console.log('Form submitted!', values)
 })
 
@@ -34,20 +37,38 @@ const isOpen = defineModel<boolean>()
 
 <template>
   <UiDialog v-model:open="isOpen">
-    <UiDialogContent>
-      <form @submit="onSubmit" class="w-full max-w-lg p-6 bg-white rounded-xl shadow-sm">
+    <UiDialogContent class="border-none shadow-s max-w-[358px] md:max-w-md rounded-xl">
+      <form @submit="onSubmit" class="flex flex-col gap-4 w-full  bg-white  shadow-sm">
     <h4 id="price-enquiry-title" class="text-lg font-semibold leading-7 text-gray-800 mb-6">
       Price Enquiry
     </h4>
 
     <!-- Quantity Field -->
-    <FormField v-slot="{ componentField }" name="quantity">
-      <FormItem>
+    <FormField v-slot="{ value }" name="quantity">
+      <FormItem class="flex justify-between items-center relative">
         <FormLabel>Quantity</FormLabel>
-        <FormControl>
-          <UiInput type="number" placeholder="Enter quantity" v-bind="componentField" />
-        </FormControl>
-        <FormMessage />
+        <UiNumberField
+          class="gap-2"
+          :min="100"
+          :model-value="value"
+          @update:model-value="(v: number) => {
+            if (v) {
+              setFieldValue('quantity', v)
+            }
+            else {
+              setFieldValue('quantity', undefined)
+            }
+          }"
+        >
+          <UiNumberFieldContent class="max-w-[150px]">
+            <UiNumberFieldDecrement />
+            <FormControl>
+              <UiNumberFieldInput />
+            </FormControl>
+            <UiNumberFieldIncrement />
+          </UiNumberFieldContent>
+        </UiNumberField>
+        <!-- <FormMessage class="absolute right-0 -top-6" /> -->
       </FormItem>
     </FormField>
 
@@ -76,13 +97,10 @@ const isOpen = defineModel<boolean>()
     <!-- Additional Details Field -->
     <FormField v-slot="{ componentField }" name="details">
       <FormItem>
-        <FormLabel>Additional Details</FormLabel>
+        <FormLabel>Additional Details (Optional)</FormLabel>
         <FormControl>
-          <UiTextarea placeholder="Type your note here..." v-bind="componentField" />
+          <UiTextarea class="min-h-[140px] bg-light-100" placeholder="Type your note here..." v-bind="componentField" />
         </FormControl>
-        <FormDescription>
-          This field is optional.
-        </FormDescription>
         <FormMessage />
       </FormItem>
     </FormField>

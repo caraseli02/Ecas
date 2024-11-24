@@ -17,7 +17,7 @@
                 </button>
             </div>
             <div
-                class="grid grid-cols-1 gap-[30px] mb-[30px] md:grid-cols-2 md:gap-6 lg:grid-rows-1 lg:items-start lg:mb-10 2xl:grid-cols-[340px,542px,460px]">
+                class="grid grid-cols-1 gap-y-[30px] mb-[30px] md:grid-cols-2 md:gap-6 lg:grid-rows-1 lg:items-start lg:mb-10 2xl:grid-cols-[340px,542px,460px]">
                 <ProductGallery
                     v-if="product && images"
 v-model="activeImageIndex" class="col-span-2 lg:col-span-1" :images="images"

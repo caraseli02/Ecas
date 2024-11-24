@@ -1,7 +1,7 @@
 <template>
     <div v-if="getOrderClientSecret" class="relative min-h-screen md:w-full">
         <UiSkeleton v-show="showSkeletonLoader" class="w-full h-full absolute inset-0" />
-        <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-full md:w-1/2 mx-auto" @submit.prevent="handleSubmit">
+        <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-full md:w-1/2 mx-auto max-w-xl" @submit.prevent="handleSubmit">
             <div id="payment-element" />
             <div v-if="!showSkeletonLoader" class="flex justify-end items-center mt-2">
                 <UiButton id="submit" :disabled="isLoading">Pay now</UiButton>
