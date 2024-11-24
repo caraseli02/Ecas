@@ -39,7 +39,7 @@ const onSubmit = handleSubmit((values) => {
 <template>
   <UiDialog>
     <UiDialogTrigger>
-      <UiButton variant="link" class=" text-slate-300 md:ml-[5px]">
+      <UiButton variant="link" class="gap-1 text-slate-300">
         <AlertTriangle class="w-[22px] h-[22px]" />
         <span class="hidden sm:inline">Report an error</span>
       </UiButton>
