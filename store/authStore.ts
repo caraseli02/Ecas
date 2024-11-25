@@ -1,112 +1,177 @@
 import { defineStore } from 'pinia';
+import { ref, reactive, computed } from 'vue';
 import Emitter from 'tiny-emitter/instance.js';
 import useFirebaseAuth from '~/composables/useFirebaseAuth';
 import moment from 'moment';
-import { useNuxtApp } from '#app';
-import { useRouter } from '#app/composables/router';
+import { useNuxtApp, useRouter, useRoute } from '#app';
 import type { StripeCardInterface, UserInfoJWT } from '~/types';
 import type { UserInterface } from '~/types/auth/user-interface';
 import type { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
-export const useAuthStore = defineStore({
-    id: 'auth-store',
-    state: () => {
-        return {
-            token: {} as { value: string; createdAt: any },
-            loggedInUser: null as UserInfoJWT | null,
-            userDetails: null as UserInterface | null,
-            firebaseTempToken: null as string | null,
-            userCards: null as StripeCardInterface[] | null,
-            generalSettings: null as GeneralSettingsInterface | null,
-        };
-    },
-    actions: {
-        addToken(token: string) {
-            this.token.value = token;
-            this.token.createdAt = moment();
-        },
-        addUser(user: UserInfoJWT) {
-            this.loggedInUser = user;
-        },
-        addUserDetail(user: UserInterface) {
-            this.userDetails = user;
-        },
-        async addUserCards() {
-            const { $api } = useNuxtApp();
-            const cardsResponse = await $api.user.userCards();
+export const useAuthStore = defineStore(
+  'auth-store',
+  () => {
+    // Initial state
+    const initialState = {
+      token: { value: '', createdAt: '' },
+      loggedInUser: null as UserInfoJWT | null,
+      userDetails: null as UserInterface | null,
+      firebaseTempToken: null as string | null,
+      userCards: null as StripeCardInterface[] | null,
+      generalSettings: null as GeneralSettingsInterface | null,
+    };
 
-            if (!cardsResponse) {
-                return Promise<null>;
-            }
+    // Reactive state variables
+    const token = reactive<{ value: string; createdAt: any }>({
+      value: initialState.token.value,
+      createdAt: initialState.token.createdAt,
+    });
+    const loggedInUser = ref<UserInfoJWT | null>(initialState.loggedInUser);
+    const userDetails = ref<UserInterface | null>(initialState.userDetails);
+    const firebaseTempToken = ref<string | null>(initialState.firebaseTempToken);
+    const userCards = ref<StripeCardInterface[] | null>(initialState.userCards);
+    const generalSettings = ref<GeneralSettingsInterface | null>(initialState.generalSettings);
 
-            this.userCards = cardsResponse.data;
+    // Actions
+    function addToken(tokenValue: string) {
+      token.value = tokenValue;
+      token.createdAt = moment();
+    }
 
-            Emitter.emit('update-cart', this.userCards);
+    function addUser(user: UserInfoJWT) {
+      loggedInUser.value = user;
+    }
 
-            return this.userCards as StripeCardInterface[];
-        },
-        addFirebaseToken(token: string) {
-            this.firebaseTempToken = token;
-        },
-        addGeneralSettings(generalSettings: GeneralSettingsInterface) {
-            this.generalSettings = generalSettings;
-        },
-        signOut() {
-            this.loggedInUser = null;
-            this.userDetails = null;
-            this.token = { value: '', createdAt: '' };
-            this.generalSettings = null;
+    function addUserDetail(user: UserInterface) {
+      userDetails.value = user;
+    }
 
-            Emitter.emit('remove-cart-and-notifications', true);
+    async function addUserCards() {
+      const { $api } = useNuxtApp();
+      const cardsResponse = await $api.user.userCards();
 
-            if (process.client) {
-                localStorage.clear();
-            }
-        },
-        async firebaseSignOut() {
-            const firebaseAuth = useFirebaseAuth();
-            await firebaseAuth.logout();
+      if (!cardsResponse) {
+        return null;
+      }
 
-            this.loggedInUser = null;
-            this.userDetails = null;
-            this.token = { value: '', createdAt: '' };
-            this.generalSettings = null;
-        },
-        getToken() {
-            // Ensure this code only runs on the client side
-            if (process.server) return null;
+      userCards.value = cardsResponse.data;
 
-            const router = useRouter();
-            const route = useRoute();
+      Emitter.emit('update-cart', userCards.value);
 
-            // Check if the token is loaded from local storage
-            if (!this.token || !this.token.createdAt) {
-                // Early return to wait for token initialization from pinia-persisted data
-                return null;
-            }
+      return userCards.value as StripeCardInterface[];
+    }
 
-            const time = moment().diff(this.token.createdAt, 'minutes');
+    function addFirebaseToken(tokenValue: string) {
+      firebaseTempToken.value = tokenValue;
+    }
 
-            if (time > 59) {
-                this.signOut();
+    function addGeneralSettings(settings: GeneralSettingsInterface) {
+      generalSettings.value = settings;
+    }
 
-                if (route.path.includes('dashboard') || route.path.includes('order') || route.path.includes('checkout')) {
-                    router.push('/');
-                    Emitter.emit('open-account-modal');
-                }
+    function signOut() {
+      loggedInUser.value = null;
+      userDetails.value = null;
+      token.value = '';
+      token.createdAt = '';
+      generalSettings.value = null;
 
-                return null;
-            }
+      Emitter.emit('remove-cart-and-notifications', true);
 
-            return this.token?.value as unknown as UserInfoJWT;
-        },
-    },
-    getters: {
-        getCurrentUser: (state) => state.loggedInUser,
-        getUserDetails: (state) => state.userDetails as UserInterface,
-        getGeneralSettings: (state) => state.generalSettings as GeneralSettingsInterface,
-    },
+      if (process.client) {
+        localStorage.clear();
+      }
+    }
+
+    async function firebaseSignOut() {
+      const firebaseAuth = useFirebaseAuth();
+      await firebaseAuth.logout();
+
+      loggedInUser.value = null;
+      userDetails.value = null;
+      token.value = '';
+      token.createdAt = '';
+      generalSettings.value = null;
+    }
+
+    function getToken() {
+      if (import.meta.server) return null;
+
+      const router = useRouter();
+      const route = useRoute();
+
+      if (!token || !token.createdAt) {
+        return null;
+      }
+
+      const time = moment().diff(token.createdAt, 'minutes');
+
+      if (time > 59) {
+        signOut();
+
+        if (
+          route.path.includes('dashboard') ||
+          route.path.includes('order') ||
+          route.path.includes('checkout')
+        ) {
+          router.push('/');
+          Emitter.emit('open-account-modal');
+        }
+
+        return null;
+      }
+
+      return token.value as unknown as UserInfoJWT;
+    }
+
+    // Getters
+    const getCurrentUser = computed(() => loggedInUser.value);
+    const getUserDetails = computed(() => userDetails.value as UserInterface);
+    const getGeneralSettings = computed(() => generalSettings.value as GeneralSettingsInterface);
+
+    // $reset function to reset state to initial values
+    function $reset() {
+      token.value = initialState.token.value;
+      token.createdAt = initialState.token.createdAt;
+      loggedInUser.value = initialState.loggedInUser;
+      userDetails.value = initialState.userDetails;
+      firebaseTempToken.value = initialState.firebaseTempToken;
+      userCards.value = initialState.userCards;
+      generalSettings.value = initialState.generalSettings;
+    }
+
+    return {
+      // State
+      token,
+      loggedInUser,
+      userDetails,
+      firebaseTempToken,
+      userCards,
+      generalSettings,
+
+      // Actions
+      addToken,
+      addUser,
+      addUserDetail,
+      addUserCards,
+      addFirebaseToken,
+      addGeneralSettings,
+      signOut,
+      firebaseSignOut,
+      getToken,
+
+      // Getters
+      getCurrentUser,
+      getUserDetails,
+      getGeneralSettings,
+
+      // Reset function
+      $reset,
+    };
+  },
+  {
     persist: {
-        storage: piniaPluginPersistedstate.localStorage(),
-      },
-});
+      storage: piniaPluginPersistedstate.localStorage()
+    },
+  }
+);
