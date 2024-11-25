@@ -28,8 +28,8 @@ const userSettings = ref(getUserDetails.value.adminSettings?.alertsAndNotificati
 
 const settings = reactive({
     passwordChange: {
-        email: userSettings.value?.passwordChange?.email || false,
-        app: userSettings.value?.passwordChange?.app || false,
+        email: userSettings.value?.securityAlerts?.email || false,
+        app: userSettings.value?.securityAlerts?.app || false,
     },
     newProducts: {
         email: userSettings.value?.newProducts?.email || false,
@@ -76,7 +76,7 @@ watch(
         <AlertsItem
             v-model:email="settings.passwordChange.email"
             v-model:app="settings.passwordChange.app"
-            :alert-key="'passwordChange'"
+            :alert-key="'securityAlerts'"
             :title="AlertAndNotificationType.passwordChange"
         />
         <AlertsItem

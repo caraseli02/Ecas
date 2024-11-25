@@ -7,6 +7,8 @@ import { AccountStatusEnum, CustomerTableColumns } from '~/types/auth/user-inter
 import { AgentsTableColumnsEnum } from '~/components/client-table/agents/columns.enum';
 import UserDashboardService from '~/services/dashboard/user.service';
 import StatusWithColor from '~/components/dataTable/StatusWithColor.vue';
+import { useAuthStore } from '~/store/authStore';
+import { AccountRole } from '~/types';
 
 const statusName = {
     0: 'Inactive',
@@ -18,6 +20,9 @@ const statusColors = {
     Disabled: 'bg-pink-500',
     Pending: 'bg-yellow-500',
 };
+
+const authStore = useAuthStore();
+const { getUserDetails } = storeToRefs(authStore);
 
 export const columns: ColumnDef<CustomerTableColumns>[] = [
     {
@@ -71,12 +76,12 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
                 options: [
                     {
                         label: 'Profile',
-                        enable: true,
+                        enable: getUserDetails.value?.role === AccountRole.Admin,
                         navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
                     },
                     {
                         label: 'Delete',
-                        enable: true,
+                        enable: getUserDetails.value?.role === AccountRole.Admin,
                         actionFn: 'deleteUser',
                     },
                     {

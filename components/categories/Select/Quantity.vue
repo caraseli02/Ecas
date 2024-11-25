@@ -9,33 +9,6 @@ const emit = defineEmits<{
     (e: 'update:quantity', value: string): void;
     (e: 'update:selection-length', value: number): void;
 }>();
-// Define custom event
-const pricingStore = usePricingStore();
-const { quantity } = storeToRefs(pricingStore);
-
-const open = ref(false);
-const selectedId = ref<string | null>(null); // Track selected item's _id
-
-// Computed property to filter quantity options based on filterLength
-const filteredQuantity = computed(() =>
-    props.filterLength !== null ? quantity.value.filter((item) => item.value.length === props.filterLength) : quantity.value
-);
-
-// Computed property to display the selected label
-const selectedLabel = computed(() => {
-    const selectedItem = quantity.value?.find((item) => item._id === selectedId.value);
-    return selectedItem ? selectedItem.label : `Select ${props.title} Template`;
-});
-
-// Emit selected length to parent when selection changes
-const handleSelect = (framework) => {
-    if (!framework) return;
-
-    selectedId.value = framework._id;
-    emit('update:selection-length', framework.value.length);
-    emit('update:quantity', framework._id);
-    open.value = false;
-};
 
 const props = defineProps<{
     title: string;
@@ -43,9 +16,30 @@ const props = defineProps<{
     filterLength: number | null;
 }>();
 
+const pricingStore = usePricingStore();
+const { quantity } = storeToRefs(pricingStore);
+
+const open = ref(false);
+const selectedId = ref<string | null>(null);
+
+const selectedLabel = computed(() => {
+    const selectedItem = quantity.value?.find((item) => item._id === selectedId.value);
+    return selectedItem ? selectedItem.label : `Select ${props.title}`;
+});
+
+const handleSelect = (framework) => {
+    if (!framework) return;
+
+    selectedId.value = framework._id;
+    emit('update:selection-length', framework.value.length); // Emit the length for filtering Margin
+    emit('update:quantity', framework._id);
+    open.value = false;
+};
+
 watchEffect(() => {
     if (props.quantity && filteredQuantity.value) {
-        handleSelect(filteredQuantity.value.filter((quantity) => quantity._id === props.quantity)[0]);
+        const selectedItem = quantity.value.find((item) => item._id === props.quantity);
+        if (selectedItem) selectedId.value = selectedItem._id;
     }
 });
 </script>
@@ -62,15 +56,15 @@ watchEffect(() => {
             </UiPopoverTrigger>
             <UiPopoverContent disabled-portal class="w-full p-0">
                 <UiCommand class="w-full">
-                    <UiCommandInput class="h-9" placeholder="Search framework..." />
-                    <UiCommandEmpty>No framework found.</UiCommandEmpty>
+                    <UiCommandInput class="h-9" placeholder="Search quantity..." />
+                    <UiCommandEmpty>No options found.</UiCommandEmpty>
                     <UiCommandList>
                         <UiCommandGroup>
                             <UiCommandItem
-                                v-for="framework in filteredQuantity"
+                                v-for="framework in quantity"
                                 :key="framework._id"
-                                class="flex justify-between items-center w-full"
                                 :value="framework.value"
+                                class="flex justify-between items-center w-full"
                                 @select="() => handleSelect(framework)"
                             >
                                 {{ framework.label }}
@@ -89,17 +83,26 @@ watchEffect(() => {
     </section>
 </template>
 
-<style>
+<style scoped>
+/* Ensure the popover container has a fixed width */
 .entry-price > [data-radix-popper-content-wrapper] {
     width: 100% !important;
     padding: 0 24px;
 }
 
+/* Apply fixed width to the dropdown content */
 .entry-price > [data-radix-popper-content-wrapper] > div {
     width: 100% !important;
 }
 
+/* Override max-width constraints */
 .entry-price > [data-radix-popper-content-wrapper] {
-    max-width: 100% !important;
+    max-width: none !important;
+}
+
+/* Style the dropdown list to ensure proper alignment */
+.UiCommand {
+    width: 100%; /* Ensure dropdown content spans full container */
+    box-sizing: border-box; /* Prevent overflow issues */
 }
 </style>
