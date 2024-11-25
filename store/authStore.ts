@@ -170,6 +170,8 @@ export const useAuthStore = defineStore(
     };
   },
   {
-    persist: piniaPluginPersistedstate.localStorage(),
+    persist: {
+      storage: piniaPluginPersistedstate.localStorage()
+    },
   }
 );
