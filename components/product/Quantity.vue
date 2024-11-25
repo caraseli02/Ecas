@@ -7,15 +7,15 @@
             <span class="text-[11px] font-Inter leading-tight font-semibold text-white"> {{ product.stock }} in stock </span>
         </div> -->
         <ProductCardStock :stock="product.stock" />
-        <div class="flex justify-end text-xs my-3 pr-4 lg:hidden px-2.5">
+        <UiButton variant="link" @click="showLargeQuantitiesModal = true" class="flex justify-end text-xs my-3 pr-4 lg:hidden px-2.5">
             For larger quantities ask
-            <NuxtLink
+            <span
                 to="/"
                 class="relative text-blue-500 font-medium ml-1 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
             >
                 here.
-            </NuxtLink>
-        </div>
+            </span>
+        </UiButton>
         <div class="lg:grid lg:grid-cols-2">
             <div class="lg:order-2 px-4">
                 <div class="flex items-center justify-between gap-3 text-xs leading-tight text-slate-500 px-3 py-2">
@@ -34,15 +34,14 @@
                         <div :class="['text-neutral-700', productDiscount ? 'text-red' : '']">{{ bulkQuantity[1].toFixed(2) }} Lei</div>
                     </div>
                 </div>
-                <div class="hidden justify-end text-slate-500 text-xs mb-[9px] lg:flex">
+                <UiButton variant="link" @click="showLargeQuantitiesModal = true" class="hidden justify-end text-slate-500 text-xs mb-[9px] lg:flex">
                     For larger quantities ask
-                    <NuxtLink
-                        to="/"
+                    <span
                         class="relative text-blue-500 font-medium ml-1 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
                     >
                         here.
-                    </NuxtLink>
-                </div>
+                    </span>
+                </UiButton>
             </div>
             <div class="lg:order-1 lg:pt-[60px] xl:pt-8 pl-4">
                 <div
@@ -114,6 +113,7 @@
             </button>
         </div>
     </div>
+    <ProductLargeQuantitiesModal v-model="showLargeQuantitiesModal" />
 </template>
 
 <script setup lang="ts">
@@ -193,4 +193,6 @@ watch(quantity, (_quantity) => {
 });
 
 buildBulkQuantities();
+
+const showLargeQuantitiesModal = ref(false);
 </script>

@@ -150,7 +150,7 @@ watch(country, (newCountry) => {
                     value: e.name,
                 };
             }) || [];
-        region.value = { label: props.address.city, value:  props.address.city };
+        region.value = { label: props.address?.city, value: props.address?.city };
     } else {
         region.value = undefined;
     }

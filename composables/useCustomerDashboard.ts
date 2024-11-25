@@ -36,7 +36,7 @@ export const useCustomerDashboard = () => {
         const { data, status } = await $api.customerDashboard.fetchCustomerActiveOrders();
         if (status && data && data.total) {
             ordersIds.value = data.total.map((object) => {
-                return {shortId: object.shortId, id: object._id };
+                return { shortId: object.shortId, id: object._id };
             });
         }
     };
@@ -77,7 +77,7 @@ export const useCustomerDashboard = () => {
     };
 
     const addresses = async () => {
-        myAddresses.value = []
+        myAddresses.value = [];
         const shipping = ref<ShippingAddressInterface>({
             alias: '-',
             name1: '-',
@@ -102,11 +102,13 @@ export const useCustomerDashboard = () => {
         });
 
         const details = userDetails?.accountType === AccountType.Personal ? userDetails?.personalDetails : userDetails?.companyDetails;
-        if (details?.shippingAddress && details?.shippingAddress[0]) {
-            shipping.value = details?.shippingAddress[0];
+
+        // get default shipping address
+        if (details?.shippingAddress) {
+            shipping.value = details?.shippingAddress.find((address) => address.default) || details?.shippingAddress[0];
         }
-        if (details?.billingAddress && details?.billingAddress[0]) {
-            billing.value = details?.billingAddress[0];
+        if (details?.billingAddress) {
+            billing.value = details?.billingAddress.find((address) => address.default) || details?.billingAddress[0];
         }
         myAddresses.value.push(shipping.value);
         myAddresses.value.push(billing.value);
