@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { columns } from './columns';
-import _ from 'lodash';
 import { CustomerTableColumns, UserInterface } from '~/types/auth/user-interface';
 import { useAuthStore } from '~/store/authStore';
-import { PaginatedCustomersInterface } from "~/model/dashboard/response/CustomerInterfaceResponse";
+import _ from 'lodash';
 
 const emit = defineEmits<{
-    showTotalItems: [val: number]
-}>()
+    showTotalItems: [val: number];
+}>();
 
 const { $api } = useNuxtApp();
 const totalItems = ref(0);
@@ -23,20 +22,10 @@ const token = authStore.getToken();
 const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
     error.value = false;
     // FIX to use userID
-    
-    const config = useRuntimeConfig()
 
     // const data = await $api.userDashboard.fetchCustomersList(page, perPage, filters, sort);
-    const data = await $fetch<PaginatedCustomersInterface>(`${config.public.BASE_URL_API}/audit?page=1&perPage=10`, {
-            headers: { Authorization: `Bearer ${token}` },
-            params: {
-                page: page,
-                perPage: perPage,
-                ...filters,
-                ...sort,
-            },
-        })
-    
+    const data = await $api.controlPanel.fetchActivityLogs(page, perPage, filters, sort, token);
+
     if (!data || data.status !== 'success') {
         loading.value = false;
         error.value = true;
@@ -50,11 +39,11 @@ const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number
     pageCount.value = data.data.page_count;
     listItems.value = data.data.items as unknown as UserInterface[];
     loading.value = false;
-    emit('showTotalItems', data.data.total_items)
+    emit('showTotalItems', data.data.total_items);
+    return data.data;
 }, 500);
 
 fetchAndSetCustomersList(1, 10);
-
 </script>
 
 <template>
@@ -73,9 +62,9 @@ fetchAndSetCustomersList(1, 10);
             <template #header="{ table, makeRefresh }">
                 <DataTableHeadControls :error="error" title="Activity Log" :table="table" @refresh="makeRefresh()">
                     <!-- <UiButton class="flex-1 md:flex-grow-0 flex gap-2" size="sm">
-                      <PlusIcon class="h-6 w-6" />
-                      Create New
-                    </UiButton> -->
+<PlusIcon class="h-6 w-6" />
+Create New
+</UiButton> -->
                 </DataTableHeadControls>
             </template>
             <template #toolbar="{ table }">
