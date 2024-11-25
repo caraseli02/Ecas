@@ -184,14 +184,14 @@ const formBusinessSchema = toTypedSchema(
             .string({
                 required_error: 'Tax ID is required',
             })
-            .optional()
-            .default(getUserDetails.value.companyDetails?.taxId || ''),
+            .default(getUserDetails.value.companyDetails?.taxId || '')
+            .optional(),
         vatNumber: z
             .string({
                 required_error: 'V.A.T Number is required',
             })
-            .optional()
-            .default(getUserDetails.value.companyDetails?.vat || ''),
+            .default(getUserDetails.value.companyDetails?.vat || '')
+            .optional(),
         bankName: z
             .string()
             .optional()
@@ -199,9 +199,9 @@ const formBusinessSchema = toTypedSchema(
             .or(z.literal('')),
         iban: z
             .union([z.string().length(0), z.string().regex(/^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/, 'Invalid IBAN')])
-            .optional()
             .default(getUserDetails.value.companyDetails?.bank_iban || '')
-            .transform((e: string) => (e === '' ? undefined : e)),
+            .transform((e: string) => (e === '' ? undefined : e))
+            .optional(),
     })
 );
 
@@ -337,7 +337,7 @@ watch(region, (newRegion) => {
                     <FormItem>
                         <FormLabel>Company Registration Number</FormLabel>
                         <FormControl>
-                            <Input type="text" placeholder="ABC123456" v-bind="componentField" :disabled="!openEdit" />
+                            <Input type="text" placeholder="ABC123456" v-bind="componentField" :disabled="true" />
                         </FormControl>
                         <FormMessage />
                     </FormItem>

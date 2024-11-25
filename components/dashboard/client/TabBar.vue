@@ -200,6 +200,10 @@ onMounted(async () => {
     // setActiveFilterHighlight();
     checkForActiveTab()
 });
+
+onBeforeRouteLeave(() => {
+    activeOrderFilter.value = {value: 'home', icon: 'Dashboard'};
+})
 </script>
 
 <style scoped></style>

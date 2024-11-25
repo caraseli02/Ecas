@@ -2,26 +2,18 @@
     <div class="pt-5 md:pt-0">
         <ProductBreadcrumbs :product="product" />
         <div class="container mb-[30px] lg:mb-10">
-            <div class="hidden items-center justify-end gap-5 mb-3 md:flex">
-                <button class="flex items-center text-slate-300 transition-colors duration-300 hover:text-blue-500">
-                    <MessageCircleQuestion class="w-[22px] h-[22px] mr-[5px]" />
-                    <span class="text-xs leading-tight">Ask about the product</span>
-                </button>
-                <button class="flex items-center text-slate-300 transition-colors duration-300 hover:text-blue-500">
-                    <AlertTriangle class="w-[22px] h-[22px] mr-[5px]" />
-                    <span class="text-xs leading-tight">Report an error</span>
-                </button>
-                <button @click="printPage" class="flex items-center text-slate-300 transition-colors duration-300 hover:text-blue-500">
-                    <PrinterIcon class="w-[22px] h-[22px] mr-[5px]" />
-                    <span class="text-xs leading-tight">Print this page</span>
-                </button>
+            <div class="w-full flex items-center justify-end md:gap-0w mb-3">
+                <ProductAskDialog />
+                <DialogReportError />
+                <UiButton variant="link" @click="printPage" class="text-slate-300 gap-1">
+                    <PrinterIcon class="w-[22px] h-[22px]" />
+                    <span class="text-xs leading-tight hidden sm:inline">Print this page</span>
+                </UiButton>
             </div>
             <div
-                class="grid grid-cols-1 gap-[30px] mb-[30px] md:grid-cols-2 md:gap-6 lg:grid-rows-1 lg:items-start lg:mb-10 2xl:grid-cols-[340px,542px,460px]">
-                <ProductGallery
-                    v-if="product && images"
-v-model="activeImageIndex" class="col-span-2 lg:col-span-1" :images="images"
-                    :product="product" @show-zoom-modal="showZoomGallery = true" />
+                class="grid grid-cols-1 gap-y-[30px] mb-[30px] md:grid-cols-2 md:gap-6 lg:grid-rows-1 lg:items-start lg:mb-10 2xl:grid-cols-[340px,542px,460px]">
+                <ProductGallery v-if="product && images" v-model="activeImageIndex" class="col-span-2 lg:col-span-1"
+                    :images="images" :product="product" @show-zoom-modal="showZoomGallery = true" />
                 <ProductDetails v-if="product" class="col-span-2 lg:col-span-1" :product="product" />
                 <ProductQuantity v-if="product" class="col-span-2 2xl:col-span-1" :product="product" />
             </div>
@@ -40,15 +32,15 @@ v-model="activeImageIndex" class="col-span-2 lg:col-span-1" :images="images"
         <ProductBlocks :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" />
         <News />
         <Manufacturers />
-        <ProductZoomGallery v-model:selectedIndex="activeImageIndex" v-model:open="showZoomGallery" :alias="product.alias" :images="images" />
+        <ProductZoomGallery v-model:selectedIndex="activeImageIndex" v-model:open="showZoomGallery"
+            :alias="product.alias" :images="images" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { AlertTriangle, MessageCircleQuestion, PrinterIcon } from 'lucide-vue-next';
+import { PrinterIcon } from 'lucide-vue-next';
 
-import { ProductDetail } from '~~/model/products/response/ProductDetailResponse';
-import { ProductImage } from '~~/model/response/products/ProductResponse';
+import type { ProductDetail } from '~~/model/products/response/ProductDetailResponse';
 import { useNuxtApp } from '#app';
 
 const { $api } = useNuxtApp();
