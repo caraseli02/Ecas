@@ -171,6 +171,7 @@ const payment = computed(() => {
                                 <p>{{ item.stock }}</p>
                             </article>
                             <article
+                                v-if="orderType === OrderType.Back"
                                 class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full"
                             >
                                 <p>Delivered</p>
@@ -179,10 +180,11 @@ const payment = computed(() => {
                                         class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full bg-emerald-500 mr-1"
                                         aria-hidden="true"
                                     ></span>
-                                    16
+                                    {{ item.backorder_stock }}
                                 </p>
                             </article>
                             <article
+                                v-if="orderType === OrderType.Back"
                                 class="flex gap-5 justify-between mt-1 w-full leading-6 whitespace-nowrap text-neutral-800 max-md:flex-wrap max-md:max-w-full"
                             >
                                 <p>Payment Status</p>

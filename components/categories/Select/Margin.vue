@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineEmits, defineProps, ref, watchEffect } from 'vue';
+import { computed, defineEmits, defineProps, ref, watch, watchEffect } from 'vue';
 import { CaretSortIcon, CheckIcon } from '@radix-icons/vue';
 import { cn } from '@/lib/utils';
 import { storeToRefs } from 'pinia';
@@ -7,35 +7,7 @@ import { usePricingStore } from '~/store/pricingStore';
 
 const emit = defineEmits<{
     (e: 'update:margin', value: string): void;
-    (e: 'update:selection-length', value: number): void;
 }>();
-// Define custom event
-const pricingStore = usePricingStore();
-const { margin } = storeToRefs(pricingStore);
-
-const open = ref(false);
-const selectedId = ref<string | null>(null); // Track selected item's _id
-
-// Computed property to filter margin options based on filterLength
-const filteredMargin = computed(() =>
-    props.filterLength !== null ? margin.value.filter((item) => item.value.length === props.filterLength) : margin.value
-);
-
-// Computed property to display the selected label
-const selectedLabel = computed(() => {
-    const selectedItem = margin.value.find((item) => item._id === selectedId.value);
-    return selectedItem ? selectedItem.label : `Select ${props.title} Template`;
-});
-
-// Emit selected length to parent when selection changes
-const handleSelect = (framework) => {
-    if (!framework) return;
-    
-    selectedId.value = framework._id;
-    emit('update:selection-length', framework.value.length);
-    emit('update:margin', framework._id);
-    open.value = false;
-};
 
 const props = defineProps<{
     title: string;
@@ -43,9 +15,48 @@ const props = defineProps<{
     filterLength: number | null;
 }>();
 
+const pricingStore = usePricingStore();
+const { margin } = storeToRefs(pricingStore);
+
+const open = ref(false);
+const selectedId = ref<string | null>(null);
+
+// Filter margin options based on `filterLength` prop
+const filteredMargin = computed(() =>
+    props.filterLength !== null ? margin.value.filter((item) => item.value.length === props.filterLength) : margin.value
+);
+
+// Display the label for the currently selected margin
+const selectedLabel = computed(() => {
+    const selectedItem = margin.value.find((item) => item._id === selectedId.value);
+    return selectedItem ? selectedItem.label : `Select ${props.title}`;
+});
+
+// Handle the selection of a margin option
+const handleSelect = (framework) => {
+    if (!framework) return;
+    selectedId.value = framework._id;
+    emit('update:margin', framework._id);
+    open.value = false;
+};
+
+// Reset the margin if the selection-length no longer matches
+watch(
+    () => props.filterLength,
+    (newFilterLength) => {
+        const selectedItem = margin.value.find((item) => item._id === selectedId.value);
+        if (selectedItem && selectedItem.value.length !== newFilterLength) {
+            selectedId.value = null; // Reset selection
+            emit('update:margin', ''); // Notify parent to reset
+        }
+    }
+);
+
+// Pre-select the current value if provided in props
 watchEffect(() => {
     if (props.margin) {
-        handleSelect(filteredMargin.value.filter((margin) => margin._id === props.margin)[0]);
+        const selectedItem = filteredMargin.value.find((item) => item._id === props.margin);
+        if (selectedItem) selectedId.value = selectedItem._id;
     }
 });
 </script>
@@ -62,15 +73,15 @@ watchEffect(() => {
             </UiPopoverTrigger>
             <UiPopoverContent disabled-portal class="w-full p-0">
                 <UiCommand class="w-full">
-                    <UiCommandInput class="h-9" placeholder="Search framework..." />
-                    <UiCommandEmpty>No framework found.</UiCommandEmpty>
+                    <UiCommandInput class="h-9" placeholder="Search margin..." />
+                    <UiCommandEmpty>No options found.</UiCommandEmpty>
                     <UiCommandList>
                         <UiCommandGroup>
                             <UiCommandItem
                                 v-for="framework in filteredMargin"
                                 :key="framework._id"
-                                class="flex justify-between items-center w-full"
                                 :value="framework.value"
+                                class="flex justify-between items-center w-full"
                                 @select="() => handleSelect(framework)"
                             >
                                 {{ framework.label }}
@@ -89,17 +100,26 @@ watchEffect(() => {
     </section>
 </template>
 
-<style>
+<style scoped>
+/* Ensure the popover container has a fixed width */
 .entry-price > [data-radix-popper-content-wrapper] {
     width: 100% !important;
     padding: 0 24px;
 }
 
+/* Apply fixed width to the dropdown content */
 .entry-price > [data-radix-popper-content-wrapper] > div {
     width: 100% !important;
 }
 
+/* Override max-width constraints */
 .entry-price > [data-radix-popper-content-wrapper] {
-    max-width: 100% !important;
+    max-width: none !important;
+}
+
+/* Style the dropdown list to ensure proper alignment */
+.UiCommand {
+    width: 100%; /* Ensure dropdown content spans full container */
+    box-sizing: border-box; /* Prevent overflow issues */
 }
 </style>
