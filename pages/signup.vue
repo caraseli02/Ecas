@@ -33,19 +33,16 @@ import {
     type FirebaseBusinessAccount as SignupBusinessPayload,
     type FirebasePersonalAccount as SignupPersonalPayload,
     type InputObject,
-    type SignupAccountType,
     type SignupBusinessDetails as SignupBusinessDetailsType,
-    type SignupContactDetails as SignupContactDetailsType,
     type SignupPersonalDetails as SignupPersonalDetailsType,
-    type SignupProfileDetails as SignupProfileDetailsType,
 } from '~~/types';
 import { useToast } from '@/components/ui/toast/use-toast';
+import { useSignupState } from '@/composables/signup/useSignupState';
 
 const { $api } = useNuxtApp();
 
 const { checkForInputErrors, checkContactConfirmationEmail, checkProfileConfirmationEmail } = useError();
 
-const currentStep = ref(0);
 
 const authStore = useAuthStore();
 
@@ -56,57 +53,17 @@ const { logout } = useFirebaseAuth();
 const firebaseToken = authStore.token?.value;
 const userInfo = authStore.loggedInUser;
 
-const selectedType = useState<SignupAccountType | ''>('signup-account-type', () => '');
-const selectedBusinessType = ref('');
-
-const businessDetails = useState<SignupBusinessDetailsType>('signup-business-details', () => {
-    return {
-        fullCompanyName: {
-            value: '',
-            error: '',
-        },
-        companyRegistrationNumber: {
-            value: '',
-            error: '',
-        },
-        vatNumber: {
-            value: '',
-            error: '',
-        },
-        country: {
-            value: {
-                value: '',
-                error: '',
-            },
-            label: '',
-            icon: '',
-        },
-        region: {
-            value: {
-                value: '',
-                error: '',
-            },
-            label: '',
-            icon: '',
-        },
-        city: {
-            value: '',
-            error: '',
-        },
-        postcode: {
-            value: '',
-            error: '',
-        },
-        addressLine1: {
-            value: '',
-            error: '',
-        },
-        addressLine2: {
-            value: '',
-            error: '',
-        },
-    };
-});
+const {
+  currentStep,
+  selectedType,
+  selectedBusinessType,
+  vatPayer,
+  businessDetails,
+  personalDetails,
+  contactDetails,
+  profileDetails,
+  clearFormData
+} = useSignupState();
 
 const handleBusinessDetailsContinue = async () => {
     let hasError = false;
@@ -162,43 +119,6 @@ const handleBusinessDetailsContinue = async () => {
     }
 };
 
-const personalDetails = useState<SignupPersonalDetailsType>('signup-personal-details', () => {
-    return {
-        firstName: {
-            value: '',
-            error: '',
-        },
-        lastName: {
-            value: '',
-            error: '',
-        },
-        country: {
-            value: undefined,
-            error: '',
-        },
-        region: {
-            value: undefined,
-            error: '',
-        },
-        city: {
-            value: '',
-            error: '',
-        },
-        postcode: {
-            value: '',
-            error: '',
-        },
-        addressLine1: {
-            value: '',
-            error: '',
-        },
-        addressLine2: {
-            value: '',
-            error: '',
-        },
-    };
-});
-
 const handlePersonalDetailsContinue = async () => {
     let hasError = checkForInputErrors([
         personalDetails.value.firstName,
@@ -235,47 +155,6 @@ const handlePersonalDetailsContinue = async () => {
     }
 };
 
-const contactDetails = useState<SignupContactDetailsType>('signup-contact-details', () => {
-    return {
-        firstName: {
-            value: '',
-            error: '',
-        },
-        lastName: {
-            value: '',
-            error: '',
-        },
-        phone: {
-            value: '',
-            error: '',
-        },
-        mobile: {
-            value: '',
-            error: '',
-        },
-        companyEmail: {
-            value: '',
-            error: '',
-            type: 'email',
-        },
-        confirmCompanyEmail: {
-            value: '',
-            error: '',
-            type: 'email',
-        },
-        email: {
-            value: '',
-            error: '',
-            type: 'email',
-        },
-        confirmEmail: {
-            value: '',
-            error: '',
-            type: 'email',
-        },
-    };
-});
-
 const handleContactDetailsContinue = () => {
     let inputsToCheck = [contactDetails.value.phone];
 
@@ -302,32 +181,6 @@ const handleContactDetailsContinue = () => {
         inputsToCheck = [];
     }
 };
-
-const profileDetails = useState<SignupProfileDetailsType>('signup-profile-details', () => {
-    return {
-        useContactEmail: false,
-        accountEmail: {
-            value: '',
-            error: '',
-            type: 'email',
-        },
-        confirmAccountEmail: {
-            value: '',
-            error: '',
-            type: 'email',
-        },
-        password: {
-            value: '',
-            error: '',
-        },
-        repeatPassword: {
-            value: '',
-            error: '',
-        },
-        subscribeToNewsletter: true,
-        agreeToTerms: false,
-    };
-});
 
 function mapType(selected: string): AccountType {
     switch (selected) {
@@ -555,30 +408,8 @@ useHead({
     title: 'Signup',
 });
 
-const vatPayer = ref(false);
-
-const clearFormData = () => {
-    // Clear personal details
-    for (const key in personalDetails.value) {
-        personalDetails.value[key].value = '';
-        personalDetails.value[key].error = '';
-    }
-    // Clear business details
-    for (const key in businessDetails.value) {
-        businessDetails.value[key].value = '';
-        businessDetails.value[key].error = '';
-    }
-    // Clear contact details
-    for (const key in contactDetails.value) {
-        contactDetails.value[key].value = '';
-        contactDetails.value[key].error = '';
-    }
-    // Clear profile details
-    for (const key in profileDetails.value) {
-        profileDetails.value[key].value = '';
-        profileDetails.value[key].error = '';
-    }
-};
-
-const isSubmitDisabled = computed(() => !profileDetails.value.agreeToTerms);
+onBeforeRouteLeave(() => {
+    authStore.$reset()
+    logout();
+})
 </script>
