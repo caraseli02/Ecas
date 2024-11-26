@@ -37,7 +37,7 @@ const handleSelect = (framework) => {
 };
 
 watchEffect(() => {
-    if (props.quantity && filteredQuantity.value) {
+    if (props.quantity) {
         const selectedItem = quantity.value.find((item) => item._id === props.quantity);
         if (selectedItem) selectedId.value = selectedItem._id;
     }
