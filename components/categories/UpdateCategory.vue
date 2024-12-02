@@ -45,22 +45,27 @@ async function makeUpdate() {
     const payload: ICreatePayload = {
         name: title.value,
         icon: icon.value,
+        enableSmartPricing: enableSmartPricing.value,
+        enableCustomProperties: enableCustomProperties.value,
+    };
 
-        smartPricingSettings: {
+    if (enableSmartPricing.value) {
+        payload.smartPricingSettings = {
             priceRangeId: selectedEntryPrice.value,
             quantityId: selectedQuantity.value,
             marginId: selectedMargin.value,
-        },
-        enableSmartPricing: enableSmartPricing.value,
+        };
+    }
 
-        customProperties: {
+    if (enableCustomProperties.value) {
+        payload.customProperties = {
             avgItemWeight: avgWeight.value,
             length: length.value,
             width: width.value,
             height: height.value,
-        },
-        enableCustomProperties: enableCustomProperties.value,
-    };
+        };
+    }
+
     if (selectedCategories.value[0]) {
         payload.parentId = selectedCategories.value[0];
     }

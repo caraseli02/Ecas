@@ -30,7 +30,7 @@
             <div class="grid grid-cols-1 gap-2 flex-1 max-h-[115px] overflow-y-auto scrollbar-thin pb-[13px]">
                 <label
                     v-for="option in options"
-                    :key="option.rawFilter.FeatureID"
+                    :key="option.rawFilter.FeatureValue"
                     class="group flex items-start justify-between cursor-pointer px-2.5"
                 >
                     <input type="checkbox" class="sr-only" @click="toggleOption(option)" />
@@ -109,13 +109,13 @@ const onInput = () => {
 };
 
 const parseOptions = () => {
-    const keys = Object.keys(props.filter)[0];
+    const key = Object.keys(props.filter)[0];
 
-    if (!props.filter || !keys) {
+    if (!props.filter || !key) {
         return;
     }
 
-    const filtered = props.filter[keys].filter((item) => item.FeatureName === keys) || [];
+    const filtered = props.filter[key].filter((item) => item.FeatureName === key) || [];
 
     return filtered.map((item) => ({
         value: item.FeatureValue,

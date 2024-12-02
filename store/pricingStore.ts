@@ -94,5 +94,5 @@ export const usePricingStore = defineStore({
     },
     persist: {
         storage: piniaPluginPersistedstate.localStorage(),
-      },
+    },
 });
