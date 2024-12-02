@@ -14,12 +14,7 @@
                 <div class="flex items-center justify-between gap-4 lg:gap-[35px] xl:gap-[78px]" :class="[isScrolled ? 'md:gap-0' : '']">
                     <div class="flex items-center">
                         <div class="flex items-center" :class="[isScrolled ? 'md:mr-[29px] lg:mr-0' : 'md:mr-4 lg:mr-6']">
-                            <button class="flex items-center mr-4 md:mr-0" @click="toggleNavModal">
-                                <BurgerIcon class="w-6 h-6" />
-                                <span v-if="!isScrolled" class="hidden leading-normal font-medium text-white ml-2 md:inline-block lg:ml-4">
-                                    Products
-                                </span>
-                            </button>
+                            <LayoutHeaderMainMenuPopover :is-scrolled="isScrolled" />
                             <NuxtLink to="/" class="flex" :class="[isScrolled ? 'md:ml-4 lg:ml-6' : 'md:hidden']">
                                 <LogoSM class="w-[22px] h-5" :class="[isScrolled ? 'md:hidden' : '']" />
                                 <Logo
@@ -149,12 +144,6 @@
                         :is-loading="isLoading"
                     />
                 </Transition>
-                <Transition name="fade">
-                    <LayoutHeaderMainMenuLarge
-                        v-if="showNavModal"
-                        class="hidden absolute z-[60] -bottom-[8px] left-0 translate-y-full w-full max-w-max md:grid"
-                    />
-                </Transition>
             </div>
         </div>
     </div>
@@ -194,7 +183,6 @@
 <script setup lang="ts">
 import Logo from '@/assets/media/logo.svg';
 import LogoSM from '@/assets/media/logo-sm.svg';
-import BurgerIcon from '@/assets/icons/header/burger.svg';
 import SearchIcon from '@/assets/icons/search.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
 import UserIcon from '@/assets/icons/user.svg';
