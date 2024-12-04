@@ -140,7 +140,7 @@ const isClientCodeFormat = (value: string) => {
     return regex.test(value);
 };
 
-const cookieToken = useCookie('token', { maxAge: 60 * 60 * 6 });
+const cookieToken = useCookie('token', { maxAge: 60 * 60 });
 
 const handleSignIn = async () => {
     const hasError = checkForInputErrors([email.value, password.value]);
