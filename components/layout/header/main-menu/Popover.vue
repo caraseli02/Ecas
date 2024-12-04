@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { MenuIcon, ChevronRight, ArrowRight, GemIcon, HeadsetIcon, Building2Icon } from 'lucide-vue-next'
+import { ref, computed } from 'vue'
 import Breadcrumb from './Breadcrumb.vue'
 import CardPlaceholderSmall from '@/assets/icons/card-placeholder-small.svg'
-import { ref, computed } from 'vue'
 
 defineProps<{
   isScrolled: boolean
@@ -33,7 +33,6 @@ const resetCategories = () => {
   selectedCategories.value = []
 }
 </script>
-
 
 <template>
   <UiPopover>
@@ -82,18 +81,10 @@ const resetCategories = () => {
         </UiButton>
       </div>
       <!-- Right Column: Subcategories -->
-      <div class="flex flex-col justify-between gap-8 bg-white px-6 py-4 rounded-xl">
+      <div class="flex flex-col gap-8 bg-white px-6 py-4 rounded-xl">
         <!-- Breadcrumb Navigation -->
         <section class="flex justify-between items-center h-8 w-full">
-          <div class="breadcrumb flex items-center space-x-2">
-            <span @click="resetCategories" class="cursor-pointer text-blue-500">All Categories</span>
-            <span v-for="(category, index) in selectedCategories" :key="category.id" class="flex items-center">
-              <ChevronRight class="w-4 h-4 text-gray-400" />
-              <span @click="onBreadcrumbClick(index)" class="cursor-pointer text-blue-500">
-                {{ category.name }}
-              </span>
-            </span>
-          </div>
+          <Breadcrumb />
           <UiButton
             class="gap-1"
             size="xs"
@@ -105,31 +96,38 @@ const resetCategories = () => {
           </UiButton>
         </section>
         <!-- Subcategories Display -->
-        <section v-if="currentCategory">
-          <div v-if="currentCategory.subcategory && currentCategory.subcategory.length > 0">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <section class="h-full" v-if="currentCategory">
+          <template v-if="currentCategory.subcategory && currentCategory.subcategory.length > 0">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 h-full max-h-[384px] overflow-y-auto">
               <div
                 v-for="sub in currentCategory.subcategory"
                 :key="sub.id"
-                class="flex flex-col"
+                class="flex flex-col gap-4"
               >
-                <h3 class="font-semibold text-lg mb-2 cursor-pointer" @click="onCategoryClick(sub)">
+                <h3
+                  class="font-medium"
+                >
                   {{ sub.name }}
                 </h3>
-                <div v-if="sub.subcategory && sub.subcategory.length > 0" class="space-y-1">
+                <div
+                  v-if="sub.subcategory && sub.subcategory.length > 0"
+                  class="flex flex-col gap-3 items-start"
+                >
                   <UiButton
-                    v-for="childSub in sub.subcategory"
+                    v-for="childSub in sub.subcategory.slice(0, 8)"
                     :key="childSub.id"
                     variant="link"
-                    class="text-left"
+                    class="text-left pl-0 flex-col items-start"
                     @click="onCategoryClick(childSub)"
+                    :disabled="childSub.productCount === 0"
                   >
                     {{ childSub.name }}
+                    <span class="text-xs">{{ childSub.productCount }} items</span>
                   </UiButton>
                 </div>
               </div>
             </div>
-          </div>
+          </template>
           <div v-else>
             <p>No subcategories available.</p>
           </div>
@@ -172,4 +170,3 @@ const resetCategories = () => {
     </UiPopoverContent>
   </UiPopover>
 </template>
-
