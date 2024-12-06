@@ -1,39 +1,23 @@
 <script lang="ts" setup>
-
+defineProps<{
+  links: string[]
+}>()
 </script>
 
 <template>
   <UiaBreadcrumb>
     <UiBreadcrumbList>
-      <UiBreadcrumbItem>
-        <UiBreadcrumbLink href="/">
-          Home
-        </UiBreadcrumbLink>
-      </UiBreadcrumbItem>
-      <UiBreadcrumbSeparator />
-      <UiBreadcrumbItem>
-        <UiDropdownMenu>
-          <UiDropdownMenuTrigger class="flex items-center gap-1">
-            <UiBreadcrumbEllipsis class="h-4 w-4" />
-            <span class="sr-only">Toggle menu</span>
-          </UiDropdownMenuTrigger>
-          <UiDropdownMenuContent align="start">
-            <UiDropdownMenuItem>Documentation</UiDropdownMenuItem>
-            <UiDropdownMenuItem>Themes</UiDropdownMenuItem>
-            <UiDropdownMenuItem>GitHub</UiDropdownMenuItem>
-          </UiDropdownMenuContent>
-        </UiDropdownMenu>
-      </UiBreadcrumbItem>
-      <UiBreadcrumbSeparator />
-      <UiBreadcrumbItem>
-        <UiBreadcrumbLink href="/docs/components/accordion.html">
-          Components
-        </UiBreadcrumbLink>
-      </UiBreadcrumbItem>
-      <UiBreadcrumbSeparator />
-      <UiBreadcrumbItem>
-        <UiBreadcrumbPage>UiBreadcrumb</UiBreadcrumbPage>
-      </UiBreadcrumbItem>
+      <template
+        v-for="link in links"
+        :key="link"
+      >
+        <UiBreadcrumbItem>
+          <UiBreadcrumbLink>
+            {{ link }}
+          </UiBreadcrumbLink>
+        </UiBreadcrumbItem>
+        <UiBreadcrumbSeparator class="last:hidden" v-if="links.length > 1" />
+      </template>
     </UiBreadcrumbList>
   </UiaBreadcrumb>
 </template>
