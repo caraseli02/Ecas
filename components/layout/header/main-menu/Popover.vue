@@ -65,7 +65,7 @@ const isOpen = ref(false)
     </UiPopoverTrigger>
     <UiPopoverContent
       align="start"
-      class="w-full h-[588px] container grid grid-cols-[288px_1fr] max-w-[1392px] items-stretch p-2 bg-grey-50 rounded-xl shadow-s"
+      class="w-full h-[588px] container overflow-hidden grid grid-cols-[288px_1fr]  items-stretch p-2 bg-grey-50 rounded-xl shadow-s"
       :side-offset="25"
     >
       <!-- Left Column: Main Categories -->
@@ -118,7 +118,7 @@ const isOpen = ref(false)
           class="h-full"
         >
           <template v-if="currentCategory.subcategory && currentCategory.subcategory.length > 0">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 h-full max-h-[384px] overflow-y-auto">
+            <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 h-full max-h-[384px] overflow-y-auto">
               <div
                 v-for="sub in currentCategory.subcategory"
                 :key="sub.id"
