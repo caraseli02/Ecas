@@ -18,9 +18,19 @@ const currentCategory = computed(() => {
   return selectedCategories.value.length > 0 ? selectedCategories.value[selectedCategories.value.length - 1] : null
 })
 
+const router = useRouter()
+
 // Function to handle category clicks
 const onCategoryClick = (category) => {
-  selectedCategories.value.push(category)
+  if (category.subcategory.length === 0) {
+    // Redirect to the category link if it's the last level
+    isOpen.value = false
+    selectedCategories.value = []
+    router.push(`/search?category=${category.id}`)
+  }
+  else {
+    selectedCategories.value.push(category)
+  }
 }
 
 // Function to handle breadcrumb clicks
@@ -32,24 +42,31 @@ const onBreadcrumbClick = (index) => {
 const resetCategories = () => {
   selectedCategories.value = []
 }
+
+const isOpen = ref(false)
 </script>
 
 <template>
-  <UiPopover>
+  <UiPopover v-model:open="isOpen">
     <UiPopoverTrigger as-child>
-      <button class="flex items-center mr-4 md:mr-0">
-        <MenuIcon class="w-6 h-6 text-white" />
+      <UiButton
+        :variant="isOpen ? 'secondary' : 'ghost'"
+        class="flex items-center mr-4 md:mr-0"
+        :class="[{ 'text-white hover:text-blue-500': !isOpen }]"
+      >
+        <MenuIcon class="w-6 h-6" />
         <span
           v-if="!isScrolled"
-          class="hidden leading-normal font-medium text-white ml-2 md:inline-block lg:ml-4"
+          class="hidden leading-normal font-medium ml-2 md:inline-block lg:ml-4"
         >
           Products
         </span>
-      </button>
+      </UiButton>
     </UiPopoverTrigger>
     <UiPopoverContent
       align="start"
-      class="w-full h-[588px] container grid grid-cols-[288px_1fr] max-w-[1392px] items-stretch p-2 bg-grey-50"
+      class="w-full h-[588px] container grid grid-cols-[288px_1fr] max-w-[1392px] items-stretch p-2 bg-grey-50 rounded-xl shadow-s"
+      :side-offset="25"
     >
       <!-- Left Column: Main Categories -->
       <div class="w-full flex flex-col items-start">
@@ -68,7 +85,7 @@ const resetCategories = () => {
             />
             <CardPlaceholderSmall
               v-else
-              class="min-w-5 min-h-5 text-black"
+              class="min-w-6 min-h-6 text-black"
             />
             <p class="flex flex-col items-start w-full font-medium">
               {{ category.name }}
@@ -96,7 +113,10 @@ const resetCategories = () => {
           </UiButton>
         </section>
         <!-- Subcategories Display -->
-        <section class="h-full" v-if="currentCategory">
+        <section
+          v-if="currentCategory"
+          class="h-full"
+        >
           <template v-if="currentCategory.subcategory && currentCategory.subcategory.length > 0">
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 h-full max-h-[384px] overflow-y-auto">
               <div
@@ -113,17 +133,32 @@ const resetCategories = () => {
                   v-if="sub.subcategory && sub.subcategory.length > 0"
                   class="flex flex-col gap-3 items-start"
                 >
-                  <UiButton
+                  <div
                     v-for="childSub in sub.subcategory.slice(0, 8)"
                     :key="childSub.id"
-                    variant="link"
-                    class="text-left pl-0 flex-col items-start"
-                    @click="onCategoryClick(childSub)"
-                    :disabled="childSub.productCount === 0"
                   >
-                    {{ childSub.name }}
-                    <span class="text-xs">{{ childSub.productCount }} items</span>
-                  </UiButton>
+                    <UiButton
+                      variant="link"
+                      class="text-left pl-0 flex-col items-start"
+                      :disabled="childSub.productCount === 0"
+                      @click="onCategoryClick(childSub)"
+                    >
+                      {{ childSub.name }}
+                      <span class="text-xs">{{ childSub.productCount }} items</span>
+                    </UiButton>
+                    <UiBadge
+                      v-if="false"
+                      class="bg-blue-500 text-xs px-2"
+                    >
+                      New
+                    </UiBadge>
+                    <UiBadge
+                      v-if="false"
+                      class="bg-rose-600 text-xs px-2"
+                    >
+                      Sale
+                    </UiBadge>
+                  </div>
                 </div>
               </div>
             </div>
