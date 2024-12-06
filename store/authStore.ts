@@ -11,7 +11,7 @@ import type { GeneralSettingsInterface } from '~/types/general-settings/general-
 export const useAuthStore = defineStore(
   'auth-store',
   () => {
-    // Initial state
+       // Initial state
     const initialState = {
       token: { value: '', createdAt: '' },
       loggedInUser: null as UserInfoJWT | null,
@@ -78,7 +78,7 @@ export const useAuthStore = defineStore(
 
       Emitter.emit('remove-cart-and-notifications', true);
 
-      if (process.client) {
+      if (import.meta.client) {
         localStorage.clear();
       }
     }
