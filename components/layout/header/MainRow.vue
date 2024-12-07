@@ -14,7 +14,7 @@
                 <div class="flex items-center justify-between gap-4 lg:gap-[35px] xl:gap-[78px]" :class="[isScrolled ? 'md:gap-0' : '']">
                     <div class="flex items-center">
                         <div class="flex items-center" :class="[isScrolled ? 'md:mr-[29px] lg:mr-0' : 'md:mr-4 lg:mr-6']">
-                            <LayoutHeaderMainMenuPopover :is-scrolled="isScrolled" />
+                            <LayoutHeaderMainMenuItems :is-scrolled="isScrolled" />
                             <NuxtLink to="/" class="flex" :class="[isScrolled ? 'md:ml-4 lg:ml-6' : 'md:hidden']">
                                 <LogoSM class="w-[22px] h-5" :class="[isScrolled ? 'md:hidden' : '']" />
                                 <Logo

@@ -1,61 +1,16 @@
 <script setup lang="ts">
-import { XIcon, MenuIcon, ChevronRight, ArrowRight, GemIcon, HeadsetIcon, Building2Icon, ChevronLeftIcon } from 'lucide-vue-next'
-import { ref, computed } from 'vue'
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import { XIcon, MenuIcon, ChevronRight, ArrowRight, GemIcon, HeadsetIcon, Building2Icon } from 'lucide-vue-next'
 import Breadcrumb from './Breadcrumb.vue'
+import { useCategoriesNavigation } from '@/composables/useCategoriesNavigation'
 import CardPlaceholderSmall from '@/assets/icons/card-placeholder-small.svg'
 
-defineProps<{
-  isScrolled: boolean
-}>()
+defineProps<{ isScrolled: boolean }>()
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const lgAndLarger = breakpoints.greaterOrEqual('lg') // sm and larger
-
-const { categories } = useCategories()
-
-// State to keep track of the selected categories path
-const selectedCategories = ref([] as any[])
-
-// Computed property to get the current category
-const currentCategory = computed(() => {
-  return selectedCategories.value.length > 0 ? selectedCategories.value[selectedCategories.value.length - 1] : null
-})
-
-const router = useRouter()
-
-// Function to handle category clicks
-const onCategoryClick = (category, makeReset: boolean) => {
-  if (makeReset) selectedCategories.value = []
-  if (category.subcategory.length === 0) {
-    // Redirect to the category link if it's the last level
-    isOpen.value = false
-    selectedCategories.value = []
-    router.push(`/search?category=${category.id}`)
-  }
-  else {
-    selectedCategories.value.push(category)
-  }
-}
-
-// Function to handle breadcrumb clicks
-// const onBreadcrumbClick = (index) => {
-//   selectedCategories.value = selectedCategories.value.slice(0, index + 1)
-// }
-
-// Function to reset to all categories
-const resetCategories = () => {
-  selectedCategories.value = []
-}
-
-const isOpen = ref(false)
+const { categories, selectedCategories, currentCategory, isOpen, onCategoryClick, resetCategories } = useCategoriesNavigation()
 </script>
 
 <template>
-  <UiPopover
-    v-if="lgAndLarger"
-    v-model:open="isOpen"
-  >
+  <UiPopover v-model:open="isOpen">
     <UiPopoverTrigger as-child>
       <UiButton
         :variant="isOpen ? 'secondary' : 'ghost'"
@@ -73,9 +28,7 @@ const isOpen = ref(false)
         <span
           v-if="!isScrolled"
           class="hidden leading-normal font-medium ml-2 md:inline-block lg:ml-4"
-        >
-          Products
-        </span>
+        >Products</span>
       </UiButton>
     </UiPopoverTrigger>
     <UiPopoverContent
@@ -83,7 +36,7 @@ const isOpen = ref(false)
       :side-offset="25"
       class="p-0 w-screen bg-transparent shadow-none border-none hidden lg:block"
     >
-      <div class="container ">
+    <div class="container ">
         <section
           class="w-full h-[588px] grid grid-cols-[288px_1fr]  items-stretch p-2 bg-grey-50 rounded-xl shadow-s overflow-hidden"
         >
@@ -228,151 +181,4 @@ const isOpen = ref(false)
       </div>
     </UiPopoverContent>
   </UiPopover>
-  <UiSheet
-    v-else
-    v-model:open="isOpen"
-  >
-    <UiSheetTrigger as-child>
-      <UiButton
-        :variant="isOpen ? 'secondary' : 'ghost'"
-        class="flex items-center mr-4 md:mr-0"
-        :class="[{ 'text-white hover:text-blue-500': !isOpen }]"
-      >
-        <XIcon
-          v-if="isOpen"
-          class="w-6 h-6"
-        />
-        <MenuIcon
-          v-else
-          class="w-6 h-6"
-        />
-        <span
-          v-if="!isScrolled"
-          class="hidden leading-normal font-medium ml-2 md:inline-block lg:ml-4"
-        >
-          Products
-        </span>
-      </UiButton>
-    </UiSheetTrigger>
-    <UiSheetContent
-      class="w-full"
-      :class="['px-1 pt-1.5', isScrolled ? 'top-[112px] md:top-[98px]' : 'top-[112px] md:top-[188px]']"
-      side="left"
-      portal-to="#nuxt_page"
-      hidde-close-button
-      :overlay-class-name="isScrolled ? 'top-[112px] md:top-[98px]' : 'top-[112px] md:top-[188px]'"
-    >
-      <UiSheetHeader>
-        <UiSheetTitle v-if="currentCategory">
-          <UiButton
-            variant="link"
-            class="flex items-center mr-4 md:mr-0"
-            @click="resetCategories"
-          >
-            <ChevronLeftIcon class="w-4 h-4" />
-            <span
-              class="leading-normal font-medium ml-2 lg:ml-4"
-            >
-              Back
-            </span>
-          </UiButton>
-          <UiSeparator class="my-1" />
-        </UiSheetTitle>
-      </UiSheetHeader>
-      <div
-        v-if="currentCategory"
-        class="flex flex-col gap-4 pt-2 ml-4 overflow-auto max-h-screen pb-32 h-full"
-      >
-        <div
-          v-for="sub in currentCategory.subcategory"
-          :key="sub.id"
-          class="flex flex-col gap-4 max-w-xs md:max-w-screen-sm"
-        >
-          <section
-            v-if="sub.subcategory && sub.subcategory.length > 0"
-            class="flex items-center gap-3 justify-between pr-1"
-          >
-            <div class="flex items-center gap-4">
-              <UiButton
-                variant="link"
-                class="text-left pl-0 flex-col items-start font-normal text-neutral-700"
-                :disabled="sub.productCount === 0"
-                @click="onCategoryClick(sub, false)"
-              >
-                {{ sub.name }}
-                <span class="text-xs font-light text-slate-500">{{ sub.productCount }} items</span>
-              </UiButton>
-              <UiBadge
-                v-if="false"
-                class="bg-blue-500 text-xs px-2"
-              >
-                New
-              </UiBadge>
-              <UiBadge
-                v-if="false"
-                class="bg-rose-600 text-xs px-2"
-              >
-                Sale
-              </UiBadge>
-            </div>
-            <ChevronRight class="w-4 h-4 text-neutral-700" />
-          </section>
-        </div>
-      </div>
-      <!-- Left Column: Main Categories -->
-      <div
-        v-else
-        class="w-full flex flex-col items-start h-full"
-      >
-        <UiButton
-          v-for="category in categories"
-          :key="category.id"
-          class="text-start h-11 w-full max-w-[366px] flex flex-row flex-nowrap justify-between gap-2"
-          variant="ghost"
-          @click="onCategoryClick(category, true)"
-        >
-          <div class="flex gap-2 items-center">
-            <component
-              :is="category.icon"
-              v-if="category.icon && category.icon !== 'N/A'"
-              class="min-w-5 min-h-5 text-black"
-            />
-            <CardPlaceholderSmall
-              v-else
-              class="min-w-6 min-h-6 text-black"
-            />
-            <p class="flex flex-col items-start w-full font-medium">
-              {{ category.name }}
-              <span class="text-xs font-normal text-slate-500">
-                {{ category.productCount }}
-              </span>
-            </p>
-          </div>
-          <ChevronRight class="w-4 h-4 text-black" />
-        </UiButton>
-      </div>
-      <SheetFooter class="sticky bottom-0 flex justify-end items-center h-10 border-t z-10 bg-white">
-        <UiButton
-          size="xs"
-          class="text-xs gap-2 px-1"
-          variant="link"
-        >
-          <Building2Icon class="w-4 h-4 text-black" />
-          Contact Sales
-        </UiButton>
-        <UiSeparator
-          orientation="vertical"
-          class="mx-1 bg-gray-200 h-4"
-        />
-        <UiButton
-          size="xs"
-          class="text-xs gap-2 px-1"
-          variant="link"
-        >
-          <HeadsetIcon class="w-4 h-4 text-black" />
-          Support
-        </UiButton>
-      </SheetFooter>
-    </UiSheetContent>
-  </UiSheet>
 </template>
