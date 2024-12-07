@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MenuIcon, ChevronRight, ArrowRight, GemIcon, HeadsetIcon, Building2Icon, ChevronLeftIcon } from 'lucide-vue-next'
+import { XIcon, MenuIcon, ChevronRight, ArrowRight, GemIcon, HeadsetIcon, Building2Icon, ChevronLeftIcon } from 'lucide-vue-next'
 import { ref, computed } from 'vue'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Breadcrumb from './Breadcrumb.vue'
@@ -10,7 +10,6 @@ defineProps<{
 }>()
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
-const smallerThanSm = breakpoints.smaller('sm') // sm and larger
 const lgAndLarger = breakpoints.greaterOrEqual('lg') // sm and larger
 
 const { categories } = useCategories()
@@ -49,7 +48,7 @@ const resetCategories = () => {
   selectedCategories.value = []
 }
 
-const isOpen = ref(true)
+const isOpen = ref(false)
 </script>
 
 <template>
@@ -63,7 +62,14 @@ const isOpen = ref(true)
         class="flex items-center mr-4 md:mr-0"
         :class="[{ 'text-white hover:text-blue-500': !isOpen }]"
       >
-        <MenuIcon class="w-6 h-6" />
+        <XIcon
+          v-if="isOpen"
+          class="w-6 h-6"
+        />
+        <MenuIcon
+          v-else
+          class="w-6 h-6"
+        />
         <span
           v-if="!isScrolled"
           class="hidden leading-normal font-medium ml-2 md:inline-block lg:ml-4"
@@ -222,14 +228,24 @@ const isOpen = ref(true)
       </div>
     </UiPopoverContent>
   </UiPopover>
-  <UiSheet v-else>
+  <UiSheet
+    v-else
+    v-model:open="isOpen"
+  >
     <UiSheetTrigger as-child>
       <UiButton
         :variant="isOpen ? 'secondary' : 'ghost'"
         class="flex items-center mr-4 md:mr-0"
         :class="[{ 'text-white hover:text-blue-500': !isOpen }]"
       >
-        <MenuIcon class="w-6 h-6" />
+        <XIcon
+          v-if="isOpen"
+          class="w-6 h-6"
+        />
+        <MenuIcon
+          v-else
+          class="w-6 h-6"
+        />
         <span
           v-if="!isScrolled"
           class="hidden leading-normal font-medium ml-2 md:inline-block lg:ml-4"
@@ -239,8 +255,12 @@ const isOpen = ref(true)
       </UiButton>
     </UiSheetTrigger>
     <UiSheetContent
-      class="px-1 pt-1.5"
+      class="w-full"
+      :class="['px-1 pt-1.5', isScrolled ? 'top-[112px] md:top-[98px]' : 'top-[112px] md:top-[188px]']"
       side="left"
+      portal-to="#nuxt_page"
+      hidde-close-button
+      :overlay-class-name="isScrolled ? 'top-[112px] md:top-[98px]' : 'top-[112px] md:top-[188px]'"
     >
       <UiSheetHeader>
         <UiSheetTitle v-if="currentCategory">
@@ -251,8 +271,7 @@ const isOpen = ref(true)
           >
             <ChevronLeftIcon class="w-4 h-4" />
             <span
-              v-if="!isScrolled"
-              class="hidden leading-normal font-medium ml-2 md:inline-block lg:ml-4"
+              class="leading-normal font-medium ml-2 lg:ml-4"
             >
               Back
             </span>
@@ -262,34 +281,26 @@ const isOpen = ref(true)
       </UiSheetHeader>
       <div
         v-if="currentCategory"
-        class="flex flex-col ml-4 overflow-auto max-h-screen pb-32"
+        class="flex flex-col gap-4 pt-2 ml-4 overflow-auto max-h-screen pb-32 h-full"
       >
         <div
           v-for="sub in currentCategory.subcategory"
           :key="sub.id"
-          class="flex flex-col gap-4 max-w-xs"
+          class="flex flex-col gap-4 max-w-xs md:max-w-screen-sm"
         >
-          <h3
-            class="font-medium"
-          >
-            {{ sub.name }}
-          </h3>
-          <div
+          <section
             v-if="sub.subcategory && sub.subcategory.length > 0"
-            class="flex flex-col gap-3 items-start"
+            class="flex items-center gap-3 justify-between pr-1"
           >
-            <div
-              v-for="childSub in sub.subcategory.slice(0, 8)"
-              :key="childSub.id"
-            >
+            <div class="flex items-center gap-4">
               <UiButton
                 variant="link"
-                class="text-left pl-0 flex-col items-start"
-                :disabled="childSub.productCount === 0"
-                @click="onCategoryClick(childSub, false)"
+                class="text-left pl-0 flex-col items-start font-normal text-neutral-700"
+                :disabled="sub.productCount === 0"
+                @click="onCategoryClick(sub, false)"
               >
-                {{ childSub.name }}
-                <span class="text-xs">{{ childSub.productCount }} items</span>
+                {{ sub.name }}
+                <span class="text-xs font-light text-slate-500">{{ sub.productCount }} items</span>
               </UiButton>
               <UiBadge
                 v-if="false"
@@ -304,13 +315,14 @@ const isOpen = ref(true)
                 Sale
               </UiBadge>
             </div>
-          </div>
+            <ChevronRight class="w-4 h-4 text-neutral-700" />
+          </section>
         </div>
       </div>
       <!-- Left Column: Main Categories -->
       <div
         v-else
-        class="w-full flex flex-col items-start"
+        class="w-full flex flex-col items-start h-full"
       >
         <UiButton
           v-for="category in categories"
@@ -339,6 +351,28 @@ const isOpen = ref(true)
           <ChevronRight class="w-4 h-4 text-black" />
         </UiButton>
       </div>
+      <SheetFooter class="sticky bottom-0 flex justify-end items-center h-10 border-t z-10 bg-white">
+        <UiButton
+          size="xs"
+          class="text-xs gap-2 px-1"
+          variant="link"
+        >
+          <Building2Icon class="w-4 h-4 text-black" />
+          Contact Sales
+        </UiButton>
+        <UiSeparator
+          orientation="vertical"
+          class="mx-1 bg-gray-200 h-4"
+        />
+        <UiButton
+          size="xs"
+          class="text-xs gap-2 px-1"
+          variant="link"
+        >
+          <HeadsetIcon class="w-4 h-4 text-black" />
+          Support
+        </UiButton>
+      </SheetFooter>
     </UiSheetContent>
   </UiSheet>
 </template>
