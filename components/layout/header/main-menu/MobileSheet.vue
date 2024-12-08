@@ -15,7 +15,7 @@ const showDiscountSection = ref(false)
     <UiSheetTrigger as-child>
       <UiButton
         variant="ghost"
-        class="flex items-center mr-4 md:mr-0 text-white hover:bg-blue-500"
+        class="flex items-center pl-0 mr-4 md:mr-0 text-white hover:bg-blue-500"
       >
         <XIcon
           v-if="isOpen"
@@ -35,16 +35,16 @@ const showDiscountSection = ref(false)
     </UiSheetTrigger>
     <UiSheetContent
       class="w-full"
-      :class="['px-1 pt-1.5', isScrolled ? 'top-[112px] md:top-[98px]' : 'top-[112px] md:top-[188px]']"
+      :class="['px-0 pt-0', isScrolled ? 'top-[112px] md:top-[98px]' : 'top-[112px] md:top-[188px]']"
       side="left"
       hidde-close-button
       :overlay-class-name="isScrolled ? 'top-[112px] md:top-[98px]' : 'top-[112px] md:top-[188px]'"
     >
-      <UiSheetHeader>
-        <UiSheetTitle v-if="currentCategory">
+      <UiSheetHeader class="bg-grey-100 border-b border-grey-300">
+        <UiSheetTitle class="container" v-if="currentCategory">
           <UiButton
             variant="link"
-            class="flex items-center ml-3 md:mr-0"
+            class="flex items-center pl-0 md:mr-0"
             @click="selectedCategories.pop()"
           >
             <ChevronLeftIcon class="w-4 h-4" />
@@ -54,12 +54,12 @@ const showDiscountSection = ref(false)
               {{ currentCategory.name }}
             </span>
           </UiButton>
-          <UiSeparator class="my-1" />
+          <!-- <UiSeparator class="my-1" /> -->
         </UiSheetTitle>
       </UiSheetHeader>
       <div
         v-if="currentCategory"
-        class="flex flex-col gap-4 pt-2 ml-4 overflow-auto max-h-screen pb-32 h-full container"
+        class="flex flex-col gap-4 pt-2 overflow-auto max-h-screen pb-32 h-full container"
       >
         <div
           v-for="sub in currentCategory.subcategory"
@@ -127,7 +127,7 @@ const showDiscountSection = ref(false)
       <!-- Left Column: Main Categories -->
       <div
         v-else
-        class="w-full h-full flex flex-col items-start container"
+        class="w-full h-full flex flex-col items-start container mt-2"
       >
         <UiButton
           v-for="category in categories"
