@@ -36,16 +36,17 @@ const { categories, selectedCategories, currentCategory, isOpen, onCategoryClick
       :side-offset="25"
       class="p-0 w-screen bg-transparent shadow-none border-none hidden lg:block"
     >
-    <div class="container ">
+      <div class="container ">
         <section
           class="w-full h-[588px] grid grid-cols-[288px_1fr]  items-stretch p-2 bg-grey-50 rounded-xl shadow-s overflow-hidden"
         >
           <!-- Left Column: Main Categories -->
-          <div class="w-full flex flex-col items-start">
+          <div class="w-full flex flex-col items-start pr-2">
             <UiButton
               v-for="category in categories"
               :key="category.id"
-              class="text-start h-11 w-full max-w-[268px] flex flex-row flex-nowrap justify-between gap-2"
+              class="text-start h-11 w-full flex flex-row flex-nowrap justify-between gap-2"
+              :class="{ 'bg-light-300 text-blue-500': selectedCategories.includes(category) }"
               variant="ghost"
               @click="onCategoryClick(category, true)"
             >
@@ -61,21 +62,27 @@ const { categories, selectedCategories, currentCategory, isOpen, onCategoryClick
                 />
                 <p class="flex flex-col items-start w-full font-medium">
                   {{ category.name }}
-                  <span class="text-xs font-normal text-slate-500">
+                  <span
+                    class="text-xs font-normal"
+                    :class="selectedCategories.includes(category) ? 'text-blue-500' : 'text-slate-500'"
+                  >
                     {{ category.productCount }}
                   </span>
                 </p>
               </div>
-              <ChevronRight class="w-4 h-4 text-black" />
+              <ChevronRight
+                class="w-4 h-4"
+                :class="selectedCategories.includes(category) ? 'text-blue-500' : 'text-neutral-700'"
+              />
             </UiButton>
           </div>
           <!-- Right Column: Subcategories -->
           <div
             v-if="currentCategory"
-            class="flex flex-col gap-8 bg-white px-6 py-4 rounded-xl"
+            class="flex flex-col gap-8 bg-white px-6 py-4 rounded-xl w-fit xl:w-full"
           >
             <!-- Breadcrumb Navigation -->
-            <section class="flex justify-between items-center h-8">
+            <section class="flex justify-between items-center h-8 w-fit xl:w-full min-w-[636px]">
               <Breadcrumb :links="selectedCategories.map((link) => link.name)" />
               <UiButton
                 class="gap-1"
@@ -92,14 +99,14 @@ const { categories, selectedCategories, currentCategory, isOpen, onCategoryClick
               class="h-full"
             >
               <template v-if="currentCategory.subcategory && currentCategory.subcategory.length > 0">
-                <div class="grid grid-cols-[320px_minmax(320px,_1fr)] xl:grid-cols-3 2xl:grid-cols-4 gap-4 h-full max-h-[384px] overflow-y-auto">
+                <div class="w-fit grid grid-cols-[320px_320px] xl:grid-cols-3 2xl:grid-cols-4 gap-4 h-full max-h-[334px] xl:max-h-[384px] overflow-y-auto">
                   <div
                     v-for="sub in currentCategory.subcategory"
                     :key="sub.id"
                     class="flex flex-col gap-4 max-w-xs"
                   >
                     <h3
-                      class="font-medium"
+                      class="font-medium text-sm"
                     >
                       {{ sub.name }}
                     </h3>
@@ -142,9 +149,9 @@ const { categories, selectedCategories, currentCategory, isOpen, onCategoryClick
               </div>
             </section>
             <!-- Footer Section -->
-            <section class="flex flex-col justify-between gap-3 h-[60px]">
+            <section class="flex flex-col justify-between gap-3 h-[134px] xl:h-[60px]">
               <UiSeparator />
-              <div class="flex justify-between items-center gap-4">
+              <div class="flex flex-wrap xl:flex-nowrap xl:justify-between items-center gap-0.5 xl:gap-4">
                 <UiButton
                   class="font-medium gap-1 p-0"
                   size="xs"
@@ -153,26 +160,30 @@ const { categories, selectedCategories, currentCategory, isOpen, onCategoryClick
                   <GemIcon class="w-4 h-4 text-black" />
                   View our discounted offers
                 </UiButton>
-                <UiSkeleton class="w-[140px] h-10" />
-                <UiSkeleton class="w-[140px] h-10" />
-                <UiSkeleton class="w-[140px] h-10" />
-                <UiSkeleton class="w-[140px] h-10 hidden 2xl:block" />
-                <UiButton
-                  size="xs"
-                  class="text-xs gap-2 px-1"
-                  variant="link"
-                >
-                  <Building2Icon class="w-4 h-4 text-black" />
-                  Contact Sales
-                </UiButton>
-                <UiButton
-                  size="xs"
-                  class="text-xs gap-2 px-1"
-                  variant="link"
-                >
-                  <HeadsetIcon class="w-4 h-4 text-black" />
-                  Support
-                </UiButton>
+                <div class="flex gap-1">
+                  <UiSkeleton class="w-[140px] h-10" />
+                  <UiSkeleton class="w-[140px] h-10" />
+                  <UiSkeleton class="w-[140px] h-10" />
+                  <UiSkeleton class="w-[140px] h-10" />
+                </div>
+                <div class="flex gap-1 items-center justify-end w-full xl:w-fit pr-4 xl:pr-0">
+                  <UiButton
+                    size="xs"
+                    class="text-xs gap-2 px-1 self-end"
+                    variant="link"
+                  >
+                    <Building2Icon class="w-4 h-4 text-black" />
+                    Contact Sales
+                  </UiButton>
+                  <UiButton
+                    size="xs"
+                    class="text-xs gap-2 px-1"
+                    variant="link"
+                  >
+                    <HeadsetIcon class="w-4 h-4 text-black" />
+                    Support
+                  </UiButton>
+                </div>
               </div>
             </section>
           </div>
