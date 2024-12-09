@@ -115,7 +115,7 @@ const { categories, selectedCategories, currentCategory, isOpen, onCategoryClick
                       class="flex flex-col gap-3 items-start"
                     >
                       <div
-                        v-for="childSub in sub.subcategory.slice(0, 8)"
+                        v-for="childSub in sub.subcategory.sort((a, b) => b.productCount - a.productCount)"
                         :key="childSub.id"
                       >
                         <UiButton

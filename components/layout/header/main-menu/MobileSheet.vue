@@ -133,7 +133,7 @@ const showDiscountSection = ref(false)
           v-for="category in categories"
           :key="category.id"
           class="text-start h-11 w-full flex flex-row flex-nowrap justify-between gap-2 px-0"
-          variant="ghost"
+          variant="link"
           @click="onCategoryClick(category, true)"
         >
           <div class="flex gap-2 items-center">

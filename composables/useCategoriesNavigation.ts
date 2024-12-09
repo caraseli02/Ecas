@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCategories } from '@/composables/useCategories'
 
@@ -15,7 +15,6 @@ export function useCategoriesNavigation() {
   const router = useRouter()
 
   function onCategoryClick(category: any, makeReset: boolean) {
-    console.log(category)
     if (makeReset) selectedCategories.value = []
     if (category.subcategory.length === 0) {
       isOpen.value = false
@@ -30,6 +29,12 @@ export function useCategoriesNavigation() {
   function resetCategories() {
     selectedCategories.value = []
   }
+
+  watch(isOpen, (isOpen) => {
+    if (!isOpen) {
+      selectedCategories.value = []
+    }
+  })
 
   return {
     categories,
