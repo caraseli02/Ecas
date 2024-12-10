@@ -34,7 +34,7 @@ const showDiscountSection = ref(false)
       </UiButton>
     </UiSheetTrigger>
     <UiSheetContent
-      class="w-full"
+      class="w-full font-Poppins"
       :class="['px-0 pt-0', isScrolled ? 'top-[112px] md:top-[98px]' : 'top-[112px] md:top-[188px]']"
       side="left"
       hidde-close-button

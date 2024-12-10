@@ -4,20 +4,20 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 </script>
 
 <template>
-  <Carousel class="relative w-full max-h-[572px] bg-white rounded-xl border border-gray-200 border-solid shadow-sm max-md:px-5 max-md:py-24 focus-visible:ring-0">
+  <Carousel class="relative w-full h-full bg-white rounded-xl border border-gray-200 border-solid shadow-s max-md:px-5 max-md:py-24 focus-visible:ring-0">
     <CarouselContent>
       <CarouselItem
         v-for="(_, index) in 5"
         :key="index"
       >
-        <div class="p-1">
+        <div class="p-0">
           <section
             class="flex overflow-hidden relative justify-between items-start self-stretch px-6 py-64 h-full"
             role="region"
             aria-labelledby="hero-title"
           >
             <div
-              class="flex absolute -right-7 z-0 shrink-0 h-[272px] min-w-[240px] top-[67px] w-[554px] bg-gradient-to-r"
+              class="flex absolute -right-7 z-0 shrink-0 h-[372px] min-w-[240px] -top-10 w-[554px] bg-gradient-to-r"
               aria-hidden="true"
             >
               <Circles />
