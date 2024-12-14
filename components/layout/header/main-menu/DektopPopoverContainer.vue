@@ -2,46 +2,12 @@
 import { ChevronRight, ArrowRight, GemIcon, HeadsetIcon, Building2Icon } from 'lucide-vue-next';
 import Breadcrumb from './Breadcrumb.vue';
 import CardPlaceholderSmall from '@/assets/icons/card-placeholder-small.svg';
-import type { TaxonomyInterface } from '~/types/dashboard/categories';
-import SemiconductorsIcon from '@/assets/icons/header/semiconductors.svg';
-import PassiveIcon from '@/assets/icons/header/passive.svg';
-import ElectromechanicsIcon from '@/assets/icons/header/electromechanics.svg';
-import CablesAndConnectorsIcon from '@/assets/icons/header/cables-and-connectors.svg';
-import PowerSupplyIcon from '@/assets/icons/header/power-supply.svg';
-import CasesIcon from '@/assets/icons/header/cases.svg';
-import ToolsIcon from '@/assets/icons/header/tools.svg';
-import IndustrialFurnitureIcon from '@/assets/icons/header/industrial-furniture.svg';
 
 const { selectedCategories, currentCategory, onCategoryClick, resetCategories } = useCategoriesNavigation();
 const { categories, getCategories } = useCategories();
 
-const iconMap = {
-  'Semiconductors': SemiconductorsIcon,
-  'Passive': PassiveIcon,
-  'Electromechanics': ElectromechanicsIcon,
-  'Cables & Connectors': CablesAndConnectorsIcon,
-  'Power Supply': PowerSupplyIcon,
-  'Cases': CasesIcon,
-  'Tools': ToolsIcon,
-  'Industrial Furniture': IndustrialFurnitureIcon,
-};
-
 const setCategories = async () => {
   await getCategories();
-
-  function mapCategories(sourceArray: any) {
-    return sourceArray.map((item: TaxonomyInterface) => ({
-      name: item.name.trim(),
-      productCount: item.productCount,
-      icon: iconMap[item.name.trim()] || CardPlaceholderSmall, // Use mapped icon or default if not found
-      subcategory: item.subcategory ? mapCategories(item.subcategory) : [],
-      id: item.id, // Recursively map subcategories
-      path: item.path,
-    }));
-  }
-
-  allCategories.value = mapCategories(categories.value);
-  mapLabelsToIds(allCategories.value);
 };
 
 onMounted(async () => {
