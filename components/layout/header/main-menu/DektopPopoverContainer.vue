@@ -16,7 +16,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="font-Poppins mt-8 md:mt-3">
+  <div class="font-Poppins mt-8 lg:mt-3">
     <section
       class="
       lg:h-[588px] lg:grid grid-cols-[288px_1fr] items-stretch lg:p-2 bg-grey-50 rounded-xl shadow-s overflow-hidden"
