@@ -16,6 +16,11 @@ import { cn } from '@/lib/utils'
 interface SheetContentProps extends DialogContentProps {
   class?: HTMLAttributes['class']
   side?: SheetVariants['side']
+  disabledPortal?: boolean
+  portalTo?: string
+  disabledOverlay?: boolean
+  overlayClassName?: string
+  hiddeCloseButton?: boolean
 }
 
 defineOptions({
@@ -36,9 +41,13 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
-  <DialogPortal>
+  <DialogPortal
+    :disabled="disabledPortal"
+    :to="portalTo"
+  >
     <DialogOverlay
-      class="fixed inset-0 z-50 bg-[rgba(47,50,65,0.10)] backdrop-blur-[7.5px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+      v-if="!disabledOverlay"
+      :class="cn('fixed inset-0 z-50 bg-[rgba(47,50,65,0.10)] backdrop-blur-[7.5px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0', props.overlayClassName)"
     />
     <DialogContent
       :class="cn(sheetVariants({ side }), props.class)"
@@ -47,9 +56,9 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       <slot />
 
       <DialogClose
-        class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800"
+        class="fixed right-4 top-3.5 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800"
       >
-        <X class="w-4 h-4 text-slate-500 dark:text-slate-400" />
+        <X v-if="!hiddeCloseButton" class="w-5 h-5 text-slate-500 dark:text-slate-400" />
       </DialogClose>
     </DialogContent>
   </DialogPortal>
