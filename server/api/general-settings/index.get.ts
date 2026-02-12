@@ -1,0 +1,92 @@
+export default defineEventHandler(async (event) => {
+    return {
+        status: 'success',
+        data: {
+            layoutSettings: {
+                _id: 'layout-001',
+            },
+            orderSettings: {
+                deliveryTypes: [
+                    {
+                        _id: 'del-001',
+                        stripeId: 'ship_standard',
+                        title: 'Standard Delivery',
+                        min: 1,
+                        max: 5,
+                        unit: 'business_day' as any,
+                        price: 9.99,
+                        active: true,
+                    },
+                    {
+                        _id: 'del-002',
+                        stripeId: 'ship_express',
+                        title: 'Express Delivery',
+                        min: 1,
+                        max: 2,
+                        unit: 'business_day' as any,
+                        price: 14.99,
+                        active: true,
+                    },
+                    {
+                        _id: 'del-003',
+                        stripeId: 'ship_premium',
+                        title: 'Premium Delivery',
+                        min: 1,
+                        max: 10,
+                        unit: 'business_day' as any,
+                        price: 24.99,
+                        active: true,
+                    },
+                ],
+                backorderShippingTypes: [
+                    {
+                        _id: 'back-001',
+                        title: 'Backorder Standard',
+                        description: 'Standard shipping for backorder items',
+                        active: true,
+                    },
+                ],
+                stockorderShippingTypes: [
+                    {
+                        _id: 'stock-001',
+                        title: 'Stock Order Standard',
+                        description: 'Standard shipping for stock order items',
+                        active: true,
+                    },
+                ],
+                paymentMethods: [
+                    {
+                        _id: 'pay-001',
+                        type: 'card' as any,
+                    },
+                    {
+                        _id: 'pay-002',
+                        type: 'card' as any,
+                    },
+                    {
+                        _id: 'pay-003',
+                        type: 'bank_transfer' as any,
+                    },
+                ],
+                smallOrderCharge: [
+                    {
+                        _id: 'soc-001',
+                        min: 0,
+                        max: 50,
+                        price: 4.99,
+                    },
+                ],
+            },
+            productSettings: {
+                _id: 'prod-set-001',
+            },
+            shopSettings: {
+                backorderThreshold: {
+                    _id: 'thresh-001',
+                    value: 100,
+                    active: true,
+                },
+            },
+        },
+    };
+});
