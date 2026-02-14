@@ -1,7 +1,7 @@
-import { defineStore, } from 'pinia';
+import { defineStore } from 'pinia';
 
 export const useCheckoutStore = defineStore('checkout', () => {
-  const checkout = ref(false)
+    const checkout = ref(false);
 
-  return { checkout }
-})
+    return { checkout };
+});

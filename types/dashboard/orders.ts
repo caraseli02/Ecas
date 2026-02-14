@@ -8,5 +8,5 @@ export enum WidgetTypeEnum {
     'Active Cart Sessions' = 'active-cart-sessions',
     'Products Sold' = 'products-sold',
     'Returns' = 'returns',
-    'Refunds' = 'refunds'
+    'Refunds' = 'refunds',
 }

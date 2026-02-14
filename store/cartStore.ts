@@ -26,7 +26,7 @@ export const useCartStore = defineStore({
         },
         setPreviousCheckoutError(error: StripeError) {
             console.log(error);
-            
+
             this.previousCheckoutError = error;
         },
         emptyOrderClientSecret() {
@@ -54,13 +54,13 @@ export const useCartStore = defineStore({
             this.orderClientSecret = null;
         },
         makeCartItemFavorite(itemId: string) {
-            const item = this.cart?.products.find((product: CartProductsInterface) => product.id === itemId);            
-            if(item?.liked) {
-                item.liked = false
-            } else if(item && !item?.liked) {
-                item.liked = true
+            const item = this.cart?.products.find((product: CartProductsInterface) => product.id === itemId);
+            if (item?.liked) {
+                item.liked = false;
+            } else if (item && !item?.liked) {
+                item.liked = true;
             }
-        }
+        },
     },
     getters: {
         mappedCartItems: (state) => {
@@ -107,5 +107,5 @@ export const useCartStore = defineStore({
     },
     persist: {
         storage: piniaPluginPersistedstate.localStorage(),
-      },
+    },
 });

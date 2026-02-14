@@ -6,7 +6,7 @@ import { SearchData } from '~/model/products/response/ProductSearchResponse';
 export const useProductStore = defineStore('product-store', () => {
     const similarProductFeatures = ref<ProductParametricDataFeaturesInterface[] | null>(null);
     const similarProducts = ref<SearchData | null>(null);
-    const showSimilarOnly = ref(false)
+    const showSimilarOnly = ref(false);
 
     const setSimilarProductFeatures = (features: ProductParametricDataFeaturesInterface[]) => {
         similarProductFeatures.value = features;
@@ -26,6 +26,6 @@ export const useProductStore = defineStore('product-store', () => {
         setSimilarProducts,
         getSimilarProductFeatures,
         getSimilarProducts,
-        showSimilarOnly
+        showSimilarOnly,
     };
 });

@@ -12,7 +12,7 @@ export interface Notification {
     seen: boolean;
     details: NotificationDetailsInterface;
     date: string;
-    group: number
+    group: number;
 }
 
 export interface NotificationDetailsInterface {

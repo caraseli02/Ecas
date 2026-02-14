@@ -1,10 +1,10 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const usePaymentStore = defineStore('payment', () => {
-  const showCardsModal = ref(false)
-  function toggleCardModal() {
-    showCardsModal.value = !showCardsModal.value
-  }
+    const showCardsModal = ref(false);
+    function toggleCardModal() {
+        showCardsModal.value = !showCardsModal.value;
+    }
 
-  return { showCardsModal, toggleCardModal }
-})
+    return { showCardsModal, toggleCardModal };
+});
