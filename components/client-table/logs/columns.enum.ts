@@ -1,4 +1,4 @@
-import { PaginatedCustomersInterface } from "~/model/dashboard/response/CustomerInterfaceResponse";
+import { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 
 export enum LogsTableColumnsEnum {
     TYPE = 'type',
@@ -6,4 +6,8 @@ export enum LogsTableColumnsEnum {
     CREATED_AT = 'createdAt',
 }
 
-export interface LogsItem { type: string, ip: string, createdAt: string }
+export interface LogsItem {
+    type: string;
+    ip: string;
+    createdAt: string;
+}

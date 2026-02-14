@@ -1,4 +1,4 @@
-import { $fetch, FetchOptions } from 'ohmyfetch';
+import { $fetch, type FetchOptions } from 'ohmyfetch';
 import { defineNuxtPlugin } from '#app';
 import ProductService from '~/services/products.service';
 import AuthService from '~/services/auth.service';
@@ -42,8 +42,11 @@ declare module '#app' {
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
+    const config = nuxtApp.$config.public;
+    const baseURL = config.MOCK_MODE ? '/api' : config.BASE_URL_API;
+
     const fetchOptions: FetchOptions = {
-        baseURL: nuxtApp.$config.public.BASE_URL_API,
+        baseURL,
     };
 
     /** create a new instance of $fetcher with custom option */

@@ -11,8 +11,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-    showTotalItems: [val: number]
-}>()
+    showTotalItems: [val: number];
+}>();
 
 const totalItems = ref(0);
 const pageCount = ref(0);
@@ -44,7 +44,7 @@ const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}
     pageCount.value = data.data.page_count;
     listItems.value = data.data.items as unknown as OrderInterface[];
     loading.value = false;
-    emit('showTotalItems', data.data.total_items)
+    emit('showTotalItems', data.data.total_items);
 };
 
 await fetchAndSetOrdersList(1, 10);

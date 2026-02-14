@@ -12,8 +12,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-    showTotalItems: [val: number]
-}>()
+    showTotalItems: [val: number];
+}>();
 
 const totalItems = ref(0);
 const pageCount = ref(0);
@@ -43,8 +43,8 @@ const fetchAndSetTransactionList = _.debounce(async (page: number, perPage: numb
 
     listItems.value = data.data.items as TransactionInterface[];
     pageCount.value = data.data.page_count;
-    emit('showTotalItems', data.data.total_items)
-    
+    emit('showTotalItems', data.data.total_items);
+
     loading.value = false;
     // listItems.value.forEach((item: TransactionInterface) => {
     //   item.createdAt = moment(item.createdAt).format('DD/MM/YYYY');
@@ -59,9 +59,7 @@ await fetchAndSetTransactionList(1, 10);
 </script>
 
 <template>
-    <div
-        class="h-full flex-1 flex-col space-y-8 flex w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px]"
-    >
+    <div class="h-full flex-1 flex-col space-y-8 flex w-[358px] md:w-[736px] lg:w-[976px] xl:w-[1392px]">
         <DataTable
             v-if="!loading"
             :fetch-fn="fetchAndSetTransactionList"

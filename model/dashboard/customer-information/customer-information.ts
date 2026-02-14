@@ -1,6 +1,6 @@
-import { AddressInterface } from '~/types/auth/user-details';
-import { AccountRole } from '~/types';
-import { ProductInterface } from '~/model/products/response/ProductResponse';
+import type { AddressInterface } from '~/types/auth/user-interface';
+import type { AccountRole } from '~/types';
+import type { ProductInterface } from '~/model/products/response/ProductResponse';
 
 export interface CustomersProfileInformation {
     email: string;

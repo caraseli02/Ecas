@@ -37,10 +37,11 @@ export const columns: ColumnDef<TransactionTableColumnsEnum>[] = [
     {
         accessorKey: TransactionTableColumnsEnum.INVOICE_ID,
         header: ({ column }) => h(ColumnHeader, { column, title: 'Invoice ID' }),
-        cell: ({ row }) => h(IdCell, { 
-            IdCell: row.getValue(TransactionTableColumnsEnum.INVOICE_ID), 
-            invoiceId: row.original?.paymentDetails?.invoiceId || '#',
-        }),
+        cell: ({ row }) =>
+            h(IdCell, {
+                IdCell: row.getValue(TransactionTableColumnsEnum.INVOICE_ID),
+                invoiceId: row.original?.paymentDetails?.invoiceId || '#',
+            }),
     },
 
     {

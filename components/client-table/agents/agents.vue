@@ -4,8 +4,8 @@ import _ from 'lodash';
 import { CustomerTableColumns, UserInterface } from '~/types/auth/user-interface';
 
 const emit = defineEmits<{
-    showTotalItems: [val: number]
-}>()
+    showTotalItems: [val: number];
+}>();
 
 const { $api } = useNuxtApp();
 const totalItems = ref(0);
@@ -36,7 +36,7 @@ const fetchAndSetCustomersList = _.debounce(async (page: number, perPage: number
     pageCount.value = data.data.page_count;
     listItems.value = data.data.items as unknown as UserInterface[];
     loading.value = false;
-    emit('showTotalItems', data.data.total_items)
+    emit('showTotalItems', data.data.total_items);
 }, 500);
 
 fetchAndSetCustomersList(1, 10);

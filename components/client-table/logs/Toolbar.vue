@@ -8,7 +8,6 @@ interface DataTableToolbarProps {
 }
 
 const props = defineProps<DataTableToolbarProps>();
-
 </script>
 
 <template>
