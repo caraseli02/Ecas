@@ -24,7 +24,9 @@
                     <p class="text-xs mb-[26px] md:text-sm md:max-w-[420px] md:mb-[15px] lg:max-w-[434px] lg:mb-5 lg:text-center">
                         {{ item.description }}
                     </p>
-                    <button class="flex bg-blue-500 rounded px-3 py-1.5 text-[13px] font-medium md:px-6 md:py-2 md:text-sm lg:mb-0 lg:mx-auto">
+                    <button
+                        class="flex bg-blue-500 rounded px-3 py-1.5 text-[13px] font-medium md:px-6 md:py-2 md:text-sm lg:mb-0 lg:mx-auto"
+                    >
                         Buy Now
                     </button>
                     <img

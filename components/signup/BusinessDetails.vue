@@ -59,12 +59,12 @@
                             placeholder="Address Line 2"
                         />
                         <div class="flex items-center space-x-2">
-                            <UiCheckbox id="vat show" :checked="vatPayer"  @update:checked="vatPayer = $event" />
+                            <UiCheckbox id="vat show" :checked="vatPayer" @update:checked="vatPayer = $event" />
                             <label
-                            for="vat show"
-                            class="text-slate-500 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                for="vat show"
+                                class="text-slate-500 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
-                            Is VAT payer
+                                Is VAT payer
                             </label>
                         </div>
                         <FormInput
@@ -136,5 +136,5 @@ watch(details.value.country, (newVal) => {
     }
 });
 
-const vatPayer = defineModel()
+const vatPayer = defineModel();
 </script>

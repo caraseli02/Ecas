@@ -97,7 +97,7 @@ const handleSubmit = async () => {
         clientSecret: tempClientSecret,
         elements,
     });
-    
+
     if (result.error) {
         cartStore.setPreviousCheckoutError(result.error);
         await router.push({ path: `/checkout/fail`, query: { id: orderId.value } });

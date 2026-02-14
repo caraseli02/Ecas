@@ -29,7 +29,10 @@
                 </div>
                 <div class="mt-auto mb-[90px]">
                     <div class="flex items-center justify-center gap-2.5">
-                        <NuxtLink to="/" class="flex items-center justify-center rounded w-[170px] px-5 py-2 text-blue-500 border border-blue-500">
+                        <NuxtLink
+                            to="/"
+                            class="flex items-center justify-center rounded w-[170px] px-5 py-2 text-blue-500 border border-blue-500"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mr-2">
                                 <path
                                     fill="#007FFF"

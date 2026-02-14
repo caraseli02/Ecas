@@ -1,37 +1,37 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue'
-import { useZoomImageWheel } from '@zoom-image/vue'
+import { onMounted } from 'vue';
+import { useZoomImageWheel } from '@zoom-image/vue';
 
 defineProps<{
-  url: string;
-}>()
+    url: string;
+}>();
 
-const imageWheelContainerRef = ref<HTMLDivElement>()
-const { createZoomImage } = useZoomImageWheel()
+const imageWheelContainerRef = ref<HTMLDivElement>();
+const { createZoomImage } = useZoomImageWheel();
 
 onMounted(() => {
-  createZoomImage(imageWheelContainerRef.value)
-})
+    createZoomImage(imageWheelContainerRef.value);
+});
 </script>
 
 <template>
     <div ref="imageWheelContainerRef" class="imageContainer">
-      <img class="image" alt="Large Pic" :src="url" />
+        <img class="image" alt="Large Pic" :src="url" />
     </div>
 </template>
 
 <style>
 .imageContainer {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image {
-  max-width: 100%;
-  max-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
 }
 </style>
 

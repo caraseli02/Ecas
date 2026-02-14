@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="relative bg-white flex flex-col justify-between rounded-xl shadow-m h-[298px] p-4 pt-7"
-    >
+    <div class="relative bg-white flex flex-col justify-between rounded-xl shadow-m h-[298px] p-4 pt-7">
         <img
             :src="props.images[activeImageIndex]?.ProductImageLarge"
             alt="Image"
@@ -24,17 +22,21 @@
             }"
             class="productGallery--swiper w-full !pb-2"
         >
-            <SwiperSlide v-for="(image, index) in images" :key="index" style="{width: 56px, height: 48px;}" class="lg:!w-[56px] lg:!h-[48px] lg:!max-w-[56px] lg:!max-h-[48px] first:ml-2">
+            <SwiperSlide
+                v-for="(image, index) in images"
+                :key="index"
+                style="{width: 56px, height: 48px;}"
+                class="lg:!w-[56px] lg:!h-[48px] lg:!max-w-[56px] lg:!max-h-[48px] first:ml-2"
+            >
                 <button class="flex" @click="handleSlideTo(index)">
                     <div class="swiper-zoom-container">
-                    <img
-                        :src="image?.ProductImageSmall"
-                        alt="Image"
-                        class="w-[60px] h-[50x] object-contain transition-opacity duration-300 lg:w-[56px] lg:h-[48px] mb-2 ml-2"
-                        :class="[index !== activeImageIndex ? 'opacity-50' : '']"
-                    />
-                </div>
-
+                        <img
+                            :src="image?.ProductImageSmall"
+                            alt="Image"
+                            class="w-[60px] h-[50x] object-contain transition-opacity duration-300 lg:w-[56px] lg:h-[48px] mb-2 ml-2"
+                            :class="[index !== activeImageIndex ? 'opacity-50' : '']"
+                        />
+                    </div>
                 </button>
             </SwiperSlide>
         </Swiper>
@@ -61,7 +63,7 @@
 import { HeartIcon, Share2Icon, BoxIcon } from 'lucide-vue-next';
 
 import { A11y, Zoom } from 'swiper';
-import { ProductImage } from '~~/model/response/products/ProductResponse';
+import type { ProductImage } from '~/model/products/response/ProductResponse';
 import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import { useNuxtApp } from '#app';
 import { ProductDetail } from '~/model/products/response/ProductDetailResponse';
@@ -89,5 +91,4 @@ const addToFavourite = async (product: ProductDetail) => {
     };
     await $api.favouriteFolder.addEntityToFavouriteList(payload);
 };
-
 </script>

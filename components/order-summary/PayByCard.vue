@@ -72,11 +72,17 @@ const onEditClick = () => {
                 <AlertTriangle class="w-5 h-5 text-rose-500" />
                 <div class="text-red-500 text-sm leading-6">Card expired</div>
             </span>
-            <span v-if="showPayWithLabel" class="text-neutral-700 text-sm font-normal leading-6 w-full text-start">Pay {{
-                isNewCardSelected ? 'with a new card' : 'by card' }}</span>
+            <span v-if="showPayWithLabel" class="text-neutral-700 text-sm font-normal leading-6 w-full text-start"
+                >Pay {{ isNewCardSelected ? 'with a new card' : 'by card' }}</span
+            >
             <div class="flex justify-end w-full gap-2">
                 <div v-if="!isExpired && !showPayWithLabel && cardInfo && !cardInfo.default" class="flex gap-2 items-center justify-end">
-                    <UiButton @click.stop="emits('set-default', cardInfo)" variant="ghost" size="xs" class="text-neutral-700 text-sm font-normal leading-6">
+                    <UiButton
+                        @click.stop="emits('set-default', cardInfo)"
+                        variant="ghost"
+                        size="xs"
+                        class="text-neutral-700 text-sm font-normal leading-6"
+                    >
                         <CheckCircle2 class="w-4 h-4 stroke-1 mr-1" />
                         Set as default
                     </UiButton>

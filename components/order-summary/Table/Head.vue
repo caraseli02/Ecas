@@ -21,22 +21,22 @@
                     Add to Favourites
                 </span>
             </button>
-               
-                <UiDialog :open="isOpen" @update:open="isOpen = $event">
-                    <UiDialogTrigger class="flex">
-                <TrashOutline class="text-slate-500 group-hover:text-rose-500 transition duration-150" />
-                        <span class="text-sm font-normal text-slate-500 ml-2 group-hover:text-rose-500 transition duration-150">
-                    Delete Selected
-                </span>
-                    </UiDialogTrigger>
-                    <UiDialogContent>
-                        <p class="text-xl mb-4">Delete all selected items?</p>
-                        <div class="flex gap-4 items-center">
+
+            <UiDialog :open="isOpen" @update:open="isOpen = $event">
+                <UiDialogTrigger class="flex">
+                    <TrashOutline class="text-slate-500 group-hover:text-rose-500 transition duration-150" />
+                    <span class="text-sm font-normal text-slate-500 ml-2 group-hover:text-rose-500 transition duration-150">
+                        Delete Selected
+                    </span>
+                </UiDialogTrigger>
+                <UiDialogContent>
+                    <p class="text-xl mb-4">Delete all selected items?</p>
+                    <div class="flex gap-4 items-center">
                         <UiButton class="w-full" @click="deleteSelected">Confirm</UiButton>
-                        <UiButton class="w-full" variant="outline" @click="isOpen = !isOpen" >Cancel</UiButton>
-                        </div>
-                    </UiDialogContent>
-                </UiDialog>
+                        <UiButton class="w-full" variant="outline" @click="isOpen = !isOpen">Cancel</UiButton>
+                    </div>
+                </UiDialogContent>
+            </UiDialog>
         </div>
     </div>
 </template>
@@ -57,9 +57,9 @@ const cartStore = useCartStore();
 
 // Methods to toggle states and emit events
 const toggleCheckAll = () => {
-    checkAllBox.value = !checkAllBox.value
-    cartStore.cart?.products.forEach((product: CartProductsInterface) => product.selected = checkAllBox.value)
-}
+    checkAllBox.value = !checkAllBox.value;
+    cartStore.cart?.products.forEach((product: CartProductsInterface) => (product.selected = checkAllBox.value));
+};
 
 const toggleFavs = () => {
     liked.value = !liked.value;
@@ -67,8 +67,7 @@ const toggleFavs = () => {
         if (product.selected) {
             product.liked = liked.value;
         }
-    })
-
+    });
 };
 
 const { $api } = useNuxtApp();

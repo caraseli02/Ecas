@@ -100,7 +100,7 @@ const selectedType = useState<SignupAccountType>('signup-account-type');
 
 const steps = computed(() => [
     {
-        label: 'Account <span class=\'max-md:hidden\'>Type</span>',
+        label: "Account <span class='max-md:hidden'>Type</span>",
         description: 'Choose your account type',
     },
     {
@@ -108,7 +108,7 @@ const steps = computed(() => [
         description: `Setup your ${selectedType.value === 'personal' ? 'personal' : 'business'} details`,
     },
     {
-        label: 'Contact <span class=\'max-md:hidden\'>Details</span>',
+        label: "Contact <span class='max-md:hidden'>Details</span>",
         description: 'Setup your contact details',
     },
     {

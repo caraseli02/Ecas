@@ -7,12 +7,16 @@
             <span class="text-slate-500 text-xs font-normal leading-5 group-hover:text-blue-500 transition duration-150">Packaging</span>
         </button>
         <Transition name="fade-bottom">
-            <div v-if="showPackagingDetails" v-click-outside="togglePackagingDetails" class="absolute border-[1px] p-3 xl:bottom-7 bottom-[76px] z-10 max-w-[216px] min-h-[176px] bg-[#FFF] rounded-xl shadow-l flex flex-col gap-3">
+            <div
+                v-if="showPackagingDetails"
+                v-click-outside="togglePackagingDetails"
+                class="absolute border-[1px] p-3 xl:bottom-7 bottom-[76px] z-10 max-w-[216px] min-h-[176px] bg-[#FFF] rounded-xl shadow-l flex flex-col gap-3"
+            >
                 <h2 class="text-neutral-700 text-sm font-medium leading-6">Packaging Details</h2>
                 <p class="text-neutral-700 text-xs font-normal leading-5">
                     A tube is a rigid extruded plastic package designed to fit the profile of the part and protect the leads. Tubes ship
-                    with the exact number of parts ordered and a rubber plug or plastic peg in each end to prevent the parts from
-                    sliding out.
+                    with the exact number of parts ordered and a rubber plug or plastic peg in each end to prevent the parts from sliding
+                    out.
                 </p>
             </div>
         </Transition>
@@ -23,7 +27,11 @@
             <span class="text-slate-500 text-xs font-normal leading-5 group-hover:text-blue-500 transition duration-150">Delivery</span>
         </button>
         <Transition name="fade-bottom">
-            <div v-if="showDeliveryDetails" v-click-outside="toggleDeliveryDetails" class="absolute border-[1px] p-3 xl:bottom-7 bottom-[76px] xl:left-12 left-[calc(25%-40px)] z-10 max-w-[240px] min-h-[176px] bg-[#FFF] rounded-xl shadow-l flex flex-col gap-3">
+            <div
+                v-if="showDeliveryDetails"
+                v-click-outside="toggleDeliveryDetails"
+                class="absolute border-[1px] p-3 xl:bottom-7 bottom-[76px] xl:left-12 left-[calc(25%-40px)] z-10 max-w-[240px] min-h-[176px] bg-[#FFF] rounded-xl shadow-l flex flex-col gap-3"
+            >
                 <h2 class="text-neutral-700 text-sm font-medium leading-6">Delivery Details</h2>
                 <p class="text-neutral-700 text-xs font-normal leading-5">
                     Standard delivery time is min. 30 working days. The date needs confirmation. Contact us for enquiry.
@@ -61,15 +69,15 @@ import { useCartStore } from '~/store/cartStore';
 
 // Define props to receive state from the parent
 const props = defineProps<{
-    item: CartProductsInterface,
-    showPackagingDetails: boolean,
-    showDeliveryDetails: boolean,
-}>()
+    item: CartProductsInterface;
+    showPackagingDetails: boolean;
+    showDeliveryDetails: boolean;
+}>();
 
 const cartStore = useCartStore();
 
 // Define emits to communicate events to the parent
-const emits = defineEmits([ 'likeItem', 'deleteItem']);
+const emits = defineEmits(['likeItem', 'deleteItem']);
 
 // Reactive references for internal state if needed
 const showPackagingDetails = ref(props.showPackagingDetails);
@@ -82,6 +90,4 @@ function togglePackagingDetails() {
 function toggleDeliveryDetails() {
     showDeliveryDetails.value = !showDeliveryDetails.value;
 }
-
 </script>
-

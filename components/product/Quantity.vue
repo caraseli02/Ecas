@@ -34,7 +34,11 @@
                         <div :class="['text-neutral-700', productDiscount ? 'text-red' : '']">{{ bulkQuantity[1].toFixed(2) }} Lei</div>
                     </div>
                 </div>
-                <UiButton variant="link" @click="showLargeQuantitiesModal = true" class="hidden justify-end text-slate-500 text-xs mb-[9px] lg:flex">
+                <UiButton
+                    variant="link"
+                    @click="showLargeQuantitiesModal = true"
+                    class="hidden justify-end text-slate-500 text-xs mb-[9px] lg:flex"
+                >
                     For larger quantities ask
                     <span
                         class="relative text-blue-500 font-medium ml-1 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
