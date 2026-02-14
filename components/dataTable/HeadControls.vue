@@ -1,38 +1,37 @@
 <script setup lang="ts" generic="TData">
-import type { Table } from '@tanstack/vue-table'
+import type { Table } from '@tanstack/vue-table';
 import { RefreshCwIcon, SlidersHorizontalIcon } from 'lucide-vue-next';
 import { AlertCircle } from 'lucide-vue-next';
 
 interface DataTableViewOptionsProps {
-  table: Table<TData>,
-  title: string,
-  error: boolean,
+    table: Table<TData>;
+    title: string;
+    error: boolean;
 }
 
-const props = defineProps<DataTableViewOptionsProps>()
+const props = defineProps<DataTableViewOptionsProps>();
 
 const emit = defineEmits<{
-  refresh: [val: boolean]
-}>()
-
+    refresh: [val: boolean];
+}>();
 </script>
 
 <template>
-  <div class="flex items-center justify-between space-y-2">
-    <div class="flex flex-col gap-4 md:flex-row  xl:items-center justify-between w-full">
-      <h2 class="text-xl font-semibold tracking-tight text-neutral-700 flex gap-4 items-center">
-        {{ title }}
-        <AlertCircle v-if="error" class="text-rose-500" />
-      </h2>
-      <div class="flex items-center gap-3">
-        <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon" @click="emit('refresh', true)">
-          <RefreshCwIcon class="w-4 h-4" />
-        </UiButton>
-        <DataTableViewOptions :table="table" />
-        <!-- <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
+    <div class="flex items-center justify-between space-y-2">
+        <div class="flex flex-col gap-4 md:flex-row xl:items-center justify-between w-full">
+            <h2 class="text-xl font-semibold tracking-tight text-neutral-700 flex gap-4 items-center">
+                {{ title }}
+                <AlertCircle v-if="error" class="text-rose-500" />
+            </h2>
+            <div class="flex items-center gap-3">
+                <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon" @click="emit('refresh', true)">
+                    <RefreshCwIcon class="w-4 h-4" />
+                </UiButton>
+                <DataTableViewOptions :table="table" />
+                <!-- <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
           <SlidersHorizontalIcon class="w-4 h-4" />
         </UiButton> -->
-        <!-- <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
+                <!-- <UiButton class="bg-light-300 text-neutral-700 hover:bg-light-500" size="icon">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_709_23457)">
               <path
@@ -46,11 +45,10 @@ const emit = defineEmits<{
             </defs>
           </svg>
         </UiButton> -->
-        <slot />
-      </div>
+                <slot />
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
