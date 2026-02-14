@@ -39,7 +39,10 @@
                     />
                 </label>
                 <div class="flex gap-2.5">
-                    <button class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="submitSuccess = true">
+                    <button
+                        class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white"
+                        @click="submitSuccess = true"
+                    >
                         Save
                     </button>
                     <button class="flex bg-gray-100 rounded px-[26px] py-[11px] text-sm font-medium text-slate-500" @click="$emit('close')">

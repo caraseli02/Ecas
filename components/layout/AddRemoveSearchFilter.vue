@@ -82,7 +82,9 @@
                 <button class="flex bg-gray-100 rounded px-[26px] py-[11px] text-sm font-medium text-slate-500" @click="$emit('close')">
                     Cancel
                 </button>
-                <button class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="saveFilters()">Save</button>
+                <button class="flex bg-blue-500 rounded px-[34px] py-[11px] text-sm font-medium text-white" @click="saveFilters()">
+                    Save
+                </button>
             </div>
         </div>
     </div>

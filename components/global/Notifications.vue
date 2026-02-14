@@ -10,9 +10,13 @@
                         </span>
                     </div>
                     <span
-v-if="unreadNotifications > 0"
+                        v-if="unreadNotifications > 0"
                         class="flex items-center justify-center -translate-y-2 h-[18px] font-Inter z-10 -top-1 -right-[9px] bg-rose-500 text-white rounded-[100px] text-xs font-medium leading-[1.5] xl:-translate-y-[18px]"
-                        :class="[unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]', adminView ? 'xl:-translate-x-[8px] -translate-x-1' : 'xl:-translate-x-[38px] -translate-x-2.5']">
+                        :class="[
+                            unreadNotifications < 10 ? 'w-[18px]' : unreadNotifications < 100 ? 'w-6' : 'w-[31px]',
+                            adminView ? 'xl:-translate-x-[8px] -translate-x-1' : 'xl:-translate-x-[38px] -translate-x-2.5',
+                        ]"
+                    >
                         <span>
                             {{ unreadNotifications }}
                         </span>
@@ -23,31 +27,35 @@ v-if="unreadNotifications > 0"
         <LazyUiSheetContent class="md:max-h-[calc(100vh-48px)] w-full h-full md:min-w-[440px] p-0 md:m-6 overflow-hidden rounded-xl">
             <div class="relative flex flex-col gap-[60px] pt-4 px-3 shadow-s">
                 <div class="flex items-center justify-between">
-                    <p class="text-2xl font-medium">
-                        Notifications
-                    </p>
+                    <p class="text-2xl font-medium">Notifications</p>
                     <UiButton
-class="z-10 hover:z-10 hover:bg-slate-200 w-8 h-8" size="icon" variant="secondary"
-                        @click="showNotifications = false">
+                        class="z-10 hover:z-10 hover:bg-slate-200 w-8 h-8"
+                        size="icon"
+                        variant="secondary"
+                        @click="showNotifications = false"
+                    >
                         <XIcon />
                     </UiButton>
                 </div>
 
                 <UiTabs v-model="selectedTab">
-                    <UiTabsList class="bg-white min-h-9 ml-2 p-0 w-full justify-start scrollbar-none overflow-x-scroll lg:overscroll-x-none overflow-y-hidden rounded-none">
+                    <UiTabsList
+                        class="bg-white min-h-9 ml-2 p-0 w-full justify-start scrollbar-none overflow-x-scroll lg:overscroll-x-none overflow-y-hidden rounded-none"
+                    >
                         <template v-for="tab in tabs" :key="tab.value">
                             <UiTabsTrigger
                                 class="pb-3 data-[state=active]:shadow-none data-[state=active]:text-blue-500 relative"
-                                :value="tab.value">
+                                :value="tab.value"
+                            >
                                 {{ tab.label }}
                                 <UiBadge
-:key="tab.badge" variant="secondary"
+                                    :key="tab.badge"
+                                    variant="secondary"
                                     :class="{ 'bg-blue-500 text-white': selectedTab === tab.value }"
-                                    class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1">{{ tab.badge }}
+                                    class="text-xs rounded-full p-1.5 min-w-5 h-5 ml-1"
+                                    >{{ tab.badge }}
                                 </UiBadge>
-                                <div
-v-if="selectedTab === tab.value"
-                                    class="w-full h-1 bg-blue-500 absolute bottom-0 rounded-t-full"></div>
+                                <div v-if="selectedTab === tab.value" class="w-full h-1 bg-blue-500 absolute bottom-0 rounded-t-full"></div>
                             </UiTabsTrigger>
                         </template>
                     </UiTabsList>
@@ -55,15 +63,17 @@ v-if="selectedTab === tab.value"
             </div>
             <div class="flex-1 overflow-y-auto h-full md:max-h-[calc(100vh-246px)] notifications-scroll">
                 <NuxtLink
-v-for="(notification, index) in first50" :key="index" :to="`${route.path}`" event=""
+                    v-for="(notification, index) in first50"
+                    :key="index"
+                    :to="`${route.path}`"
+                    event=""
                     class="flex flex-col w-full bg-white pt-2 pb-1 py-3 px-2 border-b border-border last:border-b-0 transition-colors duration-300 hover:bg-[#F5F5F5]"
-                    @click.prevent="markNotificationAsRead(notification, index)">
+                    @click.prevent="markNotificationAsRead(notification, index)"
+                >
                     <div class="flex items-center justify-between w-full py-3 px-2">
                         <div class="flex items-center">
                             <NotificationIcon class="w-5 h-5 mr-2" :class="getNotificationClass(notification.title)" />
-                            <span
-v-if="!notification.seen"
-                                class="flex w-2 h-2 flex-shrink-0 bg-blue-500 rounded-full mr-2" />
+                            <span v-if="!notification.seen" class="flex w-2 h-2 flex-shrink-0 bg-blue-500 rounded-full mr-2" />
                             <span class="capitalize text-sm leading-[1.43] font-medium">
                                 {{ notification.title }}
                             </span>
@@ -74,7 +84,8 @@ v-if="!notification.seen"
                             </span>
                             <button
                                 class="flex items-center justify-center text-slate-500 transition-colors duration-300 hover:text-blue-500"
-                                @click.stop.prevent="deleteNotification(notification, index)">
+                                @click.stop.prevent="deleteNotification(notification, index)"
+                            >
                                 <XIcon class="w-4 h-4" />
                             </button>
                         </div>
@@ -108,7 +119,7 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { useNotificationStore } from '~/store/notificationStore';
 
-const notificationStore = useNotificationStore()
+const notificationStore = useNotificationStore();
 const { unreadNotifications, showNotifications } = storeToRefs(notificationStore);
 
 enum NotificationsGroups {
@@ -122,8 +133,8 @@ const route = useRoute();
 const emits = defineEmits(['close', 'markAsRead', 'delete']);
 
 const props = defineProps<{
-    notifications: Notification[],
-    adminView?: boolean,
+    notifications: Notification[];
+    adminView?: boolean;
 }>();
 
 const selectedTab = ref('all');
@@ -137,9 +148,9 @@ const updateTabs = () => {
     selectedTab.value = 'all';
     const accountType = getAccountTypeById(userDetails.value?.accountType as number);
     const allCount = props.notifications.length;
-    const usersCount = props.notifications.filter(n => n.group === NotificationsGroups.Users).length;
-    const ordersCount = props.notifications.filter(n => n.group === NotificationsGroups.Orders).length;
-    const systemCount = props.notifications.filter(n => n.group === NotificationsGroups.System).length;
+    const usersCount = props.notifications.filter((n) => n.group === NotificationsGroups.Users).length;
+    const ordersCount = props.notifications.filter((n) => n.group === NotificationsGroups.Orders).length;
+    const systemCount = props.notifications.filter((n) => n.group === NotificationsGroups.System).length;
 
     tabs.value = [
         { value: 'all', label: 'All', badge: allCount },
@@ -178,9 +189,7 @@ const first50 = computed(() => {
     }
 
     // Sort by unseen first and most recent date
-    return filteredNotifications
-        .sort((a, b) => b.date.localeCompare(a.date))
-        .slice(0, 50);
+    return filteredNotifications.sort((a, b) => b.date.localeCompare(a.date)).slice(0, 50);
 });
 
 const getCurrentDate = (date: string) => {

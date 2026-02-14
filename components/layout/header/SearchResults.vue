@@ -38,9 +38,7 @@
                 </template>
             </div>
             <div v-else>
-                <p class="p-2 rounded text-slate-500 transition-colors duration-300 hover:bg-gray-100 hover:text-blue-500">
-                    No data found
-                </p>
+                <p class="p-2 rounded text-slate-500 transition-colors duration-300 hover:bg-gray-100 hover:text-blue-500">No data found</p>
             </div>
         </div>
     </div>

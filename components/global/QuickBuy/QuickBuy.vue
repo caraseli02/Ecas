@@ -13,7 +13,7 @@ const { $api } = useNuxtApp();
 const cartStore = useCartStore();
 const products = ref<Omit<QuickBuyItem, 'index'>[]>([
     { code: '', quantity: 1 },
-    { code: '', quantity: 1 }
+    { code: '', quantity: 1 },
 ]);
 
 const updateProduct = (payload: QuickBuyItem) => {
@@ -65,8 +65,7 @@ const isLoading = ref(false);
             <QuickBuyIcon class="mr-2" />
             <h2 class="text-3xl font-semibold text-neutral-700">Quick Buy</h2>
         </div>
-        <p
-            class="text-xs text-center text-slate-500 px-[15px] mb-6 md:px-2.5 md:mb-[15px] lg:mb-6 xl:text-sm xl:mb-[24px]">
+        <p class="text-xs text-center text-slate-500 px-[15px] mb-6 md:px-2.5 md:mb-[15px] lg:mb-6 xl:text-sm xl:mb-[24px]">
             Are you in a hurry? Use the Quick Buy feature!
         </p>
         <UiDialog v-model:open="isOpen">
@@ -83,8 +82,15 @@ const isLoading = ref(false);
                     <UiDialogTitle>Quick buy</UiDialogTitle>
                 </UiDialogHeader>
                 <div class="grid gap-4 py-4">
-                    <QuickBuyInput v-for="(product, index) in products" :key="index" :index="index" :code="product.code"
-                        :quantity="product.quantity" @update-product="updateProduct" @remove-product="removeProduct" />
+                    <QuickBuyInput
+                        v-for="(product, index) in products"
+                        :key="index"
+                        :index="index"
+                        :code="product.code"
+                        :quantity="product.quantity"
+                        @update-product="updateProduct"
+                        @remove-product="removeProduct"
+                    />
                 </div>
                 <UiDialogFooter class="w-full">
                     <div class="flex gap-2.5 w-full">

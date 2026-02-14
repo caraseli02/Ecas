@@ -10,8 +10,5 @@ const lgAndLarger = breakpoints.greaterOrEqual('lg');
 </script>
 
 <template>
-  <component
-    :is="lgAndLarger ? DesktopPopover : MobileSheet"
-    :is-scrolled="isScrolled"
-  />
+    <component :is="lgAndLarger ? DesktopPopover : MobileSheet" :is-scrolled="isScrolled" />
 </template>
