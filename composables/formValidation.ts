@@ -1,6 +1,6 @@
 import { InputObject } from '~~/types';
 
-export const useError = () => {
+export const useFormValidation = () => {
     const checkForInputErrors = (obj: Array<InputObject>) => {
         let hasError = false;
 

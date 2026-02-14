@@ -1,9 +1,13 @@
 // No need to import $fetch, it's globally available in Nuxt 3 context
 
-class HttpFactory {
-    private readonly $fetch;
+interface FetchInstance {
+    (url: string, options?: any): Promise<any>;
+}
 
-    constructor(fetcher) {
+class HttpFactory {
+    private readonly $fetch: FetchInstance;
+
+    constructor(fetcher: FetchInstance) {
         this.$fetch = fetcher;
     }
 
@@ -13,14 +17,14 @@ class HttpFactory {
      **/
     async call<T>(method: string, url: string, data?: object | null, extras = {}): Promise<T> {
         try {
-            const options = { method, ...extras };
+            const options: any = { method, ...extras };
             if (data) {
                 options.body = data;
             }
             return await this.$fetch(url, options);
         } catch (err) {
-            console.error(err);
-            return err as T;
+            console.error('API error:', err);
+            throw err;
         }
     }
 }

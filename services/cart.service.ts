@@ -1,11 +1,11 @@
 import HttpFactory from '@/composables/HttpFactory';
 import { useAuthStore } from '~/store/authStore';
-import {
+import type {
     AddToCartRequestInterface,
     DeleteProductCartRequestInterface,
     UpdateProductCartRequestInterface,
 } from '~/model/cart/request/cart.interface';
-import { CartProductsInterface, CartResponse } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface, CartResponse } from '~/model/cart/response/cart.interface';
 import Emitter from 'tiny-emitter/instance.js';
 
 class CartService extends HttpFactory {
@@ -35,7 +35,9 @@ class CartService extends HttpFactory {
             Emitter.emit('open-account-modal');
         }
 
-        payload.userId = user?.user_id;
+        if (user) {
+            payload.userId = user.user_id;
+        }
 
         return await this.call('POST', `${this.RESOURCE}`, payload, {
             headers: { Authorization: `Bearer ${token}` },
@@ -60,7 +62,9 @@ class CartService extends HttpFactory {
             Emitter.emit('open-account-modal');
         }
 
-        payload.userId = user.user_id;
+        if (user) {
+            payload.userId = user.user_id;
+        }
 
         return await this.call('PUT', `${this.RESOURCE}`, payload, {
             headers: { Authorization: `Bearer ${token}` },

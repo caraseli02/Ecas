@@ -37,8 +37,6 @@ export const useFetchAPI: useFetchType = async (url, params) => {
     };
 };
 
-
-
 // type FetchAPIType = (url: string, params?: any) => Promise<{ data: any; pending: Ref<boolean>; error: Ref<any> }>;
 
 // export const useFetchAPI: FetchAPIType = async (url, params = {}) => {

@@ -11,7 +11,7 @@ class SmartPricingService extends HttpFactory {
     async fetchPriceSettings() {
         const token = this.authStore.getToken();
         const user = this.authStore.userDetails;
-        
+
         if (user && user.role === AccountRole.Client) {
             return null;
         }

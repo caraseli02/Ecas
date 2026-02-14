@@ -1,10 +1,10 @@
 import HttpFactory from '@/composables/HttpFactory';
-import { PaginatedUserRequest } from '~/model/user/request/PaginatedUserRequest';
+import type { PaginatedUserRequest } from '~/model/user/request/PaginatedUserRequest';
 import { useAuthStore } from '~/store/authStore';
-import { ProductResponse } from '~/model/products/response/ProductResponse';
+import type { ProductResponse } from '~/model/products/response/ProductResponse';
 import { FirebaseError } from 'firebase/app';
-import { AccountAdminSettings, CardsResponse } from '~/types/auth/account-settings';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { AccountAdminSettings, CardsResponse } from '~/types/auth/account-settings';
+import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 
 class UserService extends HttpFactory {
     private RESOURCE = '/user';
@@ -12,8 +12,7 @@ class UserService extends HttpFactory {
     private token = this.authStore.getToken() ?? null;
 
     async fetchPaginatedUser(params: PaginatedUserRequest) {
-        const baseURL = useRuntimeConfig().public.BASE_URL_API;
-        const { data, error } = await useFetchAPI(`${baseURL}/${this.RESOURCE}`, {
+        const { data, error } = await useFetchAPI(`/${this.RESOURCE}`, {
             headers: {
                 Authorization: `Bearer ${this.token}`,
             },

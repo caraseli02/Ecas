@@ -1,8 +1,8 @@
 import HttpFactory from '@/composables/HttpFactory';
 import { FirebaseError } from 'firebase/app';
-import { LoginRequest } from '~/model/auth/request/LoginRequest';
-import { ProductResponse } from '~/model/products/response/ProductResponse';
-import {
+import type { LoginRequest } from '~/model/auth/request/LoginRequest';
+import type { ProductResponse } from '~/model/products/response/ProductResponse';
+import type {
     FirebaseBusinessAccount as SignupBusinessPayload,
     FirebasePersonalAccount as SignupPersonalPayload,
     UserDetailsResponse,

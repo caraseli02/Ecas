@@ -1,11 +1,11 @@
 import HttpFactory from '@/composables/HttpFactory';
-import { SearchSimilarProductRequest } from '~/model/products/request/SearchSimilarProductRequest';
-import { NewProductResponse } from '~/model/products/response/NewProductResponse';
-import { ProductParametricDataFeaturesInterface, ProductResponse } from '~/model/products/response/ProductResponse';
-import { ProductSearchResponse } from '~/model/products/response/ProductSearchResponse';
-import { SearchSimilarProductResponse } from '~/model/products/response/SearchSimilarProductResponse';
+import type { SearchSimilarProductRequest } from '~/model/products/request/SearchSimilarProductRequest';
+import type { NewProductResponse } from '~/model/products/response/NewProductResponse';
+import type { ProductParametricDataFeaturesInterface, ProductResponse } from '~/model/products/response/ProductResponse';
+import type { ProductSearchResponse } from '~/model/products/response/ProductSearchResponse';
+import type { SearchSimilarProductResponse } from '~/model/products/response/SearchSimilarProductResponse';
 import { useAuthStore } from '~/store/authStore';
-import { ProductDetailResponse } from '~/model/products/response/ProductDetailResponse';
+import type { ProductDetailResponse } from '~/model/products/response/ProductDetailResponse';
 
 class ProductService extends HttpFactory {
     private RESOURCE = '/products';
