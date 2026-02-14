@@ -190,12 +190,12 @@ onMounted(() => {
         <OrderConfirmThankYou v-if="isNew" />
         <section class="w-full flex justify-between">
             <NuxtLink v-if="false" class="w-fit" to="/dashboard/client?tab=orders">
-                <UiButton  class="gap-2" variant="secondary">
+                <UiButton class="gap-2" variant="secondary">
                     <ArrowLeft class="w-4 h-4 stroke-2" />
                     Back
                 </UiButton>
             </NuxtLink>
-            <NuxtLink v-if="true"  to="/">
+            <NuxtLink v-if="true" to="/">
                 <UiButton class="gap-2">
                     <ShoppingCart class="w-4 h-4 stroke-2" />
                     Continue Shopping

@@ -11,9 +11,16 @@
                 </UiButton>
             </div>
             <div
-                class="grid grid-cols-1 gap-y-[30px] mb-[30px] md:grid-cols-2 md:gap-6 lg:grid-rows-1 lg:items-start lg:mb-10 2xl:grid-cols-[340px,542px,460px]">
-                <ProductGallery v-if="product && images" v-model="activeImageIndex" class="col-span-2 lg:col-span-1"
-                    :images="images" :product="product" @show-zoom-modal="showZoomGallery = true" />
+                class="grid grid-cols-1 gap-y-[30px] mb-[30px] md:grid-cols-2 md:gap-6 lg:grid-rows-1 lg:items-start lg:mb-10 2xl:grid-cols-[340px,542px,460px]"
+            >
+                <ProductGallery
+                    v-if="product && images"
+                    v-model="activeImageIndex"
+                    class="col-span-2 lg:col-span-1"
+                    :images="images"
+                    :product="product"
+                    @show-zoom-modal="showZoomGallery = true"
+                />
                 <ProductDetails v-if="product" class="col-span-2 lg:col-span-1" :product="product" />
                 <ProductQuantity v-if="product" class="col-span-2 2xl:col-span-1" :product="product" />
             </div>
@@ -23,8 +30,7 @@
         <NewProducts> Similar Products </NewProducts>
         <Banner class="hidden lg:flex xl:hidden" />
         <div class="container mb-[30px] lg:mb-10 xl:mb-[60px]">
-            <div
-                class="grid grid-cols-1 gap-[15px] md:grid-cols-[40%,calc(60%-20px)] md:gap-5 xl:grid-cols-[41%,calc(59%-20px)]">
+            <div class="grid grid-cols-1 gap-[15px] md:grid-cols-[40%,calc(60%-20px)] md:gap-5 xl:grid-cols-[41%,calc(59%-20px)]">
                 <QuickBuy />
                 <EcxlusiveOffer />
             </div>
@@ -32,8 +38,12 @@
         <ProductBlocks :rows-number="2" class="mb-7 lg:mb-[38px] xl:mb-[58px]" :filters="filters" />
         <News />
         <Manufacturers />
-        <ProductZoomGallery v-model:selectedIndex="activeImageIndex" v-model:open="showZoomGallery"
-            :alias="product.alias" :images="images" />
+        <ProductZoomGallery
+            v-model:selectedIndex="activeImageIndex"
+            v-model:open="showZoomGallery"
+            :alias="product.alias"
+            :images="images"
+        />
     </div>
 </template>
 
@@ -56,12 +66,14 @@ const { data } = await $api.product.fetchSingleProduct(route.params.slug);
 product.value = data;
 
 const images = computed(() => {
-    return Array.isArray(product.value?.details?.ProductImage) ? product.value?.details?.ProductImage : [product.value?.details?.ProductImage];
+    return Array.isArray(product.value?.details?.ProductImage)
+        ? product.value?.details?.ProductImage
+        : [product.value?.details?.ProductImage];
 });
 
 const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 
-const activeImageIndex = ref(0)
+const activeImageIndex = ref(0);
 const showZoomGallery = ref(false);
 
 const printPage = () => {

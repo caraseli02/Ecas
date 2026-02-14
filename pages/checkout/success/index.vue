@@ -2,6 +2,4 @@
     <p>Payment success</p>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>

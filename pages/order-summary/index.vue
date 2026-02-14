@@ -46,7 +46,6 @@
 </template>
 
 <script setup lang="ts">
-
 import { LoaderIcon } from 'lucide-vue-next';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 

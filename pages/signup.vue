@@ -41,8 +41,7 @@ import { useSignupState } from '@/composables/signup/useSignupState';
 
 const { $api } = useNuxtApp();
 
-const { checkForInputErrors, checkContactConfirmationEmail, checkProfileConfirmationEmail } = useError();
-
+const { checkForInputErrors, checkContactConfirmationEmail, checkProfileConfirmationEmail } = useFormValidation();
 
 const authStore = useAuthStore();
 
@@ -54,15 +53,15 @@ const firebaseToken = authStore.token?.value;
 const userInfo = authStore.loggedInUser;
 
 const {
-  currentStep,
-  selectedType,
-  selectedBusinessType,
-  vatPayer,
-  businessDetails,
-  personalDetails,
-  contactDetails,
-  profileDetails,
-  clearFormData
+    currentStep,
+    selectedType,
+    selectedBusinessType,
+    vatPayer,
+    businessDetails,
+    personalDetails,
+    contactDetails,
+    profileDetails,
+    clearFormData,
 } = useSignupState();
 
 const handleBusinessDetailsContinue = async () => {
@@ -409,7 +408,7 @@ useHead({
 });
 
 onBeforeRouteLeave(() => {
-    authStore.$reset()
+    authStore.$reset();
     logout();
-})
+});
 </script>

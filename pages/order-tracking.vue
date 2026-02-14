@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 // Example orders showing different states and variations
 const orders = [
     {
