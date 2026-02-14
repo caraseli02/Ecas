@@ -17,6 +17,26 @@ npm install
 pnpm install
 ```
 
+## Mock Mode
+
+For portfolio demos, enable mock mode:
+
+```bash
+# .env
+NUXT_PUBLIC_MOCK_MODE=true
+```
+
+Demo credentials: admin@ecas.com / admin123
+
+All API endpoints mocked via Nitro server. No backend required.
+
+### Running Demo
+
+```bash
+npm install
+npm run dev
+```
+
 ## Development Server
 
 Start the development server on http://localhost:3000
