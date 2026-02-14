@@ -56,7 +56,7 @@ interface TabFilter {
     label?: string;
     value: string;
     key?: any;
-    total_items?: number | null;  // Adjusted to accept null
+    total_items?: number | null; // Adjusted to accept null
     items?: OrderInterface[];
     icon?: string;
     requiredPermission?: string;
@@ -77,7 +77,7 @@ const orderFilters = ref<TabFilter[]>([
     {
         label: 'Orders',
         value: 'orders',
-        requiredPermission: 'read:orders'
+        requiredPermission: 'read:orders',
     },
     // {
     //     label: 'Favorites',
@@ -92,23 +92,22 @@ const orderFilters = ref<TabFilter[]>([
     {
         label: 'Organization',
         value: 'organization',
-        requiredPermission: 'read:organization'
-
+        requiredPermission: 'read:organization',
     },
     {
         label: 'Agents',
         value: 'agents',
-        requiredPermission: 'read:agent'
+        requiredPermission: 'read:agent',
     },
     {
         label: 'Transaction History',
         value: 'transaction_history',
-        requiredPermission: 'read:payment'
+        requiredPermission: 'read:payment',
     },
     {
         label: 'Activity Logs',
         value: 'activity_logs',
-        requiredPermission: 'read:audit'
+        requiredPermission: 'read:audit',
     },
     {
         label: 'Settings',
@@ -117,8 +116,8 @@ const orderFilters = ref<TabFilter[]>([
 ]);
 
 const computedOrderFilters = computed(() => {
-    return orderFilters.value.filter(filter => 
-        !filter.requiredPermission || loggedInUser.value?.permissions.includes(filter.requiredPermission)
+    return orderFilters.value.filter(
+        (filter) => !filter.requiredPermission || loggedInUser.value?.permissions.includes(filter.requiredPermission)
     );
 });
 
@@ -154,7 +153,7 @@ const filterHightlightLeft = ref(0);
 //     activeOrderFilter,
 //     (newVlad) => {
 //         console.log(newVlad);
-        
+
 //         setActiveFilterHighlight();
 //     },
 //     { deep: true, immediate: true }
@@ -168,8 +167,8 @@ const updateOrderFiltersWithCounts = async () => {
             headers: { Authorization: `Bearer ${token}` },
         });
         const counts = response.data;
-        
-        orderFilters.value.forEach(filter => {
+
+        orderFilters.value.forEach((filter) => {
             const apiResponseKey: string = apiKeysMap[filter.value] || '';
             const count = counts[apiResponseKey];
             if (apiResponseKey && count !== undefined) {
@@ -191,19 +190,19 @@ const checkForActiveTab = () => {
         //     setActiveFilterHighlight()
         // }, 2000);
     }
-}
+};
 
-watch(() => route.query.tab, checkForActiveTab, { immediate: true }  );
+watch(() => route.query.tab, checkForActiveTab, { immediate: true });
 
 onMounted(async () => {
-    updateOrderFiltersWithCounts()
+    updateOrderFiltersWithCounts();
     // setActiveFilterHighlight();
-    checkForActiveTab()
+    checkForActiveTab();
 });
 
 onBeforeRouteLeave(() => {
-    activeOrderFilter.value = {value: 'home', icon: 'Dashboard'};
-})
+    activeOrderFilter.value = { value: 'home', icon: 'Dashboard' };
+});
 </script>
 
 <style scoped></style>

@@ -11,18 +11,17 @@ import Marketing from './Marketing.vue';
 const route = useRoute();
 
 onMounted(() => {
-  // check if the query has id to scroll in to view
-  setTimeout(() => {
-    const scrollToId = route.query.scrollTo;
-    if (scrollToId) {
-      const element = document.getElementById(scrollToId as string);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      }
-    }
-  }, 100);
-
-})
+    // check if the query has id to scroll in to view
+    setTimeout(() => {
+        const scrollToId = route.query.scrollTo;
+        if (scrollToId) {
+            const element = document.getElementById(scrollToId as string);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            }
+        }
+    }, 100);
+});
 </script>
 
 <template>

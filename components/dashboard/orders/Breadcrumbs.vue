@@ -35,7 +35,7 @@ defineProps({
 });
 
 const slots = defineSlots<{
-  default?: () => any
-  order?: () => any
-}>()
+    default?: () => any;
+    order?: () => any;
+}>();
 </script>

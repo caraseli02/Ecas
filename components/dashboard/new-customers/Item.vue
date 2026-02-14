@@ -18,7 +18,10 @@
             </div>
             <div :class="[loading ? 'w-full' : 'truncate']">
                 <SkeletonLoader v-if="loading" class="block w-2/3 h-4 mb-2" />
-                <div v-else class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue-500">
+                <div
+                    v-else
+                    class="text-sm leading-[1.43] font-semibold truncate transition-colors duration-300 group-hover/link:text-blue-500"
+                >
                     {{ `${item.name}` }}
                 </div>
                 <SkeletonLoader v-if="loading" class="w-full h-4" />

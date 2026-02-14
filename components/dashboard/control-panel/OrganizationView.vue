@@ -182,8 +182,8 @@ import CopyIcon from '@/assets/icons/dashboard/copy.svg';
 import { countries } from '@/data/countries';
 import { FormSelectOption } from '~~/types';
 import { useNuxtApp } from '#app';
-import { AddressInterface, CompanyDetails, ContactDetails, UserInterface } from '~/types/auth/user-interface';
-import { PropType } from 'nuxt/dist/app/compat/capi';
+import type { AddressInterface, CompanyDetails, ContactDetails, UserInterface } from '~/types/auth/user-interface';
+import type { PropType } from 'vue';
 import { getRegionByCountry } from '~/helpers/form.helper';
 import { toast } from '~/components/ui/toast';
 
