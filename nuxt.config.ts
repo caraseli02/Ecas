@@ -76,6 +76,7 @@ export default defineNuxtConfig({
             firebaseMeasurementID: process.env.NUXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
             stripePublishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
             BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API ?? 'https://dev-backend.ecasmag.ro/ecas',
+            MOCK_MODE: process.env.NUXT_PUBLIC_MOCK_MODE === 'true',
             HOST: '0.0.0.0',
         },
     },
@@ -89,10 +90,22 @@ export default defineNuxtConfig({
 
     compatibilityDate: '2024-11-20',
 
+    ignore: ['**/node_modules/**', '**/.git/**', '**/.nuxt/**', '**/dist/**', '**/coverage/**', '**/.output/**'],
+
+    hooks: {
+        'builder:watch': () => {},
+    },
+
     vite: {
         vue: {
             script: {
                 defineModel: true,
+            },
+        },
+        server: {
+            watch: {
+                usePolling: true,
+                interval: 1000,
             },
         },
     },
