@@ -23,6 +23,17 @@ export default defineEventHandler(async (event) => {
             stock: 150,
             sold: 1250,
             favourite: false,
+            priceHistory: [
+                {
+                    price: 999.99,
+                    active: true,
+                    createdAt: '2024-01-15T10:30:00Z',
+                },
+            ],
+            details: {
+                description: 'Latest flagship smartphone with cutting-edge features and premium build quality.',
+                images: ['https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500'],
+            },
         },
         {
             _id: 'prod-2',
@@ -40,6 +51,17 @@ export default defineEventHandler(async (event) => {
             stock: 75,
             sold: 890,
             favourite: true,
+            priceHistory: [
+                {
+                    price: 1499.99,
+                    active: true,
+                    createdAt: '2024-01-15T10:30:00Z',
+                },
+            ],
+            details: {
+                description: 'High-performance laptop designed for professionals and creative work.',
+                images: ['https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500'],
+            },
         },
         {
             _id: 'prod-3',
@@ -57,6 +79,17 @@ export default defineEventHandler(async (event) => {
             stock: 500,
             sold: 2340,
             favourite: false,
+            priceHistory: [
+                {
+                    price: 149.99,
+                    active: true,
+                    createdAt: '2024-01-15T10:30:00Z',
+                },
+            ],
+            details: {
+                description: 'Premium mechanical keyboard with customizable RGB backlighting.',
+                images: ['https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500'],
+            },
         },
         {
             _id: 'prod-4',
@@ -74,6 +107,73 @@ export default defineEventHandler(async (event) => {
             stock: 200,
             sold: 1560,
             favourite: false,
+            priceHistory: [
+                {
+                    price: 299.99,
+                    active: true,
+                    createdAt: '2024-01-15T10:30:00Z',
+                },
+            ],
+            details: {
+                description: 'High-quality wireless headphones with active noise cancellation.',
+                images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500'],
+            },
+        },
+        {
+            _id: 'prod-5',
+            erpItemId: 'ERP-005',
+            path: 'audio/speaker',
+            category: 'Audio',
+            active: true,
+            class: 'Standard',
+            name: 'Bluetooth Speaker Portable',
+            alias: 'speaker-bluetooth-portable',
+            description: 'Portable Bluetooth speaker with powerful sound and long battery life.',
+            code: 'SPK-005',
+            manufacturer: 'AudioTech Ltd',
+            manufacturerCode: 'ATL',
+            stock: 350,
+            sold: 1800,
+            favourite: true,
+            priceHistory: [
+                {
+                    price: 79.99,
+                    active: true,
+                    createdAt: '2024-01-15T10:30:00Z',
+                },
+            ],
+            details: {
+                description: 'Portable Bluetooth speaker with powerful sound and long battery life.',
+                images: ['https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500'],
+            },
+        },
+        {
+            _id: 'prod-6',
+            erpItemId: 'ERP-006',
+            path: 'electronics/tablet',
+            category: 'Electronics',
+            active: true,
+            class: 'Premium',
+            name: 'Premium Tablet Pro',
+            alias: 'tablet-premium-pro',
+            description: 'High-end tablet with stunning display and powerful performance.',
+            code: 'TAB-006',
+            manufacturer: 'TechBrand Inc.',
+            manufacturerCode: 'TBI',
+            stock: 120,
+            sold: 950,
+            favourite: false,
+            priceHistory: [
+                {
+                    price: 799.99,
+                    active: true,
+                    createdAt: '2024-01-15T10:30:00Z',
+                },
+            ],
+            details: {
+                description: 'High-end tablet with stunning display and powerful performance.',
+                images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500'],
+            },
         },
     ];
 
@@ -86,7 +186,7 @@ export default defineEventHandler(async (event) => {
                 p.name.toLowerCase().includes(keyword) ||
                 p.description?.toLowerCase().includes(keyword) ||
                 p.manufacturer?.toLowerCase().includes(keyword) ||
-                p.code?.toLowerCase().includes(keyword),
+                p.code?.toLowerCase().includes(keyword)
         );
     }
 
