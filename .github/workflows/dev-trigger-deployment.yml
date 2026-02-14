@@ -1,149 +1,149 @@
 name: pr-deploy-dev #here
 
 on:
-  issue_comment:
-    types: [ created ]
-  workflow_dispatch:
-    inputs:
-      parameter:
-        description: 'Deploy to env'
+    issue_comment:
+        types: [created]
+    workflow_dispatch:
+        inputs:
+            parameter:
+                description: 'Deploy to env'
 
 jobs:
-  deploy-trigger-check:
-    name: 1) looking for deploy trigger
-    runs-on: ubuntu-20.04
-    environment: dev
-    steps:
-      - name: acknowledge deployment request to commenter
-        id: check
-        uses: khan/pull-request-comment-trigger@master
-        with:
-          trigger: '/deploy#dev'
-          reaction: rocket
-        env:
-          GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
-    outputs:
-      triggered: ${{ steps.check.outputs.triggered }}
+    deploy-trigger-check:
+        name: 1) looking for deploy trigger
+        runs-on: ubuntu-20.04
+        environment: dev
+        steps:
+            - name: acknowledge deployment request to commenter
+              id: check
+              uses: khan/pull-request-comment-trigger@master
+              with:
+                  trigger: '/deploy#dev'
+                  reaction: rocket
+              env:
+                  GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
+        outputs:
+            triggered: ${{ steps.check.outputs.triggered }}
 
-  deploy:
-    name: 2) deploy pull request to DO
-    runs-on: ubuntu-20.04
-    needs: deploy-trigger-check
-    environment: dev
-    if: needs.deploy-trigger-check.outputs.triggered == 'true'
-    steps:
-      - name: get pull request ref
-        id: get_pull_request_ref
-        uses: octokit/request-action@v2.x
-        with:
-          route: GET /repos/:repository/pulls/:issue_id
-          repository: ${{ github.repository }}
-          issue_id: ${{ github.event.issue.number }}
-        env:
-          GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
+    deploy:
+        name: 2) deploy pull request to DO
+        runs-on: ubuntu-20.04
+        needs: deploy-trigger-check
+        environment: dev
+        if: needs.deploy-trigger-check.outputs.triggered == 'true'
+        steps:
+            - name: get pull request ref
+              id: get_pull_request_ref
+              uses: octokit/request-action@v2.x
+              with:
+                  route: GET /repos/:repository/pulls/:issue_id
+                  repository: ${{ github.repository }}
+                  issue_id: ${{ github.event.issue.number }}
+              env:
+                  GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
 
-      - name: create deployment
-        id: create_deployment
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/:repository/deployments
-          repository: ${{ github.repository }}
-          ref: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
-          environment: dev #here
-          auto_merge: false
-        env:
-          GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
+            - name: create deployment
+              id: create_deployment
+              uses: octokit/request-action@v2.x
+              with:
+                  route: POST /repos/:repository/deployments
+                  repository: ${{ github.repository }}
+                  ref: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
+                  environment: dev #here
+                  auto_merge: false
+              env:
+                  GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
 
-      - name: set deployment status to in progress
-        id: start_deployment
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/:repository/deployments/:deployment/statuses
-          repository: ${{ github.repository }}
-          deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
-          environment: dev #here
-          environment_url: https://ecasmag.ro/ecas
-          log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          state: in_progress
-          mediaType: '{"previews": ["flash", "ant-man"]}'
-        env:
-          GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
+            - name: set deployment status to in progress
+              id: start_deployment
+              uses: octokit/request-action@v2.x
+              with:
+                  route: POST /repos/:repository/deployments/:deployment/statuses
+                  repository: ${{ github.repository }}
+                  deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
+                  environment: dev #here
+                  environment_url: https://ecasmag.ro/ecas
+                  log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                  state: in_progress
+                  mediaType: '{"previews": ["flash", "ant-man"]}'
+              env:
+                  GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
 
-      - name: deploy the pull request
-        env:
-          REGISTRY: ${{vars.REGISTRY}}
-          IMAGE_NAME: ${{vars.IMAGE_NAME}}
-          REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
-          SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
-          FIREBASE_SERVICE_ACCOUNT_JSON: ${{secrets.FIREBASE_SERVICE_ACCOUNT_JSON}}
-          FIREBASE_API_KEY: ${{secrets.FIREBASE_API_KEY}}
-          FIREBASE_AUTH_DOMAIN: ${{secrets.FIREBASE_AUTH_DOMAIN}}
-          FIREBASE_PROJECT_ID: ${{secrets.FIREBASE_PROJECT_ID}}
-          FIREBASE_STORAGE_BUCKET: ${{secrets.FIREBASE_STORAGE_BUCKET}}
-          FIREBASE_MESSAGE_SENDER_ID: ${{secrets.FIREBASE_MESSAGE_SENDER_ID}}
-          FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
-          FIREBASE_MEASUREMENT_ID: ${{secrets.FIREBASE_MEASUREMENT_ID}}
-          STRIPE_PUBLISHABLE_KEY: ${{secrets.STRIPE_PUBLISHABLE_KEY}}
-          BASE_URL_API: ${{vars.BASE_URL_API}}
+            - name: deploy the pull request
+              env:
+                  REGISTRY: ${{vars.REGISTRY}}
+                  IMAGE_NAME: ${{vars.IMAGE_NAME}}
+                  REF: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.ref }}
+                  SHA: ${{ fromJson(steps.get_pull_request_ref.outputs.data).head.sha }}
+                  FIREBASE_SERVICE_ACCOUNT_JSON: ${{secrets.FIREBASE_SERVICE_ACCOUNT_JSON}}
+                  FIREBASE_API_KEY: ${{secrets.FIREBASE_API_KEY}}
+                  FIREBASE_AUTH_DOMAIN: ${{secrets.FIREBASE_AUTH_DOMAIN}}
+                  FIREBASE_PROJECT_ID: ${{secrets.FIREBASE_PROJECT_ID}}
+                  FIREBASE_STORAGE_BUCKET: ${{secrets.FIREBASE_STORAGE_BUCKET}}
+                  FIREBASE_MESSAGE_SENDER_ID: ${{secrets.FIREBASE_MESSAGE_SENDER_ID}}
+                  FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
+                  FIREBASE_MEASUREMENT_ID: ${{secrets.FIREBASE_MEASUREMENT_ID}}
+                  STRIPE_PUBLISHABLE_KEY: ${{secrets.STRIPE_PUBLISHABLE_KEY}}
+                  BASE_URL_API: ${{vars.BASE_URL_API}}
 
-        uses: appleboy/ssh-action@v0.1.9
-        with:
-          host: ${{ vars.SSH_HOST }}
-          username: ${{ vars.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          envs:
-            IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA,FIREBASE_SERVICE_ACCOUNT_JSON,FIREBASE_API_KEY,
-            FIREBASE_AUTH_DOMAIN,FIREBASE_PROJECT_ID,FIREBASE_STORAGE_BUCKET,FIREBASE_MESSAGE_SENDER_ID,FIREBASE_APP_ID,FIREBASE_MEASUREMENT_ID,
-            REF,SHA,BASE_URL_API,STRIPE_PUBLISHABLE_KEY
-          script: |
-            # Login to registry
-            docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
-            # Stop running container
-            docker stop $(echo $IMAGE_NAME)
-            # Remove old container
-            docker rm $(echo $IMAGE_NAME)
-            # Run a new container from a new image
-            docker run -d \
-            -p 3030:3000 \
-            -e NUXT_PUBLIC_FIREBASE_SERVICE_ACCOUNT_JSON=$FIREBASE_SERVICE_ACCOUNT_JSON \
-            -e NUXT_PUBLIC_FIREBASE_API_KEY=$FIREBASE_API_KEY \
-            -e NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN=$FIREBASE_AUTH_DOMAIN \
-            -e NUXT_PUBLIC_FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID \
-            -e NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET=$FIREBASE_STORAGE_BUCKET \
-            -e NUXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID=$FIREBASE_MESSAGE_SENDER_ID \
-            -e NUXT_PUBLIC_FIREBASE_APP_ID=$FIREBASE_APP_ID \
-            -e NUXT_PUBLIC_FIREBASE_MEASUREMENT_ID=$FIREBASE_MEASUREMENT_ID \
-            -e NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY \
-            -e NUXT_PUBLIC_BASE_URL_API=$BASE_URL_API \
-            --restart always \
-            --name $(echo $IMAGE_NAME) $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
+              uses: appleboy/ssh-action@v0.1.9
+              with:
+                  host: ${{ vars.SSH_HOST }}
+                  username: ${{ vars.USERNAME }}
+                  key: ${{ secrets.SSH_KEY }}
+                  passphrase: ${{ secrets.PASSPHRASE }}
+                  envs:
+                      IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA,FIREBASE_SERVICE_ACCOUNT_JSON,FIREBASE_API_KEY,
+                      FIREBASE_AUTH_DOMAIN,FIREBASE_PROJECT_ID,FIREBASE_STORAGE_BUCKET,FIREBASE_MESSAGE_SENDER_ID,FIREBASE_APP_ID,FIREBASE_MEASUREMENT_ID,
+                      REF,SHA,BASE_URL_API,STRIPE_PUBLISHABLE_KEY
+                  script: |
+                      # Login to registry
+                      docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
+                      # Stop running container
+                      docker stop $(echo $IMAGE_NAME)
+                      # Remove old container
+                      docker rm $(echo $IMAGE_NAME)
+                      # Run a new container from a new image
+                      docker run -d \
+                      -p 3030:3000 \
+                      -e NUXT_PUBLIC_FIREBASE_SERVICE_ACCOUNT_JSON=$FIREBASE_SERVICE_ACCOUNT_JSON \
+                      -e NUXT_PUBLIC_FIREBASE_API_KEY=$FIREBASE_API_KEY \
+                      -e NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN=$FIREBASE_AUTH_DOMAIN \
+                      -e NUXT_PUBLIC_FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID \
+                      -e NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET=$FIREBASE_STORAGE_BUCKET \
+                      -e NUXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID=$FIREBASE_MESSAGE_SENDER_ID \
+                      -e NUXT_PUBLIC_FIREBASE_APP_ID=$FIREBASE_APP_ID \
+                      -e NUXT_PUBLIC_FIREBASE_MEASUREMENT_ID=$FIREBASE_MEASUREMENT_ID \
+                      -e NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY \
+                      -e NUXT_PUBLIC_BASE_URL_API=$BASE_URL_API \
+                      --restart always \
+                      --name $(echo $IMAGE_NAME) $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $REF-$(echo $SHA | head -c7))
 
-      - name: set deployment status to success
-        id: successful_deployment
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/:repository/deployments/:deployment/statuses
-          repository: ${{ github.repository }}
-          deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
-          environment: dev
-          log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          mediaType: '{"previews": ["ant-man"]}'
-          state: success
-        env:
-          GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
+            - name: set deployment status to success
+              id: successful_deployment
+              uses: octokit/request-action@v2.x
+              with:
+                  route: POST /repos/:repository/deployments/:deployment/statuses
+                  repository: ${{ github.repository }}
+                  deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
+                  environment: dev
+                  log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                  mediaType: '{"previews": ["ant-man"]}'
+                  state: success
+              env:
+                  GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
 
-      - name: set deployment status to failure
-        id: failed_deployment
-        uses: octokit/request-action@v2.x
-        if: failure()
-        with:
-          route: POST /repos/:repository/deployments/:deployment/statuses
-          repository: ${{ github.repository }}
-          deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
-          environment: dev #here
-          log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          mediaType: '{"previews": ["ant-man"]}'
-          state: failure
-        env:
-          GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
+            - name: set deployment status to failure
+              id: failed_deployment
+              uses: octokit/request-action@v2.x
+              if: failure()
+              with:
+                  route: POST /repos/:repository/deployments/:deployment/statuses
+                  repository: ${{ github.repository }}
+                  deployment: ${{ fromJson(steps.create_deployment.outputs.data).id }}
+                  environment: dev #here
+                  log_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                  mediaType: '{"previews": ["ant-man"]}'
+                  state: failure
+              env:
+                  GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
