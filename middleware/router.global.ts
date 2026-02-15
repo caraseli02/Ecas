@@ -2,6 +2,13 @@ import { useAuthStore } from '~~/store/authStore';
 import { UserPermissionsEnum } from '~/types/auth/permissions';
 
 export default defineNuxtRouteMiddleware((to, from) => {
+    const config = useRuntimeConfig();
+
+    // Bypass all checks in mock mode
+    if (config.public.mockMode) {
+        return;
+    }
+
     const authStore = useAuthStore();
     const user = authStore.loggedInUser;
 

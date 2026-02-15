@@ -97,6 +97,12 @@ export const useAuthStore = defineStore(
         function getToken() {
             if (import.meta.server) return null;
 
+            // In mock mode, always return the demo token
+            const config = useRuntimeConfig();
+            if (config.public.mockMode) {
+                return token.value as unknown as UserInfoJWT;
+            }
+
             const router = useRouter();
             const route = useRoute();
 
