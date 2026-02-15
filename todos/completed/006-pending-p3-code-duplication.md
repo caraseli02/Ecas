@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 priority: p3
 issue_id: 006
 tags:
@@ -334,6 +334,16 @@ Rationale:
 **Action**: Created TODO file to track refactoring.
 
 **Status**: Pending implementation.
+
+## 2026-02-15 - Verification
+
+**Finding**: During implementation, verified that code duplication has already been eliminated.
+
+**Evidence**: `services/categories.service.ts:9-14` contains `authenticatedCall()` helper method that all 6 category operations now use, reducing code duplication from 24 lines to 6 method calls.
+
+**Action**: Marked as completed. Code duplication already eliminated with helper method.
+
+**Status**: Completed (authenticatedCall helper already implemented).
 
 ## Related Links
 

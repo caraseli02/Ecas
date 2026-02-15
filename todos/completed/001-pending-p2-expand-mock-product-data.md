@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 priority: p2
 issue_id: '001'
 tags: [demo, ui, mock-data]
@@ -181,6 +181,32 @@ The demo only has 6 mock products, making the product catalog feel sparse and in
 -   Shared mock data file would eliminate duplication (4 files currently)
 -   Consistent product images are important for visual appeal
 -   Related to mock data in cart and orders
+
+### 2026-02-15 - Implementation
+
+**By:** Implementation
+
+**Actions:**
+
+-   Created shared mock data file: `server/utils/mockProducts.ts`
+-   Expanded from 6 to 24 products (added 18 products)
+-   Added diverse categories: Electronics, Components, Audio, Wearables, Tools, Accessories, Office, Home
+-   Updated all 4 API files to import from shared mock data:
+-   `server/api/products/[id].get.ts`
+-   `server/api/products/[path].get.ts`
+-   `server/api/products/search.post.ts`
+-   `server/api/products/new-products.get.ts`
+-   Used consistent Unsplash images across all products
+-   Maintained realistic price ranges and product details
+
+**Outcome:**
+
+-   Product catalog now has 24 products (4x expansion)
+-   Eliminated code duplication across 4 files
+-   Better showcases pagination, filtering, and search features
+-   Demo feels more complete and professional
+
+**Status:** Completed.
 
 ---
 

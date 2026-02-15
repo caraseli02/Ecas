@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 priority: p2
 issue_id: 005
 tags:
@@ -345,6 +345,16 @@ Rationale:
 **Action**: Created TODO file to track improvement.
 
 **Status**: Pending implementation.
+
+## 2026-02-15 - Verification
+
+**Finding**: During implementation, verified that 401 handling is already optional.
+
+**Evidence**: `composables/HttpFactory.ts:19` has `options: { handle401?: boolean } = {}` parameter, and line 34 checks `if (options.handle401 !== false && err.response?.status === 401)`.
+
+**Action**: Marked as completed. 401 handling already made optional.
+
+**Status**: Completed (handle401 parameter already implemented).
 
 ## Related Links
 

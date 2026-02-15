@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 priority: p2
 issue_id: 004
 tags:
@@ -295,6 +295,16 @@ Rationale:
 **Action**: Created TODO file to track optimization.
 
 **Status**: Pending implementation.
+
+## 2026-02-15 - Verification
+
+**Finding**: During implementation, verified that redundant token management has already been addressed.
+
+**Evidence**: `services/categories.service.ts:9-14` contains `authenticatedCall()` helper method that centralizes token fetching, eliminating duplication across all 6 methods.
+
+**Action**: Marked as completed. Token management already optimized with helper method.
+
+**Status**: Completed (optimization already implemented via authenticatedCall helper).
 
 ## Related Links
 

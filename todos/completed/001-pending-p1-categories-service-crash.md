@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 priority: p1
 issue_id: 001
 tags:
@@ -201,6 +201,16 @@ Rationale:
 **Action**: Created TODO file to track fix.
 
 **Status**: Pending implementation.
+
+## 2026-02-15 - Verification
+
+**Finding**: During implementation, verified that the issue is already fixed.
+
+**Evidence**: `services/categories.service.ts:7` contains `private authStore = useAuthStore();`
+
+**Action**: Marked as completed. No changes needed.
+
+**Status**: Completed (fix already in place).
 
 ## Related Links
 
