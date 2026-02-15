@@ -75,7 +75,7 @@ export default defineNuxtConfig({
             firebaseAppID: process.env.NUXT_PUBLIC_FIREBASE_APP_ID,
             firebaseMeasurementID: process.env.NUXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
             stripePublishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-            BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API ?? 'https://dev-backend.ecasmag.ro/ecas',
+            BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API ?? '/api',
             MOCK_MODE: process.env.NUXT_PUBLIC_MOCK_MODE === 'true',
             HOST: '0.0.0.0',
         },

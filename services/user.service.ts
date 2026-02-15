@@ -9,20 +9,12 @@ import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 class UserService extends HttpFactory {
     private RESOURCE = '/user';
     private authStore = useAuthStore();
-    private token = this.authStore.getToken() ?? null;
 
     async fetchPaginatedUser(params: PaginatedUserRequest) {
-        const { data, error } = await useFetchAPI(`/${this.RESOURCE}`, {
-            headers: {
-                Authorization: `Bearer ${this.token}`,
-            },
+        const token = this.authStore.getToken();
+        return await this.call('GET', `${this.RESOURCE}`, params, {
+            headers: { Authorization: `Bearer ${token}` },
         });
-
-        if (error.value) {
-            return error.value;
-        }
-
-        return data;
     }
 
     async resetPasswordLink(email: string): Promise<ProductResponse | FirebaseError | unknown> {

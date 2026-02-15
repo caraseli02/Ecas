@@ -22,20 +22,13 @@ const categoriesOptions = computed(() => {
 });
 
 export const useCategories = () => {
-    const token = useAuthStore().getToken();
+    const { $api } = useNuxtApp();
 
     const getCategories = async () => {
-        const config = useRuntimeConfig();
         isLoading.value = true;
         selectedCategories.value = [];
         try {
-            const response = await $fetch<{
-                status: string;
-                data: { _id: string; data: TaxonomyInterface[]; locked: boolean };
-            }>(`${config.public.BASE_URL_API}/taxonomy`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
+            const response = await $api.categories.get();
             categories.value = response.data.data;
             taxonomyId.value = response.data._id;
             isLocked.value = response.data.locked;
@@ -65,7 +58,7 @@ export const useCategories = () => {
     };
 
     const createCategory = async (payload: ICreatePayload) => {
-        const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category`, 'POST', token, payload);
+        const response = await $api.categories.create(taxonomyId.value, payload);
         if (response.status === 'success') {
             await getCategories();
             return response.status;
@@ -73,20 +66,21 @@ export const useCategories = () => {
     };
 
     const deleteCategories = async (categoryIds: string[]) => {
-        const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category`, 'DELETE', token, { categoryIds });
-        if (response.status === 'success') await getCategories();
+        const response = await $api.categories.delete(taxonomyId.value, categoryIds);
+        if (response.status === 'success') {
+            await getCategories();
+        }
     };
 
     const updateCategory = async (categoryId: string, payload: ICreatePayload) => {
-        const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category/${categoryId}`, 'PATCH', token, payload);
+        const response = await $api.categories.update(taxonomyId.value, categoryId, payload);
         if (response.status === 'success') {
             await getCategories();
-            return response.status;
         }
     };
 
     const toggleCategoryStatus = async (categoryId: string) => {
-        const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category/${categoryId}/toggle-status`, 'PATCH', token);
+        const response = await $api.categories.toggleStatus(taxonomyId.value, categoryId);
         if (response.status === 'success') {
             await getCategories();
             return response.status;
@@ -94,28 +88,17 @@ export const useCategories = () => {
     };
 
     const mergeCategories = async (sourceIds: string[], targetID: string) => {
-        const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category/merge/${targetID}`, 'POST', token, { sourceIds });
-        if (response.status === 'success') await getCategories();
+        const response = await $api.categories.merge(taxonomyId.value, sourceIds, targetID);
+        if (response.status === 'success') {
+            await getCategories();
+        }
     };
 
     const moveCategories = async (categoryIds: string[], parentId: string) => {
-        const response = await apiRequest(`/taxonomy/${taxonomyId.value}/category/move/${parentId}`, 'POST', token, { categoryIds });
-        if (response.status === 'success') await getCategories();
-    };
-
-    const duplicateCategory = async (sourceId: string, targetId?: string) => {
-        const url = targetId
-            ? `/taxonomy/${taxonomyId.value}/category/${sourceId}/copy/${targetId}`
-            : `/taxonomy/${taxonomyId.value}/category/${sourceId}/copy`;
-        let payload = {};
-
-        if (targetId) {
-            payload = {
-                parentId: targetId,
-            };
+        const response = await $api.categories.move(taxonomyId.value, categoryIds, parentId);
+        if (response.status === 'success') {
+            await getCategories();
         }
-        const response = await apiRequest(url, 'POST', token, payload);
-        if (response.status === 'success') await getCategories();
     };
 
     const selectCategory = (categoryId: string) => {
@@ -147,7 +130,6 @@ export const useCategories = () => {
         toggleCategoryStatus,
         mergeCategories,
         moveCategories,
-        duplicateCategory,
         selectCategory,
         filteredAndSortedData: sortedData,
         categoriesOptions,

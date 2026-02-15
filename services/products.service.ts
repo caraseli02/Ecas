@@ -22,7 +22,8 @@ class ProductService extends HttpFactory {
                 ? {
                       headers: { Authorization: `Bearer ${token}` },
                   }
-                : {}
+                : {},
+            { handle401: false }
         );
     }
 
@@ -37,7 +38,8 @@ class ProductService extends HttpFactory {
                 ? {
                       headers: { Authorization: `Bearer ${token}` },
                   }
-                : {}
+                : {},
+            { handle401: false }
         );
     }
 
@@ -52,7 +54,8 @@ class ProductService extends HttpFactory {
                 ? {
                       headers: { Authorization: `Bearer ${token}` },
                   }
-                : {}
+                : {},
+            { handle401: false }
         );
     }
 
@@ -102,7 +105,8 @@ class ProductService extends HttpFactory {
             {
                 filters: featuresFilters,
             },
-            { params: filters, headers }
+            { params: filters, headers },
+            { handle401: false }
         );
     }
 
@@ -117,7 +121,8 @@ class ProductService extends HttpFactory {
                 ? {
                       headers: { Authorization: `Bearer ${token}` },
                   }
-                : {}
+                : {},
+            { handle401: false }
         );
     }
 }

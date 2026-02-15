@@ -1,4 +1,5 @@
 // No need to import $fetch, it's globally available in Nuxt 3 context
+import { useAuthStore } from '~/store/authStore';
 
 interface FetchInstance {
     (url: string, options?: any): Promise<any>;
@@ -15,15 +16,27 @@ class HttpFactory {
      * method - GET, POST, PUT
      * URL
      **/
-    async call<T>(method: string, url: string, data?: object | null, extras = {}): Promise<T> {
+    async call<T>(method: string, url: string, data?: object | null, extras = {}, options: { handle401?: boolean } = {}): Promise<T> {
+        const authStore = useAuthStore();
+        const token = authStore.getToken();
+        if (!token) {
+            throw new Error('No authentication token available');
+        }
+
         try {
-            const options: any = { method, ...extras };
+            const apiOptions: any = { method, ...extras };
             if (data) {
-                options.body = data;
+                apiOptions.body = data;
             }
-            return await this.$fetch(url, options);
-        } catch (err) {
-            console.error('API error:', err);
+            return await this.$fetch(url, apiOptions);
+        } catch (err: any) {
+            // Only handle 401 if explicitly requested (default: true for backward compatibility)
+            if (options.handle401 !== false && err.response?.status === 401) {
+                const router = useRouter();
+                authStore.signOut();
+                router.push('/login');
+                throw new Error('Session expired. Please log in again.');
+            }
             throw err;
         }
     }

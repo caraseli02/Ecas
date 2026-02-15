@@ -4,6 +4,12 @@
         <main class="flex flex-col pt-[96px] flex-1 lg:pt-[180px] xl:pt-[176px]" :class="[isScrolled ? 'md:pt-[170px]' : 'md:pt-[172px]']">
             <slot />
         </main>
+        <div
+            v-if="$config.public.MOCK_MODE"
+            class="fixed bottom-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-md text-xs font-medium z-50"
+        >
+            MOCK MODE
+        </div>
         <LayoutFooter />
         <Toaster />
     </div>

@@ -21,9 +21,15 @@ class CartService extends HttpFactory {
             return null;
         }
 
-        return await this.call<CartResponse>('GET', `${this.RESOURCE}`, null, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        return await this.call<CartResponse>(
+            'GET',
+            `${this.RESOURCE}`,
+            null,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            },
+            { handle401: false }
+        );
     }
 
     async addEntityToCart(payload: AddToCartRequestInterface) {
@@ -39,18 +45,30 @@ class CartService extends HttpFactory {
             payload.userId = user.user_id;
         }
 
-        return await this.call('POST', `${this.RESOURCE}`, payload, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        return await this.call(
+            'POST',
+            `${this.RESOURCE}`,
+            payload,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            },
+            { handle401: false }
+        );
     }
 
     async removeEntityFromCart(payload: DeleteProductCartRequestInterface) {
         const user = this.authStore.getCurrentUser;
         const token = this.authStore.getToken();
 
-        return await this.call('DELETE', `${this.RESOURCE}`, payload, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        return await this.call(
+            'DELETE',
+            `${this.RESOURCE}`,
+            payload,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            },
+            { handle401: false }
+        );
     }
 
     async updateEntityFromCart(payload: UpdateProductCartRequestInterface) {
@@ -66,15 +84,27 @@ class CartService extends HttpFactory {
             payload.userId = user.user_id;
         }
 
-        return await this.call('PUT', `${this.RESOURCE}`, payload, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        return await this.call(
+            'PUT',
+            `${this.RESOURCE}`,
+            payload,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            },
+            { handle401: false }
+        );
     }
 
     async fetchCartProducts() {
-        return await this.call<CartProductsInterface>('GET', `${this.RESOURCE}`, null, {
-            headers: { Authorization: `Bearer ${this.authStore.getToken()}` },
-        });
+        return await this.call<CartProductsInterface>(
+            'GET',
+            `${this.RESOURCE}`,
+            null,
+            {
+                headers: { Authorization: `Bearer ${this.authStore.getToken()}` },
+            },
+            { handle401: false }
+        );
     }
 }
 

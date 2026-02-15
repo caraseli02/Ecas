@@ -12,7 +12,7 @@ export const useFetchAPI: useFetchType = async (url, params) => {
             options.headers = options.headers || {};
 
             if (cookie.value) {
-                options.headers['x-access-token'] = cookie.value;
+                options.headers['Authorization'] = `Bearer ${cookie.value}`;
             }
         },
 
