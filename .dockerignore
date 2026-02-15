@@ -1,6 +1,0 @@
-node_modules/
-.idea/
-
-src/firebase/ServiceAccount.json
-
-docker-compose.yml
