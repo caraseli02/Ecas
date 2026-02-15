@@ -10,9 +10,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         if (!authStore.loggedInUser) {
             // Set up demo user auth token
             authStore.addToken('demo-token-portfolio');
-
-            // Create minimal demo user object
-            const demoUser = {
+            
+            // Create complete demo user object with all required fields
+            const now = new Date();
+            const demoUser: any = {
                 _id: 'mock-user-1',
                 firebaseId: 'mock-firebase-id-portfolio-demo',
                 role: 'customer',
@@ -31,7 +32,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                     firstName: 'Portfolio',
                     lastName: 'Demo User',
                     address: {
-                        name1: 'Demo Address',
+                        name1: 'NUXT_PUBLIC_BASE_URL_API',
                         country: 'US',
                         region: 'California',
                         city: 'San Francisco',
@@ -41,10 +42,29 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                     shippingAddress: [],
                     billingAddress: [],
                 },
-                createdAt: new Date().toISOString(),
+                createdAt: now.toISOString(),
                 clientCode: 'DEMO001',
+                aud: 'mock-aud',
+                auth_time: Math.floor(now.getTime() / 1000),
+                email: 'admin@ecas.com',
+                email_verified: true,
+                exp: Math.floor(now.getTime() / 1000) + (3600 * 24 * 30),
+                firebase: {
+                    identities: {
+                        'google.com': ['admin@ecas.com'],
+                    },
+                    sign_in_provider: 'email',
+                },
+                iat: Math.floor(now.getTime() / 1000),
+                iss: 'mock-iss',
+                name: 'Portfolio Demo User',
+                picture: 'https://ui-avatars.com/api/?name=Portfolio+Demo+User',
+                sub: 'demo',
+                user_id: 'mock-user-1',
+                permissions: ['*'],
+                roles: ['admin', 'customer'],
             };
-
+            
             // Add user to store
             authStore.addUser(demoUser);
             console.log('Demo user set up in middleware');
@@ -56,6 +76,18 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         return navigateTo({
             path: '/',
         });
+    }
+
+    if (import.meta.client && !token?.value) {
+        authStore.signOut();
+    }
+});
+    }
+
+    if (import.meta.client && !token?.value) {
+        authStore.signOut();
+    }
+});
     }
 
     if (import.meta.client && !token?.value) {
