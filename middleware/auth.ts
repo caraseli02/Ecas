@@ -2,8 +2,13 @@ import { useAuthStore } from '~~/store/authStore';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const token = useCookie('token');
+    const config = useRuntimeConfig();
     const authStore = useAuthStore();
-    // redirect the user to the home page
+
+    // Demo mode bypass - skip auth checks
+    if (config.public.mockMode) {
+        return;
+    }
 
     if (!token?.value) {
         return navigateTo({
