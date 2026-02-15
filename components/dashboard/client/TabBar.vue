@@ -160,12 +160,9 @@ const filterHightlightLeft = ref(0);
 // );
 
 const updateOrderFiltersWithCounts = async () => {
-    const token = useAuthStore().getToken();
-    const config = useRuntimeConfig();
+    const { $api } = useNuxtApp();
     try {
-        const response = await $fetch<ApiResponse>(`${config.public.BASE_URL_API}/dashboard/client/general/metadata`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await $api.customerDashboard.getMetadata();
         const counts = response.data;
 
         orderFilters.value.forEach((filter) => {

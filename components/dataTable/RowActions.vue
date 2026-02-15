@@ -1,15 +1,38 @@
 <script setup lang="ts">
 import { Row } from '@tanstack/vue-table';
-import { $fetch, FetchOptions } from 'ohmyfetch';
 import { LockKeyholeIcon } from 'lucide-vue-next';
+import { useNuxtApp } from '#app';
 
 export interface ActionOptionsConfiguration {
     label: string;
     enable: boolean;
-    navigateToRoute?: string; // only if isRouter = true
+    navigateToRoute?: string;
     actionFn?: (id: string) => Promise<unknown>;
     actionParameter?: string;
 }
+
+interface DataTableRowActionsProps {
+    row: Row<any>;
+    options: ActionOptionsConfiguration[];
+    service?: any;
+    discount?: number;
+    lock?: boolean;
+}
+
+const props = defineProps<DataTableRowActionsProps>();
+const { $api } = useNuxtApp();
+const task = computed(() => orderSchema.parse(props.row.original));
+
+const callAction = () => {
+    if (props.service) {
+        const service = $api[props.service as keyof typeof $api];
+        if (service && option.actionFn) {
+            return (service as any)[option.actionFn](...);
+        }
+    }
+    return undefined;
+};
+</script>
 
 interface DataTableRowActionsProps {
     row: Row<any>;
@@ -135,7 +158,7 @@ if (props.service) {
                     <UiDropdownMenuItem
                         v-if="!option.navigateToRoute"
                         :disabled="!option.enable || !option.actionFn"
-                        @click="actionService[option.actionFn](option.actionParameter || (row.original.firebaseId as string))"
+                        @click="callAction()"
                     >
                         {{ option.label }}
                     </UiDropdownMenuItem>

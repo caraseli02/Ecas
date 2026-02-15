@@ -12,6 +12,7 @@ import SettingsClientService from '~/services/dashboard/settings.service';
 import OrdersService from '~/services/dashboard/orders.service';
 import CartService from '~/services/cart.service';
 import GeneralSettings from '~/services/general-settings.service';
+import CategoriesService from '~/services/categories.service';
 import CustomerDashboard from '~/services/dashboard/client.service';
 import SmartPricingService from '~/services/dashboard/smart-pricing.service';
 import DocumentService from '~/services/dashboard/document.service';
@@ -30,7 +31,8 @@ export interface IApiInstance {
     orders: OrdersService;
     documents: DocumentService;
     generalSettings: GeneralSettings;
-    customerDashboard: CustomerDashboard;
+    categories: CategoriesService;
+    customerDashboard: CustomerDashboard & { getMetadata: () => Promise<any> };
     settingsClient: SettingsClientService;
     smartPricing: SmartPricingService;
 }
@@ -43,6 +45,9 @@ declare module '#app' {
 
 export default defineNuxtPlugin((nuxtApp) => {
     const config = nuxtApp.$config.public;
+
+    console.log(`[API] MOCK_MODE: ${config.MOCK_MODE ? 'ENABLED' : 'DISABLED'}`);
+
     const baseURL = config.MOCK_MODE ? '/api' : config.BASE_URL_API;
 
     const fetchOptions: FetchOptions = {
@@ -66,6 +71,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         orders: new OrdersService(apiFetcher),
         documents: new DocumentService(apiFetcher),
         generalSettings: new GeneralSettings(apiFetcher),
+        categories: new CategoriesService(apiFetcher),
         customerDashboard: new CustomerDashboard(apiFetcher),
         settingsClient: new SettingsClientService(apiFetcher),
         smartPricing: new SmartPricingService(apiFetcher),
