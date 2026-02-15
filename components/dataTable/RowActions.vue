@@ -34,28 +34,6 @@ const callAction = () => {
 };
 </script>
 
-interface DataTableRowActionsProps {
-    row: Row<any>;
-    options: ActionOptionsConfiguration[];
-    service?: any;
-    discount?: number;
-    lock?: boolean;
-}
-
-const props = defineProps<DataTableRowActionsProps>();
-// const task = computed(() => orderSchema.parse(props.row.original));
-
-const runtimeConfig = useRuntimeConfig();
-const fetchOptions: FetchOptions = {
-    baseURL: runtimeConfig.public.BASE_URL_API,
-};
-const apiFetcher = $fetch.create(fetchOptions);
-let actionService;
-if (props.service) {
-    actionService = new props.service(apiFetcher);
-}
-</script>
-
 <template>
     <section class="flex justify-end items-center gap-3">
         <UiBadge v-if="discount" class="h-[22px] text-xs !pt-[3px]" variant="outline"> {{ discount }}%</UiBadge>
@@ -155,11 +133,7 @@ if (props.service) {
             </UiDropdownMenuTrigger>
             <UiDropdownMenuContent align="end" class="w-[167px]">
                 <template v-for="(option, index) of props.options" :key="index">
-                    <UiDropdownMenuItem
-                        v-if="!option.navigateToRoute"
-                        :disabled="!option.enable || !option.actionFn"
-                        @click="callAction()"
-                    >
+                    <UiDropdownMenuItem v-if="!option.navigateToRoute" :disabled="!option.enable || !option.actionFn" @click="callAction()">
                         {{ option.label }}
                     </UiDropdownMenuItem>
                     <UiDropdownMenuItem v-if="!option.actionFn" :disabled="!option.enable || !option.navigateToRoute">

@@ -101,21 +101,6 @@ export const useCategories = () => {
         }
     };
 
-    const duplicateCategory = async (sourceId: string, targetId?: string) => {
-        const url = targetId
-            ? `/taxonomy/${taxonomyId.value}/category/${sourceId}/copy/${targetId}`
-            : `/taxonomy/${taxonomyId.value}/category/${sourceId}/copy`;
-        let payload = {};
-
-        if (targetId) {
-            payload = {
-                parentId: targetId,
-            };
-        }
-        const response = await $api.categories.get();
-        if (response.status === 'success') await getCategories();
-    };
-
     const selectCategory = (categoryId: string) => {
         const selectedIndex = selectedCategories.value.indexOf(categoryId);
         if (selectedIndex !== -1) {
@@ -145,7 +130,6 @@ export const useCategories = () => {
         toggleCategoryStatus,
         mergeCategories,
         moveCategories,
-        duplicateCategory,
         selectCategory,
         filteredAndSortedData: sortedData,
         categoriesOptions,
