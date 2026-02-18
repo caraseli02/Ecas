@@ -8,10 +8,36 @@ defineProps<{ isScrolled: boolean }>();
 const { categories, selectedCategories, currentCategory, isOpen, onCategoryClick } = useCategoriesNavigation();
 
 const showDiscountSection = ref(false);
+const isMobileViewport = ref(false);
+
+const updateViewportState = () => {
+    isMobileViewport.value = window.innerWidth < 1024;
+    if (!isMobileViewport.value) {
+        isOpen.value = false;
+    }
+};
+
+const sheetOpen = computed({
+    get: () => (isMobileViewport.value ? isOpen.value : false),
+    set: (value: boolean) => {
+        if (isMobileViewport.value) {
+            isOpen.value = value;
+        }
+    },
+});
+
+onMounted(() => {
+    updateViewportState();
+    window.addEventListener('resize', updateViewportState);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', updateViewportState);
+});
 </script>
 
 <template>
-    <UiSheet v-model:open="isOpen">
+    <UiSheet v-model:open="sheetOpen">
         <UiSheetTrigger as-child>
             <UiButton variant="ghost" class="flex items-center pl-0 mr-4 md:mr-0 text-white hover:bg-blue-500">
                 <XIcon v-if="isOpen" class="w-6 h-6" />
@@ -47,7 +73,7 @@ const showDiscountSection = ref(false);
                                 :disabled="sub.productCount === 0"
                             >
                                 {{ sub.name }}
-                                <span class="text-xs font-light text-slate-500">{{ sub.productCount }} items</span>
+                                <span class="text-xs font-light text-slate-500">{{ sub.productCount }} products</span>
                             </UiButton>
                             <UiBadge v-if="false" class="bg-blue-500 text-xs px-2"> New </UiBadge>
                             <UiBadge v-if="false" class="bg-rose-600 text-xs px-2"> Sale </UiBadge>
@@ -91,7 +117,7 @@ const showDiscountSection = ref(false);
                         <p class="flex flex-col items-start w-full font-medium">
                             {{ category.name }}
                             <span class="text-xs font-normal text-slate-500">
-                                {{ category.productCount }}
+                                {{ category.productCount }} products
                             </span>
                         </p>
                     </div>

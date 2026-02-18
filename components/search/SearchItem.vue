@@ -12,10 +12,10 @@
             </NuxtLink>
             <div>
                 <div class="md:flex md:items-center md:mb-[14px] max-w-[480px]">
-                    <div class="flex items-center mb-2.5 md:mb-0 md:mr-5 max-w-[70%] min-w-[20%]">
+                    <div class="flex items-center mb-2.5 md:mb-0 md:mr-5 md:flex-1 min-w-0">
                         <NuxtLink
                             :to="`/product/${item._id}`"
-                            class="text-xl leading-tight font-semibold mr-1.5 relative overflow-hidden text-ellipsis whitespace-nowrap"
+                            class="text-xl leading-tight font-semibold mr-1.5 truncate"
                         >
                             {{ item.name }}
                         </NuxtLink>
@@ -27,10 +27,10 @@
                         </button>
                     </div>
                     <button
-                        class="flex items-center text-slate-500 px-3 py-[5px] max-w-[70%] min-w-[20%] border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue-500 hover:border-blue-500 md:mb-0"
+                        class="flex items-center text-slate-500 px-3 py-[5px] w-fit max-w-full border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue-500 hover:border-blue-500 md:mb-0 md:max-w-[220px] md:flex-shrink-0"
                         @click="showCustomProductPartNumberModal = true"
                     >
-                        <span class="text-[15px] leading-tight font-medium mr-2 relative overflow-hidden text-ellipsis whitespace-nowrap">
+                        <span class="text-[15px] leading-tight font-medium mr-2 truncate">
                             {{ item.manufacturerCode }}
                         </span>
                         <EditIcon class="w-5 h-5" />

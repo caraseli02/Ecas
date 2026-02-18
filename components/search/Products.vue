@@ -216,7 +216,7 @@
             <div class="grid grid-cols-1 gap-10 mb-[25px] md:mb-10 lg:gap-[30px] xl:gap-[15px] xl:mb-[30px]">
                 <SearchItem v-for="item in paginatedProductsList" :key="item._id" :item="item" />
             </div>
-            <div class="flex flex-col items-center gap-[25px] md:flex-row md:justify-between">
+            <div class="flex flex-col items-center gap-[25px] md:hidden">
                 <label class="flex items-center">
                     <span class="text-sm flex-shrink-0 mr-2.5">Products on page</span>
                     <div class="relative">

@@ -1,13 +1,12 @@
-import { ref, computed, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCategories } from '@/composables/useCategories';
-
-const isOpen = ref(false);
 
 export function useCategoriesNavigation() {
     const { categories } = useCategories();
 
-    const selectedCategories = ref<any[]>([]);
+    const isOpen = useState<boolean>('main-menu-is-open', () => false);
+    const selectedCategories = useState<any[]>('main-menu-selected-categories', () => []);
     const currentCategory = computed(() =>
         selectedCategories.value.length > 0 ? selectedCategories.value[selectedCategories.value.length - 1] : null
     );
@@ -15,8 +14,9 @@ export function useCategoriesNavigation() {
     const router = useRouter();
 
     function onCategoryClick(category: any, makeReset: boolean) {
+        const subcategories = Array.isArray(category?.subcategory) ? category.subcategory : [];
         if (makeReset) selectedCategories.value = [];
-        if (category.subcategory.length === 0) {
+        if (subcategories.length === 0) {
             isOpen.value = false;
             selectedCategories.value = [];
             router.push(`/search?category=${category.id}`);

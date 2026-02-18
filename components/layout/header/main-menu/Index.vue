@@ -41,7 +41,7 @@
                             {{ category.name }}
                         </div>
                         <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
-                            {{ category.productCount }} Products
+                            {{ category.productCount }} products
                         </div>
                     </div>
                 </button>
@@ -53,7 +53,7 @@
                     class="group flex items-center px-2.5 py-[5px] rounded-[5px] w-full text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
                     @click="
                         selectedSubCategory = subCategory;
-                        handleCategoryClick(category);
+                        handleCategoryClick(subCategory);
                     "
                 >
                     <div>
@@ -61,22 +61,22 @@
                             {{ subCategory.name }}
                         </div>
                         <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
-                            {{ subCategory.productCount }} Products
+                            {{ subCategory.productCount }} products
                         </div>
                     </div>
                 </button>
             </template>
             <template v-else-if="selectedSubCategory">
                 <NuxtLink
-                    v-for="(subCategory, index) in selectedCategory.subcategory"
+                    v-for="(subCategory, index) in selectedSubCategory.subcategory"
                     :key="index"
-                    to="/"
+                    :to="`/search?category=${subCategory.id}`"
                     class="group flex items-center justify-between px-2.5 py-[5px] rounded-[5px] w-full text-slate-500 text-left transition-colors duration-300 hover:bg-[#F4F4F4] hover:text-blue-500"
                 >
                     <div>
                         <div class="text-[15px] font-semibold mb-px">{{ subCategory.name }}</div>
                         <div class="text-xs font-semibold text-gray-500 transition-colors duration-300 group-hover:text-slate-500">
-                            {{ subCategory.productCount }} Products
+                            {{ subCategory.productCount }} products
                         </div>
                     </div>
                 </NuxtLink>

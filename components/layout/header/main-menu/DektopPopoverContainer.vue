@@ -1,122 +1,131 @@
 <script setup lang="ts">
-import { ChevronRight, ArrowRight, GemIcon, HeadsetIcon, Building2Icon } from 'lucide-vue-next';
-import Breadcrumb from './Breadcrumb.vue';
+import { Building2Icon, ChevronRight, GemIcon, HeadsetIcon } from 'lucide-vue-next';
 import CardPlaceholderSmall from '@/assets/icons/card-placeholder-small.svg';
 
-const { selectedCategories, currentCategory, onCategoryClick, resetCategories } = useCategoriesNavigation();
+const { selectedCategories, onCategoryClick } = useCategoriesNavigation();
 const { categories, getCategories } = useCategories();
 
-const setCategories = async () => {
-    await getCategories();
-};
+const isSelected = (categoryId: string) => selectedCategories.value.some((category) => category.id === categoryId);
+const hasSelection = computed(() => selectedCategories.value.length > 0);
+const currentCategory = computed(() =>
+    selectedCategories.value.length ? selectedCategories.value[selectedCategories.value.length - 1] : null
+);
+const currentChildren = computed(() => {
+    return Array.isArray(currentCategory.value?.subcategory) ? currentCategory.value.subcategory : [];
+});
+const selectedDetailColumns = computed(() => {
+    return currentChildren.value.map((child: any) => {
+        const descendants = Array.isArray(child?.subcategory) ? child.subcategory : [];
+        return {
+            id: child.id,
+            source: child,
+            title: child.name,
+            count: child.productCount,
+            entries: descendants.length > 0 ? descendants : [child],
+        };
+    });
+});
+const breadcrumbTrail = computed(() => selectedCategories.value.map((category) => category.name));
+const formatItemCount = (count: number) => `${Number(count || 0).toLocaleString()} items`;
+const handleRootClick = (category: any) => onCategoryClick(category, true);
+const handleChildClick = (category: any) => onCategoryClick(category, false);
+const resetSelection = () => (selectedCategories.value = []);
 
 onMounted(async () => {
-    await setCategories();
+    await getCategories();
 });
 </script>
 
 <template>
-    <div class="font-Poppins mt-8 lg:mt-3">
-        <section class="lg:h-[588px] lg:grid grid-cols-[288px_1fr] items-stretch lg:p-2 bg-grey-50 rounded-xl shadow-s overflow-hidden">
-            <!-- Left Column: Main Categories -->
-            <div class="hidden lg:flex flex-col items-start pr-2 gap-1">
-                <UiButton
+    <div class="font-Poppins mt-3">
+        <section class="grid grid-cols-[372px_1fr] h-[620px] p-2 bg-[#F6F7F9] rounded-2xl border border-[#DEE1E6] shadow-[0_2px_6px_rgba(15,23,42,0.06)] overflow-hidden">
+            <div class="h-full pr-2 border-r border-[#D5D8DD] overflow-y-auto scrollbar-thin">
+                <button
                     v-for="category in categories"
                     :key="category.id"
-                    class="text-start h-11 flex flex-row flex-nowrap justify-between gap-2 p-2"
-                    :class="{ 'bg-light-300 text-blue-500': selectedCategories.includes(category) }"
-                    variant="ghost"
-                    @click="onCategoryClick(category, true)"
+                    class="group w-full h-[58px] flex items-center justify-between gap-3 px-3 py-2 rounded-xl text-left transition-colors duration-200 hover:bg-[#ECEFF3]"
+                    :class="isSelected(category.id) ? 'bg-[#ECEFF3]' : ''"
+                    @click="handleRootClick(category)"
                 >
-                    <div class="flex gap-2 items-center">
-                        <component :is="category.icon" v-if="category.icon && category.icon !== 'N/A'" class="min-w-5 min-h-5 text-black" />
-                        <CardPlaceholderSmall v-else class="min-w-6 min-h-6 text-black" />
-                        <p class="flex flex-col items-start w-full font-medium">
-                            {{ category.name }}
-                            <span
-                                class="text-xs font-normal"
-                                :class="selectedCategories.includes(category) ? 'text-blue-500' : 'text-slate-500'"
-                            >
-                                {{ category.productCount }}
-                            </span>
-                        </p>
-                    </div>
-                    <ChevronRight class="w-4 h-4" :class="selectedCategories.includes(category) ? 'text-blue-500' : 'text-neutral-700'" />
-                </UiButton>
-            </div>
-            <!-- Right Column: Subcategories -->
-            <div
-                v-if="currentCategory"
-                class="flex flex-col gap-8 bg-white px-6 py-4 rounded-xl w-fit shadow-s ring-1 ring-gray-200 border-solid"
-            >
-                <!-- Breadcrumb Navigation -->
-                <section class="flex justify-between items-center h-8 w-fit xl:w-full min-w-[636px]">
-                    <Breadcrumb :links="selectedCategories.map((link) => link.name)" />
-                    <UiButton class="gap-1" size="xs" variant="outline" @click="resetCategories">
-                        All Categories
-                        <ArrowRight class="w-4 h-4" />
-                    </UiButton>
-                </section>
-                <!-- Subcategories Display -->
-                <section class="h-fit">
-                    <template v-if="currentCategory.subcategory && currentCategory.subcategory.length > 0">
-                        <UiScrollArea class="h-[334px] xl:h-[384px]">
-                            <div class="w-fit grid grid-cols-[320px_320px] xl:grid-cols-3 2xl:grid-cols-4 gap-4 h-full">
-                                <div v-for="sub in currentCategory.subcategory" :key="sub.id" class="flex flex-col gap-4 max-w-xs">
-                                    <h3 class="font-medium text-sm">
-                                        {{ sub.name }}
-                                    </h3>
-                                    <div v-if="sub.subcategory && sub.subcategory.length > 0" class="flex flex-col gap-3 items-start">
-                                        <div
-                                            v-for="childSub in sub.subcategory.sort((a, b) => b.productCount - a.productCount)"
-                                            :key="childSub.id"
-                                        >
-                                            <UiButton
-                                                variant="link"
-                                                class="text-left pl-0 flex-col items-start"
-                                                :disabled="childSub.productCount === 0"
-                                                @click="onCategoryClick(childSub, false)"
-                                            >
-                                                {{ childSub.name }}
-                                                <span class="text-xs">{{ childSub.productCount }} items</span>
-                                            </UiButton>
-                                            <UiBadge v-if="false" class="bg-blue-500 text-xs px-2"> New </UiBadge>
-                                            <UiBadge v-if="false" class="bg-rose-600 text-xs px-2"> Sale </UiBadge>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="flex items-center gap-3 min-w-0">
+                        <CardPlaceholderSmall class="w-6 h-6 flex-shrink-0" :class="isSelected(category.id) ? 'text-blue-500' : 'text-[#2D3340]'" />
+                        <div class="min-w-0">
+                            <div class="text-[13px] leading-[1.2] font-semibold truncate" :class="isSelected(category.id) ? 'text-blue-500' : 'text-[#2B303B]'">
+                                {{ category.name }}
                             </div>
-                        </UiScrollArea>
-                    </template>
-                    <div v-else>
-                        <p>No subcategories available.</p>
-                    </div>
-                </section>
-                <!-- Footer Section -->
-                <section class="flex flex-col justify-between gap-3 h-[134px] xl:h-[60px]">
-                    <UiSeparator class="bg-grey-100" />
-                    <div class="flex flex-wrap xl:flex-nowrap xl:justify-between items-center gap-0.5 xl:gap-4">
-                        <UiButton class="font-medium gap-1 p-0" size="xs" variant="link">
-                            <GemIcon class="w-4 h-4 text-black" />
-                            View our discounted offers
-                        </UiButton>
-                        <LayoutHeaderMainMenuOffersSvgs />
-                        <div class="flex gap-1 items-center justify-end w-full xl:w-fit pr-4 xl:pr-0">
-                            <UiButton size="xs" class="text-xs gap-2 px-1 self-end text-slate-500" variant="link">
-                                <Building2Icon class="w-4 h-4 text-black" />
-                                Contact Sales
-                            </UiButton>
-                            <UiButton size="xs" class="text-xs gap-2 px-1 text-slate-500" variant="link">
-                                <HeadsetIcon class="w-4 h-4 text-black" />
-                                Support
-                            </UiButton>
+                            <div
+                                class="text-[11px] leading-[1.2] font-medium mt-0.5"
+                                :class="isSelected(category.id) ? 'text-blue-500/90' : 'text-[#6E7482]'"
+                            >
+                                {{ formatItemCount(category.productCount) }}
+                            </div>
                         </div>
                     </div>
-                </section>
+                    <ChevronRight
+                        class="w-5 h-5 flex-shrink-0 transition-colors duration-200"
+                        :class="isSelected(category.id) ? 'text-blue-500' : 'text-[#2D3340]'"
+                    />
+                </button>
             </div>
-            <LayoutHeaderMainMenuBannerNew v-else />
+            <LayoutHeaderMainMenuBannerNew v-if="!hasSelection" />
+            <div v-else class="h-full bg-white rounded-xl border border-[#E1E4EA] overflow-hidden flex flex-col">
+                <div class="h-12 px-5 border-b border-[#E8EBEF] flex items-center justify-between">
+                    <div class="text-[15px] leading-none font-medium text-[#5E6572] truncate">
+                        <span class="text-[#8A90A0]">Main Category</span>
+                        <span v-for="(crumb, index) in breadcrumbTrail" :key="`${crumb}-${index}`">
+                            <span class="mx-2 text-[#B1B6C2]">&gt;</span>
+                            <span :class="index === breadcrumbTrail.length - 1 ? 'text-[#2D3340] font-semibold' : ''">{{ crumb }}</span>
+                        </span>
+                    </div>
+                    <button
+                        class="h-8 px-3 rounded-lg border border-[#D8DCE5] text-[13px] font-medium text-[#5E6572] hover:bg-[#F5F7FA] transition-colors"
+                        @click="resetSelection"
+                    >
+                        All Categories
+                    </button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-5">
+                    <div v-if="selectedDetailColumns.length" class="grid grid-cols-4 gap-x-8 gap-y-5">
+                        <div v-for="column in selectedDetailColumns" :key="column.id" class="space-y-2.5">
+                            <h4 class="text-[14px] leading-[1.3] font-semibold text-[#2D3340] truncate">
+                                {{ column.title }}
+                            </h4>
+                            <button v-for="entry in column.entries" :key="entry.id" class="text-left group block w-full" @click="handleChildClick(entry)">
+                                <div class="text-[13px] leading-[1.3] font-medium text-[#464D5A] group-hover:text-blue-500 truncate">
+                                    {{ entry.name }}
+                                </div>
+                                <div class="text-[11px] leading-[1.3] font-medium text-[#8A90A0] mt-0.5">
+                                    {{ formatItemCount(entry.productCount) }}
+                                </div>
+                            </button>
+                            <button class="text-[13px] font-medium text-blue-500 hover:text-blue-600" @click="handleChildClick(column.source)">
+                                View all
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else class="text-[14px] text-[#7B8290]">No subcategories available.</div>
+                </div>
+                <div class="px-5 py-3 border-t border-[#E8EBEF] bg-[#FBFCFD]">
+                    <div class="flex items-center gap-4">
+                        <button class="text-[13px] leading-none font-medium text-[#2D3340] hover:text-blue-500 inline-flex items-center gap-2">
+                            <GemIcon class="w-4 h-4" />
+                            View our discounted offers
+                        </button>
+                        <LayoutHeaderMainMenuOffersSvgs />
+                        <div class="ml-auto flex items-center gap-4">
+                            <button class="text-xs leading-none font-medium text-[#6F7685] hover:text-blue-500 inline-flex items-center gap-1.5">
+                                <Building2Icon class="w-4 h-4" />
+                                Contact Sales
+                            </button>
+                            <button class="text-xs leading-none font-medium text-[#6F7685] hover:text-blue-500 inline-flex items-center gap-1.5">
+                                <HeadsetIcon class="w-4 h-4" />
+                                Support
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </template>
-
-<style scoped></style>

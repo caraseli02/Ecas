@@ -85,7 +85,7 @@ export const useCartStore = defineStore({
             state.cartSubtotal = 0;
             const authStore = useAuthStore();
             const { getUserDetails } = storeToRefs(authStore);
-            state?.cart?.products.forEach((cartProduct: CartProductsInterface) => {
+            state?.cart?.products?.forEach((cartProduct: CartProductsInterface) => {
                 if (!cartProduct.productEntity) {
                     return;
                 }
@@ -103,7 +103,7 @@ export const useCartStore = defineStore({
         },
         getOrderClientSecret: (state): string => state.orderClientSecret as string,
         getPreviousCheckoutError: (state): StripeError => state.previousCheckoutError as StripeError,
-        itemsDiscount: (state) => state.cart?.products[0]?.discount.value,
+        itemsDiscount: (state) => state.cart?.products?.[0]?.discount.value,
     },
     persist: {
         storage: piniaPluginPersistedstate.localStorage(),
