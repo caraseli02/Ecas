@@ -61,8 +61,8 @@ export default defineNuxtConfig({
         '~/assets/css/resets.css',
         '~/assets/css/utils.css',
         '~/assets/css/animations.css',
-        'leaflet/dist/leaflet.css',
-        'v-calendar/style.css',
+        '~/assets/css/vendors/leaflet.css',
+        '~/assets/css/vendors/v-calendar.css',
     ],
 
     runtimeConfig: {
