@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/vue-table';
-import { OrderTableColumns } from '~/types';
+import type { OrderTableColumns } from '~/types';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
 import RowActions from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';

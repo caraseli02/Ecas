@@ -28,7 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import { ControlPanelTabs, ControlPanelTabsEnum } from '~/types/dashboard/control-panel';
+import { ControlPanelTabsEnum } from '~/types/dashboard/control-panel';
+import type { ControlPanelTabs } from '~/types/dashboard/control-panel';
 import type { UserInterface } from '~/types/auth/user-interface';
 import { useNuxtApp } from '#app';
 import { AccountType } from '~/types';

@@ -120,6 +120,8 @@ import type { BillingAddressInterface } from '~/types/auth/user-interface';
 import { toast } from '~/components/ui/toast';
 
 const route = useRoute();
+const config = useRuntimeConfig();
+const isMockMode = computed(() => config.public.MOCK_MODE === true || config.public.MOCK_MODE === 'true');
 
 const addAddressModal = ref(false);
 const editAddressModal = ref();
@@ -194,13 +196,34 @@ const getBillingInformation = async () => {
     if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
         return;
     }
-    const response = await $api.controlPanel.fetchBilling(props.id, props.accountType);
+    try {
+        const response = await $api.controlPanel.fetchBilling(props.id, props.accountType);
 
-    if (response.status !== 'success') {
-        return;
+        if (response.status !== 'success') {
+            return;
+        }
+        addresses.value = response.data.billingAddress;
+        addAddressModal.value = false;
+    } catch (_err) {
+        if (!isMockMode.value) {
+            return;
+        }
+
+        addresses.value = [
+            {
+                _id: 'billing-1',
+                alias: 'Billing HQ',
+                name1: '5073 Mark Brown Rd',
+                name2: '',
+                country: 'US',
+                region: 'California',
+                city: 'San Francisco',
+                postcode: '94105',
+                phone: '+1-202-555-0100',
+                default: true,
+            },
+        ];
     }
-    addresses.value = response.data.billingAddress;
-    addAddressModal.value = false;
 };
 await getBillingInformation();
 
@@ -227,7 +250,7 @@ const handleEditAddress = async (object: any) => {
         });
         return;
     } else {
-        if (!props.id || props.accountType || typeof props.accountType === 'undefined') {
+        if (!props.id || props.accountType === null || typeof props.accountType === 'undefined') {
             return;
         }
 

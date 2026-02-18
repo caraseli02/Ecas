@@ -69,15 +69,12 @@
                                     : customerInformation.contactDetails?.firstName + ' ' + customerInformation.contactDetails?.lastName
                             }}
                         </div>
-                        <Tooltip theme="black" :position="'top'" class="self-start ml-3">
+                        <div class="self-start ml-3" title="Account Locked">
                             <LockKeyholeIcon
                                 v-if="customerInformation.status === AccountStatusEnum.Inactive"
                                 class="w-4 h-4 text-slate-500 transition-colors duration-300 hover:text-blue-500"
                             />
-                            <template #content>
-                                <span class="capitalize">Account Locked</span>
-                            </template>
-                        </Tooltip>
+                        </div>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[160px] h-5 mb-2 md:w-[180px]" />
                     <div v-else class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
@@ -106,25 +103,16 @@
                     <template v-else>
                         <div class="flex flex-row gap-3">
                             <div class="text-sm font-semibold mb-4">Account Details</div>
-                            <Tooltip
+                            <div
                                 v-if="customerInformation.adminSettings?.discount"
-                                :position="index === 0 ? 'bottom' : 'top'"
-                                theme="black"
+                                :title="`Customer Discount: ${customerInformation.adminSettings?.discount?.value}%`"
                             >
                                 <div
                                     class="border-[#007FFF] border-[1px] px-2 rounded-[50px] text-xs leading-[20px] font-semibold text-[#007FFF]"
                                 >
                                     {{ customerInformation.adminSettings?.discount?.value }} %
                                 </div>
-                                <template #content>
-                                    <span
-                                        >Customer Discount:
-                                        <strong class="font-semibold">{{
-                                            `${customerInformation.adminSettings?.discount?.value}%`
-                                        }}</strong></span
-                                    >
-                                </template>
-                            </Tooltip>
+                            </div>
                         </div>
                         <div class="grid grid-cols-1 gap-2">
                             <div class="grid grid-cols-[140px,1fr] gap-3">

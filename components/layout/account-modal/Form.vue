@@ -7,6 +7,7 @@
                 label="E-mail or client code"
                 type="email"
                 placeholder="you@company.com OR P-XXXXXX"
+                :error="email.error"
             />
             <FormPassword v-model="password.value" size="lg" label="Password" :error="password.error" placeholder="Your Password" />
         </div>
@@ -26,7 +27,8 @@
             </NuxtLink>
         </div>
         <button
-            class="flex items-center justify-center w-full bg-blue-500 hover:bg-blue-400 rounded-lg py-[10px] text-white mb-4"
+            class="flex items-center justify-center w-full bg-blue-500 hover:bg-blue-400 rounded-lg py-[10px] text-white mb-4 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-blue-500"
+            :disabled="isLoading"
             @click="handleSignIn"
         >
             <div v-if="isLoading" aria-label="Loading..." role="status" class="mr-3">
@@ -145,40 +147,56 @@ const isClientCodeFormat = (value: string) => {
 const cookieToken = useCookie('token', { maxAge: 60 * 60 });
 
 const handleSignIn = async () => {
+    if (isLoading.value) {
+        return;
+    }
+
+    errorResponse.show = false;
+    errorResponse.description = '';
+    errorResponse.status = '';
+    errorResponse.code = 0;
+
     const hasError = checkForInputErrors([email.value, password.value]);
 
-    if (!hasError) {
-        const payload = {
-            password: password.value.value,
-        } as { password: string; email?: string; clientCode?: string };
+    if (hasError) {
+        return;
+    }
 
-        if (isClientCodeFormat(email.value.value)) {
-            payload['clientCode'] = email.value.value;
-        } else {
-            payload['email'] = email.value.value;
+    const payload = {
+        password: password.value.value,
+    } as { password: string; email?: string; clientCode?: string };
+
+    if (isClientCodeFormat(email.value.value)) {
+        payload['clientCode'] = email.value.value;
+    } else {
+        payload['email'] = email.value.value;
+    }
+
+    isLoading.value = true;
+
+    try {
+        const response = (await $api.auth.login(payload)) as SigninResponse;
+
+        if (!response || typeof response !== 'object' || !('token' in response) || !response.token) {
+            throw response;
         }
 
-        isLoading.value = true;
+        const parsedTokenResponse = useParser().parseJwt(response.token);
+        authStore.addUser(parsedTokenResponse);
+        authStore.addToken(response.token);
+        cookieToken.value = response.token;
 
-        try {
-            const response = (await $api.auth.login(payload)) as SigninResponse;
-
-            const parsedTokenResponse = useParser().parseJwt(response.token);
-
-            isLoading.value = false;
-            authStore.addUser(parsedTokenResponse);
-            authStore.addToken(response.token);
-            cookieToken.value = response.token;
-
-            await fetchUserDetails(parsedTokenResponse, response.token);
-        } catch (error) {
-            errorResponse.code = 404;
-            errorResponse.status = 'Internal server error';
-            errorResponse.description = 'Please try again';
-            errorResponse.show = true;
-            console.error(error);
-        }
-
+        await fetchUserDetails(parsedTokenResponse, response.token);
+    } catch (error: any) {
+        const statusCode = error?.response?.status || error?.statusCode || 500;
+        errorResponse.code = statusCode;
+        errorResponse.status = statusCode === 401 ? 'Invalid credentials' : 'Sign-in failed';
+        errorResponse.description =
+            statusCode === 401
+                ? 'Invalid email/client code or password. Please check your credentials and try again.'
+                : 'Unable to sign in right now. Please try again.';
+        errorResponse.show = true;
+    } finally {
         isLoading.value = false;
     }
 };

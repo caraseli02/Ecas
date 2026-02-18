@@ -109,6 +109,8 @@ const error = ref(false);
 const emptyData = ref(false);
 const isLoading = ref(true);
 const { $api } = useNuxtApp();
+const config = useRuntimeConfig();
+const isMockMode = computed(() => config.public.MOCK_MODE === true || config.public.MOCK_MODE === 'true');
 
 const route = useRoute();
 const credit = ref({} as { limit: string; spent: string; available: string });
@@ -117,21 +119,49 @@ const getCustomerCredit = async () => {
     if (!route.params.slug) {
         return;
     }
-    const response = (await $api.controlPanel.fetchCustomerCredit(route.params.slug)) as {
-        status: string;
-        data: CustomerCreditInterface;
-    };
-    if (response.status !== 'success' || !response.data) {
-        error.value = true;
-        emptyData.value = true;
-        setTimeout(() => {
-            isLoading.value = false;
-        }, 500);
-        return;
-    } else {
+    try {
+        const response = (await $api.controlPanel.fetchCustomerCredit(route.params.slug as string)) as {
+            status: string;
+            data: CustomerCreditInterface;
+        };
+
+        if (response.status !== 'success' || !response.data) {
+            error.value = true;
+            emptyData.value = true;
+            setTimeout(() => {
+                isLoading.value = false;
+            }, 500);
+            return;
+        }
+
         credit.value = customerCreditHelper(response.data);
         error.value = false;
         emptyData.value = false;
+        setTimeout(() => {
+            isLoading.value = false;
+        }, 500);
+    } catch (_err) {
+        if (isMockMode.value) {
+            credit.value = customerCreditHelper({
+                limit: 12000,
+                spent: 3200,
+                available: 8800,
+                dueDate: new Date().toISOString(),
+                tillDue: '30',
+                term: 30,
+                freeze: false,
+                active: true,
+            });
+            error.value = false;
+            emptyData.value = false;
+            setTimeout(() => {
+                isLoading.value = false;
+            }, 500);
+            return;
+        }
+
+        error.value = true;
+        emptyData.value = true;
         setTimeout(() => {
             isLoading.value = false;
         }, 500);

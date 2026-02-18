@@ -1,5 +1,6 @@
 import type { ColumnDef } from '@tanstack/vue-table';
-import { AccountRole, OrderTableColumns } from '~/types';
+import { AccountRole } from '~/types';
+import type { OrderTableColumns } from '~/types';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
 import RowActions from '~/components/dataTable/RowActions.vue';
 import type { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
@@ -80,7 +81,7 @@ export const columns: ColumnDef<OrderTableColumns>[] = [
                     },
                     {
                         label: 'Download invoice',
-                        enable: getUserDetails.value.role === AccountRole.Client && row.original?.paymentDetails?.invoiceId,
+                        enable: getUserDetails.value?.role === AccountRole.Client && row.original?.paymentDetails?.invoiceId,
                         actionFn: 'downloadDocument',
                         actionParameter: row.original.paymentDetails.invoiceId,
                     },

@@ -1,51 +1,80 @@
-export default defineEventHandler(async (event) => {
-    const query = getQuery(event) as { page?: string; perPage?: string };
+import { getDemoOrders, getDemoOrdersForUser } from '~/server/utils/mockDashboardDemo';
 
-    const mockOrders = [
-        {
-            _id: 'ord-1',
-            orderNumber: 'ORD-54321',
-            status: 'delivered',
-            total: 2199.97,
-            createdAt: '2024-01-15T10:00:00Z',
-            items: [
-                {
-                    _id: 'item-1',
-                    productId: 'prod-1',
-                    productName: 'SmartPhone Pro Max',
-                    quantity: 2,
-                    price: 999.99,
-                },
-            ],
-        },
-        {
-            _id: 'ord-2',
-            orderNumber: 'ORD-54320',
-            status: 'shipped',
-            total: 149.99,
-            createdAt: '2024-01-10T14:30:00Z',
-            items: [
-                {
-                    _id: 'item-2',
-                    productId: 'prod-3',
-                    productName: 'Mechanical Keyboard RGB',
-                    quantity: 1,
-                    price: 149.99,
-                },
-            ],
-        },
-    ];
+const parseStartDate = (value?: string) => {
+    if (!value) {
+        return null;
+    }
 
-    const page = parseInt(query.page || '1');
-    const perPage = parseInt(query.perPage || '10');
+    const parsedNative = new Date(value);
+    if (!Number.isNaN(parsedNative.getTime())) {
+        return parsedNative;
+    }
+
+    const match = value.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}):(\d{2}))?$/);
+    if (!match) {
+        return null;
+    }
+
+    const [, day, month, year, hours = '00', minutes = '00', seconds = '00'] = match;
+    const parsedFallback = new Date(
+        Date.UTC(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes), Number(seconds))
+    );
+
+    return Number.isNaN(parsedFallback.getTime()) ? null : parsedFallback;
+};
+
+export default defineEventHandler((event) => {
+    const query = getQuery(event) as {
+        page?: string;
+        perPage?: string;
+        status?: string;
+        userId?: string;
+        startDate?: string;
+    };
+
+    const page = Number.parseInt(query.page || '1', 10);
+    const perPage = Number.parseInt(query.perPage || '10', 10);
+
+    let items = query.userId ? getDemoOrdersForUser(query.userId) : getDemoOrders();
+
+    if (query.status) {
+        const statusFilters = String(query.status)
+            .split(',')
+            .map((status) => status.trim())
+            .filter(Boolean);
+
+        if (statusFilters.length > 0) {
+            items = items.filter((order) => statusFilters.includes(String(order.status)));
+        }
+    }
+
+    if (query.startDate) {
+        const startDate = parseStartDate(String(query.startDate));
+
+        if (startDate) {
+            items = items.filter((order) => {
+                const createdAt = new Date(order.createdAt || 0);
+
+                return createdAt >= startDate;
+            });
+        }
+    }
+
+    const totalItems = items.length;
+    const safePerPage = perPage > 0 ? perPage : totalItems || 1;
+    const pageCount = Math.max(1, Math.ceil(totalItems / safePerPage));
+    const currentPage = Math.max(1, Math.min(page, pageCount));
+    const startIndex = (currentPage - 1) * safePerPage;
+
+    const paginatedItems = perPage > 0 ? items.slice(startIndex, startIndex + safePerPage) : items;
 
     return {
         status: 'success',
         data: {
-            orders: mockOrders,
-            page,
-            perPage,
-            total: mockOrders.length,
+            total_items: totalItems,
+            page_count: pageCount,
+            page: currentPage,
+            items: paginatedItems,
         },
     };
 });
