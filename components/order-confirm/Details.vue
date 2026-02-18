@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { InfoIcon, SettingsIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { BankInfo, CardInfo, PaymentTypeEnum } from '~/types';
-import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import { PaymentTypeEnum } from '~/types';
+import type { BankInfo, CardInfo } from '~/types';
+import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 
 const props = defineProps<{
     customerDetails: {

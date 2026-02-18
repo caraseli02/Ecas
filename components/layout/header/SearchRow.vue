@@ -64,7 +64,7 @@
 import Logo from '@/assets/media/logo.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import CartModal from '@/components/layout/favorites-cart-modal/Index.vue';
-import { CartInterface } from '~/model/cart/response/cart.interface';
+import type { CartInterface } from '~/model/cart/response/cart.interface';
 import Emitter from 'tiny-emitter/instance.js';
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';

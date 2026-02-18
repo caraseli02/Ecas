@@ -134,7 +134,7 @@
 import QuestionIcon from '@/assets/icons/question-circle.svg';
 import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
 import CheckIcon from '@/assets/icons/check.svg';
-import { SignupProfileDetails, SignupContactDetails, SignupAccountType } from '~~/types';
+import type { SignupProfileDetails, SignupContactDetails, SignupAccountType } from '~~/types';
 import { useAuthStore } from '~~/store/authStore';
 
 defineEmits(['continue', 'back']);

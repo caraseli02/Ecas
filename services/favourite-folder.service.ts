@@ -1,7 +1,7 @@
 import HttpFactory from '@/composables/HttpFactory';
-import { FavouriteFolderMoveInterface, FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import type { FavouriteFolderMoveInterface, FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import { useAuthStore } from '~/store/authStore';
-import { FavouriteFolderResponse } from '~/model/favourite-folder/response/favourite-folder.interface';
+import type { FavouriteFolderResponse } from '~/model/favourite-folder/response/favourite-folder.interface';
 
 class FavouriteFolderService extends HttpFactory {
     private RESOURCE = '/user';

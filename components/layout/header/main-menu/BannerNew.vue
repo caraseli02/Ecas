@@ -6,7 +6,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 <template>
     <Carousel class="relative w-full h-96 lg:h-full bg-white rounded-xl border border-gray-200 border-solid shadow-s focus-visible:ring-0">
         <CarouselContent>
-            <CarouselItem v-for="(_, index) in 5" :key="index">
+            <CarouselItem v-for="(_, index) in 1" :key="index">
                 <div class="p-0">
                     <section
                         class="flex overflow-hidden relative justify-between items-start self-stretch px-6 py-48 lg:py-64 h-full rounded-xl"
@@ -20,11 +20,15 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
                             <Circles />
                         </div>
                         <div
-                            class="flex gap-6 absolute bottom-32 z-0 flex-col font-medium leading-6 left-4 lg:left-[100px] min-w-[240px] max-w-[415px] text-zinc-800"
+                            class="flex gap-6 absolute bottom-32 z-0 flex-col font-medium leading-6 left-4 lg:left-[100px] min-w-[240px] w-[calc(100%-2rem)] lg:w-auto max-w-[415px] text-zinc-800"
                         >
                             <h4 id="hero-title" class="text-2xl lg:text-5xl font-bold">Scale Your Business Beyond Limits</h4>
                             <p class="text-base">Join our growing community of successful vendors. Sign up for our waiting list today!</p>
-                            <UiButton class="w-fit"> Book a Demo </UiButton>
+                            <NuxtLink to="/search" class="w-fit max-w-full">
+                                <UiButton class="w-fit max-w-full whitespace-normal break-words text-left h-auto leading-5 py-2 px-4">
+                                    Explore Products
+                                </UiButton>
+                            </NuxtLink>
                         </div>
                     </section>
                 </div>

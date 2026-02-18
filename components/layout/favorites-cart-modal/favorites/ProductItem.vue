@@ -123,15 +123,16 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
-import { FavoriteItem } from '~~/types';
+import type { PropType } from 'vue';
+import type { FavoriteItem } from '~~/types';
 import CheckIcon from '@/assets/icons/check.svg';
 import CheckCircleIcon from '@/assets/icons/check-circle.svg';
 import CopyIcon from '@/assets/icons/copy.svg';
 import InfoIcon from '@/assets/icons/info-circle.svg';
 import TrashIcon from '@/assets/icons/trash-can.svg';
-import { ProductAction, ProductActionObject } from '~/model/cart/response/cart.interface';
-import { PriceConfigurationSettingsInterface } from '~/model/products/response/ProductResponse';
+import { ProductAction } from '~/model/cart/response/cart.interface';
+import type { ProductActionObject } from '~/model/cart/response/cart.interface';
+import type { PriceConfigurationSettingsInterface } from '~/model/products/response/ProductResponse';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';

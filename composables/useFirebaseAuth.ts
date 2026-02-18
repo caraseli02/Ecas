@@ -1,5 +1,6 @@
-import { Auth, getAdditionalUserInfo, getIdToken, GoogleAuthProvider, signInWithPopup, signOut, User } from 'firebase/auth';
-import { UserInfoJWT } from '~~/types';
+import { getAdditionalUserInfo, getIdToken, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import type { Auth, User } from 'firebase/auth';
+import type { UserInfoJWT } from '~~/types';
 import useParser from '~/composables/useParser';
 
 interface FirebaseResults {

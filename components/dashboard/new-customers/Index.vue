@@ -80,12 +80,13 @@ import type { PropType } from 'vue';
 import ArrowUpIcon from '@/assets/icons/dashboard/arrow-up.svg';
 import ChevronIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import ArrowRightIcon from '@/assets/icons/dashboard/arrow-right.svg';
-import { AccountStatusEnum, UserInterface } from '~/types/auth/user-interface';
+import { AccountStatusEnum, type UserInterface } from '~/types/auth/user-interface';
 import { useNuxtApp } from '#app';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import Avatar from 'assets/icons/dashboard/avatar.png';
-import { AccountType, DashboardTableItem, getAccountTypeById } from '~/types';
+import { AccountType, getAccountTypeById } from '~/types';
+import type { DashboardTableItem } from '~/types';
 
 const { $api } = useNuxtApp();
 

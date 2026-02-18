@@ -1,5 +1,5 @@
 import { countries } from '~/data/countries';
-import { CountryInterface, RegionInterface } from '~/types/dashboard/control-panel';
+import type { CountryInterface, RegionInterface } from '~/types/dashboard/control-panel';
 
 export const getRegionByCountry = (country: any, region: any) => {
     const countryToFind = countries.find((obj) => obj.value === country) as CountryInterface;

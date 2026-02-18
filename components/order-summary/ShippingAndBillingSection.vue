@@ -111,8 +111,8 @@ import EditSmall from '@/assets/icons/edit-small.svg';
 import SettingCog from '@/assets/icons/setting-cog.svg';
 import CheckCircleSmall from '@/assets/icons/check-circle-small.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
-import { OrderInterface } from '~/types';
-import { PropType } from 'vue';
+import type { OrderInterface } from '~/types';
+import type { PropType } from 'vue';
 
 export default defineComponent({
     name: 'ShippingAndBillingSection',

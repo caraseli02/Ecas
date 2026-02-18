@@ -108,8 +108,8 @@ import XIcon from '@/assets/icons/dashboard/x.svg';
 import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { countries } from '@/data/countries';
-import { FormSelectOption } from '~/types';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { FormSelectOption } from '~/types';
+import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { getRegionByCountry } from '~/helpers/form.helper';
 
 const props = defineProps({

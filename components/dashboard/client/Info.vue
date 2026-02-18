@@ -199,14 +199,15 @@
 
 <script setup lang="ts">
 import Avatar from '@/assets/icons/dashboard/avatar.png';
-import { AccountStatusEnum, UserInterface } from '~/types/auth/user-interface';
-import { AccountRole, AccountType, DashboardCustomerTableItem, getAccountTypeById } from '~/types';
+import { AccountStatusEnum, type UserInterface } from '~/types/auth/user-interface';
+import { AccountRole, AccountType, getAccountTypeById } from '~/types';
+import type { DashboardCustomerTableItem } from '~/types';
 import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 import { LockKeyholeIcon } from 'lucide-vue-next';
 import { countries } from '~/data/countries';
-import { CountryInterface } from '~/types/dashboard/control-panel';
+import type { CountryInterface } from '~/types/dashboard/control-panel';
 
 const showOptions = ref(false);
 const showDeactivatingModal = ref(false);

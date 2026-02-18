@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QuickBuyItem } from '~/types/product';
+import type { QuickBuyItem } from '~/types/product';
 import { Trash2 } from 'lucide-vue-next';
 
 const localQuantity = ref(1);

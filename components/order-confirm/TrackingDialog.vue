@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OrderInterface } from '~/types';
+import type { OrderInterface } from '~/types';
 
 const props = defineProps<{
     order: OrderInterface;

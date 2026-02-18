@@ -1,6 +1,7 @@
 import { mockProducts } from '~/server/utils/mockProducts';
 
 export default defineEventHandler(async (event) => {
+    const query = getQuery(event);
     const body = (await readBody(event)) as {
         keyword?: string;
         category?: string;
@@ -10,8 +11,14 @@ export default defineEventHandler(async (event) => {
 
     let filteredProducts = mockProducts;
 
-    if (body.keyword) {
-        const keyword = body.keyword.toLowerCase();
+    const keywordSource =
+        body.keyword ||
+        String(query.keyword || query.code || query.description || query.alias || query.name || query.manufacturer || query.manufacturerCode || '');
+    const keyword = String(keywordSource || '')
+        .trim()
+        .toLowerCase();
+
+    if (keyword) {
         filteredProducts = mockProducts.filter(
             (p: any) =>
                 p.name.toLowerCase().includes(keyword) ||
@@ -21,17 +28,49 @@ export default defineEventHandler(async (event) => {
         );
     }
 
-    if (body.category) {
-        filteredProducts = filteredProducts.filter((p: any) => p.category?.toLowerCase() === body.category?.toLowerCase());
+    const category = String(body.category || query.category || '')
+        .trim()
+        .toLowerCase();
+    if (category) {
+        filteredProducts = filteredProducts.filter((p: any) => p.category?.toLowerCase() === category);
     }
+
+    const sortBy = String(query.sortBy || '').trim();
+    const sortOrder = String(query.sortOrder || 'asc').toLowerCase();
+    if (sortBy) {
+        filteredProducts = [...filteredProducts].sort((a: any, b: any) => {
+            const first = a?.[sortBy];
+            const second = b?.[sortBy];
+
+            if (first === second) return 0;
+
+            if (typeof first === 'number' && typeof second === 'number') {
+                return sortOrder === 'desc' ? second - first : first - second;
+            }
+
+            return sortOrder === 'desc'
+                ? String(second ?? '').localeCompare(String(first ?? ''))
+                : String(first ?? '').localeCompare(String(second ?? ''));
+        });
+    }
+
+    const page = Number(query.page || body.page || 1);
+    const perPage = Number(query.perPage || body.perPage || 10);
+    const start = (page - 1) * perPage;
+    const items = filteredProducts.slice(start, start + perPage);
+    const pageCount = Math.max(1, Math.ceil(filteredProducts.length / perPage));
 
     return {
         status: 'success',
         data: {
-            products: filteredProducts,
-            page: body.page || 1,
-            perPage: body.perPage || 10,
-            total: filteredProducts.length,
+            filtersCount: 0,
+            filters: {},
+            items: {
+                total_items: filteredProducts.length,
+                page_count: pageCount,
+                page,
+                items,
+            },
         },
     };
 });

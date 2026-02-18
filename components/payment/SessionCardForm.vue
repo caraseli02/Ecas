@@ -14,7 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import { loadStripe, PaymentIntentResult, Stripe, StripeElements } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import type { PaymentIntentResult, Stripe, StripeElements } from '@stripe/stripe-js';
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 

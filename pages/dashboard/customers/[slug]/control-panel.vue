@@ -48,7 +48,7 @@
                         <div v-if="emptyData || error || !credit" class="text-sm font-medium leading-tight text-gray-500">
                             No data available
                         </div>
-                        <div v-else class="text-sm font-semibold leading-tight">>{{ credit.limit + 'Lei' }}</div>
+                        <div v-else class="text-sm font-semibold leading-tight">{{ credit.limit + 'Lei' }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -66,7 +66,7 @@
                         <div v-if="emptyData || error || !credit" class="text-sm font-medium leading-tight text-gray-500">
                             No data available
                         </div>
-                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">>{{ credit.available + 'Lei' }}</div>
+                        <div v-else class="text-sm font-semibold leading-tight text-blue-500">{{ credit.available + 'Lei' }}</div>
                         <WarningIcon v-if="error" class="w-5 h-5 ml-auto max-md:hidden" />
                     </template>
                 </div>
@@ -95,16 +95,18 @@
 </template>
 
 <script setup lang="ts">
-import { UserInterface } from '~/types/auth/user-interface';
+import type { UserInterface } from '~/types/auth/user-interface';
 import { useNuxtApp } from '#app';
 import { ControlPanelLabels, ControlPanelTabsEnum } from '~/types/dashboard/control-panel';
 import { AccountType } from '~/types';
-import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 import { customerCreditHelper } from '~/helpers/customer-credit.helper';
 
 const route = useRoute();
 const router = useRouter();
 const customerName = ref('');
+const config = useRuntimeConfig();
+const isMockMode = computed(() => config.public.MOCK_MODE === true || config.public.MOCK_MODE === 'true');
 useHead({
     title: 'Dashboard Control Panel',
 });
@@ -125,21 +127,45 @@ const getCustomerCredit = async () => {
     if (!route.params.slug) {
         return;
     }
-    const response = (await $api.controlPanel.fetchCustomerCredit(route.params.slug)) as {
-        status: string;
-        data: CustomerCreditInterface;
-    };
+    isLoading.value = true;
+    try {
+        const response = (await $api.controlPanel.fetchCustomerCredit(route.params.slug)) as {
+            status: string;
+            data: CustomerCreditInterface;
+        };
 
-    if (response.status !== 'success') {
-        isLoading.value = false;
-        error.value = true;
-        emptyData.value = true;
-        return;
-    } else {
+        if (response.status !== 'success' || !response.data) {
+            isLoading.value = false;
+            error.value = true;
+            emptyData.value = true;
+            return;
+        }
+
         isLoading.value = false;
         error.value = false;
-        emptyData.value = response.data === null;
+        emptyData.value = false;
         credit.value = customerCreditHelper(response.data);
+    } catch (_err) {
+        isLoading.value = false;
+
+        if (isMockMode.value) {
+            error.value = false;
+            emptyData.value = false;
+            credit.value = customerCreditHelper({
+                limit: 12000,
+                spent: 3200,
+                available: 8800,
+                dueDate: new Date().toISOString(),
+                tillDue: '30 days',
+                term: 30,
+                freeze: false,
+                active: true,
+            });
+            return;
+        }
+
+        error.value = true;
+        emptyData.value = true;
     }
 };
 await getCustomerCredit();
@@ -169,18 +195,25 @@ const fetchInformation = async () => {
     if (!route.params.slug) {
         return;
     }
+    try {
+        const response = (await $api.customerProfile.fetchCustomerInformation(route.params.slug as string)) as {
+            status: string;
+            data: UserInterface;
+        };
 
-    const response = (await $api.customerProfile.fetchCustomerInformation(route.params.slug as string)) as {
-        status: string;
-        data: UserInterface;
-    };
-
-    if (response.status !== 'success') {
-        return;
+        if (response.status !== 'success') {
+            return;
+        }
+        accountType.value = response.data.accountType as AccountType;
+        customer.value = response.data.firebaseId;
+        customerName.value = response.data.contactDetails?.firstName + ' ' + response.data.contactDetails?.lastName;
+    } catch (_err) {
+        if (isMockMode.value) {
+            accountType.value = AccountType.Personal;
+            customer.value = String(route.params.slug);
+            customerName.value = 'Demo Customer';
+        }
     }
-    accountType.value = response.data.accountType as AccountType;
-    customer.value = response.data.firebaseId;
-    customerName.value = response.data.contactDetails?.firstName + ' ' + response.data.contactDetails?.lastName;
 };
 
 await fetchInformation();

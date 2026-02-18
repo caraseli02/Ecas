@@ -1,8 +1,8 @@
 // ~/composables/useCart.ts
 import { computed, ref } from 'vue';
-import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { useCartStore } from '~/store/cartStore';
-import { ShippingOrderPricingResponse } from '~/types/order-summary/shipping-services';
+import type { ShippingOrderPricingResponse } from '~/types/order-summary/shipping-services';
 
 export function useCart() {
     const { $api } = useNuxtApp();

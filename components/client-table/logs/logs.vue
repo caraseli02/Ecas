@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { columns } from './columns';
-import { CustomerTableColumns, UserInterface } from '~/types/auth/user-interface';
+import type { CustomerTableColumns, UserInterface } from '~/types/auth/user-interface';
 import { useAuthStore } from '~/store/authStore';
 import _ from 'lodash';
 

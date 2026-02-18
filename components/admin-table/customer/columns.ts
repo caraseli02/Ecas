@@ -1,13 +1,15 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
-import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
+import RowActions from '~/components/dataTable/RowActions.vue';
+import type { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';
 import UserInfo from '~/components/dataTable/UserInfo.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
-import { AccountStatusEnum, CustomerTableColumns } from '~/types/auth/user-interface';
+import { AccountStatusEnum, type CustomerTableColumns } from '~/types/auth/user-interface';
 import { CustomerTableColumnsEnum } from '~/components/admin-table/customer/columns.enum';
 import AccountType from '~/components/dataTable/AccountType.vue';
-import { $fetch, FetchOptions } from 'ohmyfetch';
+import { $fetch } from 'ohmyfetch';
+import type { FetchOptions } from 'ohmyfetch';
 import UserDashboardService from '~/services/dashboard/user.service';
 import { AccountType as AccountTypeEnum } from '~/types';
 

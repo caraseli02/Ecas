@@ -81,7 +81,7 @@ import ArrowRightIcon from '@/assets/icons/dashboard/arrow-right.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import type { ApexOptions } from 'apexcharts';
-import { TotalCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
+import type { TotalCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { differenceInDays, startOfISOWeek } from 'date-fns';
 import { useNuxtApp } from '#app';
 import Emitter from 'tiny-emitter/instance.js';

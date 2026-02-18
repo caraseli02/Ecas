@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { columns } from './columns';
 import _ from 'lodash';
-import { CustomerTableColumns, UserInterface } from '~/types/auth/user-interface';
+import type { CustomerTableColumns, UserInterface } from '~/types/auth/user-interface';
 
 const { $api } = useNuxtApp();
 

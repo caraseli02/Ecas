@@ -93,7 +93,7 @@
 import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import { countries } from '@/data/countries';
-import { FormSelectOption } from '~/types';
+import type { FormSelectOption } from '~/types';
 import { defineEmits } from 'vue';
 
 const data = ref({

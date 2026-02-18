@@ -99,7 +99,7 @@
 import QuestionIcon from '@/assets/icons/question-circle.svg';
 import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
 import { countries } from '@/data/countries';
-import { FormSelectOption, SignupBusinessDetails } from '~~/types';
+import type { FormSelectOption, SignupBusinessDetails } from '~~/types';
 
 defineProps({
     selectedType: {

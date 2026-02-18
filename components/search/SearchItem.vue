@@ -129,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import EditIcon from '@/assets/icons/edit.svg';
 import PDFIcon from '@/assets/icons/pdf.svg';
 import LeafIcon from '@/assets/icons/leaf.svg';
@@ -137,13 +137,13 @@ import CheckIcon from '@/assets/icons/check-circle.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
 import ShareIcon from '@/assets/icons/share.svg';
-import { ProductActionObject } from '~/model/cart/response/cart.interface';
+import type { ProductActionObject } from '~/model/cart/response/cart.interface';
 import { useNuxtApp } from '#app';
 import { useAuthStore } from '~/store/authStore';
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 import { addToCartHelper, initializeQuantities, parseProductPriceConfiguration } from '~/helpers/prices.helper';
-import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
+import type { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 
 const { $api } = useNuxtApp();
 const quantity = ref(1);

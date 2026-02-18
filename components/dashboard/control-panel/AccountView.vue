@@ -142,7 +142,7 @@
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
 import CopyIcon from '@/assets/icons/dashboard/copy.svg';
 import { countries } from '@/data/countries';
-import { FormSelectOption } from '~~/types';
+import type { FormSelectOption } from '~~/types';
 import { useNuxtApp } from '#app';
 import type { AddressInterface, ContactDetails, PersonalDetails, UserInterface } from '~/types/auth/user-interface';
 import type { PropType } from 'vue';

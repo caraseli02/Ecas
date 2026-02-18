@@ -53,7 +53,7 @@ import EyeIcon from '@/assets/icons/dashboard/eye.svg';
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 
 const showOptions = ref(false);
 

@@ -272,7 +272,7 @@ import PowerSupplyIcon2 from '@/assets/icons/header/banner/power-supply.svg';
 import DiodesIcon2 from '@/assets/icons/header/banner/diodes.svg';
 import { A11y, Pagination } from 'swiper';
 import { showNavModal } from '~~/config/modal/nav';
-import { TaxonomyInterface } from '~/types/dashboard/categories';
+import type { TaxonomyInterface } from '~/types/dashboard/categories';
 import { mapLabelsToIds } from '~/helpers/categories.helper';
 import { useRouter } from 'vue-router';
 

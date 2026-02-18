@@ -1,6 +1,6 @@
 import HttpFactory from '~/composables/HttpFactory';
 import { useAuthStore } from '~/store/authStore';
-import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import type { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 
 class GeneralSettings extends HttpFactory {
     // private RESOURCE = '/user';

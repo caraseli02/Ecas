@@ -4,7 +4,7 @@ import ShippingDialog from './ShippingDialog';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountType } from '~/types';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { ref } from 'vue';
 import { useNuxtApp } from '#app';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';

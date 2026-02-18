@@ -35,8 +35,8 @@
 
 <script setup lang="ts">
 import CartIcon from '@/assets/icons/cart.svg';
-import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
-import { PropType } from 'vue';
+import type { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { PropType } from 'vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '~/store/cartStore';

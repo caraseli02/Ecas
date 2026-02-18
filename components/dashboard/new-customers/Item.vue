@@ -87,11 +87,11 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import MoreVerticalIcon from '@/assets/icons/dashboard/more-vertical.svg';
 import UserIcon from '@/assets/icons/dashboard/user.svg';
 import { LockKeyholeIcon } from 'lucide-vue-next';
-import { DashboardCustomerTableItem } from '~/types';
+import type { DashboardCustomerTableItem } from '~/types';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 
 const props = defineProps({

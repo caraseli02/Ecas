@@ -3,8 +3,8 @@ import { useNuxtApp } from '#app';
 import Emitter from 'tiny-emitter/instance.js';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
-import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
-import { StripeError } from '@stripe/stripe-js';
+import type { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { StripeError } from '@stripe/stripe-js';
 
 export const useCartStore = defineStore({
     id: 'cart-store',

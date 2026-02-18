@@ -2,7 +2,7 @@
 import { ArrowRight, BarcodeIcon, InfoIcon, MapPin } from 'lucide-vue-next';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { useNuxtApp } from '#app';
-import { AccountRole, OrderInterface, OrderStatus, PaymentTypeEnum, ShippingCourierCreateOrderResponse } from '~/types';
+import { AccountRole, OrderStatus, PaymentTypeEnum, type OrderInterface, type ShippingCourierCreateOrderResponse } from '~/types';
 import { toast } from '~/components/ui/toast';
 import { useAuthStore } from '~/store/authStore';
 import { ref } from 'vue';

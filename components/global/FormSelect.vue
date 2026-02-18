@@ -139,8 +139,8 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
-import { FormSelectOption } from '~~/types';
+import type { PropType } from 'vue';
+import type { FormSelectOption } from '~~/types';
 import CheckIcon from '@/assets/icons/check.svg';
 import SearchIcon from '@/assets/icons/search.svg';
 import XIcon from '@/assets/icons/x.svg';

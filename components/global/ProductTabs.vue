@@ -1,13 +1,13 @@
 <template>
-    <div class="flex items-start justify-between mx-2 md:mx-3 xl:mx-3">
+    <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between mx-2 md:mx-3 xl:mx-3">
         <h2 class="hidden text-xl font-medium md:block">
             {{ activeFilter.charAt(0).toUpperCase() + activeFilter.substr(1).toLowerCase().replace('-', ' ') }}
-            products
+            Products
         </h2>
-        <div class="relative flex items-center gap-4 xl:gap-6 mb-6 md:mb-0">
-            <p v-for="(filter, index) in filters" :key="index" class="relative overflow-hidden">
+        <div class="relative flex items-center gap-4 xl:gap-6 mb-6 md:mb-0 overflow-x-auto max-w-full pb-1">
+            <p v-for="(filter, index) in filters" :key="index" class="relative overflow-hidden shrink-0">
                 <button
-                    class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue-500 md:text-base md:pb-3"
+                    class="relative text-sm font-medium pb-[13px] transition-colors duration-300 hover:text-blue-500 md:text-base md:pb-3 whitespace-nowrap"
                     :class="[activeFilter === textUtil.slugify(filter) ? 'text-blue-500' : 'text-slate-500 after:opacity-0']"
                     @click="setActiveFilter(filter)"
                 >
@@ -36,7 +36,9 @@ const emit = defineEmits<{
 const activeFilter = ref('');
 
 onMounted(() => {
-    setActiveFilter(props.filters[0]);
+    if (props.filters.length > 0) {
+        setActiveFilter(props.filters[0]);
+    }
 });
 
 const setActiveFilter = (filter: string) => {
@@ -47,10 +49,16 @@ const { $api } = useNuxtApp();
 
 watch(activeFilter, async (value) => {
     if (!value) return;
-    const { data } = await $api.product.fetchProductTab(value);
+    try {
+        const { data } = await $api.product.fetchProductTab(value);
 
-    if (data) {
-        emit('newProducts', data);
+        if (Array.isArray(data)) {
+            emit('newProducts', data);
+        } else {
+            emit('newProducts', []);
+        }
+    } catch (error) {
+        emit('newProducts', []);
     }
 });
 </script>

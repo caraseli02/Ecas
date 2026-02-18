@@ -1,4 +1,4 @@
-import { ProductInterface } from '~/model/products/response/ProductResponse';
+import type { ProductInterface } from '~/model/products/response/ProductResponse';
 
 export interface FavoriteItem {
     id: string;

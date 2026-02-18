@@ -56,7 +56,7 @@
 </template>
 <script lang="ts">
 import SettingCog from '@/assets/icons/setting-cog.svg';
-import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 import moment from 'moment/moment';
 
 export default defineComponent({

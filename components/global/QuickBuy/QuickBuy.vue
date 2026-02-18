@@ -3,11 +3,11 @@ import { PlusIcon } from 'lucide-vue-next';
 import QuickBuyIcon from '@/assets/icons/quick-buy-2.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import { ref, onMounted } from 'vue';
-import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
+import type { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
-import { type CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { useCartStore } from '~/store/cartStore';
-import { QuickBuyItem } from '~/types/product';
+import type { QuickBuyItem } from '~/types/product';
 
 const { $api } = useNuxtApp();
 const cartStore = useCartStore();

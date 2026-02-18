@@ -60,7 +60,7 @@
 <script setup lang="ts">
 import XIcon from '@/assets/icons/x.svg';
 import FolderPlusIcon from '@/assets/icons/folder-plus.svg';
-import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import type { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import { useNuxtApp } from '#app';
 
 const { $api } = useNuxtApp();

@@ -7,7 +7,7 @@
         <div class="grid grid-cols-3 gap-3 mb-[30px] md:mb-10">
             <button
                 class="flex flex-col items-center p-[15px] rounded-md transition-colors duration-300"
-                :class="[selectedType === 'personal' ? 'text-white bg-blue-500' : 'text-slate-500 bg-[#F2F2F2]']"
+                :class="[props.selectedType === 'personal' ? 'text-white bg-blue-500' : 'text-slate-500 bg-[#F2F2F2]']"
                 @click="$emit('set-type', 'personal')"
             >
                 <PersonalIcon class="w-8 h-8 mb-2.5" />
@@ -15,7 +15,7 @@
             </button>
             <button
                 class="flex flex-col items-center px-2.5 py-[15px] rounded-md transition-colors duration-300"
-                :class="[selectedType === 'sole-trader' ? 'text-white bg-blue-500' : 'text-slate-500 bg-[#F2F2F2]']"
+                :class="[props.selectedType === 'sole-trader' ? 'text-white bg-blue-500' : 'text-slate-500 bg-[#F2F2F2]']"
                 @click="$emit('set-type', 'sole-trader')"
             >
                 <SoleTraderIcon class="w-8 h-8 mb-2.5" />
@@ -23,14 +23,14 @@
             </button>
             <button
                 class="flex flex-col items-center p-[15px] rounded-md transition-colors duration-300"
-                :class="[selectedType === 'business' ? 'text-white bg-blue-500' : 'text-slate-500 bg-[#F2F2F2]']"
+                :class="[props.selectedType === 'business' ? 'text-white bg-blue-500' : 'text-slate-500 bg-[#F2F2F2]']"
                 @click="$emit('set-type', 'business')"
             >
                 <BusinessIcon class="w-8 h-8 flex-shrink-0 mb-2.5" />
                 <span class="text-sm leading-tight font-medium">Business</span>
             </button>
         </div>
-        <template v-if="selectedType === 'business'">
+        <template v-if="props.selectedType === 'business'">
             <div class="flex items-center mb-5">
                 <div class="font-medium mr-2 md:text-xl">Business Account Type</div>
                 <QuestionIcon class="w-5 h-5 text-gray-500" />
@@ -56,11 +56,11 @@
         </template>
         <div
             class="flex justify-end mb-[30px] md:mt-auto md:-mb-16 lg:-mb-32"
-            :class="[selectedType !== 'business' ? 'mt-[200px] md:mt-[188px]' : '']"
+            :class="[props.selectedType !== 'business' ? 'mt-[200px] md:mt-[188px]' : '']"
         >
             <button
                 class="flex items-center rounded bg-blue-500 px-[22px] py-[11px] text-white transition-colors duration-300 disabled:bg-gray-100 disabled:text-gray-500"
-                :disabled="!selectedType"
+                :disabled="!props.selectedType"
                 @click="$emit('continue')"
             >
                 <span class="text-sm font-medium mr-2">Continue</span>
@@ -126,11 +126,12 @@ import AgentIcon from '@/assets/icons/signup/agent.svg';
 import TwitterIcon from '@/assets/icons/social/twitter.svg';
 import LinkedInIcon from '@/assets/icons/social/linkedin.svg';
 import InstagramIcon from '@/assets/icons/social/instagram.svg';
-import { FormSelectOption, SignupAccountType } from '~~/types';
+import type { FormSelectOption, SignupAccountType } from '~~/types';
 
 const emits = defineEmits(['set-type', 'continue', 'set-business-type']);
-
-const selectedType = useState<SignupAccountType>('signup-account-type');
+const props = defineProps<{
+    selectedType: SignupAccountType | '';
+}>();
 
 const selectedBusinessAccountType = ref<FormSelectOption>({
     label: 'Executive',

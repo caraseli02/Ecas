@@ -4,7 +4,7 @@ import { AlertAndNotificationType } from '~/types/dashboard/control-panel';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountType } from '~/types';
-import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import type { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 import { useNuxtApp } from '#app';
 
 const { $api } = useNuxtApp();

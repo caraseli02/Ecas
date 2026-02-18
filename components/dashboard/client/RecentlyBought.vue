@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import Emitter from 'tiny-emitter/instance';
-import { ProductInterface } from '~/model/products/response/ProductResponse';
+import type { ProductInterface } from '~/model/products/response/ProductResponse';
 
 defineProps<{
     data: Array<ProductInterface>;

@@ -1,8 +1,8 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
-import { MarkAsPaidRequestInterface, OrderRequestInterface, OrderStatus } from '~/types';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
+import { OrderStatus, type MarkAsPaidRequestInterface, type OrderRequestInterface } from '~/types';
+import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 
 class OrdersService extends HttpFactory {
     private ORDERS_DASHBOARD_RESOURCE = '/dashboard/orders/admin';

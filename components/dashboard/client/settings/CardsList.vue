@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import _ from 'lodash';
-import { StripeCardInterface } from '~/types';
+import type { StripeCardInterface } from '~/types';
 
 const card = ref<any | null>({});
 const cards = ref<StripeCardInterface[]>([]);

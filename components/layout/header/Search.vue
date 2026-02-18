@@ -53,7 +53,8 @@
 <script setup lang="ts">
 import SearchIcon from '@/assets/icons/search.svg';
 import _ from 'lodash';
-import { ProductInterface, ProductSearchItems, SearchData } from '~~/model/products/response/ProductSearchResponse';
+import type { ProductInterface } from '~~/model/products/response/ProductResponse';
+import type { SearchData } from '~~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance';
 import { useNuxtApp } from '#app';
 
@@ -89,7 +90,7 @@ const onInput = _.debounce(async () => {
     isLoading.value = false;
 }, 200);
 
-const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[] | null> => {
+const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductInterface[] | null> => {
     isLoading.value = true;
 
     const { data: products } = (await $api.product.fetchSearchProduct(keyword, category.value, page, perPage)) as unknown as SearchData;

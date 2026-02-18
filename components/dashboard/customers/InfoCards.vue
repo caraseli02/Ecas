@@ -102,7 +102,7 @@ import CardIcon from '@/assets/icons/dashboard/card.svg';
 import AbandonedCheckoutIcon from '@/assets/icons/dashboard/abandoned-checkout.svg';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
-import { OrderInterface } from '~/types';
+import type { OrderInterface } from '~/types';
 
 const showOptions = ref(false);
 const error = ref({

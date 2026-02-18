@@ -1,9 +1,9 @@
-import { CustomerCreditInterface, DiscountInterface } from '~/types/auth/account-settings';
-import { ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
-import { BackorderShippingTypesInterface, StockorderShippingTypesInterface } from '~/types/general-settings/general-settings';
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
-import { PaymentMethod } from '@stripe/stripe-js';
-import { ShippingOrderPricingOption } from '~/types/order-summary/shipping-services';
+import type { CustomerCreditInterface, DiscountInterface } from '~/types/auth/account-settings';
+import type { ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
+import type { BackorderShippingTypesInterface, StockorderShippingTypesInterface } from '~/types/general-settings/general-settings';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { PaymentMethod } from '@stripe/stripe-js';
+import type { ShippingOrderPricingOption } from '~/types/order-summary/shipping-services';
 
 export interface OrderSummaryItem {
     title: string;

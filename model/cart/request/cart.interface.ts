@@ -1,4 +1,4 @@
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 export interface AddToCartRequestInterface {
     products: CartProductsInterface[];

@@ -1,4 +1,4 @@
-import { ProductInterface } from './ProductResponse';
+import type { ProductInterface } from './ProductResponse';
 
 export interface ProductSearchResponse {
     status: string;

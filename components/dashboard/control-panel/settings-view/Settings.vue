@@ -137,6 +137,8 @@ import { useNuxtApp } from '#app';
 import { AlertAndNotificationLabelsEnum, MarketingPreferencesEnum } from '~/types/auth/account-settings';
 
 const { $api } = useNuxtApp();
+const config = useRuntimeConfig();
+const isMockMode = computed(() => config.public.MOCK_MODE === true || config.public.MOCK_MODE === 'true');
 const alertsAndNotifications = ref([
     {
         label: AlertAndNotificationLabelsEnum.newProducts,
@@ -179,24 +181,31 @@ const getCustomerSettings = async () => {
     if (!props.id) {
         return;
     }
-    const response = await $api.controlPanel.fetchCustomerSettings(props.id);
+    try {
+        const response = await $api.controlPanel.fetchCustomerSettings(props.id);
 
-    if (response.status !== 'success') {
-        return;
+        if (response.status !== 'success' && !isMockMode.value) {
+            return;
+        }
+
+        const settings = response.status === 'success' ? response.data : null;
+
+        if (!settings?.alertsAndNotifications || !settings?.marketingPreferences) {
+            return;
+        }
+        marketingPreferences.value.forEach((preference) => {
+            preference.email = (settings?.marketingPreferences as any)[preference.key]?.email || false;
+            preference.app = (settings?.marketingPreferences as any)[preference.key]?.app || false;
+        });
+        alertsAndNotifications.value.forEach((alert) => {
+            alert.email = (settings?.alertsAndNotifications as any)[alert.key]?.email || false;
+            alert.app = (settings?.alertsAndNotifications as any)[alert.key]?.app || false;
+        });
+    } catch (_err) {
+        if (!isMockMode.value) {
+            return;
+        }
     }
-    const settings = response.data;
-    console.log(settings);
-    if (!settings.alertsAndNotifications || !settings.marketingPreferences) {
-        return;
-    }
-    marketingPreferences.value.forEach((preference) => {
-        preference.email = (settings?.marketingPreferences as any)[preference.key]?.email || false;
-        preference.app = (settings?.marketingPreferences as any)[preference.key]?.app || false;
-    });
-    alertsAndNotifications.value.forEach((alert) => {
-        alert.email = (settings?.alertsAndNotifications as any)[alert.key]?.email || false;
-        alert.app = (settings?.alertsAndNotifications as any)[alert.key]?.app || false;
-    });
 };
 
 const securityEmail = ref('');
@@ -224,7 +233,13 @@ const markSettingAsRead = async (item: object, type: string) => {
     if (!props.id || !type || !item) {
         return;
     }
-    await $api.controlPanel.markSettingsAsRead(item, type, props.id);
+    try {
+        await $api.controlPanel.markSettingsAsRead(item, type, props.id);
+    } catch (_err) {
+        if (!isMockMode.value) {
+            return;
+        }
+    }
 };
 await getCustomerSettings();
 
@@ -232,10 +247,16 @@ const resetPassword = async (email: string) => {
     if (!email) {
         return;
     }
-    const response = await $api.user.resetPasswordLink(email);
+    try {
+        const response = await $api.user.resetPasswordLink(email);
 
-    if (response.status !== 'success') {
-        return;
+        if (response.status !== 'success') {
+            return;
+        }
+    } catch (_err) {
+        if (!isMockMode.value) {
+            return;
+        }
     }
 };
 </script>

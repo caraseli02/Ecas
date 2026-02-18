@@ -1,7 +1,8 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import { AccountRole, OrderTableColumns } from '~/types';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
-import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
+import RowActions from '~/components/dataTable/RowActions.vue';
+import type { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';
 import OrderType from '~/components/dataTable/OrderType.vue';
 import StatusWithColor from '~/components/dataTable/StatusWithColor.vue';

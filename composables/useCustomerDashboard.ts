@@ -1,13 +1,14 @@
 import { ref } from 'vue';
 import { useAuthStore } from '~/store/authStore';
-import {
+import type {
     CustomerDashboardActivityData,
     ProductBannerInterface,
     ViewHistoryProductInterface,
 } from '~/model/dashboard/customer-information/customer-information';
-import { BillingAddressInterface, ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
-import { ProductInterface } from '~/model/products/response/ProductResponse';
-import { AccountType, StripeCardInterface } from '~/types';
+import type { BillingAddressInterface, ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
+import type { ProductInterface } from '~/model/products/response/ProductResponse';
+import { AccountType } from '~/types';
+import type { StripeCardInterface } from '~/types';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { storeToRefs } from 'pinia';
 import moment from 'moment';

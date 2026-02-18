@@ -61,13 +61,15 @@ import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import PercentageIcon from '@/assets/icons/dashboard/percentage.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
-import { DiscountInterface } from '~/types/auth/account-settings';
+import type { DiscountInterface } from '~/types/auth/account-settings';
 
 const customerDiscountBuffer = ref<number>(0);
 const customerDiscount = ref<number>(0);
 const loading = ref(true);
 const error = ref(false);
 const { $api } = useNuxtApp();
+const config = useRuntimeConfig();
+const isMockMode = computed(() => config.public.MOCK_MODE === true || config.public.MOCK_MODE === 'true');
 const props = defineProps({
     id: {
         type: String,
@@ -78,21 +80,37 @@ const getCustomerSettings = async () => {
     if (!props.id) {
         return;
     }
-    const response = (await $api.controlPanel.fetchCustomerDiscount(props.id)) as { status: string; data: DiscountInterface };
+    try {
+        const response = (await $api.controlPanel.fetchCustomerDiscount(props.id)) as { status: string; data: DiscountInterface };
 
-    if (response.status !== 'success') {
-        error.value = true;
-        loading.value = false;
-        return;
-    } else {
+        if (response.status !== 'success' && !isMockMode.value) {
+            error.value = true;
+            loading.value = false;
+            return;
+        }
+
         loading.value = false;
         error.value = false;
-        customerDiscount.value = response.data.value;
-        customerDiscountBuffer.value = response.data.value;
+        const discount = response.status === 'success' ? response.data.value : 10;
+        customerDiscount.value = discount;
+        customerDiscountBuffer.value = discount;
+    } catch (_err) {
+        loading.value = false;
+        error.value = !isMockMode.value;
+
+        if (isMockMode.value) {
+            customerDiscount.value = 10;
+            customerDiscountBuffer.value = 10;
+        }
     }
 };
 const updateDiscount = async (discount: number | 0) => {
     if (!props.id) {
+        return;
+    }
+    if (isMockMode.value) {
+        loading.value = false;
+        error.value = false;
         return;
     }
     const response = await $api.controlPanel.updateCustomerDiscount(discount, props.id);

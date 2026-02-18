@@ -98,7 +98,8 @@ import { computed, ref } from 'vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
-import { CartProductsInterface, ProductAction } from '~/model/cart/response/cart.interface';
+import { ProductAction } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 import ProductDetails from './ProductDetails.vue';
 import AdditionalDetails from './AdditionalDetails.vue';

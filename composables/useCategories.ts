@@ -1,7 +1,7 @@
 // useCategories.ts
 import { computed, ref } from 'vue';
-import { useAuthStore } from '@/store/authStore';
 import type { ICreatePayload, TaxonomyInterface } from '~/types/dashboard/categories';
+import { categories as demoCategories } from '~/data/categories';
 
 const selectedCategories = ref<string[]>([]);
 const showDeleteAlert = ref(false);
@@ -21,18 +21,59 @@ const categoriesOptions = computed(() => {
     return [];
 });
 
+type DemoCategoryNode = {
+    _id: string;
+    name: string;
+    status?: string;
+    icon?: string;
+    items?: DemoCategoryNode[];
+};
+
+const mapDemoCategoryNode = (node: DemoCategoryNode, parentPath = ''): TaxonomyInterface => {
+    const path = parentPath ? `${parentPath}/${node._id}` : node._id;
+    const children = (node.items || []).map((item) => mapDemoCategoryNode(item, path));
+
+    return {
+        id: node._id,
+        name: node.name,
+        averageWeight: 0,
+        productCount: children.length,
+        products: [],
+        subcategory: children,
+        path,
+        isPublished: node.status === 'published',
+        icon: node.icon,
+    };
+};
+
+const setDemoTaxonomy = () => {
+    categories.value = (demoCategories as DemoCategoryNode[]).map((category) => mapDemoCategoryNode(category));
+    taxonomyId.value = 'demo-taxonomy';
+    isLocked.value = false;
+};
+
 export const useCategories = () => {
     const { $api } = useNuxtApp();
+    const config = useRuntimeConfig();
 
     const getCategories = async () => {
         isLoading.value = true;
         selectedCategories.value = [];
         try {
+            if (config.public.MOCK_MODE || typeof $api.categories?.get !== 'function') {
+                setDemoTaxonomy();
+                return;
+            }
+
             const response = await $api.categories.get();
             categories.value = response.data.data;
             taxonomyId.value = response.data._id;
             isLocked.value = response.data.locked;
         } catch (error) {
+            if (config.public.MOCK_MODE) {
+                setDemoTaxonomy();
+                return;
+            }
             console.error('Failed to fetch counts from API:', error);
         } finally {
             isLoading.value = false;

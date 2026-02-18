@@ -1,16 +1,15 @@
 <script setup lang="ts" generic="TData">
 import { PlusCircleIcon } from 'lucide-vue-next';
-import { DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker';
 import { ref } from 'vue';
 import { cn } from '@/lib/utils';
-import { Column } from '@tanstack/vue-table';
+import type { Column } from '@tanstack/vue-table';
 
 interface Filter {
     start: Date;
     end: Date;
 }
 
-const date = ref<DatePickerRangeObject | undefined>(undefined);
+const date = ref<Filter | undefined>(undefined);
 
 function formatDate(date: Date): string {
     return date.toLocaleDateString('en-GB', {

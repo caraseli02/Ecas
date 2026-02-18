@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { OrderInterface } from '~~/types';
+import type { OrderInterface } from '~~/types';
 import DashboardIcon from '@/assets/icons/dashboard/dashboard.svg';
 // import Emitter from 'tiny-emitter/instance.js';
 import { useAuthStore } from '@/store/authStore';

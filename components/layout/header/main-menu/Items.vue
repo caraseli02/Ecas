@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { useBreakpoints, breakpointsTailwind } from '@vueuse/core';
 import DesktopPopover from './DesktopPopover.vue';
 import MobileSheet from './MobileSheet.vue';
 
 defineProps<{ isScrolled: boolean }>();
-
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const lgAndLarger = breakpoints.greaterOrEqual('lg');
 </script>
 
 <template>
-    <component :is="lgAndLarger ? DesktopPopover : MobileSheet" :is-scrolled="isScrolled" />
+    <DesktopPopover :is-scrolled="isScrolled" class="hidden lg:block" />
+    <ClientOnly>
+        <MobileSheet :is-scrolled="isScrolled" class="lg:hidden" />
+    </ClientOnly>
 </template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { InfoIcon } from 'lucide-vue-next';
-import { OrderType, PaymentSummaryInterface } from '~/types';
-import { PropType } from 'vue';
+import { OrderType } from '~/types';
+import type { PaymentSummaryInterface } from '~/types';
+import type { PropType } from 'vue';
 
 const props = defineProps({
     orderPaySum: {

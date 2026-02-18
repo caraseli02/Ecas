@@ -129,18 +129,19 @@
 </template>
 
 <script setup lang="ts">
-import { OrderInterface, OrderType } from '~/types';
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import { OrderType, type OrderInterface } from '~/types';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
-import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import Tooltip from '~/components/global/Tooltip.vue';
+import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 import Emitter from 'tiny-emitter/instance.js';
 import { useAuthStore } from '~/store/authStore';
 import { usePaymentStore } from '~/store/paymentStore';
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '~/store/cartStore';
-import { ShippingOrderPricingResponse } from '~/types/order-summary/shipping-services';
+import type { ShippingOrderPricingResponse } from '~/types/order-summary/shipping-services';
 
 const props = defineProps<{
     items: CartProductsInterface[];

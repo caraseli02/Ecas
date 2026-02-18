@@ -204,7 +204,7 @@
 </template>
 
 <script setup lang="ts">
-import { FavoriteItem } from '@/types';
+import type { FavoriteItem } from '@/types';
 import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import CogIcon from '@/assets/icons/cog.svg';
 import FolderPlusIcon from '@/assets/icons/folder-plus.svg';
@@ -216,7 +216,7 @@ import MergeIcon from '@/assets/icons/merge.svg';
 import FolderArrowIcon from '@/assets/icons/folder-arrow.svg';
 import { A11y } from 'swiper';
 import { useNuxtApp } from '#app';
-import { FavouriteFolderResponse, FavouriteFolderResponseInterface } from '~/model/favourite-folder/response/favourite-folder.interface';
+import type { FavouriteFolderResponse, FavouriteFolderResponseInterface } from '~/model/favourite-folder/response/favourite-folder.interface';
 
 const { $api } = useNuxtApp();
 

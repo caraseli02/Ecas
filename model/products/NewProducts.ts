@@ -1,4 +1,4 @@
-import { ProductImage } from './response/ProductResponse';
+import type { ProductImageInterface } from './response/ProductResponse';
 
 export interface NewProducts {
     _id: string;
@@ -12,7 +12,7 @@ export interface NewProducts {
     class: string;
     description: string;
     details: {
-        ProductImage: ProductImage;
+        ProductImage: ProductImageInterface;
     };
     manufacturer: string;
     manufacturerCode: string;

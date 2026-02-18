@@ -67,9 +67,9 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import TrashIcon from '@/assets/icons/trash-can.svg';
-import { FavoriteItem } from '~~/types';
+import type { FavoriteItem } from '~~/types';
 import { useNuxtApp } from '#app';
 import { useCartStore } from '~/store/cartStore';
 

@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import CaretIcon from '@/assets/icons/caret-right.svg';
-import { ProductInterface } from '~/model/products/response/ProductResponse';
+import type { ProductInterface } from '~/model/products/response/ProductResponse';
 import { mapLabelsToIds, mapPathArrayOfNames } from '~/helpers/categories.helper';
 
 const { categories, getCategories } = useCategories();

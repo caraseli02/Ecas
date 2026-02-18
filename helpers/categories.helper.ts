@@ -1,4 +1,4 @@
-import { TaxonomyInterface } from '~/types/dashboard/categories';
+import type { TaxonomyInterface } from '~/types/dashboard/categories';
 import { useCategoriesStore } from '~/store/categoriesStore';
 
 export const mapLabelsToIds = (array: any, result = {}) => {

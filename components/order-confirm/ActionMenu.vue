@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { toast } from '~/components/ui/toast';
-import { MarkAsPaidRequestInterface, OrderInterface, OrderStatus, PaymentStatusEnum, PaymentTypeEnum } from '~/types';
+import { OrderStatus, PaymentStatusEnum, PaymentTypeEnum, type MarkAsPaidRequestInterface, type OrderInterface } from '~/types';
 
 const { $api } = useNuxtApp();
 

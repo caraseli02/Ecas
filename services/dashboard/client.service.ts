@@ -1,6 +1,6 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import {
+import type {
     ActiveOrdersResponse,
     FavoritesResponse,
     MonthHotSaleResponse,
@@ -9,7 +9,7 @@ import {
     TotalReturnsResponse,
     ViewHistoryResponse,
 } from '~/model/dashboard/customer-information/customer-information';
-import { UserDetailsResponse } from '~/types';
+import type { UserDetailsResponse } from '~/types';
 
 class CustomerDashboard extends HttpFactory {
     private RESOURCE = '/dashboard';

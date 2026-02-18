@@ -117,8 +117,8 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, Ref } from 'vue';
-import { FavoriteItem } from '~~/types';
+import type { PropType, Ref } from 'vue';
+import type { FavoriteItem } from '~~/types';
 import FolderIcon from '@/assets/icons/folder.svg';
 import CheckIcon from '@/assets/icons/check.svg';
 import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';

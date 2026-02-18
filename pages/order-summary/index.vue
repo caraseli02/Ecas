@@ -50,9 +50,9 @@ import { LoaderIcon } from 'lucide-vue-next';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 
 // Types and Interfaces
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
-import { PaymentDetails } from '~/types';
-import { BackorderShippingTypesInterface, SmallOrderChargeInterface } from '~/types/general-settings/general-settings';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { PaymentDetails } from '~/types';
+import type { BackorderShippingTypesInterface, SmallOrderChargeInterface } from '~/types/general-settings/general-settings';
 
 // Composables
 import { useUser } from '~/composables/useUser';
@@ -67,7 +67,7 @@ import { storeToRefs } from 'pinia';
 
 // Utilities
 import Emitter from 'tiny-emitter/instance.js';
-import { ShippingOrderPricingOption, ShippingOrderPricingResponse } from '~/types/order-summary/shipping-services';
+import type { ShippingOrderPricingOption, ShippingOrderPricingResponse } from '~/types/order-summary/shipping-services';
 
 // Setup and Initialization
 const router = useRouter();

@@ -271,11 +271,11 @@ import SettingsIcon from '@/assets/icons/dashboard/setting.svg';
 import SignOutIcon from '@/assets/icons/dashboard/sign-out.svg';
 import NotificationIcon from '@/assets/icons/dashboard/notification-ringing.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import { Notification } from '~/types/dashboard/notification';
+import type { Notification } from '~/types/dashboard/notification';
 import moment from 'moment';
 import { useAuthStore } from '~/store/authStore';
 import { AccountRole, AccountType } from '../../types';
-import { UserInterface } from '~/types/auth/user-interface';
+import type { UserInterface } from '~/types/auth/user-interface';
 import { storeToRefs } from 'pinia';
 import Emitter from 'tiny-emitter/instance.js';
 

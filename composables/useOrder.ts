@@ -1,8 +1,9 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCartStore } from '~/store/cartStore';
-import { AccountRole, AccountType, OrderRequestInterface, PaymentTypeEnum } from '~/types';
-import { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
+import { AccountRole, AccountType, PaymentTypeEnum } from '~/types';
+import type { OrderRequestInterface } from '~/types';
+import type { PlaceOrderInterface } from '~/model/order/response/PlaceOrder';
 import { useCheckoutStore } from '~/store/checkout';
 import { useUser } from './useUser';
 import { storeToRefs } from 'pinia';

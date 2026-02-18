@@ -85,7 +85,7 @@
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import Emitter from 'tiny-emitter/instance.js';
 import { useNuxtApp } from '#app';
-import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 import { customerCreditHelper } from '~/helpers/customer-credit.helper';
 
 const customerName = ref('');

@@ -112,7 +112,7 @@ import ToolsIcon from '@/assets/icons/header/tools.svg';
 import IndustrialFurnitureIcon from '@/assets/icons/header/industrial-furniture.svg';
 import CaretLeft from '@/assets/icons/caret-left.svg';
 import { showNavModal } from '~~/config/modal/nav';
-import { TaxonomyInterface } from '~/types/dashboard/categories';
+import type { TaxonomyInterface } from '~/types/dashboard/categories';
 import { mapLabelsToIds } from '~/helpers/categories.helper';
 import CardPlaceholderSmall from 'assets/icons/card-placeholder-small.svg';
 import { useRouter } from 'vue-router';

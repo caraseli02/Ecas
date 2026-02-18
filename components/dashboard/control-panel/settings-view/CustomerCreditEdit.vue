@@ -167,7 +167,7 @@ import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import FreezeIcon from '@/assets/icons/dashboard/freeze.svg';
 import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
 import { useNuxtApp } from '#app';
-import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 import moment from 'moment/moment';
 
 defineEmits(['toggle-editing', 'cancel']);
@@ -199,6 +199,8 @@ const creditTermOptions = ref([
     },
 ]);
 const { $api } = useNuxtApp();
+const config = useRuntimeConfig();
+const isMockMode = computed(() => config.public.MOCK_MODE === true || config.public.MOCK_MODE === 'true');
 const props = defineProps({
     id: {
         type: String,
@@ -209,13 +211,42 @@ const getCustomerCredit = async () => {
     if (!props.id) {
         return;
     }
-    const response = await $api.controlPanel.fetchCustomerCredit(props.id);
+    try {
+        const response = await $api.controlPanel.fetchCustomerCredit(props.id);
 
-    if (response.status !== 'success') {
-        return;
+        if (response.status !== 'success' && !isMockMode.value) {
+            return;
+        }
+
+        creditObjectToEdit.value =
+            response.status === 'success'
+                ? response.data
+                : ({
+                      limit: 12000,
+                      spent: 3200,
+                      available: 8800,
+                      dueDate: new Date().toISOString(),
+                      tillDue: '30',
+                      term: 30,
+                      freeze: false,
+                      active: true,
+                  } as CustomerCreditInterface);
+    } catch (_err) {
+        if (!isMockMode.value) {
+            return;
+        }
+
+        creditObjectToEdit.value = {
+            limit: 12000,
+            spent: 3200,
+            available: 8800,
+            dueDate: new Date().toISOString(),
+            tillDue: '30',
+            term: 30,
+            freeze: false,
+            active: true,
+        } as CustomerCreditInterface;
     }
-
-    creditObjectToEdit.value = response.data;
 };
 
 await getCustomerCredit();
@@ -227,6 +258,20 @@ const getCurrentDate = (date: string) => {
 };
 const updateCreditTerm = async (term: any, value: any) => {
     if ((creditObjectToEdit.value && (term || value)) || (!creditObjectToEdit.value && term && value)) {
+        if (isMockMode.value) {
+            if (!creditObjectToEdit.value) {
+                creditObjectToEdit.value = {} as CustomerCreditInterface;
+            }
+            creditObjectToEdit.value.limit = value || creditObjectToEdit.value.limit;
+            creditObjectToEdit.value.term = term || creditObjectToEdit.value.term;
+            creditObjectToEdit.value.dueDate = term
+                ? moment(moment(), 'DD-MM-YYYY').add(term, 'days').toString()
+                : creditObjectToEdit.value.dueDate;
+            creditObjectToEdit.value.tillDue = term || creditObjectToEdit.value.tillDue;
+            creditObjectToEdit.value.available = creditObjectToEdit.value.limit - creditObjectToEdit.value.spent;
+            return;
+        }
+
         if (!props.id) {
             return;
         }
@@ -252,6 +297,11 @@ const switchFreeze = async () => {
     if (!props.id) {
         return;
     }
+    if (isMockMode.value) {
+        creditObjectToEdit.value.freeze = !creditObjectToEdit.value.freeze;
+        return;
+    }
+
     const response = await $api.controlPanel.toggleFreezeCustomerCredit(props.id);
 
     if (response.status !== 'success') {
@@ -262,6 +312,11 @@ const switchClose = async () => {
     if (!props.id) {
         return;
     }
+    if (isMockMode.value) {
+        creditObjectToEdit.value.active = !creditObjectToEdit.value.active;
+        return;
+    }
+
     const response = await $api.controlPanel.toggleCloseCustomerCredit(props.id);
 
     if (response.status !== 'success') {

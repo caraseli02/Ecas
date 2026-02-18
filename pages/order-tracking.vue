@@ -1,105 +1,111 @@
 <script setup lang="ts">
-// Example orders showing different states and variations
+import { OrderStatus, PaymentStatusEnum } from '~/types';
+
+const baseAddress = {
+    _id: 'addr-demo',
+    name1: 'Bd. Dimitrie Pompei Nr. 8',
+    name2: 'Sector 2',
+    city: 'Bucuresti',
+    region: 'Bucuresti',
+    postcode: '020335',
+    country: 'Romania',
+};
+
 const orders = [
+    // New order - just received
     {
-        // New order - just received
-        orderId: 'S-241030007',
-        awb: null,
-        amount: 457.92,
-        status: 'processing',
+        _id: 'order-demo-1',
+        shortId: 'S-241030007',
+        total: 457.92,
+        status: OrderStatus.Processing,
+        createdAt: '2024-11-27T09:00:00.000Z',
         company: {
             name: 'Ecas Electro S.R.L',
             initial: 'E',
         },
-        address: 'Bd. Dimitrie Pompei Nr. 8, Sector 2, Bucuresti, 90210, Romania',
-        billingStatus: 'pending',
-        orderDate: new Date('2024-11-27'),
-        trackingStatus: {
-            processing: true,
-            packaging: false,
-            transit: false,
-            fulfilled: false,
+        user: {
+            companyDetails: { name: 'Ecas Electro S.R.L' },
         },
+        shippingDetails: {
+            address: baseAddress,
+            statusTracking: {
+                awb: null,
+                history: [],
+            },
+        },
+        paymentDetails: { status: PaymentStatusEnum.Pending },
     },
+    // Order in packaging
     {
-        // New order - just received
-        orderId: 'S-241030007',
-        awb: null,
-        amount: 457.92,
-        status: 'processing',
-        company: {
-            name: 'Ecas Electro S.R.L',
-            initial: 'E',
-        },
-        address: 'Bd. Dimitrie Pompei Nr. 8, Sector 2, Bucuresti, 90210, Romania',
-        billingStatus: 'paid',
-        orderDate: new Date('2024-11-27'),
-        trackingStatus: {
-            processing: true,
-            packaging: false,
-            transit: false,
-            fulfilled: false,
-        },
-    },
-    {
-        // Order in processing
-        orderId: 'S-241030008',
-        awb: 'MOP524103008',
-        amount: 892.5,
-        status: 'packaging',
+        _id: 'order-demo-2',
+        shortId: 'S-241030008',
+        total: 892.5,
+        status: OrderStatus.Packaging,
+        createdAt: '2024-11-26T09:00:00.000Z',
         company: {
             name: 'Tech Solutions Ltd',
             initial: 'T',
         },
-        address: '123 Tech Avenue, Silicon Valley, CA 94025, USA',
-        billingStatus: 'paid',
-        orderDate: new Date('2024-11-26'),
-        trackingStatus: {
-            processing: true,
-            packaging: true,
-            transit: false,
-            fulfilled: false,
+        user: {
+            companyDetails: { name: 'Tech Solutions Ltd' },
         },
+        shippingDetails: {
+            address: baseAddress,
+            statusTracking: {
+                awb: 'MOP524103008',
+                history: [{ code: 100, dateTime: '', unixDateTime: 0, statusTextParts: { ro: { name: '', reason: '' } }, comment: { ro: '' } }],
+            },
+        },
+        paymentDetails: { status: PaymentStatusEnum.Paid },
     },
+    // Order shipped
     {
-        // Order shipped
-        orderId: 'S-241030009',
-        awb: 'MOP524103009',
-        amount: 1250.0,
-        status: 'transit',
+        _id: 'order-demo-3',
+        shortId: 'S-241030009',
+        total: 1250.0,
+        status: OrderStatus.Processing,
+        createdAt: '2024-11-25T09:00:00.000Z',
         company: {
             name: 'Global Imports Co',
             initial: 'G',
         },
-        address: '45 Harbor Street, Port City, PC 12345, Netherlands',
-        billingStatus: 'paid',
-        orderDate: new Date('2024-11-25'),
-        trackingStatus: {
-            processing: true,
-            packaging: true,
-            transit: true,
-            fulfilled: false,
+        user: {
+            companyDetails: { name: 'Global Imports Co' },
         },
+        shippingDetails: {
+            address: baseAddress,
+            statusTracking: {
+                awb: 'MOP524103009',
+                history: [
+                    { code: 100, dateTime: '', unixDateTime: 0, statusTextParts: { ro: { name: '', reason: '' } }, comment: { ro: '' } },
+                    { code: 20050, dateTime: '', unixDateTime: 0, statusTextParts: { ro: { name: '', reason: '' } }, comment: { ro: '' } },
+                ],
+            },
+        },
+        paymentDetails: { status: PaymentStatusEnum.Paid },
     },
+    // Delivered order
     {
-        // Delivered order
-        orderId: 'S-241030010',
-        awb: 'MOP524103010',
-        amount: 678.25,
-        status: 'fulfilled',
+        _id: 'order-demo-4',
+        shortId: 'S-241030010',
+        total: 678.25,
+        status: OrderStatus.Processing,
+        createdAt: '2024-11-24T09:00:00.000Z',
         company: {
             name: 'City Electronics',
             initial: 'C',
         },
-        address: '789 Main Street, Downtown, NY 10001, USA',
-        billingStatus: 'paid',
-        orderDate: new Date('2024-11-24'),
-        trackingStatus: {
-            processing: true,
-            packaging: true,
-            transit: true,
-            fulfilled: true,
+        user: {
+            companyDetails: { name: 'City Electronics' },
         },
+        shippingDetails: {
+            address: baseAddress,
+            statusTracking: {
+                awb: 'MOP524103010',
+                history: [{ code: 0, dateTime: '', unixDateTime: 0, statusTextParts: { ro: { name: '', reason: '' } }, comment: { ro: '' } }],
+            },
+        },
+        paymentDetails: { status: PaymentStatusEnum.Paid },
     },
 ];
 </script>
@@ -109,7 +115,7 @@ const orders = [
         <h1 class="text-2xl font-bold text-zinc-800">Order Tracking Examples</h1>
 
         <div class="grid gap-6">
-            <OrderTracking v-for="order in orders" :key="order.orderId" :order="order" />
+            <OrderTracking v-for="order in orders" :key="order._id" :order="order" />
         </div>
     </div>
 </template>

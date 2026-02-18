@@ -48,7 +48,22 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     console.log(`[API] MOCK_MODE: ${config.MOCK_MODE ? 'ENABLED' : 'DISABLED'}`);
 
-    const baseURL = config.MOCK_MODE ? '/api' : config.BASE_URL_API;
+    const baseURL = (() => {
+        if (!config.MOCK_MODE) {
+            return config.BASE_URL_API;
+        }
+
+        if (import.meta.client) {
+            return '/api';
+        }
+
+        const event = nuxtApp.ssrContext?.event;
+        const protoHeader = event?.node.req.headers['x-forwarded-proto'];
+        const protocol = Array.isArray(protoHeader) ? protoHeader[0] : protoHeader || 'http';
+        const host = event?.node.req.headers.host || 'localhost:3000';
+
+        return `${protocol}://${host}/api`;
+    })();
 
     const fetchOptions: FetchOptions = {
         baseURL,
