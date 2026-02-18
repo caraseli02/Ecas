@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type OrderInterface, OrderTableColumns } from '~/types';
+import type { OrderInterface, OrderTableColumns } from '~/types';
 import { columns } from './columns';
 
 const { $api } = useNuxtApp();

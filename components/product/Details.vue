@@ -72,7 +72,7 @@
 import { SquarePen } from 'lucide-vue-next';
 import CADModelsIcon from '@/assets/icons/cad-models.svg';
 import PDFIcon from '@/assets/icons/pdf.svg';
-import { ProductDetail } from '~~/model/products/response/ProductDetailResponse';
+import type { ProductDetail } from '~~/model/products/response/ProductDetailResponse';
 
 const props = defineProps<{
     product: ProductDetail;

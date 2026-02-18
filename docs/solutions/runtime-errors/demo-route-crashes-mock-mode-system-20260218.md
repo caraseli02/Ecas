@@ -117,4 +117,4 @@ Also implemented:
   - `/product/categories`
 
 ## Related Issues
-No related issues documented yet.
+- See also: [dashboard-demo-flow-filters-and-guards-system-20260218.md](../logic-errors/dashboard-demo-flow-filters-and-guards-system-20260218.md)

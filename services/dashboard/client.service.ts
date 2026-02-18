@@ -79,6 +79,15 @@ class CustomerDashboard extends HttpFactory {
             headers: { Authorization: `Bearer ${token}` },
         });
     }
+
+    async getMetadata() {
+        const authStore = useAuthStore();
+        const token = authStore.getToken();
+
+        return await this.call<any>('GET', `${this.MAIN_RESOURCE}/metadata`, null, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    }
 }
 
 export default CustomerDashboard;

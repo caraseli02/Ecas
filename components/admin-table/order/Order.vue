@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { type OrderInterface, OrderStatus, OrderTableColumns } from '~/types';
+import { OrderStatus } from '~/types';
+import type { OrderInterface, OrderTableColumns } from '~/types';
 import { columns } from './columns';
 import moment from 'moment/moment';
-import { Table } from '@tanstack/vue-table';
+import type { Table } from '@tanstack/vue-table';
+import { OrderTableColumnsEnum } from '~/components/client-table/order/columns.enum';
 
 interface TabFilter {
     label: string;
@@ -58,7 +60,7 @@ const orderFilters = ref<TabFilter[]>([
     },
     {
         label: 'Last 24h',
-        value: 'startDate',
+        value: OrderTableColumnsEnum.CREATED_AT,
         key: [moment.utc().subtract(24, 'hours').format('DD/MM/YYYY HH:mm:ss')],
         total_items: 0,
     },
@@ -100,15 +102,33 @@ const activeOrderFilter = ref<TabFilter>(orderFilters.value[0]);
 const filterHighlightWidth = ref(0);
 const filterHightlightLeft = ref(0);
 
+const getServerFiltersByTab = (filter: TabFilter) => {
+    const filterObj = {} as Record<string, string>;
+    const filterKeys = Array.isArray(filter?.key) ? filter.key : filter?.key ? [filter.key] : [];
+
+    if (!filter?.value || !filterKeys.length) {
+        return filterObj;
+    }
+
+    if (filter.value === 'startDate' || filter.value === OrderTableColumnsEnum.CREATED_AT) {
+        const rawDate = String(filterKeys[0] || '');
+        const parsedDate = moment.utc(rawDate, moment.ISO_8601, true).isValid()
+            ? moment.utc(rawDate)
+            : moment.utc(rawDate, 'DD/MM/YYYY HH:mm:ss', true);
+
+        filterObj.startDate = parsedDate.isValid() ? parsedDate.toISOString() : rawDate;
+        return filterObj;
+    }
+
+    filterObj[filter.value] = filterKeys.map((key) => String(key)).join(',');
+
+    return filterObj;
+};
+
 const loadTabFilters = async () => {
     loadingFilters.value = true;
     for (const filter of orderFilters.value) {
-        const filterObj = {} as any;
-
-        if (filter.key?.length) {
-            filterObj['status'] = filter.key.join(',');
-        }
-
+        const filterObj = getServerFiltersByTab(filter);
         const data = await fetchAndSetOrdersList(pageCount.value, 10, filterObj, {});
         filter.total_items = data?.total_items ?? 0;
     }
@@ -150,7 +170,10 @@ watch(
 const onTabChange = async (filter: TabFilter, table: Table<OrderTableColumns>) => {
     activeOrderFilter.value = filter;
     table.resetColumnFilters();
-    table.getColumn(filter.value)?.setFilterValue(filter.key);
+    if (filter.value) {
+        table.getColumn(filter.value)?.setFilterValue(filter.key);
+    }
+    await fetchAndSetOrdersList(1, 10, getServerFiltersByTab(filter), {});
 };
 
 loadTabFilters();
