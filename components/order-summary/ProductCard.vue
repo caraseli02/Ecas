@@ -66,7 +66,7 @@
     </div>
 </template>
 <script lang="ts">
-import { ProductInterface } from '@/model/products/response/ProductResponse';
+import type { ProductInterface } from '@/model/products/response/ProductResponse';
 import CheckCircleHollowSmall from '@/assets/icons/check-circle-hollow-small.svg';
 import HeartOutlineBig from '@/assets/icons/heart-outline-big.svg';
 import HeartSolidBig from '@/assets/icons/heart-solid-big.svg';

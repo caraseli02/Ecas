@@ -1,4 +1,4 @@
-import { InputObject } from '~~/types';
+import type { InputObject } from '~~/types';
 
 export const useFormValidation = () => {
     const checkForInputErrors = (obj: Array<InputObject>) => {

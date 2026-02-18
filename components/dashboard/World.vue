@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import { LeafletMapData } from '@/data/geojson.ts';
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 
 const props = defineProps({
     countries: {

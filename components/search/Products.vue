@@ -309,7 +309,7 @@ import CheckIcon from '@/assets/icons/check.svg';
 import ChevronDownIcon from '@/assets/icons/chevron-down.svg';
 import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
 import Pagination from 'vuejs-paginate-next';
-import { SearchData } from '~/model/products/response/ProductSearchResponse';
+import type { SearchData } from '~/model/products/response/ProductSearchResponse';
 import moment from 'moment';
 
 const props = defineProps<{

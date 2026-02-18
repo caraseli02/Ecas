@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Row } from '@tanstack/vue-table';
+import type { Row } from '@tanstack/vue-table';
 import { LockKeyholeIcon } from 'lucide-vue-next';
 import { useNuxtApp } from '#app';
 
@@ -7,7 +7,7 @@ export interface ActionOptionsConfiguration {
     label: string;
     enable: boolean;
     navigateToRoute?: string;
-    actionFn?: (id: string) => Promise<unknown>;
+    actionFn?: string | ((id?: string) => Promise<unknown> | unknown);
     actionParameter?: string;
 }
 
@@ -21,15 +21,26 @@ interface DataTableRowActionsProps {
 
 const props = defineProps<DataTableRowActionsProps>();
 const { $api } = useNuxtApp();
-const task = computed(() => orderSchema.parse(props.row.original));
 
-const callAction = () => {
+const callAction = (option: ActionOptionsConfiguration) => {
+    if (!option.actionFn) {
+        return undefined;
+    }
+
+    const actionArg = option.actionParameter || props.row.original?._id;
+
+    if (typeof option.actionFn === 'function') {
+        return option.actionFn(actionArg);
+    }
+
     if (props.service) {
-        const service = $api[props.service as keyof typeof $api];
-        if (service && option.actionFn) {
-            return (service as any)[option.actionFn](...);
+        const service = $api[props.service as keyof typeof $api] as Record<string, (...args: any[]) => unknown> | undefined;
+        const action = service?.[option.actionFn];
+        if (typeof action === 'function') {
+            return action(actionArg);
         }
     }
+
     return undefined;
 };
 </script>
@@ -133,7 +144,11 @@ const callAction = () => {
             </UiDropdownMenuTrigger>
             <UiDropdownMenuContent align="end" class="w-[167px]">
                 <template v-for="(option, index) of props.options" :key="index">
-                    <UiDropdownMenuItem v-if="!option.navigateToRoute" :disabled="!option.enable || !option.actionFn" @click="callAction()">
+                    <UiDropdownMenuItem
+                        v-if="!option.navigateToRoute"
+                        :disabled="!option.enable || !option.actionFn"
+                        @click="callAction(option)"
+                    >
                         {{ option.label }}
                     </UiDropdownMenuItem>
                     <UiDropdownMenuItem v-if="!option.actionFn" :disabled="!option.enable || !option.navigateToRoute">

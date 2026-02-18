@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import XIcon from '@/assets/icons/x.svg';
 import GlobeIcon from '@/assets/icons/globe.svg';
-import { FormSelectOption } from '~~/types';
+import type { FormSelectOption } from '~~/types';
 
 defineEmits(['close']);
 

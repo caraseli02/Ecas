@@ -1,4 +1,4 @@
-import { PriceSettingsInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
+import { PriceSettingsTypeEnum, type PriceSettingsInterface } from '~/model/prices/price-settings.interface';
 
 export const smartPricingRange = (pricing: PriceSettingsInterface[] | []) => {
     return pricing

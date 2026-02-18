@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CaretRightIcon from '@/assets/icons/caret-right.svg';
-import { ProductDetail } from '~/model/products/response/ProductDetailResponse';
+import type { ProductDetail } from '~/model/products/response/ProductDetailResponse';
 
 const props = defineProps<{
     product: ProductDetail;

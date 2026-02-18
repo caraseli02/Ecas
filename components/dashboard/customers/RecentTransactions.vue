@@ -74,7 +74,7 @@ import ArrowSquareRightIcon from '@/assets/icons/dashboard/arrow-square-right.sv
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { PaymentStatusEnum } from '~/types';
-import { TransactionInterface } from '~/types/dashboard/transaction';
+import type { TransactionInterface } from '~/types/dashboard/transaction';
 
 const error = ref(false);
 const emptyData = ref(false);

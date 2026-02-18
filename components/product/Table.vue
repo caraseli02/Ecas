@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CheckIcon from '@/assets/icons/check.svg';
-import { ProductParametricDataFeaturesInterface } from '~/model/products/response/ProductResponse';
-import { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
+import type { ProductParametricDataFeaturesInterface } from '~/model/products/response/ProductResponse';
+import type { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
 import { useNuxtApp } from '#app/nuxt';
 import { useProductStore } from '~/store/productStore';
 

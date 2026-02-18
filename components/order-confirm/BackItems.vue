@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { InfoIcon } from 'lucide-vue-next';
-import { OrderRequestInterface, OrderType } from '~/types';
+import { OrderType } from '~/types';
+import type { OrderRequestInterface } from '~/types';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { useAuthStore } from '~/store/authStore';
 

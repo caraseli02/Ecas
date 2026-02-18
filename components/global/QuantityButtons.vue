@@ -34,11 +34,12 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import PlusIcon from '@/assets/icons/plus.svg';
 import MinusIcon from '@/assets/icons/minus.svg';
-import { CartProductsInterface, ProductAction, ProductActionObject } from '~/model/cart/response/cart.interface';
-import { UpdateProductCartRequestInterface } from '~/model/cart/request/cart.interface';
+import { ProductAction } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface, ProductActionObject } from '~/model/cart/response/cart.interface';
+import type { UpdateProductCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
 import { useCartStore } from '~/store/cartStore';
 import { OrderType } from '~/types';
@@ -176,7 +177,7 @@ watch(
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import PlusIcon from '@/assets/icons/plus.svg';
 import MinusIcon from '@/assets/icons/minus.svg';
 import { CartProductsInterface, ProductAction, ProductActionObject } from '~/model/cart/response/cart.interface';

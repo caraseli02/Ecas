@@ -1,4 +1,4 @@
-import { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
+import type { PaginatedCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 
 export enum LogsTableColumnsEnum {
     TYPE = 'type',

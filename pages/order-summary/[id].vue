@@ -2,11 +2,13 @@
 import { ArrowLeft, LayoutDashboard, PackageOpenIcon, ShoppingCart, TruckIcon, Undo2Icon } from 'lucide-vue-next';
 
 import {
+    OrderType,
+} from '~/types';
+import type {
     OrderInterface,
     OrderNotesInterface,
     OrderRequestInterface,
     OrderRequestInterfaceResponse,
-    OrderType,
     PaymentInfo,
     PaymentSummaryInterface,
 } from '~/types';
@@ -15,7 +17,7 @@ import { paymentInfoHelper } from '~/helpers/payment-info.helper';
 
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { toast } from '~/components/ui/toast';
 import { orderType } from '~/components/admin-table/order/options';
 

@@ -71,12 +71,12 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import XIcon from '@/assets/icons/x.svg';
 import MergeIcon from '@/assets/icons/merge.svg';
 import FolderIcon from '@/assets/icons/folder.svg';
-import { FavoriteItem, FormSelectOption } from '~~/types';
-import { FavouriteFolderMoveInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import type { FavoriteItem, FormSelectOption } from '~~/types';
+import type { FavouriteFolderMoveInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import { useNuxtApp } from '#app';
 
 const { $api } = useNuxtApp();

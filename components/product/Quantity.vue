@@ -122,8 +122,8 @@
 
 <script setup lang="ts">
 import CartIcon from '@/assets/icons/cart.svg';
-import { CartInterface, ProductActionObject } from '~/model/cart/response/cart.interface';
-import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
+import type { CartInterface, ProductActionObject } from '~/model/cart/response/cart.interface';
+import type { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 import { addToCartHelper, initializeQuantities, parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { useCartStore } from '~/store/cartStore';

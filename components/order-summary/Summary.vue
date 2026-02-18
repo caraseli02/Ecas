@@ -75,7 +75,7 @@ import { useAuthStore } from '~/store/authStore';
 import InformationIcon from '~/assets/icons/information.svg';
 import type { OrderInterface } from '~/types';
 import OrderSummarySmallOrderModal from './SmallOrderModal.vue';
-import { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
+import type { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '~/store/cartStore';
 

@@ -1,6 +1,7 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
-import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
+import RowActions from '~/components/dataTable/RowActions.vue';
+import type { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
 import IdCell from '~/components/dataTable/IdCell.vue';
 import EnumToText from '~/components/dataTable/EnumToText.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';

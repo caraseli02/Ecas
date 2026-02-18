@@ -8,7 +8,7 @@ import { countries } from '@/data/countries';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';
 import { useToast } from '~/components/ui/toast';
 

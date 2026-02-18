@@ -11,7 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import { loadStripe, SetupIntentResult, Stripe, StripeElements } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import type { SetupIntentResult, Stripe, StripeElements } from '@stripe/stripe-js';
 
 const { $api } = useNuxtApp();
 

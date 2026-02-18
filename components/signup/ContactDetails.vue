@@ -86,7 +86,7 @@
 <script setup lang="ts">
 import QuestionIcon from '@/assets/icons/question-circle.svg';
 import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
-import { SignupAccountType, SignupContactDetails } from '~~/types';
+import type { SignupAccountType, SignupContactDetails } from '~~/types';
 
 defineEmits(['continue', 'back']);
 

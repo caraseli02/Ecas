@@ -9,7 +9,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { ref, watch } from 'vue';
 import { AccountType } from '~/types';
 import { useNuxtApp } from '#app';
-import { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
 import { updateStoreDetails } from '~/helpers/auth-store.helper';
 import { useToast } from '~/components/ui/toast';
 

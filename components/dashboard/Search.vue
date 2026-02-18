@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import SearchIcon from '@/assets/icons/dashboard/search.svg';
 import XIcon from '@/assets/icons/dashboard/x.svg';
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 
 defineProps({
     modelValue: {

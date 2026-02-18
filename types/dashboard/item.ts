@@ -1,7 +1,7 @@
 import { OrderStatus, OrderType, PaymentStatusEnum } from '~/types';
-import { AccountAdminSettings } from '~/types/auth/account-settings';
-import { AddressInterface } from '~/types/auth/user-interface';
-import { CountryInterface } from '~/types/dashboard/control-panel';
+import type { AccountAdminSettings } from '~/types/auth/account-settings';
+import type { AddressInterface } from '~/types/auth/user-interface';
+import type { CountryInterface } from '~/types/dashboard/control-panel';
 
 export interface DashboardCustomerTableItem {
     avatar?: any;

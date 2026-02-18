@@ -45,13 +45,13 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import XIcon from '@/assets/icons/x.svg';
 import CartIcon from '@/assets/icons/cart.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
 import Favorites from './favorites/Index.vue';
 import Cart from './cart/Index.vue';
-import { CartInterface } from '~/model/cart/response/cart.interface';
+import type { CartInterface } from '~/model/cart/response/cart.interface';
 
 const props = defineProps({
     tab: {

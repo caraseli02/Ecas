@@ -20,7 +20,8 @@ export const useMockMode = () => {
      */
     const isMockMode = computed(() => {
         // Layer 1: Environment variable check
-        const envMockMode = config.public.MOCK_MODE === 'true' || config.public.MOCK_MODE_ENABLED === 'true';
+        const mockModeFlag = config.public.MOCK_MODE;
+        const envMockMode = mockModeFlag === true || mockModeFlag === 'true';
 
         // Layer 2: Runtime environment check
         const isDev = import.meta.env.MODE === 'development';
@@ -29,16 +30,15 @@ export const useMockMode = () => {
         // Layer 3: Domain/IP whitelist check
         const allowedDomains = ['localhost', '127.0.0.1', 'dev.ecasmag.ro'];
         const isAllowedDomain = allowedDomains.some((domain) => {
-            if (typeof window !== 'undefined') {
-                return window.location.hostname.includes(domain);
+            if (typeof window === 'undefined') {
+                return true;
             }
-            return false;
+
+            return window.location.hostname.includes(domain);
         });
 
         // Layer 4: Process environment check (Node.js)
         const isCI = process.env.CI === 'true';
-        const isVercelPreview = process.env.VERCEL_ENV === 'preview';
-
         // CRITICAL: Mock mode ONLY if ALL conditions are met
         return envMockMode && isDev && isAllowedDomain && !isCI;
     });

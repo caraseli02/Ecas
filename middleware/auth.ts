@@ -1,4 +1,5 @@
 import { useAuthStore } from '~~/store/authStore';
+import { UserPermissionsEnum } from '~/types/auth/permissions';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const token = useCookie('token');
@@ -6,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const authStore = useAuthStore();
 
     // Demo mode bypass - set up demo user directly
-    if (config.public.mockMode) {
+    if (config.public.MOCK_MODE) {
         if (!authStore.loggedInUser) {
             // Set up demo user auth token
             authStore.addToken('demo-token-portfolio');
@@ -20,7 +21,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                 accountType: 'personal',
                 verified: true,
                 status: 1,
-                permissions: ['*'],
+                permissions: Object.values(UserPermissionsEnum),
                 roles: ['admin', 'customer'],
                 contactDetails: {
                     firstName: 'Portfolio',

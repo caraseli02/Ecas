@@ -22,7 +22,7 @@ export const useAuthStore = defineStore(
         };
 
         // Reactive state variables
-        const token = reactive<{ value: string; createdAt: any }>({
+        const token = reactive<{ value: string; createdAt: string }>({
             value: initialState.token.value,
             createdAt: initialState.token.createdAt,
         });
@@ -35,7 +35,7 @@ export const useAuthStore = defineStore(
         // Actions
         function addToken(tokenValue: string) {
             token.value = tokenValue;
-            token.createdAt = moment();
+            token.createdAt = new Date().toISOString();
         }
 
         function addUser(user: UserInfoJWT) {
@@ -95,13 +95,12 @@ export const useAuthStore = defineStore(
         }
 
         function getToken() {
-            if (import.meta.server) return null;
-
-            // In mock mode, always return the demo token
             const config = useRuntimeConfig();
-            if (config.public.mockMode) {
-                return token.value as unknown as UserInfoJWT;
+            if (config.public.MOCK_MODE) {
+                return (token.value || 'demo-token-portfolio') as unknown as UserInfoJWT;
             }
+
+            if (import.meta.server) return null;
 
             const router = useRouter();
             const route = useRoute();
@@ -110,7 +109,7 @@ export const useAuthStore = defineStore(
                 return null;
             }
 
-            const time = moment().diff(token.createdAt, 'minutes');
+            const time = moment().diff(moment(token.createdAt), 'minutes');
 
             if (time > 59) {
                 signOut();

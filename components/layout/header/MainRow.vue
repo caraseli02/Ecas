@@ -66,12 +66,14 @@
                             class="relative"
                             :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden' : 'md:flex') : 'flex items-center']"
                         >
-                            <LazyNotifications
-                                :notifications="notifications"
-                                :unread-notifications="unreadNotifications"
-                                @delete="deleteNotification"
-                                @mark-as-read="markNotificationAsRead"
-                            />
+                            <ClientOnly>
+                                <LazyNotifications
+                                    :notifications="notifications"
+                                    :unread-notifications="unreadNotifications"
+                                    @delete="deleteNotification"
+                                    @mark-as-read="markNotificationAsRead"
+                                />
+                            </ClientOnly>
                         </div>
                         <button class="flex items-center md:hidden" @click="showAccountModal = true">
                             <UserIcon class="w-6 h-6 text-white" />
@@ -192,9 +194,10 @@ import CartModal from '@/components/layout/favorites-cart-modal/Index.vue';
 import _ from 'lodash';
 import Emitter from 'tiny-emitter/instance';
 import { showNavModal } from '~~/config/modal/nav';
-import { Notification } from '~/types';
-import { ProductSearchItems, SearchData } from '~/model/products/response/ProductSearchResponse';
-import { CartInterface } from '~/model/cart/response/cart.interface';
+import type { Notification } from '~/types';
+import type { ProductInterface } from '~/model/products/response/ProductResponse';
+import type { SearchData } from '~/model/products/response/ProductSearchResponse';
+import type { CartInterface } from '~/model/cart/response/cart.interface';
 import { useCartStore } from '~/store/cartStore';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '~/store/authStore';
@@ -208,7 +211,7 @@ const notificationStore = useNotificationStore();
 const { unreadNotifications } = storeToRefs(notificationStore);
 
 const authStore = useAuthStore();
-const token = authStore.getToken();
+const hasToken = computed(() => Boolean(authStore.getToken()));
 
 const totalCartPrice = ref(0);
 
@@ -264,7 +267,7 @@ const searchVal = ref('');
 const showMobileSearch = ref(false);
 const searchDOM = ref<HTMLInputElement>();
 const items = ref<CartInterface>({} as CartInterface);
-const productList = ref<ProductSearchItems[]>([]);
+const productList = ref<ProductInterface[]>([]);
 const isLoading = ref(false);
 
 Emitter.on('remove-cart-and-notifications', async (isSignout: boolean) => {
@@ -301,7 +304,7 @@ const fetchList = async () => {
     cart.value = data.products;
 };
 
-const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductSearchItems[]> => {
+const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<ProductInterface[]> => {
     isLoading.value = true;
 
     const { data: products } = (await $api.product.fetchSearchProduct(keyword, category.value, page, perPage)) as unknown as SearchData;
@@ -336,7 +339,7 @@ const fetchNofications = async () => {
     unreadNotifications.value = 0;
     notifications.value = [];
 
-    if (!token) {
+    if (!hasToken.value) {
         isLoading.value = false;
         return;
     }
@@ -408,9 +411,8 @@ onMounted(() => {
     if (signinQuery.value === 'true') {
         showAccountModal.value = true;
     }
+    Promise.all([fetchNofications(), fetchList()]);
 });
-
-Promise.all([fetchNofications(), fetchList()]);
 
 watch(
     () => authStore.token?.value,

@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 
 const props = defineProps<{
     item: CartProductsInterface;

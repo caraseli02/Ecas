@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { FormSelectOption, SignupPersonalDetails } from '~~/types';
+import type { FormSelectOption, SignupPersonalDetails } from '~~/types';
 import QuestionIcon from '@/assets/icons/question-circle.svg';
 import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
 import { countries } from '@/data/countries';

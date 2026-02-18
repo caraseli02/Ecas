@@ -74,11 +74,11 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import { useNuxtApp } from '#app';
 import type { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import type { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
-import { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
+import type { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';

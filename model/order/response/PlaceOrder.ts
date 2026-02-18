@@ -1,4 +1,4 @@
-import { PaymentIntent } from '@stripe/stripe-js';
+import type { PaymentIntent } from '@stripe/stripe-js';
 import { PaymentStatusEnum } from '~/types';
 
 export interface OrderCreateResponse {

@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const config = useRuntimeConfig();
 
     // Bypass all checks in mock mode
-    if (config.public.mockMode) {
+    if (config.public.MOCK_MODE) {
         return;
     }
 

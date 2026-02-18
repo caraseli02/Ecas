@@ -1,4 +1,4 @@
-import { ProductDetail } from '~/model/products/response/ProductDetailResponse';
+import type { ProductDetail } from '~/model/products/response/ProductDetailResponse';
 
 export interface FavouriteFolderResponse {
     status: string;

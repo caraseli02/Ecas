@@ -1,4 +1,4 @@
-import { ProductImage, ProductParametricDataInterface, ProductSummaryDataInterface } from './ProductResponse';
+import type { ProductImageInterface, ProductParametricDataInterface, ProductSummaryDataInterface } from './ProductResponse';
 
 export interface ProductDetailResponse {
     status: string;
@@ -31,5 +31,5 @@ export interface ProductDetail {
 export interface ProductDetails {
     SummaryData: ProductSummaryDataInterface;
     ParametricData: ProductParametricDataInterface;
-    ProductImage: ProductImage;
+    ProductImage: ProductImageInterface;
 }

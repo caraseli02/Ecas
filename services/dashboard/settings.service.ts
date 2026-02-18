@@ -1,9 +1,9 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import { AccountAdminSettings } from '~/types/auth/account-settings';
-import { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { AccountAdminSettings } from '~/types/auth/account-settings';
+import type { BillingAddressInterface, ShippingAddressInterface } from '~/types/auth/user-interface';
 import { AccountType } from '~/types';
-import { DetailsResponse } from '~/model/dashboard/customer-information/customer-information';
+import type { DetailsResponse } from '~/model/dashboard/customer-information/customer-information';
 
 class SettingsClientService extends HttpFactory {
     private MAIN = '/';

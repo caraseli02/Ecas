@@ -1,7 +1,7 @@
-import { CustomersProfileInformation } from '~/model/dashboard/customer-information/customer-information';
+import type { CustomersProfileInformation } from '~/model/dashboard/customer-information/customer-information';
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import { OrderInterface } from '~/types';
+import type { OrderInterface } from '~/types';
 
 class CustomerProfileService extends HttpFactory {
     private RESOURCE = '/user';

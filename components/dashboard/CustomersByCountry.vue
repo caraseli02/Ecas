@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { CustomersByCountryInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
+import type { CustomersByCountryInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { useNuxtApp } from '#app';
 
 const { $api } = useNuxtApp();

@@ -1,6 +1,6 @@
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
-import { PriceSettingsResponseInterface, PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
+import { PriceSettingsTypeEnum, type PriceSettingsResponseInterface } from '~/model/prices/price-settings.interface';
 import { AccountRole } from '~/types';
 
 class SmartPricingService extends HttpFactory {

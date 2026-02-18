@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { columns } from './columns';
 import _ from 'lodash';
-import { TransactionInterface } from '~/types/dashboard/transaction';
+import type { TransactionInterface } from '~/types/dashboard/transaction';
 
 const { $api } = useNuxtApp();
 

@@ -10,7 +10,7 @@ import HeartOutline from '@/assets/icons/heart-outline.svg';
 import HeartSolid from '@/assets/icons/heart-solid.svg';
 
 import Tooltip from '~/components/global/Tooltip.vue';
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';

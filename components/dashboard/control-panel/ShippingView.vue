@@ -116,7 +116,7 @@ import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import CheckIcon from '@/assets/icons/check-circle.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { useNuxtApp } from '#app';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { toast } from '~/components/ui/toast';
 
 const route = useRoute();

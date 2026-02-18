@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { useCartStore } from '~/store/cartStore';
 
 const props = defineProps<{

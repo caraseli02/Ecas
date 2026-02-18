@@ -191,8 +191,8 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
-import { FavoriteItem } from '~~/types';
+import type { PropType } from 'vue';
+import type { FavoriteItem } from '~~/types';
 import DotsVerticalIcon from '@/assets/icons/dots-vertical.svg';
 import CogIcon from '@/assets/icons/cog.svg';
 import FolderPlusIcon from '@/assets/icons/folder-plus.svg';
@@ -205,7 +205,7 @@ import CheckIcon from '@/assets/icons/check.svg';
 import PenIcon from '@/assets/icons/pen.svg';
 import XIcon from '@/assets/icons/x.svg';
 import { A11y } from 'swiper';
-import { FavouriteFolderResponseInterface } from '~/model/favourite-folder/response/favourite-folder.interface';
+import type { FavouriteFolderResponseInterface } from '~/model/favourite-folder/response/favourite-folder.interface';
 
 const props = defineProps({
     folder: {

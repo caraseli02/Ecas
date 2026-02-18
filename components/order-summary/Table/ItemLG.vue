@@ -56,8 +56,8 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
-import { OrderSummaryItem } from '~~/types';
+import type { PropType } from 'vue';
+import type { OrderSummaryItem } from '~~/types';
 import D3Icon from '@/assets/icons/3d.svg';
 import TruckIcon from '@/assets/icons/truck.svg';
 import CheckIcon from '@/assets/icons/check-circle.svg';

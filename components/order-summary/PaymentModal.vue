@@ -77,7 +77,7 @@
 
 <script setup lang="ts">
 import { usePaymentStore } from '~/store/paymentStore';
-import { OrderInterface, PaymentDetails, PaymentTypeEnum, StripeCardInterface } from '~/types';
+import { PaymentTypeEnum, type OrderInterface, type PaymentDetails, type StripeCardInterface } from '~/types';
 import moment from 'moment';
 import { usePaymentCards } from '~/composables/usePaymentCards';
 

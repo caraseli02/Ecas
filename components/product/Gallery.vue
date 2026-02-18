@@ -64,9 +64,9 @@ import { HeartIcon, Share2Icon, BoxIcon } from 'lucide-vue-next';
 
 import { A11y, Zoom } from 'swiper';
 import type { ProductImage } from '~/model/products/response/ProductResponse';
-import { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import type { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import { useNuxtApp } from '#app';
-import { ProductDetail } from '~/model/products/response/ProductDetailResponse';
+import type { ProductDetail } from '~/model/products/response/ProductDetailResponse';
 
 const { $api } = useNuxtApp();
 

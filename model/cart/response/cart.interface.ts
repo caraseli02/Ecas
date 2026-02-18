@@ -1,5 +1,5 @@
-import { ProductInterface } from '~/model/products/response/ProductResponse';
-import { DiscountInterface } from '~/types/auth/account-settings';
+import type { ProductInterface } from '~/model/products/response/ProductResponse';
+import type { DiscountInterface } from '~/types/auth/account-settings';
 
 export enum ProductAction {
     Update = 'update',

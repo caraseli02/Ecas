@@ -19,31 +19,33 @@
             @sort-order-change="order = $event"
             @show-filter="additionalFilters = $event"
         />
-        <ProductBlocks
-            :rows-number="2"
-            class="mb-7 lg:mb-[38px] xl:mb-[58px]"
-            :filters="['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched']"
-        />
-        <Banner />
-        <div class="container mb-[30px] lg:mb-10 xl:mb-[60px]">
-            <div class="grid grid-cols-1 gap-[15px] md:grid-cols-[40%,calc(60%-20px)] md:gap-5 xl:grid-cols-[41%,calc(59%-20px)]">
-                <QuickBuy />
-                <EcxlusiveOffer />
+        <template v-if="showAdditionalContent">
+            <ProductBlocks
+                :rows-number="2"
+                class="mb-7 lg:mb-[38px] xl:mb-[58px]"
+                :filters="['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched']"
+            />
+            <Banner />
+            <div class="container mb-[30px] lg:mb-10 xl:mb-[60px]">
+                <div class="grid grid-cols-1 gap-[15px] md:grid-cols-[40%,calc(60%-20px)] md:gap-5 xl:grid-cols-[41%,calc(59%-20px)]">
+                    <QuickBuy />
+                    <EcxlusiveOffer />
+                </div>
             </div>
-        </div>
-        <NewProducts :row-count="2" />
-        <News />
-        <Manufacturers />
+            <NewProducts :row-count="2" />
+            <News />
+            <Manufacturers />
+        </template>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
+import type { ProductFilters, SearchData } from '~/model/products/response/ProductSearchResponse';
 import Emitter from 'tiny-emitter/instance.js';
 import _ from 'lodash-es';
 import { watch } from 'vue';
 import { useNuxtApp } from '#app';
-import { ProductParametricDataFeaturesInterface } from '~/model/products/response/ProductResponse';
+import type { ProductParametricDataFeaturesInterface } from '~/model/products/response/ProductResponse';
 import { storeToRefs } from 'pinia';
 import { useProductStore } from '~/store/productStore';
 
@@ -67,6 +69,7 @@ const sortBy = ref({ label: 'Product Code', name: 'manufacturerCode' });
 const order = ref<1 | 0>(1);
 const resetProductsFilters = ref(false);
 const category = ref<string | null>(route.query?.category?.toString() || null);
+const showAdditionalContent = computed(() => (products.value?.items?.total_items ?? 1) > 0);
 
 onMounted(async () => {
     watch(

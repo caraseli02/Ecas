@@ -1,11 +1,11 @@
-import { UserInterface } from '~/types/auth/user-interface';
-import {
+import type { UserInterface } from '~/types/auth/user-interface';
+import type {
     PriceConfigurationSettingsInterface,
     ProductDiscountsHelperInterface,
     ProductInterface,
 } from '~/model/products/response/ProductResponse';
-import { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
-import { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
+import type { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { AddToCartRequestInterface } from '~/model/cart/request/cart.interface';
 import { useNuxtApp } from '#app';
 
 export const parseProductPriceConfiguration = (product: ProductInterface, userDetails: UserInterface, quantity = 0) => {

@@ -17,6 +17,10 @@ class CategoriesService extends HttpFactory {
         return await this.authenticatedCall('POST', `${this.RESOURCE}/${taxonomyId}/category`, payload);
     }
 
+    async get() {
+        return await this.authenticatedCall('GET', `${this.RESOURCE}`);
+    }
+
     async delete(taxonomyId: string, categoryIds: string[]) {
         return await this.authenticatedCall('DELETE', `${this.RESOURCE}/${taxonomyId}/category`, { categoryIds });
     }

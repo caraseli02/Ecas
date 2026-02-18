@@ -4,9 +4,9 @@
         <SignupSelectMenu
             v-if="currentStep === 0"
             :selected-type="selectedType"
-            @set-type="($event) => (selectedType = $event)"
-            @set-business-type="($event) => (selectedBusinessType = $event)"
-            @continue="currentStep++"
+            @set-type="setSelectedType"
+            @set-business-type="setSelectedBusinessType"
+            @continue="continueFromSelectMenu"
         />
         <SignupBusinessDetails
             v-if="currentStep === 1 && (selectedType === 'business' || selectedType === 'sole-trader')"
@@ -33,6 +33,7 @@ import {
     type FirebaseBusinessAccount as SignupBusinessPayload,
     type FirebasePersonalAccount as SignupPersonalPayload,
     type InputObject,
+    type SignupAccountType,
     type SignupBusinessDetails as SignupBusinessDetailsType,
     type SignupPersonalDetails as SignupPersonalDetailsType,
 } from '~~/types';
@@ -63,6 +64,22 @@ const {
     profileDetails,
     clearFormData,
 } = useSignupState();
+
+const setSelectedType = (value: SignupAccountType | '') => {
+    selectedType.value = value;
+};
+
+const setSelectedBusinessType = (value: string) => {
+    selectedBusinessType.value = value;
+};
+
+const continueFromSelectMenu = () => {
+    if (!selectedType.value) {
+        return;
+    }
+
+    currentStep.value++;
+};
 
 const handleBusinessDetailsContinue = async () => {
     let hasError = false;

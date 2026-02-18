@@ -53,7 +53,7 @@
 import amexIcon from '@/assets/icons/amex58.svg';
 import masterIcon from '@/assets/icons/mastercard58.svg';
 import visaIcon from '@/assets/icons/visa58.svg';
-import { StripeCardInterface } from '~/types';
+import type { StripeCardInterface } from '~/types';
 import Emitter from 'tiny-emitter/instance';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 

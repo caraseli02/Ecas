@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { ControlPanelTabs, ControlPanelTabsEnum } from '~/types/dashboard/control-panel';
-import { UserInterface } from '~/types/auth/user-interface';
+import type { UserInterface } from '~/types/auth/user-interface';
 import { useNuxtApp } from '#app';
 import { AccountType } from '~/types';
 
@@ -37,6 +37,8 @@ const { $api } = useNuxtApp();
 
 const route = useRoute();
 const router = useRouter();
+const config = useRuntimeConfig();
+const isMockMode = computed(() => config.public.MOCK_MODE === true || config.public.MOCK_MODE === 'true');
 
 const activeView = computed(() => {
     return route.params.view as ControlPanelTabs;
@@ -66,17 +68,26 @@ const fetchInformation = async () => {
     if (!route.params.slug) {
         return;
     }
+    try {
+        const response = (await $api.customerProfile.fetchCustomerInformation(route.params.slug as string)) as {
+            status: string;
+            data: UserInterface;
+        };
 
-    const response = (await $api.customerProfile.fetchCustomerInformation(route.params.slug as string)) as {
-        status: string;
-        data: UserInterface;
-    };
+        if (response.status !== 'success') {
+            return;
+        }
 
-    if (response.status !== 'success') {
-        return;
+        customerDetails.value = response.data;
+    } catch (_err) {
+        if (isMockMode.value) {
+            customerDetails.value = {
+                _id: String(route.params.slug),
+                firebaseId: String(route.params.slug),
+                accountType: AccountType.Personal,
+            } as UserInterface;
+        }
     }
-
-    customerDetails.value = response.data;
 };
 
 await fetchInformation();

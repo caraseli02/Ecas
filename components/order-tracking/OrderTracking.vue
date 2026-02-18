@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { DotIcon, FilePlus2, FileSpreadsheet, MapPin, MoreVertical, Package, Truck } from 'lucide-vue-next';
 import { cn } from '~/lib/utils';
-import { OrderInterface, OrderStatus, PaymentStatusEnum } from '~/types';
-import { AddressInterface } from '~/types/auth/user-interface';
+import { OrderStatus, PaymentStatusEnum, type OrderInterface } from '~/types';
+import type { AddressInterface } from '~/types/auth/user-interface';
 
 // interface OrderStatus {
 //     processing: boolean;
@@ -33,51 +33,63 @@ interface Order {
     trackingStatus: TrackingStatus;
 }
 
+const DEFAULT_ADDRESS: AddressInterface = {
+    _id: 'demo-address',
+    name1: 'Address unavailable',
+    name2: '',
+    city: 'N/A',
+    region: 'N/A',
+    country: 'N/A',
+    postcode: 'N/A',
+};
+
+const trackingStatusOrder: TrackingStatus[] = [
+    TrackingStatus.Processing,
+    TrackingStatus.Packaging,
+    TrackingStatus.Transit,
+    TrackingStatus.Fulfilled,
+];
+
 const props = defineProps<{
     order: OrderInterface;
 }>();
 
-const processedOrder = computed(() => {
+const getTrackingStatus = (order: OrderInterface): TrackingStatus => {
+    const trackingHistory = order?.shippingDetails?.statusTracking?.history ?? [];
+
+    if (trackingHistory.some((status) => status.code === 0)) {
+        return TrackingStatus.Fulfilled;
+    }
+
+    if (trackingHistory.some((status) => status.code === 20050)) {
+        return TrackingStatus.Transit;
+    }
+
+    if (order?.status === OrderStatus.Packaging) {
+        return TrackingStatus.Packaging;
+    }
+
+    return TrackingStatus.Processing;
+};
+
+const processedOrder = computed<Order>(() => {
+    const companyName = props.order?.user?.companyDetails?.name || props.order?.userName || 'N/A';
+
     return {
-        orderId: props.order.shortId,
-        awb: props.order.shippingDetails.statusTracking?.awb || null,
-        amount: props.order.total,
-        status: props.order.status,
+        orderId: props.order?.shortId || 'N/A',
+        awb: props.order?.shippingDetails?.statusTracking?.awb || null,
+        amount: props.order?.total || 0,
+        status: props.order?.status || OrderStatus.Processing,
         company: {
-            name: props.order.user.companyDetails?.name || 'N/A',
-            initial: props.order.user.companyDetails?.name.charAt(0),
+            name: companyName,
+            initial: companyName.charAt(0) || 'N',
         },
-        address: props.order.shippingDetails.address,
-        billingStatus: props.order.paymentDetails?.status,
-        // orderDate: moment(props.order.createdAt).format('DD MMM YYYY, HH:mm'),
-        orderDate: props.order.createdAt,
-        trackingStatus: TrackingStatus.Processing,
+        address: props.order?.shippingDetails?.address || DEFAULT_ADDRESS,
+        billingStatus: props.order?.paymentDetails?.status || PaymentStatusEnum.Pending,
+        orderDate: props.order?.createdAt ? new Date(props.order.createdAt) : new Date(),
+        trackingStatus: getTrackingStatus(props.order),
     };
 });
-
-const translateTrackingStatus = () => {
-    /** Care este codul pentru comanda livrata? */
-    if (props.order.shippingDetails.statusTracking?.history?.find((status) => status.code === 0)) {
-        processedOrder.value.trackingStatus = TrackingStatus.Fulfilled;
-        return;
-    }
-
-    /** 20050 = Ridicata de la expeditor (?) */
-    if (props.order.shippingDetails.statusTracking?.history?.find((status) => status.code === 20050)) {
-        processedOrder.value.trackingStatus = TrackingStatus.Transit;
-        return;
-    }
-
-    if (props.order.status === OrderStatus.Packaging) {
-        processedOrder.value.trackingStatus = TrackingStatus.Packaging;
-        return;
-    }
-
-    if (props.order.status === OrderStatus.Processing) {
-        processedOrder.value.trackingStatus = TrackingStatus.Processing;
-        return;
-    }
-};
 
 const formattedDate = computed(() => {
     const date = new Date(processedOrder.value.orderDate);
@@ -95,7 +107,7 @@ const statusColor = computed(
             packaging: 'bg-blue-500',
             transit: 'bg-blue-500',
             fulfilled: 'bg-emerald-500',
-        }[processedOrder.value.status])
+        }[processedOrder.value.trackingStatus] || 'bg-purple-500')
 );
 
 const statusIcons = {
@@ -105,15 +117,22 @@ const statusIcons = {
     fulfilled: MapPin,
 };
 
-const billingStatusColor = computed(
-    () =>
-        ({
+const billingStatusColor = computed(() => {
+    return (
+        {
             [PaymentStatusEnum.Paid]: 'bg-green-500',
             [PaymentStatusEnum.Pending]: 'bg-orange-500',
-        }[processedOrder.value.billingStatus])
-);
+        }[processedOrder.value.billingStatus] || 'bg-orange-500'
+    );
+});
 
-translateTrackingStatus();
+const billingStatusLabel = computed(() => {
+    return PaymentStatusEnum[processedOrder.value.billingStatus] || 'Pending';
+});
+
+const isTrackingStepActive = (status: TrackingStatus) => {
+    return trackingStatusOrder.indexOf(status) <= trackingStatusOrder.indexOf(processedOrder.value.trackingStatus);
+};
 
 const handleMoreOptions = () => {
     // Implement more options menu logic
@@ -163,7 +182,7 @@ const handleMoreOptions = () => {
                                 class="flex shrink-0 self-stretch my-auto w-3 h-3 rounded-full"
                                 aria-hidden="true"
                             ></span>
-                            {{ PaymentStatusEnum[processedOrder.billingStatus] }}
+                            {{ billingStatusLabel }}
                         </span>
                     </UiBadge>
                     <UiButton
@@ -189,14 +208,14 @@ const handleMoreOptions = () => {
                     <MapPin class="w-5 h-5 shrink-0" />
                     <address class="not-italic">
                         {{
-                            `${processedOrder.address.name1}, ${processedOrder.address.name2}, ${processedOrder.address.city}, ${processedOrder.address.region}, ${processedOrder.address.country}`
+                            `${processedOrder.address.name1}, ${processedOrder.address.name2 || ''}, ${processedOrder.address.city}, ${processedOrder.address.region}, ${processedOrder.address.country}`
                         }}
                     </address>
                 </div>
                 <div class="hidden lg:block w-px h-6 bg-stone-300"></div>
                 <div class="flex gap-1 items-center text-sm leading-6 text-zinc-800">
                     <FileSpreadsheet class="w-5 h-5" />
-                    <span class="capitalize">{{ PaymentStatusEnum[processedOrder.billingStatus] }}</span>
+                    <span class="capitalize">{{ billingStatusLabel }}</span>
                 </div>
             </div>
         </section>
@@ -204,7 +223,9 @@ const handleMoreOptions = () => {
         <section class="flex flex-col gap-6 px-4 py-6 rounded-xl border border-solid bg-light-100 border-grey-300">
             <div class="flex md:flex-wrap gap-10 justify-between md:items-center text-sm leading-6 max-md:gap-4">
                 <div class="flex flex-col md:flex-row md:items-center max-md:gap-1 w-full md:w-auto">
-                    <h2 class="font-medium text-zinc-800">Order {{ order.status === OrderStatus.Pending ? 'received' : 'updated' }}</h2>
+                    <h2 class="font-medium text-zinc-800">
+                        Order {{ processedOrder.status === OrderStatus.Pending ? 'received' : 'updated' }}
+                    </h2>
                     <DotIcon class="hidden md:block text-stone-300" />
                     <time class="flex gap-1 text-gray-500">
                         <span>{{ formattedDate.day }}</span>
@@ -225,13 +246,13 @@ const handleMoreOptions = () => {
             </div>
 
             <div class="relative flex justify-between flex-wrap gap-3 items-center min-h-[36px]">
-                <template v-for="(status, index) in TrackingStatus" :key="status">
+                <template v-for="status in trackingStatusOrder" :key="status">
                     <component
                         :is="statusIcons[status]"
                         class="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 shrink-0 z-10 bg-light-100 p-1"
                         :class="{
-                            'text-slate-500': processedOrder.trackingStatus[status],
-                            'text-gray-300': !processedOrder.trackingStatus[status],
+                            'text-slate-500': isTrackingStepActive(status),
+                            'text-gray-300': !isTrackingStepActive(status),
                         }"
                     />
                 </template>
@@ -244,9 +265,7 @@ const handleMoreOptions = () => {
                             'bg-emerald-500 full': processedOrder.trackingStatus === TrackingStatus.Fulfilled,
                             'bg-blue-500 w-[85.5%]': processedOrder.trackingStatus === TrackingStatus.Transit,
                             'bg-blue-500 w-1/2': processedOrder.trackingStatus === TrackingStatus.Packaging,
-                            'bg-purple-500 w-[12.5%]':
-                                processedOrder.trackingStatus === TrackingStatus.Processing &&
-                                processedOrder.billingStatus === PaymentStatusEnum.Paid,
+                            'bg-purple-500 w-[12.5%]': processedOrder.trackingStatus === TrackingStatus.Processing,
                         }"
                     ></div>
                 </div>

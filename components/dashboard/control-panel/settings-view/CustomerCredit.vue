@@ -91,7 +91,7 @@
 import EditIcon from '@/assets/icons/dashboard/edit.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import { useNuxtApp } from '#app';
-import { CustomerCreditInterface } from '~/types/auth/account-settings';
+import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 import moment from 'moment';
 import ProgressBar from './ProgressBar.vue';
 
@@ -139,6 +139,8 @@ const chartOptions = ref({
     labels: [''],
 });
 const { $api } = useNuxtApp();
+const config = useRuntimeConfig();
+const isMockMode = computed(() => config.public.MOCK_MODE === true || config.public.MOCK_MODE === 'true');
 
 const loading = ref(true);
 const error = ref(false);
@@ -154,27 +156,68 @@ const getCustomerCredit = async () => {
     if (!props.id) {
         return;
     }
-    const response = await $api.controlPanel.fetchCustomerCredit(props.id);
+    try {
+        const response = await $api.controlPanel.fetchCustomerCredit(props.id);
 
-    if (response.status !== 'success') {
-        setTimeout(() => {
-            loading.value = false;
-            error.value = true;
-        }, 100);
-        return;
-    } else {
+        if (response.status !== 'success' && !isMockMode.value) {
+            setTimeout(() => {
+                loading.value = false;
+                error.value = true;
+            }, 100);
+            return;
+        }
+
+        const fallbackCredit: CustomerCreditInterface = {
+            limit: 12000,
+            spent: 3200,
+            available: 8800,
+            dueDate: new Date().toISOString(),
+            tillDue: '30',
+            term: 30,
+            freeze: false,
+            active: true,
+        };
+
+        const data = response.status === 'success' ? response.data : fallbackCredit;
+
         setTimeout(() => {
             loading.value = false;
             error.value = false;
         }, 100);
-    }
 
-    creditObject.value = response.data;
-    credit.value = response.data?.available;
-    if (creditObject?.value) {
-        chartSeries.value[0] = parseFloat(((creditObject?.value.spent / creditObject?.value.limit) * 100).toFixed(2));
-    } else {
-        chartSeries.value[0] = 0;
+        creditObject.value = data;
+        credit.value = data?.available;
+
+        if (creditObject?.value) {
+            chartSeries.value[0] = parseFloat(((creditObject?.value.spent / creditObject?.value.limit) * 100).toFixed(2));
+        } else {
+            chartSeries.value[0] = 0;
+        }
+    } catch (_err) {
+        if (!isMockMode.value) {
+            setTimeout(() => {
+                loading.value = false;
+                error.value = true;
+            }, 100);
+            return;
+        }
+
+        creditObject.value = {
+            limit: 12000,
+            spent: 3200,
+            available: 8800,
+            dueDate: new Date().toISOString(),
+            tillDue: '30',
+            term: 30,
+            freeze: false,
+            active: true,
+        };
+        credit.value = creditObject.value.available;
+        chartSeries.value[0] = parseFloat(((creditObject.value.spent / creditObject.value.limit) * 100).toFixed(2));
+        setTimeout(() => {
+            loading.value = false;
+            error.value = false;
+        }, 100);
     }
 };
 

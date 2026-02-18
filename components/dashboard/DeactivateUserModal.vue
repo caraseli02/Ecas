@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { DashboardCustomerTableItem } from '~/types';
+import type { DashboardCustomerTableItem } from '~/types';
 import XIcon from '@/assets/icons/dashboard/x.svg';
 import UserIcon from '@/assets/icons/dashboard/user.svg';
 import { useNuxtApp } from '#app';

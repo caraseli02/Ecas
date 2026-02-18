@@ -1,4 +1,4 @@
-import { InputObject } from '../global';
+import type { InputObject } from '../global';
 
 export type SignupAccountType = 'personal' | 'sole-trader' | 'business';
 

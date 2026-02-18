@@ -1,9 +1,10 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
-import RowActions, { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
+import RowActions from '~/components/dataTable/RowActions.vue';
+import type { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
 import UserInfo from '~/components/dataTable/UserInfo.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
-import { AccountStatusEnum, CustomerTableColumns } from '~/types/auth/user-interface';
+import { AccountStatusEnum, type CustomerTableColumns } from '~/types/auth/user-interface';
 import { AgentsTableColumnsEnum } from '~/components/client-table/agents/columns.enum';
 import UserDashboardService from '~/services/dashboard/user.service';
 import StatusWithColor from '~/components/dataTable/StatusWithColor.vue';

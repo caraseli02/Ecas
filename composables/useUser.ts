@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { useAuthStore } from '~/store/authStore';
 import { AccountType } from '~/types';
-import { ShippingAddressInterface } from '~/types/auth/user-interface';
+import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 
 export function useUser() {
     const store = useAuthStore();

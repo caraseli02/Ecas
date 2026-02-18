@@ -1,4 +1,4 @@
-import { UserInterface } from '~/types/auth/user-interface';
+import type { UserInterface } from '~/types/auth/user-interface';
 import { useNuxtApp } from '#app';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '~/store/authStore';

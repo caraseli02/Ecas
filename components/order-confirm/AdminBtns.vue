@@ -9,8 +9,8 @@ import {
     SettingsIcon,
     Undo2Icon,
 } from 'lucide-vue-next';
-import { OrderInterface, OrderStatus, PaymentStatusEnum } from '~/types';
-import { PropType } from 'vue';
+import { OrderStatus, PaymentStatusEnum, type OrderInterface } from '~/types';
+import type { PropType } from 'vue';
 import { toast } from '~/components/ui/toast';
 
 const { $api } = useNuxtApp();

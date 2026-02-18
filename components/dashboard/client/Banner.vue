@@ -101,7 +101,7 @@
 
 <script setup lang="ts">
 import { A11y, Pagination } from 'swiper';
-import { ProductBannerInterface } from '~/model/dashboard/customer-information/customer-information';
+import type { ProductBannerInterface } from '~/model/dashboard/customer-information/customer-information';
 import { addToCartHelper } from '~/helpers/prices.helper';
 import { useCartStore } from '~/store/cartStore';
 import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';

@@ -81,14 +81,14 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
-import { FavoriteItem, FormSelectOption } from '~~/types';
+import type { PropType } from 'vue';
+import type { FavoriteItem, FormSelectOption } from '~~/types';
 import XIcon from '@/assets/icons/x.svg';
 import CopyIcon from '@/assets/icons/copy.svg';
 import FolderArrowIcon from '@/assets/icons/folder-arrow.svg';
 import FolderIcon from '@/assets/icons/folder.svg';
 import { useNuxtApp } from '#app';
-import { FavouriteFolderMoveInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
+import type { FavouriteFolderMoveInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 
 const { $api } = useNuxtApp();
 

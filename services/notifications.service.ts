@@ -1,4 +1,4 @@
-import { Notification } from '~/types/dashboard/notification';
+import type { Notification } from '~/types/dashboard/notification';
 import { useAuthStore } from '~/store/authStore';
 import HttpFactory from '~/composables/HttpFactory';
 
