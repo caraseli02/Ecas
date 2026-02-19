@@ -1,5 +1,26 @@
 <template>
     <div class="mx-auto">
+        <div class="mb-5">
+            <p class="text-xs text-slate-500 mb-2">Demo role</p>
+            <div class="grid grid-cols-2 gap-2 p-1 rounded-lg bg-slate-100">
+                <button
+                    type="button"
+                    class="rounded-md px-3 py-2 text-sm font-medium transition-colors"
+                    :class="selectedLoginRole === 'customer' ? 'bg-white text-blue-500 shadow-sm' : 'text-slate-500 hover:text-blue-500'"
+                    @click="selectedLoginRole = 'customer'"
+                >
+                    Customer
+                </button>
+                <button
+                    type="button"
+                    class="rounded-md px-3 py-2 text-sm font-medium transition-colors"
+                    :class="selectedLoginRole === 'admin' ? 'bg-white text-blue-500 shadow-sm' : 'text-slate-500 hover:text-blue-500'"
+                    @click="selectedLoginRole = 'admin'"
+                >
+                    Admin
+                </button>
+            </div>
+        </div>
         <div class="grid grid-cols-1 gap-4 mb-[15px]">
             <FormInput
                 v-model="email.value"
@@ -104,7 +125,7 @@ import Emitter from 'tiny-emitter/instance.js';
 import { useMagicKeys } from '@vueuse/core';
 import SignINIcon from '@/assets/icons/menu/in.svg';
 import CheckIcon from '@/assets/icons/check.svg';
-import type { SigninResponse, UserInfoJWT } from '~~/types';
+import { AccountRole, type SigninResponse, type UserInfoJWT } from '~~/types';
 import { useAuthStore } from '~~/store/authStore';
 import type { UserInterface } from '~/types/auth/user-interface';
 import { useCartStore } from '~/store/cartStore';
@@ -113,8 +134,12 @@ import { usePricingStore } from '~/store/pricingStore';
 
 const { checkForInputErrors } = useFormValidation();
 const { $api } = useNuxtApp();
+const config = useRuntimeConfig();
 const cartStore = useCartStore();
 const pricingStore = usePricingStore();
+const emits = defineEmits<{
+    (e: 'signed-in'): void;
+}>();
 
 const email = ref({
     value: '',
@@ -128,6 +153,18 @@ const password = ref({
 
 const rememberMe = ref(false);
 const isLoading = ref(false);
+type LoginRole = 'customer' | 'admin';
+const selectedLoginRole = ref<LoginRole>('customer');
+const LOGIN_CREDENTIALS: Record<LoginRole, { email: string; password: string }> = {
+    customer: {
+        email: 'customer@ecas.com',
+        password: 'customer123',
+    },
+    admin: {
+        email: 'admin@ecas.com',
+        password: 'admin123',
+    },
+};
 
 const errorResponse = reactive({
     show: false,
@@ -139,12 +176,71 @@ const errorResponse = reactive({
 const authStore = useAuthStore();
 const { registerUser, getParsedFirebaseJWTToken, getUserToken } = useFirebaseAuth();
 
+const setDemoCredentialsByRole = (role: LoginRole) => {
+    email.value.value = LOGIN_CREDENTIALS[role].email;
+    password.value.value = LOGIN_CREDENTIALS[role].password;
+    email.value.error = '';
+    password.value.error = '';
+};
+
+watch(
+    selectedLoginRole,
+    (role) => {
+        setDemoCredentialsByRole(role);
+    },
+    { immediate: true }
+);
+
 const isClientCodeFormat = (value: string) => {
     const regex = /^[PBAS]-\d{6}$/;
     return regex.test(value);
 };
 
 const cookieToken = useCookie('token', { maxAge: 60 * 60 });
+
+const normalizeSigninResponse = (response: SigninResponse | null | undefined) => {
+    const token = response?.token || response?.data?.token;
+    const user = response?.user || response?.data?.user;
+
+    return { token, user };
+};
+
+const buildTokenPayloadFromMockUser = (user: UserInterface): UserInfoJWT => {
+    const now = Math.floor(Date.now() / 1000);
+    const userWithPermissions = user as UserInterface & { permissions?: any[] };
+    const safeUserId = user._id || 'mock-user-1';
+    const safeEmail = user.contactDetails?.email || LOGIN_CREDENTIALS[selectedLoginRole.value].email;
+
+    return {
+        aud: 'mock-aud',
+        auth_time: now,
+        email: safeEmail,
+        email_verified: true,
+        exp: now + 60 * 60,
+        firebase: {
+            identities: {
+                email: [safeEmail],
+                'google.com': [safeEmail],
+            },
+            sign_in_provider: 'password',
+        },
+        iat: now,
+        iss: 'mock-issuer',
+        name: `${user.contactDetails?.firstName || 'Demo'} ${user.contactDetails?.lastName || 'User'}`.trim(),
+        picture: 'https://ui-avatars.com/api/?name=Demo+User',
+        sub: safeUserId,
+        user_id: safeUserId,
+        permissions: (userWithPermissions.permissions || []) as any,
+    };
+};
+
+const getRoleRedirectPath = (role?: AccountRole) => {
+    if (role === AccountRole.Admin || role === AccountRole.SuperAdmin) {
+        return '/dashboard/orders';
+    }
+
+    return '/dashboard/client?tab=home';
+};
 
 const handleSignIn = async () => {
     if (isLoading.value) {
@@ -176,17 +272,26 @@ const handleSignIn = async () => {
 
     try {
         const response = (await $api.auth.login(payload)) as SigninResponse;
+        const { token, user } = normalizeSigninResponse(response);
 
-        if (!response || typeof response !== 'object' || !('token' in response) || !response.token) {
+        if (!token) {
             throw response;
         }
 
-        const parsedTokenResponse = useParser().parseJwt(response.token);
-        authStore.addUser(parsedTokenResponse);
-        authStore.addToken(response.token);
-        cookieToken.value = response.token;
+        const parsedTokenResponse =
+            config.public.MOCK_MODE && user ? buildTokenPayloadFromMockUser(user) : (useParser().parseJwt(token) as UserInfoJWT);
 
-        await fetchUserDetails(parsedTokenResponse, response.token);
+        authStore.addUser(parsedTokenResponse);
+        authStore.addToken(token);
+        cookieToken.value = token;
+
+        const userDetails = await fetchUserDetails(parsedTokenResponse.user_id || user?._id, user);
+        if (!userDetails) {
+            throw new Error('Failed to resolve user details');
+        }
+
+        emits('signed-in');
+        await navigateTo(getRoleRedirectPath(userDetails.role));
     } catch (error: any) {
         const statusCode = error?.response?.status || error?.statusCode || 500;
         errorResponse.code = statusCode;
@@ -207,30 +312,47 @@ watch(enter, (v) => {
     if (v) handleSignIn();
 });
 
-const fetchUserDetails = async (parsedToken: UserInfoJWT, token: string) => {
-    const detailsResponse = await $api.auth.fetchUserDetails(parsedToken.user_id);
+const fetchUserDetails = async (userId?: string, fallbackUser?: UserInterface) => {
+    let userDetails = fallbackUser || null;
 
-    if (detailsResponse.status !== 'success') {
-        errorResponse.show = true;
-        return;
+    if (userId) {
+        try {
+            const detailsResponse = await $api.auth.fetchUserDetails(userId);
+
+            if (detailsResponse.status === 'success') {
+                userDetails = detailsResponse.data as UserInterface;
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    const userDetails = detailsResponse.data;
+    if (!userDetails) {
+        errorResponse.show = true;
+        errorResponse.description = 'Unable to load user details.';
+        return null;
+    }
+
     await authStore.addUserDetail(userDetails as UserInterface);
 
     if (userDetails) {
-        const response = (await $api.generalSettings.fetchSettings()) as {
-            data: GeneralSettingsInterface;
-            status: string;
-        };
-        authStore.addGeneralSettings(response.data as GeneralSettingsInterface);
+        try {
+            const response = (await $api.generalSettings.fetchSettings()) as {
+                data: GeneralSettingsInterface;
+                status: string;
+            };
+            if (response.status === 'success') {
+                authStore.addGeneralSettings(response.data as GeneralSettingsInterface);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    await cartStore.updateAndReturnCart();
-    await authStore.addUserCards();
-    await pricingStore.updateAndReturnPricing();
+    await Promise.allSettled([cartStore.updateAndReturnCart(), authStore.addUserCards(), pricingStore.updateAndReturnPricing()]);
 
     Emitter.emit('notifications', true);
+    return userDetails as UserInterface;
 };
 
 const loginWithGoogle = async () => {
@@ -246,7 +368,7 @@ const loginWithGoogle = async () => {
         return navigateTo('/signup');
     } else {
         cookieToken.value = token;
-        await fetchUserDetails(parsedToken, token);
+        await fetchUserDetails(parsedToken.user_id);
     }
 };
 </script>

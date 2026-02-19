@@ -18,10 +18,6 @@ class HttpFactory {
      **/
     async call<T>(method: string, url: string, data?: object | null, extras = {}, options: { handle401?: boolean } = {}): Promise<T> {
         const authStore = useAuthStore();
-        const token = authStore.getToken();
-        if (!token) {
-            throw new Error('No authentication token available');
-        }
 
         try {
             const apiOptions: any = { method, ...extras };
@@ -34,7 +30,7 @@ class HttpFactory {
             if (options.handle401 !== false && err.response?.status === 401) {
                 const router = useRouter();
                 authStore.signOut();
-                router.push('/login');
+                router.push('/?signin=true');
                 throw new Error('Session expired. Please log in again.');
             }
             throw err;

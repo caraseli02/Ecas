@@ -1,24 +1,35 @@
+import { PaymentTypeEnum, PaymentStatusEnum } from '~/types/order-summary/item';
+import { createRuntimeOrder } from '~/server/utils/mockRuntimeOrders';
+import { getMockUserFromAuthHeader } from '~/server/utils/mockUsers';
+
 export default defineEventHandler(async (event) => {
-    const body = (await readBody(event)) as {
-        items?: any[];
-        shippingAddress?: any;
-        billingAddress?: any;
-        shippingMethod?: string;
-        paymentMethod?: string;
-    };
+  const body = (await readBody(event)) as Record<string, unknown>;
+  const headers = getHeaders(event);
+  const user = getMockUserFromAuthHeader(headers.authorization);
 
-    const orderId = 'ord-' + Date.now();
-    const orderNumber = 'ORD-' + Math.floor(Math.random() * 100000);
+  if (!user) {
+    throw createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+    });
+  }
 
-    return {
-        status: 'success',
-        data: {
-            _id: orderId,
-            orderNumber,
-            status: 'pending',
-            message: 'Order created successfully',
-            total: 2199.97,
-            redirectUrl: `/order-summary/${orderId}`,
-        },
-    };
+  const { orderId } = createRuntimeOrder(body, user);
+  const paymentType = (body.paymentDetails as { type?: PaymentTypeEnum } | undefined)?.type;
+
+  return {
+    status: 'success',
+    data: {
+      orderId,
+      status: PaymentStatusEnum.Paid,
+      useExistingPaymentMethod: Boolean(body.stripeCardId),
+      result:
+                paymentType === PaymentTypeEnum.Card
+                  ? {
+                      status: 'succeeded',
+                    }
+                  : undefined,
+      clientSecret: undefined,
+    },
+  };
 });

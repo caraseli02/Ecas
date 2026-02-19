@@ -1,46 +1,22 @@
-export default defineEventHandler(async (event) => {
-    const body = (await readBody(event)) as { email?: string; password: string };
+import { createMockToken, getMockUserByCredentials } from '~/server/utils/mockUsers';
 
-    if (body.email === 'admin@ecas.com' && body.password === 'admin123') {
-        return {
-            status: 'success',
-            data: {
-                token: 'mock-jwt-token-portfolio-demo',
-                user: {
-                    _id: 'mock-user-1',
-                    firebaseId: 'mock-firebase-id-portfolio-demo',
-                    role: 'customer',
-                    accountType: 'personal',
-                    verified: true,
-                    status: 1,
-                    permissions: ['*'],
-                    roles: ['admin', 'customer'],
-                    contactDetails: {
-                        firstName: 'Portfolio',
-                        lastName: 'Demo User',
-                        email: body.email || 'admin@ecas.com',
-                        phone: '+1234567890',
-                    },
-                    personalDetails: {
-                        firstName: 'Portfolio',
-                        lastName: 'Demo User',
-                        address: {
-                            name1: 'Demo Address',
-                            country: 'US',
-                            region: 'California',
-                            city: 'San Francisco',
-                            postcode: '94105',
-                            _id: 'addr-1',
-                        },
-                        shippingAddress: [],
-                        billingAddress: [],
-                    },
-                    createdAt: new Date().toISOString(),
-                    clientCode: 'DEMO001',
-                },
-            },
-        };
+export default defineEventHandler(async (event) => {
+    const body = (await readBody(event)) as { email?: string; clientCode?: string; password?: string };
+    const match = getMockUserByCredentials(body);
+
+    if (!match) {
+        throw createError({ statusCode: 401, statusMessage: 'Invalid credentials' });
     }
 
-    throw createError({ status: 401, statusText: 'Invalid credentials' });
+    const token = createMockToken(match.user._id || 'mock-customer-1');
+
+    return {
+        status: 'success',
+        token,
+        user: match.user,
+        data: {
+            token,
+            user: match.user,
+        },
+    };
 });
