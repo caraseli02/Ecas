@@ -1,0 +1,195 @@
+import { PaymentStatusEnum, PaymentTypeEnum } from '~/types/order-summary/item';
+import { OrderStatus } from '~/types/order-summary/item';
+import type { OrderType } from '~/types/order-summary/item';
+import type { UserInterface } from '~/types/auth/user-interface';
+
+type RuntimeOrderResponse = {
+    order: any;
+    children: any[];
+};
+
+const runtimeOrders = new Map<string, RuntimeOrderResponse>();
+
+const generateOrderId = () => `ord-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+
+const generateShortId = () => `#ORD-${Math.floor(100000 + Math.random() * 899999)}`;
+
+const calculateOrderTotals = (products: any[] = []) => {
+    if (!products.length) {
+        return { subtotal: 0, total: 0 };
+    }
+
+    const subtotal = products.reduce((sum, item) => {
+        const itemSubtotal = Number(item.subtotal || Number(item.unitPriceAfterDiscounts || 0) * Number(item.stock || 0));
+        return sum + itemSubtotal;
+    }, 0);
+
+    const total = products.reduce((sum, item) => {
+        const itemTotal = Number(item.total || Number(item.unitPriceAfterDiscounts || 0) * Number(item.stock || 0));
+        return sum + itemTotal;
+    }, 0);
+
+    return {
+        subtotal: Number(subtotal.toFixed(2)),
+        total: Number(total.toFixed(2)),
+    };
+};
+
+const normalizeShippingDetails = (shippingDetails: any = {}) => {
+    const address = shippingDetails.address || {
+        name1: 'N/A',
+        name2: '',
+        country: 'US',
+        region: 'California',
+        city: 'San Francisco',
+        postcode: '94105',
+        default: true,
+    };
+    const billingAddress = shippingDetails.billingAddress || address;
+
+    return {
+        firstName: shippingDetails.firstName || 'Demo',
+        lastName: shippingDetails.lastName || 'User',
+        phone: shippingDetails.phone || '+14085550000',
+        city: shippingDetails.city || address.city,
+        country: shippingDetails.country || address.country,
+        address: {
+            ...address,
+            default: address.default ?? true,
+        },
+        billingAddress: {
+            ...billingAddress,
+            default: billingAddress.default ?? true,
+        },
+        deliveryTypeId: shippingDetails.deliveryTypeId || 'stock-001',
+        backorderShippingTypeId: shippingDetails.backorderShippingTypeId,
+        stockorderShippingType: shippingDetails.stockorderShippingType || {
+            service: {
+                id: 1,
+                courierName: 'Demo Express',
+                name: 'Standard Delivery',
+            },
+            price: {
+                total: 19.9,
+                noVat: 16.72,
+            },
+        },
+        statusTracking: {
+            awb: `AWB-${Math.floor(100000 + Math.random() * 899999)}`,
+            uniqueId: `trk-${Math.floor(100000 + Math.random() * 899999)}`,
+            estimatedPickUpDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+        },
+    };
+};
+
+const normalizePaymentDetails = (paymentDetails: any = {}) => {
+    const rawCard = paymentDetails.card;
+    const normalizedCard = rawCard?.card
+        ? {
+              brand: rawCard.card.brand,
+              last4: rawCard.card.last4,
+              exp_year: rawCard.card.exp_year,
+              exp_month: rawCard.card.exp_month,
+          }
+        : rawCard;
+
+    return {
+        type: paymentDetails.type ?? PaymentTypeEnum.Card,
+        status: PaymentStatusEnum.Paid,
+        card: normalizedCard,
+        invoiceId: `inv-${Math.floor(100000 + Math.random() * 899999)}`,
+        invoiceShortId: `INV-${Math.floor(1000 + Math.random() * 8999)}`,
+    };
+};
+
+export const createRuntimeOrder = (payload: any, user: UserInterface) => {
+    const orderId = generateOrderId();
+    const shortId = generateShortId();
+    const products = payload.products || [];
+    const totals = calculateOrderTotals(products);
+    const noteMessage = payload.note?.message;
+
+    const order = {
+        _id: orderId,
+        shortId,
+        user,
+        userId: user._id,
+        userName: `${user.contactDetails?.firstName || ''} ${user.contactDetails?.lastName || ''}`.trim(),
+        userEmail: user.contactDetails?.email,
+        cartId: payload.cartId,
+        products,
+        shippingDetails: normalizeShippingDetails(payload.shippingDetails),
+        paymentDetails: normalizePaymentDetails(payload.paymentDetails),
+        total: totals.total,
+        subtotal: totals.subtotal,
+        margin: 0,
+        currency: payload.currency || 'ron',
+        status: OrderStatus.Pending,
+        type: (payload.type ?? 0) as OrderType,
+        shippingCost: 19.9,
+        smallOrderCost: 0,
+        discount: {
+            value: 0,
+            startDate: new Date().toISOString(),
+            endDate: new Date().toISOString(),
+        },
+        notes: noteMessage
+            ? [
+                  {
+                      _id: `note-${Date.now()}`,
+                      sender: payload.note?.sender || user.firebaseId || user._id || 'system',
+                      message: noteMessage,
+                      createdAt: new Date().toISOString(),
+                      updatedAt: new Date().toISOString(),
+                  },
+              ]
+            : [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+    };
+
+    runtimeOrders.set(orderId, {
+        order,
+        children: [],
+    });
+
+    return {
+        orderId,
+        order,
+    };
+};
+
+export const findRuntimeOrder = (id?: string | null) => {
+    if (!id) {
+        return null;
+    }
+
+    const searchId = String(id).toLowerCase();
+    for (const value of runtimeOrders.values()) {
+        const orderId = String(value.order?._id || '').toLowerCase();
+        const shortId = String(value.order?.shortId || '').toLowerCase();
+        const normalizedShortId = shortId.replace('#', '');
+
+        if (orderId === searchId || shortId === searchId || normalizedShortId === searchId) {
+            return value;
+        }
+    }
+
+    return null;
+};
+
+export const cancelRuntimeOrder = (id?: string | null) => {
+    const record = findRuntimeOrder(id);
+    if (!record) {
+        return false;
+    }
+
+    record.order.status = OrderStatus.Canceled;
+    record.order.paymentDetails.status = PaymentStatusEnum.Canceled;
+    record.order.updatedAt = new Date().toISOString();
+    return true;
+};
+
+export const listRuntimeOrders = () => {
+    return Array.from(runtimeOrders.values());
+};

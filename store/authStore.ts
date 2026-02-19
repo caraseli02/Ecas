@@ -97,7 +97,7 @@ export const useAuthStore = defineStore(
         function getToken() {
             const config = useRuntimeConfig();
             if (config.public.MOCK_MODE) {
-                return (token.value || 'demo-token-portfolio') as unknown as UserInfoJWT;
+                return token.value ? (token.value as unknown as UserInfoJWT) : null;
             }
 
             if (import.meta.server) return null;

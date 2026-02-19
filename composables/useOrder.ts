@@ -11,6 +11,7 @@ import { toast } from '~/components/ui/toast';
 
 export function useOrder() {
     const router = useRouter();
+    const config = useRuntimeConfig();
     const { user, getShipping, getBilling } = useUser();
     const cartStore = useCartStore();
     const { $api } = useNuxtApp();
@@ -126,6 +127,11 @@ export function useOrder() {
     };
 
     const handleOrderResponse = async (response: PlaceOrderInterface, orderId: string, paymentType: number) => {
+        if (config.public.MOCK_MODE) {
+            await router.push({ path: '/order-summary/' + orderId, query: { new: 'true' } });
+            return;
+        }
+
         if (paymentType === PaymentTypeEnum.Card) {
             const result = response.data.result;
 
@@ -156,8 +162,8 @@ export function useOrder() {
                         break;
                 }
             }
-        } else if (paymentType === PaymentTypeEnum.Credit || paymentType === PaymentTypeEnum.Bank) {
-            await router.push({ path: '/order-summary/' + orderId, query: { new: true } });
+        } else if (paymentType === PaymentTypeEnum.Credit || paymentType === PaymentTypeEnum.Bank || paymentType === PaymentTypeEnum.Cash) {
+            await router.push({ path: '/order-summary/' + orderId, query: { new: 'true' } });
         }
     };
 

@@ -17,7 +17,7 @@
             <div v-if="!loggedInUser" class="flex-1 flex flex-col justify-between px-4">
                 <section>
                     <div class="text-neutral-70 font-semibold mb-[36px]">Sign in to your account</div>
-                    <LayoutAccountModalForm />
+                    <LayoutAccountModalForm @signed-in="handleSignedIn" />
                 </section>
                 <p class="flex flex-wrap md:flex-nowrap justify-center items-center gap-2 text-slate-500 text-xs sticky bottom-0">
                     <SvgoMenuHelp class="text-slate-500 w-4 h-4 !text-xs" />
@@ -72,6 +72,10 @@ const emit = defineEmits<{
 }>();
 const authStore = useAuthStore();
 const { loggedInUser } = storeToRefs(authStore);
+
+const handleSignedIn = () => {
+    emit('close');
+};
 
 const navItems = ref([
     {

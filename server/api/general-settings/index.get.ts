@@ -1,3 +1,5 @@
+import { PaymentTypeEnum } from '~/types/order-summary/item';
+
 export default defineEventHandler(async (event) => {
     return {
         status: 'success',
@@ -57,15 +59,19 @@ export default defineEventHandler(async (event) => {
                 paymentMethods: [
                     {
                         _id: 'pay-001',
-                        type: 'card' as any,
+                        type: PaymentTypeEnum.Card,
                     },
                     {
                         _id: 'pay-002',
-                        type: 'card' as any,
+                        type: PaymentTypeEnum.Credit,
                     },
                     {
                         _id: 'pay-003',
-                        type: 'bank_transfer' as any,
+                        type: PaymentTypeEnum.Cash,
+                    },
+                    {
+                        _id: 'pay-004',
+                        type: PaymentTypeEnum.Bank,
                     },
                 ],
                 smallOrderCharge: [
