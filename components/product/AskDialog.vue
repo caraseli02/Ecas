@@ -13,6 +13,17 @@ const formSchema = toTypedSchema(
     })
 );
 
+const props = withDefaults(
+    defineProps<{
+        showTrigger?: boolean;
+        triggerClass?: string;
+    }>(),
+    {
+        showTrigger: true,
+        triggerClass: '',
+    }
+);
+
 const { handleSubmit } = useForm({
     validationSchema: formSchema,
 });
@@ -22,12 +33,21 @@ const onSubmit = handleSubmit((values) => {
 });
 
 const isOpen = ref(false);
+
+defineExpose({
+    open: () => {
+        isOpen.value = true;
+    },
+    close: () => {
+        isOpen.value = false;
+    },
+});
 </script>
 
 <template>
     <UiDialog v-model:open="isOpen">
-        <UiDialogTrigger as-child>
-            <UiButton variant="link" class="text-slate-300 gap-1">
+        <UiDialogTrigger v-if="props.showTrigger" as-child>
+            <UiButton variant="link" class="text-slate-300 gap-1" :class="props.triggerClass">
                 <MessageCircleQuestion class="w-[22px] h-[22px]" />
                 <span class="text-xs leading-tight hidden sm:inline">Ask about the product</span>
             </UiButton>

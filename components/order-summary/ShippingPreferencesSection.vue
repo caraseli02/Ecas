@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <span class="text-neutral-700 text-sm font-medium leading-6 group-hover:text-[#007FFF] transition duration-300">
-                            {{ deliveryType.price.total + 'Lei' }}</span
+                            {{ `${deliveryType.price.total} Lei` }}</span
                         >
                     </button>
                 </div>
@@ -92,12 +92,14 @@ export default defineComponent({
             required: true,
         },
         generalSettings: {
-            type: Object as PropType<GeneralSettingsInterface>,
-            required: true,
+            type: Object as PropType<GeneralSettingsInterface | null>,
+            required: false,
+            default: null,
         },
         shippingPreferences: {
-            type: Object as PropType<ShippingOrderPricingResponse>,
-            required: true,
+            type: Object as PropType<ShippingOrderPricingResponse | null>,
+            required: false,
+            default: null,
         },
     },
     computed: {

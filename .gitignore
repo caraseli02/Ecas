@@ -6,6 +6,9 @@ node_modules
 .output
 .env
 dist
+.eslintcache
+tmp/ui-review-*/
+pr-body.md
 
 .idea
 firebase

@@ -19,7 +19,7 @@
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
                     <span class="text-slate-500"> Credit Limit </span>
                     <span class="font-medium">
-                        {{ (creditObjectToEdit?.limit ? getAmountFormat(creditObjectToEdit.limit) : '0') + 'Lei' }}
+                        {{ (creditObjectToEdit?.limit ? getAmountFormat(creditObjectToEdit.limit) : '0') + ' Lei' }}
                     </span>
                 </div>
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
@@ -37,13 +37,13 @@
                 <div class="flex items-center justify-between pb-2 border-b border-gray-200 text-sm leading-[1.42]">
                     <span class="text-slate-500"> Total Spent </span>
                     <span class="font-medium">
-                        {{ (creditObjectToEdit?.spent ? getAmountFormat(creditObjectToEdit.spent) : '0') + 'Lei' }}
+                        {{ (creditObjectToEdit?.spent ? getAmountFormat(creditObjectToEdit.spent) : '0') + ' Lei' }}
                     </span>
                 </div>
                 <div class="flex items-center justify-between text-sm leading-[1.42]">
                     <span class="text-slate-500"> Available Credit </span>
                     <span class="font-medium text-[#EE514E]">
-                        {{ (creditObjectToEdit?.available ? getAmountFormat(creditObjectToEdit.available) : '0') + 'Lei' }}
+                        {{ (creditObjectToEdit?.available ? getAmountFormat(creditObjectToEdit.available) : '0') + ' Lei' }}
                     </span>
                 </div>
             </div>

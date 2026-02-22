@@ -9,6 +9,17 @@ import { useForm } from 'vee-validate';
 import { h } from 'vue';
 import * as z from 'zod';
 
+const props = withDefaults(
+    defineProps<{
+        showTrigger?: boolean;
+        triggerClass?: string;
+    }>(),
+    {
+        showTrigger: true,
+        triggerClass: '',
+    }
+);
+
 const formSchema = toTypedSchema(
     z.object({
         description: z.string().min(10, {
@@ -31,12 +42,23 @@ const onSubmit = handleSubmit((values) => {
         ),
     });
 });
+
+const isOpen = ref(false);
+
+defineExpose({
+    open: () => {
+        isOpen.value = true;
+    },
+    close: () => {
+        isOpen.value = false;
+    },
+});
 </script>
 
 <template>
-    <UiDialog>
-        <UiDialogTrigger>
-            <UiButton variant="link" class="gap-1 text-slate-300">
+    <UiDialog v-model:open="isOpen">
+        <UiDialogTrigger v-if="props.showTrigger">
+            <UiButton variant="link" class="gap-1 text-slate-300" :class="props.triggerClass">
                 <AlertTriangle class="w-[22px] h-[22px]" />
                 <span class="hidden sm:inline">Report an error</span>
             </UiButton>

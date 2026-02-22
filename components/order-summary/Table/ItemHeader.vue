@@ -9,7 +9,7 @@ import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
 import HeartOutline from '@/assets/icons/heart-outline.svg';
 import HeartSolid from '@/assets/icons/heart-solid.svg';
 
-import Tooltip from '~/components/global/Tooltip.vue';
+import EcasTooltip from '~/components/global/EcasTooltip.vue';
 import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
@@ -115,7 +115,7 @@ function checkCartItem(itemId: string) {
         </div>
         <div>
             <div class="hidden xl:flex flex-row gap-4 ml-4">
-                <Tooltip theme="black" position="top">
+                <EcasTooltip theme="black" position="top">
                     <button class="relative flex group" @click="cartStore.makeCartItemFavorite(item.id)">
                         <HeartSolid v-show="item.liked" class="absolute r-0 top-[1px] text-blue-500" />
                         <HeartOutline class="w-5 h-5 text-slate-500 group-hover:text-blue-500 transition duration-150" />
@@ -123,7 +123,7 @@ function checkCartItem(itemId: string) {
                     <template #content>
                         <span class="capitalize">Add to Favorites</span>
                     </template>
-                </Tooltip>
+                </EcasTooltip>
                 <button
                     class="flex text-slate-500 items-center justify-center ml-auto transition-colors duration-300 hover:text-rose-500"
                     @click="emit('deleteItem', true)"

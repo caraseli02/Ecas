@@ -1,15 +1,31 @@
 <template>
-    <div v-if="getOrderClientSecret" class="relative min-h-screen md:w-full">
-        <UiSkeleton v-show="showSkeletonLoader" class="w-full h-full absolute inset-0" />
-        <form id="payment-form" class="p-[30px] items-center lg:pt-10 w-full md:w-1/2 mx-auto max-w-xl" @submit.prevent="handleSubmit">
+    <div class="relative min-h-screen md:w-full">
+        <UiSkeleton v-show="showSkeletonLoader" class="absolute inset-0 h-full w-full" />
+
+        <div v-if="initError" class="container flex min-h-[60vh] flex-col items-center justify-center gap-4">
+            <div class="text-center">
+                <h1 class="text-xl font-semibold text-foreground">Payment session unavailable</h1>
+                <p class="mt-1 text-sm text-muted-foreground">
+                    This payment session may have expired or wasn’t created. Please return to your order and try again.
+                </p>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <UiButton variant="default" @click="goToOrderSummary">Back to order summary</UiButton>
+                <UiButton variant="outline" @click="goHome">Back home</UiButton>
+            </div>
+        </div>
+
+        <form
+            v-else
+            id="payment-form"
+            class="mx-auto w-full max-w-xl items-center p-[30px] md:w-1/2 lg:pt-10"
+            @submit.prevent="handleSubmit"
+        >
             <div id="payment-element" />
-            <div v-if="!showSkeletonLoader" class="flex justify-end items-center mt-2">
+            <div v-if="!showSkeletonLoader" class="mt-2 flex items-center justify-end">
                 <UiButton id="submit" :disabled="isLoading">Pay now</UiButton>
             </div>
         </form>
-    </div>
-    <div v-else>
-        <p>No data available</p>
     </div>
 </template>
 
@@ -28,6 +44,7 @@ const cartStore = useCartStore();
 const { getOrderClientSecret } = storeToRefs(cartStore);
 const isLoading = ref(false);
 const orderId = ref<string>();
+const initError = ref(false);
 
 let stripe: Stripe | null;
 let elements: StripeElements;
@@ -42,39 +59,44 @@ onMounted(async () => {
     stripe = await loadStripe(config.public.stripePublishableKey as string);
 
     if (!stripe || !getOrderClientSecret.value) {
-        return null;
+        initError.value = true;
+        showSkeletonLoader.value = false;
+        return;
     }
 
-    paymentIntent = await stripe.retrievePaymentIntent(getOrderClientSecret.value);
-    elements = stripe.elements({
-        mode: 'payment',
-        amount: paymentIntent.paymentIntent?.amount,
-        currency: paymentIntent.paymentIntent?.currency,
-        setup_future_usage: paymentIntent.paymentIntent?.setup_future_usage,
-        payment_method_types: paymentIntent.paymentIntent?.payment_method_types,
-    });
+    try {
+        paymentIntent = await stripe.retrievePaymentIntent(getOrderClientSecret.value);
+        elements = stripe.elements({
+            mode: 'payment',
+            amount: paymentIntent.paymentIntent?.amount,
+            currency: paymentIntent.paymentIntent?.currency,
+            setup_future_usage: paymentIntent.paymentIntent?.setup_future_usage,
+            payment_method_types: paymentIntent.paymentIntent?.payment_method_types,
+        });
 
-    const card = elements.create('payment', {
-        layout: {
-            type: 'accordion',
-            defaultCollapsed: false,
-            radios: true,
-            spacedAccordionItems: false,
-        },
-        wallets: {
-            applePay: 'auto',
-        },
-        fields: {
-            billingDetails: {
-                name: 'auto',
+        const card = elements.create('payment', {
+            layout: {
+                type: 'accordion',
+                defaultCollapsed: false,
+                radios: true,
+                spacedAccordionItems: false,
             },
-        },
-    });
+            wallets: {
+                applePay: 'auto',
+            },
+            fields: {
+                billingDetails: {
+                    name: 'auto',
+                },
+            },
+        });
 
-    card.mount('#payment-element');
-    setTimeout(() => {
+        card.mount('#payment-element');
+    } catch {
+        initError.value = true;
+    } finally {
         showSkeletonLoader.value = false;
-    }, 1000);
+    }
 });
 
 const handleSubmit = async () => {
@@ -117,11 +139,24 @@ const handleSubmit = async () => {
 };
 
 onBeforeRouteLeave(async () => {
-    if (!submitAttempt && orderId.value) {
+    if (!submitAttempt && !!getOrderClientSecret.value && orderId.value) {
         await $api.orders.cancelOrder(orderId.value);
 
         cartStore.emptyPreviousCheckoutError();
         cartStore.emptyOrderClientSecret();
     }
 });
+
+const goHome = async () => {
+    await router.push('/');
+};
+
+const goToOrderSummary = async () => {
+    if (orderId.value) {
+        await router.push(`/order-summary/${orderId.value}`);
+        return;
+    }
+
+    await router.push('/order-summary');
+};
 </script>

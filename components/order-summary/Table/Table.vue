@@ -44,13 +44,15 @@ onMounted(() => {
 });
 
 const stockItems = computed(() => {
-    return cartStore.cart?.products.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0);
+    return cartStore.cart?.products?.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0) ?? [];
 });
 
 const backOrderItems = computed(() => {
-    return cartStore.cart?.products.filter((item: CartProductsInterface) => {
-        return item.productEntity?.stock !== undefined && item?.backorder_stock && item?.backorder_stock > 0;
-    });
+    return (
+        cartStore.cart?.products?.filter((item: CartProductsInterface) => {
+            return item.productEntity?.stock !== undefined && item?.backorder_stock && item?.backorder_stock > 0;
+        }) ?? []
+    );
 });
 
 function checkAll(checked: boolean): void {

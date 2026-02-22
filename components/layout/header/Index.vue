@@ -1,6 +1,6 @@
 <template>
     <header class="fixed z-50 top-0 left-0 w-full bg-white transition-transform duration-300">
-        <div class="relative z-10 bg-[#F5F5F5] py-2">
+        <div class="relative z-10 bg-[#F5F5F5] py-1.5 md:py-2">
             <div class="container">
                 <div class="flex items-center text-slate-500 md:justify-between">
                     <div class="flex items-center gap-2 mr-4 md:mr-0">
@@ -14,7 +14,7 @@
                     </div>
                     <button class="flex items-center" @click="showRegionalPreferencesModal = true">
                         <RonFlag class="w-6 h-5 mr-2.5" />
-                        <span class="text-sm text-slate-500 leading-[1.43]">| Lei</span>
+                        <span class="text-sm text-slate-500 leading-[1.43]" aria-label="Regional preferences">{{ regionalLabel }}</span>
                     </button>
                 </div>
             </div>
@@ -32,9 +32,17 @@
 <script setup lang="ts">
 import RonFlag from '@/assets/icons/flags/ron.svg';
 import HeadphonesIcon from '@/assets/icons/headphones.svg';
-import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
+import { useRegionalPreferencesStore } from '~/store/regionalPreferencesStore';
 
-const authStore = useAuthStore();
+const regionalPreferencesStore = useRegionalPreferencesStore();
+const { language, currency } = storeToRefs(regionalPreferencesStore);
+
+const regionalLabel = computed(() => {
+    const lang = language.value?.value === 'romanian' ? 'RO' : 'EN';
+    const curr = currency.value?.label || 'Lei';
+    return `${lang} · ${curr}`;
+});
 
 defineProps({
     isScrolled: {

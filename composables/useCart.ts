@@ -13,9 +13,9 @@ export function useCart() {
 
     const fetchList = async () => {
         const cart = (await cartStore.updateAndReturnCart()) as CartInterface;
-        const products = cart?.products;
-        cartId.value = cart._id || '';
-        // mapCartItems(products);
+        const products = cart?.products || [];
+        cartId.value = cart?._id || '';
+        cartItems.value = mapCartItems(products);
     };
 
     const fetchShippingPrices = async (order) => {

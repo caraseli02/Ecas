@@ -72,7 +72,7 @@ const toggleFavs = () => {
 
 const { $api } = useNuxtApp();
 const deleteSelected = async () => {
-    const itemsToDelete = cartStore.cart?.products.filter((product: any) => product.selected)?.map((object) => object.id);
+    const itemsToDelete = cartStore.cart?.products?.filter((product: any) => product.selected)?.map((object) => object.id);
 
     const payload = {
         products: itemsToDelete,
@@ -85,5 +85,5 @@ const deleteSelected = async () => {
     }
 };
 
-const selectedItems = computed(() => cartStore.cart?.products.filter((product: CartProductsInterface) => product.selected).length);
+const selectedItems = computed(() => cartStore.cart?.products?.filter((product: CartProductsInterface) => product.selected).length ?? 0);
 </script>

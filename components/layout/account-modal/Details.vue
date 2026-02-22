@@ -11,14 +11,14 @@
                 <div class="text-neutral-700 text-sm font-medium leading-5 whitespace-nowrap">
                     {{ fullname || 'Loading...' }}
                 </div>
-                <Tooltip theme="black" position="top">
+                <EcasTooltip theme="black" position="top">
                     <component :is="getIconBadgeByAccountType()" class="w-5 h-5 hover:text-blue-500" />
                     <template #content>
                         <span class="text-sm">{{
                             getUserDetails.accountType ? AccountType[getUserDetails.accountType] : AccountRole[getUserDetails.role]
                         }}</span>
                     </template>
-                </Tooltip>
+                </EcasTooltip>
             </div>
             <div class="text-slate-500 text-xs leading-4 whitespace-nowrap mt-1">
                 {{ getUserDetails?.contactDetails.email || 'Loading...' }}
@@ -42,6 +42,7 @@ import BuildingIcon from '@/assets/icons/menu/busines-buildings.svg';
 import UserIcon from '@/assets/icons/menu/user.svg';
 import PersonalCardIcon from '@/assets/icons/menu/personalcard.svg';
 import briefcaseIcon from '@/assets/icons/menu/briefcase.svg';
+import EcasTooltip from '~/components/global/EcasTooltip.vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { AccountRole, AccountType } from '~/types';
