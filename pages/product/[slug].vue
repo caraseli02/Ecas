@@ -3,11 +3,25 @@
         <ProductBreadcrumbs :product="product" />
         <div class="container mb-[30px] lg:mb-10">
             <div class="w-full flex items-center justify-end md:gap-0w mb-3">
-                <ProductAskDialog />
-                <DialogReportError />
-                <UiButton variant="link" @click="printPage" class="text-slate-300 gap-1">
+                <UiDropdownMenu :modal="false">
+                    <UiDropdownMenuTrigger as-child>
+                        <UiButton variant="ghost" class="flex h-10 w-10 p-0 text-slate-500 sm:hidden">
+                            <MoreVertical class="h-5 w-5" />
+                            <span class="sr-only">Product actions</span>
+                        </UiButton>
+                    </UiDropdownMenuTrigger>
+                    <UiDropdownMenuContent align="end" class="w-[220px] sm:hidden">
+                        <UiDropdownMenuItem @click="askDialog?.open()">Ask about the product</UiDropdownMenuItem>
+                        <UiDropdownMenuItem @click="reportErrorDialog?.open()">Report an error</UiDropdownMenuItem>
+                        <UiDropdownMenuItem @click="printPage">Print this page</UiDropdownMenuItem>
+                    </UiDropdownMenuContent>
+                </UiDropdownMenu>
+
+                <ProductAskDialog ref="askDialog" trigger-class="hidden sm:inline-flex" />
+                <DialogReportError ref="reportErrorDialog" trigger-class="hidden sm:inline-flex" />
+                <UiButton variant="link" @click="printPage" class="hidden sm:inline-flex text-slate-300 gap-1">
                     <PrinterIcon class="w-[22px] h-[22px]" />
-                    <span class="text-xs leading-tight hidden sm:inline">Print this page</span>
+                    <span class="text-xs leading-tight">Print this page</span>
                 </UiButton>
             </div>
             <div
@@ -48,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { PrinterIcon } from 'lucide-vue-next';
+import { MoreVertical, PrinterIcon } from 'lucide-vue-next';
 
 import type { ProductDetail } from '~~/model/products/response/ProductDetailResponse';
 import { useNuxtApp } from '#app';
@@ -75,6 +89,9 @@ const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 
 const activeImageIndex = ref(0);
 const showZoomGallery = ref(false);
+
+const askDialog = ref<{ open: () => void } | null>(null);
+const reportErrorDialog = ref<{ open: () => void } | null>(null);
 
 const printPage = () => {
     if (process.client) {

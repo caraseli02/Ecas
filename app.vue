@@ -1,7 +1,9 @@
 <template>
-    <NuxtLayout>
-        <NuxtPage class="relative" id="nuxt_page" />
-    </NuxtLayout>
+    <UiTooltipProvider>
+        <NuxtLayout>
+            <NuxtPage class="relative" id="nuxt_page" />
+        </NuxtLayout>
+    </UiTooltipProvider>
     <LazyAppInfo v-model="appStore.showAppInBeta" />
 </template>
 

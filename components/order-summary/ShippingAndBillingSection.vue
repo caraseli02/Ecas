@@ -4,16 +4,16 @@
             <div class="flex flex-row justify-between">
                 <div class="flex flex-row items-center gap-3">
                     <span class="text-neutral-700 text-sm font-medium leading-6">Billing Information</span>
-                    <Tooltip v-if="billingInfoMissing" theme="black" position="top">
+                    <EcasTooltip v-if="billingInfoMissing" theme="black" position="top">
                         <WarningErrorYellow />
                         <template #content>
                             <span class="capitalize">Missing Info</span>
                         </template>
-                    </Tooltip>
+                    </EcasTooltip>
                     <GreenCheckCircle v-else />
                 </div>
                 <div class="flex flex-row gap-4">
-                    <Tooltip theme="black" position="top">
+                    <EcasTooltip theme="black" position="top">
                         <button>
                             <EditSmall
                                 class="text-[#5E6278] hover:text-[#007FFF] transition duration-150"
@@ -23,15 +23,15 @@
                         <template #content>
                             <span class="capitalize">Edit</span>
                         </template>
-                    </Tooltip>
-                    <Tooltip theme="black" position="top">
+                    </EcasTooltip>
+                    <EcasTooltip theme="black" position="top">
                         <!--                        <button>-->
                         <!--                            <SettingCog class="text-[#5E6278] hover:text-[#007FFF] transition duration-150" />-->
                         <!--                        </button>-->
                         <!--                        <template #content>-->
                         <!--                            <span class="capitalize">Settings</span>-->
                         <!--                        </template>-->
-                    </Tooltip>
+                    </EcasTooltip>
                 </div>
             </div>
             <div class="flex flex-col gap-2">
@@ -51,16 +51,16 @@
             <div class="flex flex-row justify-between">
                 <div class="flex flex-row items-center gap-3">
                     <span class="text-neutral-700 text-sm font-medium leading-6">Shipping Information</span>
-                    <Tooltip v-if="shippingInfoMissing" theme="black" position="top">
+                    <EcasTooltip v-if="shippingInfoMissing" theme="black" position="top">
                         <WarningErrorYellow />
                         <template #content>
                             <span class="capitalize">Missing Info</span>
                         </template>
-                    </Tooltip>
+                    </EcasTooltip>
                     <GreenCheckCircle v-else />
                 </div>
                 <div class="flex flex-row gap-4">
-                    <Tooltip theme="black" position="top">
+                    <EcasTooltip theme="black" position="top">
                         <button>
                             <EditSmall
                                 class="text-[#5E6278] hover:text-[#007FFF] transition duration-150"
@@ -70,15 +70,15 @@
                         <template #content>
                             <span class="capitalize">Edit</span>
                         </template>
-                    </Tooltip>
-                    <Tooltip theme="black" position="top">
+                    </EcasTooltip>
+                    <EcasTooltip theme="black" position="top">
                         <!--                        <button>-->
                         <!--                            <SettingCog class="text-[#5E6278] hover:text-[#007FFF] transition duration-150" />-->
                         <!--                        </button>-->
                         <!--            <template #content>-->
                         <!--              <span class="capitalize">Settings</span>-->
                         <!--            </template>-->
-                    </Tooltip>
+                    </EcasTooltip>
                 </div>
             </div>
             <div class="flex flex-col gap-2">
@@ -105,7 +105,7 @@
     </div>
 </template>
 <script lang="ts">
-import Tooltip from '~/components/global/Tooltip.vue';
+import EcasTooltip from '~/components/global/EcasTooltip.vue';
 import GreenCheckCircle from '@/assets/icons/green-check-circle.svg';
 import EditSmall from '@/assets/icons/edit-small.svg';
 import SettingCog from '@/assets/icons/setting-cog.svg';
@@ -122,7 +122,7 @@ export default defineComponent({
         SettingCog,
         CheckCircleSmall,
         WarningErrorYellow,
-        Tooltip,
+        EcasTooltip,
     },
     props: {
         order: {

@@ -54,7 +54,7 @@ export const useCartStore = defineStore({
             this.orderClientSecret = null;
         },
         makeCartItemFavorite(itemId: string) {
-            const item = this.cart?.products.find((product: CartProductsInterface) => product.id === itemId);
+            const item = this.cart?.products?.find((product: CartProductsInterface) => product.id === itemId);
             if (item?.liked) {
                 item.liked = false;
             } else if (item && !item?.liked) {

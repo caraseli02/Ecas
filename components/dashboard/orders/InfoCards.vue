@@ -197,7 +197,7 @@ const setWidgetValueFormat = async (type: string, response: string | number) => 
             Number(response).toLocaleString('en', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
-            }) + 'Lei';
+            }) + ' Lei';
     } else {
         response = Number(response).toLocaleString('en');
     }

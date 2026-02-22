@@ -84,14 +84,14 @@ const { cartSubtotal, itemsDiscount } = storeToRefs(cartStore);
 
 const props = defineProps<{
     order: OrderInterface;
-    generalSettings: GeneralSettingsInterface;
+    generalSettings: GeneralSettingsInterface | null;
 }>();
 
 const showSmallOrderModal = ref(false);
 
 const smallOrder = computed(() => {
     let smallOrderFee = 0;
-    useAuthStore().generalSettings?.orderSettings?.smallOrderCharge?.forEach((charge) => {
+    props.generalSettings?.orderSettings?.smallOrderCharge?.forEach((charge) => {
         if (Number(cartSubtotal.value) < charge.max && Number(cartSubtotal.value) >= charge.min) {
             smallOrderFee = charge.price;
             props.order.smallOrder = charge;

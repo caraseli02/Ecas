@@ -57,18 +57,13 @@
 <script setup lang="ts">
 import XIcon from '@/assets/icons/x.svg';
 import GlobeIcon from '@/assets/icons/globe.svg';
-import type { FormSelectOption } from '~~/types';
+import { storeToRefs } from 'pinia';
+import { useRegionalPreferencesStore } from '~/store/regionalPreferencesStore';
 
 defineEmits(['close']);
 
-const language = ref<FormSelectOption>({
-    label: 'English',
-    value: 'english',
-});
-const currency = ref<FormSelectOption>({
-    label: 'Lei',
-    value: 'ron',
-});
+const regionalPreferencesStore = useRegionalPreferencesStore();
+const { language, currency } = storeToRefs(regionalPreferencesStore);
 
 onMounted(() => {
     documentUtil.toggleBodyScroll();

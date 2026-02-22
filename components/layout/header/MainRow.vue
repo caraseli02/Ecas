@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-blue-500 py-[18px] shadow-m"
+        class="bg-blue-500 py-3 shadow-m"
         :class="[
             isScrolled
                 ? showMobileSearch
@@ -107,7 +107,7 @@
                                 </span>
                             </div>
                             <div v-if="totalCartPrice" class="flex-col text-white flex-shrink-0 ml-6 max-md:hidden">
-                                <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice + 'Lei' }}</div>
+                                <div class="leading-[1.25] font-medium mb-0.5">{{ totalCartPrice }} Lei</div>
                                 <div class="text-[10px] leading-[1.6]">(ex VAT)</div>
                             </div>
                         </button>
@@ -163,13 +163,13 @@
                         : 'backdrop-blur-none opacity-0 pointer-events-none',
                 ]"
                 @click="
-                    showAccountModal = false;
+                    closeAccountModal();
                     favoritesCartModal.show = false;
                 "
             />
         </Transition>
         <Transition name="slide-from-right">
-            <LayoutAccountModal v-if="showAccountModal" @close="showAccountModal = false" />
+            <LayoutAccountModal v-if="showAccountModal" @close="closeAccountModal" />
         </Transition>
         <Transition name="slide-from-right">
             <CartModal
@@ -231,6 +231,7 @@ defineProps({
 });
 
 const route = useRoute();
+const router = useRouter();
 
 const isMobile = ref(false);
 const signinQuery = computed(() => route.query.signin);
@@ -243,6 +244,15 @@ const favoritesCartModal = ref({
 const cartItems = ref(0);
 const cart = ref<CartInterface | null>(null);
 const category = ref<string | null>(route.query?.category?.toString() || null);
+
+const closeAccountModal = async () => {
+    showAccountModal.value = false;
+
+    if (route.query.signin) {
+        const { signin, ...rest } = route.query;
+        await router.replace({ query: rest });
+    }
+};
 
 const navItems = [
     {
@@ -418,6 +428,7 @@ watch(
     () => authStore.token?.value,
     async (newVal) => {
         if (newVal) {
+            await closeAccountModal();
             await fetchNofications();
             await fetchList();
         } else {

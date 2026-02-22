@@ -26,6 +26,7 @@ export default defineNuxtConfig({
         'shadcn-nuxt',
         '@nuxtjs/color-mode',
         '@nuxt/eslint',
+        '~/modules/shadcn-components-dir-fix',
     ],
     app: {
         head: {
@@ -94,6 +95,16 @@ export default defineNuxtConfig({
 
     hooks: {
         'builder:watch': () => {},
+    },
+
+    components: {
+        dirs: [
+            {
+                path: '~/components',
+                extensions: ['vue'],
+                ignore: ['ui/**', '**/*.ts'],
+            },
+        ],
     },
 
     vite: {

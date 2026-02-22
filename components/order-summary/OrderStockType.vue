@@ -27,12 +27,12 @@
                     >
                     <div class="flex flex-row gap-6">
                         <div v-if="shippingAndBillingMissingInfoWarning" class="flex flex-row gap-2 items-center">
-                            <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
+                            <EcasTooltip theme="black" position="top" class="flex sm:hidden lg:flex">
                                 <WarningErrorYellow />
                                 <template #content>
                                     <span class="capitalize">Missing Info</span>
                                 </template>
-                            </Tooltip>
+                            </EcasTooltip>
                             <WarningErrorYellow class="hidden sm:flex lg:hidden" />
                             <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Missing Info</span>
                         </div>
@@ -59,12 +59,12 @@
                             v-if="!shippingPreferencesExpanded && ((mixedOrBackOrder && !order.backorderOption) || !order.deliveryMethod)"
                             class="flex flex-row gap-2 items-center"
                         >
-                            <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
+                            <EcasTooltip theme="black" position="top" class="flex sm:hidden lg:flex">
                                 <WarningErrorHuge />
                                 <template #content>
                                     <span class="capitalize">Mandatory</span>
                                 </template>
-                            </Tooltip>
+                            </EcasTooltip>
                             <WarningErrorHuge class="hidden sm:flex lg:hidden" />
                             <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
                         </div>
@@ -94,12 +94,12 @@
                 >
                 <div class="flex flex-row gap-6">
                     <div v-if="paymentMethodWarning" class="flex flex-row gap-2 items-center">
-                        <Tooltip theme="black" position="top" class="flex sm:hidden lg:flex">
+                        <EcasTooltip theme="black" position="top" class="flex sm:hidden lg:flex">
                             <WarningErrorHuge />
                             <template #content>
                                 <span class="capitalize">Mandatory</span>
                             </template>
-                        </Tooltip>
+                        </EcasTooltip>
                         <WarningErrorHuge class="hidden sm:flex lg:hidden" />
                         <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
                     </div>
@@ -134,7 +134,7 @@ import type { CartProductsInterface } from '~/model/cart/response/cart.interface
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
-import Tooltip from '~/components/global/Tooltip.vue';
+import EcasTooltip from '~/components/global/EcasTooltip.vue';
 import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 import Emitter from 'tiny-emitter/instance.js';
 import { useAuthStore } from '~/store/authStore';
@@ -150,7 +150,7 @@ const props = defineProps<{
     cards: any;
     card: any;
     isNewCardSelected: boolean;
-    shippingPreferences: ShippingOrderPricingResponse;
+    shippingPreferences: ShippingOrderPricingResponse | null;
 }>();
 
 const emits = defineEmits(['update-payment-details']);
@@ -165,16 +165,16 @@ const cartStore = useCartStore();
 
 const stockOrder = computed(() => {
     return (
-        cartStore.cart?.products.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0).length >
+        (cartStore.cart?.products?.filter((item: CartProductsInterface) => item.productEntity?.stock !== undefined && item.stock > 0).length ?? 0) >
         0
     );
 });
 
 const backOrder = computed(() => {
     return (
-        cartStore.cart?.products.filter((item: CartProductsInterface) => {
+        (cartStore.cart?.products?.filter((item: CartProductsInterface) => {
             return item.productEntity?.stock !== undefined && item?.backorder_stock > 0;
-        }).length > 0
+        }).length ?? 0) > 0
     );
 });
 

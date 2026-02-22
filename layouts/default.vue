@@ -6,7 +6,7 @@
         </main>
         <div
             v-if="$config.public.MOCK_MODE"
-            class="fixed bottom-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-md text-xs font-medium z-50"
+            class="fixed bottom-3 left-3 bg-blue-500/90 text-white px-3 py-1 rounded-md text-xs font-medium z-50 pointer-events-none select-none sm:bottom-4 sm:right-4 sm:left-auto"
         >
             MOCK MODE
         </div>
