@@ -4,7 +4,11 @@ import Emitter from 'tiny-emitter/instance.js';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import { useAuthStore } from '~/store/authStore';
 import type { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
-import type { StripeError } from '@stripe/stripe-js';
+type CheckoutError = {
+    message?: string;
+    type?: string;
+    code?: string;
+};
 
 export const useCartStore = defineStore({
     id: 'cart-store',
@@ -12,7 +16,7 @@ export const useCartStore = defineStore({
         return {
             cart: null as CartInterface | null,
             orderClientSecret: null as string | null,
-            previousCheckoutError: null as StripeError | null,
+            previousCheckoutError: null as CheckoutError | null,
             cartSubtotal: 0,
         };
     },
@@ -24,7 +28,7 @@ export const useCartStore = defineStore({
         setOrderClientSecret(secret: string) {
             this.orderClientSecret = secret;
         },
-        setPreviousCheckoutError(error: StripeError) {
+        setPreviousCheckoutError(error: CheckoutError) {
             console.log(error);
 
             this.previousCheckoutError = error;
@@ -102,7 +106,7 @@ export const useCartStore = defineStore({
             return Number(state.cartSubtotal.toFixed(2));
         },
         getOrderClientSecret: (state): string => state.orderClientSecret as string,
-        getPreviousCheckoutError: (state): StripeError => state.previousCheckoutError as StripeError,
+        getPreviousCheckoutError: (state): CheckoutError => state.previousCheckoutError as CheckoutError,
         itemsDiscount: (state) => state.cart?.products?.[0]?.discount.value,
     },
     persist: {

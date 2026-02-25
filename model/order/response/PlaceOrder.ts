@@ -1,8 +1,14 @@
-import type { PaymentIntent } from '@stripe/stripe-js';
 import { PaymentStatusEnum } from '~/types';
 
+interface PaymentIntentLike {
+    id?: string;
+    status?: string;
+    amount?: number;
+    currency?: string;
+}
+
 export interface OrderCreateResponse {
-    result?: PaymentIntent;
+    result?: PaymentIntentLike;
     useExistingPaymentMethod: boolean;
     clientSecret?: string;
     status: PaymentStatusEnum;
