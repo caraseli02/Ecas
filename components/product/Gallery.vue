@@ -1,11 +1,12 @@
 <template>
     <div class="relative bg-white flex flex-col justify-between rounded-xl shadow-m h-[298px] p-4 pt-7">
-        <img
-            :src="props.images[activeImageIndex]?.ProductImageLarge"
-            alt="Image"
-            class="w-[284px] h-[160px] object-contain mx-auto lg:w-[330px] xl:w-[350px] cursor-pointer"
-            @click="emit('showZoomModal')"
-        />
+        <button type="button" class="flex" @click="emit('showZoomModal')">
+            <ImageWithFallback
+                :src="props.images[activeImageIndex]?.ProductImageLarge"
+                alt="Product image"
+                class-name="w-[284px] h-[160px] object-contain mx-auto lg:w-[330px] xl:w-[350px] cursor-pointer"
+            />
+        </button>
         <Swiper
             :modules="[A11y, Zoom]"
             :slides-per-view="4.5"
@@ -30,10 +31,10 @@
             >
                 <button class="flex" @click="handleSlideTo(index)">
                     <div class="swiper-zoom-container">
-                        <img
+                        <ImageWithFallback
                             :src="image?.ProductImageSmall"
-                            alt="Image"
-                            class="w-[60px] h-[50x] object-contain transition-opacity duration-300 lg:w-[56px] lg:h-[48px] mb-2 ml-2"
+                            alt="Product thumbnail"
+                            class-name="w-[60px] h-[50x] object-contain transition-opacity duration-300 lg:w-[56px] lg:h-[48px] mb-2 ml-2"
                             :class="[index !== activeImageIndex ? 'opacity-50' : '']"
                         />
                     </div>

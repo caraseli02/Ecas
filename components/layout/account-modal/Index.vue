@@ -16,7 +16,8 @@
             <div class="max-h-[80px] flex flex-grow m-h-fit w-full"></div>
             <div v-if="!loggedInUser" class="flex-1 flex flex-col justify-between px-4">
                 <section>
-                    <div class="text-neutral-70 font-semibold mb-[36px]">Sign in to your account</div>
+                    <div class="text-neutral-70 font-semibold">Choose a demo role</div>
+                    <p class="text-xs text-slate-500 mt-1 mb-[30px]">Use the prefilled demo credentials to explore customer and admin flows.</p>
                     <LayoutAccountModalForm @signed-in="handleSignedIn" />
                 </section>
                 <p class="flex flex-wrap md:flex-nowrap justify-center items-center gap-2 text-slate-500 text-xs sticky bottom-0">

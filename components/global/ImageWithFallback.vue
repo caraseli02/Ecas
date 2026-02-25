@@ -45,5 +45,8 @@ function handleError() {
 </script>
 
 <style scoped>
-/* Add any extra styling here */
+.full-size-svg {
+    width: 100%;
+    height: 100%;
+}
 </style>
