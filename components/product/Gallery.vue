@@ -64,6 +64,7 @@
 import { HeartIcon, Share2Icon, BoxIcon } from 'lucide-vue-next';
 
 import { A11y, Zoom } from 'swiper';
+import ImageWithFallback from '~/components/global/ImageWithFallback.vue';
 import type { ProductImage } from '~/model/products/response/ProductResponse';
 import type { FavouriteFolderRequestInterface } from '~/model/favourite-folder/request/favourite-folder.interface';
 import { useNuxtApp } from '#app';

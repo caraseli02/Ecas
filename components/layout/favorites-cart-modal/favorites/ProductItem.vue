@@ -138,6 +138,7 @@ import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { useNuxtApp } from '#app';
 import { useCartStore } from '~/store/cartStore';
+import ImageWithFallback from '~/components/global/ImageWithFallback.vue';
 
 const { $api } = useNuxtApp();
 

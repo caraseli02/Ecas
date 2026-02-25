@@ -44,7 +44,7 @@
                     />
                 </button>
             </div>
-            <button class="flex items-center">
+            <button disabled class="flex items-center disabled:cursor-not-allowed disabled:opacity-60">
                 <span class="text-sm font-medium left-[1.43] text-slate-500 mr-1"> View All </span>
                 <ArrowRightIcon class="w-5 h-5" />
             </button>

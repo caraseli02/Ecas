@@ -121,7 +121,7 @@
                     @update-payment-details="emits('update-payment-details', $event)"
                 />
             </Transition>
-            <AppModal v-model="showCardsModal" side="right">
+            <AppModal v-if="!config.public.MOCK_MODE" v-model="showCardsModal" side="right">
                 <OrderSummaryPaymentModal :cards="cards" :order="order" :card="card" :is-new-card-selected="isNewCardSelected" />
             </AppModal>
         </div>
@@ -154,6 +154,7 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits(['update-payment-details']);
+const config = useRuntimeConfig();
 
 const shippingAndBillingExpanded = ref(false);
 const shippingPreferencesExpanded = ref(false);
@@ -222,6 +223,9 @@ watch(orderType, (newOrderType) => {
 
 onMounted(() => {
     props.order.type = orderType.value;
+    if (config.public.MOCK_MODE) {
+        showCardsModal.value = false;
+    }
 });
 
 onBeforeUnmount(() => {

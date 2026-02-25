@@ -143,7 +143,7 @@
                         </div>
                     </Transition>
                 </div>
-                <button class="flex items-center text-slate-500 mr-2">
+                <button disabled class="flex items-center text-slate-500 mr-2 disabled:cursor-not-allowed disabled:opacity-60">
                     <span class="text-sm font-medium left-[1.43] mr-2"> More </span>
                     <ArrowRightIcon class="w-4 h-4" />
                 </button>

@@ -7,8 +7,12 @@ import Credit from './Credit.vue';
 import Security from './Security.vue';
 import Alerts from './Alerts.vue';
 import Marketing from './Marketing.vue';
+import { useAuthStore } from '~/store/authStore';
+import { storeToRefs } from 'pinia';
 
 const route = useRoute();
+const authStore = useAuthStore();
+const { getUserDetails } = storeToRefs(authStore);
 
 onMounted(() => {
     // check if the query has id to scroll in to view
@@ -25,14 +29,17 @@ onMounted(() => {
 </script>
 
 <template>
-    <Details />
-    <Shipping />
-    <Billing />
-    <Payments />
-    <Credit />
-    <Security />
-    <Alerts />
-    <Marketing />
+    <template v-if="getUserDetails">
+        <Details />
+        <Shipping />
+        <Billing />
+        <Payments />
+        <Credit />
+        <Security />
+        <Alerts />
+        <Marketing />
+    </template>
+    <div v-else class="bg-white rounded-xl shadow-xs p-6 text-sm text-slate-500">Loading settings...</div>
 </template>
 
 <style scoped lang="postcss"></style>

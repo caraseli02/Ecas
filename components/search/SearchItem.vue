@@ -140,6 +140,7 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue';
+import ImageWithFallback from '~/components/global/ImageWithFallback.vue';
 import EditIcon from '@/assets/icons/edit.svg';
 import PDFIcon from '@/assets/icons/pdf.svg';
 import LeafIcon from '@/assets/icons/leaf.svg';

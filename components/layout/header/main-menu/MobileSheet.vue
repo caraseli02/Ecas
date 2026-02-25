@@ -32,7 +32,9 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener('resize', updateViewportState);
+    if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', updateViewportState);
+    }
 });
 </script>
 

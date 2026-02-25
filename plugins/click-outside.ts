@@ -26,11 +26,13 @@ export default defineNuxtPlugin((nuxtApp) => {
                 },
             };
 
-            document.addEventListener('click', handlers[id].callback);
+            if (typeof document !== 'undefined') {
+                document.addEventListener('click', handlers[id].callback);
+            }
         },
         beforeUnmount(el) {
             const id = el.getAttribute('dir-id');
-            if (id) {
+            if (id && typeof document !== 'undefined') {
                 document.removeEventListener('click', handlers[id].callback);
                 delete handlers[id];
             }

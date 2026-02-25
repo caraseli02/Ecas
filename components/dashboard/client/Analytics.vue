@@ -41,7 +41,9 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    window.removeEventListener('resize', resizeListener);
+    if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', resizeListener);
+    }
 });
 
 const visibleMonths = computed(() => {

@@ -3,9 +3,8 @@ import { useNuxtApp } from '#app';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '~/store/authStore';
 
-const { $api } = useNuxtApp();
-
 export const updateStoreDetails = async () => {
+    const { $api } = useNuxtApp();
     const authStore = useAuthStore();
     const { getUserDetails } = storeToRefs(authStore);
     const response = await $api.auth.fetchUserDetails(getUserDetails.value.firebaseId);

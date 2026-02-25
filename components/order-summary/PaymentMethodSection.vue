@@ -2,7 +2,7 @@
     <div class="flex flex-col gap-6">
         <div class="flex flex-row justify-between items-center">
             <span class="text-neutral-700 text-sm font-medium leading-6">Select Payment</span>
-            <button class="group">
+            <button v-if="!config.public.MOCK_MODE" class="group">
                 <SettingCog class="text-slate-500 group-hover:text-blue-500 transition duration-300" />
             </button>
         </div>
@@ -13,7 +13,7 @@
                 @click="selectPaymentOption({ type: PaymentTypeEnum.Card, info: null })"
             >
                 <UiButton
-                    v-if="cards.length > 0"
+                    v-if="cards.length > 0 && !config.public.MOCK_MODE"
                     size="xs"
                     variant="link"
                     class="flex gap-2 items-center justify-end hover:underline pt-4"
@@ -35,7 +35,7 @@
                     :is-new-card-selected="isNewCardSelected"
                     :is-expired="cardExpired(card)"
                     :is-default="card.default"
-                    :enable-edit="true"
+                    :enable-edit="!config.public.MOCK_MODE"
                     show-pay-with-label
                     @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: $event })"
                 />
@@ -50,7 +50,7 @@
                 />
                 <OrderSummaryPayByCard
                     v-else-if="!card && availablePaymentMethods.includes(PaymentTypeEnum.Card)"
-                    enableEdit
+                    :enable-edit="!config.public.MOCK_MODE"
                     view="payment"
                     :cards="false"
                     :is-new-card-selected="false"
@@ -150,6 +150,7 @@ import { useAuthStore } from '~/store/authStore';
 import { usePaymentStore } from '~/store/paymentStore';
 
 const paymentStore = usePaymentStore();
+const config = useRuntimeConfig();
 
 const { card, cards, isNewCardSelected } = usePaymentCards();
 

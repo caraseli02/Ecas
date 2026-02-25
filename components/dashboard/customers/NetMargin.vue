@@ -26,7 +26,7 @@
                 <div v-else class="text-[28px] leading-normal font-semibold">1,200,539.77 Lei</div>
             </div>
             <div class="flex items-center justify-center">
-                <button class="flex items-center">
+                <button disabled class="flex items-center disabled:cursor-not-allowed disabled:opacity-60">
                     <span class="text-sm font-medium left-[1.43] text-slate-500 mr-2">
                         <span class="md:hidden lg:inline-block"> View </span> more
                     </span>
