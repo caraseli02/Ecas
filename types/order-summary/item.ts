@@ -2,7 +2,6 @@ import type { CustomerCreditInterface, DiscountInterface } from '~/types/auth/ac
 import type { ShippingAddressInterface, UserInterface } from '~/types/auth/user-interface';
 import type { BackorderShippingTypesInterface, StockorderShippingTypesInterface } from '~/types/general-settings/general-settings';
 import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
-import type { PaymentMethod } from '@stripe/stripe-js';
 import type { ShippingOrderPricingOption } from '~/types/order-summary/shipping-services';
 
 export interface OrderSummaryItem {
@@ -196,7 +195,12 @@ export interface PaymentDetails {
     status?: PaymentStatusEnum;
     paymentIntentId?: string;
     // card?: StripeCardInterface;
-    card?: Pick<PaymentMethod.Card, 'last4' | 'exp_year' | 'exp_month' | 'brand'>;
+    card?: {
+        last4: string;
+        exp_year: number;
+        exp_month: number;
+        brand: string;
+    };
     invoiceId?: string;
     invoiceShortId?: string;
     bankTransfer?: MarkAsPaidInterface;

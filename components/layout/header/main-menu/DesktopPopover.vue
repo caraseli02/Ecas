@@ -38,8 +38,10 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener('resize', updatePopoverTop);
-    window.removeEventListener('scroll', updatePopoverTop);
+    if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', updatePopoverTop);
+        window.removeEventListener('scroll', updatePopoverTop);
+    }
 });
 </script>
 

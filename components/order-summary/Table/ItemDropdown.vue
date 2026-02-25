@@ -95,6 +95,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import ImageWithFallback from '~/components/global/ImageWithFallback.vue';
 import { useAuthStore } from '~/store/authStore';
 import { storeToRefs } from 'pinia';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';

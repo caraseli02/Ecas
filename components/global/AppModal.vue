@@ -1,6 +1,6 @@
 <template>
     <UiSheet v-model:open="modelValue">
-        <UiSheetContent class="overflow-auto py-0" as-child :side="side">
+        <UiSheetContent class="overflow-auto py-0" :side="side">
             <slot />
         </UiSheetContent>
     </UiSheet>

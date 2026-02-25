@@ -1,6 +1,6 @@
 <template>
     <div
-        class="relative font-Inter lg:grid lg:grid-cols-[60%,40%] lg:gap-[25px] xl:grid-cols-[45%,30%,25%] xl:pb-[15px] xl:gap-0 xl:border-b xl:border-gray-200"
+        class="relative font-Inter max-md:pr-2 lg:grid lg:grid-cols-[60%,40%] lg:gap-[25px] xl:grid-cols-[45%,30%,25%] xl:pb-[15px] xl:gap-0 xl:border-b xl:border-gray-200"
     >
         <div class="flex items-start">
             <NuxtLink :to="`/product/${item._id}`" class="flex flex-shrink-0 mr-2.5 md:mr-[15px]">
@@ -15,16 +15,26 @@
                     <div class="flex items-center mb-2.5 md:mb-0 md:mr-5 md:flex-1 min-w-0">
                         <NuxtLink
                             :to="`/product/${item._id}`"
-                            class="text-xl leading-tight font-semibold mr-1.5 truncate"
+                            class="block min-w-0 flex-1 text-xl leading-tight font-semibold truncate"
                         >
                             {{ item.name }}
                         </NuxtLink>
-                        <button class="flex">
-                            <CopyClipboard
-                                :text="item.name || 'N/A'"
-                                class="w-[22px] h-[22px] text-slate-500 transition-colors duration-300 hover:text-blue-500"
-                            />
-                        </button>
+                        <div class="ml-1 flex flex-shrink-0 items-center gap-1">
+                            <button class="flex p-1" type="button" aria-label="Copy product name">
+                                <CopyClipboard
+                                    :text="item.name || 'N/A'"
+                                    class="w-[22px] h-[22px] text-slate-500 transition-colors duration-300 hover:text-blue-500"
+                                />
+                            </button>
+                            <div class="flex items-center gap-2 md:hidden">
+                                <button class="flex p-1 text-gray-500 transition-colors duration-300 hover:text-blue" type="button" aria-label="Favorite">
+                                    <HeartIcon class="w-6 h-6" />
+                                </button>
+                                <button class="flex p-1 text-gray-500 transition-colors duration-300 hover:text-blue" type="button" aria-label="Share">
+                                    <ShareIcon class="w-6 h-6" />
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <button
                         class="flex items-center text-slate-500 px-3 py-[5px] w-fit max-w-full border border-gray-300 rounded-[25px] mb-2.5 transition-colors duration-300 hover:text-blue-500 hover:border-blue-500 md:mb-0 md:max-w-[220px] md:flex-shrink-0"
@@ -108,7 +118,7 @@
                 <span class="text-sm font-medium">Add to cart</span>
             </button>
         </div>
-        <div class="absolute top-0 right-0 flex flex-col gap-2.5">
+        <div class="hidden md:flex absolute top-0 right-0 flex-col gap-2.5">
             <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue">
                 <HeartIcon class="w-6 h-6" />
             </button>
@@ -130,6 +140,7 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue';
+import ImageWithFallback from '~/components/global/ImageWithFallback.vue';
 import EditIcon from '@/assets/icons/edit.svg';
 import PDFIcon from '@/assets/icons/pdf.svg';
 import LeafIcon from '@/assets/icons/leaf.svg';

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { InfoIcon } from 'lucide-vue-next';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
+import ImageWithFallback from '~/components/global/ImageWithFallback.vue';
 import { OrderType } from '~/types';
 import type { OrderRequestInterface } from '~/types';
 import { useAuthStore } from '~/store/authStore';

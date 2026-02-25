@@ -72,21 +72,16 @@
                 {{ errorResponse.description }}
             </p>
         </div>
-        <div class="flex items-center justify-between mx-auto text-sm font-medium text-gray-500 mb-[25px]">
-            <span class="mr-2 text-slate-500 font-normal text-sm"> Don’t have an account ? </span>
-            <NuxtLink
-                to="/signup"
-                class="relative text-blue-500 hover:text-blue-400 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-blue-500 after:origin-right after:scale-x-0 after:rounded-full after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100"
-            >
-                Sign up now
-            </NuxtLink>
+        <div class="mx-auto text-sm font-medium text-gray-500 mb-[25px]">
+            <span class="text-slate-500 font-normal text-sm">Signup is disabled in the demo.</span>
         </div>
-        <div class="flex items-center mt-12 mb-6">
+        <div v-if="!config.public.MOCK_MODE" class="flex items-center mt-12 mb-6">
             <div class="h-px flex-1 bg-gray-100" />
             <span class="text-xs text-gray-400 flex-shrink-0 mx-[18px]"> Or continue with </span>
             <div class="h-px flex-1 bg-gray-100" />
         </div>
         <button
+            v-if="!config.public.MOCK_MODE"
             class="group flex items-center justify-center w-full border border-border py-2 rounded-lg mb-5 transition-colors duration-300 hover:border-blue-500"
             @click="loginWithGoogle"
         >
@@ -135,6 +130,7 @@ import { usePricingStore } from '~/store/pricingStore';
 const { checkForInputErrors } = useFormValidation();
 const { $api } = useNuxtApp();
 const config = useRuntimeConfig();
+const route = useRoute();
 const cartStore = useCartStore();
 const pricingStore = usePricingStore();
 const emits = defineEmits<{
@@ -242,6 +238,21 @@ const getRoleRedirectPath = (role?: AccountRole) => {
     return '/dashboard/client?tab=home';
 };
 
+const getSafeRedirectFromQuery = () => {
+    const redirectParam = typeof route.query.redirect === 'string' ? route.query.redirect : '';
+
+    if (!redirectParam) {
+        return '';
+    }
+
+    // Allow only in-app absolute paths and block protocol-relative redirects.
+    if (!redirectParam.startsWith('/') || redirectParam.startsWith('//')) {
+        return '';
+    }
+
+    return redirectParam;
+};
+
 const handleSignIn = async () => {
     if (isLoading.value) {
         return;
@@ -269,6 +280,7 @@ const handleSignIn = async () => {
     }
 
     isLoading.value = true;
+    const safeRedirect = getSafeRedirectFromQuery();
 
     try {
         const response = (await $api.auth.login(payload)) as SigninResponse;
@@ -291,7 +303,7 @@ const handleSignIn = async () => {
         }
 
         emits('signed-in');
-        await navigateTo(getRoleRedirectPath(userDetails.role));
+        await navigateTo(safeRedirect || getRoleRedirectPath(userDetails.role));
     } catch (error: any) {
         const statusCode = error?.response?.status || error?.statusCode || 500;
         errorResponse.code = statusCode;
@@ -365,7 +377,7 @@ const loginWithGoogle = async () => {
     if (!parsedToken.hasOwnProperty('permissions')) {
         authStore.addFirebaseToken(token);
         cookieToken.value = token;
-        return navigateTo('/signup');
+        return navigateTo('/');
     } else {
         cookieToken.value = token;
         await fetchUserDetails(parsedToken.user_id);

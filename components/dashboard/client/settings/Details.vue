@@ -18,6 +18,12 @@ const { $api } = useNuxtApp();
 
 const authStore = useAuthStore();
 const { getUserDetails } = storeToRefs(authStore);
+const hasUserDetails = computed(() => Boolean(getUserDetails.value));
+const accountType = computed(() => getUserDetails.value?.accountType ?? AccountType.Business);
+const isPersonalAccount = computed(() => accountType.value === AccountType.Personal);
+const activeAddress = computed(() =>
+    isPersonalAccount.value ? getUserDetails.value?.personalDetails?.address : getUserDetails.value?.companyDetails?.address
+);
 
 interface Country {
     label: string;
@@ -36,12 +42,9 @@ interface Region {
 
 const openEdit = ref(false);
 const country = ref<undefined | Country>(
-    getUserDetails.value[getUserDetails.value.accountType === AccountType.Personal ? 'personalDetails' : 'companyDetails']?.address.country
+    activeAddress.value?.country
         ? (countries.find(
-              (c) =>
-                  c.value ===
-                  getUserDetails.value[getUserDetails.value.accountType === AccountType.Personal ? 'personalDetails' : 'companyDetails']
-                      ?.address.country
+              (c) => c.value === activeAddress.value?.country
           ) as Country)
         : undefined
 );
@@ -58,11 +61,7 @@ const findRegionByName = (regions: Country['regions'] | undefined, name: string 
 };
 
 const region = ref<undefined | Region>(
-    findRegionByName(
-        country.value?.regions,
-        getUserDetails.value[getUserDetails.value.accountType === AccountType.Personal ? 'personalDetails' : 'companyDetails']?.address
-            .region
-    )
+    findRegionByName(country.value?.regions, activeAddress.value?.region)
 );
 
 const regions = ref<Region[]>(country.value?.regions.map((e) => ({ label: e.name, value: e.name })) || []);
@@ -74,9 +73,7 @@ const baseSchema = z.object({
         })
         .min(1)
         .default(
-            getUserDetails.value.accountType === AccountType.Personal
-                ? getUserDetails.value.personalDetails?.address.country || ''
-                : getUserDetails.value.companyDetails?.address.country || ''
+            activeAddress.value?.country || ''
         ),
     county: z
         .string({
@@ -84,9 +81,7 @@ const baseSchema = z.object({
         })
         .min(1)
         .default(
-            getUserDetails.value.accountType === AccountType.Personal
-                ? getUserDetails.value.personalDetails?.address.region || ''
-                : getUserDetails.value.companyDetails?.address.region || ''
+            activeAddress.value?.region || ''
         ),
     city: z
         .string({
@@ -94,9 +89,7 @@ const baseSchema = z.object({
         })
         .min(1)
         .default(
-            getUserDetails.value.accountType === AccountType.Personal
-                ? getUserDetails.value.personalDetails?.address.city || ''
-                : getUserDetails.value.companyDetails?.address.city || ''
+            activeAddress.value?.city || ''
         ),
     addressLine1: z
         .string({
@@ -104,27 +97,19 @@ const baseSchema = z.object({
         })
         .min(1)
         .default(
-            getUserDetails.value.accountType === AccountType.Personal
-                ? getUserDetails.value.personalDetails?.address.name1 || ''
-                : getUserDetails.value.companyDetails?.address.name1 || ''
+            activeAddress.value?.name1 || ''
         ),
     addressLine2: z
         .string()
         .optional()
-        .default(
-            getUserDetails.value.accountType === AccountType.Personal
-                ? getUserDetails.value.personalDetails?.address.name2 || ''
-                : getUserDetails.value.companyDetails?.address.name2 || ''
-        ),
+        .default(activeAddress.value?.name2 || ''),
     postcode: z
         .string({
             required_error: 'Postcode is required',
         })
         .min(1)
         .default(
-            getUserDetails.value.accountType === AccountType.Personal
-                ? getUserDetails.value.personalDetails?.address.postcode || ''
-                : getUserDetails.value.companyDetails?.address.postcode || ''
+            activeAddress.value?.postcode || ''
         ),
     phoneNumber: z
         .string({
@@ -132,21 +117,21 @@ const baseSchema = z.object({
         })
         .min(1)
         .regex(/^\+?\d{1,4}[\s-]?\(?\d{1,3}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$/, 'Invalid phone number')
-        .default(String(getUserDetails.value.contactDetails.phone)),
+        .default(String(getUserDetails.value?.contactDetails?.phone || '')),
     mobile: z
         .string({
             required_error: 'Mobile is required',
         })
         .min(1)
         .regex(/^\+?\d{1,4}[\s-]?\(?\d{1,3}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}$/, 'Invalid mobile number')
-        .default(String(getUserDetails.value.contactDetails.mobile)),
+        .default(String(getUserDetails.value?.contactDetails?.mobile || '')),
     email: z
         .string({
             required_error: 'Email is required',
         })
         .min(1)
         .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email')
-        .default(getUserDetails.value.contactDetails.email),
+        .default(getUserDetails.value?.contactDetails?.email || ''),
 });
 
 const formSchema = toTypedSchema(
@@ -156,13 +141,13 @@ const formSchema = toTypedSchema(
                 required_error: 'First name is required',
             })
             .min(1)
-            .default(getUserDetails.value.personalDetails?.firstName || ''),
+            .default(getUserDetails.value?.personalDetails?.firstName || ''),
         lastName: z
             .string({
                 required_error: 'Last name is required',
             })
             .min(1)
-            .default(getUserDetails.value.personalDetails?.lastName || ''),
+            .default(getUserDetails.value?.personalDetails?.lastName || ''),
     })
 );
 
@@ -173,40 +158,40 @@ const formBusinessSchema = toTypedSchema(
                 required_error: 'Company Name is required',
             })
             .min(1)
-            .default(getUserDetails.value.companyDetails?.name || ''),
+            .default(getUserDetails.value?.companyDetails?.name || ''),
         registrationNumber: z
             .string({
                 required_error: 'Company Registration Number is required',
             })
             .min(1)
-            .default(getUserDetails.value.companyDetails?.registrationNumber || ''),
+            .default(getUserDetails.value?.companyDetails?.registrationNumber || ''),
         taxId: z
             .string({
                 required_error: 'Tax ID is required',
             })
-            .default(getUserDetails.value.companyDetails?.taxId || '')
+            .default(getUserDetails.value?.companyDetails?.taxId || '')
             .optional(),
         vatNumber: z
             .string({
                 required_error: 'V.A.T Number is required',
             })
-            .default(getUserDetails.value.companyDetails?.vat || '')
+            .default(getUserDetails.value?.companyDetails?.vat || '')
             .optional(),
         bankName: z
             .string()
             .optional()
-            .default(getUserDetails.value.companyDetails?.bank_name || '')
+            .default(getUserDetails.value?.companyDetails?.bank_name || '')
             .or(z.literal('')),
         iban: z
             .union([z.string().length(0), z.string().regex(/^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/, 'Invalid IBAN')])
-            .default(getUserDetails.value.companyDetails?.bank_iban || '')
+            .default(getUserDetails.value?.companyDetails?.bank_iban || '')
             .transform((e: string) => (e === '' ? undefined : e))
             .optional(),
     })
 );
 
 const { handleSubmit, setFieldValue, meta } = useForm({
-    validationSchema: getUserDetails.value.accountType === AccountType.Personal ? formSchema : formBusinessSchema,
+    validationSchema: isPersonalAccount.value ? formSchema : formBusinessSchema,
 });
 
 const onSubmit = handleSubmit(async (values) => {
@@ -214,7 +199,7 @@ const onSubmit = handleSubmit(async (values) => {
         return (openEdit.value = !openEdit.value);
     }
 
-    if (getUserDetails.value.accountType === AccountType.Personal) {
+    if (isPersonalAccount.value) {
         const payloadPersonal = {
             personalDetails: {
                 firstName: values.firstName,
@@ -284,8 +269,7 @@ watch(country, (newCountry) => {
         region.value = country.value.regions.find(
             (c) =>
                 c.shortCode ===
-                getUserDetails.value[getUserDetails.value.accountType === AccountType.Personal ? 'personalDetails' : 'companyDetails']
-                    ?.address.region
+                activeAddress.value?.region
         ) as any;
     } else {
         region.value = undefined;
@@ -303,7 +287,7 @@ watch(region, (newRegion) => {
 </script>
 
 <template>
-    <div class="bg-white shadow-l rounded-xl">
+    <div v-if="hasUserDetails" class="bg-white shadow-l rounded-xl">
         <section class="flex flex-col self-stretch p-4 md:p-6 bg-white rounded-xl shadow-sm">
             <header class="flex flex-col md:flex-row gap-2.5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
                 <h2 class="self-start text-xl font-semibold leading-7 text-neutral-700">Account Details</h2>
@@ -516,6 +500,7 @@ watch(region, (newRegion) => {
             </form>
         </section>
     </div>
+    <div v-else class="bg-white shadow-l rounded-xl p-6 text-sm text-slate-500">Loading account details...</div>
 </template>
 
 <style scoped lang="postcss">

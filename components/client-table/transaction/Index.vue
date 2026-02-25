@@ -21,16 +21,37 @@ const loading = ref(true);
 const error = ref(false);
 const listItems = ref<TransactionInterface[]>([]);
 
-const fetchAndSetTransactionList = _.debounce(async (page: number, perPage: number, filters = {}, sort = {}) => {
+const fetchAndSetTransactionListRaw = async (page: number, perPage: number, filters = {}, sort = {}) => {
+    loading.value = true;
     error.value = false;
 
-    if (props.userId) {
-        filters['userId'] = props.userId;
-    }
+    try {
+        if (props.userId) {
+            filters['userId'] = props.userId;
+        }
 
-    const data = await $api.controlPanel.fetchTransactions(page, perPage, filters, sort);
+        const data = await $api.controlPanel.fetchTransactions(page, perPage, filters, sort);
 
-    if (!data || data.status !== 'success') {
+        if (!data || data.status !== 'success') {
+            loading.value = false;
+            error.value = true;
+            totalItems.value = 0;
+            pageCount.value = 0;
+            listItems.value = [];
+            return;
+        }
+
+        totalItems.value = data.data.total_items;
+
+        listItems.value = data.data.items as TransactionInterface[];
+        pageCount.value = data.data.page_count;
+        emit('showTotalItems', data.data.total_items);
+
+        loading.value = false;
+
+        return data.data;
+    } catch (err) {
+        console.error('Failed to load transactions', err);
         loading.value = false;
         error.value = true;
         totalItems.value = 0;
@@ -38,24 +59,11 @@ const fetchAndSetTransactionList = _.debounce(async (page: number, perPage: numb
         listItems.value = [];
         return;
     }
+};
 
-    totalItems.value = data.data.total_items;
+const fetchAndSetTransactionList = _.debounce(fetchAndSetTransactionListRaw, 250);
 
-    listItems.value = data.data.items as TransactionInterface[];
-    pageCount.value = data.data.page_count;
-    emit('showTotalItems', data.data.total_items);
-
-    loading.value = false;
-    // listItems.value.forEach((item: TransactionInterface) => {
-    //   item.createdAt = moment(item.createdAt).format('DD/MM/YYYY');
-    //   item.amount = Number(item.amount).toFixed(2);
-    //   item.invoiceId = item.invoiceId || '-';
-    // });
-
-    return data.data;
-}, 250);
-
-await fetchAndSetTransactionList(1, 10);
+await fetchAndSetTransactionListRaw(1, 10);
 </script>
 
 <template>

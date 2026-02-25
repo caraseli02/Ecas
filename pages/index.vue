@@ -21,9 +21,8 @@ const route = useRoute();
 
 onMounted(() => {
     if (route.query.signin === 'true') {
-        router.replace({
-            query: {},
-        });
+        const { signin, ...rest } = route.query;
+        router.replace({ query: rest });
     }
 });
 

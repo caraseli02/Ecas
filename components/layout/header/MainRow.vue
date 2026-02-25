@@ -249,7 +249,9 @@ const closeAccountModal = async () => {
     showAccountModal.value = false;
 
     if (route.query.signin) {
-        const { signin, ...rest } = route.query;
+        const rest = { ...route.query };
+        delete rest.signin;
+        delete rest.redirect;
         await router.replace({ query: rest });
     }
 };

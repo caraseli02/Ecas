@@ -96,7 +96,8 @@
                     </NuxtLink>
                     <button
                         v-else
-                        class="group flex items-center text-gray-100 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241]"
+                        :disabled="isCollapsedOnDesktop"
+                        class="group flex items-center text-gray-100 rounded-lg transition-colors duration-300 hover:text-[#009FFF] hover:bg-[#2F3241] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:text-gray-100 disabled:hover:bg-transparent"
                         :class="[
                             item.dropdown?.show ? 'bg-[#2F3241]' : '',
                             isCollapsedOnDesktop ? 'justify-center w-12 h-12 mx-auto' : 'justify-between p-3 w-full',

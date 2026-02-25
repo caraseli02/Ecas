@@ -9,6 +9,7 @@ import { paymentStatusOptions, paymentTypeOptions } from '~/components/client-ta
 import { TransactionTableColumnsEnum } from '~/components/client-table/transaction/columns.enum';
 import { AccountRole } from '~/types';
 import DocumentService from '~/services/dashboard/document.service';
+import { formatNumberWithCommas } from '~/utils/numbers';
 // import { useAuthStore } from '~/store/authStore';
 // import { storeToRefs } from 'pinia';
 

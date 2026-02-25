@@ -1,7 +1,7 @@
 <template>
     <section class="mb-[30px] md:mb-[50px] xl:mb-14">
         <div class="container">
-            <PopoverContainer class="hidden lg:block my-3 shadow-s rounded-lg" />
+            <PopoverContainer class="hidden md:block my-3 shadow-s rounded-lg" />
             <div class="grid grid-cols-4">
                 <div
                     v-for="(feature, index) in features"

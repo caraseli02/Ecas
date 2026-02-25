@@ -39,7 +39,7 @@
                         />
                     </button>
                 </div>
-                <button class="flex items-center" @click="Emitter.emit('registered-filter', selectedOption)">
+                <button disabled class="flex items-center disabled:cursor-not-allowed disabled:opacity-60">
                     <span class="text-sm font-medium left-[1.43] text-slate-500 mr-1">
                         <span class="md:hidden lg:inline-block"> View </span> more
                     </span>
@@ -86,7 +86,6 @@ import type { ApexOptions } from 'apexcharts';
 import type { ReturningCustomersInterface } from '~/model/dashboard/response/CustomerInterfaceResponse';
 import { differenceInDays, startOfISOWeek } from 'date-fns';
 import { useNuxtApp } from '#app';
-import Emitter from 'tiny-emitter/instance.js';
 
 const { $api } = useNuxtApp();
 
