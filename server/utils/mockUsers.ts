@@ -46,11 +46,11 @@ const customerUser: MockUser = {
   contactDetails: {
     firstName: 'Demo',
     lastName: 'Customer',
-    email: 'customer@ecas.com',
+    email: 'customer@demo.com',
     phone: '+14085550101',
   },
   profileDetails: {
-    email: 'customer@ecas.com',
+    email: 'customer@demo.com',
   },
   personalDetails: {
     firstName: 'Demo',
@@ -121,14 +121,14 @@ const adminUser: MockUser = {
   contactDetails: {
     firstName: 'Demo',
     lastName: 'Admin',
-    email: 'admin@ecas.com',
+    email: 'admin@demo.com',
     phone: '+14085550100',
   },
   profileDetails: {
-    email: 'admin@ecas.com',
+    email: 'admin@demo.com',
   },
   companyDetails: {
-    name: 'ECAS Demo LLC',
+    name: 'Demo Company LLC',
     registrationNumber: 'REG-2026-001',
     vat: 'US123456789',
     taxId: 'TAX-998877',
@@ -160,7 +160,7 @@ const adminUser: MockUser = {
 const mockUsers: MockUserEntry[] = [
   {
     credentials: {
-      email: 'customer@ecas.com',
+      email: 'customer@demo.com',
       password: 'customer123',
       clientCode: 'P-123456',
     },
@@ -168,7 +168,7 @@ const mockUsers: MockUserEntry[] = [
   },
   {
     credentials: {
-      email: 'admin@ecas.com',
+      email: 'admin@demo.com',
       password: 'admin123',
       clientCode: 'A-123456',
     },

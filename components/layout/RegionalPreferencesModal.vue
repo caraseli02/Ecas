@@ -15,7 +15,7 @@
             </div>
             <div class="px-5 mb-10">
                 <div class="text-sm text-slate-500 mb-5">
-                    Select a language, shipping region and currency to update your experience on ecas.ro
+                    Select a language, shipping region and currency to update your experience on demo.app
                 </div>
                 <FormSelect
                     v-model="language"

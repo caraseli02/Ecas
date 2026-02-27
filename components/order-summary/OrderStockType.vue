@@ -27,12 +27,12 @@
                     >
                     <div class="flex flex-row gap-6">
                         <div v-if="shippingAndBillingMissingInfoWarning" class="flex flex-row gap-2 items-center">
-                            <EcasTooltip theme="black" position="top" class="flex sm:hidden lg:flex">
+                            <DemoTooltip theme="black" position="top" class="flex sm:hidden lg:flex">
                                 <WarningErrorYellow />
                                 <template #content>
                                     <span class="capitalize">Missing Info</span>
                                 </template>
-                            </EcasTooltip>
+                            </DemoTooltip>
                             <WarningErrorYellow class="hidden sm:flex lg:hidden" />
                             <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Missing Info</span>
                         </div>
@@ -59,12 +59,12 @@
                             v-if="!shippingPreferencesExpanded && ((mixedOrBackOrder && !order.backorderOption) || !order.deliveryMethod)"
                             class="flex flex-row gap-2 items-center"
                         >
-                            <EcasTooltip theme="black" position="top" class="flex sm:hidden lg:flex">
+                            <DemoTooltip theme="black" position="top" class="flex sm:hidden lg:flex">
                                 <WarningErrorHuge />
                                 <template #content>
                                     <span class="capitalize">Mandatory</span>
                                 </template>
-                            </EcasTooltip>
+                            </DemoTooltip>
                             <WarningErrorHuge class="hidden sm:flex lg:hidden" />
                             <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
                         </div>
@@ -94,12 +94,12 @@
                 >
                 <div class="flex flex-row gap-6">
                     <div v-if="paymentMethodWarning" class="flex flex-row gap-2 items-center">
-                        <EcasTooltip theme="black" position="top" class="flex sm:hidden lg:flex">
+                        <DemoTooltip theme="black" position="top" class="flex sm:hidden lg:flex">
                             <WarningErrorHuge />
                             <template #content>
                                 <span class="capitalize">Mandatory</span>
                             </template>
-                        </EcasTooltip>
+                        </DemoTooltip>
                         <WarningErrorHuge class="hidden sm:flex lg:hidden" />
                         <span class="text-slate-500 text-xs font-medium leading-4 hidden sm:flex lg:hidden">Mandatory</span>
                     </div>
@@ -134,7 +134,7 @@ import type { CartProductsInterface } from '~/model/cart/response/cart.interface
 import ChevronDownIcon from '@/assets/icons/dashboard/chevron-down.svg';
 import WarningErrorYellow from '@/assets/icons/warning-error-yellow.svg';
 import WarningErrorHuge from '@/assets/icons/warning-error-huge.svg';
-import EcasTooltip from '~/components/global/EcasTooltip.vue';
+import DemoTooltip from '~/components/global/DemoTooltip.vue';
 import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 import Emitter from 'tiny-emitter/instance.js';
 import { useAuthStore } from '~/store/authStore';

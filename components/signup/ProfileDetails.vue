@@ -93,7 +93,7 @@
                                 />
                             </div>
                             <span class="text-xs text-slate-500">
-                                I have read and agreed to ECAS’s
+                                I have read and agreed to Demo's
                                 <NuxtLink to="/" class="text-blue-500 font-medium">Terms of Service</NuxtLink>,
                                 <NuxtLink to="/" class="text-blue-500 font-medium">Privacy Policy</NuxtLink>
                                 and
@@ -123,7 +123,7 @@
                 </div>
                 <div class="text-xs text-center text-slate-500 mt-auto">
                     For assistance please contact
-                    <a href="mailto:support@ecas.ro" class="text-blue-500"> support@ecas.ro </a>
+                    <a href="mailto:support@demo.app" class="text-blue-500"> support@demo.app </a>
                 </div>
             </div>
         </div>

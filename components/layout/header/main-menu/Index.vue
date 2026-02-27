@@ -94,7 +94,7 @@
                 </NuxtLink>
             </div>
             <div class="bg-blue-500 px-5 pt-[17px] pb-[21px] text-xs font-semibold text-white text-center">
-                Sales: +40724 360 250 (Mon-Fri 8:00AM - 4:00PM EST)
+                Sales: +1 800 555 0199 (Mon-Fri 8:00AM - 4:00PM EST)
             </div>
         </div>
         <LayoutHeaderMainMenuBanners v-else />

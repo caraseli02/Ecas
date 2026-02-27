@@ -59,7 +59,7 @@
                         <div class="font-semibold leading-tight mb-2 md:order-1">
                             {{ firstName + ' ' + lastName }}
                         </div>
-                        <EcasTooltip theme="black" :position="'top'" class="self-start ml-3">
+                        <DemoTooltip theme="black" :position="'top'" class="self-start ml-3">
                             <LockKeyholeIcon
                                 v-if="customerInformation.status === AccountStatusEnum.Inactive"
                                 class="w-4 h-4 text-slate-500 transition-colors duration-300 hover:text-blue-500"
@@ -67,7 +67,7 @@
                             <template #content>
                                 <span class="capitalize">Account Locked</span>
                             </template>
-                        </EcasTooltip>
+                        </DemoTooltip>
                     </div>
                     <SkeletonLoader v-if="isLoading" class="w-[160px] h-5 mb-2 md:w-[180px]" />
                     <div v-else class="flex items-center text-sm mb-2 md:order-3 md:mb-0">
@@ -206,7 +206,7 @@ import moment from 'moment';
 import Emitter from 'tiny-emitter/instance.js';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 import { LockKeyholeIcon } from 'lucide-vue-next';
-import EcasTooltip from '~/components/global/EcasTooltip.vue';
+import DemoTooltip from '~/components/global/DemoTooltip.vue';
 import { countries } from '~/data/countries';
 import type { CountryInterface } from '~/types/dashboard/control-panel';
 

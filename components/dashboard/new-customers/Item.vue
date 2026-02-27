@@ -29,12 +29,12 @@
             </div>
         </NuxtLink>
         <div v-if="!loading" class="relative flex">
-            <EcasTooltip v-if="!item.active" theme="black" :position="'top'" class="self-start mx-3">
+            <DemoTooltip v-if="!item.active" theme="black" :position="'top'" class="self-start mx-3">
                 <LockKeyholeIcon class="w-4 h-4 text-slate-500 transition-colors duration-300 hover:text-blue-500" />
                 <template #content>
                     <span class="capitalize">Account Locked</span>
                 </template>
-            </EcasTooltip>
+            </DemoTooltip>
 
             <button class="flex text-[#9296AA] transition-colors duration-300 hover:text-blue-500" @click="showOptions = !showOptions">
                 <MoreVerticalIcon class="w-6 h-6" />
@@ -91,7 +91,7 @@ import type { PropType } from 'vue';
 import MoreVerticalIcon from '@/assets/icons/dashboard/more-vertical.svg';
 import UserIcon from '@/assets/icons/dashboard/user.svg';
 import { LockKeyholeIcon } from 'lucide-vue-next';
-import EcasTooltip from '~/components/global/EcasTooltip.vue';
+import DemoTooltip from '~/components/global/DemoTooltip.vue';
 import type { DashboardCustomerTableItem } from '~/types';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 

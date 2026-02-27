@@ -4,15 +4,15 @@
         <dl class="flex flex-col gap-2 md:gap-1 items-start mt-4 text-sm leading-6">
             <div class="flex flex-col md:flex-row gap-0.5 md:gap-3 items-center">
                 <dt data-layername="companyName" class="self-stretch my-auto text-gray-500">Company Name:</dt>
-                <dd data-layername="ecasElectroSRL" class="self-stretch my-auto text-zinc-800">ECAS Electro S.R.L</dd>
+                <dd data-layername="ecasElectroSRL" class="self-stretch my-auto text-zinc-800">Demo Company Inc.</dd>
             </div>
             <div class="flex flex-col md:flex-row gap-0.5 md:gap-3 items-center self-stretch">
                 <dt data-layername="companyAddressLine1" class="self-stretch my-auto text-gray-500">Company Address Line 1:</dt>
-                <dd data-layername="bdDimitriePompeiNr8" class="self-stretch my-auto text-zinc-800">Bd. Dimitrie Pompei Nr. 8</dd>
+                <dd data-layername="bdDimitriePompeiNr8" class="self-stretch my-auto text-zinc-800">123 Demo Street, Suite 400</dd>
             </div>
             <div class="flex flex-col md:flex-row gap-0.5 md:gap-3 items-center">
                 <dt data-layername="companyAddressLine2" class="self-stretch my-auto text-gray-500">Company Address Line 2:</dt>
-                <dd data-layername="sector2Bucuresti" class="self-stretch my-auto text-zinc-800">Sector 2, Bucuresti</dd>
+                <dd data-layername="sector2Bucuresti" class="self-stretch my-auto text-zinc-800">Tech City</dd>
             </div>
             <div class="flex flex-col md:flex-row gap-0.5 md:gap-3 items-center">
                 <dt data-layername="postalCode" class="self-stretch my-auto text-gray-500">Postal Code:</dt>

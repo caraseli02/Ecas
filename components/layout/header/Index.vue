@@ -6,7 +6,7 @@
                     <div class="flex items-center gap-2 mr-4 md:mr-0">
                         <HeadphonesIcon class="w-5 h-5" />
                         <div class="hidden text-xs leading-[1.67] md:flex lg:text-sm lg:leading-tight">
-                            Sales: +40724 360 250 (Mon-Fri 8:00AM - 4:00PM EST)
+                            Sales: +1 800 555 0199 (Mon-Fri 8:00AM - 4:00PM EST)
                         </div>
                     </div>
                     <div class="text-xs leading-[1.67] font-semibold text-rose-500 mr-auto md:mr-0 lg:text-sm lg:leading-[1.43]">
