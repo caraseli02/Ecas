@@ -3,10 +3,10 @@ import { OrderStatus, PaymentStatusEnum } from '~/types';
 
 const baseAddress = {
     _id: 'addr-demo',
-    name1: 'Bd. Dimitrie Pompei Nr. 8',
+    name1: '123 Demo Street, Suite 400',
     name2: 'Sector 2',
-    city: 'Bucuresti',
-    region: 'Bucuresti',
+    city: 'Tech City',
+    region: 'Tech City',
     postcode: '020335',
     country: 'Romania',
 };
@@ -20,11 +20,11 @@ const orders = [
         status: OrderStatus.Processing,
         createdAt: '2024-11-27T09:00:00.000Z',
         company: {
-            name: 'Ecas Electro S.R.L',
+            name: 'Demo Company Inc.',
             initial: 'E',
         },
         user: {
-            companyDetails: { name: 'Ecas Electro S.R.L' },
+            companyDetails: { name: 'Demo Company Inc.' },
         },
         shippingDetails: {
             address: baseAddress,

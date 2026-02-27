@@ -7,7 +7,7 @@
                 </h4>
                 <p class="mt-2 text-sm text-gray-600">
                     For support, reach out to
-                    <a href="mailto:support@ecasmag.ro" class="text-blue-500 underline hover:text-blue-700"> support@ecasmag.ro </a>
+                    <a href="mailto:support@demo.app" class="text-blue-500 underline hover:text-blue-700"> support@demo.app </a>
                 </p>
                 <span class="mt-4 text-gray-700 block">Thank you!</span>
             </div>

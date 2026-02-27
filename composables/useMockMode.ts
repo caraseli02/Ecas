@@ -28,7 +28,7 @@ export const useMockMode = () => {
         const isTest = import.meta.env.MODE === 'test';
 
         // Layer 3: Domain/IP whitelist check
-        const allowedDomains = ['localhost', '127.0.0.1', 'dev.ecasmag.ro'];
+        const allowedDomains = ['localhost', '127.0.0.1', 'dev.demo.app'];
         const isAllowedDomain = allowedDomains.some((domain) => {
             if (typeof window === 'undefined') {
                 return true;

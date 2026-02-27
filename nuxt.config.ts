@@ -30,7 +30,7 @@ export default defineNuxtConfig({
     ],
     app: {
         head: {
-            titleTemplate: '%s - ECAS',
+            titleTemplate: '%s - Demo',
             link: [
                 { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
                 {

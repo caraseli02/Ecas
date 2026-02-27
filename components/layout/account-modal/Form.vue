@@ -153,11 +153,11 @@ type LoginRole = 'customer' | 'admin';
 const selectedLoginRole = ref<LoginRole>('customer');
 const LOGIN_CREDENTIALS: Record<LoginRole, { email: string; password: string }> = {
     customer: {
-        email: 'customer@ecas.com',
+        email: 'customer@demo.com',
         password: 'customer123',
     },
     admin: {
-        email: 'admin@ecas.com',
+        email: 'admin@demo.com',
         password: 'admin123',
     },
 };

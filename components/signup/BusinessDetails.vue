@@ -88,7 +88,7 @@
                 </div>
                 <div class="text-xs text-center text-slate-500 mt-auto">
                     For assistance please contact
-                    <a href="mailto:support@ecas.ro" class="text-blue-500">support@ecas.ro</a>
+                    <a href="mailto:support@demo.app" class="text-blue-500">support@demo.app</a>
                 </div>
             </div>
         </div>

@@ -18,7 +18,7 @@
                             </clipPath>
                         </defs>
                     </svg>
-                    <div class="text-xl font-medium mb-[30px]">Welcome to Ecas</div>
+                    <div class="text-xl font-medium mb-[30px]">Welcome to Demo</div>
                     <div class="flex items-center border border-orange bg-orange-500/20 px-5 py-[15px] rounded-md">
                         <TriangleIcon class="w-[42px] h-[42px] text-orange-500 flex-shrink-0 mr-5" />
                         <div class="text-sm text-center">
@@ -62,7 +62,7 @@
                 </div>
                 <div class="text-xs text-center text-slate-500">
                     For assistance please contact
-                    <a href="mailto:support@ecas.ro" class="text-blue-500">support@ecas.ro</a>
+                    <a href="mailto:support@demo.app" class="text-blue-500">support@demo.app</a>
                 </div>
             </div>
         </div>

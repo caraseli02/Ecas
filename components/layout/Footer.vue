@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 <div>
-                    <p class="text-[15px] text-center text-slate-500">&copy; {{ new Date().getFullYear() }} ECAS.RO</p>
+                    <p class="text-[15px] text-center text-slate-500">&copy; {{ new Date().getFullYear() }} DEMO.APP</p>
                 </div>
             </div>
         </div>
@@ -164,12 +164,12 @@ const navItems = {
     ],
     'Customer Service': [
         {
-            label: 'Sales: +40724 360 250',
-            to: 'tel:+40724 360 250',
+            label: 'Sales: +1 800 555 0199',
+            to: 'tel:+1 800 555 0199',
         },
         {
-            label: 'Technical: +40724 360 250',
-            to: 'tel:+40724 360 250',
+            label: 'Technical: +1 800 555 0199',
+            to: 'tel:+1 800 555 0199',
         },
         {
             label: 'FAQs',

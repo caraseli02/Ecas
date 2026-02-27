@@ -4,7 +4,7 @@ const normalizePath = (value: string) => value.replace(/\\/g, '/').replace(/\/+$
 
 export default defineNuxtModule({
     meta: {
-        name: 'ecas-shadcn-components-dir-fix',
+        name: 'demo-shadcn-components-dir-fix',
     },
     setup(_, nuxt) {
         nuxt.hook('components:dirs', (dirs) => {
