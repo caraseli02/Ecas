@@ -6,17 +6,17 @@ import { cn } from '@/lib/utils';
 const props = defineProps<SeparatorProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
-    const { class: _, ...delegated } = props;
+  const { class: _, ...delegated } = props;
 
-    return delegated;
+  return delegated;
 });
 </script>
 
 <template>
-    <Separator
-        v-bind="delegatedProps"
-        :class="
-            cn('shrink-0 bg-slate-200 dark:bg-slate-800', props.orientation === 'vertical' ? 'w-px h-full' : 'h-px w-full', props.class)
-        "
-    />
+  <Separator
+    v-bind="delegatedProps"
+    :class="
+      cn('shrink-0 bg-slate-200 dark:bg-slate-800', props.orientation === 'vertical' ? 'w-px h-full' : 'h-px w-full', props.class)
+    "
+  />
 </template>

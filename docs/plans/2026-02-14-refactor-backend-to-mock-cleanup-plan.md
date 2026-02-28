@@ -208,12 +208,12 @@ BASE_URL_API: process.env.NUXT_PUBLIC_BASE_URL_API ?? '/api',  // Default to moc
 
 **Tasks**:
 
--   [x]  Delete `services/product.service.ts`
--   [x]  Delete `services/order-summary/cart.service.ts`
--   [x]  Remove `nuxt-stripe-module` from package.json
--   [x]  Run `npm install` to clean package-lock.json
--   [x]  Run `npm run lint` to check for unused imports
--   [x]  Run `npm run build` to verify compilation
+-   [x] Delete `services/product.service.ts`
+-   [x] Delete `services/order-summary/cart.service.ts`
+-   [x] Remove `nuxt-stripe-module` from package.json
+-   [x] Run `npm install` to clean package-lock.json
+-   [x] Run `npm run lint` to check for unused imports
+-   [x] Run `npm run build` to verify compilation
 
 **Expected Outcome**: No compilation errors, app runs normally.
 

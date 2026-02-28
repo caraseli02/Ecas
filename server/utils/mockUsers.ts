@@ -195,7 +195,8 @@ export const getMockUserByCredentials = (credentials: { email?: string; clientCo
 
     return (
       hasValidPassword
-      && (entry.credentials.email.toLowerCase() === normalizedEmail || entry.credentials.clientCode.toUpperCase() === normalizedClientCode)
+      && (entry.credentials.email.toLowerCase() === normalizedEmail
+        || entry.credentials.clientCode.toUpperCase() === normalizedClientCode)
     );
   });
 };

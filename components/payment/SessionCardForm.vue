@@ -1,19 +1,36 @@
 <template>
-    <div class="relative min-h-screen md:w-full">
-        <div class="container flex min-h-[60vh] flex-col items-center justify-center gap-4">
-            <div class="text-center">
-                <h1 class="text-xl font-semibold text-foreground">Stripe checkout disabled in demo</h1>
-                <p class="mt-1 text-sm text-muted-foreground">
-                    Online payment is disabled in this portfolio preview. Use demo checkout flows without card payment.
-                </p>
-            </div>
-            <div class="flex flex-wrap items-center justify-center gap-2">
-                <UiButton variant="default" @click="goToOrderSummary">Back to order summary</UiButton>
-                <UiButton variant="outline" @click="goHome">Back home</UiButton>
-            </div>
-            <UiButton disabled class="disabled:cursor-not-allowed disabled:opacity-60">Pay now</UiButton>
-        </div>
+  <div class="relative min-h-screen md:w-full">
+    <div class="container flex min-h-[60vh] flex-col items-center justify-center gap-4">
+      <div class="text-center">
+        <h1 class="text-xl font-semibold text-foreground">
+          Stripe checkout disabled in demo
+        </h1>
+        <p class="mt-1 text-sm text-muted-foreground">
+          Online payment is disabled in this portfolio preview. Use demo checkout flows without card payment.
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <UiButton
+          variant="default"
+          @click="goToOrderSummary"
+        >
+          Back to order summary
+        </UiButton>
+        <UiButton
+          variant="outline"
+          @click="goHome"
+        >
+          Back home
+        </UiButton>
+      </div>
+      <UiButton
+        disabled
+        class="disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        Pay now
+      </UiButton>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -21,19 +38,19 @@ const router = useRouter();
 const route = useRoute();
 const orderId = ref<string>();
 onMounted(() => {
-    orderId.value = route.query.id as string | undefined;
+  orderId.value = route.query.id as string | undefined;
 });
 
 const goHome = async () => {
-    await router.push('/');
+  await router.push('/');
 };
 
 const goToOrderSummary = async () => {
-    if (orderId.value) {
-        await router.push(`/order-summary/${orderId.value}`);
-        return;
-    }
+  if (orderId.value) {
+    await router.push(`/order-summary/${orderId.value}`);
+    return;
+  }
 
-    await router.push('/order-summary');
+  await router.push('/order-summary');
 };
 </script>

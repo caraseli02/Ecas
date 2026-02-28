@@ -1,5 +1,5 @@
 export interface QuickBuyItem {
-    index: number;
-    code: string;
-    quantity: number;
+  index: number;
+  code: string;
+  quantity: number;
 }

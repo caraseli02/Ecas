@@ -1,40 +1,40 @@
 type useFetchType = typeof useFetch;
 
 export const useFetchAPI: useFetchType = async (url, params) => {
-    const cookie = useCookie('token');
-    const runtimeConfig = useRuntimeConfig();
+  const cookie = useCookie('token');
+  const runtimeConfig = useRuntimeConfig();
 
-    const opts = {
-        key: url,
-        baseURL: runtimeConfig.public.BASE_URL_API,
+  const opts = {
+    key: url,
+    baseURL: runtimeConfig.public.BASE_URL_API,
 
-        async onRequest({ options }) {
-            options.headers = options.headers || {};
+    async onRequest({ options }) {
+      options.headers = options.headers || {};
 
-            if (cookie.value) {
-                options.headers['Authorization'] = `Bearer ${cookie.value}`;
-            }
-        },
+      if (cookie.value) {
+        options.headers['Authorization'] = `Bearer ${cookie.value}`;
+      }
+    },
 
-        async onRequestError({ error }) {
-            console.log(error.message);
-        },
+    async onRequestError({ error }) {
+      console.log(error.message);
+    },
 
-        async onResponseError({ response }) {
-            console.log(response._data.message);
-        },
+    async onResponseError({ response }) {
+      console.log(response._data.message);
+    },
 
-        ...params,
-    };
+    ...params,
+  };
 
-    const { data, pending, error, execute } = await useFetch(url, opts);
+  const { data, pending, error, execute } = await useFetch(url, opts);
 
-    return {
-        data,
-        pending,
-        error,
-        execute,
-    };
+  return {
+    data,
+    pending,
+    error,
+    execute,
+  };
 };
 
 // type FetchAPIType = (url: string, params?: any) => Promise<{ data: any; pending: Ref<boolean>; error: Ref<any> }>;

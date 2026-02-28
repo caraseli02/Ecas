@@ -3,33 +3,32 @@ import { ref } from 'vue';
 import type { FormSelectOption } from '~~/types';
 
 export const useRegionalPreferencesStore = defineStore(
-    'regional-preferences-store',
-    () => {
-        const language = ref<FormSelectOption>({
-            label: 'English',
-            value: 'english',
-        });
+  'regional-preferences-store',
+  () => {
+    const language = ref<FormSelectOption>({
+      label: 'English',
+      value: 'english',
+    });
 
-        const currency = ref<FormSelectOption>({
-            label: 'Lei',
-            value: 'ron',
-        });
+    const currency = ref<FormSelectOption>({
+      label: 'Lei',
+      value: 'ron',
+    });
 
-        const setLanguage = (option: FormSelectOption) => {
-            language.value = option;
-        };
+    const setLanguage = (option: FormSelectOption) => {
+      language.value = option;
+    };
 
-        const setCurrency = (option: FormSelectOption) => {
-            currency.value = option;
-        };
+    const setCurrency = (option: FormSelectOption) => {
+      currency.value = option;
+    };
 
-        return {
-            language,
-            currency,
-            setLanguage,
-            setCurrency,
-        };
-    },
-    { persist: { storage: piniaPluginPersistedstate.localStorage() } }
+    return {
+      language,
+      currency,
+      setLanguage,
+      setCurrency,
+    };
+  },
+  { persist: { storage: piniaPluginPersistedstate.localStorage() } },
 );
-

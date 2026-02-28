@@ -1,13 +1,13 @@
 <template>
-    <div v-if="route.query.mode === 'resetPassword'">
-        <PasswordReset />
-    </div>
-    <div v-if="route.query.mode === 'forgotPassword'">
-        <ForgotPassword />
-    </div>
-    <div v-if="route.query.mode === 'verifyEmail'">
-        <VerifyEmail />
-    </div>
+  <div v-if="route.query.mode === 'resetPassword'">
+    <PasswordReset />
+  </div>
+  <div v-if="route.query.mode === 'forgotPassword'">
+    <ForgotPassword />
+  </div>
+  <div v-if="route.query.mode === 'verifyEmail'">
+    <VerifyEmail />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -18,15 +18,15 @@ import VerifyEmail from '~/pages/verify-email.vue';
 const route = useRoute();
 
 useHead({
-    title: () => {
-        switch (route.query.mode) {
-            case 'resetPassword':
-                return 'Reset Password';
-            case 'forgotPassword':
-                return 'Forgot Password';
-            case 'verifyEmail':
-                return 'Verify Email';
-        }
-    },
+  title: () => {
+    switch (route.query.mode) {
+      case 'resetPassword':
+        return 'Reset Password';
+      case 'forgotPassword':
+        return 'Forgot Password';
+      case 'verifyEmail':
+        return 'Verify Email';
+    }
+  },
 });
 </script>

@@ -1,13 +1,12 @@
 import { getMockCartForUser, requireMockCartUserId } from '~/server/utils/mockCart';
 
 export default defineEventHandler(async (event) => {
-    const headers = getHeaders(event);
-    const userId = requireMockCartUserId(headers.authorization);
-    const cart = getMockCartForUser(userId);
+  const headers = getHeaders(event);
+  const userId = requireMockCartUserId(headers.authorization);
+  const cart = getMockCartForUser(userId);
 
-    return {
-        status: 'success',
-        data: cart,
-    };
+  return {
+    status: 'success',
+    data: cart,
+  };
 });
-

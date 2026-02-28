@@ -3,12 +3,12 @@ import type { HTMLAttributes } from 'vue';
 import { cn } from '@/lib/utils';
 
 const props = defineProps<{
-    class?: HTMLAttributes['class'];
+  class?: HTMLAttributes['class'];
 }>();
 </script>
 
 <template>
-    <td :class="cn('px-4 h-[60px] align-middle [&:has([role=checkbox])]:pr-0', props.class)">
-        <slot />
-    </td>
+  <td :class="cn('px-4 h-[60px] align-middle [&:has([role=checkbox])]:pr-0', props.class)">
+    <slot />
+  </td>
 </template>

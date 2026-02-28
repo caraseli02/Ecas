@@ -1,7 +1,7 @@
 ---
 status: pending
 priority: p2
-issue_id: "024"
+issue_id: '024'
 tags: [code-review, tooling, eslint, prettier, developer-experience]
 dependencies: []
 ---
@@ -14,9 +14,9 @@ dependencies: []
 
 ## Findings
 
-- Running `npm run lint` produces a very large number of issues (repo-wide), dominated by indentation rules.
-- Example error observed after recent changes: `app.vue` `vue/html-indent` expects 2 spaces but files are 4 spaces.
-- AGENTS.md states Prettier uses 4 spaces.
+-   Running `npm run lint` produces a very large number of issues (repo-wide), dominated by indentation rules.
+-   Example error observed after recent changes: `app.vue` `vue/html-indent` expects 2 spaces but files are 4 spaces.
+-   AGENTS.md states Prettier uses 4 spaces.
 
 ## Proposed Solutions
 
@@ -25,11 +25,13 @@ dependencies: []
 **Approach:** Update `vue/html-indent` and `@stylistic/indent` (and related rules) to match 4-space indentation.
 
 **Pros:**
-- Consistent with documented style
-- Makes `npm run lint` actionable again
+
+-   Consistent with documented style
+-   Makes `npm run lint` actionable again
 
 **Cons:**
-- Requires updating eslint config carefully to avoid regressions
+
+-   Requires updating eslint config carefully to avoid regressions
 
 **Effort:** Medium
 
@@ -42,11 +44,13 @@ dependencies: []
 **Approach:** Use Prettier for formatting and disable/relax indentation rules in ESLint.
 
 **Pros:**
-- Minimizes lint noise
-- Common setup for Vue/Nuxt repos
+
+-   Minimizes lint noise
+-   Common setup for Vue/Nuxt repos
 
 **Cons:**
-- Might reduce enforcement of certain stylistic rules
+
+-   Might reduce enforcement of certain stylistic rules
 
 **Effort:** Small/Medium
 
@@ -59,14 +63,15 @@ To be filled during triage.
 ## Technical Details
 
 **Likely files:**
-- `eslint.config.mjs`
-- Prettier config (if present)
+
+-   `eslint.config.mjs`
+-   Prettier config (if present)
 
 ## Acceptance Criteria
 
-- [ ] `npm run lint` output is actionable (no repo-wide indentation explosion)
-- [ ] Prettier and ESLint agree on indentation
-- [ ] A small set of representative `.vue` files lint clean after formatting
+-   [ ] `npm run lint` output is actionable (no repo-wide indentation explosion)
+-   [ ] Prettier and ESLint agree on indentation
+-   [ ] A small set of representative `.vue` files lint clean after formatting
 
 ## Work Log
 
@@ -75,14 +80,17 @@ To be filled during triage.
 **By:** Codex
 
 **Actions:**
-- Ran `npm run lint` and observed massive indentation mismatches against 4-space formatting
+
+-   Ran `npm run lint` and observed massive indentation mismatches against 4-space formatting
 
 **Learnings:**
-- Tooling mismatch is currently a major DX blocker
+
+-   Tooling mismatch is currently a major DX blocker
 
 ### 2026-02-22 - Deferred
 
 **By:** Codex
 
 **Actions:**
-- User requested deferring lint alignment to a separate refactor pass
+
+-   User requested deferring lint alignment to a separate refactor pass
