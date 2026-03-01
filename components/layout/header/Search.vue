@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative" v-click-outside="() => { showSearchResults = false }">
     <label
       class="relative hidden border-[1.5px] border-blue-500 rounded-lg items-center h-11 overflow-hidden md:flex"
       :class="[isScrolled ? 'lg:border-border' : '']"
@@ -119,6 +119,8 @@ const searchProduct = async (keyword: string, page = 1, perPage = 10): Promise<P
 
 function handleEnterButton() {
   const router = useRouter();
+  showSearchResults.value = false;
+  searchDOM.value?.blur();
   router.push({ path: '/search', query: { keyword: searchVal.value } });
 }
 
@@ -139,5 +141,9 @@ watch(focus, (newVal) => {
       searchDOM.value?.focus();
     });
   }
+});
+
+watch(() => route.fullPath, () => {
+  showSearchResults.value = false;
 });
 </script>

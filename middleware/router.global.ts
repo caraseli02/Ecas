@@ -61,7 +61,7 @@ export default defineNuxtRouteMiddleware((to) => {
 
   if (!permissions.length) {
     if (config.public.MOCK_MODE) {
-      return navigateTo('/?signin=true');
+      return navigateTo('/?signin=true&redirect=' + encodeURIComponent(to.fullPath));
     }
 
     return;

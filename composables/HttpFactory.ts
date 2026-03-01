@@ -31,7 +31,7 @@ class HttpFactory {
       if (options.handle401 !== false && err.response?.status === 401) {
         const router = useRouter();
         authStore.signOut();
-        router.push('/?signin=true');
+        router.push('/?signin=true&redirect=' + encodeURIComponent(router.currentRoute.value.fullPath));
         throw new Error('Session expired. Please log in again.');
       }
       throw err;

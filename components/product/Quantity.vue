@@ -59,7 +59,7 @@
       </div>
       <div class="lg:order-1 lg:pt-[60px] xl:pt-8 pl-4">
         <div
-          class="flex items-center justify-center bg-light-300 rounded px-[13px] py-1 text-xs leading-snug mb-[22px] lg:flex-col lg:items-start lg:justify-start lg:bg-transparent lg:p-0"
+          class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 bg-light-300 rounded px-[13px] py-2 text-xs leading-snug mb-[22px] lg:flex-col lg:items-start lg:justify-start lg:bg-transparent lg:p-0 lg:gap-0"
         >
           <div class="flex items-center h-6">
             <span class="text-slate-500 mr-[5px]">Price for:</span>

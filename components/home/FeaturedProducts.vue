@@ -18,7 +18,7 @@
               Exclusive Black Friday
             </div>
             <p class="text-xs text-slate-500 md:text-[13px] xl:text-base">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin accumsan nisi a porttitor.
+              Explore our top-tier industrial products with limited-time exclusive discounts for your project.
             </p>
             <button
               class="flex w-fit bg-blue-500 text-[13px] font-medium px-3 py-1.5 rounded-lg text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto xl:mt-6"

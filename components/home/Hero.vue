@@ -1,6 +1,9 @@
 <template>
   <section class="mb-[30px] md:mb-[50px] xl:mb-14">
     <div class="container">
+      <div class="md:hidden mt-3 mb-6">
+        <LayoutHeaderMainMenuBannerNew />
+      </div>
       <PopoverContainer class="hidden md:block my-3 shadow-s rounded-lg" />
       <div class="grid grid-cols-4">
         <div

@@ -23,7 +23,7 @@
               <OrderSummaryBannerImageCard class="hidden xl:flex" />
             </div>
           </div>
-          <div class="flex flex-col justify-start">
+          <div class="flex flex-col justify-start xl:sticky xl:top-[180px] xl:max-h-[calc(100vh-200px)] xl:overflow-y-auto scrollbar-none">
             <OrderStockType
               :items="cartItems"
               :account-credit="accountCredit"
@@ -40,7 +40,7 @@
               :order="order"
               :general-settings="generalSettings"
             />
-            <OrderSummaryCheckoutButtons :is-checkout-disabled="isCheckoutDisabled" />
+            <OrderSummaryCheckoutButtons :validation-status="checkoutValidationStatus" />
             <OrderSummaryBannerCard />
             <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
             <OrderSummarySimilarProducts :loading="loading" />
@@ -169,13 +169,18 @@ const checkoutStore = useCheckoutStore();
 const { checkout } = storeToRefs(checkoutStore);
 const stopButtonTrigger = ref(true);
 
-const isCheckoutDisabled = computed(() => {
-  const hasShippingAddress = !!order.value.shippingDetails.address;
-  const hasBillingAddress = !!order.value.shippingDetails.billingAddress;
-  const hasShippingPreference = !!order.value.deliveryMethod;
-  const hasPaymentMethod = !!order.value.paymentDetails && 'type' in order.value.paymentDetails;
+const checkoutValidationStatus = computed(() => {
+  return {
+    hasShippingAddress: !!order.value.shippingDetails.address,
+    hasBillingAddress: !!order.value.shippingDetails.billingAddress,
+    hasShippingPreference: !!order.value.deliveryMethod,
+    hasPaymentMethod: !!order.value.paymentDetails && 'type' in order.value.paymentDetails,
+  };
+});
 
-  return !(hasShippingAddress && hasBillingAddress && hasShippingPreference && hasPaymentMethod);
+const isCheckoutDisabled = computed(() => {
+  const status = checkoutValidationStatus.value;
+  return !(status.hasShippingAddress && status.hasBillingAddress && status.hasShippingPreference && status.hasPaymentMethod);
 });
 
 const isLoadingCheckout = ref(false);

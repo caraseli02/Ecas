@@ -8,6 +8,7 @@ svgPrefix.toString = () => `${_.uniqueId()}_`;
 dotenv.config({ path: '.env' });
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  devtools: { enabled: process.env.NUXT_PUBLIC_MOCK_MODE !== 'true' },
 
   modules: [
     'nuxt-svgo',
@@ -121,7 +122,7 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    'builder:watch': () => {},
+    'builder:watch': () => { },
   },
 
   eslint: {
