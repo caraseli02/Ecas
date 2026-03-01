@@ -1,82 +1,89 @@
 <template>
-    <div class="relative rounded-md overflow-x-hidden aspect-[1.24] md:aspect-auto">
-        <Swiper
-            :modules="[A11y, Pagination, Autoplay]"
-            :autoplay="{
-                delay: 5000,
-            }"
-            :slides-per-view="1"
-            :space-between="15"
-            :grab-cursor="true"
-            :pagination="{
-                bulletElement: 'button',
-                clickable: true,
-            }"
-            class="homeExclusiveOffer--swiper w-full h-full"
+  <div class="relative rounded-md overflow-x-hidden aspect-[1.24] md:aspect-auto">
+    <Swiper
+      :modules="[A11y, Pagination, Autoplay]"
+      :autoplay="{
+        delay: 5000,
+      }"
+      :slides-per-view="1"
+      :space-between="15"
+      :grab-cursor="true"
+      :pagination="{
+        bulletElement: 'button',
+        clickable: true,
+      }"
+      class="homeExclusiveOffer--swiper w-full h-full"
+    >
+      <SwiperSlide
+        v-for="(item, index) in slides"
+        :key="index"
+      >
+        <div
+          class="relative z-20 px-[15px] pt-[25px] pb-[15px] text-white h-full md:pt-5 lg:px-5 lg:py-[30px] xl:px-[30px] xl:pt-[35px]"
         >
-            <SwiperSlide v-for="(item, index) in slides" :key="index">
-                <div
-                    class="relative z-20 px-[15px] pt-[25px] pb-[15px] text-white h-full md:pt-5 lg:px-5 lg:py-[30px] xl:px-[30px] xl:pt-[35px]"
-                >
-                    <h3 class="font-semibold mb-[5px] md:text-2xl md:mb-2.5 lg:mb-[5px] xl:text-[32px] xl:mb-[15px]">
-                        {{ item.title }}
-                    </h3>
-                    <p
-                        class="text-[11px] mb-[26px] md:text-base md:mb-12 lg:max-w-[434px] lg:mb-[30px] xl:text-lg xl:max-w-[350px] xl:mb-[61px]"
-                    >
-                        {{ item.description }}
-                    </p>
-                    <button class="flex bg-blue-500 rounded px-3 py-1.5 text-[13px] font-medium md:px-6 md:py-2 md:text-sm xl:py-[9px]">
-                        View More
-                    </button>
-                    <img
-                        :src="item.item"
-                        alt="Img"
-                        class="absolute bottom-7 left-1/2 -translate-x-1/2 w-[205px] object-contain md:w-[188px] md:left-[unset] md:translate-x-0 md:right-[30px] lg:w-[185px] lg:right-5 xl:w-[300px] xl:right-[15px] xl:bottom-[75px]"
-                    />
-                </div>
-                <img :src="item.bg" alt="Background" class="absolute top-0 left-0 w-full h-full object-cover rounded-md" />
-                <div
-                    class="absolute z-10 top-0 left-0 w-full h-full opacity-75 rounded-md pointer-events-none"
-                    :style="{
-                        background: 'linear-gradient(85.26deg, #001238 17.24%, rgba(0, 127, 255, 0.85) 106.53%)',
-                    }"
-                />
-            </SwiperSlide>
-        </Swiper>
-    </div>
+          <h3 class="font-semibold mb-[5px] md:text-2xl md:mb-2.5 lg:mb-[5px] xl:text-[32px] xl:mb-[15px]">
+            {{ item.title }}
+          </h3>
+          <p
+            class="text-[11px] mb-[26px] md:text-base md:mb-12 lg:max-w-[434px] lg:mb-[30px] xl:text-lg xl:max-w-[350px] xl:mb-[61px]"
+          >
+            {{ item.description }}
+          </p>
+          <button class="flex bg-blue-500 rounded px-3 py-1.5 text-[13px] font-medium md:px-6 md:py-2 md:text-sm xl:py-[9px]">
+            View More
+          </button>
+          <img
+            :src="item.item"
+            alt="Img"
+            class="absolute bottom-7 left-1/2 -translate-x-1/2 w-[205px] object-contain md:w-[188px] md:left-[unset] md:translate-x-0 md:right-[30px] lg:w-[185px] lg:right-5 xl:w-[300px] xl:right-[15px] xl:bottom-[75px]"
+          >
+        </div>
+        <img
+          :src="item.bg"
+          alt="Background"
+          class="absolute top-0 left-0 w-full h-full object-cover rounded-md"
+        >
+        <div
+          class="absolute z-10 top-0 left-0 w-full h-full opacity-75 rounded-md pointer-events-none"
+          :style="{
+            background: 'linear-gradient(85.26deg, #001238 17.24%, rgba(0, 127, 255, 0.85) 106.53%)',
+          }"
+        />
+      </SwiperSlide>
+    </Swiper>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { A11y, Autoplay, Pagination } from 'swiper';
 import SlideBg from '@/assets/media/home/exclusive-offer-bg.jpg';
 import ItemImage from '@/assets/media/home/exclusive-offer-item.png';
-import { A11y, Autoplay, Pagination } from 'swiper';
 
 const slides = ref([
-    {
-        title: 'Exclusive Black Friday Offer',
-        description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
-        bg: SlideBg,
-        item: ItemImage,
-    },
-    {
-        title: 'Exclusive Black Friday Offer',
-        description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
-        bg: SlideBg,
-        item: ItemImage,
-    },
-    {
-        title: 'Exclusive Black Friday Offer',
-        description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
-        bg: SlideBg,
-        item: ItemImage,
-    },
-    {
-        title: 'Exclusive Black Friday Offer',
-        description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
-        bg: SlideBg,
-        item: ItemImage,
-    },
+  {
+    title: 'Exclusive Black Friday Offer',
+    description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
+    bg: SlideBg,
+    item: ItemImage,
+  },
+  {
+    title: 'Exclusive Black Friday Offer',
+    description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
+    bg: SlideBg,
+    item: ItemImage,
+  },
+  {
+    title: 'Exclusive Black Friday Offer',
+    description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
+    bg: SlideBg,
+    item: ItemImage,
+  },
+  {
+    title: 'Exclusive Black Friday Offer',
+    description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
+    bg: SlideBg,
+    item: ItemImage,
+  },
 ]);
 </script>
 

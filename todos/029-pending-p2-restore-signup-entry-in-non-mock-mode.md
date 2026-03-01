@@ -1,7 +1,7 @@
 ---
 status: pending
 priority: p2
-issue_id: "029"
+issue_id: '029'
 tags: [code-review, auth, demo-mode, ux]
 dependencies: []
 ---
@@ -18,9 +18,9 @@ This is a functional regression outside demo mode.
 
 ## Findings
 
-- `components/layout/account-modal/Form.vue:75` renders the demo-only message without a mock-mode condition.
-- The previous `NuxtLink` to `/signup` was removed entirely in this patch.
-- Google login and divider were correctly gated with `v-if="!config.public.MOCK_MODE"`, which indicates the signup message likely intended the same treatment.
+-   `components/layout/account-modal/Form.vue:75` renders the demo-only message without a mock-mode condition.
+-   The previous `NuxtLink` to `/signup` was removed entirely in this patch.
+-   Google login and divider were correctly gated with `v-if="!config.public.MOCK_MODE"`, which indicates the signup message likely intended the same treatment.
 
 ## Proposed Solutions
 
@@ -29,11 +29,13 @@ This is a functional regression outside demo mode.
 **Approach:** Render the demo message only in mock mode; restore the original signup link otherwise.
 
 **Pros:**
-- Preserves demo UX and production behavior
-- Small targeted change
+
+-   Preserves demo UX and production behavior
+-   Small targeted change
 
 **Cons:**
-- Requires keeping both UI variants maintained
+
+-   Requires keeping both UI variants maintained
 
 **Effort:** 15-30 minutes
 
@@ -46,12 +48,14 @@ This is a functional regression outside demo mode.
 **Approach:** Introduce a dedicated config flag (for example `SIGNUP_ENABLED`) rather than inferring from `MOCK_MODE`.
 
 **Pros:**
-- More explicit behavior control
-- Flexible for staging/demo environments
+
+-   More explicit behavior control
+-   Flexible for staging/demo environments
 
 **Cons:**
-- More config surface area
-- Slightly larger change
+
+-   More config surface area
+-   Slightly larger change
 
 **Effort:** 1-2 hours
 
@@ -64,24 +68,27 @@ This is a functional regression outside demo mode.
 ## Technical Details
 
 **Affected files:**
-- `components/layout/account-modal/Form.vue:75`
-- `components/layout/account-modal/Form.vue:76`
+
+-   `components/layout/account-modal/Form.vue:75`
+-   `components/layout/account-modal/Form.vue:76`
 
 **Related components:**
-- `components/layout/account-modal/Index.vue` (demo-specific modal copy)
+
+-   `components/layout/account-modal/Index.vue` (demo-specific modal copy)
 
 **Database changes (if any):**
-- Migration needed? No
+
+-   Migration needed? No
 
 ## Resources
 
-- **Review target:** local uncommitted changes on `main` (2026-02-25)
+-   **Review target:** local uncommitted changes on `main` (2026-02-25)
 
 ## Acceptance Criteria
 
-- [ ] In mock mode, the modal shows demo-specific signup-disabled copy
-- [ ] In non-mock mode, the `/signup` link is visible again
-- [ ] Copy and available auth options are consistent with mode (mock vs non-mock)
+-   [ ] In mock mode, the modal shows demo-specific signup-disabled copy
+-   [ ] In non-mock mode, the `/signup` link is visible again
+-   [ ] Copy and available auth options are consistent with mode (mock vs non-mock)
 
 ## Work Log
 
@@ -90,10 +97,11 @@ This is a functional regression outside demo mode.
 **By:** Codex
 
 **Actions:**
-- Compared account modal auth CTA changes in `Form.vue`
-- Verified mock-mode guards exist for Google sign-in but not for signup copy
-- Captured regression and remediation options
+
+-   Compared account modal auth CTA changes in `Form.vue`
+-   Verified mock-mode guards exist for Google sign-in but not for signup copy
+-   Captured regression and remediation options
 
 **Learnings:**
-- Demo-mode UX changes need consistent gating to avoid impacting production behavior.
 
+-   Demo-mode UX changes need consistent gating to avoid impacting production behavior.

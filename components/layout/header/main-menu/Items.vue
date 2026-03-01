@@ -6,12 +6,12 @@ defineProps<{ isScrolled: boolean }>();
 </script>
 
 <template>
-    <div class="hidden lg:block">
-        <DesktopPopover :is-scrolled="isScrolled" />
-    </div>
-    <div class="lg:hidden">
-        <ClientOnly>
-            <MobileSheet :is-scrolled="isScrolled" />
-        </ClientOnly>
-    </div>
+  <div class="hidden lg:block">
+    <DesktopPopover :is-scrolled="isScrolled" />
+  </div>
+  <div class="lg:hidden">
+    <ClientOnly>
+      <MobileSheet :is-scrolled="isScrolled" />
+    </ClientOnly>
+  </div>
 </template>

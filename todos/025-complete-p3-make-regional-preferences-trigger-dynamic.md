@@ -1,7 +1,7 @@
 ---
 status: complete
 priority: p3
-issue_id: "025"
+issue_id: '025'
 tags: [code-review, ux, i18n, ui]
 dependencies: []
 ---
@@ -14,8 +14,8 @@ The header regional preferences trigger label is currently hardcoded (e.g. `EN Â
 
 ## Findings
 
-- Trigger lives in `components/layout/header/Index.vue`.
-- Label was changed from `| Lei` to `EN Â· Lei`, but it does not read selection state.
+-   Trigger lives in `components/layout/header/Index.vue`.
+-   Label was changed from `| Lei` to `EN Â· Lei`, but it does not read selection state.
 
 ## Proposed Solutions
 
@@ -24,10 +24,12 @@ The header regional preferences trigger label is currently hardcoded (e.g. `EN Â
 **Approach:** Use the same state used by `LayoutRegionalPreferencesModal` (store or runtime config) to show current language and currency.
 
 **Pros:**
-- Correct and consistent
+
+-   Correct and consistent
 
 **Cons:**
-- Requires identifying the source of truth for preferences
+
+-   Requires identifying the source of truth for preferences
 
 **Effort:** Small
 
@@ -40,10 +42,12 @@ The header regional preferences trigger label is currently hardcoded (e.g. `EN Â
 **Approach:** On save, emit selection and update header state.
 
 **Pros:**
-- Localized change
+
+-   Localized change
 
 **Cons:**
-- Risk of duplicating state
+
+-   Risk of duplicating state
 
 **Effort:** Medium
 
@@ -55,8 +59,8 @@ To be filled during triage.
 
 ## Acceptance Criteria
 
-- [ ] Header label matches selected language + currency after saving preferences
-- [ ] Works across refresh (persisted source of truth)
+-   [ ] Header label matches selected language + currency after saving preferences
+-   [ ] Works across refresh (persisted source of truth)
 
 ## Work Log
 
@@ -65,13 +69,15 @@ To be filled during triage.
 **By:** Codex
 
 **Actions:**
-- Noted hardcoded label in header trigger
+
+-   Noted hardcoded label in header trigger
 
 ### 2026-02-22 - Completed
 
 **By:** Codex
 
 **Actions:**
-- Added persisted `useRegionalPreferencesStore`
-- Wired `components/layout/RegionalPreferencesModal.vue` to store
-- Made header label computed from store in `components/layout/header/Index.vue`
+
+-   Added persisted `useRegionalPreferencesStore`
+-   Wired `components/layout/RegionalPreferencesModal.vue` to store
+-   Made header label computed from store in `components/layout/header/Index.vue`

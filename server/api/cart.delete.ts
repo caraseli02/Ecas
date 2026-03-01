@@ -2,16 +2,15 @@ import type { DeleteProductCartRequestInterface } from '~/model/cart/request/car
 import { getMockCartForUser, removeProductsFromMockCart, requireMockCartUserId } from '~/server/utils/mockCart';
 
 export default defineEventHandler(async (event) => {
-    const body = (await readBody(event)) as Partial<DeleteProductCartRequestInterface>;
-    const headers = getHeaders(event);
-    const userId = requireMockCartUserId(headers.authorization);
+  const body = (await readBody(event)) as Partial<DeleteProductCartRequestInterface>;
+  const headers = getHeaders(event);
+  const userId = requireMockCartUserId(headers.authorization);
 
-    const cart = getMockCartForUser(userId);
-    removeProductsFromMockCart(cart, body.products || []);
+  const cart = getMockCartForUser(userId);
+  removeProductsFromMockCart(cart, body.products || []);
 
-    return {
-        status: 'success',
-        data: cart,
-    };
+  return {
+    status: 'success',
+    data: cart,
+  };
 });
-

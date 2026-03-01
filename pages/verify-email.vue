@@ -1,17 +1,19 @@
 <template>
-    <div class="py-20 md:py-[120px] lg:py-[150px] xl:pb-[276px]">
-        <div class="container max-w-[406px]">
-            <h1 class="text-xl leading-[1.4] font-semibold text-center mb-10">Verify your email</h1>
-            <div class="grid gap-4 mt-4">
-                <button
-                    class="flex items-center justify-center p-2 rounded-lg bg-blue-500 leading-[1.67] h-12 text-white font-medium"
-                    @click="verifyEmail()"
-                >
-                    Verify
-                </button>
-            </div>
-        </div>
+  <div class="py-20 md:py-[120px] lg:py-[150px] xl:pb-[276px]">
+    <div class="container max-w-[406px]">
+      <h1 class="text-xl leading-[1.4] font-semibold text-center mb-10">
+        Verify your email
+      </h1>
+      <div class="grid gap-4 mt-4">
+        <button
+          class="flex items-center justify-center p-2 rounded-lg bg-blue-500 leading-[1.67] h-12 text-white font-medium"
+          @click="verifyEmail()"
+        >
+          Verify
+        </button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -23,32 +25,32 @@ const route = useRoute();
 const router = useRouter();
 
 const verifyEmail = async () => {
-    if (!route.query.oobCode) {
-        return false;
-    }
+  if (!route.query.oobCode) {
+    return false;
+  }
 
-    const response = (await $api.auth.verifyEmail(route.query.oobCode as string)) as { status: string };
+  const response = (await $api.auth.verifyEmail(route.query.oobCode as string)) as { status: string };
 
-    if (response.status !== 'success') {
-        toast({
-            description: 'For some reason, your email verification failed. Please try again.',
-            title: 'Email verification failed',
-            variant: 'destructive',
-        });
-        await router.push('/');
-        return;
-    }
-
+  if (response.status !== 'success') {
     toast({
-        description: 'Your email has been verified successfully.',
-        title: 'Email verified',
-        variant: 'success',
+      description: 'For some reason, your email verification failed. Please try again.',
+      title: 'Email verification failed',
+      variant: 'destructive',
     });
     await router.push('/');
     return;
+  }
+
+  toast({
+    description: 'Your email has been verified successfully.',
+    title: 'Email verified',
+    variant: 'success',
+  });
+  await router.push('/');
+  return;
 };
 
 useHead({
-    title: 'Verify Email',
+  title: 'Verify Email',
 });
 </script>

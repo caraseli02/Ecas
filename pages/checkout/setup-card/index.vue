@@ -1,4 +1,5 @@
 <template>
-    <PaymentSetupCardForm />
+  <PaymentSetupCardForm />
 </template>
+
 <script setup lang="ts"></script>

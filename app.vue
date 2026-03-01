@@ -1,10 +1,13 @@
 <template>
-    <UiTooltipProvider>
-        <NuxtLayout>
-            <NuxtPage class="relative" id="nuxt_page" />
-        </NuxtLayout>
-    </UiTooltipProvider>
-    <LazyAppInfo v-model="appStore.showAppInBeta" />
+  <UiTooltipProvider>
+    <NuxtLayout>
+      <NuxtPage
+        id="nuxt_page"
+        class="relative"
+      />
+    </NuxtLayout>
+  </UiTooltipProvider>
+  <LazyAppInfo v-model="appStore.showAppInBeta" />
 </template>
 
 <script setup lang="ts">

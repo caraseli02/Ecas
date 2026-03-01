@@ -1,22 +1,22 @@
 import { createMockToken, getMockUserByCredentials } from '~/server/utils/mockUsers';
 
 export default defineEventHandler(async (event) => {
-    const body = (await readBody(event)) as { email?: string; clientCode?: string; password?: string };
-    const match = getMockUserByCredentials(body);
+  const body = (await readBody(event)) as { email?: string; clientCode?: string; password?: string };
+  const match = getMockUserByCredentials(body);
 
-    if (!match) {
-        throw createError({ statusCode: 401, statusMessage: 'Invalid credentials' });
-    }
+  if (!match) {
+    throw createError({ statusCode: 401, statusMessage: 'Invalid credentials' });
+  }
 
-    const token = createMockToken(match.user._id || 'mock-customer-1');
+  const token = createMockToken(match.user._id || 'mock-customer-1');
 
-    return {
-        status: 'success',
-        token,
-        user: match.user,
-        data: {
-            token,
-            user: match.user,
-        },
-    };
+  return {
+    status: 'success',
+    token,
+    user: match.user,
+    data: {
+      token,
+      user: match.user,
+    },
+  };
 });

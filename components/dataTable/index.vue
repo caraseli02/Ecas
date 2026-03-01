@@ -1,18 +1,18 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { ColumnDef, ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/vue-table';
 import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table';
-import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import type { DebouncedFunc } from 'lodash';
 import { watchDebounced } from '@vueuse/core';
+import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import { transformFiltersToObject, transformSortingKeys, valueUpdater } from '~/lib/utils';
 
 interface Props {
-    columns: ColumnDef<TData, TValue>[];
-    data: TData[];
-    fetchFn: DebouncedFunc<(page: number, perPage: number, filters?: any, sort?: any) => Promise<void>>;
-    pageCount: number;
-    totalItems: number;
-    loading: boolean;
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  fetchFn: DebouncedFunc<(page: number, perPage: number, filters?: any, sort?: any) => Promise<void>>;
+  pageCount: number;
+  totalItems: number;
+  loading: boolean;
 }
 
 const props = defineProps<Props>();
@@ -23,89 +23,89 @@ const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
 
 const table = useVueTable({
-    get data() {
-        return props.data;
+  get data() {
+    return props.data;
+  },
+  get columns() {
+    return props.columns;
+  },
+  state: {
+    get sorting() {
+      return sorting.value;
     },
-    get columns() {
-        return props.columns;
+    get columnFilters() {
+      return columnFilters.value;
     },
-    state: {
-        get sorting() {
-            return sorting.value;
-        },
-        get columnFilters() {
-            return columnFilters.value;
-        },
-        get columnVisibility() {
-            return columnVisibility.value;
-        },
-        get rowSelection() {
-            return rowSelection.value;
-        },
+    get columnVisibility() {
+      return columnVisibility.value;
     },
-    enableRowSelection: true,
-    //For Server Request
-    manualPagination: true,
-    manualSorting: true,
-    pageCount: props.pageCount,
-    //For Server Request
-    onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
-    onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
-    onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
-    onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
-    getCoreRowModel: getCoreRowModel(),
-    // getFilteredRowModel: getFilteredRowModel(),
-    // getSortedRowModel: getSortedRowModel(),
-    // getFacetedRowModel: getFacetedRowModel(),
-    // getFacetedUniqueValues: getFacetedUniqueValues(),
+    get rowSelection() {
+      return rowSelection.value;
+    },
+  },
+  enableRowSelection: true,
+  // For Server Request
+  manualPagination: true,
+  manualSorting: true,
+  pageCount: props.pageCount,
+  // For Server Request
+  onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
+  onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
+  onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
+  onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
+  getCoreRowModel: getCoreRowModel(),
+  // getFilteredRowModel: getFilteredRowModel(),
+  // getSortedRowModel: getSortedRowModel(),
+  // getFacetedRowModel: getFacetedRowModel(),
+  // getFacetedUniqueValues: getFacetedUniqueValues(),
 });
 
 watch(
-    () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting],
-    (oldVal, newVal) => {
-        console.log(newVal);
-        const { pageIndex, pageSize } = table.getState().pagination;
-        if (_isEqual(oldVal, newVal)) return;
+  () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting],
+  (oldVal, newVal) => {
+    console.log(newVal);
+    const { pageIndex, pageSize } = table.getState().pagination;
+    if (_isEqual(oldVal, newVal)) return;
 
-        const rightIndex = pageIndex + 1;
-        props.fetchFn(
-            rightIndex,
-            pageSize,
-            transformFiltersToObject(table.getState().columnFilters),
-            transformSortingKeys(table.getState().sorting[0])
-        );
-    }
+    const rightIndex = pageIndex + 1;
+    props.fetchFn(
+      rightIndex,
+      pageSize,
+      transformFiltersToObject(table.getState().columnFilters),
+      transformSortingKeys(table.getState().sorting[0]),
+    );
+  },
 );
 
 const refresh = ref(false);
 watch(refresh, async () => {
-    if (!refresh.value) return;
-    const { pageIndex, pageSize } = table.getState().pagination;
-    const rightIndex = pageIndex + 1;
-    await props.fetchFn(
-        rightIndex,
-        pageSize,
-        transformFiltersToObject(table.getState().columnFilters),
-        transformSortingKeys(table.getState().sorting[0])
-    );
-    setTimeout(() => {
-        refresh.value = false;
-    }, 500);
+  if (!refresh.value) return;
+  const { pageIndex, pageSize } = table.getState().pagination;
+  const rightIndex = pageIndex + 1;
+  await props.fetchFn(
+    rightIndex,
+    pageSize,
+    transformFiltersToObject(table.getState().columnFilters),
+    transformSortingKeys(table.getState().sorting[0]),
+  );
+  setTimeout(() => {
+    refresh.value = false;
+  }, 500);
 });
 
 watchDebounced(
-    () => table.getState().columnFilters,
-    () => {
-        const { pageSize } = table.getState().pagination;
-        table.setPageIndex(0);
-        props.fetchFn(
-            1,
-            pageSize,
-            transformFiltersToObject(table.getState().columnFilters),
-            transformSortingKeys(table.getState().sorting[0])
-        );
-    },
-    { debounce: 500, maxWait: 1000 }
+  () => table.getState().columnFilters,
+  () => {
+    const { pageSize } = table.getState().pagination;
+    table.setPageIndex(0);
+    props.fetchFn(
+      1,
+      pageSize,
+      transformFiltersToObject(table.getState().columnFilters),
+      transformSortingKeys(table.getState().sorting[0]),
+    );
+  },
+  { debounce: 500, maxWait: 1000 },
 );
 
 // watch(
@@ -123,59 +123,90 @@ watchDebounced(
 // }, {deep: true})
 
 const loadingSize = computed(async () => {
-    // const size = 60 * 10;
-    const size = 60 * Number(table.getState().pagination.pageSize);
-    await nextTick();
-    return `${size}px`;
+  // const size = 60 * 10;
+  const size = 60 * Number(table.getState().pagination.pageSize);
+  await nextTick();
+  return `${size}px`;
 });
 </script>
 
 <template>
-    <div class="space-y-4 mt-5 font-Poppins text-neutral-700 relative">
-        <slot name="tabs" :table="table" />
-        <slot name="header" :make-refresh="() => (refresh = true)" :table="table" />
-        <slot name="toolbar" :table="table" />
-        <div class="rounded-xl border relative min-h-[650px]">
-            <UiTable>
-                <UiTableHeader class="bg-light-200">
-                    <UiTableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-                        <UiTableHead v-for="header in headerGroup.headers" :key="header.id">
-                            <FlexRender
-                                v-if="!header.isPlaceholder"
-                                :render="header.column.columnDef.header"
-                                :props="header.getContext()"
-                            />
-                        </UiTableHead>
-                    </UiTableRow>
-                </UiTableHeader>
-                <UiTableBody class="relative min-h-[600px]">
-                    <template v-if="table.getRowModel().rows?.length">
-                        <UiTableRow
-                            v-for="row in table.getRowModel().rows"
-                            :key="row.id"
-                            class="hover:bg-light-200"
-                            :data-state="row.getIsSelected() && 'selected'"
-                        >
-                            <UiTableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-                                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
-                            </UiTableCell>
-                        </UiTableRow>
-                    </template>
+  <div class="space-y-4 mt-5 font-Poppins text-neutral-700 relative">
+    <slot
+      name="tabs"
+      :table="table"
+    />
+    <slot
+      name="header"
+      :make-refresh="() => (refresh = true)"
+      :table="table"
+    />
+    <slot
+      name="toolbar"
+      :table="table"
+    />
+    <div class="rounded-xl border relative min-h-[650px]">
+      <UiTable>
+        <UiTableHeader class="bg-light-200">
+          <UiTableRow
+            v-for="headerGroup in table.getHeaderGroups()"
+            :key="headerGroup.id"
+          >
+            <UiTableHead
+              v-for="header in headerGroup.headers"
+              :key="header.id"
+            >
+              <FlexRender
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
+                :props="header.getContext()"
+              />
+            </UiTableHead>
+          </UiTableRow>
+        </UiTableHeader>
+        <UiTableBody class="relative min-h-[600px]">
+          <template v-if="table.getRowModel().rows?.length">
+            <UiTableRow
+              v-for="row in table.getRowModel().rows"
+              :key="row.id"
+              class="hover:bg-light-200"
+              :data-state="row.getIsSelected() && 'selected'"
+            >
+              <UiTableCell
+                v-for="cell in row.getVisibleCells()"
+                :key="cell.id"
+              >
+                <FlexRender
+                  :render="cell.column.columnDef.cell"
+                  :props="cell.getContext()"
+                />
+              </UiTableCell>
+            </UiTableRow>
+          </template>
 
-                    <div v-else class="w-full min-h-[600px]">
-                        <section class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                            <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
-                            <div class="w-full">No results.</div>
-                        </section>
-                    </div>
-                </UiTableBody>
-            </UiTable>
-            <UiSkeleton
-                v-if="refresh || loading"
-                :style="{ height: loadingSize }"
-                class="w-full rounded absolute inset-0 top-[49px] z-10"
-            />
-        </div>
-        <DataTablePagination :total-items="totalItems" :page-count="props.pageCount" :table="table" />
+          <div
+            v-else
+            class="w-full min-h-[600px]"
+          >
+            <section class="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <EmojiSadIcon class="w-[52px] h-[52px] mb-4" />
+              <div class="w-full">
+                No results.
+              </div>
+            </section>
+          </div>
+        </UiTableBody>
+      </UiTable>
+      <UiSkeleton
+        v-if="refresh || loading"
+        :style="{ height: loadingSize }"
+        class="w-full rounded absolute inset-0 top-[49px] z-10"
+      />
     </div>
+    <DataTablePagination
+      :total-items="totalItems"
+      :page-count="props.pageCount"
+      :table="table"
+    />
+  </div>
 </template>

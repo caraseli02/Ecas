@@ -6,16 +6,20 @@ import { cn } from '@/lib/utils';
 const props = defineProps<AccordionItemProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
-    const { class: _, ...delegated } = props;
+  const { class: _, ...delegated } = props;
 
-    return delegated;
+  return delegated;
 });
 
 const forwardedProps = useForwardProps(delegatedProps);
 </script>
 
 <template>
-    <AccordionItem v-slot="{ open }" v-bind="forwardedProps" :class="cn(props.class)">
-        <slot :open="open" />
-    </AccordionItem>
+  <AccordionItem
+    v-slot="{ open }"
+    v-bind="forwardedProps"
+    :class="cn(props.class)"
+  >
+    <slot :open="open" />
+  </AccordionItem>
 </template>

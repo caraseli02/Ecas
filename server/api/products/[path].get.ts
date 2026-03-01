@@ -1,34 +1,34 @@
 import { mockProducts } from '~/server/utils/mockProducts';
 
 export default defineEventHandler(async (event) => {
-    const path = getRouterParam(event, 'path');
-    const normalizedPath = String(path || '').toLowerCase();
+  const path = getRouterParam(event, 'path');
+  const normalizedPath = String(path || '').toLowerCase();
 
-    const tabHandlers: Record<string, () => any[]> = {
-        featured: () => mockProducts.slice(0, 8),
-        'best-sellers': () => mockProducts.slice(8, 16),
-        'hot-deals': () => mockProducts.slice(16, 24),
-        'top-searched': () => mockProducts.slice(0, 8),
-    };
+  const tabHandlers: Record<string, () => any[]> = {
+    'featured': () => mockProducts.slice(0, 8),
+    'best-sellers': () => mockProducts.slice(8, 16),
+    'hot-deals': () => mockProducts.slice(16, 24),
+    'top-searched': () => mockProducts.slice(0, 8),
+  };
 
-    if (tabHandlers[normalizedPath]) {
-        return {
-            status: 'success',
-            data: tabHandlers[normalizedPath](),
-        };
-    }
-
-    const product = mockProducts.find((p: any) => p.path === path);
-
-    if (!product) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: 'Product not found',
-        });
-    }
-
+  if (tabHandlers[normalizedPath]) {
     return {
-        status: 'success',
-        data: product,
+      status: 'success',
+      data: tabHandlers[normalizedPath](),
     };
+  }
+
+  const product = mockProducts.find((p: any) => p.path === path);
+
+  if (!product) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Product not found',
+    });
+  }
+
+  return {
+    status: 'success',
+    data: product,
+  };
 });

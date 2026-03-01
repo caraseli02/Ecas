@@ -1,20 +1,20 @@
 interface Price {
-    total: number;
-    noVat: number;
+  total: number;
+  noVat: number;
 }
 
 export interface ShippingOrderPricingService {
-    id: number;
-    courierName?: string;
-    name?: string;
+  id: number;
+  courierName?: string;
+  name?: string;
 }
 
 export interface ShippingOrderPricingOption {
-    price: Price;
-    service: ShippingOrderPricingService;
+  price: Price;
+  service: ShippingOrderPricingService;
 }
 
 export interface ShippingOrderPricingResponse {
-    selected: ShippingOrderPricingOption;
-    list: ShippingOrderPricingOption[];
+  selected: ShippingOrderPricingOption;
+  list: ShippingOrderPricingOption[];
 }

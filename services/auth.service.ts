@@ -1,61 +1,62 @@
-import HttpFactory from '@/composables/HttpFactory';
 import { FirebaseError } from 'firebase/app';
+import HttpFactory from '@/composables/HttpFactory';
 import type { LoginRequest } from '~/model/auth/request/LoginRequest';
 import type { ProductResponse } from '~/model/products/response/ProductResponse';
 import type {
-    FirebaseBusinessAccount as SignupBusinessPayload,
-    FirebasePersonalAccount as SignupPersonalPayload,
-    UserDetailsResponse,
+  FirebaseBusinessAccount as SignupBusinessPayload,
+  FirebasePersonalAccount as SignupPersonalPayload,
+  UserDetailsResponse,
 } from '~~/types';
 import { useAuthStore } from '~/store/authStore';
 import useFirebaseAuth from '~/composables/useFirebaseAuth';
 
 class AuthService extends HttpFactory {
-    private RESOURCE = '/auth';
-    private authStore = useAuthStore();
+  private RESOURCE = '/auth';
+  private authStore = useAuthStore();
 
-    async login(payload: LoginRequest): Promise<ProductResponse | FirebaseError | unknown> {
-        try {
-            return await this.call('POST', `${this.RESOURCE}/login`, payload);
-        } catch (err) {
-            if (err instanceof FirebaseError) {
-                return err;
-            }
-            return err;
-        }
+  async login(payload: LoginRequest): Promise<ProductResponse | FirebaseError | unknown> {
+    try {
+      return await this.call('POST', `${this.RESOURCE}/login`, payload);
     }
-
-    async registerFirebase(payload: SignupPersonalPayload | SignupBusinessPayload) {
-        const token = await useFirebaseAuth().getUserToken();
-
-        return await this.call(
-            'POST',
-            `${this.RESOURCE}/firebase/register`,
-            payload,
-            token
-                ? {
-                      headers: { Authorization: `Bearer ${token}` },
-                  }
-                : {}
-        );
+    catch (err) {
+      if (err instanceof FirebaseError) {
+        return err;
+      }
+      return err;
     }
+  }
 
-    async registerClassic(payload: SignupPersonalPayload | SignupBusinessPayload) {
-        return await this.call('POST', `${this.RESOURCE}/register`, payload);
-    }
+  async registerFirebase(payload: SignupPersonalPayload | SignupBusinessPayload) {
+    const token = await useFirebaseAuth().getUserToken();
 
-    async verifyEmail(code: string) {
-        return await this.call('POST', 'user/email/verify', { code: code });
-    }
-
-    async fetchUserDetails(userId: string) {
-        const authStore = useAuthStore();
-        const token = authStore.getToken();
-
-        return await this.call<UserDetailsResponse>('GET', `user/${userId}/details`, null, {
+    return await this.call(
+      'POST',
+      `${this.RESOURCE}/firebase/register`,
+      payload,
+      token
+        ? {
             headers: { Authorization: `Bearer ${token}` },
-        });
-    }
+          }
+        : {},
+    );
+  }
+
+  async registerClassic(payload: SignupPersonalPayload | SignupBusinessPayload) {
+    return await this.call('POST', `${this.RESOURCE}/register`, payload);
+  }
+
+  async verifyEmail(code: string) {
+    return await this.call('POST', 'user/email/verify', { code: code });
+  }
+
+  async fetchUserDetails(userId: string) {
+    const authStore = useAuthStore();
+    const token = authStore.getToken();
+
+    return await this.call<UserDetailsResponse>('GET', `user/${userId}/details`, null, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
 }
 
 export default AuthService;
