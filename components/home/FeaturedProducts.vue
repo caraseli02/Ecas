@@ -18,7 +18,7 @@
               Exclusive Black Friday
             </div>
             <p class="text-xs text-slate-500 md:text-[13px] xl:text-base">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin accumsan nisi a porttitor.
+              Shop our Black Friday deals — up to 30% off on selected electronics and accessories. Limited time only.
             </p>
             <button
               class="flex w-fit bg-blue-500 text-[13px] font-medium px-3 py-1.5 rounded-lg text-white md:text-sm md:px-6 md:py-[11px] xl:mx-auto xl:mt-6"
@@ -44,7 +44,8 @@ const filters = ['Featured', 'Best Sellers', 'Hot Deals', 'Top Searched'];
 
 async function getProductTab() {
   try {
-    const { data } = await $api.product.fetchProductTab('featured');
+    const response = await $api.product.fetchProductTab('featured');
+    const data = response?.data || response;
 
     if (Array.isArray(data)) {
       productList.value = data as ProductInterface[];

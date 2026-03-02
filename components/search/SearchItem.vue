@@ -93,26 +93,26 @@
             Minimum Order: {{ minPriceConfiguration ? minPriceConfiguration.quantity : 0 }}
           </span>
         </div>
-        <section class="flex gap-2 min-w-fit">
-          <div class="flex flex-col items-start gap-1.5">
-            <span class="text-xs leading-tight font-normal mb-2"> Quantity (pcs) </span>
+        <section class="grid grid-cols-2 gap-x-4 gap-y-1.5 md:flex md:gap-4 min-w-fit">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold mb-1"> Qty </span>
             <span
-              v-for="(quantity, _) in bulkQuantities"
-              :key="quantity"
-              class="text-[13px] leading-tight"
+              v-for="[qty, _] in bulkQuantities"
+              :key="qty"
+              class="text-[13px] leading-tight font-medium"
             >
-              {{ quantity[0] }}+
+              {{ qty }}+
             </span>
           </div>
-          <div class="flex flex-col items-start gap-1.5">
-            <span class="text-xs leading-tight font-normal mb-2"> Price (Ex VAT)</span>
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold mb-1"> Price (Ex VAT)</span>
             <span
-              v-for="(quantity, _) in bulkQuantities"
-              :key="quantity[0]"
-              class="text-[13px] leading-tight"
-              :class="[productDiscount ? 'text-red' : '']"
+              v-for="[_, price] in bulkQuantities"
+              :key="price"
+              class="text-[13px] leading-tight font-semibold"
+              :class="[productDiscount ? 'text-rose-500' : 'text-blue-600']"
             >
-              {{ quantity[1].toFixed(2) }} Lei
+              {{ price.toFixed(2) }} Lei
             </span>
           </div>
         </section>
@@ -224,7 +224,7 @@ const fetchCart = async () => {
   getPricesConfiguration();
 
   if (data) {
-    initializeQuantities(props.item, data, quantity, initialRequestedQuantity, minPriceConfiguration.value);
+    initializeQuantities(props.item, data, quantity, initialRequestedQuantity, minPriceConfiguration.value!);
   }
 
   getPricesConfiguration();

@@ -54,7 +54,8 @@ const { $api } = useNuxtApp();
 watch(activeFilter, async (value) => {
   if (!value) return;
   try {
-    const { data } = await $api.product.fetchProductTab(value);
+    const response = await $api.product.fetchProductTab(value);
+    const data = response?.data || response;
 
     if (Array.isArray(data)) {
       emit('newProducts', data);

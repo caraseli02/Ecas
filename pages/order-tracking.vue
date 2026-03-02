@@ -6,7 +6,7 @@ const baseAddress = {
   name1: '123 Demo Street, Suite 400',
   name2: 'Sector 2',
   city: 'Tech City',
-  region: 'Tech City',
+  region: 'Ilfov Region',
   postcode: '020335',
   country: 'Romania',
 };

@@ -77,10 +77,9 @@
         </label>
         <label class="flex items-center lg:mr-auto">
           <span class="text-sm flex-shrink-0 mr-2.5">Sort by</span>
-          <div class="relative min-w-[215px] mr-2.5">
+          <div class="relative min-w-[215px] flex items-center bg-white border border-border rounded px-2.5 py-[3px] transition-colors duration-300 group focus-within:border-blue-500">
             <button
-              class="flex items-center justify-between w-full border bg-white rounded px-2.5 py-[3px] transition-colors duration-300"
-              :class="[showSortByOptions ? 'border-blue-500' : 'border-border']"
+              class="flex items-center justify-between flex-1"
               @click="showSortByOptions = !showSortByOptions"
             >
               <span class="text-sm text-left mr-2.5">{{ sortBy.label }}</span>
@@ -96,14 +95,16 @@
                 :style="{
                   boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
                 }"
-                class="absolute z-10 -bottom-1 border rounded left-0 translate-y-full w-full flex flex-col gap-[5px] bg-white rounded-md max-h-[250px] overflow-y-auto scrollbar-thin shadow-card px-2.5 py-[15px]"
+                class="absolute z-10 -bottom-1 border rounded left-0 translate-y-full w-full flex flex-col gap-[1px] bg-white rounded-md max-h-[300px] overflow-y-auto scrollbar-thin shadow-xl px-1 py-1"
               >
                 <button
-                  v-for="option in sortByOptions.filter((e) => e !== sortBy)"
+                  v-for="option in sortByOptions"
                   :key="option.name"
-                  class="flex w-full text-left text-sm rounded-[5px] transition-colors duration-300 hover:text-blue-500"
+                  class="flex w-full text-left text-sm rounded-[5px] transition-colors duration-300 hover:bg-slate-50 hover:text-blue-600 px-3 py-2"
+                  :class="{ 'text-blue-600 font-medium bg-slate-50': option.name === sortBy.name }"
                   @click="
                     sortBy = option;
+                    showSortByOptions = false;
                     emits('sort-by-change', option);
                   "
                 >
@@ -111,34 +112,36 @@
                 </button>
               </div>
             </transition>
-          </div>
-          <button
-            class="flex"
-            @click="
-              order === 0 ? (order = 1) : (order = 0);
-              emits('sort-order-change', order);
-            "
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="w-6 h-6"
+            <!-- Vertical divider -->
+            <div class="w-px h-5 bg-gray-200 mx-2" />
+            <button
+              class="flex transition-colors duration-300 text-slate-500 hover:text-blue-500"
+              @click="
+                order === 0 ? (order = 1) : (order = 0);
+                emits('sort-order-change', order);
+              "
             >
-              <path
-                fill="#5E6278"
-                d="M6.21 11h11.58c1.076 0 1.614-1.396.855-2.208L12.857 2.38a1.165 1.165 0 0 0-.854-.38c-.309 0-.617.127-.851.38L5.355 8.792C4.596 9.604 5.134 11 6.21 11Z"
-                class="transition-all duration-300"
-                :opacity="order === 'asc' ? '1' : '0.4'"
-              />
-              <path
-                fill="#5E6278"
-                d="M17.79 13H6.21c-1.076 0-1.614 1.396-.855 2.209l5.798 6.412c.23.252.502.379.848.379.309 0 .618-.127.854-.38l5.79-6.413c.76-.81.221-2.207-.855-2.207Z"
-                class="transition-all duration-300"
-                :opacity="order === 'asc' ? '0.4' : '1'"
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                class="w-6 h-6"
+              >
+                <path
+                  fill="currentColor"
+                  d="M6.21 11h11.58c1.076 0 1.614-1.396.855-2.208L12.857 2.38a1.165 1.165 0 0 0-.854-.38c-.309 0-.617.127-.851.38L5.355 8.792C4.596 9.604 5.134 11 6.21 11Z"
+                  class="transition-all duration-300"
+                  :class="[order === 1 ? 'text-blue-600' : 'text-slate-400']"
+                />
+                <path
+                  fill="currentColor"
+                  d="M17.79 13H6.21c-1.076 0-1.614 1.396-.855 2.209l5.798 6.412c.23.252.502.379.848.379.309 0 .618-.127.854-.38l5.79-6.413c.76-.81.221-2.207-.855-2.207Z"
+                  class="transition-all duration-300"
+                  :class="[order === 0 ? 'text-blue-600' : 'text-slate-400']"
+                />
+              </svg>
+            </button>
+          </div>
         </label>
         <label class="flex items-center">
           <span class="text-sm flex-shrink-0 mr-2.5">Products on page</span>

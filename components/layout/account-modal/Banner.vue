@@ -27,10 +27,10 @@
             <div class="items-stretch flex grow basis-[0%] flex-col gap-4">
               <div class="flex flex-col gap-1">
                 <h4 class="text-white text-sm font-bold leading-5 whitespace-nowrap">
-                  October Hot Sale
+                  Business Solutions
                 </h4>
                 <p class="text-white text-xs leading-4 font-normal">
-                  Contrary to popular belief, Lorem Ipsum is not simply random text.
+                  Scale your operations with our premium hardware logistics.
                 </p>
               </div>
               <div
@@ -55,10 +55,10 @@
             <div class="items-stretch flex grow basis-[0%] flex-col gap-4">
               <div class="flex flex-col gap-1">
                 <h4 class="text-white text-sm font-bold leading-5 whitespace-nowrap">
-                  October Hot Sale
+                  Global Logistics
                 </h4>
                 <p class="text-white text-xs leading-4 font-normal">
-                  Contrary to popular belief, Lorem Ipsum is not simply random text.
+                  Reliable worldwide shipping for your industrial components.
                 </p>
               </div>
               <div

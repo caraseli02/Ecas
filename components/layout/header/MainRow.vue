@@ -23,16 +23,16 @@
               <LayoutHeaderMainMenuItems :is-scrolled="isScrolled" />
               <NuxtLink
                 to="/"
-                class="flex"
-                :class="[isScrolled ? 'md:ml-4 lg:ml-6' : 'md:hidden']"
+                class="flex items-center"
+                :class="[isScrolled ? 'md:ml-4 lg:ml-6 ml-0' : 'md:hidden']"
               >
-                <LogoSM
-                  class="w-[22px] h-5"
-                  :class="[isScrolled ? 'md:hidden' : '']"
+                <!-- Use full Logo on mobile to avoid truncation, but smaller -->
+                <Logo
+                  class="w-[85px] h-5 grayscale brightness-0 invert md:hidden"
                 />
                 <Logo
-                  class="hidden w-[82px] grayscale brightness-0 invert lg:w-[102px]"
-                  :class="[isScrolled ? 'md:flex' : '']"
+                  class="hidden w-[82px] grayscale brightness-0 invert lg:w-[102px] md:flex"
+                  :class="[isScrolled ? '' : 'md:hidden']"
                 />
               </NuxtLink>
             </div>
