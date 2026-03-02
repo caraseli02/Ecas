@@ -11,21 +11,35 @@
       loading="lazy"
       @error="handleError"
     >
-    <svg
+    <div
       v-else
-      viewBox="0 0 100 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      :class="['full-size-svg', mediaClass]"
+      class="w-full h-full flex items-center justify-center bg-slate-100 rounded-lg overflow-hidden relative border border-slate-200"
     >
-      <path
-        d="M33.3752 16.6668V8.3335M50.0002 16.6668V8.3335M66.6668 16.6668V8.3335M83.3335 33.3335H91.6668M83.3335 50.0002H91.6668M83.3335 66.6668H91.6668M66.6668 83.3335V91.6668M50.0418 83.3335V91.6668M33.3752 83.3335V91.6668M8.3335 33.3335H16.6668M8.3335 50.0002H16.6668M8.3335 66.6668H16.6668M18.3335 71.6668L34.9114 59.3679C37.5678 57.3986 41.4013 57.6215 43.7887 59.8881L44.8984 60.9656C47.5213 63.4552 51.7582 63.4552 54.3811 60.9656L68.3697 47.7006C70.9926 45.2111 75.2295 45.2111 77.8524 47.7006L83.3335 52.9026M40.0002 83.3335H60.0002C76.6668 83.3335 83.3335 76.6668 83.3335 60.0002V40.0002C83.3335 23.3335 76.6668 16.6668 60.0002 16.6668H40.0002C23.3335 16.6668 16.6668 23.3335 16.6668 40.0002V60.0002C16.6668 76.6668 23.3335 83.3335 40.0002 83.3335ZM45.8335 37.5002C45.8335 42.1025 42.1025 45.8335 37.5002 45.8335C32.8978 45.8335 29.1668 42.1025 29.1668 37.5002C29.1668 32.8978 32.8978 29.1668 37.5002 29.1668C42.1025 29.1668 45.8335 32.8978 45.8335 37.5002Z"
-        stroke="#D3D3D3"
-        stroke-width="4"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+      <!-- Subtle Background for Premium Look -->
+      <div
+        class="absolute inset-0 opacity-10 grayscale"
+        style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=400'); background-size: cover; background-position: center;"
       />
-    </svg>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-12 h-12 text-slate-400 relative z-10"
+      >
+        <path
+          d="M9 3H15M9 21H15M20 7V17C20 18.1046 19.1046 19 18 19H6C4.89543 19 4 18.1046 4 17V7C4 5.89543 4.89543 5 6 5H18C19.1046 5 20 5.89543 20 7Z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <path
+          d="M12 9V15M9 12H15"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </div>
   </div>
 </template>
 

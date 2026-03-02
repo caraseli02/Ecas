@@ -10,7 +10,7 @@
         </h2>
       </div>
       <p class="text-neutral-700 text-xs font-normal leading-[18px]">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Items currently not in stock will be dispatched as soon as they become available.
       </p>
     </div>
   </div>

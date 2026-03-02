@@ -46,9 +46,10 @@
       />
       <div
         v-if="menuItem.disabled"
-        class="transition-all text-sm font-medium leading-6 whitespace-nowrap"
+        class="transition-all text-sm font-medium leading-6 whitespace-nowrap flex items-center justify-between flex-1"
       >
-        {{ menuItem.text }}
+        <span>{{ menuItem.text }}</span>
+        <span class="text-[10px] bg-zinc-100 text-zinc-400 px-1.5 py-0.5 rounded ml-2 font-bold tracking-tight">COMING SOON</span>
       </div>
       <div
         v-else

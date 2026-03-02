@@ -1,6 +1,27 @@
 <template>
-  <section class="mb-[30px] md:mb-[50px] xl:mb-14">
+  <section class="mb-[30px] md:mb-[50px] xl:mb-14 overflow-hidden">
     <div class="container">
+      <!-- Mobile Hero Banner (visible only on mobile) -->
+      <div class="block md:hidden relative overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm mb-4 min-h-[280px]">
+        <div class="absolute inset-0 overflow-hidden">
+          <div class="absolute -right-10 top-0 w-72 h-72 bg-[#325DF8] opacity-20 rounded-full filter blur-3xl" />
+          <div class="absolute -right-4 top-10 w-56 h-56 bg-[#5C28DF] opacity-20 rounded-full filter blur-2xl" />
+        </div>
+        <div class="relative z-10 flex flex-col justify-center h-full px-6 py-8">
+          <h1 class="text-3xl font-bold text-zinc-800 leading-tight mb-3">
+            Scale Your Business<br>Beyond Limits
+          </h1>
+          <p class="text-sm text-slate-500 mb-6 max-w-xs">
+            Join our growing community of successful vendors. Sign up for our waiting list today!
+          </p>
+          <NuxtLink to="/search" class="w-fit">
+            <UiButton class="w-fit py-2.5 px-6 text-sm font-medium">
+              Explore Products
+            </UiButton>
+          </NuxtLink>
+        </div>
+      </div>
+      <!-- Desktop category + banner popover (hidden on mobile) -->
       <PopoverContainer class="hidden md:block my-3 shadow-s rounded-lg" />
       <div class="grid grid-cols-4">
         <div

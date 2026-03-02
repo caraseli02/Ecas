@@ -52,7 +52,7 @@ type ProductEntityLike = {
 
 const calculatePricing = (productEntity: ProductEntityLike | null | undefined, stock = 0, backorderStock = 0) => {
   const activePrice
-        = productEntity?.priceHistory?.find?.(entry => entry?.active)?.price ?? productEntity?.priceHistory?.[0]?.price ?? 0;
+    = productEntity?.priceHistory?.find?.(entry => entry?.active)?.price ?? productEntity?.priceHistory?.[0]?.price ?? 0;
   const initialUnitPrice = Number(activePrice) || 0;
   const unitPriceAfterDiscounts = initialUnitPrice;
   const subtotal = unitPriceAfterDiscounts * (Number(stock) + Number(backorderStock));
@@ -138,16 +138,16 @@ export const getMockCartForUser = (userId: string) => {
   const defaultProduct = resolveMockProduct('prod-1');
   const starterProducts: CartProductsInterface[] = defaultProduct
     ? [
-        normalizeCartProduct(
-          {
-            id: defaultProduct._id,
-            stock: 1,
-            isFolder: false,
-          },
-          undefined,
-          'set',
-        ),
-      ]
+      normalizeCartProduct(
+        {
+          id: defaultProduct._id,
+          stock: 1,
+          isFolder: false,
+        },
+        undefined,
+        'set',
+      ),
+    ]
     : [];
 
   const cart: CartInterface = {
@@ -164,14 +164,8 @@ export const getMockCartForUser = (userId: string) => {
 
 export const requireMockCartUserId = (authorizationHeader?: string | null) => {
   const userId = parseMockUserIdFromToken(authorizationHeader);
-  if (!userId) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Unauthorized',
-    });
-  }
-
-  return userId;
+  // Support guest users by falling back to a fixed guest ID if no token is present
+  return userId || 'guest-user-session';
 };
 
 export const addProductsToMockCart = (cart: CartInterface, products: Partial<CartProductsInterface>[] = []) => {

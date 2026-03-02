@@ -2,11 +2,10 @@
   <div class="flex flex-col p-6 linear-gradient rounded-xl shadow-xs justify-between h-[276px] mb-9">
     <div class="flex flex-col gap-4">
       <h2 class="text-[#FFF] text-2xl font-semibold leading-9">
-        Banner Title
+        Exclusive Member Discount
       </h2>
       <p class="text-[#FFF] text-sm font-normal leading-6">
-        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature
-        from 45 BC, making it over 2000 years old.
+        Unlock special pricing and tiered discounts by creating a business account today. Save up to 15% on bulk orders.
       </p>
     </div>
     <div class="flex flex-row justify-center">

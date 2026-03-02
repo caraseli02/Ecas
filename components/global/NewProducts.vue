@@ -22,10 +22,11 @@ const { $api } = useNuxtApp();
 const productList = ref<ProductInterface[]>([]);
 
 async function getProductTab() {
-  const { data } = await $api.product.fetchProductTab('best-sellers');
+  const response = await $api.product.fetchProductTab('best-sellers');
+  const data = response?.data || response;
 
-  if (data) {
-    productList.value = data as unknown as ProductInterface[];
+  if (Array.isArray(data)) {
+    productList.value = data as ProductInterface[];
   }
 }
 

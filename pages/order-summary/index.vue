@@ -9,6 +9,26 @@
   >
     <div class="grid grid-cols-1">
       <div class="container px-4">
+        <div
+          v-if="!userId"
+          class="mb-6 mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center gap-4 text-blue-800"
+        >
+          <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600">
+            <InfoIcon class="w-6 h-6" />
+          </div>
+          <div class="flex-1">
+            <p class="font-bold text-sm md:text-base">Viewing Summary as Guest</p>
+            <p class="text-xs md:text-sm opacity-90">
+              Review your items and configuration here. To finalize the order and apply business discounts, please
+              <NuxtLink
+                to="/?signin=true"
+                class="underline hover:text-blue-900 transition-colors font-bold"
+              >
+                Sign In
+              </NuxtLink>
+            </p>
+          </div>
+        </div>
         <OrderSummaryHeader />
         <div class="gap-6 xl:grid xl:grid-cols-[1fr,392px]">
           <div class="flex flex-col gap-9 max-w-[992px]">
@@ -52,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { LoaderIcon } from 'lucide-vue-next';
+import { InfoIcon, LoaderIcon } from 'lucide-vue-next';
 import { storeToRefs } from 'pinia';
 import Emitter from 'tiny-emitter/instance.js';
 import OrderStockType from '~/components/order-summary/OrderStockType.vue';
@@ -137,10 +157,13 @@ const accountCredit = ref({
 });
 
 const getCustomerCredit = async () => {
-  if (!userId.value) return;
+  const config = useRuntimeConfig();
+  if (!userId.value && !config.public.MOCK_MODE) return;
+
+  const idToUse = userId.value || 'guest-user-session';
 
   try {
-    const response = await $api.user.fetchCustomerCredit(userId.value);
+    const response = (await $api.user.fetchCustomerCredit(idToUse)) as any;
 
     if (response.status === 'success' && response.data) {
       const creditData = response.data;
@@ -218,6 +241,10 @@ Emitter.on('delete-product-item', (object: { id: string }) => {
   cartItems.value = cartItems.value.filter(product => product.id !== object.id);
 });
 
+const deleteSelected = () => {
+  cartItems.value = cartItems.value.filter(item => !item.selected);
+};
+
 const updateSubtotal = async (items: CartProductsInterface[], order) => {
   shippingPreferences.value = await fetchShippingPrices(order);
   await calculateSubtotal(items, order);
@@ -243,7 +270,7 @@ onMounted(async () => {
   shippingPreferences.value = await fetchShippingPrices(order.value); // Fetch shipping prices
 
   // Initial calculations
-  await calculateSubtotal(cartItems.value, order);
+  await calculateSubtotal(cartItems.value, (order as any).value);
   calculateDiscount(cartItems.value, order);
 
   order.value.products = orderItems.value;
