@@ -14,11 +14,11 @@
           />
         </button>
       </div>
-      <img
-        :src="product.details?.ProductImage.ProductImageLarge"
-        alt="Microchip Logo"
-        class="w-[82px] h-[50px] object-contain"
-      >
+      <ImageWithFallback
+        :src="product.details?.ProductImage?.ProductImageLarge"
+        alt="Manufacturer logo"
+        class-name="w-[82px] h-[50px] object-contain"
+      />
     </div>
     <div class="flex items-center justify-between gap-3 px-2.5 h-8 bg-light-100 md:px-[15px]">
       <div class="text-xs leading-tight font-medium flex-shrink-0 text-neutral-700">
@@ -98,9 +98,10 @@
 import { SquarePen } from 'lucide-vue-next';
 import CADModelsIcon from '@/assets/icons/cad-models.svg';
 import PDFIcon from '@/assets/icons/pdf.svg';
+import ImageWithFallback from '~/components/global/ImageWithFallback.vue';
 import type { ProductDetail } from '~~/model/products/response/ProductDetailResponse';
 
-const props = defineProps<{
+defineProps<{
   product: ProductDetail;
 }>();
 

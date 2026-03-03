@@ -115,3 +115,4 @@ Screenshots captured under:
 
 -   `/Users/vladislavcaraseli/Documents/Ecas/docs/solutions/runtime-errors/demo-route-crashes-mock-mode-system-20260218.md`
 -   `/Users/vladislavcaraseli/Documents/Ecas/docs/solutions/ui-bugs/desktop-category-selection-hides-banner-and-renders-detail-panel-system-20260218.md`
+-   `/Users/vladislavcaraseli/Documents/Ecas/docs/solutions/ui-bugs/broken-product-media-fallback-and-icon-overlap-product-20260303.md`
