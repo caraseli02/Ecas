@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import type { OrderInterface } from '~~/types';
-import DashboardIcon from '@/assets/icons/dashboard/dashboard.svg';
+import DashboardIcon from '@/assets/icons/dashboard/dashboard-grid.svg';
 // import Emitter from 'tiny-emitter/instance.js';
 import { useAuthStore } from '@/store/authStore';
 
