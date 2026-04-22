@@ -43,12 +43,12 @@
       :class="[!selectedCategory && !selectedSubCategory ? '' : 'opacity-0 pointer-events-none']"
     >
       <h3 class="relative z-20 font-semibold mb-[5px] md:text-2xl lg:text-[32px] lg:mb-2.5 xl:text-[40px]">
-        Exclusive Black Friday Offer
+        Featured procurement workflows
       </h3>
       <p
         class="relative z-20 text-[11px] mb-[15px] max-w-[222px] leading-snug md:text-sm md:mb-[22px] md:max-w-[258px] lg:text-base lg:mb-[30px] lg:max-w-[415px] xl:text-lg xl:max-w-[642px] xl:mb-[46px]"
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut est massa.
+        Explore sourcing, order management, and account workflows in one polished B2B electronics experience.
       </p>
       <button
         class="relative z-20 flex bg-blue-500 text-white rounded px-[15px] py-2 text-xs font-medium mb-[30px] md:px-6 md:py-[11px] md:text-sm md:mb-[60px] lg:mb-[34px] xl:mb-14"

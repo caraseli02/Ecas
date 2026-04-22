@@ -61,26 +61,26 @@ import ItemImage from '@/assets/media/home/exclusive-offer-item.png';
 
 const slides = ref([
   {
-    title: 'Exclusive Black Friday Offer',
-    description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
+    title: 'Built for modern B2B procurement',
+    description: 'Compare parts, confirm availability, and move from shortlist to checkout with a cleaner reviewer-friendly flow.',
     bg: SlideBg,
     item: ItemImage,
   },
   {
-    title: 'Exclusive Black Friday Offer',
-    description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
+    title: 'Built for modern B2B procurement',
+    description: 'Compare parts, confirm availability, and move from shortlist to checkout with a cleaner reviewer-friendly flow.',
     bg: SlideBg,
     item: ItemImage,
   },
   {
-    title: 'Exclusive Black Friday Offer',
-    description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
+    title: 'Built for modern B2B procurement',
+    description: 'Compare parts, confirm availability, and move from shortlist to checkout with a cleaner reviewer-friendly flow.',
     bg: SlideBg,
     item: ItemImage,
   },
   {
-    title: 'Exclusive Black Friday Offer',
-    description: 'Introducing Ersa and the i-CON TRACE soldering station. Ersa and the i-CON TRACE soldering station.',
+    title: 'Built for modern B2B procurement',
+    description: 'Compare parts, confirm availability, and move from shortlist to checkout with a cleaner reviewer-friendly flow.',
     bg: SlideBg,
     item: ItemImage,
   },

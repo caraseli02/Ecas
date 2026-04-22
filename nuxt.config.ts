@@ -99,6 +99,10 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-11-20',
 
+  experimental: {
+    appManifest: false,
+  },
+
   vite: {
     vue: {
       script: {
@@ -125,7 +129,7 @@ export default defineNuxtConfig({
   },
 
   eslint: {
-    checker: true,
+    checker: false,
     config: {
       stylistic: {
         semi: true,

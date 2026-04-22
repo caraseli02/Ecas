@@ -7,7 +7,7 @@
     >
       <div class="relative z-20 xl:flex xl:items-center xl:flex-row-reverse">
         <div class="text-xs font-semibold text-left md:text-[10px] lg:text-[13px] lg:mb-[15px] xl:text-[17px] xl:mb-0">
-          Fastest Intel Core i7 Ever
+          Portfolio-ready sourcing demo
         </div>
         <NewIcon class="w-[18px] h-[18px] xl:w-7 xl:h-7 xl:mr-2.5" />
       </div>

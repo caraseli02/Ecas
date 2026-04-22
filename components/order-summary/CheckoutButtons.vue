@@ -9,7 +9,18 @@
           </div>
         </button>
       </div>
-      <div>
+      <div v-if="isGuestCheckout">
+        <NuxtLink
+          :to="signinHref"
+          class="flex items-center justify-center w-full rounded-lg bg-blue-500 px-6 py-2 text-white transition-colors duration-300 hover:bg-blue-400"
+        >
+          <ShieldIcon class="text-white" />
+          <div class="p-2">
+            <span class="text-white text-base font-medium leading-7">Sign in to Continue Checkout</span>
+          </div>
+        </NuxtLink>
+      </div>
+      <div v-else>
         <UiButton
           :disabled="isCheckoutDisabled"
           class="w-full"
@@ -48,6 +59,8 @@ import { useCheckoutStore } from '~/store/checkout';
 
 defineProps<{
   isCheckoutDisabled: boolean;
+  isGuestCheckout?: boolean;
+  signinHref?: string;
 }>();
 
 const stopButtonTrigger = async () => {};

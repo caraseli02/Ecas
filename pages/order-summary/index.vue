@@ -21,7 +21,7 @@
             <p class="text-xs md:text-sm opacity-90">
               Review your items and configuration here. To finalize the order and apply business discounts, please
               <NuxtLink
-                to="/?signin=true"
+                :to="signinHref"
                 class="underline hover:text-blue-900 transition-colors font-bold"
               >
                 Sign In
@@ -60,7 +60,11 @@
               :order="order"
               :general-settings="generalSettings"
             />
-            <OrderSummaryCheckoutButtons :is-checkout-disabled="isCheckoutDisabled" />
+            <OrderSummaryCheckoutButtons
+              :is-checkout-disabled="isCheckoutDisabled"
+              :is-guest-checkout="!userId"
+              :signin-href="signinHref"
+            />
             <OrderSummaryBannerCard />
             <OrderSummaryEcxlusiveOffer class="max-lg:hidden" />
             <OrderSummarySimilarProducts :loading="loading" />
@@ -79,7 +83,7 @@ import OrderStockType from '~/components/order-summary/OrderStockType.vue';
 
 // Types and Interfaces
 import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
-import type { PaymentDetails } from '~/types';
+import { OrderType, PaymentTypeEnum, type PaymentDetails } from '~/types';
 import type { BackorderShippingTypesInterface, SmallOrderChargeInterface } from '~/types/general-settings/general-settings';
 
 // Composables
@@ -186,6 +190,50 @@ const getCustomerCredit = async () => {
 };
 
 const shippingPreferences = ref(null as ShippingOrderPricingResponse | null);
+const signinHref = computed(() => {
+  const routePath = router.currentRoute.value.fullPath || '/order-summary';
+  return `/?signin=true&redirect=${encodeURIComponent(routePath)}`;
+});
+
+const applyMockCheckoutDefaults = () => {
+  const config = useRuntimeConfig();
+
+  if (!config.public.MOCK_MODE || !userId.value) {
+    return;
+  }
+
+  if (!order.value.deliveryMethod) {
+    const firstDeliveryMethod = shippingPreferences.value?.list?.find(option => option?.service);
+    if (firstDeliveryMethod) {
+      order.value.deliveryMethod = firstDeliveryMethod;
+    }
+  }
+
+  if (!order.value.backorderOption && (order.value.type === OrderType.Back || order.value.type === OrderType.Mixed)) {
+    const firstBackorderOption = generalSettings.value?.orderSettings?.backorderShippingTypes?.find(option => option.active);
+    if (firstBackorderOption) {
+      order.value.backorderOption = firstBackorderOption;
+    }
+  }
+
+  if (!order.value.paymentDetails || !('type' in order.value.paymentDetails)) {
+    if (card.value?.id) {
+      order.value.paymentDetails = {
+        type: PaymentTypeEnum.Card,
+        card: card.value,
+      } as PaymentDetails;
+      return;
+    }
+
+    const firstCard = cards.value.find(savedCard => savedCard?.id);
+    if (firstCard) {
+      order.value.paymentDetails = {
+        type: PaymentTypeEnum.Card,
+        card: firstCard,
+      } as PaymentDetails;
+    }
+  }
+};
 
 // Checkout Control
 const checkoutStore = useCheckoutStore();
@@ -257,8 +305,20 @@ watch(
     await calculateSubtotal(cartItems.value, order.value);
     calculateDiscount(cartItems.value, order);
     order.value.products = orderItems.value;
+    applyMockCheckoutDefaults();
   },
   { deep: true },
+);
+
+watch([shippingPreferences, cards], () => {
+  applyMockCheckoutDefaults();
+}, { deep: true });
+
+watch(
+  () => order.value.type,
+  () => {
+    applyMockCheckoutDefaults();
+  },
 );
 
 // Initialization
@@ -274,6 +334,7 @@ onMounted(async () => {
   calculateDiscount(cartItems.value, order);
 
   order.value.products = orderItems.value;
+  applyMockCheckoutDefaults();
   loading.value = false;
 });
 </script>
