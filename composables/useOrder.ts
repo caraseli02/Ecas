@@ -27,6 +27,7 @@ export function useOrder() {
     smallOrder: any,
     paymentDetails: any,
     note: string,
+    orderSummary?: { products?: any[]; subtotal?: number; total?: number },
   ) => {
     if (!user.value || !user.value?.contactDetails || !deliveryMethod || !paymentDetails) {
       checkout.value = false; // Reset processing state on error
@@ -54,6 +55,10 @@ export function useOrder() {
         cartId: cartId,
         currency: 'ron',
         type: orderType,
+        products: (orderSummary?.products || []) as any,
+        subtotal: Number(orderSummary?.subtotal || 0),
+        total: Number(orderSummary?.total || 0),
+        shippingCost: Number(deliveryMethod?.price?.total || 0),
         shippingDetails: {
           ...nameDetails,
           phone: user.value.contactDetails.phone,

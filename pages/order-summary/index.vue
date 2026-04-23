@@ -97,6 +97,7 @@ import { useAuthStore } from '~/store/authStore';
 import { useCheckoutStore } from '~/store/checkout';
 
 // Utilities
+import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import type { ShippingOrderPricingOption, ShippingOrderPricingResponse } from '~/types/order-summary/shipping-services';
 
 // Setup and Initialization
@@ -114,7 +115,20 @@ const { cartId, cartItems, fetchList, calculateSubtotal, calculateDiscount, show
 const orderItems = computed(() => {
   return cartItems.value.map((item) => {
     const { selected, liked, ...rest } = item;
-    return rest as CartProductsInterface;
+    const quantity = Number(item.stock || 0) + Number(item.backorder_stock || 0);
+    const discountPrice = item.productEntity
+      ? Number(parseProductPriceConfiguration(item.productEntity, user.value as any, quantity)?.currentConfigurationDiscountPrice || 0)
+      : 0;
+    const effectiveUnitPrice = Number(discountPrice || item.unitPriceAfterDiscounts || item.initialUnitPrice || 0);
+    const lineTotal = Number((effectiveUnitPrice * quantity).toFixed(2));
+
+    return {
+      ...rest,
+      initialUnitPrice: effectiveUnitPrice,
+      unitPriceAfterDiscounts: effectiveUnitPrice,
+      subtotal: lineTotal,
+      total: lineTotal,
+    } as CartProductsInterface;
   });
 });
 
@@ -190,6 +204,21 @@ const getCustomerCredit = async () => {
 };
 
 const shippingPreferences = ref(null as ShippingOrderPricingResponse | null);
+const syncCheckoutProducts = () => {
+  order.value.products = orderItems.value;
+  order.value.subtotal = Number(orderItems.value.reduce((sum, item) => sum + Number(item.subtotal || 0), 0).toFixed(2));
+  order.value.discount.total = 0;
+};
+const syncOrderTotals = () => {
+  syncCheckoutProducts();
+  const subtotal = Number(order.value.subtotal || 0);
+  const vat = Number((subtotal * 0.19).toFixed(2));
+  const shippingFee = Number(order.value.deliveryMethod?.price?.total || 0);
+  const smallOrderFee = Number(order.value.smallOrder?.price || 0);
+
+  order.value.total = Number((subtotal + vat + shippingFee + smallOrderFee).toFixed(2));
+  order.value.shippingCost = shippingFee;
+};
 const signinHref = computed(() => {
   const routePath = router.currentRoute.value.fullPath || '/order-summary';
   return `/?signin=true&redirect=${encodeURIComponent(routePath)}`;
@@ -262,6 +291,11 @@ watch(checkout, async (newVal) => {
         order.value.smallOrder,
         order.value.paymentDetails,
         note.value,
+        {
+          products: order.value.products,
+          subtotal: Number(order.value.subtotal || 0),
+          total: Number(order.value.total || 0),
+        },
       );
       stopButtonTrigger.value = false;
     }
@@ -296,6 +330,7 @@ const deleteSelected = () => {
 const updateSubtotal = async (items: CartProductsInterface[], order) => {
   shippingPreferences.value = await fetchShippingPrices(order);
   await calculateSubtotal(items, order);
+  syncOrderTotals();
 };
 
 // Watches and Reactions
@@ -304,19 +339,21 @@ watch(
   async () => {
     await calculateSubtotal(cartItems.value, order.value);
     calculateDiscount(cartItems.value, order);
-    order.value.products = orderItems.value;
+    syncOrderTotals();
     applyMockCheckoutDefaults();
   },
   { deep: true },
 );
 
 watch([shippingPreferences, cards], () => {
+  syncOrderTotals();
   applyMockCheckoutDefaults();
 }, { deep: true });
 
 watch(
   () => order.value.type,
   () => {
+    syncOrderTotals();
     applyMockCheckoutDefaults();
   },
 );
@@ -333,7 +370,7 @@ onMounted(async () => {
   await calculateSubtotal(cartItems.value, (order as any).value);
   calculateDiscount(cartItems.value, order);
 
-  order.value.products = orderItems.value;
+  syncOrderTotals();
   applyMockCheckoutDefaults();
   loading.value = false;
 });

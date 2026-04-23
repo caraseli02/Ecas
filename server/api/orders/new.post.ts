@@ -1,4 +1,5 @@
 import { PaymentTypeEnum, PaymentStatusEnum } from '~/types/order-summary/item';
+import { clearMockCartById, findMockCartById } from '~/server/utils/mockCart';
 import { createRuntimeOrder } from '~/server/utils/mockRuntimeOrders';
 import { getMockUserFromAuthHeader } from '~/server/utils/mockUsers';
 
@@ -14,7 +15,15 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const { orderId } = createRuntimeOrder(body, user);
+  const cartId = typeof body.cartId === 'string' ? body.cartId : '';
+  const cart = findMockCartById(cartId);
+  const orderPayload = {
+    ...body,
+    products: Array.isArray(body.products) && body.products.length ? body.products : (cart?.products || []),
+  };
+
+  const { orderId } = createRuntimeOrder(orderPayload, user);
+  clearMockCartById(cartId);
   const paymentType = (body.paymentDetails as { type?: PaymentTypeEnum } | undefined)?.type;
 
   return {

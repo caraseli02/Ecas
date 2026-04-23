@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+
+const heroSlides = [0];
 </script>
 
 <template>
   <Carousel class="relative w-full h-96 lg:h-full bg-white rounded-xl border border-gray-200 border-solid shadow-s focus-visible:ring-0">
     <CarouselContent>
       <CarouselItem
-        v-for="(_, index) in 1"
+        v-for="(_, index) in heroSlides"
         :key="index"
       >
         <div class="p-0">
@@ -41,7 +43,13 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
         </div>
       </CarouselItem>
     </CarouselContent>
-    <CarouselPrevious class="lg:left-10 left-4 translate-y-32 lg:translate-y-0" />
-    <CarouselNext class="lg:right-10 right-4 translate-y-32 lg:translate-y-0" />
+    <CarouselPrevious
+      v-if="heroSlides.length > 1"
+      class="left-auto right-16 top-auto bottom-4 translate-y-0"
+    />
+    <CarouselNext
+      v-if="heroSlides.length > 1"
+      class="right-4 top-auto bottom-4 translate-y-0"
+    />
   </Carousel>
 </template>

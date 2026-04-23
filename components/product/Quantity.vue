@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-[368px] lg:h-[298px] w-full flex flex-col justify-between relative bg-white rounded-xl shadow-m md:px-[15px] lg:pt-[15px] lg:self-start"
+    class="w-full flex flex-col justify-between relative bg-white rounded-2xl shadow-m px-4 py-4 md:px-5 md:py-5 lg:self-start"
   >
     <!-- <div class="absolute top-0 left-0 px-2.5 py-2 flex items-center rounded-tl-md rounded-br-md bg-green-600">
             <CheckCircle2 class="w-4 h-4 mr-1 text-white" />
@@ -9,7 +9,7 @@
     <ProductCardStock :stock="product.stock" />
     <UiButton
       variant="link"
-      class="flex justify-end text-xs my-3 pr-4 lg:hidden px-2.5"
+      class="flex justify-end text-xs my-3 pr-0 lg:hidden px-0"
       @click="showLargeQuantitiesModal = true"
     >
       For larger quantities ask
@@ -21,8 +21,8 @@
       </span>
     </UiButton>
     <div class="lg:grid lg:grid-cols-2">
-      <div class="lg:order-2 px-4">
-        <div class="flex items-center justify-between gap-3 text-xs leading-tight text-slate-500 px-3 py-2">
+      <div class="lg:order-2 lg:pl-6">
+        <div class="flex items-center justify-between gap-3 text-xs leading-tight text-slate-500 rounded-lg bg-slate-50 px-3 py-2.5">
           <div class="flex-shrink-0">
             Quantity
           </div>
@@ -57,9 +57,9 @@
           </span>
         </UiButton>
       </div>
-      <div class="lg:order-1 lg:pt-[60px] xl:pt-8 pl-4">
+      <div class="lg:order-1 lg:pt-10 xl:pt-6">
         <div
-          class="flex items-center justify-center bg-light-300 rounded px-[13px] py-1 text-xs leading-snug mb-[22px] lg:flex-col lg:items-start lg:justify-start lg:bg-transparent lg:p-0"
+          class="flex items-center justify-center rounded-lg bg-light-300 px-[13px] py-2 text-xs leading-snug mb-5 lg:flex-col lg:items-start lg:justify-start lg:bg-transparent lg:p-0"
         >
           <div class="flex items-center h-6">
             <span class="text-slate-500 mr-[5px]">Price for:</span>
@@ -77,7 +77,7 @@
           </div>
         </div>
         <div
-          class="flex items-center justify-between font-Inter mb-4 lg:justify-start lg:items-end lg:absolute 2xl:relative bottom-0"
+          class="flex items-center justify-between font-Inter mb-4 lg:justify-start lg:items-end"
         >
           <div class="lg:mr-[15px]">
             <div
@@ -113,7 +113,7 @@
         </div>
       </div>
     </div>
-    <div class="flex gap-2.5 w-full lg:w-[486px] xl:w-[430px] p-4 pt-3 self-end">
+    <div class="flex gap-2.5 w-full pt-4 self-end border-t border-slate-100 mt-2">
       <div class="min-w-[140px] min-h-[42px]">
         <QuantityButtons
           v-if="minPriceConfiguration"

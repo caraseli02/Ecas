@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-end justify-between mb-[15px] px-2">
-    <h1 class="text-xl font-semibold">
+  <div class="flex items-center justify-between gap-4 mb-5 rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-xs md:px-5">
+    <h1 class="text-xl font-semibold text-slate-900">
       Order Summary
     </h1>
     <div class="flex items-center">
