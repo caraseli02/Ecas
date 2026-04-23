@@ -8,7 +8,7 @@
         Products Found ({{ totalItems }})
       </div>
       <div
-        class="grid grid-cols-1 gap-5 bg-gray-100 p-2.5 pr-[42px] rounded-md mb-5 md:grid-cols-[auto,auto] md:justify-start md:gap-x-[30px] md:gap-y-[18px] md:px-[15px] md:mb-[30px] lg:flex lg:items-center"
+        class="grid grid-cols-1 gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 mb-6 md:grid-cols-[auto,auto] md:justify-start md:gap-x-6 md:gap-y-4 md:px-5 md:py-5 md:mb-8 lg:flex lg:flex-wrap lg:items-center lg:gap-4"
       >
         <label class="flex items-center">
           <span class="text-sm flex-shrink-0 mr-2.5">Show</span>
@@ -183,7 +183,7 @@
           </div>
         </label>
       </div>
-      <div class="flex items-center justify-center mb-10 md:justify-between xl:mb-[30px]">
+      <div class="flex items-center justify-center mb-8 md:justify-between xl:mb-8">
         <div class="hidden font-Inter font-semibold md:block">
           Products Found ({{ totalItems }})
         </div>
@@ -233,7 +233,7 @@
           </Transition>
         </div>
       </div>
-      <div class="grid grid-cols-1 gap-10 mb-[25px] md:mb-10 lg:gap-[30px] xl:gap-[15px] xl:mb-[30px]">
+      <div class="grid grid-cols-1 gap-5 mb-8 md:mb-10 lg:gap-6 xl:gap-5 xl:mb-8">
         <SearchItem
           v-for="item in paginatedProductsList"
           :key="item._id"

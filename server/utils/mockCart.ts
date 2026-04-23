@@ -162,6 +162,23 @@ export const getMockCartForUser = (userId: string) => {
   return cart;
 };
 
+export const findMockCartById = (cartId?: string | null) => {
+  const normalizedId = String(cartId || '').trim();
+
+  if (!normalizedId) {
+    return null;
+  }
+
+  for (const stored of cartsByUserId.values()) {
+    if (stored.cart?._id === normalizedId) {
+      stored.updatedAt = nowMs();
+      return stored.cart;
+    }
+  }
+
+  return null;
+};
+
 export const requireMockCartUserId = (authorizationHeader?: string | null) => {
   const userId = parseMockUserIdFromToken(authorizationHeader);
   // Support guest users by falling back to a fixed guest ID if no token is present
@@ -230,5 +247,21 @@ export const removeProductsFromMockCart = (cart: CartInterface, ids: string[] = 
   if (cart.userId) {
     cartsByUserId.set(cart.userId, { cart, updatedAt: nowMs() });
   }
+  return cart;
+};
+
+export const clearMockCartById = (cartId?: string | null) => {
+  const cart = findMockCartById(cartId);
+
+  if (!cart) {
+    return null;
+  }
+
+  cart.products = [];
+
+  if (cart.userId) {
+    cartsByUserId.set(cart.userId, { cart, updatedAt: nowMs() });
+  }
+
   return cart;
 };

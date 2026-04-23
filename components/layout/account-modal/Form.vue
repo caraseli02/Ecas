@@ -108,7 +108,7 @@
       </p>
     </div>
     <div class="mx-auto text-sm font-medium text-gray-500 mb-[25px]">
-      <span class="text-slate-500 font-normal text-sm">Signup is disabled in the demo.</span>
+      <span class="text-slate-500 font-normal text-sm">This demo uses preconfigured accounts. Pick a role above to get started.</span>
     </div>
     <div
       v-if="!config.public.MOCK_MODE"

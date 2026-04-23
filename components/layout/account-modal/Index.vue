@@ -4,30 +4,30 @@
       class="relative z-10 flex flex-col ml-auto w-full h-full min-height bg-white max-h-vh pointer-events-auto md:w-[440px] px-2 py-4 overflow-y-scroll"
       :class="!loggedInUser ? 'px-4 py-6 md:p-6' : 'md:px-4 md:py-6'"
     >
-      <div class="flex flex-col justify-between items-center pb-6 gap-6">
+      <div class="flex flex-col justify-between items-center pb-4 gap-4">
         <button
-          class="rounded-lg w-8 h-8 bg-light-300 flex items-center justify-center text-gray-100 transition-colors duration-300 hover:text-gray-300 self-end mr-2"
+          aria-label="Close account panel"
+          class="rounded-lg w-8 h-8 bg-light-300 flex items-center justify-center transition-colors duration-300 hover:bg-light-400 self-end mr-2"
           @click="emit('close')"
         >
-          <XIcon class="w-[24px] h-[24px] text-gray-500 hover:text-blue-500" />
+          <XIcon class="w-[24px] h-[24px] text-gray-600 hover:text-blue-500" />
         </button>
         <LayoutAccountModalDetails v-if="loggedInUser" />
       </div>
-      <div class="max-h-[80px] flex flex-grow m-h-fit w-full" />
       <div
         v-if="!loggedInUser"
-        class="flex-1 flex flex-col justify-between px-4"
+        class="flex-1 flex flex-col justify-between px-1"
       >
         <section>
           <div class="text-neutral-70 font-semibold">
             Choose a demo role
           </div>
-          <p class="text-xs text-slate-500 mt-1 mb-[30px]">
+          <p class="text-xs leading-5 text-slate-500 mt-1 mb-6">
             Start with Customer Demo for the cleanest walkthrough, or open Admin Preview to inspect the back-office UI.
           </p>
           <LayoutAccountModalForm @signed-in="handleSignedIn" />
         </section>
-        <p class="flex flex-wrap md:flex-nowrap justify-center items-center gap-2 text-slate-500 text-xs sticky bottom-0">
+        <p class="flex flex-wrap md:flex-nowrap justify-center items-center gap-2 text-slate-500 text-xs pt-6">
           <SvgoMenuHelp class="text-slate-500 w-4 h-4 !text-xs" />
           For assistance please contact
           <a

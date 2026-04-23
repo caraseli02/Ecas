@@ -1,45 +1,42 @@
 <template>
-  <section class="mb-[30px] md:mb-[50px] xl:mb-14 overflow-hidden">
+  <section class="mb-10 md:mb-14 xl:mb-16 overflow-hidden">
     <div class="container">
       <!-- Mobile Hero Banner (visible only on mobile) -->
-      <div class="block md:hidden relative overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm mb-4 min-h-[280px]">
-        <div class="absolute inset-0 overflow-hidden">
-          <div class="absolute -right-10 top-0 w-72 h-72 bg-[#325DF8] opacity-20 rounded-full filter blur-3xl" />
-          <div class="absolute -right-4 top-10 w-56 h-56 bg-[#5C28DF] opacity-20 rounded-full filter blur-2xl" />
-        </div>
-        <div class="relative z-10 flex flex-col justify-center h-full px-6 py-8">
-          <h1 class="text-3xl font-bold text-zinc-800 leading-tight mb-3">
-            Scale Your Business<br>Beyond Limits
+      <div class="block md:hidden relative overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm mb-5 min-h-[320px]">
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-blue-50/40" />
+        <div class="relative z-10 flex flex-col justify-center h-full px-6 py-9">
+          <h1 class="text-3xl font-bold text-zinc-800 leading-tight mb-4">
+            Electronic Components,<br>Sourced Reliably
           </h1>
-          <p class="text-sm text-slate-500 mb-6 max-w-xs">
-            Join our growing community of successful vendors. Sign up for our waiting list today!
+          <p class="text-sm leading-6 text-slate-500 mb-7 max-w-xs">
+            Browse thousands of parts from trusted manufacturers. Check stock, compare specs, and order with confidence.
           </p>
           <NuxtLink to="/search" class="w-fit">
-            <UiButton class="w-fit py-2.5 px-6 text-sm font-medium">
+            <UiButton class="w-fit px-6 py-2.5 text-sm font-medium shadow-sm">
               Explore Products
             </UiButton>
           </NuxtLink>
         </div>
       </div>
       <!-- Desktop category + banner popover (hidden on mobile) -->
-      <PopoverContainer class="hidden md:block my-3 shadow-s rounded-lg" />
-      <div class="grid grid-cols-4">
+      <PopoverContainer class="hidden md:block mb-5 shadow-s rounded-xl" />
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         <div
           v-for="(feature, index) in features"
           :key="index"
-          class="relative flex flex-col items-center px-1 after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-full after:w-0.5 after:bg-gray-100 after:rounded-full last:after:hidden lg:flex-row lg:px-2 lg:after:h-[30px] xl:px-2.5 xl:after:h-10"
+          class="flex min-h-[118px] flex-col items-start justify-center rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-4 shadow-sm lg:min-h-[108px] lg:flex-row lg:items-center lg:gap-3 xl:px-5"
         >
           <component
             :is="feature.icon"
-            class="w-8 h-8 mb-[5px] md:w-10 md:h-10 md:mb-2.5 lg:mb-0 lg:mr-2 xl:w-[50px] xl:h-[50px] xl:mr-2.5"
+            class="w-8 h-8 mb-3 flex-shrink-0 md:w-10 md:h-10 lg:mb-0 xl:w-11 xl:h-11"
           />
-          <div class="flex flex-col items-center text-center font-Inter text-slate-500 leading-[1.2] lg:text-left lg:items-start">
+          <div class="flex flex-col text-left text-slate-500 leading-[1.25]">
             <div
-              class="text-xs font-semibold mb-[5px] mt-auto md:mb-1 lg:text-[13px] lg:mb-[5px] xl:text-xl"
+              class="text-sm font-semibold mb-1.5 text-slate-800 lg:text-[15px] xl:text-base"
               v-html="feature.title"
             />
             <div
-              class="text-[10px] md:text-[11px] lg:text-xs xl:text-base"
+              class="text-[11px] md:text-xs lg:text-[13px]"
               v-html="feature.description"
             />
           </div>

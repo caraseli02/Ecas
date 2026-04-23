@@ -115,7 +115,7 @@ const deleteProduct = (object: { id: string }) => {
 };
 
 const mapCartItems = () => {
-  items.value = cart.value?.products.map((item: CartProductsInterface) => ({
+  items.value = (cart.value?.products || []).map((item: CartProductsInterface) => ({
     id: item.id,
     type: item.isFolder ? 'folder' : 'product',
     quantity: Number(item.stock) + Number(item.backorder_stock || 0),

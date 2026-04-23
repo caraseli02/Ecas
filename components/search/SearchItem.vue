@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative font-Inter max-md:pr-2 lg:grid lg:grid-cols-[60%,40%] lg:gap-[25px] xl:grid-cols-[45%,30%,25%] xl:pb-[15px] xl:gap-0 xl:border-b xl:border-gray-200"
+    class="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-sm font-Inter md:p-5 lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-6 xl:grid-cols-[minmax(0,9fr)_minmax(0,6fr)_minmax(0,5fr)] xl:gap-6"
   >
     <div class="flex items-start">
       <NuxtLink
@@ -14,7 +14,7 @@
         />
       </NuxtLink>
       <div>
-        <div class="md:flex md:items-center md:mb-[14px] max-w-[480px]">
+        <div class="md:flex md:items-start md:justify-between md:gap-4 md:mb-4 max-w-[480px]">
           <div class="flex items-center mb-2.5 md:mb-0 md:mr-5 md:flex-1 min-w-0">
             <NuxtLink
               :to="`/product/${item._id}`"
@@ -61,7 +61,7 @@
             <EditIcon class="w-5 h-5" />
           </button>
         </div>
-        <div class="grid grid-cols-1 gap-[5px] text-xs leading-tight mb-[15px] md:gap-2 md:mb-[25px] lg:mb-0">
+        <div class="grid grid-cols-1 gap-2 text-xs leading-tight mb-4 md:mb-5 lg:mb-0">
           <div>
             {{ item.description }}
           </div>
@@ -80,7 +80,7 @@
         </div>
       </div>
     </div>
-    <div class="lg:pr-[75px]">
+    <div class="lg:pr-6">
       <div class="flex">
         <div class="flex flex-col items-start min-w-fit gap-2 xl:gap-1.5">
           <span class="text-xs text-green-500 leading-tight font-semibold md:mr-[15px] lg:mr-0 flex mb-2">
@@ -117,13 +117,13 @@
           </div>
         </section>
       </div>
-      <div class="grid grid-cols-2 pt-2.5 mb-[15px] md:grid-cols-[70%,30%] md:mb-5 lg:grid-cols-[40%,60%] lg:mb-0">
+      <div class="grid grid-cols-2 pt-3 mb-4 md:grid-cols-[70%,30%] md:mb-5 lg:grid-cols-[40%,60%] lg:mb-0">
         <div class="text-sm font-medium font-Poppins text-blue text-blue-500">
           View More
         </div>
       </div>
     </div>
-    <div class="flex gap-2.5 md:col-span-2 xl:col-span-1 xl:items-end">
+    <div class="flex gap-2.5 pt-1 md:col-span-2 xl:col-span-1 xl:items-end">
       <QuantityButtons
         v-if="minPriceConfiguration"
         v-model="quantity"
@@ -139,7 +139,7 @@
         <span class="text-sm font-medium">Add to cart</span>
       </button>
     </div>
-    <div class="hidden md:flex absolute top-0 right-0 flex-col gap-2.5">
+    <div class="hidden md:flex absolute top-5 right-5 flex-col gap-2.5">
       <button class="flex justify-end text-gray-500 transition-colors duration-300 hover:text-blue">
         <HeartIcon class="w-6 h-6" />
       </button>

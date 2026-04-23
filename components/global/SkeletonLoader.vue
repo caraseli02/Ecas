@@ -34,26 +34,16 @@ const isHexColor = (hexColor: string) => {
 
 const hexToRgb = (hex: string) => `${hex.match(/\w\w/g)?.map(x => +`0x${x}`)}`;
 
-const props = defineProps({
-  type: {
-    type: String,
-    default: LOADER_TYPES.rectangle,
-    validator(value: LoaderTypesValues) {
-      return Object.values(LOADER_TYPES).includes(value);
-    },
-  },
-  bgClass: {
-    type: String,
-    default: 'bg-gray-100',
-  },
-  cssClass: {
-    type: String,
-    default: '',
-  },
-  shimmerColor: {
-    type: String,
-    default: SHIMMER_COLOR,
-  },
+const props = withDefaults(defineProps<{
+  type?: LoaderTypesValues;
+  bgClass?: string;
+  cssClass?: string;
+  shimmerColor?: string;
+}>(), {
+  type: 'rectangle',
+  bgClass: 'bg-gray-100',
+  cssClass: '',
+  shimmerColor: '#FFFFFF',
 });
 
 const { type, bgClass, cssClass, shimmerColor } = toRefs(props);

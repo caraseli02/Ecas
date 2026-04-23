@@ -78,12 +78,7 @@
             <button
               class="flex flex-col items-center"
               :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:hidden xl:flex' : 'lg:flex xl:flex') : '']"
-              @click="
-                favoritesCartModal = {
-                  show: true,
-                  tab: 'favorites',
-                }
-              "
+              @click="openFavoritesCartModal('favorites')"
             >
               <HeartIcon class="w-6 h-6 text-white xl:mb-1" />
               <span class="hidden font-medium text-xs leading-[1.33] text-white xl:inline-block"> Favorites </span>
@@ -103,14 +98,14 @@
             </div>
             <button
               class="flex items-center md:hidden"
-              @click="showAccountModal = true"
+              @click="openAccountModal()"
             >
               <UserIcon class="w-6 h-6 text-white" />
             </button>
             <button
               class="hidden items-center flex-col md:flex"
               :class="[isScrolled ? (showMobileSearch ? 'md:hidden lg:flex' : 'md:flex') : '']"
-              @click="showAccountModal = true"
+              @click="openAccountModal()"
             >
               <UserIcon class="w-6 h-6 text-white xl:mb-1" />
               <span class="hidden text-xs leading-[1.33] font-medium text-white xl:inline-block"> My Account </span>
@@ -118,12 +113,7 @@
             <button
               class="relative items-center text-left"
               :class="[isScrolled ? '' : 'md:hidden', showMobileSearch ? 'hidden md:flex' : 'flex']"
-              @click="
-                favoritesCartModal = {
-                  show: true,
-                  tab: 'shopping-cart',
-                }
-              "
+              @click="openFavoritesCartModal('shopping-cart')"
             >
               <div class="flex items-center -mr-2.5 md:-mr-5 xl:-mr-5">
                 <CartIcon
@@ -307,6 +297,19 @@ const closeAccountModal = async () => {
   }
 };
 
+const openAccountModal = () => {
+  favoritesCartModal.value.show = false;
+  showAccountModal.value = true;
+};
+
+const openFavoritesCartModal = (tab: 'favorites' | 'shopping-cart') => {
+  showAccountModal.value = false;
+  favoritesCartModal.value = {
+    show: true,
+    tab,
+  };
+};
+
 const navItems = [
   {
     label: 'News',
@@ -352,7 +355,7 @@ Emitter.on('update-cart', async (data: CartInterface) => {
 });
 
 Emitter.on('open-account-modal', async () => {
-  showAccountModal.value = true;
+  openAccountModal();
 });
 
 const fetchList = async () => {

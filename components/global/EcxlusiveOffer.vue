@@ -46,7 +46,7 @@
         <div
           class="absolute z-10 top-0 left-0 w-full h-full opacity-75 rounded-md pointer-events-none"
           :style="{
-            background: 'linear-gradient(85.26deg, #001238 17.24%, rgba(0, 127, 255, 0.85) 106.53%)',
+            background: 'linear-gradient(85.26deg, #0a1628 17.24%, rgba(0, 90, 170, 0.9) 106.53%)',
           }"
         />
       </SwiperSlide>
@@ -67,20 +67,8 @@ const slides = ref([
     item: ItemImage,
   },
   {
-    title: 'Built for modern B2B procurement',
-    description: 'Compare parts, confirm availability, and move from shortlist to checkout with a cleaner reviewer-friendly flow.',
-    bg: SlideBg,
-    item: ItemImage,
-  },
-  {
-    title: 'Built for modern B2B procurement',
-    description: 'Compare parts, confirm availability, and move from shortlist to checkout with a cleaner reviewer-friendly flow.',
-    bg: SlideBg,
-    item: ItemImage,
-  },
-  {
-    title: 'Built for modern B2B procurement',
-    description: 'Compare parts, confirm availability, and move from shortlist to checkout with a cleaner reviewer-friendly flow.',
+    title: 'Volume pricing, real-time stock',
+    description: 'Access tiered pricing and live inventory data across thousands of electronic components from leading manufacturers.',
     bg: SlideBg,
     item: ItemImage,
   },

@@ -59,8 +59,8 @@ onMounted(() => {
               v-for="(_, index) in 10"
               :key="index"
             >
-              <Card>
-                <CardContent class="flex aspect-square items-center justify-center">
+              <div class="rounded-lg border bg-background shadow-sm">
+                <div class="flex aspect-square items-center justify-center p-4">
                   <ClientOnly>
                     <ProductZoomImg
                       :alias="alias"
@@ -69,8 +69,8 @@ onMounted(() => {
                       class="w-[260px] h-[250x] object-contain transition-opacity duration-300 lg:w-[356px] lg:h-[348px]"
                     />
                   </ClientOnly>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </UiCarouselItem>
           </UiCarouselContent>
           <UiCarouselPrevious />

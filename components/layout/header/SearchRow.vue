@@ -18,12 +18,7 @@
         <div class="flex items-center xl:gap-[46px]">
           <button
             class="flex items-center text-left max-md:hidden"
-            @click="
-              favoritesCartModal = {
-                show: true,
-                tab: 'shopping-cart',
-              }
-            "
+            @click="openFavoritesCartModal('shopping-cart')"
           >
             <div class="flex items-center mr-0.5">
               <CartIcon
@@ -136,6 +131,14 @@ const favoritesCartModal = ref({
   show: false,
   tab: 'favorites' as 'favorites' | 'shopping-cart',
 });
+
+const openFavoritesCartModal = (tab: 'favorites' | 'shopping-cart') => {
+  showAccountModal.value = false;
+  favoritesCartModal.value = {
+    show: true,
+    tab,
+  };
+};
 
 const fetchList = async () => {
   const data = await getCart.value;
