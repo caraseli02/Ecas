@@ -1,62 +1,147 @@
-# Nuxt 3 Minimal Starter
+# ECAS
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Nuxt 3 e-commerce frontend prepared as a **self-contained portfolio demo**.
 
-## Setup
+The project includes a storefront, authenticated customer flows, and dashboard surfaces backed by local Nitro mock endpoints so the app can be reviewed without a live backend.
 
-Make sure to install the dependencies:
+## Why this repo matters
+
+- Full Nuxt 3 + Vue 3 + TypeScript application
+- Storefront + account + dashboard flows in one codebase
+- Local mock API built into the repo for portfolio demos
+- Good fit for case study walkthroughs, screenshots, and reviewer smoke tests
+
+## Stack
+
+- Nuxt 3
+- Vue 3 Composition API
+- TypeScript
+- Pinia
+- Tailwind CSS
+- Radix Vue / shadcn-nuxt
+- Nitro server routes for mock data
+- Firebase and Stripe integration hooks for live mode
+
+## Recommended mode
+
+Use **mock mode** for local review and portfolio demos.
+
+Mock mode keeps the app self-contained:
+- no external backend required
+- local Nitro endpoints answer API requests
+- demo credentials work out of the box once `.env` is created
+
+## Demo credentials
+
+- Email: `admin@ecas.com`
+- Password: `admin123`
+
+## Quick start
+
+### 1. Install dependencies
 
 ```bash
-# yarn
-yarn install
-
-# npm
-npm install
-
-# pnpm
 pnpm install
 ```
 
-## Mock Mode
-
-For portfolio demos, enable mock mode:
+### 2. Create local env file
 
 ```bash
-# .env
-NUXT_PUBLIC_MOCK_MODE=true
+cp .env.example .env
 ```
 
-Demo credentials: admin@ecas.com / admin123
-
-All API endpoints mocked via Nitro server. No backend required.
-
-### Running Demo
+### 3. Start the app
 
 ```bash
-npm install
-npm run dev
+pnpm dev
 ```
 
-## Development Server
+App runs at:
+- `http://localhost:3000`
 
-Start the development server on http://localhost:3000
+## Production build
 
 ```bash
-npm run dev
+pnpm build
+pnpm preview
 ```
 
-## Production
-
-Build the application for production:
+## Available scripts
 
 ```bash
-npm run build
+pnpm dev
+pnpm build
+pnpm generate
+pnpm preview
+pnpm lint
+pnpm pretty
 ```
 
-Locally preview production build:
+## Key review flows
 
-```bash
-npm run preview
+If you are reviewing this repo for a case study or portfolio walkthrough, start here:
+
+### Storefront
+- Home page
+- Search results
+- Product detail page
+- Cart
+- Checkout entry flow
+
+### Auth / account
+- Sign-in modal
+- Signup flow
+- Redirect back into protected flows
+
+### Dashboard
+- Dashboard home
+- Orders list
+- Order detail view
+- Customer control-panel account view
+
+## Environment variables
+
+### Required for mock mode
+
+- `NUXT_PUBLIC_MOCK_MODE=true`
+- `NUXT_PUBLIC_BASE_URL_API=/api`
+
+### Optional for live integrations
+
+These are not required for the bundled mock demo, but the runtime config supports them:
+
+- `NUXT_PUBLIC_FIREBASE_API_KEY`
+- `NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NUXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `NUXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID`
+- `NUXT_PUBLIC_FIREBASE_APP_ID`
+- `NUXT_PUBLIC_FIREBASE_MEASUREMENT_ID`
+- `NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+
+## Mock architecture
+
+When `NUXT_PUBLIC_MOCK_MODE=true`:
+- the app routes API traffic to local Nitro endpoints under `server/api/`
+- dashboard and storefront demo data come from the repository itself
+- reviewers can inspect the product without a separate backend deploy
+
+## Project structure
+
+```text
+components/      UI and feature components
+pages/           Nuxt routes
+layouts/         app shells
+services/        API service layer
+server/api/      Nitro mock endpoints
+store/           Pinia stores
+types/           shared TypeScript types
+docs/            supporting audit/media materials
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Notes for contributors
+
+- Package manager for this repo is **pnpm**
+- `.env` is ignored; use `.env.example` as the template
+- `pnpm lint` currently reports legacy backlog outside this MVP cleanup pass
+- For portfolio demos, validate the key review flows above before capturing screenshots or video

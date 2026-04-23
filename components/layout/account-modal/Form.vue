@@ -11,7 +11,7 @@
           :class="selectedLoginRole === 'customer' ? 'bg-white text-blue-500 shadow-sm' : 'text-slate-500 hover:text-blue-500'"
           @click="selectedLoginRole = 'customer'"
         >
-          Customer
+          Customer Demo
         </button>
         <button
           type="button"
@@ -19,10 +19,13 @@
           :class="selectedLoginRole === 'admin' ? 'bg-white text-blue-500 shadow-sm' : 'text-slate-500 hover:text-blue-500'"
           @click="selectedLoginRole = 'admin'"
         >
-          Admin
+          Admin Preview
         </button>
       </div>
     </div>
+    <p class="mb-4 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+      Customer Demo is the smoothest reviewer path. Admin Preview opens the back-office area with sample data.
+    </p>
     <div class="grid grid-cols-1 gap-4 mb-[15px]">
       <FormInput
         v-model="email.value"

@@ -11,6 +11,7 @@ tmp/ui-review-*/
 tmp/ui-review/
 .DS_Store
 pr-body.md
+.hermes/
 
 .idea
 firebase

@@ -23,7 +23,7 @@
             Choose a demo role
           </div>
           <p class="text-xs text-slate-500 mt-1 mb-[30px]">
-            Use the prefilled demo credentials to explore customer and admin flows.
+            Start with Customer Demo for the cleanest walkthrough, or open Admin Preview to inspect the back-office UI.
           </p>
           <LayoutAccountModalForm @signed-in="handleSignedIn" />
         </section>
