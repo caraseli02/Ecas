@@ -9,7 +9,7 @@
               Sales: +1 800 555 0199 (Mon-Fri 8:00AM - 4:00PM EST)
             </div>
           </div>
-          <div class="text-xs leading-[1.67] font-semibold text-rose-500 mr-auto md:mr-0 lg:text-sm lg:leading-[1.43]">
+          <div class="text-xs leading-[1.67] font-semibold text-blue-600 mr-auto md:mr-0 lg:text-sm lg:leading-[1.43]">
             <span class="uppercase">Free</span> shipping on orders over $150
           </div>
           <button

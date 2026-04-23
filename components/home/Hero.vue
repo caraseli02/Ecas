@@ -3,16 +3,13 @@
     <div class="container">
       <!-- Mobile Hero Banner (visible only on mobile) -->
       <div class="block md:hidden relative overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm mb-4 min-h-[280px]">
-        <div class="absolute inset-0 overflow-hidden">
-          <div class="absolute -right-10 top-0 w-72 h-72 bg-[#325DF8] opacity-20 rounded-full filter blur-3xl" />
-          <div class="absolute -right-4 top-10 w-56 h-56 bg-[#5C28DF] opacity-20 rounded-full filter blur-2xl" />
-        </div>
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-blue-50/40" />
         <div class="relative z-10 flex flex-col justify-center h-full px-6 py-8">
           <h1 class="text-3xl font-bold text-zinc-800 leading-tight mb-3">
-            Scale Your Business<br>Beyond Limits
+            Electronic Components,<br>Sourced Reliably
           </h1>
           <p class="text-sm text-slate-500 mb-6 max-w-xs">
-            Join our growing community of successful vendors. Sign up for our waiting list today!
+            Browse thousands of parts from trusted manufacturers. Check stock, compare specs, and order with confidence.
           </p>
           <NuxtLink to="/search" class="w-fit">
             <UiButton class="w-fit py-2.5 px-6 text-sm font-medium">
@@ -33,7 +30,7 @@
             :is="feature.icon"
             class="w-8 h-8 mb-[5px] md:w-10 md:h-10 md:mb-2.5 lg:mb-0 lg:mr-2 xl:w-[50px] xl:h-[50px] xl:mr-2.5"
           />
-          <div class="flex flex-col items-center text-center font-Inter text-slate-500 leading-[1.2] lg:text-left lg:items-start">
+          <div class="flex flex-col items-center text-center text-slate-500 leading-[1.2] lg:text-left lg:items-start">
             <div
               class="text-xs font-semibold mb-[5px] mt-auto md:mb-1 lg:text-[13px] lg:mb-[5px] xl:text-xl"
               v-html="feature.title"

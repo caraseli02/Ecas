@@ -1,11 +1,11 @@
 <template>
   <div class="flex gap-3 w-full px-2">
-    <img
-      loading="lazy"
-      src="https://picsum.photos/56/56"
-      class="aspect-square object-contain object-center w-14 overflow-hidden shrink-0 max-w-full my-auto rounded-[50%]"
-      alt="_"
+    <div
+      class="aspect-square w-14 shrink-0 my-auto rounded-full bg-slate-200 flex items-center justify-center text-slate-600 text-lg font-semibold select-none"
+      aria-hidden="true"
     >
+      {{ avatarInitials }}
+    </div>
     <div class="justify-center items-stretch self-stretch flex grow basis-[0%] flex-col">
       <div class="items-stretch flex justify-start gap-3 pr-5 relative">
         <div class="text-neutral-700 text-sm font-medium leading-5 whitespace-nowrap">
@@ -92,8 +92,6 @@ const getIconBadgeByAccountType = () => {
   }
 };
 
-const IconTypes = [PersonalCardIcon, UserIcon, BuildingIcon, briefcaseIcon];
-
 const fullname = computed(() => {
   if (getUserDetails.value?.role === AccountRole.Client && getUserDetails.value?.accountType === AccountType.Personal) {
     accountTypeIcon.value = UserIcon;
@@ -102,6 +100,17 @@ const fullname = computed(() => {
   else {
     return `${getUserDetails.value?.contactDetails?.firstName} ${getUserDetails.value?.contactDetails?.lastName}`;
   }
+});
+
+const avatarInitials = computed(() => {
+  const sourceName = fullname.value?.trim();
+
+  if (!sourceName) {
+    return 'DE';
+  }
+
+  const parts = sourceName.split(/\s+/).filter(Boolean);
+  return parts.slice(0, 2).map(part => part[0]?.toUpperCase() || '').join('');
 });
 </script>
 

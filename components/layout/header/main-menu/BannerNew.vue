@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Circles from './Circles.vue';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 </script>
 
@@ -12,27 +11,22 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
       >
         <div class="p-0">
           <section
-            class="flex overflow-hidden relative justify-between items-start self-stretch px-6 py-48 lg:py-64 h-full rounded-xl"
+            class="relative flex h-full items-end overflow-hidden rounded-xl bg-gradient-to-br from-slate-50 via-white to-blue-50/40 px-6 py-14 lg:px-10 lg:py-20"
             role="region"
             aria-labelledby="hero-title"
           >
-            <div
-              class="flex absolute -right-7 z-0 shrink-0 h-[372px] min-w-[240px] -top-10 w-[554px] bg-gradient-to-r"
-              aria-hidden="true"
-            >
-              <Circles />
-            </div>
-            <div
-              class="flex gap-6 absolute bottom-32 z-0 flex-col font-medium leading-6 left-4 lg:left-[100px] min-w-[240px] w-[calc(100%-2rem)] lg:w-auto max-w-[415px] text-zinc-800"
-            >
+            <div class="flex flex-col gap-5 text-zinc-800 max-w-[460px]">
+              <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                ECAS procurement demo
+              </p>
               <h4
                 id="hero-title"
-                class="text-2xl lg:text-5xl font-bold"
+                class="text-2xl font-bold leading-tight lg:text-5xl"
               >
-                Scale Your Business Beyond Limits
+                Source electronic components with confidence
               </h4>
-              <p class="text-base">
-                Join our growing community of successful vendors. Sign up for our waiting list today!
+              <p class="text-sm leading-6 text-slate-600 lg:text-base">
+                Review stock, compare part details, and move from product discovery to checkout in a clearer B2B buying flow.
               </p>
               <NuxtLink
                 to="/search"
