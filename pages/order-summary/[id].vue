@@ -188,7 +188,13 @@ onMounted(() => {
 
 <template>
   <div class="container flex flex-col gap-6 p-4 transition-all duration-300 py-6 lg:px-6">
-    <OrderConfirmThankYou v-if="isNew" />
+    <OrderConfirmThankYou
+      v-if="isNew"
+      :order-id="data.data?.order?.shortId"
+      :email="customerDetails.email"
+      :shipping-method="shippingMethod?.service?.courierName"
+      :pickup-date="stockOrder?.shippingDetails?.statusTracking?.estimatedPickUpDate"
+    />
     <section class="w-full flex justify-between">
       <NuxtLink
         v-if="false"

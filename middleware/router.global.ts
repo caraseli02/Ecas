@@ -24,10 +24,6 @@ const getRequiredPermission = (path: string) => {
       return UserPermissionsEnum.CategoriesRead;
     case path === '/product/categories':
       return UserPermissionsEnum.CategoriesRead;
-    case path === '/order-summary':
-      return UserPermissionsEnum.OrdersRead;
-    case /^\/order-summary\/[^/]+$/.test(path):
-      return UserPermissionsEnum.OrdersRead;
     default:
       return null;
   }
@@ -40,6 +36,8 @@ export default defineNuxtRouteMiddleware((to) => {
   const userDetails = authStore.userDetails as { permissions?: UserPermissionsEnum[] } | null;
   const token = useCookie('token');
   const requiredPermission = getRequiredPermission(to.path);
+  const redirectTarget = to.fullPath && to.fullPath !== '/' ? to.fullPath : '';
+  const signinPath = redirectTarget ? `/?signin=true&redirect=${encodeURIComponent(redirectTarget)}` : '/?signin=true';
 
   if (to.name !== 'signup' && authStore.firebaseTempToken != null) {
     authStore.firebaseTempToken = null;
@@ -61,7 +59,7 @@ export default defineNuxtRouteMiddleware((to) => {
 
   if (!permissions.length) {
     if (config.public.MOCK_MODE) {
-      return navigateTo('/?signin=true');
+      return navigateTo(signinPath);
     }
 
     return;
