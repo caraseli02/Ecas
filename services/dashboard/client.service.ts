@@ -84,7 +84,7 @@ class CustomerDashboard extends HttpFactory {
     const authStore = useAuthStore();
     const token = authStore.getToken();
 
-    return await this.call<any>('GET', `${this.MAIN_RESOURCE}/metadata`, null, {
+    return await this.call<unknown>('GET', `${this.MAIN_RESOURCE}/metadata`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }

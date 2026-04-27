@@ -258,6 +258,7 @@ const setFoldersOnly = (items: FavoriteItem[] = []) => {
     if (item.type === 'folder') {
       folders.value.push(item);
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       item.items?.length && setFoldersOnly(item.items || []);
     }
   }

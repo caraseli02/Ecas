@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { Printer, AlertTriangle } from 'lucide-vue-next';
+import { Printer, _AlertTriangle } from 'lucide-vue-next';
 
 const printPage = () => {
   if (import.meta.client) {

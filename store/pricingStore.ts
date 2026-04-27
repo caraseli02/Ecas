@@ -8,15 +8,16 @@ export const usePricingStore = defineStore({
   state: () => {
     return {
       pricing: null as PriceSettingsInterface[] | null,
-      range: [] as any[],
-      quantity: null as any | null,
-      margin: null as any | null,
+      range: [] as unknown[],
+      quantity: null as unknown | null,
+      margin: null as unknown | null,
       showEntryModal: false,
       showMarginModal: false,
       showQuantityModal: false,
       editEntryPriceModal: null as PriceSettingsInterface | null,
-      editQuantityModal: null as any | null,
-      editMarginModal: null as any | null,
+      editQuantityModal: null as unknown | null,
+      editMarginModal: null as unknown | null,
+      // eslint-disable-next-line no-constant-binary-expression
       type: 'add' || 'edit',
     };
   },
@@ -57,16 +58,16 @@ export const usePricingStore = defineStore({
       this.margin.push({ value: margin.values, label: margin.label, selected: false, _id: _id });
     },
     removePriceRange(_id: string) {
-      this.range = this.range.filter((range: any) => range._id !== _id);
+      this.range = this.range.filter((range: unknown) => range._id !== _id);
     },
     removeQuantityRange(_id: string) {
-      this.quantity = this.quantity.filter((quantity: any) => quantity._id !== _id);
+      this.quantity = this.quantity.filter((quantity: unknown) => quantity._id !== _id);
     },
     removeMarginRange(_id: string) {
-      this.margin = this.margin.filter((margin: any) => margin._id !== _id);
+      this.margin = this.margin.filter((margin: unknown) => margin._id !== _id);
     },
     editPriceRange(range: { min: number | null; max: number | null }, label: string | null, _id: string) {
-      this.range = this.range.map((r: any) => {
+      this.range = this.range.map((r: unknown) => {
         if (r._id === _id) {
           r.value = [`$${range.min} - $${range.max}`];
           r.label = label;

@@ -11,7 +11,7 @@ const availableCredit = ref(getUserDetails.value?.adminSettings?.customerCredit?
 const balance = ref(getUserDetails.value?.adminSettings?.customerCredit?.limit || 0);
 
 const creditUsagePercentage = computed(() => {
-  const totalCredit = availableCredit.value + balance.value;
+  const _totalCredit = availableCredit.value + balance.value;
   return (availableCredit.value / balance.value) * 100;
 });
 

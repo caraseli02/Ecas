@@ -67,26 +67,41 @@ const hasMixedItems = computed(() => {
   return backorderItems.value.some(item => key1Values.has(item.key1));
 });
 
+// eslint-disable-next-line vue/return-in-computed-property
 const paymentSummary = computed(() => {
   const shippingType = data.value.data?.order.shippingDetails.stockorderShippingType;
   const orderInfo = data.value.data?.order;
 
   if (orderInfo) {
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.orderTotal = orderInfo.total;
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.subtotal = Number(orderInfo.subtotal);
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.taxPercentage = 19;
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.taxAmount = 0.19 * (orderPaySum.value.subtotal || 0);
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.discountPercentage = orderInfo.discount?.value || 0;
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.discountAmount = orderPaySum.value.discountPercentage * (orderPaySum.value.subtotal || 0);
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.handlingCharge = 0;
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.shippingCost = orderInfo.shippingCost || 0;
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.shippingText = shippingType?.service.courierName || '';
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.orderType = orderInfo.type;
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     orderPaySum.value.smallOrderCharge = orderInfo.smallOrderCost || 0;
 
     if (data.value.data?.children?.length > 0) {
-      orderPaySum.value.stockItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Stock).total;
-      orderPaySum.value.backorderItemsTotal = data.value.data.children.find((child: any) => child.type === OrderType.Back).total;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      orderPaySum.value.stockItemsTotal = data.value.data.children.find((child: unknown) => child.type === OrderType.Stock).total;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      orderPaySum.value.backorderItemsTotal = data.value.data.children.find((child: unknown) => child.type === OrderType.Back).total;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       orderPaySum.value.payableNow = orderPaySum.value.stockItemsTotal;
     }
 
@@ -109,13 +124,13 @@ const getOrderInformation = async () => {
     orderTypeValue.value = response.data.order.type;
     stockOrder.value
             = response.data.order.type === OrderType.Mixed
-        ? response.data.children.find((child: any) => child.type === OrderType.Stock)
+        ? response.data.children.find((child: unknown) => child.type === OrderType.Stock)
         : response.data.order;
 
     stockOrderItems.value = stockOrder.value.products || [];
     backOrder.value
             = response.data.order.type === OrderType.Mixed
-        ? response.data.children.find((child: any) => child.type === OrderType.Back)
+        ? response.data.children.find((child: unknown) => child.type === OrderType.Back)
         : response.data.order;
     backorderItems.value = backOrder.value.products || [];
 

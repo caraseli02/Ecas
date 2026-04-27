@@ -24,6 +24,7 @@ import chartDesigns from '@/chart-designs/progressBar.json';
 
 export default defineComponent({
   name: 'ProgressBar',
+  // eslint-disable-next-line vue/require-prop-types
   props: ['value'],
   data() {
     return {

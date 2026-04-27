@@ -217,7 +217,7 @@ const form = ref({
 });
 const regions = ref<FormSelectOption[]>([]);
 
-const getCountryRegion = async (country: any, region: any) => {
+const getCountryRegion = async (country: unknown, region: unknown) => {
   //
   const countryRegionObj = getRegionByCountry(country, region);
 

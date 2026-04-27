@@ -101,7 +101,7 @@ import type { TransactionInterface } from '~/types/dashboard/transaction';
 
 const error = ref(false);
 const emptyData = ref(false);
-const showOptions = ref(false);
+const _showOptions = ref(false);
 const isLoading = ref(true);
 const props = defineProps({
   id: {
@@ -143,7 +143,7 @@ const fetchRecentTransactions = async () => {
 
   recentTransactions.value = response.data;
 
-  recentTransactions.value?.map((transaction, index) => {
+  recentTransactions.value?.map((transaction, _index) => {
     const transactionInfo = {} as OrderInfo;
 
     transactionInfo.amount = `${transaction.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} Lei`;

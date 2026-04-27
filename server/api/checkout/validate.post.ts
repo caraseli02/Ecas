@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
-  const body = (await readBody(event)) as {
-    shippingAddress?: any;
-    billingAddress?: any;
+  const _body = (await readBody(event)) as {
+    shippingAddress?: unknown;
+    billingAddress?: unknown;
   };
 
   return {

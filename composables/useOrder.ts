@@ -22,12 +22,12 @@ export function useOrder() {
   const makeCheckout = async (
     orderType: number,
     cartId: string,
-    deliveryMethod: any,
-    backOrderOption: any,
-    smallOrder: any,
-    paymentDetails: any,
+    deliveryMethod: unknown,
+    backOrderOption: unknown,
+    smallOrder: unknown,
+    paymentDetails: unknown,
     note: string,
-    orderSummary?: { products?: any[]; subtotal?: number; total?: number },
+    orderSummary?: { products?: unknown[]; subtotal?: number; total?: number },
   ) => {
     if (!user.value || !user.value?.contactDetails || !deliveryMethod || !paymentDetails) {
       checkout.value = false; // Reset processing state on error
@@ -55,7 +55,7 @@ export function useOrder() {
         cartId: cartId,
         currency: 'ron',
         type: orderType,
-        products: (orderSummary?.products || []) as any,
+        products: (orderSummary?.products || []) as unknown,
         subtotal: Number(orderSummary?.subtotal || 0),
         total: Number(orderSummary?.total || 0),
         shippingCost: Number(deliveryMethod?.price?.total || 0),
@@ -125,7 +125,8 @@ export function useOrder() {
         await handleOrderResponse(response, orderId, paymentDetails.type);
       }
     }
-    catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    catch (_error) {
       await router.push({ path: '/checkout/fail' });
     }
     finally {
@@ -153,6 +154,7 @@ export function useOrder() {
       else {
         switch (result.status) {
           case 'succeeded':
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             orderId && (await router.push({ path: '/order-summary/' + orderId, query: { new: 'true' } }));
             break;
           case 'canceled':

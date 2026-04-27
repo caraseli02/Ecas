@@ -62,7 +62,7 @@ export function useCart() {
   };
 
   const showWarning = computed(() => {
-    return cartItems.value.some((item: any) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
+    return cartItems.value.some((item: unknown) => item.productEntity?.stock !== undefined && item.productEntity.stock < item.stock);
   });
 
   return { cartItems, fetchList, calculateSubtotal, calculateDiscount, cartId, showWarning, fetchShippingPrices };

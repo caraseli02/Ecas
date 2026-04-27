@@ -88,7 +88,7 @@ import { useCartStore } from '~/store/cartStore';
 
 const cartStore = useCartStore();
 
-const { $api } = useNuxtApp();
+const { $api: _$api } = useNuxtApp();
 
 const { getCart, getCartSubtotal } = storeToRefs(cartStore);
 const totalCartPrice = ref(0);
@@ -113,6 +113,7 @@ Emitter.on('update-cart', async (data: CartInterface) => {
 
 Emitter.on('notifications', async (notifications: boolean) => {
   if (notifications) {
+    // noop
   }
 });
 

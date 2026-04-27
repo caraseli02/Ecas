@@ -106,7 +106,7 @@ const formSchema = toTypedSchema(
 );
 
 // Use Vee-Validate form composable
-const { handleSubmit, errors, resetForm, isFieldDirty } = useForm({
+const { handleSubmit, _errors, resetForm, isFieldDirty } = useForm({
   validationSchema: formSchema,
   initialValues: {
     amountPaid: Number(props.initialAmountPaid?.toFixed(2)) || 0,

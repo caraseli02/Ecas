@@ -7,7 +7,7 @@ import EnumToText from '~/components/dataTable/EnumToText.vue';
 import CellDate from '~/components/dataTable/CellDate.vue';
 import { paymentStatusOptions, paymentTypeOptions } from '~/components/client-table/transaction/options';
 import { TransactionTableColumnsEnum } from '~/components/client-table/transaction/columns.enum';
-import { AccountRole } from '~/types';
+import { _AccountRole } from '~/types';
 import DocumentService from '~/services/dashboard/document.service';
 import { formatNumberWithCommas } from '~/utils/numbers';
 // import { useAuthStore } from '~/store/authStore';

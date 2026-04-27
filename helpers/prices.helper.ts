@@ -54,8 +54,8 @@ export const parseProductPriceConfiguration = (product: ProductInterface, userDe
 export const initializeQuantities = (
   product: ProductInterface,
   data: CartInterface,
-  quantity: any,
-  initialRequestedQuantity: any,
+  quantity: unknown,
+  initialRequestedQuantity: unknown,
   minPriceConfiguration: PriceConfigurationSettingsInterface,
 ) => {
   if (!data.products?.length) {

@@ -59,6 +59,7 @@ export enum AlertAndNotificationLabelsEnum {
   outOfStock = 'Out of stock',
   priceChange = 'Prince Change',
   shippingUpdates = 'Shipping Updates',
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   princeChange = 'Prince Change',
   passwordChange = 'Password Change',
   cartItemsOutOfStock = 'Cart Items - Out of Stock',

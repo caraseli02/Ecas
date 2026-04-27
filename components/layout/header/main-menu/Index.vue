@@ -165,7 +165,7 @@ const allCategories = ref<
   {
     name: string;
     productCount: number;
-    icon: any;
+    icon: unknown;
     id: string;
     subcategory: { name: string; productCount: number; id: string }[];
   }[]
@@ -173,7 +173,7 @@ const allCategories = ref<
 const setCategories = async () => {
   await getCategories();
 
-  function mapCategories(sourceArray: any) {
+  function mapCategories(sourceArray: unknown) {
     return sourceArray.map((item: TaxonomyInterface) => ({
       name: item.name.trim(),
       productCount: item.productCount,

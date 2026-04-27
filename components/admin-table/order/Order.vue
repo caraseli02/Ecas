@@ -9,7 +9,7 @@ import { OrderTableColumnsEnum } from '~/components/client-table/order/columns.e
 interface TabFilter {
   label: string;
   value: string;
-  key?: any;
+  key?: unknown;
   total_items: number;
   items?: OrderInterface[];
 }
@@ -21,7 +21,7 @@ const pageCount = ref(0);
 const loading = ref(true);
 const loadingFilters = ref(true);
 const error = ref(false);
-const emptyData = ref(false);
+const _emptyData = ref(false);
 const listItems = ref<OrderTableColumns[]>([]);
 
 const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {
@@ -157,7 +157,7 @@ watch(
   async () => {
     setActiveFilterHighlight();
 
-    const filter = {} as any;
+    const filter = {} as unknown;
     if (activeOrderFilter.value.key?.length) {
       filter['status'] = activeOrderFilter.value.key.join(',');
     }

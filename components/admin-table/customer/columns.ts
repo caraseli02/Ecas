@@ -19,7 +19,7 @@ const fetchOptions: FetchOptions = {
 
 /** create a new instance of $fetcher with custom option */
 const apiFetcher = $fetch.create(fetchOptions);
-const userDashboard = new UserDashboardService(apiFetcher);
+const _userDashboard = new UserDashboardService(apiFetcher);
 
 export const columns: ColumnDef<CustomerTableColumns>[] = [
   // {
@@ -39,6 +39,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
         name:
                     row.original.accountType === AccountTypeEnum.Personal
                       ? `${row.original.personalDetails?.firstName} ${row.original.personalDetails?.lastName}`
+                    // eslint-disable-next-line no-constant-binary-expression
                       : `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` || 'N/A',
         email: row.original.contactDetails?.email,
         navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,

@@ -18,7 +18,7 @@ class CustomerProfileService extends HttpFactory {
   async fetchCustomerLastOrder(userID: string) {
     const authStore = useAuthStore();
     const token = authStore.getToken();
-    return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/last-order`, null, {
+    return await this.call<unknown>('GET', `${this.MAIN_RESOURCE}/${userID}/last-order`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -26,7 +26,7 @@ class CustomerProfileService extends HttpFactory {
   async fetchCustomerTotalSpent(userID: string) {
     const authStore = useAuthStore();
     const token = authStore.getToken();
-    return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/total-spent`, null, {
+    return await this.call<unknown>('GET', `${this.MAIN_RESOURCE}/${userID}/total-spent`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -34,7 +34,7 @@ class CustomerProfileService extends HttpFactory {
   async fetchCustomerAvgOrderValue(userID: string) {
     const authStore = useAuthStore();
     const token = authStore.getToken();
-    return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/average-order`, null, {
+    return await this.call<unknown>('GET', `${this.MAIN_RESOURCE}/${userID}/average-order`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -42,7 +42,7 @@ class CustomerProfileService extends HttpFactory {
   async fetchCustomerAbandonedCheckout(userID: string) {
     const authStore = useAuthStore();
     const token = authStore.getToken();
-    return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/abandoned-checkout`, null, {
+    return await this.call<unknown>('GET', `${this.MAIN_RESOURCE}/${userID}/abandoned-checkout`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -50,7 +50,7 @@ class CustomerProfileService extends HttpFactory {
   async fetchCustomerShippingInformation(userID: string) {
     const authStore = useAuthStore();
     const token = authStore.getToken();
-    return await this.call<any>('GET', `${this.MAIN_RESOURCE}/${userID}/shipping-information`, null, {
+    return await this.call<unknown>('GET', `${this.MAIN_RESOURCE}/${userID}/shipping-information`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }

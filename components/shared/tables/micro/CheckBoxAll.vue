@@ -26,6 +26,8 @@ export default defineComponent({
   components: {
     CheckIcon,
   },
+  // eslint-disable-next-line vue/require-prop-types
   props: ['checkAll'],
+  emits: ['checkAll'],
 });
 </script>

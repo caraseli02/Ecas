@@ -71,7 +71,7 @@ const formSchema = toTypedSchema(
   }),
 );
 
-const { handleSubmit, values, setFieldValue, errors } = useForm({
+const { handleSubmit, _values, setFieldValue, _errors } = useForm({
   validationSchema: formSchema,
 });
 const { toast } = useToast();
@@ -104,6 +104,7 @@ const onSubmit = handleSubmit(async (values) => {
   const response = props.address ? await $api.user.updateShippingAsCustomer(payload) : await $api.user.addShippingAsCustomer(payload);
 
   if (response.status === 'success') {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !props.address && emit('addShippingAddress', payload);
     await updateStoreDetails();
     onCloseDialog();

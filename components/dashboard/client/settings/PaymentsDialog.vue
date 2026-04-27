@@ -18,12 +18,12 @@ const formSchema = toTypedSchema(
   }),
 );
 
-const { handleSubmit, values, setErrors } = useForm({
+const { handleSubmit, _values, _setErrors } = useForm({
   validationSchema: formSchema,
   validateOnMount: true,
 });
 
-const onSubmit = handleSubmit((values) => {
+const _onSubmit = handleSubmit((_values) => {
   showErrorMsg.value = true;
 });
 
@@ -38,7 +38,7 @@ const props = defineProps<{
   cardInfo: StripeCardInterface;
 }>();
 
-const emit = defineEmits(['update:isOpen']);
+const _emit = defineEmits(['update:isOpen']);
 
 const localIsOpen = defineModel<boolean>();
 

@@ -64,7 +64,7 @@ export function extractIdAndName(dataArray: TaxonomyInterface[], excludeIds?: st
   const result: { id: string; name: string }[] = [];
 
   function recurse(item: TaxonomyInterface) {
-    // If the current item or any of its children are excluded, skip the recursion
+    // If the current item or unknown of its children are excluded, skip the recursion
     if (excludeIds && excludeIds.includes(item.id)) {
       return; // Skip this item and all its subcategories
     }
@@ -92,6 +92,7 @@ export const filterByQuery = (items: TaxonomyInterface[], query: string): Taxono
         results.push(category);
       }
       else {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         category?.subcategory && search(category.subcategory, query);
       }
     }
@@ -114,7 +115,7 @@ export const sortByField = <T>(items: T[], field: keyof T, order: 'asc' | 'desc'
   });
 };
 
-export const apiRequest = async (url: string, method: IMethod, token: string, body?: any) => {
+export const apiRequest = async (url: string, method: IMethod, token: string, body?: unknown) => {
   const { toast } = useToast();
   const config = useRuntimeConfig();
   try {

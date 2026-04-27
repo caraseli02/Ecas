@@ -8,8 +8,8 @@ export default defineEventHandler(async (event) => {
       user: {
         _id: 'new-user-' + Date.now(),
         firebaseId: 'new-firebase-id-' + Date.now(),
-        role: 'customer' as any,
-        accountType: 'personal' as any,
+        role: 'customer' as unknown,
+        accountType: 'personal' as unknown,
         verified: false,
         status: 2,
         contactDetails: {

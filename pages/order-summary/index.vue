@@ -17,7 +17,9 @@
             <InfoIcon class="w-6 h-6" />
           </div>
           <div class="flex-1">
-            <p class="font-bold text-sm md:text-base">Viewing Summary as Guest</p>
+            <p class="font-bold text-sm md:text-base">
+              Viewing Summary as Guest
+            </p>
             <p class="text-xs md:text-sm opacity-90">
               Review your items and configuration here. To finalize the order and apply business discounts, please
               <NuxtLink
@@ -117,7 +119,7 @@ const orderItems = computed(() => {
     const { selected, liked, ...rest } = item;
     const quantity = Number(item.stock || 0) + Number(item.backorder_stock || 0);
     const discountPrice = item.productEntity
-      ? Number(parseProductPriceConfiguration(item.productEntity, user.value as any, quantity)?.currentConfigurationDiscountPrice || 0)
+      ? Number(parseProductPriceConfiguration(item.productEntity, user.value as unknown, quantity)?.currentConfigurationDiscountPrice || 0)
       : 0;
     const effectiveUnitPrice = Number(discountPrice || item.unitPriceAfterDiscounts || item.initialUnitPrice || 0);
     const lineTotal = Number((effectiveUnitPrice * quantity).toFixed(2));
@@ -134,7 +136,7 @@ const orderItems = computed(() => {
 
 // Payment Processing
 const { card, cards, isNewCardSelected, fetchCards } = usePaymentCards();
-const paymentDetails = ref<PaymentDetails | null>(null);
+const _paymentDetails = ref<PaymentDetails | null>(null);
 const paymentType = ref({ type: 0, selected: false });
 
 // Order Processing
@@ -181,7 +183,7 @@ const getCustomerCredit = async () => {
   const idToUse = userId.value || 'guest-user-session';
 
   try {
-    const response = (await $api.user.fetchCustomerCredit(idToUse)) as any;
+    const response = (await $api.user.fetchCustomerCredit(idToUse)) as unknown;
 
     if (response.status === 'success' && response.data) {
       const creditData = response.data;
@@ -299,7 +301,8 @@ watch(checkout, async (newVal) => {
       );
       stopButtonTrigger.value = false;
     }
-    catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    catch (_error) {
       isLoadingCheckout.value = false;
     }
     isLoadingCheckout.value = false;
@@ -367,7 +370,7 @@ onMounted(async () => {
   shippingPreferences.value = await fetchShippingPrices(order.value); // Fetch shipping prices
 
   // Initial calculations
-  await calculateSubtotal(cartItems.value, (order as any).value);
+  await calculateSubtotal(cartItems.value, (order as unknown).value);
   calculateDiscount(cartItems.value, order);
 
   syncOrderTotals();

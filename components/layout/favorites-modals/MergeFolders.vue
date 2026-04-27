@@ -22,11 +22,11 @@
           </div>
           <div class="grid grid-cols-1 gap-2.5 max-h-[132px] overflow-y-auto scrollbar-thin mb-[15px]">
             <LayoutFavoritesCartModalFavoritesFolderItem
-              v-for="(folder, index) in foldersCopy"
+              v-for="(f, index) in foldersCopy"
               :key="index"
-              :folder="folder"
+              :folder="f"
               in-modal
-              @select="folder.selected = !folder.selected"
+              @select="f.selected = !f.selected"
             />
           </div>
           <div>

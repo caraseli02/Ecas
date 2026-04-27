@@ -193,14 +193,14 @@ const toOrderStatus = (status?: string) => statusMap[String(status || '').toLowe
 
 const toDemoOrderId = (index: number) => `ord-${index + 1}`;
 
-const mapOrderItems = (order: any) => {
+const mapOrderItems = (order: unknown) => {
   const defaultDiscount = {
     value: 0,
     startDate: '2024-01-01T00:00:00.000Z',
     endDate: '2027-01-01T00:00:00.000Z',
   };
 
-  return (order.itemsDetails || []).map((item: any) => {
+  return (order.itemsDetails || []).map((item: unknown) => {
     const product = mockProducts.find(entry => entry._id === item.productId) || mockProducts[0];
     const quantity = Number(item.quantity || 1);
     const price = Number(item.price || 0);
@@ -220,7 +220,7 @@ const mapOrderItems = (order: any) => {
   });
 };
 
-const mapOrderToContract = (order: any, index: number, userId?: string) => {
+const mapOrderToContract = (order: unknown, index: number, userId?: string) => {
   const customerId = order.customerId || resolveCustomerId(userId);
   const customer = mockCustomers.find(entry => entry._id === customerId) || getDemoCustomer(userId);
   const name = splitName(customer.name);
@@ -463,7 +463,7 @@ export const getOrderWidgetTotal = (type?: string) => {
       return 24;
     case 'products-sold':
       return orders.reduce(
-        (sum, order) => sum + (order.products || []).reduce((itemsSum: number, item: any) => itemsSum + Number(item.stock || 0), 0),
+        (sum, order) => sum + (order.products || []).reduce((itemsSum: number, item: unknown) => itemsSum + Number(item.stock || 0), 0),
         0,
       );
     case 'returns':

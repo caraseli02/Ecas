@@ -36,7 +36,7 @@
 import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { useCartStore } from '~/store/cartStore';
 
-const props = defineProps<{
+const _props = defineProps<{
   loading: boolean;
 }>();
 

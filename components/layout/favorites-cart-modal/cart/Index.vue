@@ -3,7 +3,7 @@
     <div class="py-4 px-4 flex-1 h-full overflow-y-auto overscroll-contain scrollbar-thin max-h-vh md:py-6">
       <div class="grid grid-cols-1 gap-4">
         <LayoutFavoritesCartModalFavoritesProductItem
-          v-for="(item, index) in items"
+          v-for="(item) in items"
           :key="item.id"
           :product="item"
           in-cart
@@ -45,22 +45,22 @@ import { useCartStore } from '~/store/cartStore';
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
-const { getCartSubtotal, cartSubtotal, cart } = storeToRefs(cartStore);
-const { getUserDetails } = storeToRefs(authStore);
+const { _getCartSubtotal, cartSubtotal, cart } = storeToRefs(cartStore);
+const { _getUserDetails } = storeToRefs(authStore);
 
 const items = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
 // const cart = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
 
 defineEmits(['close']);
 
-const props = defineProps({
+const _props = defineProps({
   data: {
     type: Object as PropType<CartInterface>,
     required: true,
   },
 });
 
-const totalCartPrice = ref(0);
+const _totalCartPrice = ref(0);
 
 // watch(
 //     [items],
@@ -95,7 +95,7 @@ const totalCartPrice = ref(0);
 //     mapCartItems(cart.value);
 // };
 
-const updateQuantity = async () => {
+const _updateQuantity = async () => {
   items.value = cart.value;
   mapCartItems();
 };

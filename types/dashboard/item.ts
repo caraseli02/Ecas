@@ -4,7 +4,7 @@ import type { AddressInterface } from '~/types/auth/user-interface';
 import type { CountryInterface } from '~/types/dashboard/control-panel';
 
 export interface DashboardCustomerTableItem {
-  avatar?: any;
+  avatar?: unknown;
   name: string;
   email: string;
   account: string;
@@ -56,11 +56,11 @@ export interface DashboardOrderItem {
   firebaseId: string;
   email?: string;
   customer?: {
-    avatar?: any;
+    avatar?: unknown;
     name: string;
     discount?: number;
     email: string;
-    flag: any;
+    flag: unknown;
     active: boolean;
   };
   payment: PaymentStatusEnum;

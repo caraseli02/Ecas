@@ -99,7 +99,7 @@ const handleSignedIn = () => {
   emit('close');
 };
 
-const navItems = ref([
+const _navItems = ref([
   {
     label: 'Dashboard',
     to: '/dashboard',

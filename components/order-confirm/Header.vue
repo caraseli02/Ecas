@@ -14,7 +14,7 @@ interface Props {
   date: string;
   shippingMethod?: string;
   pickupDate?: string;
-  paymentMethod?: Record<string, any>;
+  paymentMethod?: Record<string, unknown>;
   paymentStatus?: PaymentStatusEnum;
   onDownloadDocument: () => void;
 }

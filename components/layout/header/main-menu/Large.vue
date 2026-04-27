@@ -336,7 +336,7 @@ const allCategories = ref<
   {
     name: string;
     productCount: number;
-    icon: any;
+    icon: unknown;
     id: string;
     subcategory: { name: string; productCount: number; id: string }[];
   }[]
@@ -344,7 +344,7 @@ const allCategories = ref<
 const setCategories = async () => {
   await getCategories();
 
-  function mapCategories(sourceArray: any) {
+  function mapCategories(sourceArray: unknown) {
     return sourceArray.map((item: TaxonomyInterface) => ({
       name: item.name.trim(),
       productCount: item.productCount,
@@ -360,7 +360,7 @@ const setCategories = async () => {
 };
 
 const selectedCategory = ref<(typeof allCategories.value)[0] | null>(null);
-const selectedSubCategory = ref<any>();
+const selectedSubCategory = ref<unknown>();
 
 const slides = ref([
   {
@@ -445,7 +445,7 @@ const handleTogglerMouseLeave = (event: MouseEvent) => {
   isMouseOverToggler.value = null;
 };
 
-const swiperDOM = ref<any>(null);
+const swiperDOM = ref<unknown>(null);
 
 onMounted(async () => {
   await setCategories();

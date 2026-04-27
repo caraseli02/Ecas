@@ -9,5 +9,5 @@ export interface FavoriteItem {
   selected?: boolean;
   quantity?: number;
   productEntity: ProductInterface;
-  image?: any;
+  image?: unknown;
 }

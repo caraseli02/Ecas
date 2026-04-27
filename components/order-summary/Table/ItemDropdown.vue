@@ -65,7 +65,7 @@
                   id: item.id,
                   min: stockItem ? item?.productEntity?.priceConfiguration?.configuration[0].quantity : 1,
                   max: item.productEntity?.stock,
-                } as any"
+                } as unknown"
                 @update:model-value="quantity = $event"
               />
             </div>
@@ -100,7 +100,7 @@
     v-model="deleteItem"
     :remove-only-stock-quantity="stockItem && !!item.backorder_stock && item.backorder_stock > 0"
     :remove-only-backstock-quantity="!stockItem && item.stock > 0"
-    :products="[item as any]"
+    :products="[item as unknown]"
     :delete-from-cart="true"
     @close="deleteItem = false"
     @removed="emits('updateQuantity')"

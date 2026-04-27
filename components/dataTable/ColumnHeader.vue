@@ -6,7 +6,7 @@ import type { Order } from '../client-table/order/schema';
 import { cn } from '@/lib/utils';
 
 interface DataTableColumnHeaderProps {
-  column: Column<Order, any>;
+  column: Column<Order, unknown>;
   title: string;
   table?: Table<Order>;
 }

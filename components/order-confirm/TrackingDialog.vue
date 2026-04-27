@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { OrderInterface } from '~/types';
 
-const props = defineProps<{
+const _props = defineProps<{
   order: OrderInterface;
 }>();
 

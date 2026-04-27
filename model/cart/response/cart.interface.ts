@@ -48,12 +48,12 @@ export interface CartProductsInterface {
   isFolder: boolean;
 
   /**
-     * Price before any discount per unit
+     * Price before unknown discount per unit
      */
   initialUnitPrice: number;
 
   /**
-     * Price after any discount per unit
+     * Price after unknown discount per unit
      */
   unitPriceAfterDiscounts: number;
 

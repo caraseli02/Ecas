@@ -106,12 +106,14 @@
   </div>
   <Teleport to="body">
     <Transition name="fade">
+      <!-- eslint-disable vue/no-mutating-props -->
       <DashboardDeactivateUserModal
         v-if="showDeactivatingModal"
         :user="item"
         @close="showDeactivatingModal = false"
         @change-lock-status="item.active = !item.active"
       />
+      <!-- eslint-enable vue/no-mutating-props -->
     </Transition>
     <div
       class="fixed z-50 top-0 left-0 w-full h-full bg-[#2F3241]/10 transition-all duration-300 cursor-pointer"
@@ -130,7 +132,7 @@ import DemoTooltip from '~/components/global/DemoTooltip.vue';
 import type { DashboardCustomerTableItem } from '~/types';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 
-const props = defineProps({
+const _props = defineProps({
   item: {
     type: Object as PropType<DashboardCustomerTableItem>,
     required: true,

@@ -192,7 +192,7 @@ import type { AddressInterface, CompanyDetails, ContactDetails, UserInterface } 
 import { getRegionByCountry } from '~/helpers/form.helper';
 import { toast } from '~/components/ui/toast';
 
-const companyInformation = ref<CompanyDetails>({} as CompanyDetails);
+const _companyInformation = ref<CompanyDetails>({} as CompanyDetails);
 const { $api } = useNuxtApp();
 const props = defineProps({
   id: {
@@ -273,7 +273,7 @@ const form = ref({
 });
 const regions = ref<FormSelectOption[]>([]);
 
-const getCountryRegion = (country: any, region: any) => {
+const getCountryRegion = (country: unknown, region: unknown) => {
   const countryRegionObj = getRegionByCountry(country, region);
 
   if (!countryRegionObj) {

@@ -32,7 +32,7 @@ export interface IApiInstance {
   documents: DocumentService;
   generalSettings: GeneralSettings;
   categories: CategoriesService;
-  customerDashboard: CustomerDashboard & { getMetadata: () => Promise<any> };
+  customerDashboard: CustomerDashboard & { getMetadata: () => Promise<unknown> };
   settingsClient: SettingsClientService;
   smartPricing: SmartPricingService;
 }

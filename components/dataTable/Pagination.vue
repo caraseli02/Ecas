@@ -7,7 +7,7 @@ interface DataTablePaginationProps {
   pageCount: number;
   totalItems: number;
 }
-const props = defineProps<DataTablePaginationProps>();
+const _props = defineProps<DataTablePaginationProps>();
 </script>
 
 <template>

@@ -70,7 +70,7 @@ class SmartPricingService extends HttpFactory {
     });
   }
 
-  async editPriceRange(data: any, id: string) {
+  async editPriceRange(data: unknown, id: string) {
     const token = this.authStore.getToken();
     return await this.call<{
       status: string;

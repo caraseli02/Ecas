@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <section class="mb-10 md:mb-14 xl:mb-16 overflow-hidden">
     <div class="container">
@@ -11,7 +12,10 @@
           <p class="text-sm leading-6 text-slate-500 mb-7 max-w-xs">
             Browse thousands of parts from trusted manufacturers. Check stock, compare specs, and order with confidence.
           </p>
-          <NuxtLink to="/search" class="w-fit">
+          <NuxtLink
+            to="/search"
+            class="w-fit"
+          >
             <UiButton class="w-fit px-6 py-2.5 text-sm font-medium shadow-sm">
               Explore Products
             </UiButton>

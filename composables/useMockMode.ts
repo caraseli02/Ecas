@@ -25,7 +25,7 @@ export const useMockMode = () => {
 
     // Layer 2: Runtime environment check
     const isDev = import.meta.env.MODE === 'development';
-    const isTest = import.meta.env.MODE === 'test';
+    const _isTest = import.meta.env.MODE === 'test';
 
     // Layer 3: Domain/IP whitelist check
     const allowedDomains = ['localhost', '127.0.0.1', 'dev.demo.app'];

@@ -28,7 +28,7 @@ function transformObject(data: Filter): [string, string] {
 
 const props = defineProps<{
   title: string;
-  column?: Column<TData, any>;
+  column?: Column<TData, unknown>;
 }>();
 
 watch(

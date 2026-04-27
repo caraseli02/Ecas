@@ -5,7 +5,7 @@ import { PlusCircleIcon } from 'lucide-vue-next';
 import { PopoverClose } from 'radix-vue';
 
 interface DataTableInputFilter {
-  column?: Column<TData, any>;
+  column?: Column<TData, unknown>;
   title?: string;
   prefix?: string;
 }

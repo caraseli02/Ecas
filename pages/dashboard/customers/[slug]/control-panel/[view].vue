@@ -89,6 +89,7 @@ const fetchInformation = async () => {
 
     customerDetails.value = response.data;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     if (isMockMode.value) {
       customerDetails.value = {

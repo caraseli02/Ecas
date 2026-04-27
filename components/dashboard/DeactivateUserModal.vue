@@ -93,7 +93,7 @@ import { useNuxtApp } from '#app';
 import { countries } from '~/data/countries';
 
 const { $api } = useNuxtApp();
-const country = ref({} as any);
+const country = ref({} as unknown);
 
 const props = defineProps({
   user: {

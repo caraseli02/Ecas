@@ -18,7 +18,7 @@ const totalItems = ref(0);
 const pageCount = ref(0);
 const loading = ref(true);
 const error = ref(false);
-const emptyData = ref(false);
+const _emptyData = ref(false);
 const listItems = ref<OrderTableColumns[]>([]);
 
 const fetchAndSetOrdersList = async (page: number, perPage: number, filters = {}, sort = {}) => {

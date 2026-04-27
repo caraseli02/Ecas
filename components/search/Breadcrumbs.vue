@@ -37,7 +37,7 @@ import { useCategories } from '~/composables/useCategories';
 import { findCategory, mapLabelsToIds, mapPathArrayOfNames } from '~/helpers/categories.helper';
 import { useCategoriesStore } from '~/store/categoriesStore';
 
-const categoriesStore = useCategoriesStore();
+const _categoriesStore = useCategoriesStore();
 
 const { categories, getCategories } = useCategories();
 
