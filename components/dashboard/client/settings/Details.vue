@@ -206,6 +206,7 @@ const onSubmit = handleSubmit(async (values) => {
     };
     const response = await $api.settingsClient.updateDetails(payloadPersonal);
     if (response.status === 'success') {
+    // noop
     }
   }
   else {
@@ -232,6 +233,7 @@ const onSubmit = handleSubmit(async (values) => {
     };
     const response = await $api.settingsClient.updateDetails(payloadBusiness);
     if (response.status === 'success') {
+    // noop
     }
   }
 
@@ -251,7 +253,7 @@ watch(country, (newCountry) => {
           value: e.name,
         };
       }) || [];
-    region.value = country.value.regions.find(c => c.shortCode === activeAddress.value?.region) as any;
+    region.value = country.value.regions.find(c => c.shortCode === activeAddress.value?.region) as unknown;
   }
   else {
     region.value = undefined;
@@ -261,7 +263,7 @@ watch(country, (newCountry) => {
 watch(region, (newRegion) => {
   if (newRegion) {
     setFieldValue('county', newRegion.value);
-    region.value = regions.value.find(c => c.value === newRegion.value) as any;
+    region.value = regions.value.find(c => c.value === newRegion.value) as unknown;
   }
   else {
     region.value = undefined;

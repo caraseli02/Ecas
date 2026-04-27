@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import type { AccountType } from '~/types';
 
 interface DataTableFacetedFilter {
-  column?: Column<TData, any>;
+  column?: Column<TData, unknown>;
   title?: string;
   options?: {
     label: string | null;

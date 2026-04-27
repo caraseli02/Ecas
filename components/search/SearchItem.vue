@@ -97,7 +97,7 @@
           <div class="flex flex-col items-start gap-1">
             <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold mb-1"> Qty </span>
             <span
-              v-for="[qty, _] in bulkQuantities"
+              v-for="[qty] in bulkQuantities"
               :key="qty"
               class="text-[13px] leading-tight font-medium"
             >
@@ -107,7 +107,7 @@
           <div class="flex flex-col items-start gap-1">
             <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold mb-1"> Price (Ex VAT)</span>
             <span
-              v-for="[_, price] in bulkQuantities"
+              v-for="[, price] in bulkQuantities"
               :key="price"
               class="text-[13px] leading-tight font-semibold"
               :class="[productDiscount ? 'text-rose-500' : 'text-blue-600']"
@@ -177,7 +177,7 @@ import { useCartStore } from '~/store/cartStore';
 import { addToCartHelper, initializeQuantities, parseProductPriceConfiguration } from '~/helpers/prices.helper';
 import type { PriceConfigurationSettingsInterface, ProductInterface } from '~/model/products/response/ProductResponse';
 
-const { $api } = useNuxtApp();
+const { $api: _$api } = useNuxtApp();
 const quantity = ref(1);
 const initialRequestedQuantity = ref(0);
 
@@ -192,7 +192,7 @@ const authStore = useAuthStore();
 const cartStore = useCartStore();
 
 const { getUserDetails } = storeToRefs(authStore);
-const { getCart, cart } = storeToRefs(cartStore);
+const { _getCart, cart } = storeToRefs(cartStore);
 
 const minPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
 const currentPriceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(undefined);
@@ -248,7 +248,7 @@ const buildBulkQuantities = () => {
 const addToCart = async (product: ProductInterface) => {
   const stock = initialRequestedQuantity.value > 0 ? quantity.value - initialRequestedQuantity.value : quantity.value;
 
-  const response = (await addToCartHelper(product, stock)) as any;
+  const response = (await addToCartHelper(product, stock)) as unknown;
 
   if (response.status === 'success') {
     await cartStore.updateAndReturnCart();

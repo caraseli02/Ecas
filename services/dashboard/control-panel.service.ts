@@ -27,8 +27,8 @@ class ControlPanelService extends HttpFactory {
 
     const data = {
       setting: {
-        name: (setting as object as any).key,
-        value: (setting as object as any)[type],
+        name: (setting as object as unknown).key,
+        value: (setting as object as unknown)[type],
         option: type,
       },
     };
@@ -90,7 +90,7 @@ class ControlPanelService extends HttpFactory {
     const token = this.authStore.getToken();
     return await this.call<{
       status: string;
-      data: any;
+      data: unknown;
     }>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -100,7 +100,7 @@ class ControlPanelService extends HttpFactory {
     const token = this.authStore.getToken();
     return await this.call<{
       status: string;
-      data: any;
+      data: unknown;
     }>('GET', `${this.MAIN}/${id}/${type === 0 ? 'personal' : 'organization'}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -212,7 +212,7 @@ class ControlPanelService extends HttpFactory {
   async fetchActivityLogs(page: number, perPage: number, filters = {}, sort = {}) {
     const token = this.authStore.getToken();
 
-    return await this.call<any>('GET', this.ACTIVITY_LOGS_RESOURCE, null, {
+    return await this.call<unknown>('GET', this.ACTIVITY_LOGS_RESOURCE, null, {
       params: {
         page: page,
         perPage: perPage,

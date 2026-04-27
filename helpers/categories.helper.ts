@@ -1,15 +1,15 @@
 import type { TaxonomyInterface } from '~/types/dashboard/categories';
 import { useCategoriesStore } from '~/store/categoriesStore';
 
-export const mapLabelsToIds = (array: any, result = {}) => {
+export const mapLabelsToIds = (array: unknown, result = {}) => {
   const categoriesStore = useCategoriesStore();
 
   if (categoriesStore.categoriesMap && Object.keys(categoriesStore.categoriesMap).length) {
     return categoriesStore.categoriesMap;
   }
 
-  const recursiveFn = (array: any, result = {}) => {
-    array.forEach((item: any) => {
+  const recursiveFn = (array: unknown, result = {}) => {
+    array.forEach((item: unknown) => {
       // Add the current item to the result object
       result[item.name] = item.id;
       // Check if the item has subcategories and recursively process them
@@ -27,7 +27,7 @@ export const mapLabelsToIds = (array: any, result = {}) => {
   return mappedCategories;
 };
 
-export const mapPathArrayOfNames = (path: string, categoriesMap: any) => {
+export const mapPathArrayOfNames = (path: string, categoriesMap: unknown) => {
   const idToNameMap = Object.entries(categoriesMap).reduce((acc, [name, id]) => {
     acc[id] = {
       name: name,
@@ -43,11 +43,11 @@ export const mapPathArrayOfNames = (path: string, categoriesMap: any) => {
     .filter(name => name) as { id: string; name: string }[];
 };
 
-export const mapNamesToPath = (namesArray: any, categoriesMap: any) => {
+export const mapNamesToPath = (namesArray: unknown, categoriesMap: unknown) => {
   // Map each name in namesArray to its corresponding ID from categoriesMap
   const ids = namesArray.map(name => categoriesMap[name] || null);
 
-  // Filter out any null values (in case any name is missing from the map) and join with '/'
+  // Filter out unknown null values (in case unknown name is missing from the map) and join with '/'
   return ids.filter(Boolean).join('/');
 };
 

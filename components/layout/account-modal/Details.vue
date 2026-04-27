@@ -94,6 +94,7 @@ const getIconBadgeByAccountType = () => {
 
 const fullname = computed(() => {
   if (getUserDetails.value?.role === AccountRole.Client && getUserDetails.value?.accountType === AccountType.Personal) {
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     accountTypeIcon.value = UserIcon;
     return `${getUserDetails.value?.personalDetails?.firstName} ${getUserDetails.value?.personalDetails?.lastName}`;
   }

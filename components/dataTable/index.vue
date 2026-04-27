@@ -9,7 +9,7 @@ import { transformFiltersToObject, transformSortingKeys, valueUpdater } from '~/
 interface Props {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  fetchFn: DebouncedFunc<(page: number, perPage: number, filters?: any, sort?: any) => Promise<void>>;
+  fetchFn: DebouncedFunc<(page: number, perPage: number, filters?: unknown, sort?: unknown) => Promise<void>>;
   pageCount: number;
   totalItems: number;
   loading: boolean;
@@ -122,9 +122,11 @@ watchDebounced(
 //   table.reset()
 // }, {deep: true})
 
+// eslint-disable-next-line vue/no-async-in-computed-properties
 const loadingSize = computed(async () => {
   // const size = 60 * 10;
   const size = 60 * Number(table.getState().pagination.pageSize);
+  // eslint-disable-next-line vue/no-async-in-computed-properties
   await nextTick();
   return `${size}px`;
 });

@@ -37,7 +37,7 @@ const SENSITIVE_PATTERNS = [
   /Bearer\s+[A-Za-z0-9\-._~+/]+=*/g, // Bearer tokens
   /sk_test_[a-zA-Z0-9]{24,}/g, // Stripe test keys
   /pk_test_[a-zA-Z0-9]{24,}/g, // Stripe publishable keys
-  /firebase[a-z0-9\-]{20,}/gi, // Firebase keys
+  /firebase[a-z0-9-]{20,}/gi, // Firebase keys
 ];
 
 /**
@@ -58,10 +58,10 @@ const INTERNAL_ERROR_PATTERNS = [
  * File path patterns to remove
  */
 const FILE_PATH_PATTERNS = [
-  /\/[a-zA-Z0-9_\-\/\.]+\.(ts|js|vue|json|css)/g,
-  /[A-Za-z]:\\[a-zA-Z0-9_\-\\\.]+\.(ts|js|vue|json|css)/g,
-  /\/[a-zA-Z0-9_\-\/\.]+\/node_modules\//g,
-  /[a-zA-Z0-9_\-\\\.]+\\node_modules\\/g,
+  /\/[a-zA-Z0-9_\-/.]+\.(ts|js|vue|json|css)/g,
+  /[A-Za-z]:\\[a-zA-Z0-9_\-\\.]+\.(ts|js|vue|json|css)/g,
+  /\/[a-zA-Z0-9_\-/.]+\/node_modules\//g,
+  /[a-zA-Z0-9_\-\\.]+\\node_modules\\/g,
 ];
 
 /**
@@ -202,7 +202,7 @@ export function logErrorSafely(error: Error | string, context: string = 'Unknown
  * @param context - Error context
  * @param sanitizedMessage - Sanitized error message
  */
-function sendToErrorTrackingService(error: Error | string, context: string, sanitizedMessage: string): void {
+function sendToErrorTrackingService(_error: Error | string, _context: string, _sanitizedMessage: string): void {
   // TODO: Implement error tracking service integration
   // Example with Sentry:
   // Sentry.captureException(error, {

@@ -142,7 +142,7 @@ const filteredData = ref([] as ProductFiltersWrapper[]);
 const showFilters = ref(true);
 const checkedOptions = ref([]);
 
-const parseFilters = (filters: any) => {
+const parseFilters = (filters: unknown) => {
   const data: ProductFiltersWrapper[] = [];
   let index = 0;
 

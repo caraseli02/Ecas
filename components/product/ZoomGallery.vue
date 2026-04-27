@@ -12,6 +12,7 @@ const emblaMainApi = ref<CarouselApi>();
 const emblaThumbnailApi = ref<CarouselApi>();
 
 const selectedIndex = defineModel<number>('selectedIndex');
+// eslint-disable-next-line vue/require-prop-types
 const isOpen = defineModel('open', { default: false });
 
 function onSelect() {

@@ -26,12 +26,12 @@
 
 <script setup lang="ts">
 defineProps<{
-  cardInfo?: any;
+  cardInfo?: unknown;
   isSelected?: boolean;
 }>();
 
 const emits = defineEmits(['selectPaymentOption']);
-const paymentMethods = async (cardInfo: any) => {
+const paymentMethods = async (cardInfo: unknown) => {
   emits('selectPaymentOption', cardInfo);
 };
 </script>

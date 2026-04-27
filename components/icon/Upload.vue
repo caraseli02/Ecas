@@ -5,6 +5,7 @@
       v-if="svgPreview"
       class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-md"
     >
+      <!-- eslint-disable vue/no-v-html -->
       <div v-html="svgPreview" />
     </div>
     <SvgoCardPlaceholderSmall

@@ -8,6 +8,7 @@
       <span class="text-rose-500 text-sm font-medium leading-6">Select backorder shipping preferences</span>
     </div>
     <template v-if="isMixedOrBackOrder">
+      <!-- eslint-disable-next-line vue/require-v-for-key -->
       <div
         v-for="backOrderOption in generalSettings?.orderSettings?.backorderShippingTypes"
         class="flex flex-col gap-4"
@@ -49,6 +50,7 @@
       class="flex flex-col gap-4"
     >
       <span class="text-neutral-700 text-sm font-medium leading-6">Delivery Method</span>
+      <!-- eslint-disable-next-line vue/require-v-for-key -->
       <div
         v-for="deliveryType in shippingPreferences.list"
         class="flex flex-col gap-4"
@@ -140,15 +142,18 @@ export default defineComponent({
   methods: {
     selectBackorderPreference(option: BackorderShippingTypesInterface) {
       if (this.order) {
+        // eslint-disable-next-line vue/no-mutating-props
         this.order.backorderOption = option;
       }
     },
     selectStockorderPreference(option: StockorderShippingTypesInterface) {
       if (this.order) {
+        // eslint-disable-next-line vue/no-mutating-props
         this.order.stockorderOption = option;
       }
     },
     selectDeliveryMethod(option: ShippingOrderPricingOption) {
+      // eslint-disable-next-line vue/no-mutating-props
       this.order.deliveryMethod = option;
     },
   },

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { CaretSortIcon, CheckIcon } from '@radix-icons/vue';
-import { cn } from '@/lib/utils';
+import { CaretSortIcon, _CheckIcon } from '@radix-icons/vue';
 
 const banks = [
   { value: 'bcr_ron', label: 'BCR Bank', currency: 'RON' },

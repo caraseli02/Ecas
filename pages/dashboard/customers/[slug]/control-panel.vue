@@ -206,6 +206,7 @@ const getCustomerCredit = async () => {
     emptyData.value = false;
     credit.value = customerCreditHelper(response.data);
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     isLoading.value = false;
 
@@ -269,6 +270,7 @@ const fetchInformation = async () => {
     customer.value = response.data.firebaseId;
     customerName.value = response.data.contactDetails?.firstName + ' ' + response.data.contactDetails?.lastName;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     if (isMockMode.value) {
       accountType.value = AccountType.Personal;

@@ -6,7 +6,7 @@ export const useFormValidation = () => {
 
     obj.forEach((e) => {
       if (e.type === 'email') {
-        const emailRegex = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm;
+        const emailRegex = /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm;
         const clientCodeRegex = /^[PBAS]-\d{6}$/;
 
         if (!emailRegex.test(e.value) && !clientCodeRegex.test(e.value)) {

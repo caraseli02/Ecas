@@ -55,13 +55,14 @@ const apiKeysMap: ApiKeysMap = {
 interface TabFilter {
   label?: string;
   value: string;
-  key?: any;
+  key?: unknown;
   total_items?: number | null; // Adjusted to accept null
   items?: OrderInterface[];
   icon?: string;
   requiredPermission?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ApiResponse = {
   status: 'success' | 'error';
   data: Record<string, number | null>;

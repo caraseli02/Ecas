@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const _ = require('lodash');
 
 const svgPrefix = {};
@@ -105,11 +106,11 @@ export default defineNuxtConfig({
     '/product/categories': { appMiddleware: ['auth'] },
   },
 
-  compatibilityDate: '2024-11-20',
-
   experimental: {
     appManifest: false,
   },
+
+  compatibilityDate: '2024-11-20',
 
   vite: {
     vue: {

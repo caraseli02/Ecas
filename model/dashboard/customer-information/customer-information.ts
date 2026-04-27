@@ -68,12 +68,12 @@ export interface CustomerDashboardActivityData {
 
 export interface DetailsResponse {
   status: string;
-  data: any;
+  data: unknown;
 }
 
 export interface RecentlyBoughtResponse {
   status: string;
-  data: any;
+  data: unknown;
 }
 
 export interface ViewHistoryResponse {

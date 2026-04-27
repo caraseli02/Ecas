@@ -39,7 +39,7 @@ class SettingsClientService extends HttpFactory {
     );
   }
 
-  async updateDetails(payload: any) {
+  async updateDetails(payload: unknown) {
     const token = this.authStore.getToken();
     const userId = this.authStore.getUserDetails.firebaseId;
     const accountType = this.authStore.getUserDetails.accountType;
@@ -59,7 +59,7 @@ class SettingsClientService extends HttpFactory {
   async updateCardAsDefault(cardId: string) {
     const token = this.authStore.getToken();
 
-    return await this.call<any>('POST', `${this.USER_PATH}/card/default/${cardId}`, null, {
+    return await this.call<unknown>('POST', `${this.USER_PATH}/card/default/${cardId}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -67,7 +67,7 @@ class SettingsClientService extends HttpFactory {
   async deleteCard(cardId: string) {
     const token = this.authStore.getToken();
 
-    return await this.call<{ status: string; data: any }>('DELETE', `${this.USER_PATH}/card/${cardId}`, null, {
+    return await this.call<{ status: string; data: unknown }>('DELETE', `${this.USER_PATH}/card/${cardId}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }

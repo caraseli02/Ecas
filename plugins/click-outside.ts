@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-const handlers: any = {};
+const handlers: unknown = {};
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.directive('click-outside', {
@@ -11,7 +11,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       let latch = false;
 
       handlers[id] = {
-        callback: (event: any) => {
+        callback: (event: unknown) => {
           if (latch) {
             const clickedEl = event.target;
             if (!clickedEl) {
@@ -35,6 +35,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       const id = el.getAttribute('dir-id');
       if (id && typeof document !== 'undefined') {
         document.removeEventListener('click', handlers[id].callback);
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete handlers[id];
       }
     },

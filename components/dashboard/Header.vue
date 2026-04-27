@@ -323,7 +323,7 @@ const { getUserDetails } = storeToRefs(authStore);
 
 const emit = defineEmits<{
   (e: 'close'): void;
-  (e: 'show-side-nav'): any;
+  (e: 'show-side-nav'): unknown;
 }>();
 
 const showMobileSearch = ref(false);
@@ -331,7 +331,6 @@ const searchValue = ref('');
 const notifications = ref<Notification[]>([] as Notification[]);
 const { $api } = useNuxtApp();
 const error = ref(false);
-const emptyData = ref(false);
 const isLoading = ref(false);
 const showOptions = ref(false);
 const showNotifications = ref(false);

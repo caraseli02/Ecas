@@ -1,11 +1,12 @@
 import type { FilterInterface, SortInterface } from '~/model/dashboard/table/filters';
 
-export const handleFilterChange = (activeFilters: FilterInterface[], emits, filter: string, event: any, raw: boolean, hidden = false) => {
+export const handleFilterChange = (activeFilters: FilterInterface[], emits, filter: string, event: unknown, raw: boolean, hidden = false) => {
   const value = raw ? event : event.target?.value;
 
   const existingFilterIndex = activeFilters.findIndex(item => item.filter === filter);
 
   if (existingFilterIndex < 0) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     value !== '' && typeof value !== 'undefined' && activeFilters.push({ filter: filter, value: value, hidden: hidden });
   }
   else {

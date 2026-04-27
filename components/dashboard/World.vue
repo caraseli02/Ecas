@@ -89,14 +89,14 @@ const getColor = (countryName: string) => {
     return '#D9D9D9';
   }
 };
-const style = (feature: any) => {
+const style = (feature: unknown) => {
   return {
     fillColor: getColor(feature.properties.name),
     fillOpacity: 1,
   };
 };
 const tooltipCountry = ref();
-const highlightFeatureClick = (e: any) => {
+const highlightFeatureClick = (e: unknown) => {
   const clickedCountryName = e.target.feature.properties.name;
   const country = props.countries.find(c => c.label === clickedCountryName);
   if (country) {
@@ -104,7 +104,7 @@ const highlightFeatureClick = (e: any) => {
     tooltipCountry.value.latLng = e.latlng;
   }
 };
-const onEachFeature = (_: any, layer: any) => {
+const onEachFeature = (_: unknown, layer: unknown) => {
   layer.on({
     click: highlightFeatureClick,
   });

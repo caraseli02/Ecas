@@ -249,7 +249,7 @@ const normalizeSigninResponse = (response: SigninResponse | null | undefined) =>
 
 const buildTokenPayloadFromMockUser = (user: UserInterface): UserInfoJWT => {
   const now = Math.floor(Date.now() / 1000);
-  const userWithPermissions = user as UserInterface & { permissions?: any[] };
+  const userWithPermissions = user as UserInterface & { permissions?: unknown[] };
   const safeUserId = user._id || 'mock-user-1';
   const safeEmail = user.contactDetails?.email || LOGIN_CREDENTIALS[selectedLoginRole.value].email;
 
@@ -272,7 +272,7 @@ const buildTokenPayloadFromMockUser = (user: UserInterface): UserInfoJWT => {
     picture: 'https://ui-avatars.com/api/?name=Demo+User',
     sub: safeUserId,
     user_id: safeUserId,
-    permissions: (userWithPermissions.permissions || []) as any,
+    permissions: (userWithPermissions.permissions || []) as unknown,
   };
 };
 
@@ -352,7 +352,7 @@ const handleSignIn = async () => {
     emits('signed-in');
     await navigateTo(safeRedirect || getRoleRedirectPath(userDetails.role));
   }
-  catch (error: any) {
+  catch (error: unknown) {
     const statusCode = error?.response?.status || error?.statusCode || 500;
     errorResponse.code = statusCode;
     errorResponse.status = statusCode === 401 ? 'Invalid credentials' : 'Sign-in failed';
@@ -425,6 +425,7 @@ const loginWithGoogle = async () => {
   authStore.addToken(token);
   authStore.addUser(parsedToken);
 
+  // eslint-disable-next-line no-prototype-builtins
   if (!parsedToken.hasOwnProperty('permissions')) {
     authStore.addFirebaseToken(token);
     cookieToken.value = token;

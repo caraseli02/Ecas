@@ -49,7 +49,7 @@ import ResetIcon from '@/assets/icons/reset.svg';
 
 const emits = defineEmits(['close', 'show-add-filters-modal']);
 
-const onDrag = (event: any) => {
+const onDrag = (event: unknown) => {
   if (event.direction === 'bottom') {
     emits('close');
   }

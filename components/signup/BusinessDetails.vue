@@ -156,5 +156,6 @@ watch(details.value.country, (newVal) => {
   }
 });
 
+// eslint-disable-next-line vue/require-prop-types
 const vatPayer = defineModel();
 </script>

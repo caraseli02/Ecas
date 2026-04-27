@@ -2,7 +2,6 @@
 import type { Table } from '@tanstack/vue-table';
 import { XIcon } from 'lucide-vue-next';
 import { AgentsTableColumnsEnum } from '~/components/client-table/agents/columns.enum';
-import { accountType } from '~/components/admin-table/customer/options';
 
 interface DataTableToolbarProps {
   table: Table<TData>;

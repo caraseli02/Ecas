@@ -8,7 +8,6 @@ import { useAuthStore } from '~/store/authStore';
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const lgAndLarger = breakpoints.greaterOrEqual('lg'); // sm and larger
 
-const authStore = useAuthStore();
 const generalSettings = useAuthStore().generalSettings;
 
 const props = defineProps<{

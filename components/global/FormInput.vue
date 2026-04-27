@@ -70,6 +70,7 @@ defineProps({
   label: String,
   placeholder: String,
   error: String,
+  // eslint-disable-next-line vue/require-prop-types
   icon: {
     required: false,
   },

@@ -16,6 +16,7 @@ const props = defineProps<{
 }>();
 
 const pricingStore = usePricingStore();
+// eslint-disable-next-line vue/no-dupe-keys
 const { margin } = storeToRefs(pricingStore);
 
 const open = ref(false);

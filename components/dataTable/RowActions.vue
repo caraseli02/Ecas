@@ -12,9 +12,9 @@ export interface ActionOptionsConfiguration {
 }
 
 interface DataTableRowActionsProps {
-  row: Row<any>;
+  row: Row<unknown>;
   options: ActionOptionsConfiguration[];
-  service?: any;
+  service?: unknown;
   discount?: number;
   lock?: boolean;
 }
@@ -34,7 +34,7 @@ const callAction = (option: ActionOptionsConfiguration) => {
   }
 
   if (props.service) {
-    const service = $api[props.service as keyof typeof $api] as Record<string, (...args: any[]) => unknown> | undefined;
+    const service = $api[props.service as keyof typeof $api] as Record<string, (...args: unknown[]) => unknown> | undefined;
     const action = service?.[option.actionFn];
     if (typeof action === 'function') {
       return action(actionArg);

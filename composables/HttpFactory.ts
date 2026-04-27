@@ -2,7 +2,7 @@
 import { useAuthStore } from '~/store/authStore';
 
 interface FetchInstance {
-  (url: string, options?: any): Promise<any>;
+  (url: string, options?: unknown): Promise<unknown>;
 }
 
 class HttpFactory {
@@ -20,13 +20,13 @@ class HttpFactory {
     const authStore = useAuthStore();
 
     try {
-      const apiOptions: any = { method, ...extras };
+      const apiOptions: unknown = { method, ...extras };
       if (data) {
         apiOptions.body = data;
       }
       return await this.$fetch(url, apiOptions);
     }
-    catch (err: any) {
+    catch (err: unknown) {
       // Only handle 401 if explicitly requested (default: true for backward compatibility)
       if (options.handle401 !== false && err.response?.status === 401) {
         const router = useRouter();

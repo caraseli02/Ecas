@@ -133,7 +133,7 @@ defineProps({
   },
 });
 
-const fetchAndSetNewCustomers = async (time = 7) => {
+const fetchAndSetNewCustomers = async (_time = 7) => {
   loading.value = true;
   error.value = false;
 

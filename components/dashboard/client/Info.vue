@@ -125,7 +125,7 @@
             class="w-[180px] h-5 mb-2"
           />
           <div
-            v-else="customerInformation.accountType === 2 || customerInformation.accountType === 3"
+            v-else
             class="text-sm font-medium text-blue-500 mb-2 md:order-4 md:mb-0"
           >
             {{ customerInformation?.companyDetails?.name }}
@@ -299,7 +299,7 @@ const error = ref(false);
 const emptyData = ref(false);
 const isLoading = ref(false);
 const country = ref<CountryInterface>({} as CountryInterface);
-const address = ref({} as any);
+const address = ref({} as unknown);
 const props = defineProps({
   id: {
     type: String,

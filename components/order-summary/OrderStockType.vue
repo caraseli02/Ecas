@@ -198,8 +198,8 @@ const props = defineProps<{
   items: CartProductsInterface[];
   accountCredit: CustomerCreditInterface;
   order: OrderInterface;
-  cards: any;
-  card: any;
+  cards: unknown;
+  card: unknown;
   isNewCardSelected: boolean;
   shippingPreferences: ShippingOrderPricingResponse | null;
 }>();
@@ -230,6 +230,7 @@ const backOrder = computed(() => {
   );
 });
 
+// eslint-disable-next-line vue/return-in-computed-property
 const orderType = computed(() => {
   if (stockOrder.value && backOrder.value) {
     Emitter.emit('order-type', OrderType.Mixed);
@@ -245,6 +246,7 @@ const orderType = computed(() => {
   }
 });
 
+// eslint-disable-next-line vue/return-in-computed-property
 const shippingAndBillingMissingInfoWarning = computed(() => {
   if (props.order.shippingDetails?.address && props.order.shippingDetails?.billingAddress) {
     return (
@@ -263,18 +265,19 @@ const shippingAndBillingMissingInfoWarning = computed(() => {
 });
 
 const mixedOrBackOrder = computed(() => props.order.type === OrderType.Back || props.order.type === OrderType.Mixed);
-const mixedOrStockOrder = computed(() => props.order.type === OrderType.Stock || props.order.type === OrderType.Mixed);
 
 const paymentMethodWarning = computed(() => {
   const paymentDetails = props.order.paymentDetails;
   return !paymentDetails || paymentDetails.type == null;
 });
 
-watch(orderType, (newOrderType) => {
+watch(orderType, (_newOrderType) => {
+// eslint-disable-next-line vue/no-mutating-props
   props.order.type = orderType.value;
 });
 
 onMounted(() => {
+// eslint-disable-next-line vue/no-mutating-props
   props.order.type = orderType.value;
   if (config.public.MOCK_MODE) {
     showCardsModal.value = false;

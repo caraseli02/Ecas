@@ -88,8 +88,10 @@ export default defineComponent({
   name: 'ThreeDotMenu',
   components: {
     OrdersIcon,
+    // eslint-disable-next-line vue/no-unused-components
     ProfileIcon,
     SettingsIcon,
+    // eslint-disable-next-line vue/no-unused-components
     DeactivateIcon,
     UserUnlockIcon,
     TrashIcon,
@@ -97,48 +99,74 @@ export default defineComponent({
     EditIcon,
   },
   props: [
+    // eslint-disable-next-line vue/require-prop-types
     'index',
+    // eslint-disable-next-line vue/require-prop-types
     'dropdownTop',
+    // eslint-disable-next-line vue/require-prop-types
     'dropdownLeft',
+    // eslint-disable-next-line vue/require-prop-types
     'profileButton',
+    // eslint-disable-next-line vue/require-prop-types
     'profile',
+    // eslint-disable-next-line vue/require-prop-types
     'profileText',
+    // eslint-disable-next-line vue/require-prop-types
     'documentButton',
+    // eslint-disable-next-line vue/require-prop-types
     'documentText',
+    // eslint-disable-next-line vue/require-prop-types
     'settingsButton',
+    // eslint-disable-next-line vue/require-prop-types
     'settingsText',
+    // eslint-disable-next-line vue/require-prop-types
     'deactivateButton',
+    // eslint-disable-next-line vue/require-prop-types
     'deactivateText',
+    // eslint-disable-next-line vue/require-prop-types
     'trashButton',
+    // eslint-disable-next-line vue/require-prop-types
     'trashText',
+    // eslint-disable-next-line vue/require-prop-types
     'invoiceButton',
+    // eslint-disable-next-line vue/require-prop-types
     'invoiceText',
+    // eslint-disable-next-line vue/require-prop-types
     'editButton',
+    // eslint-disable-next-line vue/require-prop-types
     'editText',
+    // eslint-disable-next-line vue/require-prop-types
     'active',
   ],
   methods: {
     profileClicked() {
       this.$router.push(`/dashboard/customers/${this.profile.firebaseId}`);
+      // eslint-disable-next-line vue/require-explicit-emits
       this.$emit('profileClicked');
     },
     documentClicked() {
+      // eslint-disable-next-line vue/require-explicit-emits
       this.$emit('documentClicked');
     },
     settingsClicked() {
       this.$router.push(`/dashboard/customers/${this.profile.firebaseId}/control-panel`);
+      // eslint-disable-next-line vue/require-explicit-emits
       this.$emit('settingsClicked');
     },
     deactivateClicked() {
+      // eslint-disable-next-line vue/require-explicit-emits
       this.$emit('deactivateClicked');
     },
     trashClicked() {
+      // eslint-disable-next-line vue/require-explicit-emits
       this.$emit('trashClicked');
     },
     invoiceClicked() {
+      // eslint-disable-next-line vue/require-explicit-emits
       this.$emit('invoiceClicked');
     },
     editClicked() {
+      // eslint-disable-next-line vue/require-explicit-emits
       this.$emit('editClicked');
     },
   },

@@ -140,6 +140,7 @@ export default defineComponent({
   components: {
     GreenCheckCircle,
     EditSmall,
+    // eslint-disable-next-line vue/no-unused-components
     SettingCog,
     CheckCircleSmall,
     WarningErrorYellow,

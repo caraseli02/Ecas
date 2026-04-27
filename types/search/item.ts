@@ -3,7 +3,7 @@ export interface SearchItem {
   slug?: string;
   title: string;
   discount?: number;
-  cover: any;
+  cover: unknown;
   manufacturer: string;
   manufacturerCode: string;
   stock: number;

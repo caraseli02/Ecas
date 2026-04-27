@@ -3,7 +3,7 @@ import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
 
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { FormControl, _FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 const formSchema = toTypedSchema(
   z.object({

@@ -112,11 +112,11 @@ export function sanitizeMockData<T>(data: T, options: SanitizeOptions = {}): T {
 
   // Handle objects
   if (typeof data === 'object') {
-    const sanitized: any = {};
+    const sanitized: unknown = {};
 
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const value = (data as any)[key];
+        const value = (data as unknown)[key];
 
         // Security: Check for blocked keys
         const isBlocked = blockedKeys.some(bk => key.toLowerCase().includes(bk.toLowerCase()));
@@ -217,7 +217,7 @@ export function validateMockDataStructure(data: unknown): boolean {
   // Objects are valid if all values are valid
   for (const key in data) {
     if (Object.prototype.hasOwnProperty.call(data, key)) {
-      const value = (data as any)[key];
+      const value = (data as unknown)[key];
 
       // Check for blocked keys
       if (BLOCKED_KEYS.some(bk => key.toLowerCase().includes(bk.toLowerCase()))) {

@@ -13,7 +13,7 @@ class OrdersService extends HttpFactory {
   async fetchWidget(type: 'string', time: number) {
     const token = this.authStore.getToken();
 
-    return await this.call<any>('GET', `${this.ORDERS_DASHBOARD_RESOURCE}/${type}?time=${time}`, null, {
+    return await this.call<unknown>('GET', `${this.ORDERS_DASHBOARD_RESOURCE}/${type}?time=${time}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -35,7 +35,7 @@ class OrdersService extends HttpFactory {
   async sendOrder(order: OrderRequestInterface) {
     const token = this.authStore.getToken();
 
-    return await this.call<any>(
+    return await this.call<unknown>(
       'POST',
       `${this.ORDERS_RESOURCE}/new`,
       { ...order },
@@ -48,7 +48,7 @@ class OrdersService extends HttpFactory {
   async createAndRetrieveSetupIntent() {
     const token = this.authStore.getToken();
 
-    return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/setup-intent/new`, null, {
+    return await this.call<unknown>('POST', `${this.ORDERS_RESOURCE}/setup-intent/new`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -56,15 +56,15 @@ class OrdersService extends HttpFactory {
   async getOrderById(id: string) {
     const token = this.authStore.getToken();
 
-    return await this.call<any>('GET', `${this.ORDERS_RESOURCE}/${id}`, null, {
+    return await this.call<unknown>('GET', `${this.ORDERS_RESOURCE}/${id}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
-  async getShippingPricesForOrder(order: any) {
+  async getShippingPricesForOrder(order: unknown) {
     const token = this.authStore.getToken();
 
-    return await this.call<any>(
+    return await this.call<unknown>(
       'POST',
       `${this.ORDERS_RESOURCE}/price`,
       { order },
@@ -75,26 +75,26 @@ class OrdersService extends HttpFactory {
   }
 
   async validateAddress(address: ShippingAddressInterface) {
-    return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/validate-address`, { ...address });
+    return await this.call<unknown>('POST', `${this.ORDERS_RESOURCE}/validate-address`, { ...address });
   }
 
   async cancelOrder(id: string) {
     const token = this.authStore.getToken();
-    return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}/cancel`, null, {
+    return await this.call<unknown>('POST', `${this.ORDERS_RESOURCE}/${id}/cancel`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
   async markAsPaid(id: string, payload: MarkAsPaidRequestInterface) {
     const token = this.authStore.getToken();
-    return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}/paid`, payload, {
+    return await this.call<unknown>('POST', `${this.ORDERS_RESOURCE}/${id}/paid`, payload, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
   async changeStatus(id: string, status: OrderStatus) {
     const token = this.authStore.getToken();
-    return await this.call<any>(
+    return await this.call<unknown>(
       'POST',
       `${this.ORDERS_RESOURCE}/${id}`,
       { status },
@@ -106,7 +106,7 @@ class OrdersService extends HttpFactory {
 
   async retryFailedShippingOrders(id: string) {
     const token = this.authStore.getToken();
-    return await this.call<any>('POST', `${this.ORDERS_RESOURCE}/${id}/shipping/retry`, null, {
+    return await this.call<unknown>('POST', `${this.ORDERS_RESOURCE}/${id}/shipping/retry`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -114,7 +114,7 @@ class OrdersService extends HttpFactory {
   async getCustomerOrders() {
     const token = this.authStore.getToken();
 
-    return await this.call<any>('GET', `${this.ORDERS_RESOURCE}?page=1&perPage=0`, null, {
+    return await this.call<unknown>('GET', `${this.ORDERS_RESOURCE}?page=1&perPage=0`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }

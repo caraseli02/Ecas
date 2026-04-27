@@ -200,6 +200,7 @@ const props = defineProps({
   },
   disabled: Boolean,
   checkboxes: Boolean,
+  // eslint-disable-next-line vue/require-prop-types
   icon: {
     required: false,
   },

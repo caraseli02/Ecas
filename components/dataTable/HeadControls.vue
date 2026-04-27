@@ -1,14 +1,5 @@
 <script setup lang="ts" generic="TData">
-import type { Table } from '@tanstack/vue-table';
-import { RefreshCwIcon, SlidersHorizontalIcon, AlertCircle } from 'lucide-vue-next';
-
-interface DataTableViewOptionsProps {
-  table: Table<TData>;
-  title: string;
-  error: boolean;
-}
-
-const props = defineProps<DataTableViewOptionsProps>();
+import { RefreshCwIcon, AlertCircle } from 'lucide-vue-next';
 
 const emit = defineEmits<{
   refresh: [val: boolean];

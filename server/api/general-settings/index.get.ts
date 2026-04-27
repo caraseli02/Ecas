@@ -1,6 +1,6 @@
 import { PaymentTypeEnum } from '~/types/order-summary/item';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   return {
     status: 'success',
     data: {
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
             title: 'Standard Delivery',
             min: 1,
             max: 5,
-            unit: 'business_day' as any,
+            unit: 'business_day',
             price: 9.99,
             active: true,
           },
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
             title: 'Express Delivery',
             min: 1,
             max: 2,
-            unit: 'business_day' as any,
+            unit: 'business_day',
             price: 14.99,
             active: true,
           },
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
             title: 'Premium Delivery',
             min: 1,
             max: 10,
-            unit: 'business_day' as any,
+            unit: 'business_day',
             price: 24.99,
             active: true,
           },

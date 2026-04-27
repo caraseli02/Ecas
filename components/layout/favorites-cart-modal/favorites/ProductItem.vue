@@ -254,7 +254,7 @@ const deleteItemFromCart = async () => {
 
 watch(
   productItem,
-  (value) => {
+  (_value) => {
     getPricesConfiguration();
   },
   { deep: true },

@@ -10,7 +10,9 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:entry-price', value: string): void;
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   (e: 'update:quantity', value: string): void;
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   (e: 'update:margin', value: string): void;
   (e: 'update:enabled', value: boolean): void;
 }>();

@@ -2,7 +2,7 @@
   <div class="relative z-20 grid grid-cols-1 gap-4 mb-9 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
     <div
       v-for="(card, indexOfWidget) in cards"
-      :key="index"
+      :key="indexOfWidget"
       class="group bg-white rounded-xl p-4 pr-2 shadow-xs md:p-6 md:pr-4"
     >
       <div
@@ -249,7 +249,7 @@ const productsSold = ref('');
 const getTotalOrders = async () => {
   const firstWidget = (await $api.orders.fetchWidget('total-orders', thisWeekDifference)) as {
     status: string;
-    data: { total: any };
+    data: { total: unknown };
   };
   if (firstWidget.status !== 'success') {
     isLoading.value[0] = false;
@@ -264,7 +264,7 @@ const getTotalOrders = async () => {
 const getGrossRevenue = async () => {
   const secondWidget = (await $api.orders.fetchWidget('gross-revenue', thisWeekDifference)) as {
     status: string;
-    data: { total: any };
+    data: { total: unknown };
   };
   if (secondWidget.status !== 'success') {
     isLoading.value[1] = false;
@@ -279,7 +279,7 @@ const getGrossRevenue = async () => {
 const getAvgOrderValue = async () => {
   const thirdWidget = (await $api.orders.fetchWidget('average-order-value', thisWeekDifference)) as {
     status: string;
-    data: { total: any };
+    data: { total: unknown };
   };
   if (thirdWidget.status !== 'success') {
     isLoading.value[2] = false;
@@ -294,7 +294,7 @@ const getAvgOrderValue = async () => {
 const getProductsSold = async () => {
   const fourthWidget = (await $api.orders.fetchWidget('products-sold', thisWeekDifference)) as {
     status: string;
-    data: { total: any };
+    data: { total: unknown };
   };
   if (fourthWidget.status !== 'success') {
     isLoading.value[3] = false;
@@ -443,8 +443,8 @@ const cards = ref([
   },
 ]);
 
-const getWidgedData = async (data: any, index: number) => {
-  const type = (WidgetTypeEnum as any)[data.menu.selected.label];
+const getWidgedData = async (data: unknown, index: number) => {
+  const type = (WidgetTypeEnum as unknown)[data.menu.selected.label];
   const range = type !== 'active-cart-sessions' && type !== 'total-stock-value' ? data.range.selected.value : -1;
   const response = await $api.orders.fetchWidget(type, range);
   if (response.status !== 'success') {

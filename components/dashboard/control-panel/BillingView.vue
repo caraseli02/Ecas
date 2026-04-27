@@ -165,13 +165,13 @@ const props = defineProps({
 const addresses = ref<BillingAddressInterface[]>([] as BillingAddressInterface[]);
 const newAddress = ref<BillingAddressInterface>({} as BillingAddressInterface);
 
-const setAsDefault = async (address: any) => {
-  addresses.value.forEach((item: any) => {
+const setAsDefault = async (address: unknown) => {
+  addresses.value.forEach((item: unknown) => {
     item.default = false;
   });
   address.default = true;
 
-  addresses.value.forEach((item: any, index: number) => {
+  addresses.value.forEach((item: unknown, index: number) => {
     if (item.default === true) {
       defaultAddressIndex.value = index;
     }
@@ -183,7 +183,7 @@ const setAsDefault = async (address: any) => {
   await $api.controlPanel.updateBilling(address, route.params.slug as string);
 };
 
-const handleAddAddress = async (val: any) => {
+const handleAddAddress = async (val: unknown) => {
   addAddressModal.value = false;
   newAddress.value = {} as BillingAddressInterface;
 
@@ -230,6 +230,7 @@ const getBillingInformation = async () => {
     addresses.value = response.data.billingAddress;
     addAddressModal.value = false;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     if (!isMockMode.value) {
       return;
@@ -253,7 +254,7 @@ const getBillingInformation = async () => {
 };
 await getBillingInformation();
 
-const handleEditAddress = async (object: any) => {
+const handleEditAddress = async (object: unknown) => {
   editAddressModal.value = null;
   const addressToBeVerified = {
     alias: object.address.alias.value,

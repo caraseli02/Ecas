@@ -186,7 +186,7 @@ import CalendarIcon from '@/assets/icons/dashboard/calendar.svg';
 import { useNuxtApp } from '#app';
 import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 
-defineEmits(['toggle-editing', 'cancel']);
+defineEmits(['toggle-editing', 'cancel', 'close']);
 
 const creditTerm = ref();
 const creditAmount = ref(0);
@@ -248,6 +248,7 @@ const getCustomerCredit = async () => {
             active: true,
           } as CustomerCreditInterface);
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     if (!isMockMode.value) {
       return;
@@ -273,7 +274,7 @@ const getAmountFormat = (money: number) => {
 const getCurrentDate = (date: string) => {
   return moment(date).format('DD MMM YYYY');
 };
-const updateCreditTerm = async (term: any, value: any) => {
+const updateCreditTerm = async (term: unknown, value: unknown) => {
   if ((creditObjectToEdit.value && (term || value)) || (!creditObjectToEdit.value && term && value)) {
     if (isMockMode.value) {
       if (!creditObjectToEdit.value) {

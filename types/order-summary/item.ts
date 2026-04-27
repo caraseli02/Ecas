@@ -7,7 +7,7 @@ import type { ShippingOrderPricingOption } from '~/types/order-summary/shipping-
 export interface OrderSummaryItem {
   title: string;
   discount?: number;
-  cover: any;
+  cover: unknown;
   vat: number;
   quantity: number;
   price: number;
@@ -22,7 +22,7 @@ export enum Currency {
 export interface OrderSummaryItem {
   title: string;
   discount?: number;
-  cover: any;
+  cover: unknown;
   vat: number;
   quantity: number;
   price: number;
@@ -87,7 +87,7 @@ export interface OrderRequestInterface {
   cartId?: string;
   products: CartProductsInterface[];
   shippingDetails: OrderShippingDetailsInterface;
-  stripeCardId?: any;
+  stripeCardId?: unknown;
   paymentDetails: PaymentDetails;
   smallOrderChargeId?: string;
   shippingCost?: number;
@@ -107,7 +107,7 @@ export interface OrderRequestInterfaceResponse {
   status: string;
   data: {
     order: OrderInterface;
-    children: any;
+    children: unknown;
   };
 }
 
@@ -250,6 +250,7 @@ export enum PaymentStatusEnum {
 }
 
 export const getPaymentStatusById = <
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   T extends {
     [index: string]: number;
   },
@@ -291,6 +292,7 @@ export interface PaymentSummaryInterface {
 }
 
 export const getPaymentTypeById = <
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   T extends {
     [index: string]: number;
   },

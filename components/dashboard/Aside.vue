@@ -487,13 +487,13 @@ const hoveredNavItemTop = ref(0);
 
 const themeMode = ref<'dark' | 'light'>('dark');
 
-const handleNavItemMouseEnter = (event: MouseEvent, item: any) => {
+const handleNavItemMouseEnter = (event: MouseEvent, item: unknown) => {
   const target = event.target as HTMLElement;
   hoveredNavItem.value = item;
   hoveredNavItemTop.value = target.getBoundingClientRect().top;
 };
 
-const handleItemDropdownToggle = (event: MouseEvent, item: any) => {
+const handleItemDropdownToggle = (event: MouseEvent, item: unknown) => {
   if (item.dropdown) {
     item.dropdown.show = !item.dropdown?.show;
 
