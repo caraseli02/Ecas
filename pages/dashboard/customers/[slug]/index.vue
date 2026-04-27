@@ -210,6 +210,7 @@ const getCustomerCredit = async () => {
       isLoading.value = false;
     }, 500);
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     if (isMockMode.value) {
       credit.value = customerCreditHelper({

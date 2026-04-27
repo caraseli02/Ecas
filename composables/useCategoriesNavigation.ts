@@ -6,14 +6,14 @@ export function useCategoriesNavigation() {
   const { categories } = useCategories();
 
   const isOpen = useState<boolean>('main-menu-is-open', () => false);
-  const selectedCategories = useState<any[]>('main-menu-selected-categories', () => []);
+  const selectedCategories = useState<unknown[]>('main-menu-selected-categories', () => []);
   const currentCategory = computed(() =>
     selectedCategories.value.length > 0 ? selectedCategories.value[selectedCategories.value.length - 1] : null,
   );
 
   const router = useRouter();
 
-  function onCategoryClick(category: any, makeReset: boolean) {
+  function onCategoryClick(category: unknown, makeReset: boolean) {
     const subcategories = Array.isArray(category?.subcategory) ? category.subcategory : [];
     if (makeReset) selectedCategories.value = [];
     if (subcategories.length === 0) {

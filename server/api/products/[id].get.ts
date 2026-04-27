@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   const productId = getRouterParam(event, 'id');
   const normalizedId = String(productId || '').toLowerCase();
 
-  const tabHandlers: Record<string, () => any[]> = {
+  const tabHandlers: Record<string, () => unknown[]> = {
     'featured': () => mockProducts.slice(0, 8),
     'best-sellers': () => mockProducts.slice(8, 16),
     'hot-deals': () => mockProducts.slice(16, 24),
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  const product = mockProducts.find((p: any) => p._id === productId || p.path === productId);
+  const product = mockProducts.find((p: unknown) => p._id === productId || p.path === productId);
 
   if (!product) {
     throw createError({

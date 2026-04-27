@@ -53,8 +53,8 @@ const props = defineProps<{
 }>();
 
 const slots = defineSlots<{
-  header?: () => any;
-  banner?: () => any;
+  header?: () => unknown;
+  banner?: () => unknown;
 }>();
 
 const productList = ref<ProductInterface[]>([]);

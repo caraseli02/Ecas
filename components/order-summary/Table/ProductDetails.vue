@@ -2,7 +2,7 @@
 import { defineProps } from 'vue';
 import StockStatus from './StockStatus.vue';
 
-const props = defineProps({
+defineProps({
   item: Object,
   shortStock: Boolean,
   stockItem: Boolean,

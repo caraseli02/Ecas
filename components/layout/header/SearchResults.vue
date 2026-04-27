@@ -17,7 +17,7 @@
         class="grid grid-cols-1 max-h-[340px] overflow-auto scrollbar-thin pr-1.5"
       >
         <template
-          v-for="(product, index) in props.products"
+          v-for="(product) in props.products"
           :key="product._id"
         >
           <NuxtLink
@@ -59,7 +59,7 @@ import CaretIcon from '@/assets/icons/caret-right.svg';
 import type { ProductInterface } from '~/model/products/response/ProductResponse';
 import { mapLabelsToIds, mapPathArrayOfNames } from '~/helpers/categories.helper';
 
-const { categories, getCategories } = useCategories();
+const { categories, _getCategories } = useCategories();
 
 const props = defineProps<{
   products: ProductInterface[];

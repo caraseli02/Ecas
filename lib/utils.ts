@@ -24,7 +24,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref) {
+export function valueUpdater<T extends Updater<unknown>>(updaterOrValue: T, ref: Ref) {
   ref.value = typeof updaterOrValue === 'function' ? updaterOrValue(ref.value) : updaterOrValue;
 }
 
@@ -55,8 +55,8 @@ export function transformFiltersToObject(filters: Filter[]): Record<string, unkn
       transformedFilters['endDate'] = (filter.value as string[])[1];
     }
     else if (filter.type === FiltersType.Range) {
-      transformedFilters[`${filter.id}From`] = (filter.value as string[])[0] || 'any';
-      transformedFilters[`${filter.id}To`] = (filter.value as string[])[1] || 'any';
+      transformedFilters[`${filter.id}From`] = (filter.value as string[])[0] || 'unknown';
+      transformedFilters[`${filter.id}To`] = (filter.value as string[])[1] || 'unknown';
     }
     else if (Array.isArray(filter.value)) {
       transformedFilters[filter.id] = filter.value.join(',');

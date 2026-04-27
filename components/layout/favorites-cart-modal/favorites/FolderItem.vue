@@ -193,7 +193,7 @@ watch(editing, (newVal) => {
   }
 });
 
-watch(folderWithActiveOptions as any, () => {
+watch(folderWithActiveOptions as unknown, () => {
   if (folderWithActiveOptions?.value && folderWithActiveOptions.value.id !== props.folder.id) {
     showOptions.value = false;
   }

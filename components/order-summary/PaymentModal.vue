@@ -30,22 +30,22 @@
         Saved cards
       </h4>
       <div
-        v-for="card in cards"
-        :key="card.id"
+        v-for="c in cards"
+        :key="c.id"
         class="pt-4"
       >
         <OrderSummaryPayByCard
           view="payment"
-          :card-info="card"
-          :card-type="card?.card?.brand"
+          :card-info="c"
+          :card-type="c?.card?.brand"
           :is-selected="
             !isNewCardSelected
-              && (payment.card?.id ? payment.card?.id === card?.id : order.paymentDetails?.card?.id === card?.id)
+              && (payment.card?.id ? payment.card?.id === c?.id : order.paymentDetails?.card?.id === c?.id)
           "
           :has-card="true"
-          :is-expired="cardExpired(card)"
+          :is-expired="cardExpired(c)"
           @click="isNewCardSelected = false"
-          @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: card })"
+          @select-payment-option="selectPaymentOption({ type: PaymentTypeEnum.Card, info: c })"
           @set-default="setCardAsDefault"
         />
       </div>
@@ -117,7 +117,7 @@ const props = defineProps<{
 const emits = defineEmits(['change-is-new-card-selected']);
 const payment = ref({} as PaymentDetails);
 
-function selectPaymentOption(option: { type: PaymentTypeEnum; info?: any }) {
+function selectPaymentOption(option: { type: PaymentTypeEnum; info?: unknown }) {
   if (props.order.paymentDetails) {
     payment.value.type = option.type;
 
@@ -129,6 +129,7 @@ function selectPaymentOption(option: { type: PaymentTypeEnum; info?: any }) {
 
 function exitCardModal(option: boolean) {
   if (!option) {
+    // eslint-disable-next-line vue/no-mutating-props
     props.order.paymentDetails = payment.value;
     if (payment.value.card) {
       card.value.billing_details = payment.value.card?.billing_details;
@@ -151,7 +152,7 @@ function exitCardModal(option: boolean) {
   }
 }
 
-function cardExpired(card: any) {
+function cardExpired(card: unknown) {
   const exp_date = moment([card.card.exp_year, card.card.exp_month]);
   const date = moment([Number(moment().format('y')), Number(moment().format('M'))]);
   const dif = exp_date.diff(date, 'months');

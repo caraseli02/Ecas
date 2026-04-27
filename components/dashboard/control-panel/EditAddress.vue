@@ -123,7 +123,6 @@ import BusinessIcon from '@/assets/icons/dashboard/business.svg';
 import TrashIcon from '@/assets/icons/dashboard/trash.svg';
 import { countries } from '@/data/countries';
 import type { FormSelectOption } from '~/types';
-import type { ShippingAddressInterface } from '~/types/auth/user-interface';
 import { getRegionByCountry } from '~/helpers/form.helper';
 
 const props = defineProps({
@@ -192,10 +191,9 @@ const data = ref({
     error: '',
   },
 });
-const newAddress = ref<ShippingAddressInterface>({} as ShippingAddressInterface);
 const regions = ref<FormSelectOption[]>([]);
 
-const getCountryRegion = async (country: any, region: any) => {
+const getCountryRegion = async (country: unknown, region: unknown) => {
   const countryRegionObj = getRegionByCountry(country, region);
   regions.value = countryRegionObj?.regions || [];
   data.value.country.value = countryRegionObj?.country || { label: '', value: '', icon: '' };

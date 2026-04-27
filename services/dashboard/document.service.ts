@@ -9,7 +9,7 @@ class DocumentService extends HttpFactory {
   async downloadDocument(id: string) {
     const token = this.authStore.getToken();
 
-    const response = await this.call<any>('GET', `${this.DOCUMENT_RESOURCE}/${id}`, null, {
+    const response = await this.call<unknown>('GET', `${this.DOCUMENT_RESOURCE}/${id}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

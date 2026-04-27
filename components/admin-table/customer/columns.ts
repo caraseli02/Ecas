@@ -1,6 +1,4 @@
 import type { ColumnDef } from '@tanstack/vue-table';
-import { $fetch } from 'ohmyfetch';
-import type { FetchOptions } from 'ohmyfetch';
 import ColumnHeader from '~/components/dataTable/ColumnHeader.vue';
 import RowActions from '~/components/dataTable/RowActions.vue';
 import type { ActionOptionsConfiguration } from '~/components/dataTable/RowActions.vue';
@@ -10,16 +8,7 @@ import CellDate from '~/components/dataTable/CellDate.vue';
 import { AccountStatusEnum, type CustomerTableColumns } from '~/types/auth/user-interface';
 import { CustomerTableColumnsEnum } from '~/components/admin-table/customer/columns.enum';
 import AccountType from '~/components/dataTable/AccountType.vue';
-import UserDashboardService from '~/services/dashboard/user.service';
 import { AccountType as AccountTypeEnum } from '~/types';
-
-const fetchOptions: FetchOptions = {
-  baseURL: process.env.NUXT_PUBLIC_BASE_URL_API,
-};
-
-/** create a new instance of $fetcher with custom option */
-const apiFetcher = $fetch.create(fetchOptions);
-const userDashboard = new UserDashboardService(apiFetcher);
 
 export const columns: ColumnDef<CustomerTableColumns>[] = [
   // {
@@ -39,7 +28,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
         name:
                     row.original.accountType === AccountTypeEnum.Personal
                       ? `${row.original.personalDetails?.firstName} ${row.original.personalDetails?.lastName}`
-                      : `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` || 'N/A',
+                      : `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}`,
         email: row.original.contactDetails?.email,
         navigateToRoute: `/dashboard/customers/${row.original.firebaseId}`,
       }),

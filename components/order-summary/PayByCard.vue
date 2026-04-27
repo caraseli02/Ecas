@@ -4,8 +4,8 @@ import { usePaymentStore } from '~/store/paymentStore';
 
 const paymentStore = usePaymentStore();
 
-const props = defineProps<{
-  cardInfo?: any;
+defineProps<{
+  cardInfo?: unknown;
   isSelected?: boolean;
   hasCard?: boolean;
   cards: boolean;
@@ -19,7 +19,7 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits(['selectPaymentOption', 'delete-card', 'set-default', 'edit-card']);
-const paymentMethods = async (cardInfo: any) => {
+const paymentMethods = async (cardInfo: unknown) => {
   emits('selectPaymentOption', cardInfo);
 };
 

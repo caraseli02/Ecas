@@ -18,17 +18,17 @@
  *   4. Removes the corresponding entries from skills-lock.json.
  */
 
-import { existsSync, readFileSync, writeFileSync, rmSync, readdirSync, statSync, lstatSync, unlinkSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, rmSync, lstatSync, unlinkSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 // Skills that were renamed, merged, or folded in v2.0 and v2.1.
 const DEPRECATED_NAMES = [
-  'frontend-design',    // renamed to impeccable (v2.0)
-  'teach-impeccable',   // folded into /impeccable teach (v2.0)
-  'arrange',            // renamed to layout (v2.1)
-  'normalize',          // merged into polish (v2.1)
-  'onboard',            // merged into harden (v2.1)
-  'extract',            // merged into /impeccable extract (v2.1)
+  'frontend-design', // renamed to impeccable (v2.0)
+  'teach-impeccable', // folded into /impeccable teach (v2.0)
+  'arrange', // renamed to layout (v2.1)
+  'normalize', // merged into polish (v2.1)
+  'onboard', // merged into harden (v2.1)
+  'extract', // merged into /impeccable extract (v2.1)
 ];
 
 // All known harness directories that may contain a skills/ subfolder.
@@ -46,9 +46,9 @@ export function findProjectRoot(startDir = process.cwd()) {
   const { root } = { root: '/' };
   while (dir !== root) {
     if (
-      existsSync(join(dir, 'package.json')) ||
-      existsSync(join(dir, '.git')) ||
-      existsSync(join(dir, 'skills-lock.json'))
+      existsSync(join(dir, 'package.json'))
+      || existsSync(join(dir, '.git'))
+      || existsSync(join(dir, 'skills-lock.json'))
     ) {
       return dir;
     }
@@ -70,7 +70,8 @@ export function isImpeccableSkill(skillDir) {
   try {
     const content = readFileSync(skillMd, 'utf-8');
     return /impeccable/i.test(content);
-  } catch {
+  }
+  catch {
     return false;
   }
 }
@@ -121,7 +122,8 @@ export function removeDeprecatedSkills(projectRoot) {
       let stat;
       try {
         stat = lstatSync(skillPath);
-      } catch {
+      }
+      catch {
         continue; // does not exist at all
       }
 
@@ -160,7 +162,8 @@ export function cleanSkillsLock(projectRoot) {
   let lock;
   try {
     lock = JSON.parse(readFileSync(lockPath, 'utf-8'));
-  } catch {
+  }
+  catch {
     return [];
   }
 
@@ -201,7 +204,8 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(new URL(import.meta.
   const result = cleanup();
   if (result.deletedPaths.length === 0 && result.removedLockEntries.length === 0) {
     console.log('No deprecated Impeccable skills found. Nothing to clean up.');
-  } else {
+  }
+  else {
     if (result.deletedPaths.length > 0) {
       console.log(`Removed ${result.deletedPaths.length} deprecated skill(s):`);
       for (const p of result.deletedPaths) console.log(`  - ${p}`);

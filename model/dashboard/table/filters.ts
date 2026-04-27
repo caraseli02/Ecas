@@ -1,7 +1,7 @@
 export interface FilterInterface {
   filter: string;
   hidden?: boolean;
-  value: any;
+  value: unknown;
 }
 
 export interface SortInterface {

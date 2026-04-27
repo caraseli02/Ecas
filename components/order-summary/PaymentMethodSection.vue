@@ -157,7 +157,7 @@ import RadioButtonChecked from '@/assets/icons/radio-button-checked.svg';
 import BankIcon from '@/assets/icons/bank.svg';
 import PieChart from '@/assets/icons/pie-chart.svg';
 import MoneyIcon from '@/assets/icons/money.svg';
-import { PaymentTypeEnum, type OrderInterface, type PaymentDetails, type StripeCardInterface } from '~/types';
+import { PaymentTypeEnum, type OrderInterface, type PaymentDetails, type _StripeCardInterface } from '~/types';
 import type { CustomerCreditInterface } from '~/types/auth/account-settings';
 import { useAuthStore } from '~/store/authStore';
 import { usePaymentStore } from '~/store/paymentStore';
@@ -179,17 +179,17 @@ const payment = ref({} as PaymentDetails);
 const authStore = useAuthStore();
 
 const { getGeneralSettings } = storeToRefs(authStore);
-const availablePaymentMethods = ref<any>([] as any);
+const availablePaymentMethods = ref<unknown>([] as unknown);
 
 const paymentMethods = async () => {
-  getGeneralSettings.value.orderSettings?.paymentMethods.map((method: any) => {
+  getGeneralSettings.value.orderSettings?.paymentMethods.map((method: unknown) => {
     availablePaymentMethods.value.push(method.type);
   });
 };
 
 await paymentMethods();
 
-function selectPaymentOption(option: { type: PaymentTypeEnum; info?: any }) {
+function selectPaymentOption(option: { type: PaymentTypeEnum; info?: unknown }) {
   payment.value = {} as PaymentDetails;
 
   if (props.order.paymentDetails) {
@@ -202,7 +202,7 @@ function selectPaymentOption(option: { type: PaymentTypeEnum; info?: any }) {
   }
 }
 
-function cardExpired(card: any) {
+function cardExpired(card: unknown) {
   const exp_date = moment([card.card.exp_year, card.card.exp_month]);
   const date = moment([Number(moment().format('y')), Number(moment().format('M'))]);
   const dif = exp_date.diff(date, 'months');

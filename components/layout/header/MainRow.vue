@@ -228,6 +228,7 @@ import _ from 'lodash';
 import Emitter from 'tiny-emitter/instance';
 import { storeToRefs } from 'pinia';
 import Logo from '@/assets/media/logo.svg';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import LogoSM from '@/assets/media/logo-sm.svg';
 import SearchIcon from '@/assets/icons/search.svg';
 import HeartIcon from '@/assets/icons/heart.svg';
@@ -445,16 +446,6 @@ const deleteNotification = async (notification: Notification, index: number) => 
     return;
   }
   notifications.value.splice(index, 1);
-};
-
-const toggleNavModal = () => {
-  if (window.innerWidth < 768 || route.name !== 'index') {
-    showNavModal.value = !showNavModal.value;
-    return;
-  }
-  if (window.scrollY > 20) {
-    showNavModal.value = !showNavModal.value;
-  }
 };
 
 watch(showMobileSearch, (newVal) => {

@@ -35,9 +35,6 @@ import { onMounted, ref } from 'vue';
 import CaretRightIcon from '@/assets/icons/caret-right.svg';
 import { useCategories } from '~/composables/useCategories';
 import { findCategory, mapLabelsToIds, mapPathArrayOfNames } from '~/helpers/categories.helper';
-import { useCategoriesStore } from '~/store/categoriesStore';
-
-const categoriesStore = useCategoriesStore();
 
 const { categories, getCategories } = useCategories();
 

@@ -8,8 +8,8 @@ export default defineEventHandler(async (event) => {
       user: {
         _id: 'firebase-user-' + Date.now(),
         firebaseId: body.firebaseId || 'mock-firebase-id-' + Date.now(),
-        role: 'customer' as any,
-        accountType: body.accountType || ('personal' as any),
+        role: 'customer',
+        accountType: body.accountType || 'personal',
         verified: true,
         status: 1,
         contactDetails: {

@@ -6,7 +6,7 @@ import { usePricingStore } from '~/store/pricingStore';
 import { PriceSettingsTypeEnum } from '~/model/prices/price-settings.interface';
 
 const pricingStore = usePricingStore();
-const { showMarginModal, editMarginModal, type } = storeToRefs(pricingStore);
+const { showMarginModal, editMarginModal, _type } = storeToRefs(pricingStore);
 
 const { $api } = useNuxtApp();
 
@@ -23,7 +23,7 @@ watch(
             id: index + 1,
             value: `${Number(value.replace('%', ''))}`,
           }));
-          editMarginModal.value.value.map((value) => {});
+          editMarginModal.value.value.map((_value) => {});
         }
       }
       else {

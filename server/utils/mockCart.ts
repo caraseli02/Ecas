@@ -138,16 +138,16 @@ export const getMockCartForUser = (userId: string) => {
   const defaultProduct = resolveMockProduct('prod-1');
   const starterProducts: CartProductsInterface[] = defaultProduct
     ? [
-      normalizeCartProduct(
-        {
-          id: defaultProduct._id,
-          stock: 1,
-          isFolder: false,
-        },
-        undefined,
-        'set',
-      ),
-    ]
+        normalizeCartProduct(
+          {
+            id: defaultProduct._id,
+            stock: 1,
+            isFolder: false,
+          },
+          undefined,
+          'set',
+        ),
+      ]
     : [];
 
   const cart: CartInterface = {

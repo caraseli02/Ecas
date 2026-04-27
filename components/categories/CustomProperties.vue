@@ -17,8 +17,11 @@ const lengthValue = ref<string | null>(props.length);
 
 const emit = defineEmits<{
   (e: 'update:weight', value: string): void;
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   (e: 'update:width', value: string): void;
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   (e: 'update:length', value: string): void;
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   (e: 'update:height', value: string): void;
   (e: 'update:enabled', value: boolean): void;
 }>();

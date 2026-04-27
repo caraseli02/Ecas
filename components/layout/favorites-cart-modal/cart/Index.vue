@@ -3,7 +3,7 @@
     <div class="py-4 px-4 flex-1 h-full overflow-y-auto overscroll-contain scrollbar-thin max-h-vh md:py-6">
       <div class="grid grid-cols-1 gap-4">
         <LayoutFavoritesCartModalFavoritesProductItem
-          v-for="(item, index) in items"
+          v-for="(item) in items"
           :key="item.id"
           :product="item"
           in-cart
@@ -36,31 +36,21 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue';
 import { storeToRefs } from 'pinia';
 import CartIcon from '@/assets/icons/cart.svg';
-import type { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { useAuthStore } from '~/store/authStore';
 import { useCartStore } from '~/store/cartStore';
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
-const { getCartSubtotal, cartSubtotal, cart } = storeToRefs(cartStore);
-const { getUserDetails } = storeToRefs(authStore);
+const { _getCartSubtotal, cartSubtotal, cart } = storeToRefs(cartStore);
+const { _getUserDetails } = storeToRefs(authStore);
 
 const items = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
 // const cart = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
 
 defineEmits(['close']);
-
-const props = defineProps({
-  data: {
-    type: Object as PropType<CartInterface>,
-    required: true,
-  },
-});
-
-const totalCartPrice = ref(0);
 
 // watch(
 //     [items],
@@ -94,11 +84,6 @@ const totalCartPrice = ref(0);
 //     cart.value = props.data.products;
 //     mapCartItems(cart.value);
 // };
-
-const updateQuantity = async () => {
-  items.value = cart.value;
-  mapCartItems();
-};
 
 watch(
   cart,

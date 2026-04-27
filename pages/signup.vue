@@ -245,14 +245,14 @@ const backToSelectMenu = async () => {
   currentStep.value--;
 };
 
-const registerClassicSignup = async (payload: SignupPersonalPayload | SignupBusinessPayload): Promise<any> => {
+const registerClassicSignup = async (payload: SignupPersonalPayload | SignupBusinessPayload): Promise<unknown> => {
   payload.isAlreadyRegisteredWithFirebase = false;
   payload.account.profileDetails.password = profileDetails.value.password.value;
 
   return await $api.auth.registerClassic(payload);
 };
 
-const registerFirebaseSignup = async (payload: SignupPersonalPayload | SignupBusinessPayload): Promise<any> => {
+const registerFirebaseSignup = async (payload: SignupPersonalPayload | SignupBusinessPayload): Promise<unknown> => {
   delete payload.account.profileDetails.password;
   payload.account.firebaseId = userInfo?.user_id;
   payload.isAlreadyRegisteredWithFirebase = true;
@@ -407,6 +407,7 @@ const handleSubmit = async () => {
     }
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       firebaseToken ? await registerFirebaseSignup(payload) : await registerClassicSignup(payload);
 
       toast({
@@ -418,7 +419,8 @@ const handleSubmit = async () => {
       await logout();
       // TODO: Notification banner
     }
-    catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    catch (_error) {
       toast({
         variant: 'destructive',
         title: 'Error',

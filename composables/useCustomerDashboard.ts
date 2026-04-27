@@ -13,13 +13,13 @@ import { AccountType } from '~/types';
 import type { StripeCardInterface } from '~/types';
 import { parseProductPriceConfiguration } from '~/helpers/prices.helper';
 
-const ordersIds = ref<any[]>([]);
+const ordersIds = ref<unknown[]>([]);
 const activeOrderFilter = ref({
   value: 'home',
 });
 const myActivityData = ref<CustomerDashboardActivityData>({} as CustomerDashboardActivityData);
 const myAccountInformation = ref<UserInterface>({} as UserInterface);
-const myRecentlyBougth = ref<any[]>([]);
+const myRecentlyBougth = ref<unknown[]>([]);
 const myAddresses = ref<ShippingAddressInterface[]>([]);
 const myViewHistory = ref<ProductInterface[]>([]);
 const myMonthHotSale = ref<ProductInterface[]>([]);

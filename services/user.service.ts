@@ -21,7 +21,7 @@ class UserService extends HttpFactory {
     try {
       return await this.call<{
         status: string;
-        data: any;
+        data: unknown;
       }>('POST', `${this.RESOURCE}/password/email/reset`, { email: email });
     }
     catch (err) {
@@ -48,7 +48,7 @@ class UserService extends HttpFactory {
     }
   }
 
-  async fetchCustomerCredit(id: string) {
+  async fetchCustomerCredit(_id: string) {
     const token = this.authStore.getToken();
 
     return await this.call<AccountAdminSettings>('GET', `${this.RESOURCE}/credit`, null, {

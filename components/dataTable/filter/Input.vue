@@ -3,12 +3,12 @@ import type { Column } from '@tanstack/vue-table';
 import { PlusCircleIcon, SearchIcon } from 'lucide-vue-next';
 
 interface DataTableInputFilter {
-  column?: Column<TData, any>;
+  column?: Column<TData, unknown>;
   title?: string;
 }
 
 const props = defineProps<DataTableInputFilter>();
-const emit = defineEmits<{
+defineEmits<{
   onInput: [value: string];
 }>();
 

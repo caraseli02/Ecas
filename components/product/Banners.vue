@@ -6,7 +6,9 @@
           <div class="relative z-20 flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
             <NewIcon class="w-8 h-8 flex-shrink-0 md:w-[42px] md:h-[42px] md:mr-[15px]" />
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Fast path</p>
+              <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                Fast path
+              </p>
               <h2 class="font-semibold md:text-[32px] lg:text-2xl xl:text-[32px]">
                 Quote-ready parts for active orders
               </h2>
@@ -27,7 +29,9 @@
         <div class="relative flex items-center justify-between rounded-md px-[30px] py-[13px] overflow-hidden border border-slate-200">
           <div class="relative z-20 flex flex-col gap-1 md:flex-row md:items-center">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.14em] text-blue-100">Buyer support</p>
+              <p class="text-xs font-semibold uppercase tracking-[0.14em] text-blue-100">
+                Buyer support
+              </p>
               <h2 class="font-semibold text-white md:text-[32px] lg:text-2xl xl:text-[32px]">
                 Compare inventory and pricing in one place
               </h2>

@@ -88,7 +88,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import OrderSummarySmallOrderModal from './SmallOrderModal.vue';
-import { useAuthStore } from '~/store/authStore';
 import InformationIcon from '~/assets/icons/information.svg';
 import type { OrderInterface } from '~/types';
 import type { GeneralSettingsInterface } from '~/types/general-settings/general-settings';
@@ -109,6 +108,7 @@ const smallOrder = computed(() => {
   props.generalSettings?.orderSettings?.smallOrderCharge?.forEach((charge) => {
     if (Number(cartSubtotal.value) < charge.max && Number(cartSubtotal.value) >= charge.min) {
       smallOrderFee = charge.price;
+      // eslint-disable-next-line vue/no-mutating-props
       props.order.smallOrder = charge;
     }
   });

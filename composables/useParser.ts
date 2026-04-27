@@ -1,5 +1,5 @@
 export default function useParser() {
-  function parseJwt(token: string): any {
+  function parseJwt(token: string): unknown {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const JSONPayload = decodeURIComponent(

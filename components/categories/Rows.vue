@@ -9,7 +9,7 @@ const { selectCategory, filteredAndSortedData, getCategories, selectedCategories
 getCategories();
 </script>
 
-<!-- CategoryRow.vue -->
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <UiSkeleton
     v-if="isLoading"
@@ -55,7 +55,7 @@ getCategories();
                 class="w-5 aspect-square stroke-1"
               />
               <CardPlaceholderSmall
-                v-else="category.icon === 'N/A'"
+                v-else
                 class="w-5 aspect-square stroke-1"
               />
             </figure>

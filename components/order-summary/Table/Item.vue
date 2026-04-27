@@ -55,6 +55,7 @@ const itemQuantity = computed(() => {
   return props.stockItem ? Number(props.item.backorder_stock) : Number(props.item.stock);
 });
 
+// eslint-disable-next-line vue/return-in-computed-property
 const shortStock = computed(() => {
   if (props.item.productEntity?.stock)
     return Number(props.item.productEntity?.stock) <= thresholdStock && props.item.productEntity?.stock > 0 && props.stockItem;
@@ -65,10 +66,6 @@ watch(itemQuantity, () => {
     emits('updateQuantity');
   }
 });
-
-const deleteCurrent = () => {
-  emits('deleteCurrent', props.item.id);
-};
 
 const setupMediaQuery = () => {
   const mediaQuery = window.matchMedia('(min-width: 1280px)');

@@ -68,12 +68,13 @@
 <script setup lang="ts">
 import { useAuthStore } from '~/store/authStore';
 
-const { $api } = useNuxtApp();
+// $api available for future use
+const { $api: _$api } = useNuxtApp();
 
 const authStore = useAuthStore();
 
-const route = useRoute();
 const props = defineProps<{
+// eslint-disable-next-line vue/prop-name-casing
   IdCell: string;
   notes?: string;
   orderId?: string;

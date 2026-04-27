@@ -23,7 +23,9 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'setDefault', address: AddressData): void;
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   (e: 'edit', address: AddressData): void;
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   (e: 'delete', address: AddressData): void;
 }>();
 

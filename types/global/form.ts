@@ -1,11 +1,11 @@
 export interface FormSelectOption {
   label: string;
   value: string;
-  icon?: any;
+  icon?: unknown;
 }
 
 export interface InputObject {
-  value: any;
+  value: unknown;
   error: string;
   type?: 'email';
 }

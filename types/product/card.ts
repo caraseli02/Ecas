@@ -3,7 +3,7 @@ export interface ProductCard {
   title: string;
   category: string;
   price: string;
-  cover: any;
+  cover: unknown;
   discount?: number;
   stock?: number;
 }

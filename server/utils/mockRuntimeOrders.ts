@@ -3,8 +3,8 @@ import type { OrderType } from '~/types/order-summary/item';
 import type { UserInterface } from '~/types/auth/user-interface';
 
 type RuntimeOrderResponse = {
-  order: any;
-  children: any[];
+  order: unknown;
+  children: unknown[];
 };
 
 const runtimeOrders = new Map<string, RuntimeOrderResponse>();
@@ -13,7 +13,7 @@ const generateOrderId = () => `ord-${Date.now()}-${Math.floor(Math.random() * 10
 
 const generateShortId = () => `#ORD-${Math.floor(100000 + Math.random() * 899999)}`;
 
-const calculateOrderTotals = (products: any[] = []) => {
+const calculateOrderTotals = (products: unknown[] = []) => {
   if (!products.length) {
     return { subtotal: 0, total: 0 };
   }
@@ -34,7 +34,7 @@ const calculateOrderTotals = (products: any[] = []) => {
   };
 };
 
-const normalizeShippingDetails = (shippingDetails: any = {}) => {
+const normalizeShippingDetails = (shippingDetails: unknown = {}) => {
   const address = shippingDetails.address || {
     name1: 'N/A',
     name2: '',
@@ -81,7 +81,7 @@ const normalizeShippingDetails = (shippingDetails: any = {}) => {
   };
 };
 
-const normalizePaymentDetails = (paymentDetails: any = {}) => {
+const normalizePaymentDetails = (paymentDetails: unknown = {}) => {
   const rawCard = paymentDetails.card;
   const normalizedCard = rawCard?.card
     ? {
@@ -101,7 +101,7 @@ const normalizePaymentDetails = (paymentDetails: any = {}) => {
   };
 };
 
-export const createRuntimeOrder = (payload: any, user: UserInterface) => {
+export const createRuntimeOrder = (payload: unknown, user: UserInterface) => {
   const orderId = generateOrderId();
   const shortId = generateShortId();
   const products = payload.products || [];

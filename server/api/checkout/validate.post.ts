@@ -1,8 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const body = (await readBody(event)) as {
-    shippingAddress?: any;
-    billingAddress?: any;
-  };
+  await readBody(event);
 
   return {
     status: 'success',

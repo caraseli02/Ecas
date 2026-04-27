@@ -115,6 +115,7 @@ const getCustomerSettings = async () => {
     customerDiscount.value = discount;
     customerDiscountBuffer.value = discount;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     loading.value = false;
     error.value = !isMockMode.value;

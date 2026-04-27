@@ -7,7 +7,7 @@ import { h } from 'vue';
 import * as z from 'zod';
 import { toast } from '@/components/ui/toast';
 import { Textarea } from '@/components/ui/textarea';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { FormControl, _FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 const props = withDefaults(
   defineProps<{

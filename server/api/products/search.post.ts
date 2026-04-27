@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
 
   if (keyword) {
     filteredProducts = mockProducts.filter(
-      (p: any) =>
+      (p: unknown) =>
         p.name.toLowerCase().includes(keyword)
         || p.description?.toLowerCase().includes(keyword)
         || p.manufacturer?.toLowerCase().includes(keyword)
@@ -41,13 +41,13 @@ export default defineEventHandler(async (event) => {
     .trim()
     .toLowerCase();
   if (category) {
-    filteredProducts = filteredProducts.filter((p: any) => p.category?.toLowerCase() === category);
+    filteredProducts = filteredProducts.filter((p: unknown) => p.category?.toLowerCase() === category);
   }
 
   const sortBy = String(query.sortBy || '').trim();
   const sortOrder = String(query.sortOrder || 'asc').toLowerCase();
   if (sortBy) {
-    filteredProducts = [...filteredProducts].sort((a: any, b: any) => {
+    filteredProducts = [...filteredProducts].sort((a: unknown, b: unknown) => {
       const first = a?.[sortBy];
       const second = b?.[sortBy];
 

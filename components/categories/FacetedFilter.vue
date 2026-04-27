@@ -14,13 +14,7 @@ interface DataTableFacetedFilter {
   }[];
 }
 
-const props = defineProps<DataTableFacetedFilter>();
-
-const facets = computed(() => {
-  const values = new Set<string>();
-  props.options.forEach(option => values.add(option.value));
-  return Array.from(values);
-});
+defineProps<DataTableFacetedFilter>();
 
 const selectedValues = ref<Set<string>>(new Set());
 

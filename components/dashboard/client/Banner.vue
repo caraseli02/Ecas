@@ -139,7 +139,7 @@ defineProps<{
 const addToCart = async (product: ProductBannerInterface) => {
   const stock = product.quantity;
 
-  const response = (await addToCartHelper(product as any, stock)) as any;
+  const response = (await addToCartHelper(product as unknown, stock)) as unknown;
 
   if (response.status === 'success') {
     await cartStore.updateAndReturnCart();

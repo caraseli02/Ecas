@@ -140,7 +140,7 @@ const isSwiped = ref(false);
 const isSwipping = ref(false);
 const swipingTimeout = ref<NodeJS.Timeout>();
 
-const onDrag = (event: any) => {
+const onDrag = (event: unknown) => {
   if (showOptions.value) {
     return;
   }

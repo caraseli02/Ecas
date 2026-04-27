@@ -4,11 +4,11 @@ export const useCategoriesStore = defineStore({
   id: 'categories-store',
   state: () => {
     return {
-      categoriesMap: null as any | null,
+      categoriesMap: null as unknown | null,
     };
   },
   actions: {
-    updateCategories(object: any) {
+    updateCategories(object: unknown) {
       this.categoriesMap = object;
     },
   },

@@ -14,7 +14,6 @@ export const useSignupHandlers = () => {
   const { checkForInputErrors, checkContactConfirmationEmail, checkProfileConfirmationEmail } = useFormValidation();
   const { logout } = useFirebaseAuth();
   const firebaseToken = null; // Implement retrieval of Firebase token
-  const userInfo = null; // Implement retrieval of user info
 
   const nextStep = () => currentStep.value++;
   const previousStep = () => currentStep.value--;
@@ -300,7 +299,8 @@ export const useSignupHandlers = () => {
         await logout();
         nextStep();
       }
-      catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      catch (_error) {
         toast({ variant: 'destructive', title: 'Error', description: 'Registration failed' });
       }
       finally {

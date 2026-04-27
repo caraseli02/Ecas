@@ -221,14 +221,15 @@ const getCustomerSettings = async () => {
       return;
     }
     marketingPreferences.value.forEach((preference) => {
-      preference.email = (settings?.marketingPreferences as any)[preference.key]?.email || false;
-      preference.app = (settings?.marketingPreferences as any)[preference.key]?.app || false;
+      preference.email = (settings?.marketingPreferences as unknown)[preference.key]?.email || false;
+      preference.app = (settings?.marketingPreferences as unknown)[preference.key]?.app || false;
     });
     alertsAndNotifications.value.forEach((alert) => {
-      alert.email = (settings?.alertsAndNotifications as any)[alert.key]?.email || false;
-      alert.app = (settings?.alertsAndNotifications as any)[alert.key]?.app || false;
+      alert.email = (settings?.alertsAndNotifications as unknown)[alert.key]?.email || false;
+      alert.app = (settings?.alertsAndNotifications as unknown)[alert.key]?.app || false;
     });
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     if (!isMockMode.value) {
       return;
@@ -264,6 +265,7 @@ const markSettingAsRead = async (item: object, type: string) => {
   try {
     await $api.controlPanel.markSettingsAsRead(item, type, props.id);
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     if (!isMockMode.value) {
       return;
@@ -283,6 +285,7 @@ const resetPassword = async (email: string) => {
       return;
     }
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch (_err) {
     if (!isMockMode.value) {
       return;

@@ -34,7 +34,7 @@
 import _ from 'lodash';
 import type { StripeCardInterface } from '~/types';
 
-const card = ref<any | null>({});
+const card = ref<unknown | null>({});
 const cards = ref<StripeCardInterface[]>([]);
 const isNewCardSelected = ref<boolean>(false);
 
@@ -60,6 +60,7 @@ const setCardAsDefault = async (cardInfo: StripeCardInterface) => {
   selectedCard.value = cardInfo;
   const response = await $api.settingsClient.updateCardAsDefault(cardInfo.id);
   if (response.status === 'success') {
+    // noop
   }
 };
 

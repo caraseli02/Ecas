@@ -7,7 +7,7 @@
 <script setup lang="ts">
 definePageMeta({
   middleware: [
-    function (to, from) {
+    function (_to, _from) {
       return navigateTo('/');
     },
   ],

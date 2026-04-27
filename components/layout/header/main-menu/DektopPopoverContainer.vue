@@ -14,7 +14,7 @@ const currentChildren = computed(() => {
   return Array.isArray(currentCategory.value?.subcategory) ? currentCategory.value.subcategory : [];
 });
 const selectedDetailColumns = computed(() => {
-  return currentChildren.value.map((child: any) => {
+  return currentChildren.value.map((child: unknown) => {
     const descendants = Array.isArray(child?.subcategory) ? child.subcategory : [];
     return {
       id: child.id,
@@ -27,8 +27,8 @@ const selectedDetailColumns = computed(() => {
 });
 const breadcrumbTrail = computed(() => selectedCategories.value.map(category => category.name));
 const formatItemCount = (count: number) => `${Number(count || 0).toLocaleString()} items`;
-const handleRootClick = (category: any) => onCategoryClick(category, true);
-const handleChildClick = (category: any) => onCategoryClick(category, false);
+const handleRootClick = (category: unknown) => onCategoryClick(category, true);
+const handleChildClick = (category: unknown) => onCategoryClick(category, false);
 const resetSelection = () => (selectedCategories.value = []);
 
 onMounted(async () => {

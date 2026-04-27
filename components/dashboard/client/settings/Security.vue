@@ -11,7 +11,7 @@ const email = ref<string>(getUserDetails.value.contactDetails.email);
 
 async function sendResetPasswordLink() {
   if (email.value) {
-    const response = (await $api.user.resetPasswordLink(email.value)) as { status: string; data: any };
+    const response = (await $api.user.resetPasswordLink(email.value)) as { status: string; data: unknown };
     if (response.status !== 'success') {
       return;
     }
