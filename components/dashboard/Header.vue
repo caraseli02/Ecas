@@ -331,7 +331,6 @@ const searchValue = ref('');
 const notifications = ref<Notification[]>([] as Notification[]);
 const { $api } = useNuxtApp();
 const error = ref(false);
-const _emptyData = ref(false);
 const isLoading = ref(false);
 const showOptions = ref(false);
 const showNotifications = ref(false);

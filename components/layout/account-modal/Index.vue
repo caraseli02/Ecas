@@ -77,14 +77,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import XIcon from '@/assets/icons/x.svg';
-import DashboardIcon from '@/assets/icons/dashboard.svg';
-import NotificationsIcon from '@/assets/icons/notifications.svg';
-import QuickBuyIcon from '@/assets/icons/quick-buy-2.svg';
-import PriceOfferIcon from '@/assets/icons/price-offer.svg';
-import BOMUploadIcon from '@/assets/icons/bom-upload.svg';
-import HeartIcon from '@/assets/icons/heart.svg';
-import OrderTrackingIcon from '@/assets/icons/order-tracking.svg';
-import OrderHistoryIcon from '@/assets/icons/history.svg';
 import SignOutIcon from '@/assets/icons/menu/sign-out.svg';
 import SvgoMenuHelp from '@/assets/icons/menu/help.svg';
 import { useAuthStore } from '~~/store/authStore';
@@ -98,49 +90,6 @@ const { loggedInUser } = storeToRefs(authStore);
 const handleSignedIn = () => {
   emit('close');
 };
-
-const _navItems = ref([
-  {
-    label: 'Dashboard',
-    to: '/dashboard',
-    icon: DashboardIcon,
-  },
-  {
-    label: 'Notifications',
-    to: '/',
-    icon: NotificationsIcon,
-  },
-  {
-    label: 'Quick Buy',
-    to: '/',
-    icon: QuickBuyIcon,
-  },
-  {
-    label: 'Price Offer',
-    to: '/',
-    icon: PriceOfferIcon,
-  },
-  {
-    label: 'BOM Upload',
-    to: '/',
-    icon: BOMUploadIcon,
-  },
-  {
-    label: 'Favorites',
-    to: '/',
-    icon: HeartIcon,
-  },
-  {
-    label: 'Order Tracking',
-    to: '/',
-    icon: OrderTrackingIcon,
-  },
-  {
-    label: 'Order History',
-    to: '/',
-    icon: OrderHistoryIcon,
-  },
-]);
 
 const token = useCookie('token');
 const handleSignOut = async () => {

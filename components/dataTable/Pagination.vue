@@ -1,13 +1,5 @@
 <script setup lang="ts" generic="TData">
-import type { Table } from '@tanstack/vue-table';
 import { ChevronRightIcon, ChevronLeftIcon, ChevronsRightIcon, ChevronsLeftIcon } from 'lucide-vue-next';
-
-interface DataTablePaginationProps {
-  table: Table<TData>;
-  pageCount: number;
-  totalItems: number;
-}
-const _props = defineProps<DataTablePaginationProps>();
 </script>
 
 <template>

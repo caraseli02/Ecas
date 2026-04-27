@@ -17,8 +17,7 @@ export const usePricingStore = defineStore({
       editEntryPriceModal: null as PriceSettingsInterface | null,
       editQuantityModal: null as unknown | null,
       editMarginModal: null as unknown | null,
-      // eslint-disable-next-line no-constant-binary-expression
-      type: 'add' || 'edit',
+      type: 'add' as const,
     };
   },
   actions: {

@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import HomeIcon from '@/assets/icons/dashboard/home.svg';
 
-const _props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true,

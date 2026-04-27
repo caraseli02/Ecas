@@ -184,7 +184,6 @@ import EmojiSadIcon from '@/assets/icons/dashboard/emoji-sad.svg';
 import WarningIcon from '@/assets/icons/dashboard/warning.svg';
 import type { OrderInterface } from '~/types';
 
-const _showOptions = ref(false);
 const error = ref({
   lastOrder: false,
   totalSpent: false,

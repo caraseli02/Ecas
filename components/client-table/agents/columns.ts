@@ -31,8 +31,7 @@ export const columns: ColumnDef<CustomerTableColumns>[] = [
     header: ({ column }) => h(ColumnHeader, { column, title: 'Name' }),
     cell: ({ row }) =>
       h(UserInfo, {
-        // eslint-disable-next-line no-constant-binary-expression
-        name: `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}` ?? 'N/A',
+        name: `${row.original.contactDetails?.firstName} ${row.original.contactDetails?.lastName}`,
         email: row.original.contactDetails?.email,
       }),
   },

@@ -1,10 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const _body = (await readBody(event)) as {
-    cartItems?: unknown[];
-    shippingAddress?: unknown;
-    billingAddress?: unknown;
-    paymentMethod?: string;
-  };
+  await readBody(event);
 
   return {
     status: 'success',

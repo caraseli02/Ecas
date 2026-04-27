@@ -88,7 +88,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import OrderSummarySmallOrderModal from './SmallOrderModal.vue';
-import { _useAuthStore } from '~/store/authStore';
 import InformationIcon from '~/assets/icons/information.svg';
 import type { OrderInterface } from '~/types';
 import type { GeneralSettingsInterface } from '~/types/general-settings/general-settings';

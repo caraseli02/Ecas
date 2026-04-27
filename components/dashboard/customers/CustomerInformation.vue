@@ -381,13 +381,6 @@ const deleteAccountAsAdmin = async (id: string) => {
   }
 };
 
-const _deactivateAccountAsAdmin = async (id: string) => {
-  const response = await $api.userDashboard.deactivateUser(id);
-  if (response.status !== 'success') {
-    return;
-  }
-};
-
 const getCurrentDate = (date: string) => {
   return moment(date).format('DD MMM YYYY, HH:mm');
 };

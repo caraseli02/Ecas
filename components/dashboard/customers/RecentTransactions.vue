@@ -101,7 +101,6 @@ import type { TransactionInterface } from '~/types/dashboard/transaction';
 
 const error = ref(false);
 const emptyData = ref(false);
-const _showOptions = ref(false);
 const isLoading = ref(true);
 const props = defineProps({
   id: {

@@ -36,10 +36,9 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue';
 import { storeToRefs } from 'pinia';
 import CartIcon from '@/assets/icons/cart.svg';
-import type { CartInterface, CartProductsInterface } from '~/model/cart/response/cart.interface';
+import type { CartProductsInterface } from '~/model/cart/response/cart.interface';
 import { useAuthStore } from '~/store/authStore';
 import { useCartStore } from '~/store/cartStore';
 
@@ -52,15 +51,6 @@ const items = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
 // const cart = ref<CartProductsInterface[]>([] as CartProductsInterface[]);
 
 defineEmits(['close']);
-
-const _props = defineProps({
-  data: {
-    type: Object as PropType<CartInterface>,
-    required: true,
-  },
-});
-
-const _totalCartPrice = ref(0);
 
 // watch(
 //     [items],
@@ -94,11 +84,6 @@ const _totalCartPrice = ref(0);
 //     cart.value = props.data.products;
 //     mapCartItems(cart.value);
 // };
-
-const _updateQuantity = async () => {
-  items.value = cart.value;
-  mapCartItems();
-};
 
 watch(
   cart,

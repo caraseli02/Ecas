@@ -52,7 +52,6 @@ const cartStore = useCartStore();
 const { getPreviousCheckoutError, getOrderClientSecret } = storeToRefs(cartStore);
 
 const orderId = ref<string>();
-const _retry = ref(false);
 
 orderId.value = route.query.id as string;
 

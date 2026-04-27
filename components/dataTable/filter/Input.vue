@@ -8,7 +8,7 @@ interface DataTableInputFilter {
 }
 
 const props = defineProps<DataTableInputFilter>();
-const _emit = defineEmits<{
+defineEmits<{
   onInput: [value: string];
 }>();
 

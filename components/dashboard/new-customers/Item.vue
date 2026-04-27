@@ -132,7 +132,7 @@ import DemoTooltip from '~/components/global/DemoTooltip.vue';
 import type { DashboardCustomerTableItem } from '~/types';
 import ThreeDotMenu from '~/components/shared/tables/micro/row-items/ThreeDotMenu.vue';
 
-const _props = defineProps({
+defineProps({
   item: {
     type: Object as PropType<DashboardCustomerTableItem>,
     required: true,

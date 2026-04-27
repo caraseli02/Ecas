@@ -116,7 +116,6 @@ const discountsHelper = parseProductPriceConfiguration(props.product, getUserDet
 
 const priceConfiguration = ref<PriceConfigurationSettingsInterface | undefined>(discountsHelper?.minimumOrderQuantityConfiguration);
 const discountPrice = ref(discountsHelper?.discountPrice || 0);
-const _userDiscount = ref(discountsHelper?.userDiscount || 0);
 const productDiscount = ref(discountsHelper?.productDiscount || 0);
 
 const addToFavourite = async (product: ProductInterface) => {

@@ -192,7 +192,6 @@ import type { AddressInterface, CompanyDetails, ContactDetails, UserInterface } 
 import { getRegionByCountry } from '~/helpers/form.helper';
 import { toast } from '~/components/ui/toast';
 
-const _companyInformation = ref<CompanyDetails>({} as CompanyDetails);
 const { $api } = useNuxtApp();
 const props = defineProps({
   id: {

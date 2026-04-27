@@ -23,7 +23,7 @@ const { handleSubmit, _values, _setErrors } = useForm({
   validateOnMount: true,
 });
 
-const _onSubmit = handleSubmit((_values) => {
+handleSubmit((_values) => {
   showErrorMsg.value = true;
 });
 
@@ -38,7 +38,7 @@ const props = defineProps<{
   cardInfo: StripeCardInterface;
 }>();
 
-const _emit = defineEmits(['update:isOpen']);
+defineEmits(['update:isOpen']);
 
 const localIsOpen = defineModel<boolean>();
 

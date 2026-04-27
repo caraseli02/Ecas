@@ -57,7 +57,6 @@ class CartService extends HttpFactory {
   }
 
   async removeEntityFromCart(payload: DeleteProductCartRequestInterface) {
-    const _user = this.authStore.getCurrentUser;
     const token = this.authStore.getToken();
 
     return await this.call(

@@ -4,7 +4,7 @@ import { usePaymentStore } from '~/store/paymentStore';
 
 const paymentStore = usePaymentStore();
 
-const _props = defineProps<{
+defineProps<{
   cardInfo?: unknown;
   isSelected?: boolean;
   hasCard?: boolean;

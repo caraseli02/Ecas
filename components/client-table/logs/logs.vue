@@ -13,7 +13,6 @@ const totalItems = ref(0);
 const pageCount = ref(0);
 const loading = ref(true);
 const error = ref(false);
-const _emptyData = ref(false);
 const listItems = ref<CustomerTableColumns[]>([]);
 
 const authStore = useAuthStore();

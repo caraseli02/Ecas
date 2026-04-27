@@ -1,13 +1,5 @@
 <script setup lang="ts" generic="TData">
-import type { Table } from '@tanstack/vue-table';
-import { _XIcon } from 'lucide-vue-next';
 import { LogsTableColumnsEnum } from '~/components/client-table/logs/columns.enum';
-
-interface DataTableToolbarProps {
-  table: Table<TData>;
-}
-
-const _props = defineProps<DataTableToolbarProps>();
 </script>
 
 <template>

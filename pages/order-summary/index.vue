@@ -136,7 +136,6 @@ const orderItems = computed(() => {
 
 // Payment Processing
 const { card, cards, isNewCardSelected, fetchCards } = usePaymentCards();
-const _paymentDetails = ref<PaymentDetails | null>(null);
 const paymentType = ref({ type: 0, selected: false });
 
 // Order Processing

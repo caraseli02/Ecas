@@ -18,8 +18,7 @@
  *   4. Removes the corresponding entries from skills-lock.json.
  */
 
-// eslint-disable-next-line no-unused-vars
-import { existsSync, readFileSync, writeFileSync, rmSync, _readdirSync, _statSync, lstatSync, unlinkSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, rmSync, lstatSync, unlinkSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 // Skills that were renamed, merged, or folded in v2.0 and v2.1.

@@ -14,7 +14,6 @@ export const useSignupHandlers = () => {
   const { checkForInputErrors, checkContactConfirmationEmail, checkProfileConfirmationEmail } = useFormValidation();
   const { logout } = useFirebaseAuth();
   const firebaseToken = null; // Implement retrieval of Firebase token
-  const _userInfo = null; // Implement retrieval of user info
 
   const nextStep = () => currentStep.value++;
   const previousStep = () => currentStep.value--;

@@ -73,7 +73,6 @@ const { $api: _$api } = useNuxtApp();
 
 const authStore = useAuthStore();
 
-const _route = useRoute();
 const props = defineProps<{
 // eslint-disable-next-line vue/prop-name-casing
   IdCell: string;

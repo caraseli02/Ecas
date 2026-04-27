@@ -67,10 +67,6 @@ watch(itemQuantity, () => {
   }
 });
 
-const _deleteCurrent = () => {
-  emits('deleteCurrent', props.item.id);
-};
-
 const setupMediaQuery = () => {
   const mediaQuery = window.matchMedia('(min-width: 1280px)');
   const handler = (e: MediaQueryListEvent) => {

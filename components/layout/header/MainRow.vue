@@ -448,16 +448,6 @@ const deleteNotification = async (notification: Notification, index: number) => 
   notifications.value.splice(index, 1);
 };
 
-const _toggleNavModal = () => {
-  if (window.innerWidth < 768 || route.name !== 'index') {
-    showNavModal.value = !showNavModal.value;
-    return;
-  }
-  if (window.scrollY > 20) {
-    showNavModal.value = !showNavModal.value;
-  }
-};
-
 watch(showMobileSearch, (newVal) => {
   if (newVal) {
     nextTick(() => {

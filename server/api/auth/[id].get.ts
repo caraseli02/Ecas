@@ -6,13 +6,13 @@ export default defineEventHandler(async (event) => {
     data: {
       _id: userId,
       firebaseId: 'mock-firebase-id-' + userId,
-      role: 'customer' as unknown,
-      accountType: 'personal' as unknown,
+      role: 'customer',
+      accountType: 'personal',
       verified: true,
       status: 1,
       spent: 1250.5,
       ordersCount: 5,
-      currentStatus: 'online' as unknown,
+      currentStatus: 'online',
       contactDetails: {
         firstName: 'John',
         lastName: 'Doe',

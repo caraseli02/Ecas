@@ -36,7 +36,7 @@ defineProps({
   },
 });
 
-const _slots = defineSlots<{
+defineSlots<{
   default?: () => unknown;
   order?: () => unknown;
 }>();
