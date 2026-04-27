@@ -102,7 +102,6 @@ export default defineNuxtConfig({
   routeRules: {
     '/dashboard/**': { appMiddleware: ['auth'] },
     '/checkout/**': { appMiddleware: ['auth'] },
-    '/order-summary/**': { appMiddleware: ['auth'] },
     '/product/categories': { appMiddleware: ['auth'] },
   },
 
