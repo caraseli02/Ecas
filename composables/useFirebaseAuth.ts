@@ -27,10 +27,8 @@ export default function () {
 
       return signIn;
     }
-    catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error);
-      }
+    catch {
+      // Error handled silently
       return { error: Error };
     }
   };

@@ -16,12 +16,10 @@ export const useFetchAPI: useFetchType = async (url, params) => {
       }
     },
 
-    async onRequestError({ error }) {
-      console.log(error.message);
+    async onRequestError({ error: _error }) {
     },
 
-    async onResponseError({ response }) {
-      console.log(response._data.message);
+    async onResponseError({ response: _response }) {
     },
 
     ...params,

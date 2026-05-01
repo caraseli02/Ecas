@@ -46,8 +46,6 @@ declare module '#app' {
 export default defineNuxtPlugin((nuxtApp) => {
   const config = nuxtApp.$config.public;
 
-  console.log(`[API] MOCK_MODE: ${config.MOCK_MODE ? 'ENABLED' : 'DISABLED'}`);
-
   const baseURL = (() => {
     if (!config.MOCK_MODE) {
       return config.BASE_URL_API;

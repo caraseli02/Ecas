@@ -30,8 +30,6 @@ export const useCartStore = defineStore({
       this.orderClientSecret = secret;
     },
     setPreviousCheckoutError(error: CheckoutError) {
-      console.log(error);
-
       this.previousCheckoutError = error;
     },
     emptyOrderClientSecret() {

@@ -63,7 +63,6 @@ const table = useVueTable({
 watch(
   () => [table.getState().pagination.pageIndex, table.getState().pagination.pageSize, table.getState().sorting],
   (oldVal, newVal) => {
-    console.log(newVal);
     const { pageIndex, pageSize } = table.getState().pagination;
     if (_isEqual(oldVal, newVal)) return;
 
