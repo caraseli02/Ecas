@@ -28,8 +28,7 @@ const { handleSubmit } = useForm({
   validationSchema: formSchema,
 });
 
-const onSubmit = handleSubmit((values) => {
-  console.log('Form submitted!', values);
+const onSubmit = handleSubmit((_values) => {
 });
 
 const isOpen = ref(false);

@@ -231,14 +231,12 @@ const currentQuantity = ref(props.modelValue);
 const emits = defineEmits(['update:modelValue']);
 const inputHandler = async (quantity: number) => {
     if (currentQuantity.value === quantity) {
-        console.log('same value');
         return;
     }
 
     emits('update:modelValue', quantity);
 
     currentQuantity.value = quantity;
-    console.log('quantity: ', quantity);
     if (props.object && props.object.action === ProductAction.Update) {
         const payload = {} as UpdateProductCartRequestInterface;
         let product: CartProductsInterface;
@@ -264,7 +262,6 @@ const inputHandler = async (quantity: number) => {
         const object = await $api.cart.updateEntityFromCart(payload);
         if (object.status === 'success') {
             await cartStore.updateAndReturnCart();
-            console.log('emitting', quantity);
         }
     }
 };

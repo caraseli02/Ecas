@@ -21,8 +21,7 @@ const { handleSubmit, setFieldValue } = useForm({
   },
 });
 
-const onSubmit = handleSubmit((values) => {
-  console.log('Form submitted!', values);
+const onSubmit = handleSubmit((_values) => {
 });
 
 const isOpen = defineModel<boolean>();
